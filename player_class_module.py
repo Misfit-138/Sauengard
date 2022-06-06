@@ -12,7 +12,8 @@ class Player:
         print("The player is navigating")
 
     def swing(self):
-        print("The player swings and gets a random swing score added to his dexterity")
+        print(f"{self.name} swings and gets a random swing score added to his dexterity")
 
     def heals(self):
-        print("The player takes a restorative tincture")
+        print(f"{self.name} takes a restorative tincture")
+

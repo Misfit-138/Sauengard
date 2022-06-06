@@ -1,11 +1,12 @@
 class Player:
 
-    def __init__(self,con,int,wis,str,dex):
-        self.con = con
-        self.int = int
-        self.wis = wis
-        self.str = str
-        self.dex = dex
+    def __init__(self,name,constitution,intelligence,wisdom,strength,dexterity):
+        self.name = name
+        self.constitution = constitution
+        self.intelligence = intelligence
+        self.wisdom = wisdom
+        self.strength = strength
+        self.dexterity = dexterity
 
     def navigate(self):
         print("The player is navigating")

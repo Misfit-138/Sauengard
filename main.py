@@ -17,4 +17,4 @@ print(player_1.strength)
 print(player_1.dexterity)
 if player_1.dexterity > 12:
     print("Great dexterity!!")
-
+player_1.swing()

@@ -28,6 +28,7 @@ natural to use certain in-place functions like sort and random.shuffle. These ar
 An in-place algorithm is impure and non-idempotent, but if the state that it modifies is limited to its parameter(s)
 and its documentation and return value (usually None) support this, the behavior is predictable and comprehensible."""
 from player_class_module import Player
+from monster_class_module import Monster
 import random
 import os
 
@@ -55,3 +56,10 @@ print(f"Strength: {player_1.strength}")
 print(f"Dexterity: {player_1.dexterity}")
 
 player_1.swing(player_1.dexterity, player_1.strength, player_1.sword)
+pres_a_key = input()
+# name,level,gold,sword,armor,shield,constitution,intelligence,wisdom,strength,dexterity
+monster_stats = ("Kobold",1,0,0,0,0,*random.sample(range(3, 18), 5))
+monster = Monster(*monster_stats)  # send stats to Monster class
+monster.swing(monster.dexterity, monster.strength, monster.sword)
+
+

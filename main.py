@@ -29,21 +29,29 @@ An in-place algorithm is impure and non-idempotent, but if the state that it mod
 and its documentation and return value (usually None) support this, the behavior is predictable and comprehensible."""
 from player_class_module import Player
 import random
+import os
+
+
 # player_stats = [18,17,16,15,14]
 player_name = input("Enter Player name: ")
 # player_stats = (player_name,18,18,18,18,18)
 # the asterisk * before the random function passes the parameters without
 # the brackets
-player_stats = (player_name, *random.sample(range(6, 18), 5))
+# name,level,gold,sword,armor,shield,constitution,intelligence,wisdom,strength,dexterity
+player_stats = (player_name,1,0,0,0,0,*random.sample(range(3, 18), 5))
 print(player_stats)
 
 player_1 = Player(*player_stats)  # sending stats to Player Class
 print(f"Name: {player_1.name}")
+print(f"Level: {player_1.level}")
+print(f"Gold: {player_1.gold}")
+print(f"Sword + {player_1.sword}")
+print(f"Armor + {player_1.armor}")
+print(f"Shield + {player_1.shield}")
 print(f"Constitution {player_1.constitution}")
-print(player_1.intelligence)
-print(player_1.wisdom)
-print(player_1.strength)
-print(player_1.dexterity)
-#if player_1.dexterity > 12:
-#    print("Great dexterity!!")
-player_1.swing(player_1.dexterity, player_1.strength)
+print(f"Intelligence: {player_1.intelligence}")
+print(f"Wisdom: {player_1.wisdom}")
+print(f"Strength: {player_1.strength}")
+print(f"Dexterity: {player_1.dexterity}")
+
+player_1.swing(player_1.dexterity, player_1.strength, player_1.sword)

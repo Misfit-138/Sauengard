@@ -17,10 +17,8 @@ class Monster:
         self.strength = strength
         self.dexterity = dexterity
 
-    def navigate(self):
-        print("The monster is navigating")
 
-    def swing(self, dexterity, strength, sword):
+    '''def swing(self, dexterity, strength, sword):
         monster_roll20 = random.randint(1, 20)
         dexterity_modifier = round((dexterity - 10) / 2)
         player_roll20 = random.randint(1, 20)
@@ -37,8 +35,5 @@ class Monster:
             print (f"Monster does {damage_to_monster} points of damage!")
         else:
             print(f"Monster misses..")
-            return
+            return'''
 
-
-    def heals(self):
-        print(f"{self.name} takes a restorative tincture")

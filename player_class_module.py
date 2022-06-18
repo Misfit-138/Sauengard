@@ -4,7 +4,7 @@ import random
 class Player:
 
     def __init__(self, name, level, gold, sword, armor, shield, constitution, intelligence, wisdom, strength,
-                 dexterity):
+                 dexterity, hitpoints):
         self.name = name
         self.level = level
         self.gold = gold
@@ -16,29 +16,31 @@ class Player:
         self.wisdom = wisdom
         self.strength = strength
         self.dexterity = dexterity
+        self.hitpoints = hitpoints
 
-    def navigate(self):
-        print("The player is navigating")
+    def reduce_health(self, damage):
+        self.hitpoints -= damage
 
-    def swing(self, dexterity, strength, sword):
-        player_roll20 = random.randint(1, 20)
+    def swing(self, name, dexterity, strength, sword):
+        roll20 = random.randint(1, 20)
         dexterity_modifier = round((dexterity - 10) / 2)
-        monster_roll20 = random.randint(1, 20)
-        player_roll12 = random.randint(1, 12)
+        opponent_roll20 = random.randint(1, 20)
+        roll12 = random.randint(1, 12)
         strength_modifier = round((strength - 10) / 2)
-        damage_to_monster = round(player_roll12 + strength_modifier + sword)
-        print(f"Player rolls 20 sided die---> {player_roll20}")
+
+        print(f"{name} rolls 20 sided die---> {roll20}")
         print(f"Dexterity modifier {dexterity_modifier}")
-        print(f"Monster rolls 20 sided die ---> {monster_roll20}")
-        if player_roll20 + dexterity_modifier > monster_roll20:
-            print(f"{self.name} hits!")
-            print(f"Player rolls 12 sided die---> {player_roll12}")
-            print(f'Strength modifier---> {strength_modifier}')
-            print (f"Player does {damage_to_monster} points of damage!")
+        print(f"Monster rolls 20 sided die ---> {opponent_roll20}")
+        if roll20 + dexterity_modifier > opponent_roll20:
+            damage_to_opponent = round(roll12 + strength_modifier + sword)
+            if damage_to_opponent > 0:
+                print(f"{name} hits!")
+                print(f"{name} rolls 12 sided die---> {roll12}")
+                print(f'Strength modifier---> {strength_modifier}')
+                print(f"{name} does {damage_to_opponent} points of damage!")
+            else:
+                print("0 or less than zero....Miss")
+                return damage_to_opponent
         else:
-            print(f"Player misses..")
+            print(f"{name} misses..")
             return
-
-
-    def heals(self):
-        print(f"{self.name} takes a restorative tincture")

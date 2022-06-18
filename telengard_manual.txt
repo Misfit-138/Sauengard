@@ -1,0 +1,231 @@
+↓↓↓
+Telengard (telengard-manual.txt)
+Telengard - improvised manual
+-----------------------------
+
+- by Elwood
+
+
+1. Commands
+
+Arrow keys to move around
+F - Fight
+C - Cast
+S - Stay
+E - Evade
+P - Replot
+Q - Quit
+H - Help
+F1 - Use Scroll of Rescue
+F2 - Use Potion of Healing
+F3 - Use Potion of Strength
+F4 - Save Character
+
+
+2. Spells
+
+Each spell costs spell points equal to its level.
+
+Spell |   Exp.level
+Level | needed to use
+----------------------
+  1   |        1
+  2   |        3
+  3   |        6
+  4   |        9
+  5   |       12
+  6   |       15
+
+Level 1
+ 1 - Magic Missile (C)
+ 2 - Sleep (C)
+ 3 - Cure Light Wounds
+ 4 - Light
+ 5 - Turn Undead (C)
+ 6 - Protection from Evil (C)
+
+Level 2
+ 1 - Web (C)
+ 2 - Levitate
+ 3 - Cause Light Wounds (C)
+ 4 - Detect Traps
+ 5 - Charm (C)
+ 6 - Strength
+
+Level 3
+ 1 - Lightning Bolt (C)
+ 2 - Cure Serious Wounds
+ 3 - Continual Light
+ 4 - Invisibility
+ 5 - Hold Monster (C)
+ 6 - Phantasmal Force (C)
+
+Level 4
+ 1 - Pass Wall
+ 2 - Fireball (C)
+ 3 - Cause Serious Wounds (C)
+ 4 - Flesh to Stone (C)
+ 5 - Fear
+ 6 - Finger of Death (C)
+
+Level 5
+ 1 - Teleport
+ 2 - Astral Walk
+ 3 - Power Word Kill (C)
+ 4 - Ice Storm (C)
+ 5 - Wall of Fire (C)
+ 6 - Plague (C)
+
+Level 6
+ 1 - Time Stop
+ 2 - Raise Dead
+ 3 - Holy Symbol (C)
+ 4 - Word of Recall
+ 5 - Restoration
+ 6 - Prismatic Wall (C)
+
+(C) = Combat Spell - can be used in combat only
+
+
+3. Experience Points
+
+ Exp.  | Exp.Points
+Points |   needed
+--------------------
+   1   |        0
+   2   |     2000
+   3   |     4000
+   4   |     8000
+   5   |    16000
+   6   |    32000
+   7   |    64000
+   8   |   128000
+   9   |   256000
+  10   |   512000
+
+...etc. - it's always twice the number of exp. points needed to attain the
+last level
+
+
+4. Monsters
+
+The monsters of Telengard are many and varied. All monsters, like the characters
+who
+trespass for their hides, have experience level ratings. Like a character's
+rating,
+the higher the number the more powerful it is. There are two very distinct types
+of
+monsters in Telengard: Undead and Living.
+
+Undead monsters are vile creatures that have managed to live past their
+appointed hour
+of death due to some foul curse. They have no heartbeat, no breath; they do not
+sleep
+and cannot usually be charmed. You will no doubt find that they have not lost
+their
+appetite however! Undead monsters have a (U) after their name in the monster
+listings.
+
+Living monsters are normal creatures that eat, sleep, drink and dance upon dead
+warriors'
+bodies. Living monsters have a (L) after their name in the monster listings.
+
+	1) Gnoll (L)
+	   A sawed-off freak, not too tough but nasty nonetheless. Lowlife of the
+dungeon.
+
+	2) Kobold (L)
+	   A close relative of the Gnoll, fond of pricking unwary adventurers with
+their
+	   cranial horn. Like a Gnoll they like to hamstring you and slit your throat
+
+	3) Skeleton (U)
+	   Your basic rampaging bag of bones. No brains but will attack relentlessly
+until
+	   vanquished.
+
+	4) Hobbit (L)
+	   Not the nice type you're used to, this nimble little creature is
+definitely not
+	   to be trusted. He'd sooner make off with a magical item than have a
+confrontation.
+
+	5) Zombie (U)
+	   A newly-risen corpse, slightly cannier than a skeleton only because
+it's not
+	   completely rotted out.
+
+	6) Orc (L)
+	   Sly, foul-smelling and not too nice. Orcs have taken a liking to munching
+on
+	   unwary travellers.
+
+	7) Fighter (L)
+	   A competent mercenary out to make his fortune by dispatching you as quickly
+as
+	   possible and stealing your gold and valuables.
+
+	8) Mummy (U)
+	   A bandage-wrapped monster fresh from the crypt. More deadly than a zombie
+due to
+	   its more preserved state.
+
+	9) Elf (L)
+	   A nimble and cunning threat. Elves fight well when forced to and are skilled
+at
+	   thieving as well.
+
+       10) Ghoul (U)
+	   A creature with a rather tainted reputation for feasting upon corpses and
+robbing
+	   graves for meat. Beware - its touch can paralyze!
+
+       11) Dwarf (L)
+	   A brawny, tunnel-dwelling creature that feels right at home in TELENGARD.
+Skilled
+	   at using an axe to lop off heads; also known to pick pockets.
+
+       12) Troll (L)
+	   A nine-foot tall, loathsome man-eating brute you'd do best avoid
+altogether.
+
+       13) Wraith (U)
+	   The undead spirit of a dead warrior out for revenge. Wraiths have been known
+to take
+	   away Experience Points, draining a character's level.
+
+       14) Ogre (L)
+	   A stocky, ill-tempered eight-foot hairy cousin of the giant. A vicious
+opponent that
+	   never gives mercy.
+
+       15) Minotaur (L)
+	   An ugly result of cross-breeding between an Ogre and a large bull. Their
+breath alone
+	   can kill small dogs and feeble adventurers.
+
+       16) Giant (L)
+	   A grotesquely overgrown humanoid. Fond of fighting with a club or small
+tree. The
+	   Giants of TELENGARD are no pushover.
+
+       17) Specter (U)
+	   Spirit of an ancient warrior king long dead. Like a Wraith, the Specter can
+drain a
+	   character's Experience Level. Beware!
+
+       18) Vampire (U)
+	   The most hideous and distasteful of the "Undead". It's touch
+can paralyze and its bite
+	   can drain a character's blood as well as his Level.
+
+       19) Demon (L)
+	   A foul beast summoned from the nether plains. Demons are armed with a deadly
+whip and a
+	   flaming sword. The sword's dangerous, but the whip's worse!
+
+       20) Dragon (L)
+	   King of the nasties. Dragons like to barbeque young warriors with a small
+gust of their
+	   disagreeable breath. A good beginner's tip is "Never fight a
+Dragon!"

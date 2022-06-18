@@ -21,7 +21,7 @@ class Player:
     def reduce_health(self, damage):
         self.hitpoints -= damage
 
-    def swing(self, name, dexterity, strength, sword):
+    def swing(self, name, dexterity, strength, sword, hitpoints):
         roll20 = random.randint(1, 20)
         dexterity_modifier = round((dexterity - 10) / 2)
         opponent_roll20 = random.randint(1, 20)
@@ -40,7 +40,8 @@ class Player:
                 print(f"{name} does {damage_to_opponent} points of damage!")
             else:
                 print("0 or less than zero....Miss")
-                return damage_to_opponent
+                # return damage_to_opponent
         else:
-            print(f"{name} misses..")
-            return
+            print(f"{name} misses..and gets hit!")
+            hitpoints -= 5
+            return self.hitpoints

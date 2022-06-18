@@ -97,6 +97,8 @@ random_monster = random.randint(0, 19)
         print("You have encountered a ", (monsters[random_monster])) '''
 
 # name, dexterity, strength, sword
-player_1 = Player(*player_stats)
-player_1.swing(player_name, player_1.dexterity, player_1.strength, player_1.sword)
+
+player_1.swing(player_name, player_1.dexterity, player_1.strength, player_1.sword, player_1.hitpoints)
+
 print(player_1.hitpoints)
+print

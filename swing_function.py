@@ -5,7 +5,7 @@ from player_class_module import *
 # import player_class_module
 
 #def swing(name, dexterity, strength, sword):
-def swing(name, dexterity, strength, sword):
+def swing(name, dexterity, strength, sword, hitpoints):
     roll20 = random.randint(1, 20)
     dexterity_modifier = round((dexterity - 10) / 2)
     opponent_roll20 = random.randint(1, 20)
@@ -30,5 +30,6 @@ def swing(name, dexterity, strength, sword):
             print("0 or less than zero....Miss")
             return
     else:
-        print(f"{name} misses..")
-        return
+        print(f"{name} misses.. and gets hit!")
+        hitpoints -= 5
+        return hitpoints

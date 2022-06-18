@@ -17,6 +17,23 @@ class Monster:
         self.strength = strength
         self.dexterity = dexterity
 
+ '''   class Player:
+        def __init__(self, weapon, health):
+            self.weapon = weapon
+            self.health = health
+
+        def reduce_health(amount):
+            self.health -= amount
+
+    You can add additional methods like calculate_damage()
+    to the Player class that take into account the type of weapon the player has.
+    If you also create a monster class, your fight sequence could look something like
+
+    def fight():
+        monster.reduce_health(player.calculate_damage())
+        monster.check_dead()
+        player.reduce_health(monster.calculate_damage())
+        player.check_dead()'''
 
     '''def swing(self, dexterity, strength, sword):
         monster_roll20 = random.randint(1, 20)
@@ -36,4 +53,5 @@ class Monster:
         else:
             print(f"Monster misses..")
             return'''
+
 

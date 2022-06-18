@@ -27,7 +27,7 @@ print(f"Hitpoints: {player_1.hitpoints}")
 
 player_1.reduce_health(5)
 print(player_1.hitpoints)
-print(type(player_1))
+
 #player_1.swing("name", 12, 12, 12)
 #damage = swing()
 #print(damage)

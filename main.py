@@ -44,7 +44,7 @@ accept_stats = ""
 while accept_stats != "y":
     os.system('cls')
     # name,level,gold,sword,armor,shield,constitution,intelligence,wisdom,strength,dexterity
-    # player_stats = (player_name,1,0,0,0,0,*random.sample(range(3, 19), 5), 18)
+    # player_stats = (player_name,1,0,0,0,0,*random.sample(range(3, 19), 5))
     player_stats = [player_name, 1, 0, 0, 0, 0, *random.sample(range(3, 19), 5), 0]
     # print(player_stats)
     con = round(player_stats[6] * 1.2)
@@ -62,29 +62,12 @@ while accept_stats != "y":
     print(f"Strength: {player_1.strength}")
     print(f"Dexterity: {player_1.dexterity}")
     print(f"Hitpoints: {player_1.hitpoints}")
-    # thisdict.update({"color": "red"})
-    # hitpoints_modifier = (player_1.constitution - 10) / 2
-    # hitpoints = player_1.constitution + hitpoints_modifier
-    print(f"Hitpoints: {player_1.hitpoints}")
     accept_stats = input("Accept stats y/n ?")
-# current_player.update({'Name': player_1.name})
-'''print(f"Level: {player_1.level}")
-    print(f"Gold: {player_1.gold}")
-    print(f"Sword + {player_1.sword}")
-    print(f"Armor + {player_1.armor}")
-    print(f"Shield + {player_1.shield}")
-    print(f"Constitution {player_1.constitution}")
-    print(f"Intelligence: {player_1.intelligence}")
-    print(f"Wisdom: {player_1.wisdom}")
-    print(f"Strength: {player_1.strength}")
-    print(f"Dexterity: {player_1.dexterity}")'''
 
-'''player_1.swing(player_1.dexterity, player_1.strength, player_1.sword)  # call swing function and send stats
-pres_a_key = input()
 # name,level,gold,sword,armor,shield,constitution,intelligence,wisdom,strength,dexterity
-monster_stats = ("Kobold",1,0,0,0,0,*random.sample(range(3, 18), 5))
-monster = Monster(*monster_stats)  # send stats to Monster class
-monster.swing(monster.dexterity, monster.strength, monster.sword)'''
+#monster_stats = ("Kobold",1,0,0,0,0,*random.sample(range(3, 18), 5))
+#monster = Monster(*monster_stats)  # send stats to Monster class
+#monster.swing(monster.dexterity, monster.strength, monster.sword)'''
 
 '''
 monsters = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
@@ -98,7 +81,7 @@ random_monster = random.randint(0, 19)
 
 # name, dexterity, strength, sword
 
-player_1.swing(player_name, player_1.dexterity, player_1.strength, player_1.sword, player_1.hitpoints)
+player_1.swing(player_name, player_1.dexterity, player_1.strength, player_1.sword)
+print(f"You have {player_1.hitpoints} hitpoints")
 
-print(player_1.hitpoints)
-print
+

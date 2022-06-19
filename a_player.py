@@ -1,14 +1,11 @@
 import random
 
 
-def calculate_damage():
-    damage_inflicted = random.randint(3, 5)
-    return damage_inflicted
-
+# check_dead returns a string value, it does not output it to stdout.
+# If you want to see the output from check_dead, try print(player.check_dead())
 
 class Player:
-    def __init__(self, name, weapon, health):
-        self.name = name
+    def __init__(self, weapon, health):
         self.weapon = weapon
         self.health = health
 
@@ -17,52 +14,21 @@ class Player:
 
     def check_dead(self):
         if self.health > 0:
-            return False
+            return "Player not dead"
+        else:
+            return "Player dead"
 
+    def calculate_damage(self, weapon):
+        damage_inflicted = random.randint(3, 15) + weapon
+        return damage_inflicted
 
-def calculate_damage():
-    damage_inflicted = random.randint(3, 5)
-    return damage_inflicted
-
-
-class Monster:
-    def __init__(self, name, weapon, health):
-        self.name = name
-        self.weapon = weapon
-        self.health = health
-
-    def reduce_health(self, amount):
-        self.health -= amount
-
-    def check_dead(self):
+    def fight(self):
+        self.reduce_health(self.calculate_damage(self.weapon))
         print(self.health)
-        if self.health > 0:
-            return "Monster not dead"
-
-player = Player("Trett", "Sword", 20)
-monster = Monster("Skeleton", "sword", 20)
+        #print(self.check_dead())
 
 
-'''You can add additional methods like calculate_damage()
-to the Player class that take into account the type of weapon the player has.
-If you also create a monster class , your fight sequence could look something like
+player = Player(1, 15)
 
-
-def fight():
-    monster.reduce_health(player.calculate_damage())
-    monster.check_dead()
-    player.reduce_health(monster.calculate_damage())
-    player.check_dead()
-    '''
-
-
-def fight():
-    monster.reduce_health(calculate_damage())
-    print(monster.health)
-    monster.check_dead()
-    player.reduce_health(calculate_damage())
-    print(player.health)
-    player.check_dead()
-
-
-fight()
+player.fight()
+print(player.check_dead())

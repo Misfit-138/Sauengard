@@ -20,8 +20,15 @@ class Player:
 
     def reduce_health(self, damage):
         self.hitpoints -= damage
+        return damage
 
-    def swing(self, name, dexterity, strength, sword, hitpoints):
+    def check_dead(self):
+        if self.hitpoints > 0:
+            return f"You are alive"
+        else:
+            return f"You are dead"
+
+    def swing(self, name, dexterity, strength, sword):
         roll20 = random.randint(1, 20)
         dexterity_modifier = round((dexterity - 10) / 2)
         opponent_roll20 = random.randint(1, 20)
@@ -40,8 +47,9 @@ class Player:
                 print(f"{name} does {damage_to_opponent} points of damage!")
             else:
                 print("0 or less than zero....Miss")
-                # return damage_to_opponent
+                return
         else:
             print(f"{name} misses..and gets hit!")
-            hitpoints -= 5
-            return self.hitpoints
+            print(f"You suffer {self.reduce_health(roll12 + 12)} points damage!! ")
+            print(self.check_dead())
+        return

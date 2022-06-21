@@ -28,11 +28,11 @@ natural to use certain in-place functions like sort and random.shuffle. These ar
 An in-place algorithm is impure and non-idempotent, but if the state that it modifies is limited to its parameter(s)
 and its documentation and return value (usually None) support this, the behavior is predictable and comprehensible."""
 from player_class_module import *
-from monster_class_module import Monster
+
 import random
 import os
 # from swing_function import swing
-from current_player import *
+
 
 # player_stats = [18,17,16,15,14]
 player_name = input("Enter Player name: ")
@@ -43,15 +43,18 @@ player_name = input("Enter Player name: ")
 accept_stats = ""
 while accept_stats != "y":
     os.system('cls')
-    # name,level,gold,sword,armor,shield,constitution,intelligence,wisdom,strength,dexterity
+    # name,level,experience,gold,sword,armor,shield,constitution,intelligence,wisdom,strength,dexterity
     # player_stats = (player_name,1,0,0,0,0,*random.sample(range(3, 19), 5))
-    player_stats = [player_name, 1, 0, 0, 0, 0, *random.sample(range(3, 19), 5), 0]
+    player_stats = [player_name, 1, 0, 0, 0, 0, 0, *random.sample(range(3, 19), 5), 0]
     # print(player_stats)
-    con = round(player_stats[6] * 1.2)
-    player_stats[11] = con
+    con = round(player_stats[7] * 1.2)  # add 20% to constitution (index 7)
+    player_stats[12] = con  # make index 12 (hitpoints) 20% more than constitution
+    print(player_stats)
+    #exit()
     player_1 = Player(*player_stats)  # sending stats to Player Class
     print(f"Name: {player_1.name}")
     print(f"Level: {player_1.level}")
+    print(f"Experience: {player_1.experience}")
     print(f"Gold: {player_1.gold}")
     print(f"Sword + {player_1.sword}")
     print(f"Armor + {player_1.armor}")
@@ -79,9 +82,11 @@ random_monster = random.randint(0, 19)
         os.system('cls')
         print("You have encountered a ", (monsters[random_monster])) '''
 
-# name, dexterity, strength, sword
+# name, dexterity, strength, sword, monster_type
+monster_type = "skeleton"
+player_1.swing(player_name, player_1.dexterity, player_1.strength, player_1.sword, monster_type)
+print(f"You have {player_1.hitpoints} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
 
-player_1.swing(player_name, player_1.dexterity, player_1.strength, player_1.sword)
-print(f"You have {player_1.hitpoints} hitpoints")
+
 
 

@@ -1,5 +1,5 @@
 # name, level, gold, sword, armor, shield, constitution, intelligence, wisdom, strength, dexterity, hitpoints
-from player_class_module import Player
+from player_class_module import *
 # from player_class_module import
 import random
 import os

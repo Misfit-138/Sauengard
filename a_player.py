@@ -1,4 +1,4 @@
-import random
+import randoomtest
 
 
 # check_dead returns a string value, it does not output it to stdout.

@@ -1,5 +1,4 @@
-import randoomtest
-
+import random
 
 # check_dead returns a string value, it does not output it to stdout.
 # If you want to see the output from check_dead, try print(player.check_dead())

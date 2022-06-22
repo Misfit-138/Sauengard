@@ -1,5 +1,5 @@
 from player_class_module import *
-import randoomtest
+import random
 player_name = "Legolas"
 player_stats = [player_name, 1, 0, 0, 0, 0, *random.sample(range(3, 19), 5), 0]
 # print(player_stats)

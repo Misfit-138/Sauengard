@@ -84,7 +84,8 @@ random_monster = random.randint(0, 19)
 
 # name, dexterity, strength, sword, monster_type
 monster_type = "skeleton"
-player_1.swing(player_name, player_1.dexterity, player_1.strength, player_1.sword, monster_type)
+monster_level = 1
+player_1.swing(player_1.name, player_1.level, player_1.dexterity, player_1.strength, player_1.sword, monster_level, monster_type)
 print(f"You have {player_1.hitpoints} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
 
 

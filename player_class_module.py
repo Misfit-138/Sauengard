@@ -26,6 +26,8 @@ class Player:
         self.experience = + experience_points
 
     def current_level(self):
+        if self.experience < 2000:
+            self.level = 1
         if self.experience >= 2000 < 4000:
             self.level = 2
         if self.experience >= 4000 < 8000:
@@ -61,11 +63,14 @@ class Player:
         roll20 = random.randint(1, 20)
         return roll20
 
-    def roll_12(self):
-        roll12 = random.randint(1, 12)
+    def roll_12(self, level):
+        dice_rolls = []  # create list for multiple dice rolls
+        for i in range(level):  # (1 hit die per level per DnD 5E)
+            dice_rolls.append(random.randint(1, 12))
+        roll12 = sum(dice_rolls)
         return roll12
 
-    def swing(self, name, dexterity, strength, sword, monster_type):
+    def swing(self, name, level, dexterity, strength, sword, monster_level, monster_type):
         dexterity_modifier = round((dexterity - 10) / 2)
         opponent_roll20 = random.randint(1, 20)
         strength_modifier = round((strength - 10) / 2)
@@ -74,7 +79,7 @@ class Player:
         print(f"Dexterity modifier {dexterity_modifier}")
         print(f"The {monster_type} rolls 20 sided die ---> {opponent_roll20}")
         if roll20 + dexterity_modifier > opponent_roll20:
-            roll12 = self.roll_12()
+            roll12 = self.roll_12(self.level)
             damage_to_opponent = round(roll12 + strength_modifier + sword)
             if damage_to_opponent > 0:
                 print(f"You hit the {monster_type}!")
@@ -82,15 +87,19 @@ class Player:
                 print(f'Strength modifier---> {strength_modifier}')
                 print(f"You do {damage_to_opponent} points of damage!")
                 exp = 64000
+                before_level = self.level
                 self.increase_experience(exp)
                 self.current_level()
+                after_level = self.level
+                if after_level > before_level:
+                    print(f"You went up a level!")
                 print(f"You gain {exp} experience points for a total of {self.experience}")
             else:
-                print(f"You strike the {monster_type}, but it blocks!")
+                print(f"You strike the {monster_type}, but it blocks!")  # zero damage result
                 return
         else:
             print(f"{name} misses..and gets hit!")
-            print(f"You suffer {self.reduce_health(self.roll_12())} points damage!! ")
+            print(f"You suffer {self.reduce_health(self.roll_12(monster_level))} points damage!! ")
             print(self.check_dead())
         return
 

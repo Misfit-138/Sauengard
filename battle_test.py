@@ -3,7 +3,7 @@ from player_class_module import *
 # from player_class_module import
 import random
 import os
-from swing_function import swing
+
 player_name = input("Enter Player name: ")
 player_stats = [player_name,1,0,0,0,0,*random.sample(range(3, 19), 5), 0]
 constitution = round(player_stats[6] * 1.2)

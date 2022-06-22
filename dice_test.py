@@ -5,8 +5,8 @@ def roll_12(level):
     dice_rolls = []
     for i in range(level):
         dice_rolls.append(random.randint(1, 12))
-    total_roll = sum(dice_rolls)
-    return dice_rolls, total_roll
+    total_of_rolls = sum(dice_rolls)
+    return dice_rolls, total_of_rolls
     # print(f"Randomised list is: {dice_list}. Sum of all numbers is {sum(dice_list)}")
 
 
@@ -17,5 +17,5 @@ dice_list, total_roll = roll_12(2)  # assign returned tuple. this is somewhat co
 print(dice_list)
 print(total_roll)
 
-# if you call a function and expect to use a return value, like by printing it, you must first assign a variable in
+# if you call a function and expect to use a return value, like, by printing it, you must first assign a variable in
 # the call itself!!!

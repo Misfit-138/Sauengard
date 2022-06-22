@@ -65,10 +65,10 @@ class Player:
 
     def roll_12(self, level):
         dice_rolls = []  # create list for multiple dice rolls
-        for i in range(level):  # (1 hit die per level per DnD 5E)
+        for i in range(level):  # (1 hit die per level according to DnD 5E rules)
             dice_rolls.append(random.randint(1, 12))
-        roll12 = sum(dice_rolls)
-        return roll12
+        roll12_sum = sum(dice_rolls)
+        return roll12_sum
 
     def swing(self, name, level, dexterity, strength, sword, monster_level, monster_type):
         dexterity_modifier = round((dexterity - 10) / 2)

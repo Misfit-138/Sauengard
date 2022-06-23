@@ -27,10 +27,13 @@ natural to use certain in-place functions like sort and random.shuffle. These ar
 
 An in-place algorithm is impure and non-idempotent, but if the state that it modifies is limited to its parameter(s)
 and its documentation and return value (usually None) support this, the behavior is predictable and comprehensible."""
-from player_class_module import *
 
+
+from player_class_module import *
+from monster_class_module import *
 import random
 import os
+
 # from swing_function import swing
 
 
@@ -50,7 +53,6 @@ while accept_stats != "y":
     con = round(player_stats[7] * 1.2)  # add 20% to constitution (index 7)
     player_stats[12] = con  # make index 12 (hitpoints) 20% more than constitution
     print(player_stats)
-    #exit()
     player_1 = Player(*player_stats)  # sending stats to Player Class
     print(f"Name: {player_1.name}")
     print(f"Level: {player_1.level}")
@@ -67,27 +69,43 @@ while accept_stats != "y":
     print(f"Hitpoints: {player_1.hitpoints}")
     accept_stats = input("Accept stats y/n ?")
 
-# name,level,gold,sword,armor,shield,constitution,intelligence,wisdom,strength,dexterity
-#monster_stats = ("Kobold",1,0,0,0,0,*random.sample(range(3, 18), 5))
-#monster = Monster(*monster_stats)  # send stats to Monster class
-#monster.swing(monster.dexterity, monster.strength, monster.sword)'''
+dungeon_level = 1
 
-'''
-monsters = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
-"Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", "Dragon"]
-random_monster = random.randint(0, 19)
-        experience_points = (random_monster + 1) * 100
-        Monster_MAX_Hitpoints = random.uniform(0.8, 1.2) * Character_MAX_Hitpoints
-        Monster_Hitpoints = Monster_MAX_Hitpoints
-        os.system('cls')
-        print("You have encountered a ", (monsters[random_monster])) '''
+MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
+            "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", "Dragon"]
 
-# name, dexterity, strength, sword, monster_type
-monster_type = "skeleton"
-monster_level = 1
-player_1.swing(player_1.name, player_1.level, player_1.dexterity, player_1.strength, player_1.sword, monster_level, monster_type)
+
+def random_monster():
+    return random.choice(MONSTERS)
+
+
+monster_type = random_monster()
+monster_level = player_1.level + random.randint(0,2)
+# name0, level1, experience_award2, gold3, sword4, armor5, shield6, constitution7, strength8, dexterity9, hitpoints10
+monster_stats = [monster_type, monster_level, 200, random.randint(100, 300), 0, 0, 0, *random.sample(range(3, 18), 3),0]  # added a zero at end for hitpoints placeholder
+
+monster_con = round(monster_stats[7] * 1.2)  # add 20% to constitution (index 7)
+monster_stats[10] = monster_con  # make index 10 (hitpoints) 20% more than constitution
+# name0, level1, experience_award2, gold3, sword4, armor5, shield6, constitution7, strength8, dexterity9, hitpoints10
+monster = Monster(*monster_stats)  # send stats to Monster class
+print(f"You have encountered a level {monster_level} {monster_type}")
+print(monster_stats)
+damage_to_monster = player_1.swing(player_1.name, player_1.level, player_1.dexterity, player_1.strength, player_1.sword, monster_level,
+               monster_type)
+monster.reduce_health(damage_to_monster)
+if monster.check_dead() == False:
+    print(f"{monster_type} is not dead.")
+else:
+    print(f"It died..")
+    player_1.experience += monster.experience_award
+    player_1.gold += monster.gold
+print(f"You have {player_1.hitpoints} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
+# name, level, dexterity, strength, sword, player_level, player_hp
+damage_to_player = monster.swing(monster_type, monster_level, monster.dexterity, monster.strength, monster.sword, player_1.level, player_1.hitpoints)
+player_1.reduce_health(damage_to_player)
+if player_1.check_dead() == False:
+    print(f"You are alive")
+else:
+    print(f"You have died.")
+    exit()
 print(f"You have {player_1.hitpoints} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
-
-
-
-

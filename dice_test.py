@@ -3,7 +3,7 @@ import random
 
 def roll_12(level):
     dice_rolls = []
-    for i in range(level):
+    for dice in range(level):
         dice_rolls.append(random.randint(1, 12))
     total_of_rolls = sum(dice_rolls)
     return dice_rolls, total_of_rolls

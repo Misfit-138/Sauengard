@@ -6,7 +6,8 @@ import random
 
 class Player:
 
-    def __init__(self, name, level, experience, gold, sword, armor, shield, constitution, intelligence, wisdom, strength,
+    def __init__(self, name, level, experience, gold, sword, armor, shield, constitution, intelligence, wisdom,
+                 strength,
                  dexterity, hitpoints):
         self.name = name
         self.level = level
@@ -55,51 +56,58 @@ class Player:
 
     def check_dead(self):
         if self.hitpoints > 0:
-            return f"You are alive"
+            return False
         else:
-            return f"You are dead"
+            return True
 
-    def roll_20(self):
-        roll20 = random.randint(1, 20)
-        return roll20
+    def dice_roll(self, no_of_dice, no_of_sides):
+        dice_rolls = []  # create list for multiple die rolls
+        for dice in range(no_of_dice):  # (1 hit die per level according to DnD 5E rules)
+            dice_rolls.append(random.randint(1, no_of_sides))
+        your_roll_sum = sum(dice_rolls)
+        return your_roll_sum
 
-    def roll_12(self, level):
-        dice_rolls = []  # create list for multiple dice rolls
-        for i in range(level):  # (1 hit die per level according to DnD 5E rules)
-            dice_rolls.append(random.randint(1, 12))
-        roll12_sum = sum(dice_rolls)
-        return roll12_sum
+    #def roll_20(self):
+    #    roll20 = random.randint(1, 20)
+    #    return roll20
 
+    #def roll_12(self, level):
+    #    dice_rolls = []  # create list for multiple dice rolls
+    #    for i in range(level):  # (1 hit die per level according to DnD 5E rules)
+    #        dice_rolls.append(random.randint(1, 12))
+    #    roll12_sum = sum(dice_rolls)
+    #    return roll12_sum
+#  ****DON'T FORGET TO PASS MONSTER DEXTERITY in order TO INCLUDE ITS DEXTERITY MODIFIER IN d20 ROLL!! ****
     def swing(self, name, level, dexterity, strength, sword, monster_level, monster_type):
         dexterity_modifier = round((dexterity - 10) / 2)
         opponent_roll20 = random.randint(1, 20)
         strength_modifier = round((strength - 10) / 2)
-        roll20 = self.roll_20()
+        roll20 = self.dice_roll(1, 20)
         print(f"{name} rolls 20 sided die---> {roll20}")
         print(f"Dexterity modifier {dexterity_modifier}")
         print(f"The {monster_type} rolls 20 sided die ---> {opponent_roll20}")
         if roll20 + dexterity_modifier > opponent_roll20:
-            roll12 = self.roll_12(self.level)
+            roll12 = self.dice_roll(self.level, 12)  # Barabrians have d12..fighters have d10; may want to change this
             damage_to_opponent = round(roll12 + strength_modifier + sword)
             if damage_to_opponent > 0:
                 print(f"You hit the {monster_type}!")
-                print(f"{name} rolls 12 sided die---> {roll12}")
-                print(f'Strength modifier---> {strength_modifier}')
+                print(f"{name} rolls 12 sided die---> {roll12} + {strength_modifier} Strength modifier = {damage_to_opponent} ")
+                #print(f'Strength modifier---> {strength_modifier}')
                 print(f"You do {damage_to_opponent} points of damage!")
-                exp = 64000
+                return damage_to_opponent
+            else:
+                print(f"You strike the {monster_type}, but it blocks!")  # zero damage result
+                return 0
+        else:
+            print(f"You missed...")
+            return 0
+
+
+"""exp = 64000
                 before_level = self.level
                 self.increase_experience(exp)
                 self.current_level()
                 after_level = self.level
                 if after_level > before_level:
                     print(f"You went up a level!")
-                print(f"You gain {exp} experience points for a total of {self.experience}")
-            else:
-                print(f"You strike the {monster_type}, but it blocks!")  # zero damage result
-                return
-        else:
-            print(f"{name} misses..and gets hit!")
-            print(f"You suffer {self.reduce_health(self.roll_12(monster_level))} points damage!! ")
-            print(self.check_dead())
-        return
-
+                print(f"You gain {exp} experience points for a total of {self.experience}")"""

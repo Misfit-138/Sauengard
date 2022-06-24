@@ -229,3 +229,53 @@ whip and a
 gust of their
 	   disagreeable breath. A good beginner's tip is "Never fight a
 Dragon!"
+
+*****************************************************************************************************************
+
+Choose a challenge rating (CR) for your trap, object, effect, or creature
+between 1 and 30. Write down its statistics from the following formulas:
+• AC = 12 + ½ CR (or choose between 10 and 20 based on the story)
+• DC = 12 + ½ CR
+• Hit Points = 20 × CR
+• Attack Bonus = 3 + ½ CR
+• Proficient Saves or Skills = 3 + ½ CR
+• Single-Target Damage = 7 × CR (or 2d6 per CR)
+• Multi-Target Damage = 3 x CR (or 1d6 per CR)
+
+Difficulty Class:
+Task Difficulty   DC
+Very easy         5
+Easy              10
+Medium            15
+Hard              20
+Very hard         25
+Nearly impossible 30
+
+Deadly Encounter Benchmark
+• Choose monster types and numbers that
+make sense for the situation in the story.
+• Compare total monster challenge ratings to
+total character levels. An encounter may be
+deadly if total CRs are greater than these
+thresholds:
+
+Level   Deadly Monster CR Threshold
+1-4     CRs > ¼ Total Character Levels
+5-10    CRs > ½ Total Character Levels
+11-16   CRs > ¾ Total Character Levels
+17-20   CRs > Total Character Levels
+
+Monster Hordes
+Attacks and Saves: Assume
+one quarter of attacks or saves
+succeed. Adjust up or down
+based on circumstances.
+
+Hit Points and Damage: Track
+damage done to the horde.
+Each time the horde takes
+enough damage to kill an
+individual monster, remove a
+monster. Remove three
+quarters of monsters targeted
+with areas of effect.

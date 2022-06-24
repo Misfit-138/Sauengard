@@ -23,10 +23,10 @@ print(f"Intelligence: {player_1.intelligence}")
 print(f"Wisdom: {player_1.wisdom}")
 print(f"Strength: {player_1.strength}")
 print(f"Dexterity: {player_1.dexterity}")
-print(f"Hitpoints: {player_1.hitpoints}")
+print(f"Hitpoints: {player_1.hit_points}")
 
 player_1.reduce_health(5)
-print(player_1.hitpoints)
+print(player_1.hit_points)
 
 #player_1.swing("name", 12, 12, 12)
 #damage = swing()

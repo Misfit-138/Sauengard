@@ -34,7 +34,7 @@ from monster_class_module import *
 import random
 import os
 
-# from swing_function import swing
+
 
 
 # player_stats = [18,17,16,15,14]
@@ -46,12 +46,12 @@ player_name = input("Enter Player name: ")
 accept_stats = ""
 while accept_stats != "y":
     os.system('cls')
-    # name,level,experience,gold,sword,armor,shield,constitution,intelligence,wisdom,strength,dexterity
+    # 0name,1level,2experience,3gold,4sword,5armor,6shield,7constitution,8intelligence,9wisdom,10strength,11dexterity,12charisma
     # player_stats = (player_name,1,0,0,0,0,*random.sample(range(3, 19), 5))
-    player_stats = [player_name, 1, 0, 0, 0, 0, 0, *random.sample(range(3, 19), 5), 0]
+    player_stats = [player_name, 1, 0, 0, 0, 0, 0, *random.sample(range(3, 19), 6), 0]  # zero is placeholder for hit points- index 13
     # print(player_stats)
     con = round(player_stats[7] * 1.2)  # add 20% to constitution (index 7)
-    player_stats[12] = con  # make index 12 (hitpoints) 20% more than constitution
+    player_stats[13] = con  # make index 13 (hitpoints) 20% more than constitution
     print(player_stats)
     player_1 = Player(*player_stats)  # sending stats to Player Class
     print(f"Name: {player_1.name}")
@@ -66,7 +66,8 @@ while accept_stats != "y":
     print(f"Wisdom: {player_1.wisdom}")
     print(f"Strength: {player_1.strength}")
     print(f"Dexterity: {player_1.dexterity}")
-    print(f"Hitpoints: {player_1.hitpoints}")
+    print(f"Charisma: {player_1.charisma}")
+    print(f"Hitpoints: {player_1.hit_points}")
     accept_stats = input("Accept stats y/n ?")
 
 dungeon_level = 1
@@ -77,10 +78,10 @@ MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter",
 
 def random_monster():
     return random.choice(MONSTERS)
-
+# monsters have Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma
 
 monster_type = random_monster()
-monster_level = player_1.level + random.randint(0,2)
+monster_level = dungeon_level + random.randint(0,2)
 # name0, level1, experience_award2, gold3, sword4, armor5, shield6, constitution7, strength8, dexterity9, hitpoints10
 monster_stats = [monster_type, monster_level, 200, random.randint(100, 300), 0, 0, 0, *random.sample(range(3, 18), 3),0]  # added a zero at end for hitpoints placeholder
 
@@ -90,8 +91,8 @@ monster_stats[10] = monster_con  # make index 10 (hitpoints) 20% more than const
 monster = Monster(*monster_stats)  # send stats to Monster class
 print(f"You have encountered a level {monster_level} {monster_type}")
 print(monster_stats)
-damage_to_monster = player_1.swing(player_1.name, player_1.level, player_1.dexterity, player_1.strength, player_1.sword, monster_level,
-               monster_type)
+damage_to_monster = player_1.swing(player_1.name, player_1.level, player_1.dexterity, player_1.strength, player_1.sword, monster.level,
+               monster_type, monster.dexterity)  # send stats to player's swing function
 monster.reduce_health(damage_to_monster)
 if monster.check_dead() == False:
     print(f"{monster_type} is not dead.")
@@ -99,13 +100,13 @@ else:
     print(f"It died..")
     player_1.experience += monster.experience_award
     player_1.gold += monster.gold
-print(f"You have {player_1.hitpoints} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
+print(f"You have {player_1.hit_points} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
 # name, level, dexterity, strength, sword, player_level, player_hp
-damage_to_player = monster.swing(monster_type, monster_level, monster.dexterity, monster.strength, monster.sword, player_1.level, player_1.hitpoints)
+damage_to_player = monster.swing(monster_type, monster_level, monster.dexterity, monster.strength, monster.sword, player_1.level, player_1.hit_points, player_1.dexterity)
 player_1.reduce_health(damage_to_player)
 if player_1.check_dead() == False:
     print(f"You are alive")
 else:
     print(f"You have died.")
     exit()
-print(f"You have {player_1.hitpoints} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
+print(f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")

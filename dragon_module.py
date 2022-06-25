@@ -24,21 +24,24 @@ from monster_class_module import *
 
 class Dragon(Monster):
 
-    def __init__(self, level, experience_award, gold, sword, armor_class, shield, constitution, strength, dexterity,
-                         hit_points, human_player_level):
-        super().__init__(level, experience_award, gold, sword, armor_class, shield, constitution, strength, dexterity,
-                         hit_points, human_player_level)
+    def __init__(self, level, experience_award, gold, sword, armor, shield, armor_class, strength, dexterity, constitution, intelligence, wisdom, charisma, hit_points, human_player_level):
+        super().__init__(level, experience_award, gold, sword, armor, shield, armor_class, strength, dexterity, constitution, intelligence, wisdom, charisma, hit_points, human_player_level)
+        self.level = level
         self.experience_award = self.level * 1000
         self.gold = gold
         self.sword = sword
-        self.armor_class = 10
+        self.armor = armor
         self.shield = shield
-        self.constitution = constitution
+        self.armor_class = 10
         self.strength = strength
         self.dexterity = dexterity
+        self.constitution = constitution
+        self.intelligence = intelligence
+        self.wisdom = wisdom
+        self.charisma = charisma
         self.hit_points = hit_points
-        self.hit_dice = 10
         self.human_player_level = human_player_level
+        self.hit_dice = 12
         #self.challenge_rating = pass
         self.dexterity_modifier = round((dexterity - 10) / 2)
     name = "Dragon"

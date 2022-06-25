@@ -11,21 +11,24 @@ between 1 and 30. Write down its statistics from the following formulas:
 import random
 from dice_roll_module import dice_roll
 
-
+# # monsters have Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma
 class Monster:
 
-    def __init__(self, level, experience_award, gold, sword, armor_class, shield, constitution, strength, dexterity,
-                 hit_points, human_player_level):
+    def __init__(self, level, experience_award, gold, sword, armor, shield, armor_class, strength, dexterity, constitution, intelligence, wisdom, charisma, hit_points, human_player_level):
         # self.name = name
         self.level = level
         self.experience_award = experience_award
         self.gold = gold
         self.sword = sword
-        self.armor_class = armor_class
+        self.armor = armor
         self.shield = shield
-        self.constitution = constitution
+        self.armor_class = armor_class
         self.strength = strength
         self.dexterity = dexterity
+        self.constitution = constitution
+        self.intelligence = intelligence
+        self.wisdom = wisdom
+        self.charisma = charisma
         self.hit_points = hit_points
         self.hit_dice = 10
         self.human_player_level = human_player_level
@@ -39,12 +42,12 @@ class Monster:
         else:
             return True
 
-    def roll_12(self, level):
+    '''def roll_12(self, level):
         dice_rolls = []  # create list for multiple dice rolls
         for dice in range(level):  # (1 hit die per level according to DnD 5E rules)
             dice_rolls.append(random.randint(1, 12))
         roll12_sum = sum(dice_rolls)
-        return roll12_sum
+        return roll12_sum'''
 
     def swing(self, name, level, dexterity, strength, sword, player_level, player_hp, player_dexterity):
         dexterity_modifier = round((dexterity - 10) / 2)

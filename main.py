@@ -35,20 +35,21 @@ import os
 
 # player_stats = [18,17,16,15,14]
 player_name = input("Enter Player name: ")
-# player_stats = (player_name,18,18,18,18,18)
-# the asterisk * before the random function passes the parameters without
-# the brackets
+# constitution_modifier = round((constitution - 10) / 2)
+# hit_points = 10 + self.constitution_modifier
+# the asterisk * before the random function passes the parameters without the brackets
 
 accept_stats = ""
 while accept_stats != "y":
     os.system('cls')
-    # 0name,1level,2experience,3gold,4sword,5armor,6shield,7constitution,8intelligence,9wisdom,10strength,11dexterity,12charisma
+    # 0name,1level,2experience,3gold,4sword,5armor_class,6shield,7constitution,8intelligence,9wisdom,10strength,11dexterity,12charisma
+    # 0name, 1level, 2experience, 3gold, 4sword, 5armor, 6shield, 7armor_class, 8strength, 9dexterity, 10constitution, 11intelligence, 12wisdom, 13charisma, 14hit_points
     # player_stats = (player_name,1,0,0,0,0,*random.sample(range(3, 19), 5))
-    player_stats = [player_name, 1, 0, 0, 0, 0, 0, *random.sample(range(3, 19), 6),
-                    0]  # zero is placeholder for hit points- index 13
+    player_stats = [player_name, 1, 0, 0, 0, 0, 0, 10, *random.sample(range(3, 19), 6), 0]  # zero is placeholder for hit points- index 13
     # print(player_stats)
-    con = round(player_stats[7] * 1.2)  # add 20% to constitution (index 7)
-    player_stats[13] = con  # make index 13 (hitpoints) 20% more than constitution
+    hit_points = 10 + round((player_stats[10] - 10) / 2)  # hit_points = 10 + self.constitution_modifier (index 10)
+    player_stats[14] = hit_points  # make index 13 (hit points) 20% more than constitution
+
     print(player_stats)
     player_1 = Player(*player_stats)  # sending stats to Player Class
     print(f"Name: {player_1.name}")
@@ -56,7 +57,7 @@ while accept_stats != "y":
     print(f"Experience: {player_1.experience}")
     print(f"Gold: {player_1.gold}")
     print(f"Sword + {player_1.sword}")
-    print(f"Armor + {player_1.armor_class}")
+    print(f"Armor Class {player_1.armor_class}")
     print(f"Shield + {player_1.shield}")
     print(f"Constitution {player_1.constitution}")
     print(f"Intelligence: {player_1.intelligence}")
@@ -65,6 +66,7 @@ while accept_stats != "y":
     print(f"Dexterity: {player_1.dexterity}")
     print(f"Charisma: {player_1.charisma}")
     print(f"Hitpoints: {player_1.hit_points}")
+    print(round((player_stats[10] - 10) / 2))
     accept_stats = input("Accept stats y/n ?")
 
 dungeon_level = 1
@@ -76,25 +78,23 @@ MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter",
 def random_monster():
     return random.choice(MONSTERS)
 
-
 # monsters have Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma
 
 #monster_cls = random_monster()
 monster_cls = Dragon
 monster_level = dungeon_level + random.randint(0, 2)
-#  level0, experience_award1, gold2, sword3, armor4, shield5, constitution6, strength7, dexterity8, hitpoints9
-monster_stats = [monster_level, 0, random.randint(0, 300), 0, 0, 0, *random.sample(range(3, 18), 3), 0, player_1.level]  # added a zeros at end for hitpoints
-# #monster_stats = [monster_cls, monster_level, 200, random.randint(0, 300), 0, 0, 0, *random.sample(range(3, 18), 3), 0]  # added a zero at end for hitpoints placeholder
-monster_con = round(monster_stats[6] * 1.2)  # add 20% to constitution (index 7)
-monster_stats[9] = monster_con  # make index 9 (hitpoints) 20% more than constitution
-# name0, level1, experience_award2, gold3, sword4, armor5, shield6, constitution7, strength8, dexterity9, hitpoints10
-#monster = Monster(*monster_stats)  # send stats to Monster class and create 'monster' as object
+#0level, 1experience_award, 2gold, 3sword, 4armor,5shield,6armor_class,7strength,8dexterity,9constitution,10intelligence,11wisdom,12charisma,13hit_points,14human_player_level
+
+monster_stats = [monster_level, 0, random.randint(0, 300), 0, 0, 0, 0, *random.sample(range(3, 18), 6), 0, player_1.level]  # added a zero at end for hitpoints
+monster_hit_points = round(monster_stats[9] * 1.2)  # add 20% to constitution (index 8)
+monster_stats[13] = monster_hit_points  # make index 13 (hitpoints) 20% more than constitution
 monster = monster_cls(*monster_stats)  # send stats to monster class and create 'monster' as object
 print(f"You have encountered a level {monster_level} {monster.name}")
 print(monster_stats)
-damage_to_monster = player_1.swing(player_1.name, player_1.level, player_1.dexterity, player_1.strength, player_1.sword,
-                                   monster.level,
-                                   monster.name, monster.dexterity, monster.armor_class)  # send stats to player's swing function
+# send stats to player's swing function:
+damage_to_monster = player_1.swing(player_1.name, player_1.level, player_1.dexterity,
+                                   player_1.strength, player_1.sword, monster.level,
+                                   monster.name, monster.dexterity, monster.armor_class)
 monster.reduce_health(damage_to_monster)
 if monster.check_dead() == False:
     print(f"{monster.name} is not dead.")

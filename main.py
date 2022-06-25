@@ -56,7 +56,7 @@ while accept_stats != "y":
     print(f"Experience: {player_1.experience}")
     print(f"Gold: {player_1.gold}")
     print(f"Sword + {player_1.sword}")
-    print(f"Armor + {player_1.armor}")
+    print(f"Armor + {player_1.armor_class}")
     print(f"Shield + {player_1.shield}")
     print(f"Constitution {player_1.constitution}")
     print(f"Intelligence: {player_1.intelligence}")
@@ -70,7 +70,7 @@ while accept_stats != "y":
 dungeon_level = 1
 
 MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
-            "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", "Dragon"]
+            "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
 
 
 def random_monster():
@@ -79,37 +79,33 @@ def random_monster():
 
 # monsters have Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma
 
-#monster_type = random_monster()
-monster_type = "Dragon"
+#monster_cls = random_monster()
+monster_cls = Dragon
 monster_level = dungeon_level + random.randint(0, 2)
+#  level0, experience_award1, gold2, sword3, armor4, shield5, constitution6, strength7, dexterity8, hitpoints9
+monster_stats = [monster_level, 0, random.randint(0, 300), 0, 0, 0, *random.sample(range(3, 18), 3), 0, player_1.level]  # added a zeros at end for hitpoints
+# #monster_stats = [monster_cls, monster_level, 200, random.randint(0, 300), 0, 0, 0, *random.sample(range(3, 18), 3), 0]  # added a zero at end for hitpoints placeholder
+monster_con = round(monster_stats[6] * 1.2)  # add 20% to constitution (index 7)
+monster_stats[9] = monster_con  # make index 9 (hitpoints) 20% more than constitution
 # name0, level1, experience_award2, gold3, sword4, armor5, shield6, constitution7, strength8, dexterity9, hitpoints10
-
-monster_stats = [monster_type, monster_level, 200, random.randint(0, 300), 0, 0, 0, *random.sample(range(3, 18), 3),
-                 0]  # added a zero at end for hitpoints placeholder
-monster_con = round(monster_stats[7] * 1.2)  # add 20% to constitution (index 7)
-monster_stats[10] = monster_con  # make index 10 (hitpoints) 20% more than constitution
-# name0, level1, experience_award2, gold3, sword4, armor5, shield6, constitution7, strength8, dexterity9, hitpoints10
-#getattr(user, 'doSomething')
-#monster = getattr(monster_type(*monster_stats))  # send stats to Monster class
-monster = Monster(*monster_stats)  # send stats to Monster class and create 'monster' as object
-#monster = monster_type(*monster_stats)  # send stats to Monster class and create 'monster' as object
-print(f"You have encountered a level {monster_level} {monster_type}")
+#monster = Monster(*monster_stats)  # send stats to Monster class and create 'monster' as object
+monster = monster_cls(*monster_stats)  # send stats to monster class and create 'monster' as object
+print(f"You have encountered a level {monster_level} {monster.name}")
 print(monster_stats)
 damage_to_monster = player_1.swing(player_1.name, player_1.level, player_1.dexterity, player_1.strength, player_1.sword,
                                    monster.level,
-                                   monster_type, monster.dexterity)  # send stats to player's swing function
+                                   monster.name, monster.dexterity, monster.armor_class)  # send stats to player's swing function
 monster.reduce_health(damage_to_monster)
 if monster.check_dead() == False:
-    print(f"{monster_type} is not dead.")
+    print(f"{monster.name} is not dead.")
 else:
     print(f"It died..")
     player_1.experience += monster.experience_award
     player_1.gold += monster.gold
-print(
-    f"You have {player_1.hit_points} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
+print(f"You have {player_1.hit_points} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
 # name, level, dexterity, strength, sword, player_level, player_hp
 
-damage_to_player = monster.swing(monster_type, monster_level, monster.dexterity, monster.strength, monster.sword,
+damage_to_player = monster.swing(monster.name, monster_level, monster.dexterity, monster.strength, monster.sword,
                                  player_1.level, player_1.hit_points, player_1.dexterity)
 player_1.reduce_health(damage_to_player)
 if player_1.check_dead() == False:

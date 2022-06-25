@@ -1,5 +1,18 @@
 # import random
 from dice_roll_module import *
+'''Target
+Identify your target to the table. 
+Attack
+Roll a d20. During an Attack roll, 1 always fails, and 20 always succeeds. 
+Modify
+Add your modifiers.  
+Armor Class 
+If the modified result is ≥ target’s Armor Class (AC) , the attack hits the target. 
+Damage Roll Damage Dice and add modifiers. The target’s HP are reduced, factoring resistances and vulnerabilities. 
+Spell Attack Many spells count as attacks. 
+The caster rolls d20 + Spellcasting Ability Modifier + Proficiency Bonus to hit vs AC. PHB 205'''
+
+
 
 # name0, level1, experience2, gold3, sword4, armor5, shield6, constitution7,
 # intelligence8, wisdom9, strength10, dexterity11, charisma12, hit_points13
@@ -8,7 +21,7 @@ from dice_roll_module import *
 
 class Player:
 
-    def __init__(self, name, level, experience, gold, sword, armor, shield, constitution, intelligence, wisdom,
+    def __init__(self, name, level, experience, gold, sword, armor_class, shield, constitution, intelligence, wisdom,
                  strength,
                  dexterity, charisma, hit_points):
         self.name = name
@@ -16,7 +29,7 @@ class Player:
         self.experience = experience
         self.gold = gold
         self.sword = sword
-        self.armor = armor
+        self.armor_class = armor_class
         self.shield = shield
         self.constitution = constitution
         self.intelligence = intelligence
@@ -26,6 +39,9 @@ class Player:
         self.charisma = charisma
         self.hit_points = hit_points
         self.hit_dice = 12
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.dexterity_modifier = round((dexterity - 10) / 2)
+        self.strength_modifier = round((strength - 10) / 2)
 
     def increase_experience(self, experience_points):
         self.experience = + experience_points
@@ -64,29 +80,19 @@ class Player:
         else:
             return True
 
-#    def dice_roll(self, no_of_dice, no_of_sides):
-#        dice_rolls = []  # create list for multiple die rolls
-#        for dice in range(no_of_dice):  # (1 hit die per level according to DnD 5E rules)
-#            dice_rolls.append(random.randint(1, no_of_sides))
-#        your_roll_sum = sum(dice_rolls)
-#        return your_roll_sum
-
-    def swing(self, name, level, dexterity, strength, sword, monster_level, monster_type, monster_dexterity):
-        player_dexterity_modifier = round((dexterity - 10) / 2)
-        opponent_roll20 = dice_roll(1, 20) + ((monster_dexterity - 10) / 2)  # determine mon dex modifier
-        player_strength_modifier = round((strength - 10) / 2)
-        roll_d20 = dice_roll(1, 20)
+    def swing(self, name, level, dexterity, strength, sword, monster_level, monster_type, monster_dexterity, monster_armor_class):
+        opponent_roll20 = dice_roll(1, 20) + round((monster_dexterity - 10) / 2)  # determine mon dex modifier
+        roll_d20 = dice_roll(1, 20)  # attack roll
+        print(f"Attack roll..")
         print(f"{name} rolls 20 sided die---> {roll_d20}")
-        print(f"Dexterity modifier {player_dexterity_modifier}")
-        print(f"The {monster_type} rolls 20 sided die ---> {opponent_roll20}")
-        if roll_d20 + player_dexterity_modifier > opponent_roll20:
-            roll_d12 = dice_roll(self.level, 12)  # Barbarians have d12..fighters have d10; may want to change this
-            damage_to_opponent = round(roll_d12 + player_strength_modifier + sword)
+        print(f"Dexterity modifier {self.dexterity_modifier}")
+        print(f"Monster armor class {monster_armor_class}")
+        if roll_d20 + self.proficiency_bonus + self.dexterity_modifier > monster_armor_class:
+            damage_roll = dice_roll(self.level, 12)  # Barbarians have d12..fighters have d10 or d8?; may want to change this
+            damage_to_opponent = round(damage_roll + self.strength_modifier + sword)
             if damage_to_opponent > 0:
                 print(f"You hit the {monster_type}!")
-                print(
-                    f"{name} rolls 12 sided die---> {roll_d12} + {player_strength_modifier} Strength modifier = {damage_to_opponent} ")
-                # print(f'Strength modifier---> {strength_modifier}')
+                print(f"{name} rolls 12 sided die---> {damage_roll} + {self.strength_modifier} Strength modifier = {damage_to_opponent} ")
                 print(f"You do {damage_to_opponent} points of damage!")
                 return damage_to_opponent
             else:

@@ -19,3 +19,8 @@ print(total_roll)
 
 # if you call a function and expect to use a return value, like, by printing it, you must first assign a variable in
 # the call itself!!!
+# 1 + (total level/4)Rounded up
+level = 7
+var = round(1 + (level / 4))
+var2 = 1 + round(level / 4)
+print(var, var2)

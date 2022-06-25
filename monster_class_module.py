@@ -1,23 +1,34 @@
+'''Choose a challenge rating (CR) for your trap, object, effect, or creature
+between 1 and 30. Write down its statistics from the following formulas:
+• AC = 12 + ½ CR (or choose between 10 and 20 based on the story)
+• DC = 12 + ½ CR
+• Hit Points = 20 × CR
+• Attack Bonus = 3 + ½ CR
+• Proficient Saves or Skills = 3 + ½ CR
+• Single-Target Damage = 7 × CR (or 2d6 per CR)
+• Multi-Target Damage = 3 x CR (or 1d6 per CR)'''
+
 import random
 from dice_roll_module import dice_roll
 
+
 class Monster:
 
-    def __init__(self, name, level, experience_award, gold, sword, armor, shield, constitution, strength,
-                 dexterity, hit_points):
-        self.name = name
+    def __init__(self, level, experience_award, gold, sword, armor_class, shield, constitution, strength, dexterity,
+                 hit_points, human_player_level):
+        # self.name = name
         self.level = level
         self.experience_award = experience_award
         self.gold = gold
         self.sword = sword
-        self.armor = armor
+        self.armor_class = armor_class
         self.shield = shield
         self.constitution = constitution
         self.strength = strength
         self.dexterity = dexterity
         self.hit_points = hit_points
         self.hit_dice = 10
-
+        self.human_player_level = human_player_level
     def reduce_health(self, damage):
         self.hit_points -= damage
         return damage
@@ -27,17 +38,6 @@ class Monster:
             return False
         else:
             return True
-
-#    def roll_20(self):
-#        roll20 = random.randint(1, 20)
-#        return roll20
-
-#    def dice_roll(self, no_of_dice, no_of_sides):
- #       dice_rolls = []  # create list for multiple die rolls
-#        for dice in range(no_of_dice):  # (1 hit die per level according to DnD 5E rules)
- #           dice_rolls.append(random.randint(1, no_of_sides))
-#        your_roll_sum = sum(dice_rolls)
-#        return your_roll_sum
 
     def roll_12(self, level):
         dice_rolls = []  # create list for multiple dice rolls

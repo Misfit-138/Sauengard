@@ -279,3 +279,57 @@ individual monster, remove a
 monster. Remove three
 quarters of monsters targeted
 with areas of effect.
+*********************************************************************************************************************
+BATTLING!
+Target
+Identify your target to the table.
+Attack
+
+Roll a d20. During an Attack roll, 1 always fails, and 20 always succeeds.
+Modify
+Add your modifiers.
+proficiency + ability score modifier.
+If you have any spells, class features, magic items or whatever that says it adds to your attack rolls, add those too.
+Armor Class
+If the modified result is ≥ target’s Armor Class (AC) , the attack hits the target.
+Damage
+Roll Damage Dice and add modifiers.
+ Weapon Damage: the weapon's listed damage + ability score modifier.
+ Same as above with regards to spells, class features, magic items, etc.
+ If something says it adds to the damage with your weapon, add it to the damage.
+ The target’s HP are reduced, factoring resistances and vulnerabilities.
+ 18 DEX is +4 modifier.
+ If your proficiency is +2 (and assuming you are actually proficient with the weapon),
+ and you roll a 10 that's: 10 + 2 + 4 = 16. For damage, a longbow is 1d8. You roll a 4, so: 4 + 4 = 8.
+The formula for the Proficiency Bonus is
+{2 + (Total Level-1)/4}Rounded Down or 1 + (total level/4)Rounded up, both formulas will give the same results.
+Spell Attack
+Many spells count as attacks.
+The caster rolls d20 + Spellcasting Ability Modifier + Proficiency Bonus to hit vs AC. PHB 205
+********************************************************************************************************************
+ARMOR CLASS
+Here are a few examples of Base AC calculations:
+
+No Armour: Base AC = 10 + Dexterity modifier
+Leather Armour: Base AC = 11 + Dexterity modifier
+Chain Shirt: Base AC = 13 + Dexterity modifier (max +2)
+Plate Mail: Base AC = 18
+Mage Armour spell: Base AC = 13 + Dexterity modifier
+Barbarian Unarmoured Defense
+ability: Base AC = 10 + Dexterity modifier + Constitution modifier
+Monk Unarmoured Defense ability: Base AC = 10 + Dexterity modifier + Wisdom modifier
+Sorcerer Draconic Resilience ability: Base AC = 13 + Dexterity modifier
+Meanwhile, there are several ways of further modifying your Armour Class. A few examples of these
+
+Shield: +2 bonus to AC*
+Shield of Faith spell: +2 bonus to AC
+Shield spell: +5 bonus to AC
+Half Cover: +2 bonus to AC
+Three-Quarters Cover: +5 bonus to AC
++1 Armour: +1 bonus to AC
+Ring of Protection: +1 bonus to AC; requires attunement
+Bracers of Defense: +3 bonus to AC when not wearing armour or using a shield; requires attunement
+Arrow Catching Shield: +1 bonus to AC against ranged attacks; requires attunement
+There is at least one unusual exception to how AC is calculated:
+
+Barkskin spell: Your minimum AC is 16.

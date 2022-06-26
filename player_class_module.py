@@ -1,5 +1,6 @@
 # import random
 from dice_roll_module import *
+
 '''Target
 Identify your target to the table. 
 Attack
@@ -12,8 +13,6 @@ Damage Roll Damage Dice and add modifiers. The target’s HP are reduced, factor
 Spell Attack Many spells count as attacks. 
 The caster rolls d20 + Spellcasting Ability Modifier + Proficiency Bonus to hit vs AC. PHB 205'''
 
-
-
 # name0, level1, experience2, gold3, sword4, armor5, shield6, constitution7,
 # intelligence8, wisdom9, strength10, dexterity11, charisma12, hit_points13
 
@@ -23,17 +22,18 @@ Hit Points at 1st Level: 10 + your Constitution modifier
 Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighter level after 1st
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.'''
 
+
 class Player:
 
-    def __init__(self, name, level, experience, gold, sword, armor_bonus, shield, armor_class, strength, dexterity, constitution, intelligence, wisdom, charisma, hit_points):
+    def __init__(self, name, level, experience, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
+                 constitution, intelligence, wisdom, charisma, hit_points):
         self.name = name
         self.level = level
         self.experience = experience
         self.gold = gold
-        self.sword = sword
+        self.weapon = weapon
         self.armor_bonus = armor_bonus
         self.shield = shield
-
         self.strength = strength
         self.dexterity = dexterity
         self.constitution = constitution
@@ -47,7 +47,7 @@ class Player:
         self.armor_class = 10 + self.dexterity_modifier + armor_bonus
         self.strength_modifier = round((strength - 10) / 2)
         self.constitution_modifier = round((constitution - 10) / 2)
-        #self.hit_points = 10 + self.constitution_modifier
+        # self.hit_points = 10 + self.constitution_modifier
 
     def increase_experience(self, experience_points):
         self.experience = + experience_points
@@ -86,8 +86,8 @@ class Player:
         else:
             return True
 
-    def swing(self, name, level, dexterity, strength, sword, monster_level, monster_type, monster_dexterity, monster_armor_class):
-        opponent_roll20 = dice_roll(1, 20) + round((monster_dexterity - 10) / 2)  # determine mon dex modifier
+    def swing(self, name, level, dexterity, strength, sword, monster_level, monster_type, monster_dexterity,
+              monster_armor_class):
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"Attack roll..")
         print(f"{name} rolls 20 sided die---> {roll_d20}")
@@ -97,11 +97,13 @@ class Player:
         print(f"Dexterity modifier {self.dexterity_modifier}\n Proficiency bonus {self.proficiency_bonus}")
         print(f"Monster armor class {monster_armor_class}")
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier >= monster_armor_class:
-            damage_roll = dice_roll(self.level, self.hit_dice)  # Barbarians have d12..fighters have d10 or d8?; may want to change this
+            damage_roll = dice_roll(self.level,
+                                    self.hit_dice)  # Barbarians have d12..fighters have d10 or d8?; may want to change this
             damage_to_opponent = round(damage_roll + self.strength_modifier + sword)
             if damage_to_opponent > 0:
                 print(f"You hit the {monster_type}!")
-                print(f"{name} rolls {self.hit_dice} sided die---> {damage_roll} + {self.strength_modifier} Strength modifier = {damage_to_opponent} ")
+                print(
+                    f"{name} rolls {self.hit_dice} sided die---> {damage_roll} + {self.strength_modifier} Strength modifier = {damage_to_opponent} ")
                 print(f"You do {damage_to_opponent} points of damage!")
                 return damage_to_opponent
             else:

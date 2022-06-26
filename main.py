@@ -42,7 +42,7 @@ player_name = input("Enter Player name: ")
 accept_stats = ""
 while accept_stats != "y":
     os.system('cls')
-    # 0name,1level,2experience,3gold,4sword,5armor,6shield,7armor_class,8strength,9dexterity,10constitution,11intelligence,12wisdom,13charisma,14hit_points
+    # 0name,1level,2experience,3gold,4weapon+,5armor,6shield,7armor_class,8strength,9dexterity,10constitution,11intelligence,12wisdom,13charisma,14hit_points
     player_stats = [player_name, 1, 0, 0, 0, 0, 0, 10, *random.sample(range(3, 19), 6),
                     0]  # zero is placeholder for hit points
     # print(player_stats)
@@ -55,7 +55,7 @@ while accept_stats != "y":
     print(f"Level: {player_1.level}")
     print(f"Experience: {player_1.experience}")
     print(f"Gold: {player_1.gold}")
-    print(f"Sword + {player_1.sword}")
+    print(f"Weapon + {player_1.weapon}")
     print(f"Armor Class {player_1.armor_class}")
     print(f"Shield + {player_1.shield}")
     print(f"Constitution {player_1.constitution}")
@@ -70,27 +70,40 @@ while accept_stats != "y":
 
 dungeon_level = 1
 
-MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
-            "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
+# MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
+#            "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
+MONSTERS = [Dragon]
 
 
-def grab_monster():
+def rndm_monster():
     return random.choice(MONSTERS)
 
 
-# monster_cls = grab_monster()
-monster_cls = Dragon
+monster_cls = rndm_monster()
+# monster_cls = Dragon
 monster_level = dungeon_level + random.randint(0, 2)
-# 0level, 1experience_award, 2gold, 3sword, 4armor,5shield,6armor_class,7strength,8dexterity,9constitution,10intelligence,11wisdom,12charisma,13hit_points,14human_player_level
-monster_stats = [monster_level, 0, random.randint(0, 300), 0, 0, 0, 0, *random.sample(range(3, 18), 6), 0, player_1.level]  # added a zero at end for hitpoints
-monster_hit_points = (monster_stats[9])  # equal to constitution (index 8) for now..
+# monster_stats list index:
+# 0level, 1experience_award, 2gold, 3weapon_bonus, 4armor,5shield,6armor_class,7strength,8dexterity,9constitution,10intelligence,11wisdom,12charisma,13hit_points,14can_paralyze, 15can_drain, 16undead,17human_player_level
+monster_stats = [monster_level, 0, random.randint(0, 300), 0, 0, 0, 0, *random.sample(range(3, 18), 6), 0, False, False,
+                 False, player_1.level]
+monster_hit_points = (monster_stats[9])  # equal to constitution (index 9) for now..
 monster_stats[13] = round(monster_hit_points)  # make index 13 (hitpoints) 20% more than constitution
 monster = monster_cls(*monster_stats)  # send stats to monster class and create 'monster' as object
 print(f"You have encountered a level {monster_level} {monster.name}.")
-print(monster_stats)
+if monster.undead and monster.can_paralyze:
+    paralyze = dice_roll(1, 20)
+    if paralyze == 20:
+        print("You're paralyzed!!")
+        damage_to_player = monster.swing(monster.name, monster_level, monster.dexterity, monster.strength,
+                                         monster.weapon,
+                                         player_1.level, player_1.hit_points, player_1.dexterity, player_1.armor_class)
+if monster.undead and monster.can_drain:
+    drain_level = dice_roll(1, 20)
+    if drain_level == 20:
+        print("It drains a level!")
 # send stats to player's swing function:
 damage_to_monster = player_1.swing(player_1.name, player_1.level, player_1.dexterity,
-                                   player_1.strength, player_1.sword, monster.level,
+                                   player_1.strength, player_1.weapon, monster.level,
                                    monster.name, monster.dexterity, monster.armor_class)
 monster.reduce_health(damage_to_monster)
 
@@ -104,9 +117,8 @@ else:
     player_1.gold += monster.gold
 print(
     f"You have {player_1.hit_points} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
-# name, level, dexterity, strength, sword, player_level, player_hp
 
-damage_to_player = monster.swing(monster.name, monster_level, monster.dexterity, monster.strength, monster.sword,
+damage_to_player = monster.swing(monster.name, monster_level, monster.dexterity, monster.strength, monster.weapon,
                                  player_1.level, player_1.hit_points, player_1.dexterity, player_1.armor_class)
 player_1.reduce_health(damage_to_player)
 if not player_1.check_dead():  # if player not dead

@@ -39,19 +39,21 @@ and the result is added to its Hit Points.
 For example, if a monster has a Constitution of 12 (+1 modifier) and 2d8 Hit Dice, it has 2d8 + 2 Hit Points (average 11).
 '''
 
-
 import random
 from dice_roll_module import dice_roll
+
 
 # # monsters have Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma
 class Monster:
 
-    def __init__(self, level, experience_award, gold, sword, armor_bonus, shield, armor_class, strength, dexterity, constitution, intelligence, wisdom, charisma, hit_points, human_player_level):
+    def __init__(self, level, experience_award, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
+                 constitution, intelligence, wisdom, charisma, hit_points, can_paralyze, can_drain, undead,
+                 human_player_level):
         # self.name = name
         self.level = level
         self.experience_award = experience_award
         self.gold = gold
-        self.sword = sword
+        self.weapon = weapon
         self.armor = armor_bonus
         self.shield = shield
         self.armor_class = armor_class
@@ -62,6 +64,9 @@ class Monster:
         self.wisdom = wisdom
         self.charisma = charisma
         self.hit_points = hit_points
+        self.can_paralyze = can_paralyze
+        self.can_drain = can_drain
+        self.undead = undead
         self.hit_dice = 10
         self.human_player_level = human_player_level
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -78,6 +83,7 @@ class Monster:
         self.attack_4_phrase = ""
         self.attack_5 = 0
         self.attack_5_phrase = ""
+
     def reduce_health(self, damage):
         self.hit_points -= damage
         return damage
@@ -95,7 +101,8 @@ class Monster:
         roll12_sum = sum(dice_rolls)
         return roll12_sum'''
 
-    def swing(self, name, level, dexterity, strength, sword, player_level, player_hp, player_dexterity, player_armor_class):
+    def swing(self, name, level, dexterity, strength, weapon, player_level, player_hp, player_dexterity,
+              player_armor_class):
         attack_bonus = random.randint(1, 5)
         if attack_bonus == 1:
             attack_bonus = self.attack_1
@@ -112,21 +119,21 @@ class Monster:
         if attack_bonus == 5:
             attack_bonus = self.attack_5
             attack_phrase = self.attack_5_phrase
-        #dexterity_modifier = round((dexterity - 10) / 2)
-        #strength_modifier = round((strength - 10) / 2)
+        # dexterity_modifier = round((dexterity - 10) / 2)
+        # strength_modifier = round((strength - 10) / 2)
         roll20 = dice_roll(1, 20)
         print(f"{name} rolls 20 sided die---> {roll20}")
         if roll20 == 1:
-            print(f"{name} rolled a 1. 1 means failure..")
+            print(f"{name} rolled a 1..failure!")
             return 0
         print(f"Dexterity modifier {self.dexterity_modifier}")
         print(f"Your armor class ---> {player_armor_class}")  # at this point the player is the opponent!
         if roll20 + self.dexterity_modifier >= player_armor_class:
-            roll12 = dice_roll(self.level, 12)
-            damage_to_opponent = round(roll12 + self.strength_modifier + attack_bonus)
+            damage_roll = dice_roll(self.level, self.hit_dice)
+            damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus)
             if damage_to_opponent > 0:
                 print(f"{attack_phrase}")
-                print(f"{name} rolls 12 sided dice---> {roll12}")
+                print(f"{name} rolls {self.hit_dice} sided dice---> {damage_roll}")
                 print(f"Strength modifier---> {self.strength_modifier}\nAttack bonus---> {attack_bonus}")
                 print(f"It does {damage_to_opponent} points of damage!")
                 return damage_to_opponent

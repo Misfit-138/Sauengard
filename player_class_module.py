@@ -20,29 +20,31 @@ The caster rolls d20 + Spellcasting Ability Modifier + Proficiency Bonus to hit 
 # **** TRY DEFINING DEXTERITY AND STRENGTH MODIFIERS HERE ****
 '''Hit Dice: 1d10 per Fighter level
 Hit Points at 1st Level: 10 + your Constitution modifier
-Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighter level after 1st'''
+Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighter level after 1st
+In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.'''
 
 class Player:
 
-    def __init__(self, name, level, experience, gold, sword, armor, shield, armor_class, strength, dexterity, constitution, intelligence, wisdom, charisma, hit_points):
+    def __init__(self, name, level, experience, gold, sword, armor_bonus, shield, armor_class, strength, dexterity, constitution, intelligence, wisdom, charisma, hit_points):
         self.name = name
         self.level = level
         self.experience = experience
         self.gold = gold
         self.sword = sword
-        self.armor = armor
+        self.armor_bonus = armor_bonus
         self.shield = shield
-        self.armor_class = armor_class
+
         self.strength = strength
         self.dexterity = dexterity
         self.constitution = constitution
         self.intelligence = intelligence
         self.wisdom = wisdom
         self.charisma = charisma
-        self.hit_points = hit_points
-        self.hit_dice = 10  # 10 per fighter level
+        self.hit_points = hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.dexterity_modifier = round((dexterity - 10) / 2)
+        self.armor_class = 10 + self.dexterity_modifier + armor_bonus
         self.strength_modifier = round((strength - 10) / 2)
         self.constitution_modifier = round((constitution - 10) / 2)
         #self.hit_points = 10 + self.constitution_modifier
@@ -89,9 +91,12 @@ class Player:
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"Attack roll..")
         print(f"{name} rolls 20 sided die---> {roll_d20}")
+        if roll_d20 == 1:
+            print(f"You rolled a 1. 1 means failure..")
+            return 0
         print(f"Dexterity modifier {self.dexterity_modifier}\n Proficiency bonus {self.proficiency_bonus}")
         print(f"Monster armor class {monster_armor_class}")
-        if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier > monster_armor_class:
+        if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier >= monster_armor_class:
             damage_roll = dice_roll(self.level, self.hit_dice)  # Barbarians have d12..fighters have d10 or d8?; may want to change this
             damage_to_opponent = round(damage_roll + self.strength_modifier + sword)
             if damage_to_opponent > 0:
@@ -117,7 +122,10 @@ class Player:
                     print(f"You went up a level!")
                 print(f"You gain {exp} experience points for a total of {self.experience}")"""
 
-'''Fighter
+'''
+In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.
+
+Fighter
 As a Fighter, you gain the following Class Features.
 
 Hit Points

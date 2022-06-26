@@ -24,3 +24,9 @@ level = 7
 var = round(1 + (level / 4))
 var2 = 1 + round(level / 4)
 print(var, var2)
+roll_2 = random.randint(1, 3)
+print(f"Roll 3 sided die:{roll_2}")
+
+ability_score = int(input("Input ability score"))
+ability_modifier = round((ability_score - 10) / 2)
+print(ability_modifier)

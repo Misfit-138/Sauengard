@@ -315,8 +315,7 @@ Leather Armour: Base AC = 11 + Dexterity modifier
 Chain Shirt: Base AC = 13 + Dexterity modifier (max +2)
 Plate Mail: Base AC = 18
 Mage Armour spell: Base AC = 13 + Dexterity modifier
-Barbarian Unarmoured Defense
-ability: Base AC = 10 + Dexterity modifier + Constitution modifier
+Barbarian Unarmoured Defense ability: Base AC = 10 + Dexterity modifier + Constitution modifier
 Monk Unarmoured Defense ability: Base AC = 10 + Dexterity modifier + Wisdom modifier
 Sorcerer Draconic Resilience ability: Base AC = 13 + Dexterity modifier
 Meanwhile, there are several ways of further modifying your Armour Class. A few examples of these

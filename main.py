@@ -27,7 +27,7 @@ natural to use certain in-place functions like sort and random.shuffle. These ar
 
 An in-place algorithm is impure and non-idempotent, but if the state that it modifies is limited to its parameter(s)
 and its documentation and return value (usually None) support this, the behavior is predictable and comprehensible."""
-from  dragon_module import *
+from dragon_module import *
 from player_class_module import *
 from monster_class_module import *
 import random
@@ -42,13 +42,12 @@ player_name = input("Enter Player name: ")
 accept_stats = ""
 while accept_stats != "y":
     os.system('cls')
-    # 0name,1level,2experience,3gold,4sword,5armor_class,6shield,7constitution,8intelligence,9wisdom,10strength,11dexterity,12charisma
-    # 0name, 1level, 2experience, 3gold, 4sword, 5armor, 6shield, 7armor_class, 8strength, 9dexterity, 10constitution, 11intelligence, 12wisdom, 13charisma, 14hit_points
-    # player_stats = (player_name,1,0,0,0,0,*random.sample(range(3, 19), 5))
-    player_stats = [player_name, 1, 0, 0, 0, 0, 0, 10, *random.sample(range(3, 19), 6), 0]  # zero is placeholder for hit points- index 13
+    # 0name,1level,2experience,3gold,4sword,5armor,6shield,7armor_class,8strength,9dexterity,10constitution,11intelligence,12wisdom,13charisma,14hit_points
+    player_stats = [player_name, 1, 0, 0, 0, 0, 0, 10, *random.sample(range(3, 19), 6),
+                    0]  # zero is placeholder for hit points
     # print(player_stats)
-    hit_points = 10 + round((player_stats[10] - 10) / 2)  # hit_points = 10 + self.constitution_modifier (index 10)
-    player_stats[14] = hit_points  # make index 13 (hit points) 20% more than constitution
+    hit_points = 10 + round((player_stats[10] - 10) / 2)  # hit_points at level one = 10 + self.constitution_modifier (index 10 is constitution)
+    player_stats[14] = hit_points  # make player_stats index 14 equal to 10 + con modifier
 
     print(player_stats)
     player_1 = Player(*player_stats)  # sending stats to Player Class
@@ -66,7 +65,7 @@ while accept_stats != "y":
     print(f"Dexterity: {player_1.dexterity}")
     print(f"Charisma: {player_1.charisma}")
     print(f"Hitpoints: {player_1.hit_points}")
-    print(round((player_stats[10] - 10) / 2))
+    # print(round((player_stats[10] - 10) / 2))
     accept_stats = input("Accept stats y/n ?")
 
 dungeon_level = 1
@@ -75,40 +74,42 @@ MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter",
             "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
 
 
-def random_monster():
+def grab_monster():
     return random.choice(MONSTERS)
 
-# monsters have Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma
 
-#monster_cls = random_monster()
+# monster_cls = grab_monster()
 monster_cls = Dragon
 monster_level = dungeon_level + random.randint(0, 2)
-#0level, 1experience_award, 2gold, 3sword, 4armor,5shield,6armor_class,7strength,8dexterity,9constitution,10intelligence,11wisdom,12charisma,13hit_points,14human_player_level
-
+# 0level, 1experience_award, 2gold, 3sword, 4armor,5shield,6armor_class,7strength,8dexterity,9constitution,10intelligence,11wisdom,12charisma,13hit_points,14human_player_level
 monster_stats = [monster_level, 0, random.randint(0, 300), 0, 0, 0, 0, *random.sample(range(3, 18), 6), 0, player_1.level]  # added a zero at end for hitpoints
-monster_hit_points = round(monster_stats[9] * 1.2)  # add 20% to constitution (index 8)
-monster_stats[13] = monster_hit_points  # make index 13 (hitpoints) 20% more than constitution
+monster_hit_points = (monster_stats[9])  # equal to constitution (index 8) for now..
+monster_stats[13] = round(monster_hit_points)  # make index 13 (hitpoints) 20% more than constitution
 monster = monster_cls(*monster_stats)  # send stats to monster class and create 'monster' as object
-print(f"You have encountered a level {monster_level} {monster.name}")
+print(f"You have encountered a level {monster_level} {monster.name}.")
 print(monster_stats)
 # send stats to player's swing function:
 damage_to_monster = player_1.swing(player_1.name, player_1.level, player_1.dexterity,
                                    player_1.strength, player_1.sword, monster.level,
                                    monster.name, monster.dexterity, monster.armor_class)
 monster.reduce_health(damage_to_monster)
-if monster.check_dead() == False:
+
+if not monster.check_dead():  # if monster is not dead
     print(f"{monster.name} is not dead.")
+    print(f"It has {monster.hit_points} hit points.")
 else:
+    print(f"It has {monster.hit_points} hit points.")
     print(f"It died..")
     player_1.experience += monster.experience_award
     player_1.gold += monster.gold
-print(f"You have {player_1.hit_points} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
+print(
+    f"You have {player_1.hit_points} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
 # name, level, dexterity, strength, sword, player_level, player_hp
 
 damage_to_player = monster.swing(monster.name, monster_level, monster.dexterity, monster.strength, monster.sword,
-                                 player_1.level, player_1.hit_points, player_1.dexterity)
+                                 player_1.level, player_1.hit_points, player_1.dexterity, player_1.armor_class)
 player_1.reduce_health(damage_to_player)
-if player_1.check_dead() == False:
+if not player_1.check_dead():  # if player not dead
     print(f"You are alive")
 else:
     print(f"You have died.")

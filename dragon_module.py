@@ -21,10 +21,12 @@ A monster’s Constitution modifier also affects the number of Hit Points it has
 Its Constitution modifier is multiplied by the number of Hit Dice it possesses,
 and the result is added to its Hit Points.
 For example, if a monster has a Constitution of 12 (+1 modifier) and 2d8 Hit Dice, it has 2d8 + 2 Hit Points (average 11).
+
 Adult Red Dragon Stats per D&D
 STR 27 (+8) DEX 10 (+0) CON 25 (+7) INT 16 (+3) WIS 13 (+1) CHA 21 (+5)
 
 '''
+import random
 
 from monster_class_module import *
 
@@ -35,7 +37,7 @@ class Dragon(Monster):
         super().__init__(level, experience_award, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity, constitution, intelligence, wisdom, charisma, hit_points, can_paralyze, can_drain, undead, human_player_level)
         self.level = level
         self.experience_award = self.level * 1000
-        self.gold = gold
+        self.gold = self.level * round(1000 * random.uniform(1, 2))
         self.weapon = weapon
         self.armor = armor_bonus
         self.shield = shield
@@ -45,9 +47,9 @@ class Dragon(Monster):
         self.intelligence = random.randint(14, 17)
         self.wisdom = random.randint(12, 14)
         self.charisma = random.randint(18, 21)
-        self.can_paralyze = True
-        self.can_drain = True
-        self.undead = True
+        self.can_paralyze = False
+        self.can_drain = False
+        self.undead = False
         # For a dragon, hit points should be quite high. Level * random range 10-20 + con mod
         self.human_player_level = human_player_level
         self.hit_dice = 12  # 12 for huge monster
@@ -55,7 +57,7 @@ class Dragon(Monster):
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((strength - 10) / 2)
         self.constitution_modifier = round((constitution - 10) / 2)
-        self.hit_points = self.level * (random.randint(15, 20)) + self.constitution_modifier
+        self.hit_points = 1  # self.level * (random.randint(15, 20)) + self.constitution_modifier
         self.dexterity_modifier = round((dexterity - 10) / 2)
         self.armor_class = random.randint(17, 19)
         self.attack_1 = 5  # attack bonus

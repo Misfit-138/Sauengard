@@ -26,7 +26,7 @@ In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armo
 class Player:
 
     def __init__(self, name, level, experience, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
-                 constitution, intelligence, wisdom, charisma, hit_points):
+                 constitution, intelligence, wisdom, charisma, hit_points, is_paralyzed):
         self.name = name
         self.level = level
         self.experience = experience
@@ -42,15 +42,16 @@ class Player:
         self.charisma = charisma
         self.hit_points = hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
-        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.dexterity_modifier = round((dexterity - 10) / 2)
         self.armor_class = 10 + self.dexterity_modifier + armor_bonus
         self.strength_modifier = round((strength - 10) / 2)
         self.constitution_modifier = round((constitution - 10) / 2)
-        # self.hit_points = 10 + self.constitution_modifier
+        self.intelligence_modifier = round((intelligence - 10) / 2)
+        self.wisdom_modifier = round((wisdom - 10) / 2)
+        self.charisma_modifier = round((charisma - 10) / 2)
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.is_paralyzed = is_paralyzed
 
-    def increase_experience(self, experience_points):
-        self.experience = + experience_points
 
     def current_level(self):
         if self.experience < 2000:
@@ -75,6 +76,21 @@ class Player:
             self.level = 10
         if self.experience > 1024000:
             self.level = 11
+
+    def increase_experience(self, exp_award):
+        self.experience = + exp_award
+        return
+
+    def level_up(self, exp_award, monster_gold):
+        self.gold += monster_gold
+        before_level = self.level
+        self.increase_experience(exp_award)
+        self.current_level()
+        after_level = self.level
+        if after_level > before_level:
+            print(f"You went up a level!")
+        print(
+            f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points for a total of {self.experience}")
 
     def reduce_health(self, damage):
         self.hit_points -= damage
@@ -115,14 +131,14 @@ class Player:
 
 
 """leveling up logic
-                exp = 64000
+                exp_award = 64000
                 before_level = self.level
-                self.increase_experience(exp)
+                self.increase_experience(exp_award)
                 self.current_level()
                 after_level = self.level
                 if after_level > before_level:
                     print(f"You went up a level!")
-                print(f"You gain {exp} experience points for a total of {self.experience}")"""
+                print(f"You gain {exp_award} experience points for a total of {self.experience}")"""
 
 '''
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.

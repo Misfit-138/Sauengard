@@ -42,14 +42,12 @@ For example, if a monster has a Constitution of 12 (+1 modifier) and 2d8 Hit Dic
 import random
 from dice_roll_module import dice_roll
 
-
 # # monsters have Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma
 class Monster:
 
     def __init__(self, level, experience_award, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
                  constitution, intelligence, wisdom, charisma, hit_points, can_paralyze, can_drain, undead,
                  human_player_level):
-        # self.name = name
         self.level = level
         self.experience_award = experience_award
         self.gold = gold
@@ -67,12 +65,12 @@ class Monster:
         self.can_paralyze = can_paralyze
         self.can_drain = can_drain
         self.undead = undead
-        self.hit_dice = 10
+        self.hit_dice = 0  # tiny d4, small d6, medium d8, large d10, huge d12, gargantuan d20
         self.human_player_level = human_player_level
-        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.dexterity_modifier = round((dexterity - 10) / 2)
-        self.strength_modifier = round((strength - 10) / 2)
-        self.constitution_modifier = round((constitution - 10) / 2)
+        self.proficiency_bonus = 0  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.dexterity_modifier = 0  # round((dexterity - 10) / 2)
+        self.strength_modifier = 0  # round((strength - 10) / 2)
+        self.constitution_modifier = 0  # round((constitution - 10) / 2)
         self.attack_1 = 0
         self.attack_1_phrase = ""
         self.attack_2 = 0
@@ -94,13 +92,6 @@ class Monster:
         else:
             return True
 
-    '''def roll_12(self, level):
-        dice_rolls = []  # create list for multiple dice rolls
-        for dice in range(level):  # (1 hit die per level according to DnD 5E rules)
-            dice_rolls.append(random.randint(1, 12))
-        roll12_sum = sum(dice_rolls)
-        return roll12_sum'''
-
     def swing(self, name, level, dexterity, strength, weapon, player_level, player_hp, player_dexterity,
               player_armor_class):
         attack_bonus = random.randint(1, 5)
@@ -119,8 +110,6 @@ class Monster:
         if attack_bonus == 5:
             attack_bonus = self.attack_5
             attack_phrase = self.attack_5_phrase
-        # dexterity_modifier = round((dexterity - 10) / 2)
-        # strength_modifier = round((strength - 10) / 2)
         roll20 = dice_roll(1, 20)
         print(f"{name} rolls 20 sided die---> {roll20}")
         if roll20 == 1:

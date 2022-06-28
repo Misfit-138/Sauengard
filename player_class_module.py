@@ -52,7 +52,6 @@ class Player:
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.is_paralyzed = is_paralyzed
 
-
     def current_level(self):
         if self.experience < 2000:
             self.level = 1

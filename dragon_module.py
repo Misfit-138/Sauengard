@@ -45,9 +45,9 @@ class Dragon(Monster):
         self.intelligence = random.randint(14, 17)
         self.wisdom = random.randint(12, 14)
         self.charisma = random.randint(18, 21)
-        self.can_paralyze = False
-        self.can_drain = False
-        self.undead = False
+        self.can_paralyze = True
+        self.can_drain = True
+        self.undead = True
         # For a dragon, hit points should be quite high. Level * random range 10-20 + con mod
         self.human_player_level = human_player_level
         self.hit_dice = 12  # 12 for huge monster

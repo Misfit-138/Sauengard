@@ -96,15 +96,15 @@ while fight_or_evade not in {'f', 'e'}:
     fight_or_evade = input("Please enter f or e:")
 
 # player's turn:
-turns = 0
+# turns = 0
 # send stats to player's swing function:
 
 damage_to_monster = player_1.swing(player_1.name, player_1.level, player_1.dexterity,
                                    player_1.strength, player_1.weapon, monster.level,
                                    monster.name, monster.dexterity, monster.armor_class)
 monster.reduce_health(damage_to_monster)
-turns += 1
-print(f"Turns: {turns}")
+#turns += 1
+#print(f"Turns: {turns}")
 if not monster.check_dead():  # if monster is not dead
     print(f"{monster.name} is not dead.")
     print(f"It has {monster.hit_points} hit points.")
@@ -118,24 +118,28 @@ else:
 print(f"You have {player_1.hit_points} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
 # monster turn:
 if not monster.check_dead():  # if monster is not dead
-    if monster.undead and monster.can_paralyze:
-        paralyze = dice_roll(1, 20)
-        if paralyze == 20:
-            print("You're paralyzed!!")
-            damage_to_player = monster.swing(monster.name, monster_level, monster.dexterity, monster.strength,
-                                             monster.weapon,
-                                             player_1.level, player_1.hit_points, player_1.dexterity, player_1.armor_class)
-    if monster.undead and monster.can_drain:
-        drain_level = dice_roll(1, 20)
-        if drain_level == 20:
-            print("It drains a level!")
-            if player_1.level < 1:
-                print(f"You died!!")
     damage_to_player = monster.swing(monster.name, monster_level, monster.dexterity, monster.strength, monster.weapon,
                                      player_1.level, player_1.hit_points, player_1.dexterity, player_1.armor_class)
     player_1.reduce_health(damage_to_player)
     if not player_1.check_dead():  # if player not dead
         print(f"You are alive")
+        if monster.undead and monster.can_paralyze:
+            player_1.is_paralyzed = monster.paralyze(monster.name, monster_level, monster.dexterity, monster.strength,
+                                                     monster.weapon,
+                                                     player_1.level, player_1.hit_points, player_1.dexterity,
+                                                     player_1.armor_class, player_1.wisdom, player_1.wisdom_modifier)
+
+        if monster.undead and monster.can_drain:
+            level_drain = monster.drain(monster.wisdom, player_1.level, player_1.wisdom, player_1.wisdom_modifier)
+            if level_drain:  # if level_drain True
+                print("It drains a level!\nYou go down a level!!")
+                player_1.level -= 1
+                if player_1.level <= 0:
+                    print(f"You have died from drainage!!!!!")
+                    exit()
+            else:
+                print(f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
+
     else:
         print(f"You have died.")
         exit()

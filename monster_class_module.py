@@ -136,10 +136,10 @@ class Monster:
 
     def paralyze(self, name, level, dexterity, strength, weapon, human_player_level, human_player_hit_points,
                  human_player_dexterity, human_player_armor_class, human_player_wisdom, human_player_wisdom_modifier):
-        paralyze = 20  # dice_roll(1, 20)
+        paralyze = dice_roll(1, 20)
         if paralyze == 20 and self.wisdom > (human_player_wisdom + human_player_wisdom_modifier):
             print("You're paralyzed!!")
-            damage_to_player = self.swing(self.name, self.level, self.dexterity, self.strength,
+            damage_to_player = self.swing(name, self.level, self.dexterity, self.strength,
                                           self.weapon,
                                           human_player_level, human_player_hit_points, human_player_dexterity,
                                           human_player_armor_class)
@@ -148,13 +148,11 @@ class Monster:
             return False
 
     def drain(self, self_wisdom, human_player_level, human_player_wisdom, human_player_wisdom_modifier):
-        drain_level = 20  # dice_roll(1, 20)
+        drain_level = dice_roll(1, 20)
         if drain_level == 20 and self_wisdom > (human_player_wisdom + human_player_wisdom_modifier):
             # print("It drains a level!")
             level_drain = True
             return level_drain
-            if human_player_level < 1:
-                print(f"You died!!")
         else:
             level_drain = False
             return level_drain

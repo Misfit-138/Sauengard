@@ -77,9 +77,12 @@ MONSTERS = [Dragon]
 
 #def create_monster():
 #    return random.choice(MONSTERS)
-in_dungeon = True
+in_proximity_to_monster = True
 dungeon_level = 1
-while in_dungeon:
+while in_proximity_to_monster:
+    if player_1.check_dead():
+        print(f"You're dead meat!")
+        break
     monster_cls = random.choice(MONSTERS)
     monster_level = dungeon_level + random.randint(0, 2)
     # monster_stats list index:
@@ -90,16 +93,19 @@ while in_dungeon:
     monster_stats[13] = round(monster_hit_points)  # make index 13 = constitution for now
     monster = monster_cls(*monster_stats)  # send stats to monster class and create 'monster' as object
     print(f"You have encountered a level {monster_level} {monster.name}.")
-    fight = True
-    while fight:
+    #fight = True
+    while True:
         fight_or_evade = input("Fight or Evade?\n F/E").lower()
         if fight_or_evade == "f":
             print("Fight")
-            fight = True
+            #fight = True
         else:
-            print("You evade.")
-            fight = False
-
+            evade_success = dice_roll(1, 20)
+            if evade_success + player_1.dexterity_modifier >= monster.dexterity:
+                print("You evade.")
+                break
+            else:
+                continue
         # player's turn:
         damage_to_monster = player_1.swing(player_1.name, player_1.level, player_1.dexterity,
                                            player_1.strength, player_1.weapon, monster.level,
@@ -108,12 +114,12 @@ while in_dungeon:
         if not monster.check_dead():  # if monster is not dead
             print(f"{monster.name} is not dead.")
             print(f"It has {monster.hit_points} hit points.")
-            fight = True
+
         else:
             print(f"It has {monster.hit_points} hit points.")
             print(f"It died..")
             player_1.level_up(monster.experience_award, monster.gold)
-            fight = False
+            break
         print(f"You currently have {player_1.hit_points} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
 
         # monster turn:
@@ -131,6 +137,7 @@ while in_dungeon:
                     player_1.reduce_health(damage_to_player)
                     if not player_1.check_dead():  # if player not dead
                         print(f"You are alive")
+
                 if monster.undead and monster.can_drain:
                     level_drain = monster.drain(monster.wisdom, player_1.level, player_1.wisdom, player_1.wisdom_modifier)
                     if level_drain:  # if level_drain True
@@ -138,17 +145,17 @@ while in_dungeon:
                         player_1.level -= 1
                         if player_1.level <= 0:
                             print(f"You have died from drainage!!!!!")
-                            exit()
+                            break
 
                     else:
                         print(f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
-
+                        continue
             else:
                 print(f"You have died.")
-                exit()
+                break
             print(f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
         else:
-            fight = False
+            break
 
 
 

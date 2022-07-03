@@ -40,7 +40,7 @@ class Player:
         self.intelligence = intelligence
         self.wisdom = wisdom
         self.charisma = charisma
-        self.hit_points = 1000 #hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.hit_points = hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
         self.dexterity_modifier = round((dexterity - 10) / 2)
         self.armor_class = 10 + self.dexterity_modifier + armor_bonus
@@ -88,7 +88,7 @@ class Player:
         self.current_level()
         after_level = self.level
         if after_level > before_level:
-            print(f"You went up a level!")
+            print(f"You went up a level!\n You are level {self.level}")
             print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points for a total of {self.experience}")
             gain_hit_points = dice_roll(self.level, self.hit_dice) + self.constitution_modifier  # (previous HP + Hit Die roll + CON modifier)
             self.hit_points += gain_hit_points

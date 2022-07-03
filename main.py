@@ -44,7 +44,7 @@ while accept_stats != "y":
     os.system('cls')
     # 0name,1level,2experience,3gold,4weapon+,5armor,6shield,7armor_class,8strength,9dexterity,10constitution,11intelligence,12wisdom,13charisma,14hit_points15is_paralyzed
     player_stats = [player_name, 1, 0, 0, 0, 0, 0, 10, *random.sample(range(3, 19), 6),
-                    0, False]  # zero is placeholder for hit points
+                    0, False]  # zero is placeholder for hit points is_paralyzed = False
     # print(player_stats)
     hit_points = 10 + round((player_stats[10] - 10) / 2)  # hit_points at level one = 10 + self.constitution_modifier (index 10 is constitution)
     player_stats[14] = hit_points  # make player_stats index 14 equal to 10 + con modifier
@@ -75,74 +75,80 @@ dungeon_level = 1
 MONSTERS = [Dragon]
 
 
-def rndm_monster():
-    return random.choice(MONSTERS)
+#def create_monster():
+#    return random.choice(MONSTERS)
+in_dungeon = True
+dungeon_level = 1
+while in_dungeon:
+    monster_cls = random.choice(MONSTERS)
+    monster_level = dungeon_level + random.randint(0, 2)
+    # monster_stats list index:
+    # 0level, 1experience_award, 2gold, 3weapon_bonus, 4armor,5shield,6armor_class,7strength,8dexterity,9constitution,10intelligence,11wisdom,12charisma,13hit_points,14can_paralyze, 15can_drain, 16undead,17human_player_level
+    monster_stats = [monster_level, 0, 0, 0, 0, 0, 0, *random.sample(range(3, 18), 6), 0, False, False,
+                     False, player_1.level]
+    monster_hit_points = (monster_stats[9])  # equal to constitution (index 9) for now..
+    monster_stats[13] = round(monster_hit_points)  # make index 13 = constitution for now
+    monster = monster_cls(*monster_stats)  # send stats to monster class and create 'monster' as object
+    print(f"You have encountered a level {monster_level} {monster.name}.")
+    fight = True
+    while fight:
+        fight_or_evade = input("Fight or Evade?\n F/E").lower()
+        if fight_or_evade == "f":
+            print("Fight")
+            fight = True
+        else:
+            print("You evade.")
+            fight = False
 
+        # player's turn:
+        damage_to_monster = player_1.swing(player_1.name, player_1.level, player_1.dexterity,
+                                           player_1.strength, player_1.weapon, monster.level,
+                                           monster.name, monster.dexterity, monster.armor_class)
+        monster.reduce_health(damage_to_monster)
+        if not monster.check_dead():  # if monster is not dead
+            print(f"{monster.name} is not dead.")
+            print(f"It has {monster.hit_points} hit points.")
+            fight = True
+        else:
+            print(f"It has {monster.hit_points} hit points.")
+            print(f"It died..")
+            player_1.level_up(monster.experience_award, monster.gold)
+            fight = False
+        print(f"You have {player_1.hit_points} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
 
-monster_cls = rndm_monster()
-# monster_cls = Dragon
-monster_level = dungeon_level + random.randint(0, 2)
-# monster_stats list index:
-# 0level, 1experience_award, 2gold, 3weapon_bonus, 4armor,5shield,6armor_class,7strength,8dexterity,9constitution,10intelligence,11wisdom,12charisma,13hit_points,14can_paralyze, 15can_drain, 16undead,17human_player_level
-monster_stats = [monster_level, 0, 0, 0, 0, 0, 0, *random.sample(range(3, 18), 6), 0, False, False,
-                 False, player_1.level]
-monster_hit_points = (monster_stats[9])  # equal to constitution (index 9) for now..
-monster_stats[13] = round(monster_hit_points)  # make index 13 (hitpoints) 20% more than constitution
-monster = monster_cls(*monster_stats)  # send stats to monster class and create 'monster' as object
-print(f"You have encountered a level {monster_level} {monster.name}.")
-fight_or_evade = input("Fight or Evade?\n F/E").lower()
-while fight_or_evade not in {'f', 'e'}:
-#while fight_or_evade not in "f" or "e":
-    fight_or_evade = input("Please enter f or e:")
+        # monster turn:
+        if not monster.check_dead():  # if monster is not dead
+            damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity, monster.strength, monster.weapon,
+                                             player_1.level, player_1.hit_points, player_1.dexterity, player_1.armor_class)
+            player_1.reduce_health(damage_to_player)
+            if not player_1.check_dead():  # if player not dead
+                print(f"You are alive")
+                if monster.undead and monster.can_paralyze:
+                    player_1.is_paralyzed = monster.paralyze(monster.name, monster.level, monster.dexterity, monster.strength,
+                                                             monster.weapon,
+                                                             player_1.level, player_1.hit_points, player_1.dexterity,
+                                                             player_1.armor_class, player_1.wisdom, player_1.wisdom_modifier)
+                    player_1.reduce_health(damage_to_player)
+                    if not player_1.check_dead():  # if player not dead
+                        print(f"You are alive")
+                if monster.undead and monster.can_drain:
+                    level_drain = monster.drain(monster.wisdom, player_1.level, player_1.wisdom, player_1.wisdom_modifier)
+                    if level_drain:  # if level_drain True
+                        print("It drains a level!\nYou go down a level!!")
+                        player_1.level -= 1
+                        if player_1.level <= 0:
+                            print(f"You have died from drainage!!!!!")
+                            exit()
 
-# player's turn:
-# turns = 0
-# send stats to player's swing function:
+                    else:
+                        print(f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
 
-damage_to_monster = player_1.swing(player_1.name, player_1.level, player_1.dexterity,
-                                   player_1.strength, player_1.weapon, monster.level,
-                                   monster.name, monster.dexterity, monster.armor_class)
-monster.reduce_health(damage_to_monster)
-#turns += 1
-#print(f"Turns: {turns}")
-if not monster.check_dead():  # if monster is not dead
-    print(f"{monster.name} is not dead.")
-    print(f"It has {monster.hit_points} hit points.")
-else:
-    print(f"It has {monster.hit_points} hit points.")
-    print(f"It died..")
-    player_1.level_up(monster.experience_award, monster.gold)
-    #player_1.experience +=
-    #player_1.gold += monster.gold
-
-print(f"You have {player_1.hit_points} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
-# monster turn:
-if not monster.check_dead():  # if monster is not dead
-    damage_to_player = monster.swing(monster.name, monster_level, monster.dexterity, monster.strength, monster.weapon,
-                                     player_1.level, player_1.hit_points, player_1.dexterity, player_1.armor_class)
-    player_1.reduce_health(damage_to_player)
-    if not player_1.check_dead():  # if player not dead
-        print(f"You are alive")
-        if monster.undead and monster.can_paralyze:
-            player_1.is_paralyzed = monster.paralyze(monster.name, monster_level, monster.dexterity, monster.strength,
-                                                     monster.weapon,
-                                                     player_1.level, player_1.hit_points, player_1.dexterity,
-                                                     player_1.armor_class, player_1.wisdom, player_1.wisdom_modifier)
-
-        if monster.undead and monster.can_drain:
-            level_drain = monster.drain(monster.wisdom, player_1.level, player_1.wisdom, player_1.wisdom_modifier)
-            if level_drain:  # if level_drain True
-                print("It drains a level!\nYou go down a level!!")
-                player_1.level -= 1
-                if player_1.level <= 0:
-                    print(f"You have died from drainage!!!!!")
-                    exit()
             else:
-                print(f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
+                print(f"You have died.")
+                exit()
+            print(f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
+        else:
+            fight = False
 
-    else:
-        print(f"You have died.")
-        exit()
-    print(f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
-else:
-    exit()
+
+

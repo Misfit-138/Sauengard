@@ -1,4 +1,4 @@
-''' Choose a challenge rating (CR) for your trap, object, effect, or creature
+""" Choose a challenge rating (CR) for your trap, object, effect, or creature
 between 1 and 30. Write down its statistics from the following formulas:
 • AC = 12 + ½ CR (or choose between 10 and 20 based on the story)
 • DC = 12 + ½ CR
@@ -24,7 +24,7 @@ For example, if a monster has a Constitution of 12 (+1 modifier) and 2d8 Hit Dic
 
 Adult Red Dragon Stats per D&D
 STR 27 (+8) DEX 10 (+0) CON 25 (+7) INT 16 (+3) WIS 13 (+1) CHA 21 (+5)
-'''
+
 
 from monster_class_module import *
 
@@ -50,12 +50,12 @@ class Dragon(Monster):
         self.undead = False
         # For a dragon, hit points should be quite high. Level * random range 10-20 + con mod
         self.human_player_level = human_player_level
-        self.hit_dice = 12  # 12 for huge monster
+        self.hit_dice = 12  # 12 for huge monster, 20 for gargantuan
         # self.challenge_rating = 0
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((strength - 10) / 2)
         self.constitution_modifier = round((constitution - 10) / 2)
-        self.hit_points = 1  # self.level * (random.randint(15, 20)) + self.constitution_modifier
+        self.hit_points = self.level * (random.randint(15, 20)) + self.constitution_modifier
         self.dexterity_modifier = round((dexterity - 10) / 2)
         self.armor_class = random.randint(17, 19)
         self.attack_1 = 5  # attack bonus
@@ -68,4 +68,4 @@ class Dragon(Monster):
         self.attack_4_phrase = "The dragon attacks with its wings!!"
         self.attack_5 = 10
         self.attack_5_phrase = "The dragon breathes fire!!"
-    name = "Dragon"
+    name = "Dragon" """

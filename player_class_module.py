@@ -88,7 +88,7 @@ class Player:
         self.current_level()
         after_level = self.level
         if after_level > before_level:
-            print(f"You went up a level!\n You are level {self.level}")
+            print(f"You went up a level! You are now level {self.level}.")
             print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points for a total of {self.experience}")
             gain_hit_points = dice_roll(self.level, self.hit_dice) + self.constitution_modifier  # (previous HP + Hit Die roll + CON modifier)
             self.hit_points += gain_hit_points
@@ -114,7 +114,7 @@ class Player:
         if roll_d20 == 1:
             print(f"You rolled a 1. 1 means failure..")
             return 0
-        print(f"Dexterity modifier {self.dexterity_modifier}\n Proficiency bonus {self.proficiency_bonus}")
+        print(f"Dexterity modifier {self.dexterity_modifier}\nProficiency bonus {self.proficiency_bonus}")
         print(f"Monster armor class {monster_armor_class}")
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier >= monster_armor_class:
             damage_roll = dice_roll(self.level,
@@ -133,6 +133,17 @@ class Player:
             print(f"You missed...")
             return 0
 
+    def fight_or_evade(self, monster_dexterity):
+        choice = input("Fight or Evade?\n F/E").lower()
+        if choice == "f":
+            print("Fight")
+            return
+        else:
+            evade_success = dice_roll(1, 20)
+            if evade_success + self.dexterity_modifier >= monster_dexterity or evade_success == 20:
+                print("You evade.")
+                return True
+                # in_proximity_to_monster = False
 
 """leveling up logic
                 exp_award = 64000

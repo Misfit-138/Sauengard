@@ -147,9 +147,9 @@ class Monster:
         else:
             return False
 
-    def drain(self, self_wisdom, human_player_level, human_player_wisdom, human_player_wisdom_modifier):
+    def drain(self, human_player_level, human_player_wisdom, human_player_wisdom_modifier):
         drain_level = dice_roll(1, 20)
-        if drain_level == 20 and self_wisdom > (human_player_wisdom + human_player_wisdom_modifier):
+        if drain_level == 20 and self.wisdom > (human_player_wisdom + human_player_wisdom_modifier):
             # print("It drains a level!")
             level_drain = True
             return level_drain
@@ -157,3 +157,93 @@ class Monster:
             level_drain = False
             return level_drain
 
+
+'''
+    def monster_turn(self,):
+        if not monster.check_dead():  # if monster is not dead
+            damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity, monster.strength,
+                                             monster.weapon,
+                                             player_1.level, player_1.hit_points, player_1.dexterity,
+                                             player_1.armor_class)
+            player_1.reduce_health(damage_to_player)
+            if not player_1.check_dead():  # if player not dead
+                print(f"You are alive")
+                if monster.undead and monster.can_paralyze:
+                    player_1.is_paralyzed = monster.paralyze(monster.name, monster.level, monster.dexterity,
+                                                             monster.strength,
+                                                             monster.weapon,
+                                                             player_1.level, player_1.hit_points, player_1.dexterity,
+                                                             player_1.armor_class, player_1.wisdom,
+                                                             player_1.wisdom_modifier)
+                    player_1.reduce_health(damage_to_player)
+                    if not player_1.check_dead():  # if player not dead
+                        print(f"You are alive")
+
+                if monster.undead and monster.can_drain:
+                    level_drain = monster.drain(monster.wisdom, player_1.level, player_1.wisdom,
+                                                player_1.wisdom_modifier)
+                    if level_drain:  # if level_drain True
+                        print("It drains a level!\nYou go down a level!!")
+                        player_1.level -= 1
+                        if player_1.level <= 0:
+                            print(f"You have died from drainage!!!!!")
+                            break
+
+                    else:
+                        print(
+                            f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
+                        continue
+            else:
+                print(f"You have died.")
+                break
+            print(
+                f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
+        else:
+            break'''
+
+
+class Dragon(Monster):
+
+    def __init__(self, level, experience_award, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
+                 constitution, intelligence, wisdom, charisma, hit_points, can_paralyze, can_drain, undead,
+                 human_player_level):
+        super().__init__(level, experience_award, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
+                         constitution, intelligence, wisdom, charisma, hit_points, can_paralyze, can_drain, undead,
+                         human_player_level)
+        self.level = level
+        self.experience_award = self.level * 1000
+        self.gold = self.level * round(1000 * random.uniform(1, 2))
+        self.weapon = weapon
+        self.armor = armor_bonus
+        self.shield = shield
+        self.strength = random.randint(17, 27)
+        self.dexterity = random.randint(10, 11)
+        self.constitution = random.randint(14, 19)
+        self.intelligence = random.randint(14, 17)
+        self.wisdom = random.randint(12, 14)
+        self.charisma = random.randint(18, 21)
+        self.can_paralyze = False
+        self.can_drain = False
+        self.undead = False
+        # For a dragon, hit points should be quite high. Level * random range 10-20 + con mod
+        self.human_player_level = human_player_level
+        self.hit_dice = 12  # 12 for huge monster, 20 for gargantuan
+        # self.challenge_rating = 0
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.strength_modifier = round((strength - 10) / 2)
+        self.constitution_modifier = round((constitution - 10) / 2)
+        self.hit_points = self.level * (random.randint(15, 20)) + self.constitution_modifier
+        self.dexterity_modifier = round((dexterity - 10) / 2)
+        self.armor_class = random.randint(17, 19)
+        self.attack_1 = 5  # attack bonus
+        self.attack_1_phrase = "It strikes with its terrible claws!!"
+        self.attack_2 = 6
+        self.attack_2_phrase = "The dragon hisses and strikes with its gaping jaws!!"
+        self.attack_3 = 6
+        self.attack_3_phrase = "The dragon swings its tail!!"
+        self.attack_4 = 7
+        self.attack_4_phrase = "The dragon attacks with its wings!!"
+        self.attack_5 = 10
+        self.attack_5_phrase = "The dragon breathes fire!!"
+
+    name = "Dragon"

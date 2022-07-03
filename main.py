@@ -30,6 +30,7 @@ and its documentation and return value (usually None) support this, the behavior
 from dragon_module import *
 from player_class_module import *
 from monster_class_module import *
+
 import random
 import os
 
@@ -46,7 +47,8 @@ while accept_stats != "y":
     player_stats = [player_name, 1, 0, 0, 0, 0, 0, 10, *random.sample(range(3, 19), 6),
                     0, False]  # zero is placeholder for hit points is_paralyzed = False
     # print(player_stats)
-    hit_points = 10 + round((player_stats[10] - 10) / 2)  # hit_points at level one = 10 + self.constitution_modifier (index 10 is constitution)
+    hit_points = 10 + round((player_stats[
+                                 10] - 10) / 2)  # hit_points at level one = 10 + self.constitution_modifier (index 10 is constitution)
     player_stats[14] = hit_points  # make player_stats index 14 equal to 10 + con modifier
 
     print(player_stats)
@@ -74,14 +76,20 @@ dungeon_level = 1
 #            "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
 MONSTERS = [Dragon]
 
-
-#def create_monster():
+# def create_monster():
 #    return random.choice(MONSTERS)
+# in proximity loop contains battle loop within it
 in_proximity_to_monster = True
-dungeon_level = 1
+
+# def fight_or_evade(dexterity):
+#    pass
+
+# ************ OFFLOAD AS MUCH OF THIS LOGIC AS POSSIBLE TO THE OTHER MODULES!!! **************************
 while in_proximity_to_monster:
     if player_1.check_dead():
         print(f"You're dead meat!")
+        break
+    if not in_proximity_to_monster:
         break
     monster_cls = random.choice(MONSTERS)
     monster_level = dungeon_level + random.randint(0, 2)
@@ -93,19 +101,14 @@ while in_proximity_to_monster:
     monster_stats[13] = round(monster_hit_points)  # make index 13 = constitution for now
     monster = monster_cls(*monster_stats)  # send stats to monster class and create 'monster' as object
     print(f"You have encountered a level {monster_level} {monster.name}.")
-    #fight = True
+    # fight = True
     while True:
-        fight_or_evade = input("Fight or Evade?\n F/E").lower()
-        if fight_or_evade == "f":
-            print("Fight")
-            #fight = True
+        evade_success = player_1.fight_or_evade(monster.dexterity)
+        if evade_success:
+            break
         else:
-            evade_success = dice_roll(1, 20)
-            if evade_success + player_1.dexterity_modifier >= monster.dexterity:
-                print("You evade.")
-                break
-            else:
-                continue
+            print(f"You are rooted to the spot")
+            # place logic here: if dice roll and dexterity > monster then player's turn, else monster gets the jump
         # player's turn:
         damage_to_monster = player_1.swing(player_1.name, player_1.level, player_1.dexterity,
                                            player_1.strength, player_1.weapon, monster.level,
@@ -119,27 +122,34 @@ while in_proximity_to_monster:
             print(f"It has {monster.hit_points} hit points.")
             print(f"It died..")
             player_1.level_up(monster.experience_award, monster.gold)
+            in_proximity_to_monster = False
             break
-        print(f"You currently have {player_1.hit_points} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
+        print(
+            f"You currently have {player_1.hit_points} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
 
         # monster turn:
         if not monster.check_dead():  # if monster is not dead
-            damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity, monster.strength, monster.weapon,
-                                             player_1.level, player_1.hit_points, player_1.dexterity, player_1.armor_class)
+            damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity, monster.strength,
+                                             monster.weapon,
+                                             player_1.level, player_1.hit_points, player_1.dexterity,
+                                             player_1.armor_class)
             player_1.reduce_health(damage_to_player)
             if not player_1.check_dead():  # if player not dead
                 print(f"You are alive")
                 if monster.undead and monster.can_paralyze:
-                    player_1.is_paralyzed = monster.paralyze(monster.name, monster.level, monster.dexterity, monster.strength,
+                    player_1.is_paralyzed = monster.paralyze(monster.name, monster.level, monster.dexterity,
+                                                             monster.strength,
                                                              monster.weapon,
                                                              player_1.level, player_1.hit_points, player_1.dexterity,
-                                                             player_1.armor_class, player_1.wisdom, player_1.wisdom_modifier)
+                                                             player_1.armor_class, player_1.wisdom,
+                                                             player_1.wisdom_modifier)
                     player_1.reduce_health(damage_to_player)
                     if not player_1.check_dead():  # if player not dead
                         print(f"You are alive")
 
                 if monster.undead and monster.can_drain:
-                    level_drain = monster.drain(monster.wisdom, player_1.level, player_1.wisdom, player_1.wisdom_modifier)
+                    level_drain = monster.drain(player_1.level, player_1.wisdom,
+                                                player_1.wisdom_modifier)
                     if level_drain:  # if level_drain True
                         print("It drains a level!\nYou go down a level!!")
                         player_1.level -= 1
@@ -148,14 +158,13 @@ while in_proximity_to_monster:
                             break
 
                     else:
-                        print(f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
+                        print(
+                            f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
                         continue
             else:
                 print(f"You have died.")
                 break
-            print(f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
+            print(
+                f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
         else:
             break
-
-
-

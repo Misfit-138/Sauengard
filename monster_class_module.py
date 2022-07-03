@@ -117,11 +117,11 @@ class Monster:
             print(f"{name} rolled a 1..failure!")
             return 0
         print(f"Dexterity modifier {self.dexterity_modifier}")
-        print(f"Your armor class ---> {player_armor_class}")  # at this point the player is the opponent!
+        print(f"Your armor class ---> {player_armor_class}")
         if roll20 + self.dexterity_modifier >= player_armor_class:
             damage_roll = dice_roll(self.level, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus)
-            if damage_to_opponent > 0:
+            if damage_to_opponent > 0:  # # at this point the player is the opponent!
                 print(f"{attack_phrase}")
                 print(f"{name} rolls {self.hit_dice} sided dice---> {damage_roll}")
                 print(f"Strength modifier---> {self.strength_modifier}\nAttack bonus---> {attack_bonus}")

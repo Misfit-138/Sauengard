@@ -114,7 +114,7 @@ while in_dungeon:
             print(f"It died..")
             player_1.level_up(monster.experience_award, monster.gold)
             fight = False
-        print(f"You have {player_1.hit_points} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
+        print(f"You currently have {player_1.hit_points} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
 
         # monster turn:
         if not monster.check_dead():  # if monster is not dead

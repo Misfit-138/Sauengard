@@ -87,7 +87,7 @@ in_proximity_to_monster = True
 # ************ OFFLOAD AS MUCH OF THIS LOGIC AS POSSIBLE TO THE OTHER MODULES!!! **************************
 while in_proximity_to_monster:
     if player_1.check_dead():
-        print(f"You're dead meat!")
+        print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
         break
     if not in_proximity_to_monster:
         break
@@ -101,19 +101,45 @@ while in_proximity_to_monster:
     monster_stats[13] = round(monster_hit_points)  # make index 13 = constitution for now
     monster = monster_cls(*monster_stats)  # send stats to monster class and create 'monster' as object
     print(f"You have encountered a level {monster_level} {monster.name}.")
-    # fight = True
-    while True:
-        evade_success = player_1.fight_or_evade(monster.dexterity)
-        if evade_success:
-            break
+    if dice_roll(1, 20) == 20:  # (player_1.dexterity + player_1.dexterity_modifier):
+        attack_or_steal = dice_roll(1, 20)
+        if attack_or_steal > 16:  # (player_1.dexterity + player_1.dexterity_modifier):
+            print(f"You are caught off guard! It attacks!")
+            damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity, monster.strength,
+                                             monster.weapon,
+                                             player_1.level, player_1.hit_points, player_1.dexterity,
+                                             player_1.armor_class)
+            player_1.reduce_health(damage_to_player)
+            if not player_1.check_dead():  # if player not dead
+                print(f"You are alive")
+            else:
+                continue
         else:
-            print(f"You are rooted to the spot")
+            print(f"The {monster.name} makes a quick move. He steals an item from your pack.")
+            continue
+            # break
+    # battle loop
+    while True:
+        choice = input("Fight or Evade?\n F/E").lower()
+        if choice == "e":
+            evade_success = player_1.evade(monster.name, monster.dexterity)
+            if evade_success:
+                # in_proximity_to_monster = False
+                break
+            else:
+                print(f"You are rooted to the spot! You must stand your ground!")
+        elif choice == "f":
+            print(f"Fight.")
+        else:
+            continue  # if player enters anything other than e or f
+
             # place logic here: if dice roll and dexterity > monster then player's turn, else monster gets the jump
+            # if dice_roll(1, 20) + player_1.dexterity_modifier > monster.dexterity:
         # player's turn:
         damage_to_monster = player_1.swing(player_1.name, player_1.level, player_1.dexterity,
                                            player_1.strength, player_1.weapon, monster.level,
                                            monster.name, monster.dexterity, monster.armor_class)
-        monster.reduce_health(damage_to_monster)
+        monster.reduce_health(damage_to_monster)  # take returned damage to monster
         if not monster.check_dead():  # if monster is not dead
             print(f"{monster.name} is not dead.")
             print(f"It has {monster.hit_points} hit points.")
@@ -122,8 +148,11 @@ while in_proximity_to_monster:
             print(f"It has {monster.hit_points} hit points.")
             print(f"It died..")
             player_1.level_up(monster.experience_award, monster.gold)
-            in_proximity_to_monster = False
+            # in_proximity_to_monster = False change this back after testing
             break
+        if not in_proximity_to_monster:
+            break
+
         print(
             f"You currently have {player_1.hit_points} hitpoints, {player_1.gold} gold, and {player_1.experience} experience. You are level {player_1.level}")
 

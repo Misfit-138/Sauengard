@@ -232,7 +232,7 @@ class Dragon(Monster):
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((strength - 10) / 2)
         self.constitution_modifier = round((constitution - 10) / 2)
-        self.hit_points = self.level * (random.randint(15, 20)) + self.constitution_modifier
+        self.hit_points = 1  # self.level * (random.randint(15, 20)) + self.constitution_modifier
         self.dexterity_modifier = round((dexterity - 10) / 2)
         self.armor_class = random.randint(17, 19)
         self.attack_1 = 5  # attack bonus

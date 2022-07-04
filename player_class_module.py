@@ -1,6 +1,8 @@
 # import random
 from dice_roll_module import *
 
+#from main import monster
+#from monster_class_module import *
 '''Target
 Identify your target to the table. 
 Attack
@@ -40,7 +42,7 @@ class Player:
         self.intelligence = intelligence
         self.wisdom = wisdom
         self.charisma = charisma
-        self.hit_points = hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.hit_points = 1000000  # hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
         self.dexterity_modifier = round((dexterity - 10) / 2)
         self.armor_class = 10 + self.dexterity_modifier + armor_bonus
@@ -133,16 +135,11 @@ class Player:
             print(f"You missed...")
             return 0
 
-    def fight_or_evade(self, monster_dexterity):
-        choice = input("Fight or Evade?\n F/E").lower()
-        if choice == "f":
-            print("Fight")
-            return
-        else:
-            evade_success = dice_roll(1, 20)
-            if evade_success + self.dexterity_modifier >= monster_dexterity or evade_success == 20:
-                print("You evade.")
-                return True
+    def evade(self, monster_name, monster_dexterity):
+        evade_success = dice_roll(1, 20)
+        if evade_success + self.dexterity_modifier >= monster_dexterity or evade_success == 20:
+            print(f"You successfully evade the {monster_name}.")
+            return True
                 # in_proximity_to_monster = False
 
 """leveling up logic

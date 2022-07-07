@@ -7,3 +7,12 @@ while a < 20:
 
 b = random.sample(range(3, 19), 5)
 print(b)
+keepGameRunning = True
+while keepGameRunning:
+    navigate = input("Which way to navigate or E to enter dungeon")
+    if navigate not in ('e'):
+        print(f"You are navigating")
+    else:
+        keepGameRunning = False
+print("You enter the dungeon")
+

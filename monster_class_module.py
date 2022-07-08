@@ -81,10 +81,11 @@ class Monster:
         self.undead = undead
         self.hit_dice = 0  # tiny d4, small d6, medium d8, large d10, huge d12, gargantuan d20
         self.human_player_level = human_player_level
-        self.proficiency_bonus = 0  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.dexterity_modifier = 0  # round((dexterity - 10) / 2)
-        self.strength_modifier = 0  # round((strength - 10) / 2)
-        self.constitution_modifier = 0  # round((constitution - 10) / 2)
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.dexterity_modifier = round((dexterity - 10) / 2)
+        self.strength_modifier = round((strength - 10) / 2)
+        self.constitution_modifier = round((constitution - 10) / 2)
+        self.wisdom_modifier = round((wisdom - 10) / 2)
         self.attack_1 = 0
         self.attack_1_phrase = ""
         self.attack_2 = 0
@@ -147,28 +148,33 @@ class Monster:
             print(f"It missed..")
         return 0
 
-    def paralyze(self, name, level, dexterity, strength, weapon, human_player_level, human_player_hit_points,
+    def paralyze(self, name, level, monster_wisdom, monster_wisdom_modifier, dexterity, strength, weapon,
+                 human_player_level, human_player_hit_points,
                  human_player_dexterity, human_player_armor_class, human_player_wisdom, human_player_wisdom_modifier):
-        paralyze = dice_roll(1, 20)
-        if paralyze > 17 and self.wisdom > (human_player_wisdom + human_player_wisdom_modifier):
+        paralyze_chance = dice_roll(1, 20)
+        if paralyze_chance == 20 or paralyze_chance > 17 and (monster_wisdom + monster_wisdom_modifier) > (
+                human_player_wisdom + human_player_wisdom_modifier):
             print("You're paralyzed!!")
-            damage_to_player = self.swing(name, self.level, self.dexterity, self.strength,
-                                          self.weapon,
+            damage_to_player = self.swing(name, level, dexterity, strength,
+                                          weapon,
                                           human_player_level, human_player_hit_points, human_player_dexterity,
                                           human_player_armor_class)
-            return True
+            return damage_to_player
         else:
-            return False
-
-    def drain(self, human_player_level, human_player_wisdom, human_player_wisdom_modifier):
+            print("It failed")
+            return
+    def drain(self, monster_wisdom, monster_wisdom_modifier, human_player_level, human_player_wisdom,
+              human_player_wisdom_modifier):
         drain_level = dice_roll(1, 20)  # need player_1 experience logic for proper drain??
-        if drain_level > 17 and self.wisdom > (human_player_wisdom + human_player_wisdom_modifier):
+        if drain_level > 17 and (monster_wisdom + monster_wisdom_modifier) > (
+                human_player_wisdom + human_player_wisdom_modifier):
             # print("It drains a level!")
             level_drain = True
             return level_drain
         else:
             level_drain = False
             return level_drain
+
 
 # For example, if a monster has a Constitution of 12 (+1 modifier) and 2d8 Hit Dice, it has 2d8 + 2 Hit Points
 # dice_roll(self.level, self.hit_dice) + self.constitution_modifier

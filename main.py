@@ -111,8 +111,6 @@ while True:
                         # in proximity loop contains battle loop within it
                         in_proximity_to_monster = True
 
-
-
                         # ************ OFFLOAD AS MUCH OF THIS LOGIC AS POSSIBLE TO THE OTHER MODULES!!! **************************
                         while in_proximity_to_monster:
                             if player_1.check_dead():
@@ -207,21 +205,23 @@ while True:
                                         print(f"Chance to paralyze")
                                         if monster.undead and monster.can_paralyze:
                                             player_1.is_paralyzed = monster.paralyze(monster.name, monster.level,
-                                                                                     monster.dexterity,
-                                                                                     monster.strength,
-                                                                                     monster.weapon,
-                                                                                     player_1.level,
-                                                                                     player_1.hit_points,
-                                                                                     player_1.dexterity,
-                                                                                     player_1.armor_class,
-                                                                                     player_1.wisdom,
-                                                                                     player_1.wisdom_modifier)
+                                                                                monster.wisdom, monster.wisdom_modifier,
+                                                                                monster.dexterity,
+                                                                                monster.strength,
+                                                                                monster.weapon,
+                                                                                player_1.level,
+                                                                                player_1.hit_points,
+                                                                                player_1.dexterity,
+                                                                                player_1.armor_class,
+                                                                                player_1.wisdom,
+                                                                                player_1.wisdom_modifier)
                                             player_1.reduce_health(damage_to_player)
                                             if not player_1.check_dead():  # if player not dead
                                                 print(f"You are alive")
 
                                         if monster.undead and monster.can_drain:
-                                            level_drain = monster.drain(player_1.level, player_1.wisdom,
+                                            level_drain = monster.drain(monster.wisdom, monster.wisdom_modifier,
+                                                                        player_1.level, player_1.wisdom,
                                                                         player_1.wisdom_modifier)
                                             if level_drain:  # if level_drain True..this logic must be offloaded and expanded to include experience
                                                 print("It drains a level!\nYou go down a level!!")

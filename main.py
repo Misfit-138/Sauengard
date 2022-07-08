@@ -104,7 +104,7 @@ while True:
                         print("This should create monster now..")
                         dungeon_level = 1
 
-                        MONSTERS = [Ghoul, Dragon]
+                        MONSTERS = [Ghoul]
 
                         # def create_monster():
                         #    return random.choice(MONSTERS)
@@ -143,10 +143,14 @@ while True:
                                                                      player_1.dexterity,
                                                                      player_1.armor_class)
                                     player_1.reduce_health(damage_to_player)
-                                    if not player_1.check_dead():  # if player not dead
-                                        print(f"You are alive")
-                                    else:
-                                        continue
+                                    if player_1.check_dead():  # if player  dead
+
+                                        print(f"You are dead!")
+                                        in_proximity_to_monster = False
+                                        in_dungeon = False
+                                        in_town = False
+                                        break
+                                        # continue
                                 else:
                                     print(f"The {monster.name} makes a quick move. He steals an item from your pack.")
                                     in_proximity_to_monster = False
@@ -158,7 +162,7 @@ while True:
                                     evade_success = player_1.evade(monster.name, monster.dexterity)
                                     if evade_success:
                                         in_proximity_to_monster = False
-                                        in_town = True
+                                        # in_town = True
                                         break
                                     else:
                                         print(f"You are rooted to the spot! You must stand your ground!")
@@ -182,11 +186,9 @@ while True:
                                     print(f"It has {monster.hit_points} hit points.")
                                     print(f"It died..")
                                     player_1.level_up(monster.experience_award, monster.gold)
-                                    in_proximity_to_monster = False  # change this back after testing
-                                    in_town = True
+                                    in_proximity_to_monster = False
                                     break
                                 if not in_proximity_to_monster:
-                                    in_town = True
                                     break
 
                                 print(
@@ -202,7 +204,7 @@ while True:
                                                                      player_1.armor_class)
                                     player_1.reduce_health(damage_to_player)
                                     if not player_1.check_dead():  # if player not dead
-                                        print(f"You are alive")
+                                        print(f"Chance to paralyze")
                                         if monster.undead and monster.can_paralyze:
                                             player_1.is_paralyzed = monster.paralyze(monster.name, monster.level,
                                                                                      monster.dexterity,
@@ -216,16 +218,16 @@ while True:
                                                                                      player_1.wisdom_modifier)
                                             player_1.reduce_health(damage_to_player)
                                             if not player_1.check_dead():  # if player not dead
-                                                continue
-                                                # print(f"You are alive")
+                                                print(f"You are alive")
 
                                         if monster.undead and monster.can_drain:
                                             level_drain = monster.drain(player_1.level, player_1.wisdom,
                                                                         player_1.wisdom_modifier)
-                                            if level_drain:  # if level_drain True
+                                            if level_drain:  # if level_drain True..this logic must be offloaded and expanded to include experience
                                                 print("It drains a level!\nYou go down a level!!")
                                                 player_1.level -= 1
-                                                if player_1.level <= 0:
+                                                player_1.experience *= round(.51)
+                                                if player_1.level < 1:
                                                     print(f"You have died from drainage!!!!!")
                                                     in_proximity_to_monster = False
                                                     in_dungeon = False

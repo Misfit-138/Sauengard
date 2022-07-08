@@ -139,7 +139,7 @@ class Monster:
     def paralyze(self, name, level, dexterity, strength, weapon, human_player_level, human_player_hit_points,
                  human_player_dexterity, human_player_armor_class, human_player_wisdom, human_player_wisdom_modifier):
         paralyze = dice_roll(1, 20)
-        if paralyze == 20 and self.wisdom > (human_player_wisdom + human_player_wisdom_modifier):
+        if paralyze > 17 and self.wisdom > (human_player_wisdom + human_player_wisdom_modifier):
             print("You're paralyzed!!")
             damage_to_player = self.swing(name, self.level, self.dexterity, self.strength,
                                           self.weapon,
@@ -150,8 +150,8 @@ class Monster:
             return False
 
     def drain(self, human_player_level, human_player_wisdom, human_player_wisdom_modifier):
-        drain_level = dice_roll(1, 20)
-        if drain_level == 20 and self.wisdom > (human_player_wisdom + human_player_wisdom_modifier):
+        drain_level = dice_roll(1, 20)  # need player_1 experience logic for proper drain??
+        if drain_level > 17 and self.wisdom > (human_player_wisdom + human_player_wisdom_modifier):
             # print("It drains a level!")
             level_drain = True
             return level_drain
@@ -178,7 +178,7 @@ class Ghoul(Monster):
         self.dexterity = random.randint(6, 11)
         self.constitution = random.randint(6, 12)
         self.intelligence = random.randint(1, 10)
-        self.wisdom = random.randint(1, 10)
+        self.wisdom = 18  # random.randint(7, 13)
         self.charisma = random.randint(1, 5)
         self.can_paralyze = True
         self.can_drain = True
@@ -188,10 +188,11 @@ class Ghoul(Monster):
         self.hit_dice = 8  # 12 for huge monster, 20 for gargantuan
         # self.challenge_rating = 0
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.strength_modifier = round((strength - 10) / 2)
-        self.constitution_modifier = round((constitution - 10) / 2)
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
         self.hit_points = self.level * (random.randint(7, 12)) + self.constitution_modifier
-        self.dexterity_modifier = round((dexterity - 10) / 2)
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.wisdom_modifier = round((self.strength - 10) / 2)
         self.armor_class = random.randint(10, 11)
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "It strikes with one claw.."
@@ -235,10 +236,11 @@ class Dragon(Monster):
         self.hit_dice = 12  # 12 for huge monster, 20 for gargantuan
         # self.challenge_rating = 0
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.strength_modifier = round((strength - 10) / 2)
-        self.constitution_modifier = round((constitution - 10) / 2)
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
         self.hit_points = self.level * (random.randint(15, 20)) + self.constitution_modifier
-        self.dexterity_modifier = round((dexterity - 10) / 2)
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
         self.armor_class = random.randint(17, 19)
         self.attack_1 = 5  # attack bonus
         self.attack_1_phrase = "It strikes with its terrible claws!!"

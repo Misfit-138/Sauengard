@@ -32,6 +32,7 @@ from player_class_module import *
 from monster_class_module import *
 import random
 import os
+
 while True:
     player_name = input("Enter Player name: ")
     accept_stats = ""
@@ -66,32 +67,44 @@ while True:
         in_town = True
         in_dungeon = False
         while in_town:
-            town_functions = input("What do you wish to do or E to enter dungeon")
-            if town_functions not in 'e':
-                if town_functions == 'b':
-                    print(f"You are in town, buying stuff")
-                else:
-                    print("You are in town doing stuff")
-            else:
+            town_functions = input("You are in town. (B)lacksmith (C)hemist or (E) to enter dungeon")
+            if town_functions == 'r':
+                print("Restart")
+                in_town = False
+                break
+            if town_functions == 'b':
+                print("You visit the blacksmith")
+            if town_functions == 'c':
+                print("You visit the quantum chemist")
+            if town_functions == 'e':
                 in_town = False
                 in_dungeon = True
                 print("You enter the dungeon")
+
                 while in_dungeon:
                     dungeon_command = input("Town (P)ortal or WASD or (F)ight")
-                    if dungeon_command not in 'p':
-                        if dungeon_command == 'w' or 'a' or 's' or 'd':
-                            print(f"You are navigating")
-                        elif dungeon_command == 'f':
-                            print("This should start the create monster function now..")
-                            dungeon_level = 1
-                    else:
-                        in_dungeon = False
+                    if dungeon_command == 'p':
                         in_town = True
+                        in_dungeon = False
                         break
+                    if dungeon_command == 'w' or 'a' or 's' or 'd':
+                        if dungeon_command == 'w':
+                            print("You go north")
+                        if dungeon_command == 'a':
+                            print("You go west")
+                        if dungeon_command == 's':
+                            print("You go south")
+                        if dungeon_command == 'd':
+                            print("You go east")
 
-
-
-
+                    if dungeon_command == 'f':
+                        print("This should start the create monster function now..")
+                        dungeon_level = 1
+                    #else:
+                     #   print("Unknown command")
+                        #in_town = False
+                        #in_dungeon = False
+                        # break
                         # MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
                         #            "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
                         MONSTERS = [Dragon]
@@ -115,19 +128,23 @@ while True:
                             monster_level = dungeon_level + random.randint(0, 2)
                             # monster_stats list index:
                             # 0level, 1experience_award, 2gold, 3weapon_bonus, 4armor,5shield,6armor_class,7strength,8dexterity,9constitution,10intelligence,11wisdom,12charisma,13hit_points,14can_paralyze, 15can_drain, 16undead,17human_player_level
-                            monster_stats = [monster_level, 0, 0, 0, 0, 0, 0, *random.sample(range(3, 18), 6), 0, False, False,
+                            monster_stats = [monster_level, 0, 0, 0, 0, 0, 0, *random.sample(range(3, 18), 6), 0, False,
+                                             False,
                                              False, player_1.level]
                             monster_hit_points = (monster_stats[9])  # equal to constitution (index 9) for now..
                             monster_stats[13] = round(monster_hit_points)  # make index 13 = constitution for now
-                            monster = monster_cls(*monster_stats)  # send stats to monster class and create 'monster' as object
+                            monster = monster_cls(
+                                *monster_stats)  # send stats to monster class and create 'monster' as object
                             print(f"You have encountered a level {monster_level} {monster.name}.")
                             if dice_roll(1, 20) == 20:  # (player_1.dexterity + player_1.dexterity_modifier):
                                 attack_or_steal = dice_roll(1, 20)
                                 if attack_or_steal > 16:  # (player_1.dexterity + player_1.dexterity_modifier):
                                     print(f"You are caught off guard! It attacks!")
-                                    damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity, monster.strength,
+                                    damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity,
+                                                                     monster.strength,
                                                                      monster.weapon,
-                                                                     player_1.level, player_1.hit_points, player_1.dexterity,
+                                                                     player_1.level, player_1.hit_points,
+                                                                     player_1.dexterity,
                                                                      player_1.armor_class)
                                     player_1.reduce_health(damage_to_player)
                                     if not player_1.check_dead():  # if player not dead
@@ -181,19 +198,25 @@ while True:
 
                                 # monster turn:
                                 if not monster.check_dead():  # if monster is not dead
-                                    damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity, monster.strength,
+                                    damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity,
+                                                                     monster.strength,
                                                                      monster.weapon,
-                                                                     player_1.level, player_1.hit_points, player_1.dexterity,
+                                                                     player_1.level, player_1.hit_points,
+                                                                     player_1.dexterity,
                                                                      player_1.armor_class)
                                     player_1.reduce_health(damage_to_player)
                                     if not player_1.check_dead():  # if player not dead
                                         print(f"You are alive")
                                         if monster.undead and monster.can_paralyze:
-                                            player_1.is_paralyzed = monster.paralyze(monster.name, monster.level, monster.dexterity,
+                                            player_1.is_paralyzed = monster.paralyze(monster.name, monster.level,
+                                                                                     monster.dexterity,
                                                                                      monster.strength,
                                                                                      monster.weapon,
-                                                                                     player_1.level, player_1.hit_points, player_1.dexterity,
-                                                                                     player_1.armor_class, player_1.wisdom,
+                                                                                     player_1.level,
+                                                                                     player_1.hit_points,
+                                                                                     player_1.dexterity,
+                                                                                     player_1.armor_class,
+                                                                                     player_1.wisdom,
                                                                                      player_1.wisdom_modifier)
                                             player_1.reduce_health(damage_to_player)
                                             if not player_1.check_dead():  # if player not dead

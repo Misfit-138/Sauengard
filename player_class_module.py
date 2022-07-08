@@ -91,12 +91,12 @@ class Player:
         after_level = self.level
         if after_level > before_level:
             print(f"You went up a level! You are now level {self.level}.")
-            print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points for a total of {self.experience}")
+            print(f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain {exp_award} experience points for a total of {self.experience}")
             gain_hit_points = dice_roll(self.level, self.hit_dice) + self.constitution_modifier  # (previous HP + Hit Die roll + CON modifier)
             self.hit_points += gain_hit_points
             print(f"You gain {gain_hit_points} hit points")
         else:
-            print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points for a total of {self.experience}")
+            print(f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain {exp_award} experience points for a total of {self.experience}")
 
     def reduce_health(self, damage):
         self.hit_points -= damage
@@ -140,17 +140,9 @@ class Player:
         if evade_success + self.dexterity_modifier >= monster_dexterity or evade_success == 20:
             print(f"You successfully evade the {monster_name}.")
             return True
-                # in_proximity_to_monster = False
 
-"""leveling up logic
-                exp_award = 64000
-                before_level = self.level
-                self.increase_experience(exp_award)
-                self.current_level()
-                after_level = self.level
-                if after_level > before_level:
-                    print(f"You went up a level!")
-                print(f"You gain {exp_award} experience points for a total of {self.experience}")"""
+
+
 
 '''
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.

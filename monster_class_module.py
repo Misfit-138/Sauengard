@@ -1,4 +1,4 @@
-'''Choose a challenge rating (CR) for your trap, object, effect, or creature
+"""Choose a challenge rating (CR) for your trap, object, effect, or creature
 between 1 and 30. Write down its statistics from the following formulas:
 • AC = 12 + ½ CR (or choose between 10 and 20 based on the story)
 • DC = 12 + ½ CR
@@ -37,7 +37,9 @@ A monster’s Constitution modifier also affects the number of Hit Points it has
 Its Constitution modifier is multiplied by the number of Hit Dice it possesses,
 and the result is added to its Hit Points.
 For example, if a monster has a Constitution of 12 (+1 modifier) and 2d8 Hit Dice, it has 2d8 + 2 Hit Points (average 11).
-'''
+# MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
+# "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
+"""
 
 import random
 from dice_roll_module import dice_roll
@@ -158,48 +160,51 @@ class Monster:
             return level_drain
 
 
-'''
-    def monster_turn(self,):
-        if not monster.check_dead():  # if monster is not dead
-            damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity, monster.strength,
-                                             monster.weapon,
-                                             player_1.level, player_1.hit_points, player_1.dexterity,
-                                             player_1.armor_class)
-            player_1.reduce_health(damage_to_player)
-            if not player_1.check_dead():  # if player not dead
-                print(f"You are alive")
-                if monster.undead and monster.can_paralyze:
-                    player_1.is_paralyzed = monster.paralyze(monster.name, monster.level, monster.dexterity,
-                                                             monster.strength,
-                                                             monster.weapon,
-                                                             player_1.level, player_1.hit_points, player_1.dexterity,
-                                                             player_1.armor_class, player_1.wisdom,
-                                                             player_1.wisdom_modifier)
-                    player_1.reduce_health(damage_to_player)
-                    if not player_1.check_dead():  # if player not dead
-                        print(f"You are alive")
+class Ghoul(Monster):
 
-                if monster.undead and monster.can_drain:
-                    level_drain = monster.drain(monster.wisdom, player_1.level, player_1.wisdom,
-                                                player_1.wisdom_modifier)
-                    if level_drain:  # if level_drain True
-                        print("It drains a level!\nYou go down a level!!")
-                        player_1.level -= 1
-                        if player_1.level <= 0:
-                            print(f"You have died from drainage!!!!!")
-                            break
+    def __init__(self, level, experience_award, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
+                 constitution, intelligence, wisdom, charisma, hit_points, can_paralyze, can_drain, undead,
+                 human_player_level):
+        super().__init__(level, experience_award, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
+                         constitution, intelligence, wisdom, charisma, hit_points, can_paralyze, can_drain, undead,
+                         human_player_level)
+        self.level = level
+        self.experience_award = self.level * 600
+        self.gold = self.level * 103 * round(random.uniform(1, 2))  # ghouls shouldn't have much gold
+        self.weapon = weapon
+        self.armor = armor_bonus
+        self.shield = shield
+        self.strength = random.randint(7, 12)
+        self.dexterity = random.randint(6, 11)
+        self.constitution = random.randint(6, 12)
+        self.intelligence = random.randint(1, 10)
+        self.wisdom = random.randint(1, 10)
+        self.charisma = random.randint(1, 5)
+        self.can_paralyze = True
+        self.can_drain = True
+        self.undead = True
+        # For a dragon, hit points should be quite high. Level * random range 10-20 + con mod
+        self.human_player_level = human_player_level
+        self.hit_dice = 8  # 12 for huge monster, 20 for gargantuan
+        # self.challenge_rating = 0
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.strength_modifier = round((strength - 10) / 2)
+        self.constitution_modifier = round((constitution - 10) / 2)
+        self.hit_points = self.level * (random.randint(7, 12)) + self.constitution_modifier
+        self.dexterity_modifier = round((dexterity - 10) / 2)
+        self.armor_class = random.randint(10, 11)
+        self.attack_1 = 0  # attack bonus
+        self.attack_1_phrase = "It strikes with one claw.."
+        self.attack_2 = 1
+        self.attack_2_phrase = "The ghoul lunges and attacks with its rancid teeth!!"
+        self.attack_3 = 2
+        self.attack_3_phrase = "It strikes with both of its terrible claws!!"
+        self.attack_4 = 2
+        self.attack_4_phrase = "It rushes straight at you!!"
+        self.attack_5 = 2
+        self.attack_5_phrase = "It leaps upon you!!"
 
-                    else:
-                        print(
-                            f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
-                        continue
-            else:
-                print(f"You have died.")
-                break
-            print(
-                f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
-        else:
-            break'''
+    name = "Ghoul"
 
 
 class Dragon(Monster):
@@ -232,7 +237,7 @@ class Dragon(Monster):
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((strength - 10) / 2)
         self.constitution_modifier = round((constitution - 10) / 2)
-        self.hit_points = 1  # self.level * (random.randint(15, 20)) + self.constitution_modifier
+        self.hit_points = self.level * (random.randint(15, 20)) + self.constitution_modifier
         self.dexterity_modifier = round((dexterity - 10) / 2)
         self.armor_class = random.randint(17, 19)
         self.attack_1 = 5  # attack bonus

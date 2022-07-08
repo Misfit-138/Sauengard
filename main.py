@@ -27,7 +27,8 @@ natural to use certain in-place functions like sort and random.shuffle. These ar
 
 An in-place algorithm is impure and non-idempotent, but if the state that it modifies is limited to its parameter(s)
 and its documentation and return value (usually None) support this, the behavior is predictable and comprehensible."""
-
+# MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
+# "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
 from player_class_module import *
 from monster_class_module import *
 import random
@@ -67,7 +68,7 @@ while True:
         in_town = True
         in_dungeon = False
         while in_town:
-            town_functions = input("You are in town. (B)lacksmith (C)hemist or (E) to enter dungeon")
+            town_functions = input("You are in town. (R)estart the game, (B)lacksmith, (C)hemist or (E)nter dungeon")
             if town_functions == 'r':
                 print("Restart")
                 in_town = False
@@ -80,9 +81,9 @@ while True:
                 in_town = False
                 in_dungeon = True
                 print("You enter the dungeon")
-
                 while in_dungeon:
-                    dungeon_command = input("Town (P)ortal or WASD or (F)ight")
+                    encounter = dice_roll(1, 20)
+                    dungeon_command = input("Town (P)ortal or WASD to navigate.")
                     if dungeon_command == 'p':
                         in_town = True
                         in_dungeon = False
@@ -96,26 +97,21 @@ while True:
                             print("You go south")
                         if dungeon_command == 'd':
                             print("You go east")
-
-                    if dungeon_command == 'f':
-                        print("This should start the create monster function now..")
+                        if dungeon_command not in ('w', 'a', 's', 'd', 'p'):
+                            print("Unknown command")
+                            continue
+                    if encounter > 12:
+                        print("This should create monster now..")
                         dungeon_level = 1
-                    #else:
-                     #   print("Unknown command")
-                        #in_town = False
-                        #in_dungeon = False
-                        # break
-                        # MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
-                        #            "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
-                        MONSTERS = [Dragon]
+
+                        MONSTERS = [Ghoul, Dragon]
 
                         # def create_monster():
                         #    return random.choice(MONSTERS)
                         # in proximity loop contains battle loop within it
                         in_proximity_to_monster = True
 
-                        # def fight_or_evade(dexterity):
-                        #    pass
+
 
                         # ************ OFFLOAD AS MUCH OF THIS LOGIC AS POSSIBLE TO THE OTHER MODULES!!! **************************
                         while in_proximity_to_monster:
@@ -153,8 +149,8 @@ while True:
                                         continue
                                 else:
                                     print(f"The {monster.name} makes a quick move. He steals an item from your pack.")
-                                    continue
-                                    # break
+                                    in_proximity_to_monster = False
+                                    break
                             # battle loop
                             while True:
                                 choice = input("Fight or Evade?\n F/E").lower()
@@ -220,7 +216,8 @@ while True:
                                                                                      player_1.wisdom_modifier)
                                             player_1.reduce_health(damage_to_player)
                                             if not player_1.check_dead():  # if player not dead
-                                                print(f"You are alive")
+                                                continue
+                                                # print(f"You are alive")
 
                                         if monster.undead and monster.can_drain:
                                             level_drain = monster.drain(player_1.level, player_1.wisdom,
@@ -231,11 +228,13 @@ while True:
                                                 if player_1.level <= 0:
                                                     print(f"You have died from drainage!!!!!")
                                                     in_proximity_to_monster = False
+                                                    in_dungeon = False
+                                                    in_town = False
                                                     break
 
                                             else:
                                                 print(
-                                                    f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")
+                                                    f"You have {player_1.hit_points} hit points, and {player_1.experience} experience. You are level {player_1.level}")
                                                 continue
                                     else:
                                         print(f"You have died.")

@@ -37,6 +37,17 @@ A monster’s Constitution modifier also affects the number of Hit Points it has
 Its Constitution modifier is multiplied by the number of Hit Dice it possesses,
 and the result is added to its Hit Points.
 For example, if a monster has a Constitution of 12 (+1 modifier) and 2d8 Hit Dice, it has 2d8 + 2 Hit Points (average 11).
+Adult Red Dragon
+Huge dragon, chaotic evil
+Armor Class 19 (Natural Armor)
+Hit Points 256 (19d12+133)
+Speed 40 ft., climb 40 ft., fly 80 ft.
+STR 27 (+8)
+DEX 10 (+0)
+CON 25 (+7)
+INT 16 (+3)
+WIS 13 (+1)
+CHA 21 (+5)
 # MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
 # "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
 """
@@ -159,7 +170,8 @@ class Monster:
             level_drain = False
             return level_drain
 
-
+# For example, if a monster has a Constitution of 12 (+1 modifier) and 2d8 Hit Dice, it has 2d8 + 2 Hit Points
+# dice_roll(self.level, self.hit_dice) + self.constitution_modifier
 class Ghoul(Monster):
 
     def __init__(self, level, experience_award, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
@@ -178,12 +190,11 @@ class Ghoul(Monster):
         self.dexterity = random.randint(6, 11)
         self.constitution = random.randint(6, 12)
         self.intelligence = random.randint(1, 10)
-        self.wisdom = 18  # random.randint(7, 13)
+        self.wisdom = random.randint(7, 15)
         self.charisma = random.randint(1, 5)
         self.can_paralyze = True
         self.can_drain = True
         self.undead = True
-        # For a dragon, hit points should be quite high. Level * random range 10-20 + con mod
         self.human_player_level = human_player_level
         self.hit_dice = 8  # 12 for huge monster, 20 for gargantuan
         # self.challenge_rating = 0

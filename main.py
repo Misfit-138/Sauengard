@@ -121,10 +121,13 @@ while True:
                             monster_cls = random.choice(MONSTERS)
                             monster_level = dungeon_level + random.randint(0, 2)
                             # monster_stats list index:
-                            # 0level, 1experience_award, 2gold, 3weapon_bonus, 4armor,5shield,6armor_class,7strength,8dexterity,9constitution,10intelligence,11wisdom,12charisma,13hit_points,14can_paralyze, 15can_drain, 16undead,17human_player_level
+                            # 0level, 1experience_award, 2gold, 3weapon_bonus, 4armor,5shield,6armor_class,7strength,
+                            # 8dexterity,9constitution,10intelligence,11wisdom,12charisma,13hit_points,14can_paralyze,
+                            # 15can_drain, 16undead,17human_player_level, 18difficulty_class, 19proficiency,
+                            # 20damage, 21challenge_rating
                             monster_stats = [monster_level, 0, 0, 0, 0, 0, 0, *random.sample(range(3, 18), 6), 0, False,
                                              False,
-                                             False, player_1.level]
+                                             False, player_1.level, 0, 0, 0, 0]
                             monster_hit_points = (monster_stats[9])  # equal to constitution (index 9) for now..
                             monster_stats[13] = round(monster_hit_points)  # make index 13 = constitution for now
                             monster = monster_cls(

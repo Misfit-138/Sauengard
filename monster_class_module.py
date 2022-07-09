@@ -205,15 +205,16 @@ class Monster:
         if paralyze_chance == 20 or paralyze_chance > 17 and (monster_wisdom + monster_wisdom_modifier) > (
                 human_player_wisdom + human_player_wisdom_modifier):
             print("You're paralyzed!!")
-            damage_to_player = self.swing(name, level, dexterity, strength,
-                                          weapon,
-                                          human_player_level, human_player_hit_points, human_player_dexterity,
-                                          human_player_armor_class)
-            if damage_to_player > 0:
-                return damage_to_player
+            return True
+            #damage_to_player = self.swing(name, level, dexterity, strength,
+            #                              weapon,
+            #                              human_player_level, human_player_hit_points, human_player_dexterity,
+            #                              human_player_armor_class)
+            #if damage_to_player > 0:
+
         else:
             print("It failed")
-            return 0
+            return False
 
     def drain(self, monster_wisdom, monster_wisdom_modifier, human_player_level, human_player_wisdom,
               human_player_wisdom_modifier):

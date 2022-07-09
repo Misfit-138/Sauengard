@@ -228,12 +228,19 @@ while True:
                                                                                      player_1.armor_class,
                                                                                      player_1.wisdom,
                                                                                      player_1.wisdom_modifier)
-                                            player_1.reduce_health(player_1.is_paralyzed)
+                                            if player_1.is_paralyzed:
+                                                paralyze_damage = dice_roll(monster.number_of_hd, monster.hit_dice)
+                                                player_1.reduce_health(paralyze_damage)
+                                                print(f"You suffer {paralyze_damage} hit points!!")
+
                                             if not player_1.check_dead():  # if player not dead
                                                 print(f"You are alive")
-
-
-
+                                            else:
+                                                print("You are dead and paralyzed!")
+                                                in_proximity_to_monster = False
+                                                in_dungeon = False
+                                                in_town = False
+                                                break
                                         if monster.undead and monster.can_drain:
                                             level_drain = monster.drain(monster.wisdom, monster.wisdom_modifier,
                                                                         player_1.level, player_1.wisdom,

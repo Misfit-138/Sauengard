@@ -68,11 +68,14 @@ while True:
         in_town = True
         in_dungeon = False
         while in_town:
-            town_functions = input("You are in town. (R)estart the game, (B)lacksmith, (C)hemist or (E)nter dungeon")
+            town_functions = input("You are in town. (Q)uit game, (R)estart the game, (B)lacksmith, (C)hemist or (E)nter dungeon")
             if town_functions == 'r':
                 print("Restart")
                 in_town = False
                 break
+            if town_functions == 'q':
+                print("Exiting..")
+                exit()
             if town_functions == 'b':
                 print("You visit the blacksmith")
             if town_functions == 'c':

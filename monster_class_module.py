@@ -92,7 +92,7 @@ Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighte
 import random
 from dice_roll_module import dice_roll
 
-'''Choose a challenge rating (CR) for your trap, object, effect, or creature
+'''Choose a challenge rating (CR) for your custom trap, object, effect, or creature
 between 1 and 30. Write down its statistics from the following formulas:
 • AC = 12 + ½ CR (or choose between 10 and 20 based on the story)
 • DC = 12 + ½ CR
@@ -126,6 +126,7 @@ class Monster:
         self.can_drain = can_drain
         self.undead = undead
         self.hit_dice = 0  # tiny d4, small d6, medium d8, large d10, huge d12, gargantuan d20
+        self.number_of_hd = 0
         self.human_player_level = human_player_level
         self.difficulty_class = difficulty_class
         self.proficiency_bonus = proficiency  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -182,7 +183,7 @@ class Monster:
         print(f"Dexterity modifier {self.dexterity_modifier}")
         print(f"Your armor class ---> {player_armor_class}")
         if roll20 + self.dexterity_modifier >= player_armor_class:
-            damage_roll = dice_roll(self.level, self.hit_dice)
+            damage_roll = dice_roll(self.number_of_hd, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus)
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
                 print(f"{attack_phrase}")
@@ -208,10 +209,11 @@ class Monster:
                                           weapon,
                                           human_player_level, human_player_hit_points, human_player_dexterity,
                                           human_player_armor_class)
-            return damage_to_player
+            if damage_to_player > 0:
+                return damage_to_player
         else:
             print("It failed")
-            return
+            return 0
 
     def drain(self, monster_wisdom, monster_wisdom_modifier, human_player_level, human_player_wisdom,
               human_player_wisdom_modifier):
@@ -226,8 +228,9 @@ class Monster:
             return level_drain
 
 
+# For monster hit points..take hit dice and add (constitution modifier x number of hit dice).
 # For example, if a monster has a Constitution of 12 (+1 modifier) and 2d8 Hit Dice, it has 2d8 + 2 Hit Points
-# dice_roll(self.level, self.hit_dice) + self.constitution_modifier
+# self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier)
 class Ghoul(Monster):
 
     def __init__(self, level, experience_award, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
@@ -258,10 +261,10 @@ class Ghoul(Monster):
         self.challenge_rating = challenge_rating
         self.hit_dice = 8  # 12 for huge monster, 20 for gargantuan
         self.number_of_hd = 2
-        # self.challenge_rating = 0
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier)
         self.hit_points = self.level * (random.randint(7, 12)) + self.constitution_modifier
         self.dexterity_modifier = round((self.dexterity - 10) / 2)
         self.wisdom_modifier = round((self.strength - 10) / 2)
@@ -284,10 +287,10 @@ class Dragon(Monster):
 
     def __init__(self, level, experience_award, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
                  constitution, intelligence, wisdom, charisma, hit_points, can_paralyze, can_drain, undead,
-                 human_player_level):
+                 human_player_level, difficulty_class, proficiency, damage, challenge_rating):
         super().__init__(level, experience_award, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
                          constitution, intelligence, wisdom, charisma, hit_points, can_paralyze, can_drain, undead,
-                         human_player_level)
+                         human_player_level, difficulty_class, proficiency, damage, challenge_rating)
         self.level = level
         self.experience_award = self.level * 1000
         self.gold = self.level * round(1000 * random.uniform(1, 2))

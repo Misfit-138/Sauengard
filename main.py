@@ -41,12 +41,12 @@ while True:
         os.system('cls')
         # 0name,1level,2experience,3gold,4weapon+,5armor,6shield,7armor_class,8strength,9dexterity,10constitution,11intelligence,12wisdom,13charisma,14hit_points15is_paralyzed
         player_stats = [player_name, 1, 0, 0, 0, 0, 0, 10, *random.sample(range(3, 19), 6),
-                        0, False]  # zero is placeholder for hit points is_paralyzed = False
+                        0, 0, False]  # zero is placeholder for hit points is_paralyzed = False
         # print(player_stats)
         hit_points = 10 + round((player_stats[
                                      10] - 10) / 2)  # hit_points at level one = 10 + self.constitution_modifier (index 10 is constitution)
         player_stats[14] = hit_points  # make player_stats index 14 equal to 10 + con modifier
-
+        player_stats[15] = hit_points
         print(player_stats)
         player_1 = Player(*player_stats)  # sending stats to Player Class and create player_1 as Player class object
         print(f"Name: {player_1.name}")
@@ -64,11 +64,13 @@ while True:
         print(f"Charisma: {player_1.charisma}")
         print(f"Hitpoints: {player_1.hit_points}")
         accept_stats = input("Accept stats y/n ?")
+    # a while loop's 'else' part runs if no break occurs and the condition is false
     if accept_stats == "y":
         in_town = True
         in_dungeon = False
         while in_town:
-            town_functions = input("You are in town. (Q)uit game, (R)estart the game, (B)lacksmith, (C)hemist or (E)nter dungeon")
+            town_functions = input(
+                "You are in town. (Q)uit game, (R)estart the game, (B)lacksmith, (C)hemist or (E)nter dungeon")
             if town_functions == 'r':
                 print("Restart")
                 in_town = False
@@ -78,6 +80,7 @@ while True:
                 exit()
             if town_functions == 'b':
                 print("You visit the blacksmith")
+
             if town_functions == 'c':
                 print("You visit the quantum chemist")
             if town_functions == 'e':
@@ -86,11 +89,13 @@ while True:
                 print("You enter the dungeon")
                 while in_dungeon:
                     encounter = dice_roll(1, 20)
-                    dungeon_command = input("Town (P)ortal or WASD to navigate.")
+                    dungeon_command = input("Town (P)ortal, (H)ealing potion or WASD to navigate.")
                     if dungeon_command == 'p':
                         in_town = True
                         in_dungeon = False
                         break
+                    if dungeon_command == 'h':
+                        player_1.hit_points += 10
                     if dungeon_command == 'w' or 'a' or 's' or 'd':
                         if dungeon_command == 'w':
                             print("You go north")
@@ -100,7 +105,7 @@ while True:
                             print("You go south")
                         if dungeon_command == 'd':
                             print("You go east")
-                        if dungeon_command not in ('w', 'a', 's', 'd', 'p'):
+                        if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h'):
                             print("Unknown command")
                             continue
                     if encounter > 12:
@@ -208,22 +213,26 @@ while True:
                                                                      player_1.armor_class)
                                     player_1.reduce_health(damage_to_player)
                                     if not player_1.check_dead():  # if player not dead
-                                        print(f"Chance to paralyze")
-                                        if monster.undead and monster.can_paralyze:
+
+                                        if dice_roll(1, 20) > 17 and monster.undead and monster.can_paralyze:
+                                            print(f"Chance to paralyze")
                                             player_1.is_paralyzed = monster.paralyze(monster.name, monster.level,
-                                                                                monster.wisdom, monster.wisdom_modifier,
-                                                                                monster.dexterity,
-                                                                                monster.strength,
-                                                                                monster.weapon,
-                                                                                player_1.level,
-                                                                                player_1.hit_points,
-                                                                                player_1.dexterity,
-                                                                                player_1.armor_class,
-                                                                                player_1.wisdom,
-                                                                                player_1.wisdom_modifier)
-                                            player_1.reduce_health(damage_to_player)
+                                                                                     monster.wisdom,
+                                                                                     monster.wisdom_modifier,
+                                                                                     monster.dexterity,
+                                                                                     monster.strength,
+                                                                                     monster.weapon,
+                                                                                     player_1.level,
+                                                                                     player_1.hit_points,
+                                                                                     player_1.dexterity,
+                                                                                     player_1.armor_class,
+                                                                                     player_1.wisdom,
+                                                                                     player_1.wisdom_modifier)
+                                            player_1.reduce_health(player_1.is_paralyzed)
                                             if not player_1.check_dead():  # if player not dead
                                                 print(f"You are alive")
+
+
 
                                         if monster.undead and monster.can_drain:
                                             level_drain = monster.drain(monster.wisdom, monster.wisdom_modifier,
@@ -242,10 +251,13 @@ while True:
 
                                             else:
                                                 print(
-                                                    f"You have {player_1.hit_points} hit points, and {player_1.experience} experience. You are level {player_1.level}")
+                                                    f"You have {player_1.hit_points} out of a maximum {player_1.maximum_hit_points} hit points, and {player_1.experience} experience. You are level {player_1.level}")
                                                 continue
                                     else:
                                         print(f"You have died.")
+                                        in_proximity_to_monster = False
+                                        in_dungeon = False
+                                        in_town = False
                                         break
                                     print(
                                         f"You have {player_1.hit_points} hitpoints, and {player_1.experience} experience. You are level {player_1.level}")

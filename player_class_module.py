@@ -1,8 +1,8 @@
 # import random
 from dice_roll_module import *
 
-#from main import monster
-#from monster_class_module import *
+# from main import monster
+# from monster_class_module import *
 '''Target
 Identify your target to the table. 
 Attack
@@ -28,7 +28,7 @@ In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armo
 class Player:
 
     def __init__(self, name, level, experience, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
-                 constitution, intelligence, wisdom, charisma, hit_points, is_paralyzed):
+                 constitution, intelligence, wisdom, charisma, hit_points, maximum_hit_points, is_paralyzed):
         self.name = name
         self.level = level
         self.experience = experience
@@ -38,13 +38,15 @@ class Player:
         self.shield = shield
         self.strength = strength
         self.dexterity = dexterity
+        self.dexterity_modifier = round((dexterity - 10) / 2)
         self.constitution = constitution
         self.intelligence = intelligence
         self.wisdom = wisdom
         self.charisma = charisma
-        self.hit_points = 1000000  # hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
-        self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
-        self.dexterity_modifier = round((dexterity - 10) / 2)
+        self.maximum_hit_points = maximum_hit_points
+        self.hit_points = hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.hit_dice = 10 + self.dexterity_modifier + armor_bonus  # Hit Dice: 1d10 per Fighter level
+
         self.armor_class = 10 + self.dexterity_modifier + armor_bonus
         self.strength_modifier = round((strength - 10) / 2)
         self.constitution_modifier = round((constitution - 10) / 2)
@@ -91,16 +93,21 @@ class Player:
         after_level = self.level
         if after_level > before_level:
             print(f"You went up a level! You are now level {self.level}.")
-            print(f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain {exp_award} experience points for a total of {self.experience}")
-            gain_hit_points = dice_roll(self.level, self.hit_dice) + self.constitution_modifier  # (previous HP + Hit Die roll + CON modifier)
-            self.hit_points += gain_hit_points
+            print(
+                f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain {exp_award} experience points for a total of {self.experience}")
+            gain_hit_points = dice_roll(1, self.hit_dice) + self.constitution_modifier
+            if gain_hit_points < 0:
+                gain_hit_points = 1
+            self.hit_points += gain_hit_points  # (previous HP + Hit Die roll + CON modifier)
+            self.maximum_hit_points += gain_hit_points
             print(f"You gain {gain_hit_points} hit points")
         else:
-            print(f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain {exp_award} experience points for a total of {self.experience}")
+            print(
+                f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain {exp_award} experience points for a total of {self.experience}")
 
     def reduce_health(self, damage):
         self.hit_points -= damage
-        return damage
+        return  # damage
 
     def check_dead(self):
         if self.hit_points > 0:
@@ -140,8 +147,6 @@ class Player:
         if evade_success + self.dexterity_modifier >= monster_dexterity or evade_success == 20:
             print(f"You successfully evade the {monster_name}.")
             return True
-
-
 
 
 '''
@@ -238,7 +243,8 @@ such as Champion. The archetype you choose grants you features at 3rd Level and 
 
 Ability Score Improvement
 When you reach 4th Level, and again at 6th, 8th, 12th, 14th, 16th, and 19th level, 
-you can increase one ability score of your choice by 2, or you can increase two Ability Scores of your choice by 1. As normal, you can’t increase an ability score above 20 using this feature.
+you can increase one ability score of your choice by 2, or you can increase two Ability Scores of your choice by 1. 
+As normal, you can’t increase an ability score above 20 using this feature.
 
 Extra Attack
 Beginning at 5th Level, you can Attack twice, instead of once, whenever you take the Attack Action on Your Turn.

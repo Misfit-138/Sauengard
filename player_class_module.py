@@ -99,10 +99,12 @@ class Player:
         if after_level > before_level:
             print(f"You went up a level! ")
             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav', winsound.SND_ASYNC)
-            time.sleep(4)
+            time.sleep(2)
             print(f"You are now level {self.level}.")
+            time.sleep(2)
             print(f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain {exp_award} "
                   f"experience points for a total of {self.experience}")
+            time.sleep(2)
             gain_hit_points = dice_roll(1, self.hit_dice) + self.constitution_modifier
             if gain_hit_points < 0:
                 gain_hit_points = 1
@@ -110,8 +112,8 @@ class Player:
             self.maximum_hit_points += gain_hit_points
             print(f"You gain {gain_hit_points} hit points")
         else:
-            print(
-                f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain {exp_award} experience points for a total of {self.experience}")
+            print(f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain "
+                  f"{exp_award} experience points for a total of {self.experience}")
 
     def reduce_health(self, damage):
         self.hit_points -= damage
@@ -135,7 +137,7 @@ class Player:
         print(f"Monster armor class {monster_armor_class}")
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier >= monster_armor_class:
             damage_roll = dice_roll(self.level,
-                                    self.hit_dice)  # Barbarians have d12..fighters have d10 or d8?; may want to change this
+                                    self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + weapon)
             if damage_to_opponent > 0:
                 print(f"You hit the {monster_type}!")

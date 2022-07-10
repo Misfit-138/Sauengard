@@ -41,8 +41,10 @@ winsound.PlaySound('e:\\C64\\Telengard\\telengard.wav', winsound.SND_ASYNC)
 os.system('cls')
 typing("Welcome to Sauengard.")
 print("")
+typing("Enjoy the music.")
+print("")
 os.system('pause')
-# winsound.PlaySound(None, winsound.SND_ASYNC)
+winsound.PlaySound(None, winsound.SND_ASYNC)
 while True:
     player_name = input("Enter Player name: ")
     accept_stats = ""
@@ -76,6 +78,7 @@ while True:
         accept_stats = input("Accept stats y/n ?")
     # a while loop's 'else' part runs if no break occurs and the condition is false
     if accept_stats == "y":
+        print(f"You enter the town of Fieldenberg.")
         in_town = True
         in_dungeon = False
         while in_town:

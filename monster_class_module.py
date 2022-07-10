@@ -204,7 +204,7 @@ class Monster:
         paralyze_chance = dice_roll(1, 20)
         if paralyze_chance == 20 or paralyze_chance > 17 and (monster_wisdom + monster_wisdom_modifier) > (
                 human_player_wisdom + human_player_wisdom_modifier):
-            print("You're paralyzed!!")
+            print("You're paralyzed!!\nIt sadistically gores you!")
             return True
             #damage_to_player = self.swing(name, level, dexterity, strength,
             #                              weapon,
@@ -213,7 +213,7 @@ class Monster:
             #if damage_to_player > 0:
 
         else:
-            print("It failed")
+            print("You ignore its wiles and break free from its grip!")
             return False
 
     def drain(self, monster_wisdom, monster_wisdom_modifier, human_player_level, human_player_wisdom,

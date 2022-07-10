@@ -15,8 +15,9 @@ Damage Roll Damage Dice and add modifiers. The target’s HP are reduced, factor
 Spell Attack Many spells count as attacks. 
 The caster rolls d20 + Spellcasting Ability Modifier + Proficiency Bonus to hit vs AC. PHB 205'''
 
-# name0, level1, experience2, gold3, sword4, armor5, shield6, constitution7,
-# intelligence8, wisdom9, strength10, dexterity11, charisma12, hit_points13
+# name0, level1, experience2, gold3, weapon4, armor5, shield6, constitution7,
+# intelligence8, wisdom9, strength10, dexterity11, charisma12, hit_points13, maximum_hit_points14,
+# 15is_paralyzed
 
 # **** TRY DEFINING DEXTERITY AND STRENGTH MODIFIERS HERE ****
 '''Hit Dice: 1d10 per Fighter level
@@ -45,7 +46,7 @@ class Player:
         self.charisma = charisma
         self.maximum_hit_points = maximum_hit_points
         self.hit_points = hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
-        self.hit_dice = 10 + self.dexterity_modifier + armor_bonus  # Hit Dice: 1d10 per Fighter level
+        self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
 
         self.armor_class = 10 + self.dexterity_modifier + armor_bonus
         self.strength_modifier = round((strength - 10) / 2)
@@ -115,7 +116,7 @@ class Player:
         else:
             return True
 
-    def swing(self, name, level, dexterity, strength, sword, monster_level, monster_type, monster_dexterity,
+    def swing(self, name, level, dexterity, strength, weapon, monster_level, monster_type, monster_dexterity,
               monster_armor_class):
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"Attack roll..")
@@ -128,7 +129,7 @@ class Player:
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier >= monster_armor_class:
             damage_roll = dice_roll(self.level,
                                     self.hit_dice)  # Barbarians have d12..fighters have d10 or d8?; may want to change this
-            damage_to_opponent = round(damage_roll + self.strength_modifier + sword)
+            damage_to_opponent = round(damage_roll + self.strength_modifier + weapon)
             if damage_to_opponent > 0:
                 print(f"You hit the {monster_type}!")
                 print(

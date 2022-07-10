@@ -31,8 +31,12 @@ and its documentation and return value (usually None) support this, the behavior
 # "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
 from player_class_module import *
 from monster_class_module import *
+from typing_module import *
 import random
 import os
+
+typing("This is a test of the emergency broadcast system."
+       "The message continues")
 
 while True:
     player_name = input("Enter Player name: ")

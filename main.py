@@ -34,10 +34,15 @@ from monster_class_module import *
 from typing_module import *
 import random
 import os
+import winsound
 
-typing("This is a test of the emergency broadcast system."
-       "The message continues")
-
+# "E:\C64\Telengard\telengard.wav"
+winsound.PlaySound('e:\\C64\\Telengard\\telengard.wav', winsound.SND_ASYNC)
+os.system('cls')
+typing("Welcome to Sauengard.")
+print("")
+os.system('pause')
+# winsound.PlaySound(None, winsound.SND_ASYNC)
 while True:
     player_name = input("Enter Player name: ")
     accept_stats = ""
@@ -195,6 +200,7 @@ while True:
                                 elif choice == "f":
                                     print(f"Fight.")
                                 else:
+                                    print(f"The {monster.name} is not amused.")
                                     continue  # if player enters anything other than e or f
                                 # player's turn:
                                 damage_to_monster = player_1.swing(player_1.name, player_1.level, player_1.dexterity,

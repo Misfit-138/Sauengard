@@ -1,4 +1,8 @@
 # import random
+import time
+
+import winsound
+
 from dice_roll_module import *
 
 # from main import monster
@@ -93,9 +97,12 @@ class Player:
         self.current_level()
         after_level = self.level
         if after_level > before_level:
-            print(f"You went up a level! You are now level {self.level}.")
-            print(
-                f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain {exp_award} experience points for a total of {self.experience}")
+            print(f"You went up a level! ")
+            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav', winsound.SND_ASYNC)
+            time.sleep(4)
+            print(f"You are now level {self.level}.")
+            print(f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain {exp_award} "
+                  f"experience points for a total of {self.experience}")
             gain_hit_points = dice_roll(1, self.hit_dice) + self.constitution_modifier
             if gain_hit_points < 0:
                 gain_hit_points = 1

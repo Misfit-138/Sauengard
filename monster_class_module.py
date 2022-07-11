@@ -103,6 +103,9 @@ between 1 and 30. Write down its statistics from the following formulas:
 
 
 # # monsters have Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma
+
+
+
 class Monster:
 
     def __init__(self, level, experience_award, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
@@ -187,7 +190,7 @@ class Monster:
             damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus)
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
                 print(f"{attack_phrase}")
-                print(f"{name} rolls {self.hit_dice} sided dice---> {damage_roll}")
+                print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll}")
                 print(f"Strength modifier---> {self.strength_modifier}\nAttack bonus---> {attack_bonus}")
                 print(f"It does {damage_to_opponent} points of damage!")
                 return damage_to_opponent
@@ -204,13 +207,13 @@ class Monster:
         paralyze_chance = dice_roll(1, 20)
         if paralyze_chance == 20 or paralyze_chance > 17 and (monster_wisdom + monster_wisdom_modifier) > (
                 human_player_wisdom + human_player_wisdom_modifier):
-            print("You're paralyzed!!\nIt sadistically gores you!")
+            print("You're paralyzed!!\nAs you stand, frozen and defenseless, it savagely gores you!")
             return True
-            #damage_to_player = self.swing(name, level, dexterity, strength,
+            # damage_to_player = self.swing(name, level, dexterity, strength,
             #                              weapon,
             #                              human_player_level, human_player_hit_points, human_player_dexterity,
             #                              human_player_armor_class)
-            #if damage_to_player > 0:
+            # if damage_to_player > 0:
 
         else:
             print("You ignore its wiles and break free from its grip!")

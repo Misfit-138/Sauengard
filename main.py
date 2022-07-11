@@ -51,9 +51,9 @@ while True:
     while accept_stats != "y":
         os.system('cls')
         # 0name,1level,2experience,3gold,4weapon+,5armor,6shield,7armor_class,8strength,
-        # 9dexterity,10constitution,11intelligence,12wisdom,13charisma,14hit_points15is_paralyzed
+        # 9dexterity,10constitution,11intelligence,12wisdom,13charisma,14hit_points15is_paralyzed16boots,17cloak
         player_stats = [player_name, 1, 0, 0, 0, 0, 0, 10, *random.sample(range(3, 19), 6),
-                        0, 0, False]  # zero is placeholder for hit points is_paralyzed = False
+                        0, 0, False, 0, 0]  # zero is placeholder for hit points is_paralyzed = False
         # print(player_stats)
         # hit_points at level one = 10 + self.constitution_modifier (index 10 is constitution)
         hit_points = 10 + round((player_stats[10] - 10) / 2)
@@ -95,7 +95,8 @@ while True:
                 print("You visit the blacksmith")
 
             if town_functions == 'c':
-                print("You visit the quantum chemist")
+                print("You visit the quantum chemist. He heals you to full strength.")
+                player_1.hit_points = player_1.maximum_hit_points
             if town_functions == 'e':
                 in_town = False
                 in_dungeon = True
@@ -108,7 +109,9 @@ while True:
                         in_dungeon = False
                         break
                     if dungeon_command == 'h':
+                        print("You chug a healing potion.")
                         player_1.hit_points += 10
+                        print(f"You have {player_1.hit_points} hit points.")
                     if dungeon_command == 'w' or 'a' or 's' or 'd':
                         if dungeon_command == 'w':
                             print("You go north")
@@ -136,12 +139,14 @@ while True:
                         while in_proximity_to_monster:
                             if player_1.check_dead():
                                 print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
+                                winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav',
+                                                   winsound.SND_ASYNC)
+                                time.sleep(2)
                                 in_proximity_to_monster = False
                                 in_dungeon = False
                                 in_town = False
                                 while True:
                                     try_again = input("Do you wish to play again (y/n)?").lower()
-
                                     if try_again == "y":
                                         break
                                     if try_again == "n":
@@ -152,7 +157,7 @@ while True:
                             if not in_proximity_to_monster:
                                 break
                             monster_cls = random.choice(MONSTERS)
-                            monster_level = dungeon_level + random.randint(0, 2)
+                            monster_level = dungeon_level  # + random.randint(0, 2)
                             # monster_stats list index:
                             # 0level, 1experience_award, 2gold, 3weapon_bonus, 4armor,5shield,6armor_class,7strength,
                             # 8dexterity,9constitution,10intelligence,11wisdom,12charisma,13hit_points,14can_paralyze,
@@ -165,6 +170,10 @@ while True:
                             monster_stats[13] = round(monster_hit_points)  # make index 13(hp) = constitution for now
                             monster = monster_cls(*monster_stats)  # send stats to class and create 'monster' as object
                             print(f"You have encountered a level {monster_level} {monster.name}.")
+                            # if dice_roll(1, 20) > 0:  # == 20 and player_1.charisma > 15:
+                            if player_1.monster_likes_you(monster.name, monster.intelligence):
+                                in_proximity_to_monster = False
+                                break
                             if dice_roll(1, 20) == 20:  # (player_1.dexterity + player_1.dexterity_modifier):
                                 attack_or_steal = dice_roll(1, 20)
                                 if attack_or_steal > 16:  # (player_1.dexterity + player_1.dexterity_modifier):
@@ -178,9 +187,9 @@ while True:
                                     player_1.reduce_health(damage_to_player)
                                     if player_1.check_dead():  # if player  dead
                                         print(f"You were caught off guard! Testing Sauengard statement")
-                                        #in_proximity_to_monster = False
-                                        #in_dungeon = False
-                                        #in_town = False
+                                        # in_proximity_to_monster = False
+                                        # in_dungeon = False
+                                        # in_town = False
                                         break
                                 else:
                                     print(f"The {monster.name} makes a quick move. He steals an item from your pack.")
@@ -261,9 +270,9 @@ while True:
                                                 print(f"You are alive")
                                             else:
                                                 print("You are dead and paralyzed!")
-                                                #in_proximity_to_monster = False
-                                                #in_dungeon = False
-                                                #in_town = False
+                                                # in_proximity_to_monster = False
+                                                # in_dungeon = False
+                                                # in_town = False
                                                 break
                                         '''if monster.can_drain:
                                             level_drain = monster.drain(monster.wisdom, monster.wisdom_modifier,
@@ -288,13 +297,12 @@ while True:
                                                 continue'''
                                     else:
                                         print(f"You have died.")
-                                        #in_proximity_to_monster = False
-                                        #in_dungeon = False
-                                        #in_town = False
+                                        # in_proximity_to_monster = False
+                                        # in_dungeon = False
+                                        # in_town = False
                                         break
-                                    print(
-                                        f"You have {player_1.hit_points} hit points of a maximum "
-                                        f"{player_1.maximum_hit_points}, and "
-                                        f"{player_1.experience} experience. You are level {player_1.level}")
+                                    print(f"You have {player_1.hit_points} hit points of a maximum "
+                                          f"{player_1.maximum_hit_points}, and "
+                                          f"{player_1.experience} experience. You are level {player_1.level}")
                                 else:
                                     break

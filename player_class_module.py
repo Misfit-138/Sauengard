@@ -33,7 +33,8 @@ In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armo
 class Player:
 
     def __init__(self, name, level, experience, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
-                 constitution, intelligence, wisdom, charisma, hit_points, maximum_hit_points, is_paralyzed):
+                 constitution, intelligence, wisdom, charisma, hit_points, maximum_hit_points, is_paralyzed, boots,
+                 cloak):
         self.name = name
         self.level = level
         self.experience = experience
@@ -51,39 +52,72 @@ class Player:
         self.maximum_hit_points = maximum_hit_points
         self.hit_points = hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
-
-        self.armor_class = 10 + self.dexterity_modifier + armor_bonus
+        self.armor_class = 10 + self.dexterity_modifier + self.armor_bonus + self.shield
         self.strength_modifier = round((strength - 10) / 2)
         self.constitution_modifier = round((constitution - 10) / 2)
         self.intelligence_modifier = round((intelligence - 10) / 2)
         self.wisdom_modifier = round((wisdom - 10) / 2)
         self.charisma_modifier = round((charisma - 10) / 2)
-        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.proficiency_bonus = 2  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.is_paralyzed = is_paralyzed
+        self.boots = boots
+        self.cloak = cloak
+        self.two_handed = False
+        self.extra_attack = 0
 
-    def current_level(self):
-        if self.experience < 2000:
+    def calculate_proficiency_bonus(self):
+        if self.level <= 4:
+            self.proficiency_bonus = 2
+        if self.level > 4 < 9:
+            self.proficiency_bonus = 3
+        if self.level > 8 < 13:
+            self.proficiency_bonus = 4
+        if self.level > 12 < 17:
+            self.proficiency_bonus = 5
+        if self.level > 16:
+            self.proficiency_bonus = 6
+
+    def calculate_current_level(self):
+        if self.experience < 300:
             self.level = 1
-        if self.experience >= 2000 < 4000:
+        if self.experience >= 300 < 900:
             self.level = 2
-        if self.experience >= 4000 < 8000:
+        if self.experience >= 900 < 2700:
             self.level = 3
-        if self.experience >= 8000 < 16000:
+        if self.experience >= 2700 < 6500:
             self.level = 4
-        if self.experience >= 16000 < 32000:
+        if self.experience >= 6500 < 14000:
             self.level = 5
-        if self.experience >= 32000 < 64000:
+        if self.experience >= 14000 < 23000:
             self.level = 6
-        if self.experience >= 64000 < 128000:
+        if self.experience >= 23000 < 34000:
             self.level = 7
-        if self.experience >= 128000 < 256000:
+        if self.experience >= 34000 < 48000:
             self.level = 8
-        if self.experience >= 256000 < 512000:
+        if self.experience >= 48000 < 64000:
             self.level = 9
-        if self.experience >= 512000 < 1024000:
+        if self.experience >= 64000 < 85000:
             self.level = 10
-        if self.experience > 1024000:
+        if self.experience >= 85000 < 100000:
             self.level = 11
+        if self.experience >= 100000 < 120000:
+            self.level = 12
+        if self.experience >= 120000 < 140000:
+            self.level = 13
+        if self.experience >= 140000 < 165000:
+            self.level = 14
+        if self.experience >= 165000 < 195000:
+            self.level = 15
+        if self.experience >= 195000 < 225000:
+            self.level = 16
+        if self.experience >= 225000 < 265000:
+            self.level = 17
+        if self.experience >= 265000 < 305000:
+            self.level = 18
+        if self.experience >= 305000 < 355000:
+            self.level = 19
+        if self.experience >= 355000:
+            self.level = 20
         return
 
     def increase_experience(self, exp_award):
@@ -93,27 +127,67 @@ class Player:
     def level_up(self, exp_award, monster_gold):
         self.gold += monster_gold
         before_level = self.level
-        self.increase_experience(exp_award)
-        self.current_level()
+        before_proficiency_bonus = self.proficiency_bonus
+        self.increase_experience(exp_award)  # EXPERIENCE UP!!
+        self.calculate_current_level()
+        self.calculate_proficiency_bonus()
+        after_proficiency_bonus = self.proficiency_bonus
         after_level = self.level
         if after_level > before_level:
-            print(f"You went up a level! ")
+            print(f"You went up a level!! ")
             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav', winsound.SND_ASYNC)
             time.sleep(2)
             print(f"You are now level {self.level}.")
             time.sleep(2)
-            print(f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain {exp_award} "
-                  f"experience points for a total of {self.experience}")
-            time.sleep(2)
+            self.calculate_proficiency_bonus()  # according to DnD 5e
             gain_hit_points = dice_roll(1, self.hit_dice) + self.constitution_modifier
             if gain_hit_points < 0:
                 gain_hit_points = 1
             self.hit_points += gain_hit_points  # (previous HP + Hit Die roll + CON modifier)
             self.maximum_hit_points += gain_hit_points
             print(f"You gain {gain_hit_points} hit points")
+            time.sleep(2)
+            if self.level == 5:
+                print("You gain the Extra Attack skill!!")
+                time.sleep(2)
+            if after_proficiency_bonus > before_proficiency_bonus:
+                print(f"Your proficiency bonus increases from {before_proficiency_bonus} to {after_proficiency_bonus}!")
+                time.sleep(2)
+            print(f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain {exp_award} "
+                  f"experience points for a total of {self.experience}\nYou have {self.hit_points} hit"
+                  f"points of a maximum {self.maximum_hit_points}.")
+            time.sleep(2)
         else:
             print(f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain "
-                  f"{exp_award} experience points for a total of {self.experience}")
+                  f"{exp_award} experience points for a total of {self.experience}\nYou have {self.hit_points} hit"
+                  f"points of a maximum {self.maximum_hit_points}.")
+
+    def monster_likes_you(self, name, monster_intel):
+        if dice_roll(1, 20) == 20 and monster_intel > 8 and self.charisma > 15:
+            print(f"The {name} likes you!")
+            gift_item = dice_roll(1, 5)
+            if gift_item == 1:
+                self.armor_bonus += 1
+                print(f"He gives you quantum armor + {self.armor_bonus}!")
+                return True
+            if gift_item == 2:
+                self.shield += 1
+                print(f"He gives you a quantum shield + {self.shield}!")
+                return True
+            if gift_item == 3:
+                self.weapon += 1
+                print(f"He gives you a quantum sword + {self.weapon}!")
+                return True
+            if gift_item == 4:
+                self.boots += 1
+                print(f"He gives you Elven boots + {self.boots}!")
+                return True
+            if gift_item == 5:
+                self.cloak += 1
+                print(f"He gives you an Elven cloak + {self.cloak}!")
+                return True
+        else:
+            return False
 
     def reduce_health(self, damage):
         self.hit_points -= damage
@@ -136,18 +210,27 @@ class Player:
         print(f"Dexterity modifier {self.dexterity_modifier}\nProficiency bonus {self.proficiency_bonus}")
         print(f"Monster armor class {monster_armor_class}")
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier >= monster_armor_class:
-            damage_roll = dice_roll(self.level,
-                                    self.hit_dice)
+            damage_roll = dice_roll(self.level, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + weapon)
             if damage_to_opponent > 0:
                 print(f"You hit the {monster_type}!")
-                print(
-                    f"{name} rolls {self.hit_dice} sided die---> {damage_roll} + {self.strength_modifier} Strength modifier = {damage_to_opponent} ")
+                print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll} + weapon bonus {weapon} "
+                      f"+ {self.strength_modifier} "
+                      f"Strength modifier = {damage_to_opponent} ")
                 print(f"You do {damage_to_opponent} points of damage!")
                 return damage_to_opponent
             else:
                 print(f"You strike the {monster_type}, but it blocks!")  # zero damage result
                 return 0
+        elif self.level > 4:
+            print("You missed..")
+            time.sleep(2)
+            print("Extra Attack Skill chance to hit!")
+            time.sleep(2)
+            damage_roll = dice_roll(self.level, self.hit_dice)
+            damage_to_opponent = round(damage_roll + self.strength_modifier + weapon) + 1
+            print(f"You manage an off-balance attack for {damage_to_opponent} points of damage!")
+            return damage_to_opponent
         else:
             print(f"You missed...")
             return 0
@@ -219,7 +302,8 @@ Defense
 While you are wearing armor, you gain a +1 bonus to AC.
 
 Dueling
-When you are wielding a melee weapon in one hand and no other Weapons, you gain a +2 bonus to Damage Rolls with that weapon.
+When you are wielding a melee weapon in one hand and no other Weapons, 
+you gain a +2 bonus to Damage Rolls with that weapon.
 
 Great Weapon Fighting
 When you roll a 1 or 2 on a damage die for an Attack you make with a melee weapon that you are wielding with two hands,
@@ -305,4 +389,26 @@ Starting Gold
 Subclass Name
 Martial Archetype
 Suggested Abilities
-Strength or Dexterity, Constitution or Intelligence'''
+Strength or Dexterity, Constitution or Intelligence
+Experience Points	Level	Proficiency Bonus
+0	                1	    +2
+300	                2	    +2
+900	                3	    +2
+2,700	            4	    +2
+6,500	            5	    +3
+14,000	            6	    +3
+23,000	            7	    +3
+34,000	            8	    +3
+48,000	            9	    +4
+64,000	            10	    +4
+85,000	            11	    +4
+100,000	            12	    +4
+120,000	            13	    +5
+140,000	            14	    +5
+165,000	            15	    +5
+195,000	            16	    +5
+225,000	            17	    +6
+265,000	            18	    +6
+305,000	            19	    +6
+355,000	            20	    +6
+'''

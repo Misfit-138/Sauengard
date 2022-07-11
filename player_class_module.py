@@ -141,7 +141,7 @@ class Player:
             time.sleep(2)
             self.calculate_proficiency_bonus()  # according to DnD 5e
             gain_hit_points = dice_roll(1, self.hit_dice) + self.constitution_modifier
-            if gain_hit_points < 0:
+            if gain_hit_points < 1:
                 gain_hit_points = 1
             self.hit_points += gain_hit_points  # (previous HP + Hit Die roll + CON modifier)
             self.maximum_hit_points += gain_hit_points
@@ -260,7 +260,8 @@ Armor: Light Armor, Medium Armor, Heavy Armor, Shields
 Weapons: simple Weapons, martial Weapons
 Tools: none
 Saving Throws: Strength, Constitution
-Skills: Choose two Skills from Acrobatics, Animal Handling, Athletics, History, Insight, Intimidation, Perception, and Survival
+Skills: Choose two Skills from Acrobatics, Animal Handling, Athletics, History, 
+Insight, Intimidation, Perception, and Survival
 
 Starting Equipment
 You start with the following items, plus anything provided by your Background.
@@ -333,7 +334,8 @@ you can use it twice before a rest, but only once on the same turn.
 
 Martial Archetype
 At 3rd Level, you choose an archetype that you strive to emulate in your Combat styles and Techniques, 
-such as Champion. The archetype you choose grants you features at 3rd Level and again at 7th, 10th, 15th, and 18th level.
+such as Champion. The archetype you choose grants you features at 3rd Level 
+and again at 7th, 10th, 15th, and 18th level.
 
 Ability Score Improvement
 When you reach 4th Level, and again at 6th, 8th, 12th, 14th, 16th, and 19th level, 
@@ -343,13 +345,15 @@ As normal, you can’t increase an ability score above 20 using this feature.
 Extra Attack
 Beginning at 5th Level, you can Attack twice, instead of once, whenever you take the Attack Action on Your Turn.
 
-The number of attacks increases to three when you reach 11th level in this class and to four when you reach 20th level in this class.
+The number of attacks increases to three when you reach 11th level in this class 
+and to four when you reach 20th level in this class.
 
 Indomitable
 Beginning at 9th level, you can Reroll a saving throw that you fail.
  If you do so, you must use the new roll, and you can't use this feature again until you finish a Long Rest.
 
-You can use this feature twice between long rests starting at 13th level and three times between long rests starting at 17th level.
+You can use this feature twice between long rests starting at 13th level 
+and three times between long rests starting at 17th level.
 
 Martial Archetypes
 Different fighters choose different approaches to perfecting their Fighting Prowess. 
@@ -357,7 +361,8 @@ The Martial Archetype you choose to emulate reflects your approach.
 
 Champion
 The archetypal Champion focuses on the Development of raw physical power honed to deadly perfection.
- Those who model themselves on this archetype combine rigorous Training with physical excellence to deal devastating blows.
+ Those who model themselves on this archetype combine rigorous Training with physical excellence 
+ to deal devastating blows.
 
 Improved Critical
 Beginning when you choose this archetype at 3rd Level, your weapon attacks score a critical hit on a roll of 19 or 20.

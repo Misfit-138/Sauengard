@@ -38,7 +38,8 @@ Nearly Impossible	30
 
 A few things to know; however, a natural 20 doesn’t mean you automatically succeed.
 You still have to add your bonuses, but it usually results in the most favorable outcome,
-even though you can’t crit on ability checks. Likewise, a natural 1 doesn’t mean automatic failure or a critical failure.
+even though you can’t crit on ability checks. Likewise,
+a natural 1 doesn’t mean automatic failure or a critical failure.
 You could still pass the check if your bonuses are high enough. And on the note of failing a Check, the DM could still
 have it succeed, but just at a cost (e.g., you leap across the chasm, but you break your leg on the ledge as you didn’t
 land properly).

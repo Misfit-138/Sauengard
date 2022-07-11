@@ -20,7 +20,7 @@ You can assign the return value to variables in the calling scope. You can think
   generate its one return value then disappear.
 
 Ideally, functions are written to be pure and idempotent; that is, they don't modify global state and produce
-the same result when called multiple times. Python is a little less strict about this than other languages and it's
+the same result when called multiple times. Python is a little less strict about this than other languages, and it's
 natural to use certain in-place functions like sort and random.shuffle. These are exceptions that prove the rule
  (and if you know a bit about sorting and shuffling, they make sense in these contexts due to the algorithms used
  and the need for efficiency).

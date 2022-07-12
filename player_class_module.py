@@ -165,8 +165,8 @@ class Player:
         after_proficiency_bonus = self.proficiency_bonus
         after_level = self.level
         if after_level > before_level:
-            print(f"You went up a level!! ")
             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav', winsound.SND_ASYNC)
+            print(f"You went up a level!!")
             time.sleep(2)
             print(f"You are now level {self.level}.")
             time.sleep(2)
@@ -184,15 +184,13 @@ class Player:
             if after_proficiency_bonus > before_proficiency_bonus:
                 print(f"Your proficiency bonus increases from {before_proficiency_bonus} to {after_proficiency_bonus}!")
                 time.sleep(2)
-            print(f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain {exp_award} "
-                  f"experience points for a total of {self.experience}\nYou have {self.hit_points} hit"
-                  f"points of a maximum {self.maximum_hit_points}.")
+            print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points.")
             time.sleep(2)
             self.hud()
         else:
-            print(f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain "
-                  f"{exp_award} experience points for a total of {self.experience}\nYou have {self.hit_points} hit"
-                  f"points of a maximum {self.maximum_hit_points}.")
+            print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points")
+            time.sleep(2)
+            self.hud()
 
     def monster_likes_you(self, name, monster_intel):
         if dice_roll(1, 20) == 20 and monster_intel > 8 and self.charisma > 15:
@@ -236,11 +234,11 @@ class Player:
         self.hud()
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"You strike at the {monster_name}..")
-        #print(f"{name} rolls 20 sided die---> {roll_d20}")
+        # print(f"{name} rolls 20 sided die---> {roll_d20}")
         time.sleep(1)
         if roll_d20 == 1:
             print("You missed.")
-            #print(f"You rolled a 1. 1 means failure..")
+            # print(f"You rolled a 1. 1 means failure..")
             time.sleep(1)
             return 0
         # print(f"Dexterity modifier {self.dexterity_modifier}\nProficiency bonus {self.proficiency_bonus}")
@@ -255,10 +253,12 @@ class Player:
                       f"+ {self.strength_modifier} "
                       f"Strength modifier = {damage_to_opponent} ")'''
                 print(f"You do {damage_to_opponent} points of damage!")
-                time.sleep(1)
+                time.sleep(2)
+                self.hud()
                 return damage_to_opponent
             else:
-                print(f"You strike the {monster_name}, but it blocks!")  # zero damage result
+                print(f"It blocks!")  # zero damage result
+                time.sleep(1)
                 return 0
         elif self.level > 4:
             print("You missed..")
@@ -268,6 +268,8 @@ class Player:
             damage_roll = dice_roll(self.level, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + weapon) + 1
             print(f"You manage an off-balance attack for {damage_to_opponent} points of damage!")
+            time.sleep(2)
+            self.hud()
             return damage_to_opponent
         else:
             print(f"You missed...")

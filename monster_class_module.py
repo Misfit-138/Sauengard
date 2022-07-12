@@ -131,7 +131,7 @@ class Monster:
         self.can_drain = can_drain
         self.undead = undead
         self.hit_dice = 0  # tiny d4, small d6, medium d8, large d10, huge d12, gargantuan d20
-        self.number_of_hd = 0
+        self.number_of_hd = self.level
         self.human_player_level = human_player_level
         self.difficulty_class = difficulty_class
         self.proficiency_bonus = proficiency  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -181,10 +181,10 @@ class Monster:
             attack_bonus = self.attack_5
             attack_phrase = self.attack_5_phrase
         roll20 = dice_roll(1, 20)
-        print(f"The {name} attacks! {roll20}")
+        print(f"The {name} attacks!")
         if roll20 == 1:
             print(f"..it awkwardly strikes and you easily block.")
-            time.sleep(1)
+            time.sleep(2)
             return 0
         # print(f"Dexterity modifier {self.dexterity_modifier}")
         # print(f"Your armor class ---> {player_armor_class}")
@@ -197,15 +197,15 @@ class Monster:
                 # print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll}")
                 # print(f"Strength modifier---> {self.strength_modifier}\nAttack bonus---> {attack_bonus}")
                 print(f"It does {damage_to_opponent} points of damage!")
-                time.sleep(2)
+                time.sleep(3.5)
                 return damage_to_opponent
             else:
                 print(f"The {name} strikes, but you block the attack!")  # zero damage to player result
-                time.sleep(1)
+                time.sleep(2)
                 return 0  # 0 points damage to player
         else:
             print(f"It missed..")
-            time.sleep(1.5)
+            time.sleep(2)
         return 0
 
     def paralyze(self, name, level, monster_wisdom, monster_wisdom_modifier, dexterity, strength, weapon,

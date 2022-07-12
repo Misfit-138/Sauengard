@@ -91,6 +91,8 @@ Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighte
 """
 
 import random
+import time
+
 from dice_roll_module import dice_roll
 
 '''Choose a challenge rating (CR) for your custom trap, object, effect, or creature
@@ -104,7 +106,6 @@ between 1 and 30. Write down its statistics from the following formulas:
 
 
 # # monsters have Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma
-
 
 
 class Monster:
@@ -180,26 +181,31 @@ class Monster:
             attack_bonus = self.attack_5
             attack_phrase = self.attack_5_phrase
         roll20 = dice_roll(1, 20)
-        print(f"{name} rolls 20 sided die---> {roll20}")
+        print(f"The {name} attacks! {roll20}")
         if roll20 == 1:
-            print(f"{name} rolled a 1..failure!")
+            print(f"..it awkwardly strikes and you easily block.")
+            time.sleep(1)
             return 0
-        print(f"Dexterity modifier {self.dexterity_modifier}")
-        print(f"Your armor class ---> {player_armor_class}")
+        # print(f"Dexterity modifier {self.dexterity_modifier}")
+        # print(f"Your armor class ---> {player_armor_class}")
         if roll20 + self.dexterity_modifier >= player_armor_class:
             damage_roll = dice_roll(self.number_of_hd, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus)
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
                 print(f"{attack_phrase}")
-                print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll}")
-                print(f"Strength modifier---> {self.strength_modifier}\nAttack bonus---> {attack_bonus}")
+                time.sleep(1)
+                # print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll}")
+                # print(f"Strength modifier---> {self.strength_modifier}\nAttack bonus---> {attack_bonus}")
                 print(f"It does {damage_to_opponent} points of damage!")
+                time.sleep(2)
                 return damage_to_opponent
             else:
                 print(f"The {name} strikes, but you block the attack!")  # zero damage to player result
+                time.sleep(1)
                 return 0  # 0 points damage to player
         else:
             print(f"It missed..")
+            time.sleep(1.5)
         return 0
 
     def paralyze(self, name, level, monster_wisdom, monster_wisdom_modifier, dexterity, strength, weapon,
@@ -277,7 +283,7 @@ class Ghoul(Monster):
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "It strikes with one claw.."
         self.attack_2 = 1
-        self.attack_2_phrase = "The ghoul lunges and attacks with its rancid teeth!!"
+        self.attack_2_phrase = "It lunges and attacks with its rancid teeth!!"
         self.attack_3 = 2
         self.attack_3_phrase = "It strikes with both of its terrible claws!!"
         self.attack_4 = 2

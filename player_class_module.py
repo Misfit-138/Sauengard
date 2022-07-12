@@ -1,8 +1,7 @@
 # import random
 import time
-
+import os
 import winsound
-
 from dice_roll_module import *
 
 # from main import monster
@@ -52,7 +51,7 @@ class Player:
         self.maximum_hit_points = maximum_hit_points
         self.hit_points = hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
-        self.armor_class = 10 + self.dexterity_modifier + self.armor_bonus + self.shield
+
         self.strength_modifier = round((strength - 10) / 2)
         self.constitution_modifier = round((constitution - 10) / 2)
         self.intelligence_modifier = round((intelligence - 10) / 2)
@@ -64,6 +63,38 @@ class Player:
         self.cloak = cloak
         self.two_handed = False
         self.extra_attack = 0
+        self.armor_class = 10 + self.dexterity_modifier + self.armor_bonus + self.shield + self.boots
+
+    def hud(self):
+        os.system('cls')
+        print(f"                                                                     Name: {self.name}")
+        print(f"                                                                     Level: {self.level}")
+        print(f"                                                                     Experience: {self.experience}")
+        print(f"                                                                     Gold: {self.gold}")
+        print(f"                                                                     Weapon + {self.weapon}")
+        print(
+            f"                                                                     Armor Class {self.armor_class}")
+        print(f"                                                                     Shield + {self.shield}")
+        print(
+            f"                                                                     Constitution {self.constitution}")
+        print(
+            f"                                                                     Intelligence: {self.intelligence}")
+        print(f"                                                                     Wisdom: {self.wisdom}")
+        print(f"                                                                     Strength: {self.strength}")
+        print(f"                                                                     Dexterity: {self.dexterity}")
+        print(f"                                                                     Charisma: {self.charisma}")
+        print(f"                                                                     Hit points: {self.hit_points}/"
+              f"{self.maximum_hit_points}")
+        if self.boots == 0:
+            print(f"                                                                     Boots: Leather")
+        else:
+            print(
+                f"                                                                     Boots: Elven Boots + {self.boots}")
+        if self.cloak == 0:
+            print(f"                                                                     Cloak: none")
+        else:
+            print(
+                f"                                                                     Cloak: Elven Cloak + {self.boots}")
 
     def calculate_proficiency_bonus(self):
         if self.level <= 4:
@@ -157,6 +188,7 @@ class Player:
                   f"experience points for a total of {self.experience}\nYou have {self.hit_points} hit"
                   f"points of a maximum {self.maximum_hit_points}.")
             time.sleep(2)
+            self.hud()
         else:
             print(f"You snarf {monster_gold} gold pieces for a total of {self.gold} and gain "
                   f"{exp_award} experience points for a total of {self.experience}\nYou have {self.hit_points} hit"
@@ -199,28 +231,34 @@ class Player:
         else:
             return True
 
-    def swing(self, name, level, dexterity, strength, weapon, monster_level, monster_type, monster_dexterity,
+    def swing(self, name, level, dexterity, strength, weapon, monster_level, monster_name, monster_dexterity,
               monster_armor_class):
+        self.hud()
         roll_d20 = dice_roll(1, 20)  # attack roll
-        print(f"Attack roll..")
-        print(f"{name} rolls 20 sided die---> {roll_d20}")
+        print(f"You strike at the {monster_name}..")
+        #print(f"{name} rolls 20 sided die---> {roll_d20}")
+        time.sleep(1)
         if roll_d20 == 1:
-            print(f"You rolled a 1. 1 means failure..")
+            print("You missed.")
+            #print(f"You rolled a 1. 1 means failure..")
+            time.sleep(1)
             return 0
-        print(f"Dexterity modifier {self.dexterity_modifier}\nProficiency bonus {self.proficiency_bonus}")
-        print(f"Monster armor class {monster_armor_class}")
+        # print(f"Dexterity modifier {self.dexterity_modifier}\nProficiency bonus {self.proficiency_bonus}")
+        # print(f"Monster armor class {monster_armor_class}")
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier >= monster_armor_class:
             damage_roll = dice_roll(self.level, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + weapon)
             if damage_to_opponent > 0:
-                print(f"You hit the {monster_type}!")
-                print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll} + weapon bonus {weapon} "
+                print(f"You hit!")
+                time.sleep(1)
+                '''print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll} + weapon bonus {weapon} "
                       f"+ {self.strength_modifier} "
-                      f"Strength modifier = {damage_to_opponent} ")
+                      f"Strength modifier = {damage_to_opponent} ")'''
                 print(f"You do {damage_to_opponent} points of damage!")
+                time.sleep(1)
                 return damage_to_opponent
             else:
-                print(f"You strike the {monster_type}, but it blocks!")  # zero damage result
+                print(f"You strike the {monster_name}, but it blocks!")  # zero damage result
                 return 0
         elif self.level > 4:
             print("You missed..")

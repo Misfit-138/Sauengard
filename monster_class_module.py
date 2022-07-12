@@ -251,7 +251,7 @@ class Ghoul(Monster):
                          constitution, intelligence, wisdom, charisma, hit_points, can_paralyze, can_drain, undead,
                          human_player_level, difficulty_class, proficiency, damage, challenge_rating)
         self.level = level
-        self.experience_award = self.level * 600
+        self.experience_award = self.level * 75
         self.gold = self.level * 103 * round(random.uniform(1, 2))  # ghouls shouldn't have much gold
         self.weapon = weapon
         self.armor = armor_bonus

@@ -264,7 +264,9 @@ while True:
                                     break
                             else:
                                 hud()
-                                print(f"The {monster.name} makes a quick move. He steals an item from your pack.")
+                                print(f"The {monster.name} makes a quick move...")
+                                time.sleep(1.5)
+                                print("He steals an item from your pack.")
                                 in_proximity_to_monster = False
                                 break
                         # battle loop

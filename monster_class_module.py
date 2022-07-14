@@ -164,38 +164,38 @@ class Monster:
 
     def swing(self, name, level, dexterity, strength, weapon, player_level, player_hp, player_dexterity,
               player_armor_class):
-        attack_bonus = random.randint(1, 5)
-        if attack_bonus == 1:
+        attack_bonus = random.randint(1, 100)
+        if attack_bonus <= 50:
             attack_bonus = self.attack_1
             attack_phrase = self.attack_1_phrase
-        if attack_bonus == 2:
+        if attack_bonus > 50 <= 75:
             attack_bonus = self.attack_2
             attack_phrase = self.attack_2_phrase
-        if attack_bonus == 3:
+        if attack_bonus > 75 <= 85:
             attack_bonus = self.attack_3
             attack_phrase = self.attack_3_phrase
-        if attack_bonus == 4:
+        if attack_bonus > 85 <= 95:
             attack_bonus = self.attack_4
             attack_phrase = self.attack_4_phrase
-        if attack_bonus == 5:
+        if attack_bonus > 95:
             attack_bonus = self.attack_5
             attack_phrase = self.attack_5_phrase
         roll20 = dice_roll(1, 20)
-        print(f"The {name} attacks!")
+        print(f"The {name} attacks! (It rolls {roll20})")
         if roll20 == 1:
             print(f"..it awkwardly strikes and you easily block.")
             time.sleep(2)
             return 0
-        # print(f"Dexterity modifier {self.dexterity_modifier}")
-        # print(f"Your armor class ---> {player_armor_class}")
+        print(f"Dexterity modifier {self.dexterity_modifier}")
+        print(f"Your armor class ---> {player_armor_class}")
         if roll20 + self.dexterity_modifier >= player_armor_class:
             damage_roll = dice_roll(self.number_of_hd, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus)
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
                 print(f"{attack_phrase}")
                 time.sleep(1)
-                # print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll}")
-                # print(f"Strength modifier---> {self.strength_modifier}\nAttack bonus---> {attack_bonus}")
+                print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll}")
+                print(f"Strength modifier---> {self.strength_modifier}\nAttack bonus---> {attack_bonus}")
                 print(f"It does {damage_to_opponent} points of damage!")
                 time.sleep(3.5)
                 return damage_to_opponent
@@ -212,9 +212,12 @@ class Monster:
                  human_player_level, human_player_hit_points,
                  human_player_dexterity, human_player_armor_class, human_player_wisdom, human_player_wisdom_modifier):
         paralyze_chance = dice_roll(1, 20)
-        if paralyze_chance == 20 or paralyze_chance > 17 and (monster_wisdom + monster_wisdom_modifier) > (
-                human_player_wisdom + human_player_wisdom_modifier):
-            print("You're paralyzed!!\nAs you stand, frozen and defenseless, it savagely gores you!")
+        if paralyze_chance == 20 or paralyze_chance > 17 and (monster_wisdom + monster_wisdom_modifier) >= (
+                human_player_wisdom):
+            print("You're paralyzed!!")
+            time.sleep(1)
+            print("As you stand, frozen and defenseless, it savagely gores you!")
+            time.sleep(1)
             return True
             # damage_to_player = self.swing(name, level, dexterity, strength,
             #                              weapon,
@@ -251,19 +254,19 @@ class Ghoul(Monster):
                          constitution, intelligence, wisdom, charisma, hit_points, can_paralyze, can_drain, undead,
                          human_player_level, difficulty_class, proficiency, damage, challenge_rating)
         self.level = level
-        self.experience_award = self.level * 75
+        self.experience_award = self.level * 90
         self.gold = self.level * 103 * round(random.uniform(1, 2))  # ghouls shouldn't have much gold
         self.weapon = weapon
         self.armor = armor_bonus
         self.shield = shield
-        self.strength = random.randint(7, 12)
-        self.dexterity = random.randint(6, 11)
-        self.constitution = random.randint(6, 12)
-        self.intelligence = random.randint(1, 10)
-        self.wisdom = random.randint(7, 15)
+        self.strength = random.randint(11, 12)
+        self.dexterity = random.randint(12, 16)
+        self.constitution = random.randint(11, 12)
+        self.intelligence = random.randint(5, 10)
+        self.wisdom = random.randint(7, 10)
         self.charisma = random.randint(1, 5)
         self.can_paralyze = True
-        self.can_drain = True
+        self.can_drain = False
         self.undead = True
         self.human_player_level = human_player_level
         self.difficulty_class = difficulty_class
@@ -279,7 +282,7 @@ class Ghoul(Monster):
         self.hit_points = self.level * (random.randint(7, 12)) + self.constitution_modifier
         self.dexterity_modifier = round((self.dexterity - 10) / 2)
         self.wisdom_modifier = round((self.strength - 10) / 2)
-        self.armor_class = random.randint(10, 11)
+        self.armor_class = random.randint(11, 12)
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "It strikes with one claw.."
         self.attack_2 = 1
@@ -288,7 +291,7 @@ class Ghoul(Monster):
         self.attack_3_phrase = "It strikes with both of its terrible claws!!"
         self.attack_4 = 2
         self.attack_4_phrase = "It rushes straight at you!!"
-        self.attack_5 = 2
+        self.attack_5 = 3
         self.attack_5_phrase = "It leaps upon you!!"
 
     name = "Ghoul"

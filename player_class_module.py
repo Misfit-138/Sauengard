@@ -33,7 +33,7 @@ class Player:
 
     def __init__(self, name, level, experience, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
                  constitution, intelligence, wisdom, charisma, hit_points, maximum_hit_points, is_paralyzed, boots,
-                 cloak):
+                 cloak, weapon_name):
         self.name = name
         self.level = level
         self.experience = experience
@@ -64,6 +64,7 @@ class Player:
         self.two_handed = False
         self.extra_attack = 0
         self.armor_class = 10 + self.dexterity_modifier + self.armor_bonus + self.shield + self.boots
+        self.weapon_name = weapon_name
 
     def hud(self):
         os.system('cls')

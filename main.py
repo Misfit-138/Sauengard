@@ -50,13 +50,14 @@ def hud():
     print(f"                                                                     Experience: {player_1.experience}")
     print(f"                                                                     Gold: {player_1.gold}")
     print(f"                                                                     Weapon + {player_1.weapon}")
+    print(f"                                                                     Equipped weapon: {player_1.weapon_name}")
     print(f"                                                                     Armor Class {player_1.armor_class}")
     print(f"                                                                     Shield + {player_1.shield}")
+    print(f"                                                                     Strength: {player_1.strength}")
+    print(f"                                                                     Dexterity: {player_1.dexterity}")
     print(f"                                                                     Constitution {player_1.constitution}")
     print(f"                                                                     Intelligence: {player_1.intelligence}")
     print(f"                                                                     Wisdom: {player_1.wisdom}")
-    print(f"                                                                     Strength: {player_1.strength}")
-    print(f"                                                                     Dexterity: {player_1.dexterity}")
     print(f"                                                                     Charisma: {player_1.charisma}")
     print(f"                                                                     Hit points: {player_1.hit_points}/"
           f"{player_1.maximum_hit_points}")
@@ -73,11 +74,13 @@ def hud():
 
 
 # "E:\C64\Telengard\telengard.wav"
-winsound.PlaySound('e:\\C64\\Telengard\\telengard.wav', winsound.SND_ASYNC)
+#winsound.PlaySound('e:\\C64\\Telengard\\telengard.wav', winsound.SND_ASYNC)
+winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\sound.wav', winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+
 os.system('cls')
 typing("Welcome to Sauengard.")
 print("")
-typing("Enjoy the music.")
+#typing("Enjoy the music.")
 print("")
 os.system('pause')
 winsound.PlaySound(None, winsound.SND_ASYNC)
@@ -90,8 +93,10 @@ while True:
         os.system('cls')
         # 0name,1level,2experience,3gold,4weapon+,5armor,6shield,7armor_class,8strength,
         # 9dexterity,10constitution,11intelligence,12wisdom,13charisma,14hit_points15is_paralyzed16boots,17cloak
-        player_stats = [player_name, 1, 0, 0, 0, 0, 0, 10, *random.sample(range(3, 19), 6),
-                        0, 0, False, 0, 0]  # zero is placeholder for hit points is_paralyzed = False
+        # 18weapon_name
+        #player_stats = [player_name, 1, 0, 0, 0, 0, 0, 10, *random.sample(range(3, 19), 6),
+        #                0, 0, False, 0, 0]  # zero is placeholder for hit points is_paralyzed = False
+        player_stats = [player_name, 1, 0, 0, 0, 0, 0, 10, 15, 14, 13, 12, 8, 10, 0, 0, False, 0, 0, "sword"]
         # print(player_stats)
         # hit_points at level one = 10 + self.constitution_modifier (index 10 is constitution)
         hit_points = 10 + round((player_stats[10] - 10) / 2)
@@ -106,24 +111,26 @@ while True:
         print(f"Weapon + {player_1.weapon}")
         print(f"Armor Class {player_1.armor_class}")
         print(f"Shield + {player_1.shield}")'''
+        print(f"Strength: {player_1.strength}")
+        print(f"Dexterity: {player_1.dexterity}")
         print(f"Constitution {player_1.constitution}")
         print(f"Intelligence: {player_1.intelligence}")
         print(f"Wisdom: {player_1.wisdom}")
-        print(f"Strength: {player_1.strength}")
-        print(f"Dexterity: {player_1.dexterity}")
         print(f"Charisma: {player_1.charisma}")
         print(f"Hitpoints: {player_1.hit_points}")
-        accept_stats = input("Accept stats y/n ? ")
+        #os.system('pause')
+        accept_stats = input("Accept stats y/n ? ").lower()
     # a while loop's 'else' part runs if no break occurs and the condition is false
     if accept_stats == "y":
         hud()
+    # hud()
     print(f"You enter the town of Fieldenberg.")
     in_town = True
     in_dungeon = False
     while in_town:
         town_functions = input(
             "You are in town. (S)ave, (Q)uit game, (R)estart the game, (B)lacksmith, (C)hemist or (E)nter dungeon "
-            "--> ")
+            "--> ").lower()
         if town_functions == 'r':
             print("Restart")
             time.sleep(2)
@@ -152,15 +159,17 @@ while True:
             hud()
             print("You enter the dungeon..")
             time.sleep(1)
+            #winsound.PlaySound('C:\\Users\\Pitsk\\Music\\creepy_dungeon_theme.wav',winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
             while in_dungeon:
                 encounter = dice_roll(1, 20)
-                dungeon_command = input("Town (P)ortal, (H)ealing potion or WASD to navigate. --> ")
+                dungeon_command = input("Town (P)ortal, (H)ealing potion or WASD to navigate. --> ").lower()
                 if dungeon_command == 'p':
                     in_town = True
                     in_dungeon = False
                     hud()
                     print(f"The portal appears before you; a seemingly impossible gateway between distant places..")
                     time.sleep(2)
+                    winsound.PlaySound(None, winsound.SND_ASYNC)
                     break
                 if dungeon_command == 'h':
                     hud()
@@ -200,6 +209,7 @@ while True:
                     # ************ OFFLOAD AS MUCH OF THIS LOGIC AS POSSIBLE TO THE OTHER MODULES!!! **************
                     while in_proximity_to_monster:
                         if player_1.check_dead():
+                            winsound.PlaySound(None, winsound.SND_ASYNC)
                             hud()
 
                             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav',
@@ -225,7 +235,9 @@ while True:
                         if not in_proximity_to_monster:
                             break
                         monster_cls = random.choice(MONSTERS)
-                        monster_level = dungeon_level  # + random.randint(0, 2)
+                        #monster_level = dungeon_level  # + random.randint(0, 2)
+                        monster_level = player_1.level
+                        #monster_cls = "MonsterLevel", player_1.level
                         # monster_stats list index:
                         # 0level, 1experience_award, 2gold, 3weapon_bonus, 4armor,5shield,6armor_class,7strength,
                         # 8dexterity,9constitution,10intelligence,11wisdom,12charisma,13hit_points,14can_paralyze,
@@ -239,6 +251,7 @@ while True:
                         monster = monster_cls(*monster_stats)  # send stats to class and create 'monster' as object
                         hud()
                         print(f"You have encountered a level {monster_level} {monster.name}.")
+                        time.sleep(1.5)
                         # if dice_roll(1, 20) > 0:  # == 20 and player_1.charisma > 15:
                         if player_1.monster_likes_you(monster.name, monster.intelligence):
                             in_proximity_to_monster = False
@@ -247,7 +260,7 @@ while True:
                             attack_or_steal = dice_roll(1, 20)
                             if attack_or_steal > 16:  # (player_1.dexterity + player_1.dexterity_modifier):
                                 hud()
-                                print(f"You are caught off guard! It attacks!")
+                                print(f"You are caught off guard!")
                                 damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity,
                                                                  monster.strength,
                                                                  monster.weapon,
@@ -257,20 +270,23 @@ while True:
                                 player_1.reduce_health(damage_to_player)
                                 if player_1.check_dead():  # if player  dead
                                     hud()
-                                    print(f"You were caught off guard! Testing Sauengard statement")
-                                    # in_proximity_to_monster = False
+                                    print(f"You were caught off guard!")
+                                    time.sleep(1.5)
+                                    #in_proximity_to_monster = False
                                     # in_dungeon = False
                                     # in_town = False
-                                    break
+                                    continue
                             else:
                                 hud()
                                 print(f"The {monster.name} makes a quick move...")
                                 time.sleep(1.5)
                                 print("He steals an item from your pack.")
+                                time.sleep(1.5)
                                 in_proximity_to_monster = False
                                 break
                         # battle loop
                         while True:
+                            hud()
                             choice = input("Fight Cast or Evade?\n F/C/E --> ").lower()
                             if choice == "e":
                                 evade_success = player_1.evade(monster.name, monster.dexterity)
@@ -280,7 +296,12 @@ while True:
                                     break
                                 else:
                                     hud()
-                                    print(f"You are rooted to the spot! You must stand your ground!")
+                                    print(f"The {monster.name} swiftly blocks your escape.")
+                                    time.sleep(.5)
+                                    print(f"You are rooted to the spot. You must stand your ground!")
+                                    time.sleep(.5)
+                                    print(f"You raise your {player_1.weapon_name}.")
+                                    time.sleep(1)
                             elif choice == "c":
                                 hud()
                                 print(f"Cast")
@@ -331,6 +352,7 @@ while True:
 
                                     if dice_roll(1, 20) > 17 and monster.undead and monster.can_paralyze:
                                         print(f"It lurches forward, grabbing your arm!")
+                                        time.sleep(1)
                                         player_1.is_paralyzed = monster.paralyze(monster.name, monster.level,
                                                                                  monster.wisdom,
                                                                                  monster.wisdom_modifier,
@@ -349,7 +371,7 @@ while True:
                                             print(f"You suffer {paralyze_damage} hit points!!")
                                             time.sleep(1)
                                         if not player_1.check_dead():  # if player not dead
-                                            print(f"You are alive")
+                                            print(f"You regain your faculties.")
                                             time.sleep(2)
                                             continue
                                         else:
@@ -370,25 +392,3 @@ while True:
 
                             else:
                                 break
-
-'''if monster.can_drain:
-                                        level_drain = monster.drain(monster.wisdom, monster.wisdom_modifier,
-                                                                    player_1.level, player_1.wisdom,
-                                                                    player_1.wisdom_modifier)
-                                        if level_drain:  # try to offload this logic
-                                            print("It drains a level!\nYou go down a level!!")
-                                            player_1.level -= 1
-                                            player_1.experience *= .50
-                                            if player_1.level < 1:
-                                                print(f"You have died from drainage!!!!!")
-                                                in_proximity_to_monster = False
-                                                in_dungeon = False
-                                                in_town = False
-                                                break
-
-                                        else:
-                                            print(f"You have {player_1.hit_points} out of a maximum "
-                                                  f"{player_1.maximum_hit_points} hit points, and"
-                                                  f" {player_1.experience} experience. "
-                                                  f"You are level {player_1.level}")
-                                            continue'''

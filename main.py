@@ -32,6 +32,7 @@ and its documentation and return value (usually None) support this, the behavior
 import time
 import pickle
 from player_class_module import *
+#from monster_test import *
 from monster_class_module import *
 from typing_module import *
 import random
@@ -219,11 +220,13 @@ while True:
                     player_1.hud()
                     print("This should create monster now..")
                     dungeon_level = 1
+                    monster_dict = {
+                        1: [Kobold, Ghoul]
+                    }
 
-                    #MONSTERS_lvl_1 = [Ghoul]
-                    MONSTERS = [Ghoul]
-                    LEGENDARY_MONSTERS = [Dragon]
-                    #monster_list = "MONSTERS_lvl_", player_1.level
+                    #MONSTERS = [Ghoul]
+
+
                     # def create_monster():
                     #    return random.choice(MONSTERS)
                     # in proximity loop contains battle loop within it
@@ -257,8 +260,9 @@ while True:
                                     continue
                         if not in_proximity_to_monster:
                             break
-                        #monster_cls = random.choice(monster_list)
-                        monster_cls = random.choice(MONSTERS)
+
+                        monster_key = player_1.level  # monster level of difficulty corresponds to player_1.level
+                        monster_cls = random.choice(monster_dict[monster_key])
                         # monster_level = dungeon_level  # + random.randint(0, 2)
                         monster_level = player_1.level
                         # monster_cls = "MonsterLevel", player_1.level
@@ -272,6 +276,7 @@ while True:
                                          False, player_1.level, 0, 0, 0, 0]
                         monster_hit_points = (monster_stats[9])  # equal to constitution (index 9) for now..
                         monster_stats[13] = round(monster_hit_points)  # make index 13(hp) = constitution for now
+                        #monster = monster_cls
                         monster = monster_cls(*monster_stats)  # send stats to class and create 'monster' as object
                         player_1.hud()
                         print(f"You have encountered a level {monster_level} {monster.name}.")
@@ -288,7 +293,7 @@ while True:
                                 print(f"You are caught off guard!")
                                 damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity,
                                                                  monster.strength,
-                                                                 monster.weapon,
+                                                                 monster.weapon_bonus,
                                                                  player_1.level, player_1.hit_points,
                                                                  player_1.dexterity,
                                                                  player_1.armor_class)
@@ -368,7 +373,7 @@ while True:
                             if not monster.check_dead():  # if monster is not dead
                                 damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity,
                                                                  monster.strength,
-                                                                 monster.weapon,
+                                                                 monster.weapon_bonus,
                                                                  player_1.level, player_1.hit_points,
                                                                  player_1.dexterity,
                                                                  player_1.armor_class)
@@ -383,7 +388,7 @@ while True:
                                                                                  monster.wisdom_modifier,
                                                                                  monster.dexterity,
                                                                                  monster.strength,
-                                                                                 monster.weapon,
+                                                                                 monster.weapon_bonus,
                                                                                  player_1.level,
                                                                                  player_1.hit_points,
                                                                                  player_1.dexterity,

@@ -28,7 +28,7 @@ with open('player.sav', 'rb') as player_save:
     print(f"                                                                     Level: {player_2.level}")
     print(f"                                                                     Experience: {player_2.experience}")
     print(f"                                                                     Gold: {player_2.gold}")
-    print(f"                                                                     Weapon + {player_2.weapon}")
+    print(f"                                                                     Weapon + {player_2.weapon_bonus}")
     print(f"                                                                     Armor Class {player_2.armor_class}")
     print(f"                                                                     Shield + {player_2.shield_bonus}")
     print(f"                                                                     Constitution {player_2.constitution}")

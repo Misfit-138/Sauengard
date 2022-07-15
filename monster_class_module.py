@@ -261,7 +261,7 @@ class Ghoul(Monster):
         self.shield = shield
         self.strength = random.randint(11, 12)
         self.dexterity = random.randint(12, 16)
-        self.constitution = random.randint(11, 12)
+        self.constitution = random.randint(12, 13)
         self.intelligence = random.randint(5, 10)
         self.wisdom = random.randint(7, 10)
         self.charisma = random.randint(1, 5)
@@ -278,12 +278,10 @@ class Ghoul(Monster):
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)
-        if self.level == 1:
-            self.hit_points = random.randint(10, 13)
-        else:
-            self.hit_points = self.level * (random.randint(8, 12)) + self.constitution_modifier
-            #self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier) + 1
-        # self.hit_points = self.level * (random.randint(8, 13)) + self.constitution_modifier
+
+        self.hit_points = self.level * (random.randint(8, 10)) + self.constitution_modifier
+        # self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier) + 1
+
         self.dexterity_modifier = round((self.dexterity - 10) / 2)
         self.wisdom_modifier = round((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 12)

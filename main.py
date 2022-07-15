@@ -161,7 +161,7 @@ while True:
             #with open(player_1.name, 'wb') as player_save:
             #with open('player.sav', 'wb') as player_save:
                 pickle.dump(player_1, player_save)
-                time.sleep(3)
+                time.sleep(2)
         if town_functions == 'b':
             player_1.hud()
             print("You visit the blacksmith")

@@ -1,4 +1,5 @@
 # import random
+import random
 import time
 import os
 import winsound
@@ -18,7 +19,7 @@ Damage Roll Damage Dice and add modifiers. The target’s HP are reduced, factor
 Spell Attack Many spells count as attacks. 
 The caster rolls d20 + Spellcasting Ability Modifier + Proficiency Bonus to hit vs AC. PHB 205'''
 
-# name0, level1, experience2, gold3, weapon4, armor5, shield6, constitution7,
+# name0, level1, experience2, gold3, weapon_bonus4, armor5, shield6, constitution7,
 # intelligence8, wisdom9, strength10, dexterity11, charisma12, hit_points13, maximum_hit_points14,
 # 15is_paralyzed
 
@@ -31,40 +32,40 @@ In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armo
 
 class Player:
 
-    def __init__(self, name, level, experience, gold, weapon, armor_bonus, shield, armor_class, strength, dexterity,
-                 constitution, intelligence, wisdom, charisma, hit_points, maximum_hit_points, is_paralyzed, boots,
-                 cloak, weapon_name):
+    def __init__(self, name):  # level, experience, gold, weapon_bonus, armor_bonus, shield, armor_class, strength,
+        # dexterity,
+        #  constitution, intelligence, wisdom, charisma, hit_points, maximum_hit_points, is_paralyzed, boots,
+        #  cloak, weapon_name):
         self.name = name
-        self.level = level
-        self.experience = experience
-        self.gold = gold
-        self.weapon = weapon
-        self.armor_bonus = armor_bonus
-        self.shield = shield
-        self.strength = strength
-        self.dexterity = dexterity
-        self.dexterity_modifier = round((dexterity - 10) / 2)
-        self.constitution = constitution
-        self.intelligence = intelligence
-        self.wisdom = wisdom
-        self.charisma = charisma
-        self.maximum_hit_points = maximum_hit_points
-        self.hit_points = hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.level = 1
+        self.experience = 0
+        self.gold = 0
+        self.weapon_bonus = 0
+        self.armor_bonus = 0
+        self.shield_bonus = 0
+        self.strength = 15  # random.randint(13, 16)
+        self.dexterity = 14  # random.randint(12, 15)
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.constitution = 13  # random.randint(12, 14)13
+        self.intelligence = 12
+        self.wisdom = 8
+        self.charisma = 10
         self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
-
-        self.strength_modifier = round((strength - 10) / 2)
-        self.constitution_modifier = round((constitution - 10) / 2)
-        self.intelligence_modifier = round((intelligence - 10) / 2)
-        self.wisdom_modifier = round((wisdom - 10) / 2)
-        self.charisma_modifier = round((charisma - 10) / 2)
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.intelligence_modifier = round((self.intelligence - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.charisma_modifier = round((self.charisma - 10) / 2)
         self.proficiency_bonus = 2  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.is_paralyzed = is_paralyzed
-        self.boots = boots
-        self.cloak = cloak
+        self.maximum_hit_points = 10 + self.constitution_modifier
+        self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.is_paralyzed = False
+        self.boots_bonus = 0
+        self.cloak = 0
         self.two_handed = False
         self.extra_attack = 0
-        self.armor_class = 10 + self.dexterity_modifier + self.armor_bonus + self.shield + self.boots
-        self.weapon_name = weapon_name
+        self.armor_class = 10 + self.dexterity_modifier + self.armor_bonus + self.shield_bonus + self.boots_bonus
+        self.weapon_name = "sword"
 
     def hud(self):
         os.system('cls')
@@ -72,10 +73,10 @@ class Player:
         print(f"                                                                     Level: {self.level}")
         print(f"                                                                     Experience: {self.experience}")
         print(f"                                                                     Gold: {self.gold}")
-        print(f"                                                                     Weapon + {self.weapon}")
+        print(f"                                                                     Weapon + {self.weapon_bonus}")
         print(
             f"                                                                     Armor Class {self.armor_class}")
-        print(f"                                                                     Shield + {self.shield}")
+        print(f"                                                                     Shield + {self.shield_bonus}")
         print(
             f"                                                                     Constitution {self.constitution}")
         print(
@@ -86,16 +87,16 @@ class Player:
         print(f"                                                                     Charisma: {self.charisma}")
         print(f"                                                                     Hit points: {self.hit_points}/"
               f"{self.maximum_hit_points}")
-        if self.boots == 0:
+        if self.boots_bonus == 0:
             print(f"                                                                     Boots: Leather")
         else:
             print(
-                f"                                                                     Boots: Elven Boots + {self.boots}")
+                f"                                                                     Boots: Elven Boots + {self.boots_bonus}")
         if self.cloak == 0:
             print(f"                                                                     Cloak: none")
         else:
             print(
-                f"                                                                     Cloak: Elven Cloak + {self.boots}")
+                f"                                                                     Cloak: Elven Cloak + {self.boots_bonus}")
 
     def calculate_proficiency_bonus(self):
         if self.level <= 4:
@@ -202,16 +203,16 @@ class Player:
                 print(f"He gives you quantum armor + {self.armor_bonus}!")
                 return True
             if gift_item == 2:
-                self.shield += 1
-                print(f"He gives you a quantum shield + {self.shield}!")
+                self.shield_bonus += 1
+                print(f"He gives you a quantum shield + {self.shield_bonus}!")
                 return True
             if gift_item == 3:
-                self.weapon += 1
-                print(f"He gives you a quantum sword + {self.weapon}!")
+                self.weapon_bonus += 1
+                print(f"He gives you a quantum sword + {self.weapon_bonus}!")
                 return True
             if gift_item == 4:
-                self.boots += 1
-                print(f"He gives you Elven boots + {self.boots}!")
+                self.boots_bonus += 1
+                print(f"He gives you Elven boots + {self.boots_bonus}!")
                 return True
             if gift_item == 5:
                 self.cloak += 1
@@ -230,7 +231,7 @@ class Player:
         else:
             return True
 
-    def swing(self, name, level, dexterity, strength, weapon, monster_level, monster_name, monster_dexterity,
+    def swing(self, name, level, dexterity, strength, weapon_bonus, monster_level, monster_name, monster_dexterity,
               monster_armor_class):
         self.hud()
         roll_d20 = dice_roll(1, 20)  # attack roll
@@ -246,11 +247,11 @@ class Player:
         # print(f"Monster armor class {monster_armor_class}")
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier >= monster_armor_class:
             damage_roll = dice_roll(self.level, self.hit_dice)
-            damage_to_opponent = round(damage_roll + self.strength_modifier + weapon)
+            damage_to_opponent = round(damage_roll + self.strength_modifier + self.weapon_bonus)
             if damage_to_opponent > 0:
                 print(f"You hit!")
                 time.sleep(1)
-                '''print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll} + weapon bonus {weapon} "
+                f'''print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll} + weapon bonus {self.weapon_bonus}"
                       f"+ {self.strength_modifier} "
                       f"Strength modifier = {damage_to_opponent} ")'''
                 print(f"You do {damage_to_opponent} points of damage!")
@@ -267,7 +268,7 @@ class Player:
             print("Extra Attack Skill chance to hit!")
             time.sleep(2)
             damage_roll = dice_roll(self.level, self.hit_dice)
-            damage_to_opponent = round(damage_roll + self.strength_modifier + weapon) + 1
+            damage_to_opponent = round(damage_roll + self.strength_modifier + self.weapon_bonus) + 1
             print(f"You manage an off-balance attack for {damage_to_opponent} points of damage!")
             time.sleep(2)
             self.hud()

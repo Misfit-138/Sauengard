@@ -38,18 +38,17 @@ import random
 import os
 import winsound
 
-
 # load a player from disk-
 # with open('player.sav', 'rb') as player_save:
 #    player_1 = pickle.load(player_save)
 
-def hud():
+'''def hud():
     os.system('cls')
     print(f"                                                                     Name: {player_1.name}")
     print(f"                                                                     Level: {player_1.level}")
     print(f"                                                                     Experience: {player_1.experience}")
     print(f"                                                                     Gold: {player_1.gold}")
-    print(f"                                                                     Weapon + {player_1.weapon}")
+    print(f"                                                                     Weapon + {player_1.weapon_bonus}")
     print(f"                                                                     Equipped weapon: {player_1.weapon_name}")
     print(f"                                                                     Armor Class {player_1.armor_class}")
     print(f"                                                                     Shield + {player_1.shield}")
@@ -70,61 +69,76 @@ def hud():
         print(f"                                                                     Cloak: none")
     else:
         print(
-            f"                                                                     Cloak: Elven Cloak + {player_1.boots}")
-
+            f"                                                                     Cloak: Elven Cloak + {player_1.boots}")'''
 
 # "E:\C64\Telengard\telengard.wav"
-#winsound.PlaySound('e:\\C64\\Telengard\\telengard.wav', winsound.SND_ASYNC)
-winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\sound.wav', winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+# winsound.PlaySound('e:\\C64\\Telengard\\telengard.wav', winsound.SND_ASYNC)
+winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\sound.wav',
+                   winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 os.system('cls')
 typing("Welcome to Sauengard.")
 print("")
-#typing("Enjoy the music.")
+# typing("Enjoy the music.")
 print("")
 os.system('pause')
 winsound.PlaySound(None, winsound.SND_ASYNC)
 os.system('cls')
 
 while True:
-    player_name = input("Enter Player name: ")
-    accept_stats = ""
-    while accept_stats != "y":
-        os.system('cls')
-        # 0name,1level,2experience,3gold,4weapon+,5armor,6shield,7armor_class,8strength,
-        # 9dexterity,10constitution,11intelligence,12wisdom,13charisma,14hit_points15is_paralyzed16boots,17cloak
-        # 18weapon_name
-        #player_stats = [player_name, 1, 0, 0, 0, 0, 0, 10, *random.sample(range(3, 19), 6),
-        #                0, 0, False, 0, 0]  # zero is placeholder for hit points is_paralyzed = False
-        player_stats = [player_name, 1, 0, 0, 0, 0, 0, 10, 15, 14, 13, 12, 8, 10, 0, 0, False, 0, 0, "sword"]
-        # print(player_stats)
-        # hit_points at level one = 10 + self.constitution_modifier (index 10 is constitution)
-        hit_points = 10 + round((player_stats[10] - 10) / 2)
-        player_stats[14] = hit_points  # make player_stats index 14 equal to 10 + con modifier
-        player_stats[15] = hit_points
-        # print(player_stats)
-        player_1 = Player(*player_stats)  # sending stats to Player Class and create player_1 as Player class object
-        '''print(f"Name: {player_1.name}")
-        print(f"Level: {player_1.level}")
-        print(f"Experience: {player_1.experience}")
-        print(f"Gold: {player_1.gold}")
-        print(f"Weapon + {player_1.weapon}")
-        print(f"Armor Class {player_1.armor_class}")
-        print(f"Shield + {player_1.shield}")'''
-        print(f"Strength: {player_1.strength}")
-        print(f"Dexterity: {player_1.dexterity}")
-        print(f"Constitution {player_1.constitution}")
-        print(f"Intelligence: {player_1.intelligence}")
-        print(f"Wisdom: {player_1.wisdom}")
-        print(f"Charisma: {player_1.charisma}")
-        print(f"Hitpoints: {player_1.hit_points}")
-        #os.system('pause')
-        accept_stats = input("Accept stats y/n ? ").lower()
-    # a while loop's 'else' part runs if no break occurs and the condition is false
-    if accept_stats == "y":
-        hud()
-    # hud()
+    new_game_or_load = input("(S)tart a new character or (L)oad a saved one? ").lower()
+    if new_game_or_load not in ('s', 'l'):
+        continue
+    if new_game_or_load == 'l':
+        player_name = input("Enter name of saved character: ")
+        load_a_character = player_name + ".sav"
+        if os.path.isfile(load_a_character):
+            print(f"{player_name} found.")
+            with open(load_a_character, 'rb') as saved_player:
+                player_1 = pickle.load(saved_player)
+                time.sleep(1)
+                print(f"{player_name} read")
+                time.sleep(1)
+        else:
+            print(f"Could not find {player_name} ")
+            time.sleep(1.5)
+            continue
+    if new_game_or_load == 's':
+        player_name = input("Thy name, noble sire? ")
+        accept_stats = ""
+        while accept_stats != "y":
+            player_1 = Player(player_name)
+            os.system('cls')
+            # 0name,1level,2experience,3gold,4weapon+,5armor,6shield,7armor_class,8strength,
+            # 9dexterity,10constitution,11intelligence,12wisdom,13charisma,14hit_points15is_paralyzed16boots,17cloak
+            # 18weapon_name
+            # player_stats = [player_name, 1, 0, 0, 0, 0, 0, 10, *random.sample(range(3, 19), 6),
+            #                0, 0, False, 0, 0]  # zero is placeholder for hit points is_paralyzed = False
+            # player_stats = [player_name, 1, 0, 0, 0, 0, 0, 10, 15, 14, 13, 12, 8, 10, 0, 0, False, 0, 0, "sword"]
+
+            # hit_points at level one = 10 + self.constitution_modifier (index 10 is constitution)
+            # hit_points = 10 + round((player_stats[10] - 10) / 2)
+            # player_stats[14] = hit_points  # make player_stats index 14 equal to 10 + con modifier
+            # player_stats[15] = hit_points
+            # print(player_stats)
+            # player_1 = Player(player_name)
+            # player_1 = Player(*player_stats)  # sending stats to Player Class and create player_1 as Player class object
+            print(f"Strength: {player_1.strength}")
+            print(f"Dexterity: {player_1.dexterity}")
+            print(f"Constitution {player_1.constitution}")
+            print(f"Intelligence: {player_1.intelligence}")
+            print(f"Wisdom: {player_1.wisdom}")
+            print(f"Charisma: {player_1.charisma}")
+            print(f"Hitpoints: {player_1.hit_points}")
+            # os.system('pause')
+            accept_stats = input("Accept stats y/n ? ").lower()
+        # a while loop's 'else' part runs if no break occurs and the condition is false
+        if accept_stats == "y":
+            player_1.hud()
+
     print(f"You enter the town of Fieldenberg.")
+    time.sleep(1.5)
+    player_1.hud()
     in_town = True
     in_dungeon = False
     while in_town:
@@ -141,66 +155,75 @@ while True:
             print("Exiting..")
             exit()
         if town_functions == 's':
-            with open('player.sav', 'wb') as player_save:
+            print(f"Saving {player_1.name}")
+            character_filename = player_1.name + ".sav"
+            with open(character_filename, 'wb') as player_save:
+            #with open(player_1.name, 'wb') as player_save:
+            #with open('player.sav', 'wb') as player_save:
                 pickle.dump(player_1, player_save)
-
+                time.sleep(3)
         if town_functions == 'b':
-            hud()
+            player_1.hud()
             print("You visit the blacksmith")
 
         if town_functions == 'c':
-            hud()
+            player_1.hud()
             print("You visit the quantum chemist. He heals you to full strength.")
+            time.sleep(1.5)
             player_1.hit_points = player_1.maximum_hit_points
+            player_1.hud()
         if town_functions == 'e':
 
             in_town = False
             in_dungeon = True
-            hud()
+            player_1.hud()
             print("You enter the dungeon..")
             time.sleep(1)
-            #winsound.PlaySound('C:\\Users\\Pitsk\\Music\\creepy_dungeon_theme.wav',winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+            # winsound.PlaySound('C:\\Users\\Pitsk\\Music\\creepy_dungeon_theme.wav',winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
             while in_dungeon:
                 encounter = dice_roll(1, 20)
                 dungeon_command = input("Town (P)ortal, (H)ealing potion or WASD to navigate. --> ").lower()
                 if dungeon_command == 'p':
                     in_town = True
                     in_dungeon = False
-                    hud()
+                    player_1.hud()
                     print(f"The portal appears before you; a seemingly impossible gateway between distant places..")
                     time.sleep(2)
                     winsound.PlaySound(None, winsound.SND_ASYNC)
                     break
                 if dungeon_command == 'h':
-                    hud()
+                    player_1.hud()
                     print("You chug a healing potion.")
                     player_1.hit_points += 10
                     print(f"You have {player_1.hit_points} hit points.")
                     time.sleep(1)
-                    hud()
+                    player_1.hud()
                 if dungeon_command == 'w' or 'a' or 's' or 'd':
                     if dungeon_command == 'w':
-                        hud()
+                        player_1.hud()
                         print("You go north")
                     if dungeon_command == 'a':
-                        hud()
+                        player_1.hud()
                         print("You go west")
                     if dungeon_command == 's':
-                        hud()
+                        player_1.hud()
                         print("You go south")
                     if dungeon_command == 'd':
-                        hud()
+                        player_1.hud()
                         print("You go east")
                     if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h'):
-                        hud()
+                        player_1.hud()
                         print("Unknown command")
                         continue
                 if encounter > 12:
-                    hud()
+                    player_1.hud()
                     print("This should create monster now..")
                     dungeon_level = 1
+
+                    #MONSTERS_lvl_1 = [Ghoul]
                     MONSTERS = [Ghoul]
                     LEGENDARY_MONSTERS = [Dragon]
+                    #monster_list = "MONSTERS_lvl_", player_1.level
                     # def create_monster():
                     #    return random.choice(MONSTERS)
                     # in proximity loop contains battle loop within it
@@ -210,7 +233,7 @@ while True:
                     while in_proximity_to_monster:
                         if player_1.check_dead():
                             winsound.PlaySound(None, winsound.SND_ASYNC)
-                            hud()
+                            player_1.hud()
 
                             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav',
                                                winsound.SND_ASYNC)
@@ -234,10 +257,11 @@ while True:
                                     continue
                         if not in_proximity_to_monster:
                             break
+                        #monster_cls = random.choice(monster_list)
                         monster_cls = random.choice(MONSTERS)
-                        #monster_level = dungeon_level  # + random.randint(0, 2)
+                        # monster_level = dungeon_level  # + random.randint(0, 2)
                         monster_level = player_1.level
-                        #monster_cls = "MonsterLevel", player_1.level
+                        # monster_cls = "MonsterLevel", player_1.level
                         # monster_stats list index:
                         # 0level, 1experience_award, 2gold, 3weapon_bonus, 4armor,5shield,6armor_class,7strength,
                         # 8dexterity,9constitution,10intelligence,11wisdom,12charisma,13hit_points,14can_paralyze,
@@ -249,8 +273,9 @@ while True:
                         monster_hit_points = (monster_stats[9])  # equal to constitution (index 9) for now..
                         monster_stats[13] = round(monster_hit_points)  # make index 13(hp) = constitution for now
                         monster = monster_cls(*monster_stats)  # send stats to class and create 'monster' as object
-                        hud()
+                        player_1.hud()
                         print(f"You have encountered a level {monster_level} {monster.name}.")
+                        print(f"{monster.constitution_modifier} {monster.hit_points}")
                         time.sleep(1.5)
                         # if dice_roll(1, 20) > 0:  # == 20 and player_1.charisma > 15:
                         if player_1.monster_likes_you(monster.name, monster.intelligence):
@@ -259,7 +284,7 @@ while True:
                         if dice_roll(1, 20) == 20:  # (player_1.dexterity + player_1.dexterity_modifier):
                             attack_or_steal = dice_roll(1, 20)
                             if attack_or_steal > 16:  # (player_1.dexterity + player_1.dexterity_modifier):
-                                hud()
+                                player_1.hud()
                                 print(f"You are caught off guard!")
                                 damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity,
                                                                  monster.strength,
@@ -269,15 +294,15 @@ while True:
                                                                  player_1.armor_class)
                                 player_1.reduce_health(damage_to_player)
                                 if player_1.check_dead():  # if player  dead
-                                    hud()
+                                    player_1.hud()
                                     print(f"You were caught off guard!")
                                     time.sleep(1.5)
-                                    #in_proximity_to_monster = False
+                                    # in_proximity_to_monster = False
                                     # in_dungeon = False
                                     # in_town = False
                                     continue
                             else:
-                                hud()
+                                player_1.hud()
                                 print(f"The {monster.name} makes a quick move...")
                                 time.sleep(1.5)
                                 print("He steals an item from your pack.")
@@ -286,7 +311,7 @@ while True:
                                 break
                         # battle loop
                         while True:
-                            hud()
+                            player_1.hud()
                             choice = input("Fight Cast or Evade?\n F/C/E --> ").lower()
                             if choice == "e":
                                 evade_success = player_1.evade(monster.name, monster.dexterity)
@@ -295,7 +320,7 @@ while True:
                                     # in_town = True
                                     break
                                 else:
-                                    hud()
+                                    player_1.hud()
                                     print(f"The {monster.name} swiftly blocks your escape.")
                                     time.sleep(.5)
                                     print(f"You are rooted to the spot. You must stand your ground!")
@@ -303,21 +328,21 @@ while True:
                                     print(f"You raise your {player_1.weapon_name}.")
                                     time.sleep(1)
                             elif choice == "c":
-                                hud()
+                                player_1.hud()
                                 print(f"Cast")
                                 continue
                             elif choice == "f":
-                                hud()
+                                player_1.hud()
                                 print(f"Fight.")
                             else:
-                                hud()
+                                player_1.hud()
                                 print(f"The {monster.name} is not amused.")
                                 time.sleep(1)
-                                hud()
+                                player_1.hud()
                                 continue  # if player enters anything other than e or f
                             # player's turn:
                             damage_to_monster = player_1.swing(player_1.name, player_1.level, player_1.dexterity,
-                                                               player_1.strength, player_1.weapon, monster.level,
+                                                               player_1.strength, player_1.weapon_bonus, monster.level,
                                                                monster.name, monster.dexterity, monster.armor_class)
                             monster.reduce_health(damage_to_monster)  # take returned damage to monster
                             if not monster.check_dead():  # if monster is not dead
@@ -325,7 +350,7 @@ while True:
                                 print(f"It has {monster.hit_points} hit points.")
                                 time.sleep(2)
                             else:
-                                hud()
+                                player_1.hud()
                                 # print(f"It has {monster.hit_points} hit points.")
                                 print(f"It died..")
                                 time.sleep(2)
@@ -388,7 +413,7 @@ while True:
                                     # in_dungeon = False
                                     # in_town = False
                                     break
-                                hud()
+                                player_1.hud()
 
                             else:
                                 break

@@ -15,7 +15,7 @@ with open('config.dictionary', 'wb') as player_save:
         self.name = "Trett"
 
 
-player_2 = Player()
+player_1 = Player()
 with open('player.sav', 'wb') as player_save:
     pickle.dump(player_2, player_save)
 '''
@@ -30,7 +30,7 @@ with open('player.sav', 'rb') as player_save:
     print(f"                                                                     Gold: {player_2.gold}")
     print(f"                                                                     Weapon + {player_2.weapon}")
     print(f"                                                                     Armor Class {player_2.armor_class}")
-    print(f"                                                                     Shield + {player_2.shield}")
+    print(f"                                                                     Shield + {player_2.shield_bonus}")
     print(f"                                                                     Constitution {player_2.constitution}")
     print(f"                                                                     Intelligence: {player_2.intelligence}")
     print(f"                                                                     Wisdom: {player_2.wisdom}")

@@ -74,9 +74,9 @@ import winsound
 
 # "E:\C64\Telengard\telengard.wav"
 # winsound.PlaySound('e:\\C64\\Telengard\\telengard.wav', winsound.SND_ASYNC)
-winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\sound.wav',
-                   winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-
+# winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\sound.wav',winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+#winsound.PlaySound('C:\\Users\\Pitsk\\Music\\creepy_dungeon_theme.wav', winsound.SND_ASYNC)
+winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\originalsound.wav', winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 os.system('cls')
 typing("Welcome to Sauengard.")
 print("")
@@ -180,7 +180,7 @@ while True:
             player_1.hud()
             print("You enter the dungeon..")
             time.sleep(1)
-            # winsound.PlaySound('C:\\Users\\Pitsk\\Music\\creepy_dungeon_theme.wav',winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
             while in_dungeon:
                 encounter = dice_roll(1, 20)
                 dungeon_command = input("Town (P)ortal, (H)ealing potion or WASD to navigate. --> ").lower()
@@ -220,9 +220,10 @@ while True:
                     player_1.hud()
                     print("This should create monster now..")
                     dungeon_level = 1
+                    # monster dictionary. keys correspond to difficulty
                     monster_dict = {
-                        1: [Kobold, Ghoul, Goblin, WingedKobold],
-                        2: [Drow]
+                        1: [Kobold, Goblin, WingedKobold],
+                        2: [Drow, Ghoul]
                     }
 
                     # MONSTERS = [Ghoul]
@@ -282,7 +283,8 @@ while True:
                         print(f"{monster.introduction}")
                         # print(f"You have encountered a level {monster.level} {monster.name}.")
                         print(f"{monster.constitution_modifier} {monster.hit_points}")
-                        time.sleep(2.5)
+                        # time.sleep(2.5)
+                        os.system('pause')
                         # if dice_roll(1, 20) > 0:  # == 20 and player_1.charisma > 15:
                         if player_1.monster_likes_you(monster.name, monster.intelligence):
                             in_proximity_to_monster = False

@@ -242,7 +242,7 @@ class Ghoul(Monster):
                          constitution, intelligence, wisdom, charisma, hit_points, can_paralyze, can_drain, undead,
                          human_player_level, difficulty_class, proficiency, damage, challenge_rating)
         self.level = level
-        self.experience_award = self.level * 90
+        self.experience_award = 200
         self.gold = self.level * 103 * round(random.uniform(1, 2))  # ghouls shouldn't have much gold
         self.weapon_bonus = weapon
         self.armor = armor_bonus
@@ -266,7 +266,7 @@ class Ghoul(Monster):
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)
-        self.hit_points = self.level * (random.randint(8, 10)) + self.constitution_modifier
+        self.hit_points = random.randint(20, 24) + self.constitution_modifier
         # self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier) + 1
         self.dexterity_modifier = round((self.dexterity - 10) / 2)
         self.wisdom_modifier = round((self.wisdom - 10) / 2)
@@ -283,7 +283,7 @@ class Ghoul(Monster):
         self.attack_5_phrase = "It leaps upon you!!"
         self.introduction = "You have encountered a Ghoul, crouching and licking a skull. Noticing your approach,\n" \
                             "it drops the skull and rises to its feet, hissing through razor-sharp teeth and\n" \
-                            "working its jagged claws. Driven by an insatiable hunger for humanoid flesh, its bulbous " \
+                            "working its jagged claws. Driven by an insatiable hunger for humanoid flesh, its bulbous\n " \
                             "black eyes grow impossibly wide. "
     name = "Ghoul"
 
@@ -349,7 +349,7 @@ class Kobold(Monster):
                          constitution, intelligence, wisdom, charisma, hit_points, can_paralyze, can_drain, undead,
                          human_player_level, difficulty_class, proficiency, damage, challenge_rating)
         self.level = 1
-        self.experience_award = self.level * 25
+        self.experience_award = 25
         self.gold = self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
@@ -454,7 +454,7 @@ class WingedKobold(Monster):
                          constitution, intelligence, wisdom, charisma, hit_points, can_paralyze, can_drain, undead,
                          human_player_level, difficulty_class, proficiency, damage, challenge_rating)
         self.level = 1
-        self.experience_award = self.level * 50
+        self.experience_award = 50
         self.gold = self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
@@ -506,7 +506,7 @@ class Drow(Monster):
                          constitution, intelligence, wisdom, charisma, hit_points, can_paralyze, can_drain, undead,
                          human_player_level, difficulty_class, proficiency, damage, challenge_rating)
         self.level = 2
-        self.experience_award = self.level * 50
+        self.experience_award = 100
         self.gold = self.level * 300 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
@@ -530,7 +530,7 @@ class Drow(Monster):
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)
-        self.hit_points = self.level * (random.randint(5, 6)) + self.constitution_modifier
+        self.hit_points = random.randint(12, 14) + self.constitution_modifier
         # self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier) + 1
         self.dexterity_modifier = round((self.dexterity - 10) / 2)
         self.wisdom_modifier = round((self.wisdom - 10) / 2)

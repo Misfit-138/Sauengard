@@ -262,7 +262,8 @@ while True:
                         if not in_proximity_to_monster:
                             break
 
-                        monster_key = player_1.level + random.randint(0, 1)  # same level as player or 1 higher
+                        monster_key = random.randint(1, (player_1.level + 1))
+                        #monster_key = player_1.level + random.randint(0, 1)  # same level as player or 1 higher
                         monster_cls = random.choice(monster_dict[monster_key])
                         # monster_level = dungeon_level  # + random.randint(0, 2)
                         monster_level = player_1.level

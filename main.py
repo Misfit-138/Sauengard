@@ -32,7 +32,7 @@ and its documentation and return value (usually None) support this, the behavior
 import time
 import pickle
 from player_class_module import *
-#from monster_test import *
+# from monster_test import *
 from monster_class_module import *
 from typing_module import *
 import random
@@ -159,8 +159,8 @@ while True:
             print(f"Saving {player_1.name}")
             character_filename = player_1.name + ".sav"
             with open(character_filename, 'wb') as player_save:
-            #with open(player_1.name, 'wb') as player_save:
-            #with open('player.sav', 'wb') as player_save:
+                # with open(player_1.name, 'wb') as player_save:
+                # with open('player.sav', 'wb') as player_save:
                 pickle.dump(player_1, player_save)
                 time.sleep(2)
         if town_functions == 'b':
@@ -221,11 +221,11 @@ while True:
                     print("This should create monster now..")
                     dungeon_level = 1
                     monster_dict = {
-                        1: [Kobold, Ghoul]
+                        1: [Kobold, Ghoul, Goblin, WingedKobold],
+                        2: [Drow]
                     }
 
-                    #MONSTERS = [Ghoul]
-
+                    # MONSTERS = [Ghoul]
 
                     # def create_monster():
                     #    return random.choice(MONSTERS)
@@ -261,7 +261,7 @@ while True:
                         if not in_proximity_to_monster:
                             break
 
-                        monster_key = player_1.level  # monster level of difficulty corresponds to player_1.level
+                        monster_key = player_1.level + random.randint(0, 1)  # same level as player or 1 higher
                         monster_cls = random.choice(monster_dict[monster_key])
                         # monster_level = dungeon_level  # + random.randint(0, 2)
                         monster_level = player_1.level
@@ -276,12 +276,13 @@ while True:
                                          False, player_1.level, 0, 0, 0, 0]
                         monster_hit_points = (monster_stats[9])  # equal to constitution (index 9) for now..
                         monster_stats[13] = round(monster_hit_points)  # make index 13(hp) = constitution for now
-                        #monster = monster_cls
+                        # monster = monster_cls
                         monster = monster_cls(*monster_stats)  # send stats to class and create 'monster' as object
                         player_1.hud()
-                        print(f"You have encountered a level {monster_level} {monster.name}.")
+                        print(f"{monster.introduction}")
+                        # print(f"You have encountered a level {monster.level} {monster.name}.")
                         print(f"{monster.constitution_modifier} {monster.hit_points}")
-                        time.sleep(1.5)
+                        time.sleep(2.5)
                         # if dice_roll(1, 20) > 0:  # == 20 and player_1.charisma > 15:
                         if player_1.monster_likes_you(monster.name, monster.intelligence):
                             in_proximity_to_monster = False
@@ -290,7 +291,7 @@ while True:
                             attack_or_steal = dice_roll(1, 20)
                             if attack_or_steal > 16:  # (player_1.dexterity + player_1.dexterity_modifier):
                                 player_1.hud()
-                                print(f"You are caught off guard!")
+                                print(f"The {monster.name} attacks with blinding speed! You are caught off guard!")
                                 damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity,
                                                                  monster.strength,
                                                                  monster.weapon_bonus,

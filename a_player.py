@@ -1,5 +1,6 @@
 import random
 
+
 # check_dead returns a string value, it does not output it to stdout.
 # If you want to see the output from check_dead, try print(player.check_dead())
 
@@ -24,7 +25,7 @@ class Player:
     def fight(self):
         self.reduce_health(self.calculate_damage(self.weapon))
         print(self.health)
-        #print(self.check_dead())
+        # print(self.check_dead())
 
 
 player = Player(1, 15)

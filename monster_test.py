@@ -130,20 +130,20 @@ class Kobold(Monster):
     def __init__(self):
         super().__init__()
         self.level = 1
-        self.experience_award = self.level * 90
-        self.gold = self.level * 103 * round(random.uniform(1, 2))  # ghouls shouldn't have much gold
+        self.experience_award = self.level * 25
+        self.gold = self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
-        self.strength = random.randint(11, 12)
-        self.dexterity = random.randint(12, 16)
-        self.constitution = random.randint(12, 13)
-        self.intelligence = random.randint(5, 10)
-        self.wisdom = random.randint(7, 10)
-        self.charisma = random.randint(1, 5)
-        self.can_paralyze = True
+        self.strength = random.randint(6, 8)
+        self.dexterity = random.randint(14, 16)
+        self.constitution = random.randint(8, 10)
+        self.intelligence = random.randint(7, 8)
+        self.wisdom = random.randint(7, 8)
+        self.charisma = random.randint(7, 8)
+        self.can_paralyze = False
         self.can_drain = False
-        self.undead = True
+        self.undead = False
         # self.human_player_level = human_player_level
         self.difficulty_class = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -154,22 +154,70 @@ class Kobold(Monster):
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)
-
-        self.hit_points = self.level * (random.randint(8, 10)) + self.constitution_modifier
+        self.hit_points = self.level * (random.randint(5, 6)) + self.constitution_modifier
         # self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier) + 1
-
         self.dexterity_modifier = round((self.dexterity - 10) / 2)
         self.wisdom_modifier = round((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 12)
         self.attack_1 = 0  # attack bonus
-        self.attack_1_phrase = "The Kobold strikes with one claw.."
+        self.attack_1_phrase = "It strikes at you with its dagger.."
         self.attack_2 = 1
-        self.attack_2_phrase = "The Kobold lunges and attacks with its rancid teeth!!"
+        self.attack_2_phrase = "It thrusts forward and attacks with its jaws!"
         self.attack_3 = 2
-        self.attack_3_phrase = "The Kobold strikes with both of its terrible claws!!"
+        self.attack_3_phrase = "It raises its sling, in an attempt to bludgeon you!"
         self.attack_4 = 2
-        self.attack_4_phrase = "The Kobold rushes straight at you!!"
+        self.attack_4_phrase = "With blinding speed, it kicks with its horrid claws.."
         self.attack_5 = 3
-        self.attack_5_phrase = "It leaps upon you!!"
+        self.attack_5_phrase = "It whips its tail!"
 
     name = "Kobold"
+
+    class Ghoul(Monster):
+
+        def __init__(self):
+            super().__init__()
+            self.level = 1
+            self.experience_award = self.level * 90
+            self.gold = self.level * 103 * round(random.uniform(1, 2))  # ghouls shouldn't have much gold
+            self.weapon_bonus = 0
+            self.armor = 0
+            self.shield = 0
+            self.strength = random.randint(11, 12)
+            self.dexterity = random.randint(12, 16)
+            self.constitution = random.randint(12, 13)
+            self.intelligence = random.randint(5, 10)
+            self.wisdom = random.randint(7, 10)
+            self.charisma = random.randint(1, 5)
+            self.can_paralyze = True
+            self.can_drain = False
+            self.undead = True
+            # self.human_player_level = human_player_level
+            self.difficulty_class = 1
+            self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+            self.damage = 0
+            self.challenge_rating = 1
+            self.hit_dice = 8  # 12 for huge monster, 20 for gargantuan
+            self.number_of_hd = self.level
+            self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+            self.strength_modifier = round((self.strength - 10) / 2)
+            self.constitution_modifier = round((self.constitution - 10) / 2)
+
+            self.hit_points = self.level * (random.randint(8, 10)) + self.constitution_modifier
+            # self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier) + 1
+
+            self.dexterity_modifier = round((self.dexterity - 10) / 2)
+            self.wisdom_modifier = round((self.wisdom - 10) / 2)
+            self.armor_class = random.randint(11, 12)
+            self.attack_1 = 0  # attack bonus
+            self.attack_1_phrase = "The Kobold strikes with one claw.."
+            self.attack_2 = 1
+            self.attack_2_phrase = "The Kobold lunges and attacks with its rancid teeth!!"
+            self.attack_3 = 2
+            self.attack_3_phrase = "The Kobold strikes with both of its terrible claws!!"
+            self.attack_4 = 2
+            self.attack_4_phrase = "The Kobold rushes straight at you!!"
+            self.attack_5 = 3
+            self.attack_5_phrase = "It leaps upon you!!"
+
+        name = "Ghoul"
+

@@ -5,7 +5,8 @@ import random
 # If you want to see the output from check_dead, try print(player.check_dead())
 
 class Player:
-    def __init__(self, weapon, health):
+    def __init__(self, name, weapon, health):
+        self.name = name
         self.weapon = weapon
         self.health = health
 
@@ -28,7 +29,23 @@ class Player:
         # print(self.check_dead())
 
 
-player = Player(1, 15)
+player = Player("fart", 1, 15)
 
 player.fight()
 print(player.check_dead())
+
+# Dumping Object to File
+print(f"Saving {player.name}")
+character_filename = player.name + ".txt"
+import pprint
+
+f = open(character_filename, 'w')
+pprint.pprint(player, f)
+f.close()
+# Loading object from file
+
+# import pprint
+f = open(character_filename)
+lines = f.read()
+player = eval(lines)
+f.close()

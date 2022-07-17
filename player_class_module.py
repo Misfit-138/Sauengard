@@ -1,5 +1,5 @@
 # import random
-import random
+
 import time
 import os
 import winsound
@@ -30,6 +30,21 @@ Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighte
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.'''
 
 
+class QuantumSword:
+
+    def __init__(self):
+        self.name = "Rudimentary Quantum Sword"
+        self.damage_bonus = 1
+
+    def __repr__(self):
+        # return "Rudimentary Quantum Sword"
+        return self.name
+
+
+quantum_sword = QuantumSword()
+quantum_sword_2 = QuantumSword()
+
+
 class Player:
 
     def __init__(self, name):  # level, experience, gold, weapon_bonus, armor_bonus, shield, armor_class, strength,
@@ -43,13 +58,13 @@ class Player:
         self.weapon_bonus = 0
         self.armor_bonus = 0
         self.shield_bonus = 0
-        self.strength = 15  # random.randint(13, 16)
-        self.dexterity = 14  # random.randint(12, 15)
+        self.strength = 15  # random.randint(14, 16)
+        self.dexterity = 14  # random.randint(13, 15)
         self.dexterity_modifier = round((self.dexterity - 10) / 2)
-        self.constitution = 13  # random.randint(12, 14)13
-        self.intelligence = 12
-        self.wisdom = 8
-        self.charisma = 10
+        self.constitution = 13  # random.randint(12, 14)
+        self.intelligence = 12  # random.randint(11, 13)
+        self.wisdom = 8  # random.randint(7, 9)
+        self.charisma = 10  # random.randint(9, 11)
         self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)
@@ -66,6 +81,7 @@ class Player:
         self.extra_attack = 0
         self.armor_class = 10 + self.dexterity_modifier + self.armor_bonus + self.shield_bonus + self.boots_bonus
         self.weapon_name = "sword"
+        self.pack = [quantum_sword, quantum_sword_2]
 
     def hud(self):
         os.system('cls')

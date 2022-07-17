@@ -29,7 +29,7 @@ An in-place algorithm is impure and non-idempotent, but if the state that it mod
 and its documentation and return value (usually None) support this, the behavior is predictable and comprehensible."""
 # MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
 # "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
-import time
+
 import pickle
 from player_class_module import *
 # from monster_test import *
@@ -75,8 +75,9 @@ import winsound
 # "E:\C64\Telengard\telengard.wav"
 # winsound.PlaySound('e:\\C64\\Telengard\\telengard.wav', winsound.SND_ASYNC)
 # winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\sound.wav',winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-#winsound.PlaySound('C:\\Users\\Pitsk\\Music\\creepy_dungeon_theme.wav', winsound.SND_ASYNC)
-winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\originalsound.wav', winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+# winsound.PlaySound('C:\\Users\\Pitsk\\Music\\creepy_dungeon_theme.wav', winsound.SND_ASYNC)
+winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\originalsound.wav',
+                   winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 os.system('cls')
 typing("Welcome to Sauengard.")
 print("")
@@ -138,6 +139,9 @@ while True:
             player_1.hud()
 
     print(f"You enter the town of Fieldenberg.")
+    print(quantum_sword)
+    # print(', '.join(player_1.pack))
+    print(f"Your pack contains {player_1.pack}")
     time.sleep(1.5)
     player_1.hud()
     in_town = True
@@ -174,13 +178,13 @@ while True:
             player_1.hit_points = player_1.maximum_hit_points
             player_1.hud()
         if town_functions == 'e':
-
             in_town = False
             in_dungeon = True
             player_1.hud()
             print("You enter the dungeon..")
             time.sleep(1)
-            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
+                               winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
             while in_dungeon:
                 encounter = dice_roll(1, 20)
                 dungeon_command = input("Town (P)ortal, (H)ealing potion or WASD to navigate. --> ").lower()
@@ -263,7 +267,6 @@ while True:
                             break
 
                         monster_key = random.randint(1, (player_1.level + 1))
-                        #monster_key = player_1.level + random.randint(0, 1)  # same level as player or 1 higher
                         monster_cls = random.choice(monster_dict[monster_key])
                         # monster_level = dungeon_level  # + random.randint(0, 2)
                         monster_level = player_1.level

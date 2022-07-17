@@ -105,3 +105,6 @@ for i in player_1.pack:
 
 print(res)
 
+import pprint
+pretty = pprint.PrettyPrinter(width=16)
+pretty.pprint(res)

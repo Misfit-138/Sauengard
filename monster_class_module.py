@@ -152,6 +152,7 @@ class Monster:
         self.attack_5 = 0
         self.attack_5_phrase = ""
         self.introduction = ""
+
     def reduce_health(self, damage):
         self.hit_points -= damage
         return damage
@@ -285,6 +286,7 @@ class Ghoul(Monster):
                             "it drops the skull and rises to its feet, hissing through razor-sharp teeth and\n" \
                             "working its jagged claws. Driven by an insatiable hunger for humanoid flesh, its bulbous\n " \
                             "black eyes grow impossibly wide. "
+
     name = "Ghoul"
 
 
@@ -337,6 +339,7 @@ class Dragon(Monster):
         self.attack_5 = 10
         self.attack_5_phrase = "The dragon breathes fire!!"
         self.introduction = f"You have encountered a {self.name}."
+
     name = "Dragon"
 
 
@@ -389,6 +392,7 @@ class Kobold(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "It whips its tail!"
         self.introduction = f"You have encountered a {self.name}."
+
     name = "Kobold"
 
 
@@ -442,6 +446,7 @@ class Goblin(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "It strikes a combination of blows with both hands!"
         self.introduction = f"You have encountered a {self.name}."
+
     name = "Goblin"
 
 
@@ -494,6 +499,7 @@ class WingedKobold(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "It raises its spear!"
         self.introduction = f"You have encountered a {self.name}."
+
     name = "Winged Kobold"
 
 
@@ -546,7 +552,9 @@ class Drow(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "It releases weird quantum flames from its outstretched hand!!"
         self.introduction = f"You have encountered a {self.name}."
+
     name = "Drow"
+
 
 '''def drain(self, monster_wisdom, monster_wisdom_modifier, human_player_level, human_player_wisdom,
               human_player_wisdom_modifier):

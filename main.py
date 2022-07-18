@@ -32,16 +32,13 @@ and its documentation and return value (usually None) support this, the behavior
 
 import pickle
 from player_class_module import *
-# from monster_test import *
-from monster_class_module import *
+from monster_test import *
+#from monster_class_module import *
 from typing_module import *
 import random
 import os
 import winsound
 
-# load a player from disk-
-# with open('player.sav', 'rb') as player_save:
-#    player_1 = pickle.load(player_save)
 
 '''def hud():
     os.system('cls')
@@ -139,16 +136,15 @@ while True:
             player_1.hud()
 
     print(f"You enter the town of Fieldenberg.")
-    print(quantum_sword)
-    # print(', '.join(player_1.pack))
-    print(f"Your pack contains {player_1.pack}")
+    # print(f"Your pack contains {player_1.pack}")
     time.sleep(1.5)
     player_1.hud()
     in_town = True
     in_dungeon = False
     while in_town:
         town_functions = input(
-            "You are in town. (S)ave, (Q)uit game, (R)estart the game, (B)lacksmith, (C)hemist or (E)nter dungeon "
+            "You are in town. (S)ave, (Q)uit game, (R)estart the game, (I)nventory, (B)lacksmith, (C)hemist or ("
+            "E)nter dungeon "
             "--> ").lower()
         if town_functions == 'r':
             print("Restart")
@@ -163,13 +159,22 @@ while True:
             print(f"Saving {player_1.name}")
             character_filename = player_1.name + ".sav"
             with open(character_filename, 'wb') as player_save:
-                # with open(player_1.name, 'wb') as player_save:
-                # with open('player.sav', 'wb') as player_save:
                 pickle.dump(player_1, player_save)
                 time.sleep(2)
+        if town_functions == 'i':
+            player_1.hud()
+            player_1.inventory()
+            os.system('pause')
         if town_functions == 'b':
             player_1.hud()
             print("You visit the blacksmith")
+            at_blacksmith = True
+            while at_blacksmith:
+                buy_or_exit = input("(B)uy items or (E)xit --> ").lower()
+                if buy_or_exit == 'e':
+                    break
+                if buy_or_exit == 'b':
+                    player_1.sale()
 
         if town_functions == 'c':
             player_1.hud()
@@ -187,7 +192,8 @@ while True:
                                winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
             while in_dungeon:
                 encounter = dice_roll(1, 20)
-                dungeon_command = input("Town (P)ortal, (H)ealing potion or WASD to navigate. --> ").lower()
+                dungeon_command = input(
+                    "Town (P)ortal, (H)ealing potion, (I)nventory or WASD to navigate. --> ").lower()
                 if dungeon_command == 'p':
                     in_town = True
                     in_dungeon = False
@@ -203,6 +209,8 @@ while True:
                     print(f"You have {player_1.hit_points} hit points.")
                     time.sleep(1)
                     player_1.hud()
+                if dungeon_command == 'i':
+                    player_1.inventory()
                 if dungeon_command == 'w' or 'a' or 's' or 'd':
                     if dungeon_command == 'w':
                         player_1.hud()
@@ -216,7 +224,7 @@ while True:
                     if dungeon_command == 'd':
                         player_1.hud()
                         print("You go east")
-                    if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h'):
+                    if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h', 'i'):
                         player_1.hud()
                         print("Unknown command")
                         continue
@@ -281,8 +289,8 @@ while True:
                                          False, player_1.level, 0, 0, 0, 0]
                         monster_hit_points = (monster_stats[9])  # equal to constitution (index 9) for now..
                         monster_stats[13] = round(monster_hit_points)  # make index 13(hp) = constitution for now
-                        # monster = monster_cls
-                        monster = monster_cls(*monster_stats)  # send stats to class and create 'monster' as object
+                        monster = monster_cls()
+                        #monster = monster_cls(*monster_stats)  # send stats to class and create 'monster' as object
                         player_1.hud()
                         print(f"{monster.introduction}")
                         # print(f"You have encountered a level {monster.level} {monster.name}.")
@@ -317,7 +325,7 @@ while True:
                                 player_1.hud()
                                 print(f"The {monster.name} makes a quick move...")
                                 time.sleep(1.5)
-                                print("He steals an item from your pack.")
+                                player_1.quick_move()
                                 time.sleep(1.5)
                                 in_proximity_to_monster = False
                                 break

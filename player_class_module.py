@@ -1,7 +1,9 @@
 # import random
-
+import pprint
 import time
 import os
+from collections import Counter
+
 import winsound
 from dice_roll_module import *
 
@@ -30,17 +32,55 @@ Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighte
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.'''
 
 
-class QuantumSword:
+class Sword:
 
     def __init__(self):
-        self.name = "Rudimentary Quantum Sword"
-        self.damage_bonus = 1
+        self.name = ""
+        self.damage_bonus = 0
+        self.to_hit_bonus = 0
+        self.sell_price = 0
+        self.buy_price = 0
+        self.minimum_level = 1
 
     def __repr__(self):
-        # return "Rudimentary Quantum Sword"
         return self.name
 
 
+class ShortSword(Sword):
+    def __init__(self):
+        super().__init__()
+        self.name = "Short Sword"
+        self.damage_bonus = 1
+        self.to_hit_bonus = 0
+        self.sell_price = 75
+        self.buy_price = 125
+        self.minimum_level = 1
+
+
+class BroadSword(Sword):
+    def __init__(self):
+        super().__init__()
+        self.name = "Broad Sword"
+        self.damage_bonus = 1
+        self.to_hit_bonus = 0
+        self.sell_price = 75
+        self.buy_price = 125
+        self.minimum_level = 1
+
+
+class QuantumSword(Sword):
+    def __init__(self):
+        super().__init__()
+        self.name = "Rudimentary Quantum Sword"
+        self.damage_bonus = 3
+        self.to_hit_bonus = 2
+        self.sell_price = 5000
+        self.buy_price = 8000
+        self.minimum_level = 3
+
+
+short_sword = ShortSword()
+broad_sword = BroadSword()
 quantum_sword = QuantumSword()
 quantum_sword_2 = QuantumSword()
 
@@ -81,7 +121,14 @@ class Player:
         self.extra_attack = 0
         self.armor_class = 10 + self.dexterity_modifier + self.armor_bonus + self.shield_bonus + self.boots_bonus
         self.weapon_name = "sword"
-        self.pack = [quantum_sword, quantum_sword_2]
+        self.pack = []
+
+    def inventory(self):
+        if len(self.pack):
+            print("Your pack contains:")
+            print(*self.pack, sep="\n")
+        else:
+            print("Your pack is empty")
 
     def hud(self):
         os.system('cls')
@@ -237,6 +284,15 @@ class Player:
         else:
             return False
 
+    def quick_move(self):
+        if len(self.pack):
+            stolen_item = random.choice(self.pack)
+            print(f"He steals your {stolen_item}!")
+            return
+        else:
+            print("You have nothing in your pack!")
+            return
+
     def reduce_health(self, damage):
         self.hit_points -= damage
         return  # damage
@@ -299,6 +355,45 @@ class Player:
             print(f"You successfully evade the {monster_name}.")
             return True
 
+    def sale(self):
+        while True:
+            print("The following items are for sale:")
+            print(f"Item             Level Requirement          Price")
+            print(f"1 {short_sword}                         1                    50   ")
+            print(f"2 {broad_sword}                          1                    70   ")
+            print(f"3 {quantum_sword} 2                    100")
+            sale_item_choice = input("Item number to buy or (E)xit:").lower()
+            if sale_item_choice not in ('1', '2', '3', 'e'):
+                continue
+            if sale_item_choice == 'e':
+                return
+            if sale_item_choice == '1':
+                sale_weapon = short_sword
+                if sale_weapon not in self.pack:
+                    print(f"You buy a {short_sword}")
+                    self.pack.append(short_sword)
+                    return
+                else:
+                    print(f"You already have a {short_sword}")
+                    continue
+            if sale_item_choice == '2':
+                sale_weapon = broad_sword
+                if sale_weapon not in self.pack:
+                    print(f"You buy a {broad_sword}")
+                    self.pack.append(broad_sword)
+                    return
+                else:
+                    print(f"You already have a {broad_sword}")
+                    continue
+            if sale_item_choice == '3':
+                sale_weapon = quantum_sword
+                if sale_weapon not in self.pack:
+                    print(f"You buy a {quantum_sword}")
+                    self.pack.append(quantum_sword)
+                    return
+                else:
+                    print(f"You already have a {quantum_sword}")
+                    continue
 
 '''
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.

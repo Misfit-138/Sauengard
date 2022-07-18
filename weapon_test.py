@@ -13,20 +13,52 @@ monster.breathe_fire(monster.strength)'''
 # print(attack)
 import random
 from collections import Counter
+import pprint
 
-class QuantumSword:
+
+class Sword:
 
     def __init__(self):
-        self.name = "Rudimentary Quantum Sword"
-        self.damage_bonus = 1
+        self.name = "Short Sword"
+        self.damage_bonus = 0
+        self.to_hit_bonus = 0
+        self.sell_price = 50
+        self.buy_price = 100
+        self.minimum_level = 1
 
     def __repr__(self):
-        # return "Rudimentary Quantum Sword"
+        return self.name
+
+
+class BroadSword(Sword):
+    def __init__(self):
+        super().__init__()
+        self.name = "Broad Sword"
+        self.damage_bonus = 1
+        self.to_hit_bonus = 0
+        self.sell_price = 75
+        self.buy_price = 125
+        self.minimum_level = 1
+
+    def __repr__(self):
+        return self.name
+
+
+class QuantumSword(Sword):
+    def __init__(self):
+        super().__init__()
+        self.name = "Rudimentary Quantum Sword"
+        self.damage_bonus = 3
+        self.to_hit_bonus = 2
+        self.sell_price = 5000
+        self.buy_price = 8000
+        self.minimum_level = 3
+
+    def __repr__(self):
         return self.name
 
 
 class Axe:
-
     damage_bonus: int
 
     def __init__(self):
@@ -65,7 +97,7 @@ print("Your pack contains:")
 print(repr(player_1.pack).strip("[]"))
 
 # print(repr(player_2.pack).strip("[]"))
-#player_2.pack.clear()  # someone steals your entire inventory!!!
+# player_2.pack.clear()  # someone steals your entire inventory!!!
 
 print(f"The hobbit makes a quick move.")
 if len(player_1.pack):
@@ -93,18 +125,16 @@ else:
     print(repr(player_1.pack).strip("[]"))
 print(f"You swing your {player_1.wielded_weapon_1} and get a bonus of {player_1.weapon_bonus}")
 
-
 # MyList = ["a", "b", "a", "c", "c", "a", "c"]
 res = Counter(player_1.pack)
 
-print(res)
+# print(res)
 res = {}
 
 for i in player_1.pack:
     res[i] = player_1.pack.count(i)
 
-print(res)
+#print(res)
 
-import pprint
-pretty = pprint.PrettyPrinter(width=16)
+pretty = pprint.PrettyPrinter(width=20)
 pretty.pprint(res)

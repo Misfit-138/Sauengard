@@ -2,6 +2,8 @@
 import pprint
 import time
 import os
+import gc
+import operator as op
 from collections import Counter
 
 import winsound
@@ -53,7 +55,7 @@ class ShortSword(Sword):
         self.damage_bonus = 1
         self.to_hit_bonus = 0
         self.sell_price = 75
-        self.buy_price = 125
+        self.buy_price = 50
         self.minimum_level = 1
 
 
@@ -94,8 +96,9 @@ class Player:
         self.name = name
         self.level = 1
         self.experience = 0
-        self.gold = 0
-        self.weapon_bonus = 0
+        self.gold = 5000
+        self.wielded_weapon = short_sword
+        self.weapon_bonus = self.wielded_weapon.damage_bonus
         self.armor_bonus = 0
         self.shield_bonus = 0
         self.strength = 15  # random.randint(14, 16)
@@ -120,13 +123,24 @@ class Player:
         self.two_handed = False
         self.extra_attack = 0
         self.armor_class = 10 + self.dexterity_modifier + self.armor_bonus + self.shield_bonus + self.boots_bonus
-        self.weapon_name = "sword"
+        # self.weapon_name = "sword"
         self.pack = []
 
     def inventory(self):
         if len(self.pack):
             print("Your pack contains:")
-            print(*self.pack, sep="\n")
+            #print(*self.pack, sep="\n")
+            #print("Alternate method:")
+            # this needs work!! too tired...
+            stuff_dict = {}
+            for item in self.pack:
+                stuff_dict[item] = self.pack.count(item)
+            print(str(stuff_dict).replace("{", "").replace("}", ""))
+            print("alternate method:")
+            for key, value in stuff_dict.items():
+                print(key, ' : ', value)
+                #print(value, ':', key)
+
         else:
             print("Your pack is empty")
 
@@ -257,21 +271,21 @@ class Player:
             time.sleep(2)
             self.hud()
 
-    def monster_likes_you(self, name, monster_intel):
-        if dice_roll(1, 20) == 20 and monster_intel > 8 and self.charisma > 15:
-            print(f"The {name} likes you!")
+    def monster_likes_you(self, monster_name, monster_intel):
+        if dice_roll(1, 20) == 20 and monster_intel > 8:  # and self.charisma > 15:
+            print(f"The {monster_name} likes you!")
             gift_item = dice_roll(1, 5)
             if gift_item == 1:
                 self.armor_bonus += 1
-                print(f"He gives you quantum armor + {self.armor_bonus}!")
+                print(f"He enhances your armor to + {self.armor_bonus}!")
                 return True
             if gift_item == 2:
                 self.shield_bonus += 1
-                print(f"He gives you a quantum shield + {self.shield_bonus}!")
+                print(f"He enhances your shield to + {self.shield_bonus}!")
                 return True
             if gift_item == 3:
                 self.weapon_bonus += 1
-                print(f"He gives you a quantum sword + {self.weapon_bonus}!")
+                print(f"He enhances your sword to + {self.weapon_bonus}!")
                 return True
             if gift_item == 4:
                 self.boots_bonus += 1
@@ -356,44 +370,58 @@ class Player:
             return True
 
     def sale(self):
+        sale_items_dict = {'1': short_sword,
+                           '2': broad_sword,
+                           '3': quantum_sword
+                           }
         while True:
+
             print("The following items are for sale:")
             print(f"Item             Level Requirement          Price")
-            print(f"1 {short_sword}                         1                    50   ")
-            print(f"2 {broad_sword}                          1                    70   ")
-            print(f"3 {quantum_sword} 2                    100")
-            sale_item_choice = input("Item number to buy or (E)xit:").lower()
-            if sale_item_choice not in ('1', '2', '3', 'e'):
+            print(f"1 Shortsword             {short_sword.minimum_level}                    {short_sword.buy_price}   ")
+            print(f"2 Broad Sword            {broad_sword.minimum_level}                    {broad_sword.buy_price}   ")
+            print(f"3 Quantum Sword          {quantum_sword.minimum_level}                    {quantum_sword.buy_price}")
+            print(f"You have {self.gold} gold pieces.")
+            sale_item_key = input("Item number to buy or (E)xit the blacksmith:").lower()
+            if sale_item_key not in ('1', '2', '3', 'e'):
                 continue
-            if sale_item_choice == 'e':
+            if sale_item_key == 'e':
                 return
-            if sale_item_choice == '1':
-                sale_weapon = short_sword
-                if sale_weapon not in self.pack:
-                    print(f"You buy a {short_sword}")
-                    self.pack.append(short_sword)
-                    return
-                else:
-                    print(f"You already have a {short_sword}")
-                    continue
-            if sale_item_choice == '2':
-                sale_weapon = broad_sword
-                if sale_weapon not in self.pack:
+            sale_item = (sale_items_dict[sale_item_key])
+            if self.gold >= sale_item.sell_price and self.level >= sale_item.minimum_level:
+            #if sale_item not in self.pack and self.gold >= sale_item.sell_price and self.level >= sale_item.minimum_level:
+                print(f"You buy a {sale_item}")
+                self.gold -= sale_item.buy_price
+                self.pack.append(sale_item)
+                return
+            elif self.gold < sale_item.sell_price:
+                print(f"You do not have enough gold")
+                continue
+            elif self.level < sale_item.minimum_level:
+                print(f"The minimum level requirement is {sale_item.minimum_level}. You are level {self.level}")
+                continue
+            else:
+                print(f"You already have a {sale_item}")
+                continue
+            '''if sale_item_key == '2':
+                sale_item = broad_sword
+                if sale_item not in self.pack:
                     print(f"You buy a {broad_sword}")
                     self.pack.append(broad_sword)
                     return
                 else:
                     print(f"You already have a {broad_sword}")
                     continue
-            if sale_item_choice == '3':
-                sale_weapon = quantum_sword
-                if sale_weapon not in self.pack:
+            if sale_item_key == '3':
+                sale_item = quantum_sword
+                if sale_item not in self.pack:
                     print(f"You buy a {quantum_sword}")
                     self.pack.append(quantum_sword)
                     return
                 else:
                     print(f"You already have a {quantum_sword}")
-                    continue
+                    continue'''
+
 
 '''
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.

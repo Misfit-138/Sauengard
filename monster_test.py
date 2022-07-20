@@ -278,56 +278,8 @@ class Ghoul(Monster):
                             "it drops the skull and rises to its feet, hissing through razor-sharp teeth and\n" \
                             "working its jagged claws. Driven by an insatiable hunger for humanoid flesh,\n " \
                             "its bulbous black eyes grow impossibly wide as it draws in its serpentine tongue. "
+
     name = "Ghoul"
-
-
-class Dragon(Monster):
-
-    def __init__(self):
-        super().__init__()
-        self.level = 20
-        self.experience_award = self.level * 1000
-        self.gold = self.level * round(1000 * random.uniform(1, 2))
-        self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
-        self.strength = random.randint(17, 27)
-        self.dexterity = random.randint(10, 11)
-        self.constitution = random.randint(14, 19)
-        self.intelligence = random.randint(14, 17)
-        self.wisdom = random.randint(12, 14)
-        self.charisma = random.randint(18, 21)
-        self.can_paralyze = False
-        self.can_drain = False
-        self.undead = False
-        # For a dragon, hit points should be quite high. Level * random range 10-20 + con mod
-        self.human_player_level = 0
-        self.difficulty_class = 20
-        self.proficiency_bonus = 6  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
-        self.challenge_rating = 20
-        self.hit_dice = 12  # 12 for huge monster, 20 for gargantuan
-        self.number_of_hd = 2
-        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.strength_modifier = round((self.strength - 10) / 2)
-        self.constitution_modifier = round((self.constitution - 10) / 2)
-        self.hit_points = self.level * (random.randint(15, 20)) + self.constitution_modifier
-        self.dexterity_modifier = round((self.dexterity - 10) / 2)
-        self.wisdom_modifier = round((self.wisdom - 10) / 2)
-        self.armor_class = random.randint(17, 19)
-        self.attack_1 = 5  # attack bonus
-        self.attack_1_phrase = "It strikes with its terrible claws!!"
-        self.attack_2 = 6
-        self.attack_2_phrase = "The dragon hisses and strikes with its gaping jaws!!"
-        self.attack_3 = 6
-        self.attack_3_phrase = "The dragon swings its tail!!"
-        self.attack_4 = 7
-        self.attack_4_phrase = "The dragon attacks with its wings!!"
-        self.attack_5 = 10
-        self.attack_5_phrase = "The dragon breathes fire!!"
-        self.introduction = f"You have encountered a {self.name}."
-
-    name = "Dragon"
 
 
 class Kobold(Monster):
@@ -362,7 +314,7 @@ class Kobold(Monster):
         self.hit_points = self.level * (random.randint(5, 6)) + self.constitution_modifier
         self.dexterity_modifier = round((self.dexterity - 10) / 2)
         self.wisdom_modifier = round((self.wisdom - 10) / 2)
-        self.armor_class = random.randint(12, 12)
+        self.armor_class = random.randint(11, 12)
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "It strikes at you with its dagger.."
         self.attack_2 = 1

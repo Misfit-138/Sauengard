@@ -65,6 +65,7 @@ class Axe:
         self.name = "Battle Axe"
         self.a_name = "A Battle Axe"
         self.damage_bonus = 2
+        self.sell_price = 2000
 
     def __repr__(self):
         return self.name
@@ -126,7 +127,7 @@ else:
 print(f"You swing your {player_1.wielded_weapon_1} and get a bonus of {player_1.weapon_bonus}")
 
 # MyList = ["a", "b", "a", "c", "c", "a", "c"]
-res = Counter(player_1.pack)
+res = Counter(str(player_1.pack))
 
 # print(res)
 res = {}
@@ -134,7 +135,28 @@ res = {}
 for i in player_1.pack:
     res[i] = player_1.pack.count(i)
 
-#print(res)
+# print(res)
 
-pretty = pprint.PrettyPrinter(width=20)
-pretty.pprint(res)
+# pretty = pprint.PrettyPrinter(width=20)
+print(str(res))
+ABC = ['a', 'b', 'c']
+
+print("Items you can sell:")
+pack = list(player_1.pack)
+enumerated_items = dict(enumerate(pack))
+# print(enumerated_items)
+print(str(enumerated_items).replace("{", "").replace("'", "").replace("}", ""))
+sell_item_key = int(input("Enter number of item to exchange for gold."))
+# sale_item = (enumerated_items[sell_item_key])
+sale_item = player_1.pack[sell_item_key]
+
+print(f"You sell your {sale_item} for {sale_item.sell_price} gold pieces")
+player_1.pack.pop(sell_item_key)
+print("Your pack currently contains:")
+pack = list(player_1.pack)
+enumerated_items = dict(enumerate(pack))
+# print(enumerated_items)
+print(str(enumerated_items).replace("{", "").replace("'", "").replace("}", ""))
+for key, value in enumerated_items.items():
+    print(key, ' : ', value)
+    print(value, ':', key)

@@ -96,7 +96,7 @@ while True:
             with open(load_a_character, 'rb') as saved_player:
                 player_1 = pickle.load(saved_player)
                 time.sleep(1)
-                print(f"{player_name} read")
+                print(f"{player_name} read.")
                 time.sleep(1)
         else:
             print(f"Could not find {player_name} ")
@@ -162,26 +162,28 @@ while True:
             print("Exiting..")
             exit()
         if town_functions == 's':
-            print(f"Saving {player_1.name}")
+            print(f"Saving {player_1.name}...")
             character_filename = player_1.name + ".sav"
             with open(character_filename, 'wb') as player_save:
                 pickle.dump(player_1, player_save)
+                print(f"{player_1.name} saved.")
                 time.sleep(2)
         if town_functions == 'i':
             player_1.hud()
             player_1.inventory()
             os.system('pause')
+            player_1.hud()
         if town_functions == 'b':
             player_1.hud()
             print("You visit the blacksmith")
             at_blacksmith = True
-            while at_blacksmith:
-                buy_or_exit = input("(B)uy items or (E)xit --> ").lower()
-                if buy_or_exit == 'e':
-                    break
-                if buy_or_exit == 'b':
-                    player_1.sale()
-
+            #while at_blacksmith:
+            #    buy_or_exit = input("(B)uy items or (E)xit --> ").lower()
+            #    if buy_or_exit == 'e':
+            #        break
+            #    if buy_or_exit == 'b':
+            player_1.blacksmith_sale()
+            player_1.hud()
         if town_functions == 'c':
             player_1.hud()
             print("You visit the quantum chemist. He heals you to full strength.")
@@ -221,15 +223,19 @@ while True:
                     if dungeon_command == 'w':
                         player_1.hud()
                         print("You go north")
+                        player_1.regenerate()
                     if dungeon_command == 'a':
                         player_1.hud()
                         print("You go west")
+                        player_1.regenerate()
                     if dungeon_command == 's':
                         player_1.hud()
                         print("You go south")
+                        player_1.regenerate()
                     if dungeon_command == 'd':
                         player_1.hud()
                         print("You go east")
+                        player_1.regenerate()
                     if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h', 'i'):
                         player_1.hud()
                         print("Unknown command")
@@ -241,7 +247,7 @@ while True:
                     # monster dictionary. keys correspond to difficulty
                     monster_dict = {
                         1: [Kobold, Goblin, WingedKobold],
-                        2: [Drow, Ghoul]
+                        2: [Shadow, Skeleton, Drow, Orc, Ghoul]
                     }
 
                     # MONSTERS = [Ghoul]
@@ -351,7 +357,7 @@ while True:
                                     time.sleep(.5)
                                     print(f"You are rooted to the spot. You must stand your ground!")
                                     time.sleep(.5)
-                                    print(f"You raise your weapon..")
+                                    print(f"You raise your {player_1.wielded_weapon}..")
                                     time.sleep(1)
                             elif choice == "c":
                                 player_1.hud()
@@ -382,6 +388,7 @@ while True:
                                 time.sleep(2)
                                 player_1.level_up(monster.experience_award, monster.gold)
                                 in_proximity_to_monster = False
+
                                 break
                             if not in_proximity_to_monster:
                                 break

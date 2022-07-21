@@ -96,7 +96,7 @@ class Player:
         self.name = name
         self.level = 1
         self.experience = 0
-        self.gold = 5000
+        self.gold = 500000
         self.wielded_weapon = short_sword
         self.weapon_bonus = self.wielded_weapon.damage_bonus
         self.armor_bonus = 0
@@ -120,26 +120,36 @@ class Player:
         self.is_paralyzed = False
         self.boots_bonus = 0
         self.cloak = 0
+        self.ring_of_prot = 0
+        self.ring_of_reg = 1
         self.two_handed = False
         self.extra_attack = 0
         self.armor_class = 10 + self.dexterity_modifier + self.armor_bonus + self.shield_bonus + self.boots_bonus
         # self.weapon_name = "sword"
         self.pack = []
 
+    def regenerate(self):
+        if self.hit_points < self.maximum_hit_points and self.ring_of_reg > 0:
+            self.hit_points += self.ring_of_reg
+            print(f"You regenerate + {self.ring_of_reg}")
+            time.sleep(1)
+            return
+
     def inventory(self):
         if len(self.pack):
             print("Your pack contains:")
-            #print(*self.pack, sep="\n")
-            #print("Alternate method:")
+            print("Item              Quantity")
+            # print(*self.pack, sep="\n")
+            # print("Alternate method:")
             # this needs work!! too tired...
             stuff_dict = {}
             for item in self.pack:
                 stuff_dict[item] = self.pack.count(item)
-            print(str(stuff_dict).replace("{", "").replace("}", ""))
-            print("alternate method:")
+            # print(str(stuff_dict).replace("{", "").replace("}", ""))
+            # print("alternate method:")
             for key, value in stuff_dict.items():
-                print(key, ' : ', value)
-                #print(value, ':', key)
+                print(key, 's', ':    ', value, sep='')
+                # print(value, ':', key)
 
         else:
             print("Your pack is empty")
@@ -322,24 +332,25 @@ class Player:
         self.hud()
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"You strike at the {monster_name}..")
-        # print(f"{name} rolls 20 sided die---> {roll_d20}")
+        print(f"{name} rolls 20 sided die---> {roll_d20}")
         time.sleep(1)
         if roll_d20 == 1:
             print("You missed.")
-            # print(f"You rolled a 1. 1 means failure..")
+            print(f"You rolled a 1. 1 means failure..")
             time.sleep(1)
             return 0
-        # print(f"Dexterity modifier {self.dexterity_modifier}\nProficiency bonus {self.proficiency_bonus}")
-        # print(f"Monster armor class {monster_armor_class}")
+        print(f"Dexterity modifier {self.dexterity_modifier}\nProficiency bonus {self.proficiency_bonus}")
+        print(f"Monster armor class {monster_armor_class}")
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier >= monster_armor_class:
             damage_roll = dice_roll(self.level, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + self.weapon_bonus)
             if damage_to_opponent > 0:
                 print(f"You hit!")
                 time.sleep(1)
-                f'''print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll} + weapon bonus {self.weapon_bonus}"
-                      f"+ {self.strength_modifier} "
-                      f"Strength modifier = {damage_to_opponent} ")'''
+                print(
+                    f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll} + weapon bonus {self.weapon_bonus}"
+                    f"+ {self.strength_modifier} "
+                    f"Strength modifier = {damage_to_opponent} ")
                 print(f"You do {damage_to_opponent} points of damage!")
                 time.sleep(2)
                 self.hud()
@@ -353,12 +364,18 @@ class Player:
             time.sleep(2)
             print("Extra Attack Skill chance to hit!")
             time.sleep(2)
-            damage_roll = dice_roll(self.level, self.hit_dice)
-            damage_to_opponent = round(damage_roll + self.strength_modifier + self.weapon_bonus) + 1
-            print(f"You manage an off-balance attack for {damage_to_opponent} points of damage!")
-            time.sleep(2)
-            self.hud()
-            return damage_to_opponent
+            roll_d20 = dice_roll(1, 20)
+            if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier >= monster_armor_class:
+                damage_roll = dice_roll(self.level, self.hit_dice)
+                damage_to_opponent = round(damage_roll + self.strength_modifier + self.weapon_bonus) + 1
+                print(f"You manage to attack for {damage_to_opponent} points of damage!")
+                time.sleep(2)
+                self.hud()
+                return damage_to_opponent
+            else:
+                print("You miss again.")
+                time.sleep(1)
+                return 0
         else:
             print(f"You missed...")
             return 0
@@ -369,58 +386,57 @@ class Player:
             print(f"You successfully evade the {monster_name}.")
             return True
 
-    def sale(self):
+    def blacksmith_sale(self):
         sale_items_dict = {'1': short_sword,
                            '2': broad_sword,
                            '3': quantum_sword
                            }
         while True:
-
+            self.hud()
             print("The following items are for sale:")
             print(f"Item             Level Requirement          Price")
             print(f"1 Shortsword             {short_sword.minimum_level}                    {short_sword.buy_price}   ")
             print(f"2 Broad Sword            {broad_sword.minimum_level}                    {broad_sword.buy_price}   ")
-            print(f"3 Quantum Sword          {quantum_sword.minimum_level}                    {quantum_sword.buy_price}")
+            print(
+                f"3 Quantum Sword          {quantum_sword.minimum_level}                    {quantum_sword.buy_price}")
             print(f"You have {self.gold} gold pieces.")
-            sale_item_key = input("Item number to buy or (E)xit the blacksmith:").lower()
-            if sale_item_key not in ('1', '2', '3', 'e'):
+            sale_item_key = input("Enter item number to buy, your pack (I)nventory, or (E)xit the blacksmith:").lower()
+            if sale_item_key not in ('1', '2', '3', 'i', 'e'):
+                continue
+            if sale_item_key == 'i':
+                self.hud()
+                self.inventory()
+                os.system('pause')
+                self.hud()
                 continue
             if sale_item_key == 'e':
                 return
             sale_item = (sale_items_dict[sale_item_key])
             if self.gold >= sale_item.sell_price and self.level >= sale_item.minimum_level:
-            #if sale_item not in self.pack and self.gold >= sale_item.sell_price and self.level >= sale_item.minimum_level:
                 print(f"You buy a {sale_item}")
                 self.gold -= sale_item.buy_price
                 self.pack.append(sale_item)
-                return
+                time.sleep(1)
+                self.hud()
+                continue
             elif self.gold < sale_item.sell_price:
                 print(f"You do not have enough gold")
+                time.sleep(1)
+                self.hud()
                 continue
             elif self.level < sale_item.minimum_level:
                 print(f"The minimum level requirement is {sale_item.minimum_level}. You are level {self.level}")
+                time.sleep(1)
+                self.hud()
                 continue
             else:
                 print(f"You already have a {sale_item}")
+                time.sleep(1)
+                self.hud()
                 continue
-            '''if sale_item_key == '2':
-                sale_item = broad_sword
-                if sale_item not in self.pack:
-                    print(f"You buy a {broad_sword}")
-                    self.pack.append(broad_sword)
-                    return
-                else:
-                    print(f"You already have a {broad_sword}")
-                    continue
-            if sale_item_key == '3':
-                sale_item = quantum_sword
-                if sale_item not in self.pack:
-                    print(f"You buy a {quantum_sword}")
-                    self.pack.append(quantum_sword)
-                    return
-                else:
-                    print(f"You already have a {quantum_sword}")
-                    continue'''
+
+    def loot(self):
+        pass
 
 
 '''

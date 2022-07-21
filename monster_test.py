@@ -190,7 +190,7 @@ class Monster:
         print(f"Your armor class ---> {player_armor_class}")
         if roll20 + self.dexterity_modifier >= player_armor_class:
             damage_roll = dice_roll(self.number_of_hd, self.hit_dice)
-            damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus)
+            damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus + self.weapon_bonus)
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
                 print(f"{attack_phrase}")
                 time.sleep(1)
@@ -228,58 +228,6 @@ class Monster:
         else:
             print("You ignore its wiles and break free from its grip!")
             return False
-
-
-class Ghoul(Monster):
-
-    def __init__(self):
-        super().__init__()
-        self.level = 2
-        self.experience_award = 200
-        self.gold = self.level * 103 * round(random.uniform(1, 2))  # ghouls shouldn't have much gold
-        self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
-        self.strength = random.randint(11, 12)
-        self.dexterity = random.randint(12, 16)
-        self.constitution = random.randint(12, 13)
-        self.intelligence = random.randint(5, 10)
-        self.wisdom = random.randint(7, 10)
-        self.charisma = random.randint(1, 5)
-        self.can_paralyze = True
-        self.can_drain = False
-        self.undead = True
-        self.human_player_level = 0
-        self.difficulty_class = 2
-        self.proficiency_bonus = 1  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
-        self.challenge_rating = 2
-        self.hit_dice = 8  # 12 for huge monster, 20 for gargantuan
-        self.number_of_hd = self.level
-        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.strength_modifier = round((self.strength - 10) / 2)
-        self.constitution_modifier = round((self.constitution - 10) / 2)
-        self.hit_points = random.randint(20, 24) + self.constitution_modifier
-        # self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier) + 1
-        self.dexterity_modifier = round((self.dexterity - 10) / 2)
-        self.wisdom_modifier = round((self.wisdom - 10) / 2)
-        self.armor_class = random.randint(11, 12)
-        self.attack_1 = 0  # attack bonus
-        self.attack_1_phrase = "It strikes with one claw.."
-        self.attack_2 = 1
-        self.attack_2_phrase = "It lunges and attacks with its rancid teeth!!"
-        self.attack_3 = 2
-        self.attack_3_phrase = "It strikes with both of its terrible claws!!"
-        self.attack_4 = 2
-        self.attack_4_phrase = "It rushes straight at you!!"
-        self.attack_5 = 3
-        self.attack_5_phrase = "It leaps upon you!!"
-        self.introduction = "You have encountered a Ghoul, crouching and licking a skull. Noticing your approach,\n" \
-                            "it drops the skull and rises to its feet, hissing through razor-sharp teeth and\n" \
-                            "working its jagged claws. Driven by an insatiable hunger for humanoid flesh,\n " \
-                            "its bulbous black eyes grow impossibly wide as it draws in its serpentine tongue. "
-
-    name = "Ghoul"
 
 
 class Kobold(Monster):
@@ -372,7 +320,7 @@ class Goblin(Monster):
         self.attack_4 = 2
         self.attack_4_phrase = "It raises its scimitar overhead with both hands for a mighty blow.."
         self.attack_5 = 3
-        self.attack_5_phrase = "It strikes a combination of blows with both hands!"
+        self.attack_5_phrase = "Its scimitar flashes with impossible speed!"
         self.introduction = f"You have encountered a {self.name}."
 
     name = "Goblin"
@@ -426,6 +374,103 @@ class WingedKobold(Monster):
     name = "Winged Kobold"
 
 
+class Shadow(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 2
+        self.experience_award = 100
+        self.gold = 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = random.randint(5, 6)
+        self.dexterity = random.randint(13, 15)
+        self.constitution = random.randint(12, 14)
+        self.intelligence = random.randint(5, 7)
+        self.wisdom = random.randint(9, 11)
+        self.charisma = random.randint(7, 8)
+        self.can_paralyze = True
+        self.can_drain = False
+        self.undead = True
+        # self.human_player_level = human_player_level
+        self.difficulty_class = 2
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 2
+        self.hit_dice = 8  # medium
+        self.number_of_hd = self.level
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.hit_points = random.randint(15, 17)
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.armor_class = random.randint(12, 12)
+        self.attack_1 = 0  # attack bonus
+        self.attack_1_phrase = "It slithers and strikes.."
+        self.attack_2 = 1
+        self.attack_2_phrase = "It thrusts forward.."
+        self.attack_3 = 2
+        self.attack_3_phrase = "Its amorphous form strikes at you.."
+        self.attack_4 = 2
+        self.attack_4_phrase = "Its amorphous form strikes with blinding speed!"
+        self.attack_5 = 3
+        self.attack_5_phrase = "It attempts to grab you with necrotic malice!"
+        self.introduction = f"You have encountered a {self.name}..an unnatural abomination with form, " \
+                            f"and yet without form.. You feel the air bristling with quantum energy.."
+
+    name = "Shadow"
+
+
+class Skeleton(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 2
+        self.experience_award = 100
+        self.gold = 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = random.randint(9, 11)
+        self.dexterity = random.randint(13, 15)
+        self.constitution = random.randint(14, 16)
+        self.intelligence = random.randint(5, 7)
+        self.wisdom = random.randint(7, 9)
+        self.charisma = random.randint(5, 6)
+        self.can_paralyze = False
+        self.can_drain = False
+        self.undead = True
+        # self.human_player_level = human_player_level
+        self.difficulty_class = 2
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 2
+        self.hit_dice = 8  # medium
+        self.number_of_hd = self.level
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.hit_points = random.randint(11, 13) + self.constitution_modifier
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.armor_class = random.randint(12, 12)
+        self.attack_1 = 0  # attack bonus
+        self.attack_1_phrase = "It strikes at you with its dagger.."
+        self.attack_2 = 1
+        self.attack_2_phrase = "It raises its shortsword.."
+        self.attack_3 = 2
+        self.attack_3_phrase = "It raises its shortsword.."
+        self.attack_4 = 2
+        self.attack_4_phrase = "It strikes with its shortsword with blinding speed!"
+        self.attack_5 = 3
+        self.attack_5_phrase = "It strikes wildly!!"
+        self.introduction = f"You have encountered a {self.name}."
+
+    name = "Skeleton"
+
+
 class Drow(Monster):
 
     def __init__(self):
@@ -472,6 +517,107 @@ class Drow(Monster):
         self.introduction = f"You have encountered a {self.name}."
 
     name = "Drow"
+
+
+class Orc(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 2
+        self.experience_award = 100
+        self.gold = 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.weapon_bonus = 2
+        self.armor = 0
+        self.shield = 0
+        self.strength = random.randint(14, 16)
+        self.dexterity = random.randint(11, 14)
+        self.constitution = random.randint(14, 16)
+        self.intelligence = random.randint(6, 8)
+        self.wisdom = random.randint(10, 12)
+        self.charisma = random.randint(9, 11)
+        self.can_paralyze = False
+        self.can_drain = False
+        self.undead = False
+        self.difficulty_class = 1
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 1
+        self.hit_dice = 8  # medium
+        self.number_of_hd = self.level
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(11, 13)) + self.constitution_modifier
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.armor_class = random.randint(12, 12)
+        self.attack_1 = 0  # attack bonus
+        self.attack_1_phrase = "It strikes at you with its greataxe.."
+        self.attack_2 = 1
+        self.attack_2_phrase = "It swings its greataxe with blinding speed!"
+        self.attack_3 = 2
+        self.attack_3_phrase = "It swings its mace!"
+        self.attack_4 = 2
+        self.attack_4_phrase = "It thrusts mightily forward with its javelin!"
+        self.attack_5 = 3
+        self.attack_5_phrase = "It raises its greataxe overhead with both hands for a mighty blow.."
+        self.introduction = f"You have encountered a savage Orc. Stooping forward with its piggish face " \
+                            f"and prominent teeth, it prepares to satisfy its bloodlust by slaying any " \
+                            f"humanoids that stand against it.."
+
+    name = "Orc"
+
+
+class Ghoul(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 2
+        self.experience_award = 200
+        self.gold = self.level * 103 * round(random.uniform(1, 2))  # ghouls shouldn't have much gold
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = random.randint(11, 12)
+        self.dexterity = random.randint(12, 16)
+        self.constitution = random.randint(12, 13)
+        self.intelligence = random.randint(5, 10)
+        self.wisdom = random.randint(7, 10)
+        self.charisma = random.randint(1, 5)
+        self.can_paralyze = True
+        self.can_drain = False
+        self.undead = True
+        self.human_player_level = 0
+        self.difficulty_class = 2
+        self.proficiency_bonus = 1  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 2
+        self.hit_dice = 8  # 12 for huge monster, 20 for gargantuan
+        self.number_of_hd = self.level
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.hit_points = random.randint(20, 24) + self.constitution_modifier
+        # self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier) + 1
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.armor_class = random.randint(11, 12)
+        self.attack_1 = 0  # attack bonus
+        self.attack_1_phrase = "It strikes with one claw.."
+        self.attack_2 = 1
+        self.attack_2_phrase = "It lunges and attacks with its rancid teeth!!"
+        self.attack_3 = 2
+        self.attack_3_phrase = "It strikes with both of its terrible claws!!"
+        self.attack_4 = 2
+        self.attack_4_phrase = "It rushes straight at you!!"
+        self.attack_5 = 3
+        self.attack_5_phrase = "It leaps upon you!!"
+        self.introduction = "You have encountered a Ghoul, crouching and licking a skull. Noticing your approach,\n" \
+                            "it drops the skull and rises to its feet, hissing through razor-sharp teeth and\n" \
+                            "working its jagged claws. Driven by an insatiable hunger for humanoid flesh,\n " \
+                            "its bulbous black eyes grow impossibly wide as it draws in its serpentine tongue. "
+
+    name = "Ghoul"
 
 
 # For monster hit points..take hit dice and add (constitution modifier x number of hit dice).

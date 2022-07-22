@@ -113,6 +113,8 @@ class ShortAxe(Axe):
 
 class Player:
 
+    #wielded_weapon: object
+
     def __init__(self, name):  # level, experience, gold, weapon_bonus, armor_bonus, shield, armor_class, strength,
         # dexterity,
         #  constitution, intelligence, wisdom, charisma, hit_points, maximum_hit_points, is_paralyzed, boots,
@@ -489,7 +491,7 @@ class Player:
                 continue
             if sale_item_key == 'e':
                 return
-            sale_item: object = (sale_items_dict[sale_item_key])
+            sale_item = (sale_items_dict[sale_item_key])
             if self.gold >= sale_item.sell_price and self.level >= sale_item.minimum_level:
                 print(f"You buy a {sale_item}")
                 self.gold -= sale_item.buy_price

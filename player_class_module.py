@@ -27,7 +27,6 @@ The caster rolls d20 + Spellcasting Ability Modifier + Proficiency Bonus to hit 
 # intelligence8, wisdom9, strength10, dexterity11, charisma12, hit_points13, maximum_hit_points14,
 # 15is_paralyzed
 
-# **** TRY DEFINING DEXTERITY AND STRENGTH MODIFIERS HERE ****
 '''Hit Dice: 1d10 per Fighter level
 Hit Points at 1st Level: 10 + your Constitution modifier
 Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighter level after 1st

@@ -152,11 +152,6 @@ class Player:
         # self.weapon_name = "sword"
         self.pack = []
 
-    def manage_weapons(self):
-        print(f"Your current wielded weapon: "
-              f"{self.wielded_weapon}"
-              f"Damage bonus: {self.wielded_weapon.damage_bonus}"
-              f"To hit bonus: {self.wielded_weapon.to_hit_bonus}")
 
     def regenerate(self):
         if self.hit_points < self.maximum_hit_points and self.ring_of_reg > 0:
@@ -167,7 +162,6 @@ class Player:
 
     def inventory(self):
         while True:
-            # sorted(self.pack, key=lambda x: x.name)
             if len(self.pack):
                 self.hud()
                 print("Your pack contains:")
@@ -175,8 +169,6 @@ class Player:
                 print()
                 self.pack.sort(key=lambda x: x.damage_bonus)
                 # print(*self.pack, sep="\n")
-                # print("Alternate method:")
-                # this needs work!! too tired...
                 stuff_dict = {}
                 for item in self.pack:
                     stuff_dict[item] = self.pack.count(item)
@@ -497,7 +489,7 @@ class Player:
                 continue
             if sale_item_key == 'e':
                 return
-            sale_item = (sale_items_dict[sale_item_key])
+            sale_item: object = (sale_items_dict[sale_item_key])
             if self.gold >= sale_item.sell_price and self.level >= sale_item.minimum_level:
                 print(f"You buy a {sale_item}")
                 self.gold -= sale_item.buy_price

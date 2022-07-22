@@ -95,6 +95,7 @@ while True:
             print(f"{player_name} found.")
             with open(load_a_character, 'rb') as saved_player:
                 player_1 = pickle.load(saved_player)
+
                 time.sleep(1)
                 print(f"{player_name} read.")
                 time.sleep(1)
@@ -164,6 +165,7 @@ while True:
         if town_functions == 's':
             print(f"Saving {player_1.name}...")
             character_filename = player_1.name + ".sav"
+
             with open(character_filename, 'wb') as player_save:
                 pickle.dump(player_1, player_save)
                 print(f"{player_1.name} saved.")

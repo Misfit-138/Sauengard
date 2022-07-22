@@ -1,4 +1,5 @@
 # import random
+import operator
 import pprint
 import time
 import os
@@ -51,7 +52,7 @@ class ShortSword(Sword):
     def __init__(self):
         super().__init__()
         self.name = "Short Sword"
-        self.damage_bonus = 1
+        self.damage_bonus = 0
         self.to_hit_bonus = 0
         self.sell_price = 75
         self.buy_price = 50
@@ -73,17 +74,41 @@ class QuantumSword(Sword):
     def __init__(self):
         super().__init__()
         self.name = "Rudimentary Quantum Sword"
-        self.damage_bonus = 3
+        self.damage_bonus = 10  # 5
         self.to_hit_bonus = 2
         self.sell_price = 5000
-        self.buy_price = 8000
-        self.minimum_level = 3
+        self.buy_price = 125  # 8000
+        self.minimum_level = 1  # 3
 
 
 short_sword = ShortSword()
 broad_sword = BroadSword()
 quantum_sword = QuantumSword()
-quantum_sword_2 = QuantumSword()
+
+
+class Axe:
+
+    def __init__(self):
+        self.name = ""
+        self.damage_bonus = 0
+        self.to_hit_bonus = 0
+        self.sell_price = 0
+        self.buy_price = 0
+        self.minimum_level = 1
+
+    def __repr__(self):
+        return self.name
+
+
+class ShortAxe(Axe):
+    def __init__(self):
+        super().__init__()
+        self.name = "Short Axe"
+        self.damage_bonus = 2
+        self.to_hit_bonus = -1
+        self.sell_price = 200
+        self.buy_price = 1000
+        self.minimum_level = 1
 
 
 class Player:
@@ -97,7 +122,7 @@ class Player:
         self.experience = 0
         self.gold = 500000
         self.wielded_weapon = short_sword
-        self.weapon_bonus = self.wielded_weapon.damage_bonus
+        self.weapon_bonus = self.wielded_weapon.damage_bonus  # self.weapon_bonus no longer used
         self.armor_bonus = 0
         self.shield_bonus = 0
         self.strength = 15  # random.randint(14, 16)
@@ -127,6 +152,12 @@ class Player:
         # self.weapon_name = "sword"
         self.pack = []
 
+    def manage_weapons(self):
+        print(f"Your current wielded weapon: "
+              f"{self.wielded_weapon}"
+              f"Damage bonus: {self.wielded_weapon.damage_bonus}"
+              f"To hit bonus: {self.wielded_weapon.to_hit_bonus}")
+
     def regenerate(self):
         if self.hit_points < self.maximum_hit_points and self.ring_of_reg > 0:
             self.hit_points += self.ring_of_reg
@@ -135,23 +166,71 @@ class Player:
             return
 
     def inventory(self):
-        if len(self.pack):
-            print("Your pack contains:")
-            print("Item              Quantity")
-            # print(*self.pack, sep="\n")
-            # print("Alternate method:")
-            # this needs work!! too tired...
-            stuff_dict = {}
-            for item in self.pack:
-                stuff_dict[item] = self.pack.count(item)
-            # print(str(stuff_dict).replace("{", "").replace("}", ""))
-            # print("alternate method:")
-            for key, value in stuff_dict.items():
-                print(key, 's', ':    ', value, sep='')
-                # print(value, ':', key)
-
-        else:
-            print("Your pack is empty")
+        while True:
+            # sorted(self.pack, key=lambda x: x.name)
+            if len(self.pack):
+                self.hud()
+                print("Your pack contains:")
+                print("Item                       Quantity")
+                print()
+                self.pack.sort(key=lambda x: x.damage_bonus)
+                # print(*self.pack, sep="\n")
+                # print("Alternate method:")
+                # this needs work!! too tired...
+                stuff_dict = {}
+                for item in self.pack:
+                    stuff_dict[item] = self.pack.count(item)
+                # print(str(stuff_dict).replace("{", "").replace("}", ""))
+                # print("alternate method:")
+                for key, value in stuff_dict.items():
+                    print(key, 's', ':    ', value, sep='')
+                    # print(value, ':', key)
+                print()
+            else:
+                print("Your pack is empty")
+            print(f"Your current wielded weapon: "
+                  f"{self.wielded_weapon}\n"
+                  f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
+                  f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
+            if not len(self.pack):
+                return
+            inventory_choice = input(f"(S)ubstitute wielded weapon or (E)xit: ").lower()
+            if inventory_choice not in ('s', 'e'):
+                continue
+            if inventory_choice == 'e':
+                return
+            if inventory_choice == 's':
+                self.hud()
+                stuff = {}
+                for item in self.pack:
+                    stuff[item] = self.pack.index(item)
+                for key, value in stuff.items():
+                    print(value, ':', key)
+                old_weapon = self.wielded_weapon
+                print(f"Your current wielded weapon: "
+                      f"{self.wielded_weapon}\n"
+                      f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
+                      f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
+                try:
+                    new_weapon = int(input(f"Enter the number of the weapon from your pack you wish to wield: "))
+                #try:
+                    self.wielded_weapon = self.pack[new_weapon]
+                except (IndexError, ValueError):
+                    print("Invalid entry..")
+                    time.sleep(1)
+                    continue
+                print(f"You remove the {self.pack[new_weapon]} from your pack and are now wielding it.\n"
+                      f"You place the {old_weapon} in your pack.")
+                self.pack.pop(new_weapon)
+                self.pack.append(old_weapon)
+                time.sleep(1)
+                if not len(self.pack):
+                    print("Your pack is now empty.")
+                    time.sleep(1)
+                    return
+            else:
+                print("Your pack is empty..see if this statement is ever seen")
+                return
 
     def hud(self):
         os.system('cls')
@@ -159,7 +238,7 @@ class Player:
         print(f"                                                                     Level: {self.level}")
         print(f"                                                                     Experience: {self.experience}")
         print(f"                                                                     Gold: {self.gold}")
-        print(f"                                                                     Weapon + {self.weapon_bonus}")
+        print(f"                                                                     Weapon + {self.wielded_weapon.damage_bonus}")
         print(
             f"                                                                     Armor Class {self.armor_class}")
         print(f"                                                                     Shield + {self.shield_bonus}")
@@ -244,6 +323,7 @@ class Player:
         return
 
     def level_up(self, exp_award, monster_gold):
+        # *****************ADD LOGIC FOR EVERY STAT !!!!!!!!!!!!! *********************************************************
         self.gold += monster_gold
         before_level = self.level
         before_proficiency_bonus = self.proficiency_bonus
@@ -293,8 +373,10 @@ class Player:
                 print(f"He enhances your shield to + {self.shield_bonus}!")
                 return True
             if gift_item == 3:
-                self.weapon_bonus += 1
-                print(f"He enhances your sword to + {self.weapon_bonus}!")
+                self.wielded_weapon.damage_bonus += 1
+                self.wielded_weapon.damage_bonus = self.wielded_weapon.damage_bonus
+                # *****ADD LOGIC TO APPEND PREFIX TO WEAPON NAME, LIKE, 'ENHANCED', ETC ***********************************
+                print(f"He enhances your sword to + {self.wielded_weapon.damage_bonus}!")
                 return True
             if gift_item == 4:
                 self.boots_bonus += 1
@@ -338,16 +420,21 @@ class Player:
             print(f"You rolled a 1. 1 means failure..")
             time.sleep(1)
             return 0
+        if roll_d20 == 20:
+            critical_bonus = 2
+            print(f"CRITICAL HIT!!")
+        else:
+            critical_bonus = 1
         print(f"Dexterity modifier {self.dexterity_modifier}\nProficiency bonus {self.proficiency_bonus}")
         print(f"Monster armor class {monster_armor_class}")
-        if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier >= monster_armor_class:
-            damage_roll = dice_roll(self.level, self.hit_dice)
-            damage_to_opponent = round(damage_roll + self.strength_modifier + self.weapon_bonus)
+        if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
+            damage_roll = dice_roll((self.level * critical_bonus), self.hit_dice)
+            damage_to_opponent = round(damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus)
             if damage_to_opponent > 0:
                 print(f"You hit!")
                 time.sleep(1)
                 print(
-                    f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll} + weapon bonus {self.weapon_bonus}"
+                    f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll} + weapon bonus {self.wielded_weapon.damage_bonus}"
                     f"+ {self.strength_modifier} "
                     f"Strength modifier = {damage_to_opponent} ")
                 print(f"You do {damage_to_opponent} points of damage!")
@@ -364,9 +451,9 @@ class Player:
             print("Extra Attack Skill chance to hit!")
             time.sleep(2)
             roll_d20 = dice_roll(1, 20)
-            if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier >= monster_armor_class:
+            if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
                 damage_roll = dice_roll(self.level, self.hit_dice)
-                damage_to_opponent = round(damage_roll + self.strength_modifier + self.weapon_bonus) + 1
+                damage_to_opponent = round(damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) + 1
                 print(f"You manage to attack for {damage_to_opponent} points of damage!")
                 time.sleep(2)
                 self.hud()

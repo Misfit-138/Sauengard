@@ -236,10 +236,10 @@ while True:
                         player_1.hud()
                         print("You go east")
                         player_1.regenerate()
-                    if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h', 'i'):
-                        player_1.hud()
-                        print("Unknown command")
-                        continue
+                if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h', 'i'):
+                    player_1.hud()
+                    print("Unknown command")
+                    continue
                 if encounter > 12:
                     player_1.hud()
                     print("This should create monster now..")

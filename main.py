@@ -144,6 +144,7 @@ while True:
 
     print(f"You enter the town of Fieldenberg.")
     # print(f"Your pack contains {player_1.pack}")
+    #player_1.pack.append(healing_potion)
     time.sleep(1.5)
     player_1.hud()
     in_town = True

@@ -34,10 +34,11 @@ Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighte
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.'''
 
 
-class Sword:
+class Weapon:
 
     def __init__(self):
         self.name = ""
+        self.item_type = "weapon"
         self.damage_bonus = 0
         self.to_hit_bonus = 0
         self.sell_price = 0
@@ -48,10 +49,11 @@ class Sword:
         return self.name
 
 
-class ShortSword(Sword):
+class ShortSword(Weapon):
     def __init__(self):
         super().__init__()
         self.name = "Short Sword"
+        self.item_type = "weapon"
         self.damage_bonus = 0
         self.to_hit_bonus = 0
         self.sell_price = 75
@@ -59,10 +61,11 @@ class ShortSword(Sword):
         self.minimum_level = 1
 
 
-class BroadSword(Sword):
+class BroadSword(Weapon):
     def __init__(self):
         super().__init__()
         self.name = "Broad Sword"
+        self.item_type = "weapon"
         self.damage_bonus = 1
         self.to_hit_bonus = 0
         self.sell_price = 75
@@ -70,10 +73,11 @@ class BroadSword(Sword):
         self.minimum_level = 1
 
 
-class QuantumSword(Sword):
+class QuantumSword(Weapon):
     def __init__(self):
         super().__init__()
         self.name = "Rudimentary Quantum Sword"
+        self.item_type = "weapon"
         self.damage_bonus = 10  # 5
         self.to_hit_bonus = 2
         self.sell_price = 5000
@@ -86,24 +90,11 @@ broad_sword = BroadSword()
 quantum_sword = QuantumSword()
 
 
-class Axe:
-
-    def __init__(self):
-        self.name = ""
-        self.damage_bonus = 0
-        self.to_hit_bonus = 0
-        self.sell_price = 0
-        self.buy_price = 0
-        self.minimum_level = 1
-
-    def __repr__(self):
-        return self.name
-
-
-class ShortAxe(Axe):
+class ShortAxe(Weapon):
     def __init__(self):
         super().__init__()
         self.name = "Short Axe"
+        self.item_type = "weapon"
         self.damage_bonus = 2
         self.to_hit_bonus = -1
         self.sell_price = 200
@@ -111,9 +102,22 @@ class ShortAxe(Axe):
         self.minimum_level = 1
 
 
+short_axe = ShortAxe()
+
+
+class HealingPotion:
+    def __init__(self):
+        self.name = "Potion of healing"
+        self.item_type = "potion"
+        self.heal_points = 10
+
+
+healing_potion = HealingPotion
+
+
 class Player:
 
-    #wielded_weapon: object
+    # wielded_weapon: object
 
     def __init__(self, name):  # level, experience, gold, weapon_bonus, armor_bonus, shield, armor_class, strength,
         # dexterity,
@@ -154,7 +158,6 @@ class Player:
         # self.weapon_name = "sword"
         self.pack = []
 
-
     def regenerate(self):
         if self.hit_points < self.maximum_hit_points and self.ring_of_reg > 0:
             self.hit_points += self.ring_of_reg
@@ -169,13 +172,10 @@ class Player:
                 print("Your pack contains:")
                 print("Item                       Quantity")
                 print()
+
                 self.pack.sort(key=lambda x: x.damage_bonus)
-                # print(*self.pack, sep="\n")
-                stuff_dict = {}
-                for item in self.pack:
-                    stuff_dict[item] = self.pack.count(item)
-                # print(str(stuff_dict).replace("{", "").replace("}", ""))
-                # print("alternate method:")
+                stuff_dict = Counter(item.name for item in self.pack)
+
                 for key, value in stuff_dict.items():
                     print(key, 's', ':    ', value, sep='')
                     # print(value, ':', key)
@@ -195,8 +195,13 @@ class Player:
                 return
             if inventory_choice == 's':
                 self.hud()
+                # stuff = Counter(item.name for item in self.pack)
+                #items = [item for item in self.pack if item.item_type == "weapon"]
+                self.pack.sort(key=lambda x: x.damage_bonus)
+                # stuff = Counter(item.name for item in items)
                 stuff = {}
                 for item in self.pack:
+                    #if getattr(item, item.item_type) == "weapon":
                     stuff[item] = self.pack.index(item)
                 for key, value in stuff.items():
                     print(value, ':', key)
@@ -207,7 +212,7 @@ class Player:
                       f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
                 try:
                     new_weapon = int(input(f"Enter the number of the weapon from your pack you wish to wield: "))
-                #try:
+                    # try:
                     self.wielded_weapon = self.pack[new_weapon]
                 except (IndexError, ValueError):
                     print("Invalid entry..")
@@ -215,8 +220,10 @@ class Player:
                     continue
                 print(f"You remove the {self.pack[new_weapon]} from your pack and are now wielding it.\n"
                       f"You place the {old_weapon} in your pack.")
+                self.pack.sort(key=lambda x: x.damage_bonus)
                 self.pack.pop(new_weapon)
                 self.pack.append(old_weapon)
+                self.pack.sort(key=lambda x: x.damage_bonus)
                 time.sleep(1)
                 if not len(self.pack):
                     print("Your pack is now empty.")
@@ -232,7 +239,8 @@ class Player:
         print(f"                                                                     Level: {self.level}")
         print(f"                                                                     Experience: {self.experience}")
         print(f"                                                                     Gold: {self.gold}")
-        print(f"                                                                     Weapon + {self.wielded_weapon.damage_bonus}")
+        print(
+            f"                                                                     Weapon + {self.wielded_weapon.damage_bonus}")
         print(
             f"                                                                     Armor Class {self.armor_class}")
         print(f"                                                                     Shield + {self.shield_bonus}")

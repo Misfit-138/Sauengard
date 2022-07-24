@@ -220,7 +220,6 @@ class Player:
                     continue
                 print(f"You remove the {self.pack[new_weapon]} from your pack and are now wielding it.\n"
                       f"You place the {old_weapon} in your pack.")
-                self.pack.sort(key=lambda x: x.damage_bonus)
                 self.pack.pop(new_weapon)
                 self.pack.append(old_weapon)
                 self.pack.sort(key=lambda x: x.damage_bonus)

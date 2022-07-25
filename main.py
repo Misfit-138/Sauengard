@@ -31,7 +31,8 @@ and its documentation and return value (usually None) support this, the behavior
 # "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
 
 import pickle
-from player_class_module import *
+from player_class_test import *
+#from player_class_module import *
 from monster_test import *
 #from monster_class_module import *
 from typing_module import *

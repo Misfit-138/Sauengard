@@ -73,7 +73,14 @@ def inventory(self):
 item_type = 'weapon'
 pack = {
     'weapon': [short_sword, short_axe, quantum_sword, broad_sword],
-    'potion': [healing_potion]
+    'healing': [healing_potion],
+    'armor': [],
+    'shield': [],
+    'boot': [],
+    'cloak': [],
+    'ring_reg': [],
+    'ring_prot': [],
+
 }
 
 print(*pack[
@@ -87,10 +94,27 @@ for key, value in stuff_dict.items():  # loop through each key and value
 number_of_items = len(pack[item_type])
 print(f"You have {number_of_items} items in your pack.")
 found_item = short_sword
+
 print(f"You have found a {found_item.name}")
-(pack[found_item.item_type]).append(found_item)
-(pack[item_type]).sort(key=lambda x: x.damage_bonus)
-stuff_dict = Counter(item.name for item in pack[item_type])
+if found_item not in pack[item_type]:
+    (pack[found_item.item_type]).append(found_item)
+    (pack[item_type]).sort(key=lambda x: x.damage_bonus)
+    stuff_dict = Counter(item.name for item in pack[item_type])
+    for key, value in stuff_dict.items():
+        print(key, 's', ':    ', value, sep='')
+    number_of_items = len(pack[item_type])
+    print(f"You now have {number_of_items} items in your {found_item.item_type} pack.")
+else:
+    print(f"You already have a {found_item.name}")
+
+
+# Get all values of a dictionary as list
+list_of_values = list(pack.values())
+stuff_dict = Counter(item.name for item in list(pack.values()))
+# Print the list containing all values of dictionary
+print(list_of_values)
+print()
+#list_of_values.sort()
+stuff_dict = Counter(item.name for item in list_of_values)
 for key, value in stuff_dict.items():
     print(key, 's', ':    ', value, sep='')
-print(f"You now have {number_of_items} items in your pack.")

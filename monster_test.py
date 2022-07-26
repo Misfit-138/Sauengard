@@ -129,6 +129,7 @@ class Monster:
         self.can_paralyze = False
         self.can_drain = False
         self.undead = False
+        self.quantum_energy = False
         self.hit_dice = 0  # tiny d4, small d6, medium d8, large d10, huge d12, gargantuan d20
         self.number_of_hd = self.level
         self.human_player_level = 0
@@ -150,6 +151,16 @@ class Monster:
         self.attack_4_phrase = ""
         self.attack_5 = 0
         self.attack_5_phrase = ""
+        self.quantum_attack_1 = 0
+        self.quantum_attack_1_phrase = ""
+        self.quantum_attack_2 = 0
+        self.quantum_attack_2_phrase = ""
+        self.quantum_attack_3 = 0
+        self.quantum_attack_3_phrase = ""
+        self.quantum_attack_4 = 0
+        self.quantum_attack_4_phrase = ""
+        self.quantum_attack_5 = 0
+        self.quantum_attack_5_phrase = ""
         self.introduction = ""
 
     def reduce_health(self, damage):
@@ -206,7 +217,53 @@ class Monster:
         else:
             print(f"It missed..")
             time.sleep(2)
-        return 0
+            return 0
+
+    def quantum_energy_attack(self, name, player_wisdom, player_dexterity):
+        attack_bonus = random.randint(1, 100)
+        if attack_bonus <= 50:
+            attack_bonus = self.quantum_attack_1
+            attack_phrase = self.quantum_attack_1_phrase
+        if attack_bonus > 50 <= 75:
+            attack_bonus = self.quantum_attack_2
+            attack_phrase = self.quantum_attack_2_phrase
+        if attack_bonus > 75 <= 85:
+            attack_bonus = self.quantum_attack_3
+            attack_phrase = self.quantum_attack_3_phrase
+        if attack_bonus > 85 <= 95:
+            attack_bonus = self.quantum_attack_4
+            attack_phrase = self.quantum_attack_4_phrase
+        if attack_bonus > 95:
+            attack_bonus = self.quantum_attack_5
+            attack_phrase = self.quantum_attack_5_phrase
+
+        roll20 = dice_roll(1, 20)
+        print(f"The {name} attacks with Quantum Energy! (It rolls {roll20})")
+        if roll20 == 1:
+            print(f"..its attempts to procure the universal forces fail miserably.")
+            time.sleep(2)
+            return 0
+        print(f"Wisdom modifier {self.wisdom_modifier}")
+        print(f"Your dexterity ---> {player_dexterity}")
+        if roll20 + self.wisdom_modifier >= player_dexterity:
+            damage_roll = dice_roll(self.number_of_hd, self.hit_dice)
+            damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)
+            if damage_to_opponent > 0:  # # at this point the player is the opponent!
+                print(f"{attack_phrase}")
+                time.sleep(1)
+                print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll}")
+                print(f"Wisdom modifier---> {self.wisdom_modifier}\nAttack bonus---> {attack_bonus}")
+                print(f"It does {damage_to_opponent} points of damage!")
+                time.sleep(3.5)
+                return damage_to_opponent
+            else:
+                print(f"The {name} strikes with Quantum Powers, but you dodge the attack!")  # zero damage to player result
+                time.sleep(2)
+                return 0  # 0 points damage to player
+        else:
+            print(f"It fails to harness the mysterious Quantum energies..")
+            time.sleep(2)
+            return 0
 
     def paralyze(self, name, level, monster_wisdom, monster_wisdom_modifier, dexterity, strength, weapon,
                  human_player_level, human_player_hit_points,
@@ -249,7 +306,7 @@ class Kobold(Monster):
         self.can_paralyze = False
         self.can_drain = False
         self.undead = False
-        # self.human_player_level = human_player_level
+        self.quantum_energy = False
         self.difficulty_class = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
@@ -297,7 +354,7 @@ class Goblin(Monster):
         self.can_paralyze = False
         self.can_drain = False
         self.undead = False
-        # self.human_player_level = human_player_level
+        self.quantum_energy = False
         self.difficulty_class = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
@@ -345,7 +402,7 @@ class WingedKobold(Monster):
         self.can_paralyze = False
         self.can_drain = False
         self.undead = False
-        # self.human_player_level = human_player_level
+        self.quantum_energy = False
         self.difficulty_class = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
@@ -457,16 +514,21 @@ class Skeleton(Monster):
         self.wisdom_modifier = round((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
         self.attack_1 = 0  # attack bonus
-        self.attack_1_phrase = "It strikes at you with its dagger.."
+        self.attack_1_phrase = "It strikes at you with its shortsword..."
         self.attack_2 = 1
-        self.attack_2_phrase = "It raises its shortsword.."
+        self.attack_2_phrase = "It raises its shortsword and swings mightily.."
         self.attack_3 = 2
-        self.attack_3_phrase = "It raises its shortsword.."
+        self.attack_3_phrase = "It darts forward with unnerving speed, sword in bony hand.."
         self.attack_4 = 2
-        self.attack_4_phrase = "It strikes with its shortsword with blinding speed!"
+        self.attack_4_phrase = "It thrusts forward with its heavy, iron spear!"
         self.attack_5 = 3
-        self.attack_5_phrase = "It strikes wildly!!"
-        self.introduction = f"You have encountered a {self.name}."
+        self.attack_5_phrase = "Reaching over its back, it produces a battle axe and strikes wildly!!"
+        self.introduction = f"From the ground rises a skeleton warrior. Its battle-scarred and weary weaponry still\n" \
+                            f"in hand, it fearlessly hammers its shield with sword, taunting an attack. A full-toothed\n" \
+                            f"grin forever emblazoned on its bony countenance, it shouts an absent, yet echoing\n" \
+                            f"battle-cry at you from behind its slack, gaping jaw!\n" \
+                            f"The air bristles with Quantum Energy.."
+
 
     name = "Skeleton"
 
@@ -490,7 +552,7 @@ class Drow(Monster):
         self.can_paralyze = False
         self.can_drain = False
         self.undead = False
-        # self.human_player_level = human_player_level
+        self.quantum_energy = True
         self.difficulty_class = 2
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
@@ -514,6 +576,16 @@ class Drow(Monster):
         self.attack_4_phrase = "It strikes with its shortsword with blinding speed!"
         self.attack_5 = 3
         self.attack_5_phrase = "It releases weird quantum flames from its outstretched hand!!"
+        self.quantum_attack_1 = 0
+        self.quantum_attack_1_phrase = ""
+        self.quantum_attack_2 = 0
+        self.quantum_attack_2_phrase = ""
+        self.quantum_attack_3 = 0
+        self.quantum_attack_3_phrase = ""
+        self.quantum_attack_4 = 0
+        self.quantum_attack_4_phrase = ""
+        self.quantum_attack_5 = 0
+        self.quantum_attack_5_phrase = ""
         self.introduction = f"You have encountered a {self.name}."
 
     name = "Drow"
@@ -538,6 +610,7 @@ class Orc(Monster):
         self.can_paralyze = False
         self.can_drain = False
         self.undead = False
+        self.quantum_energy = False
         self.difficulty_class = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
@@ -562,7 +635,7 @@ class Orc(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "It raises its greataxe overhead with both hands for a mighty blow.."
         self.introduction = f"You have encountered a savage Orc. Stooping forward with its piggish face " \
-                            f"and prominent teeth, it prepares to satisfy its bloodlust by slaying any " \
+                            f"and prominent teeth,\nit prepares to satisfy its bloodlust by slaying any " \
                             f"humanoids that stand against it.."
 
     name = "Orc"

@@ -33,7 +33,7 @@ and its documentation and return value (usually None) support this, the behavior
 import pickle
 from player_class_test import *
 #from player_class_module import *
-from monster_test import *
+from monster_module import *
 #from monster_class_module import *
 from typing_module import *
 import random

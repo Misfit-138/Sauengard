@@ -25,20 +25,22 @@ def inventory(self):
               f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
         if not len(self.pack):
             return
-        inventory_choice = input(f"(S)ubstitute wielded weapon or (E)xit: ").lower()
-        if inventory_choice not in ('s', 'e'):
+        inventory_choice = input(f"Manage (W)eapons or (E)xit: ").lower()
+        if inventory_choice not in ('w', 'e'):
             continue
         if inventory_choice == 'e':
             return
-        if inventory_choice == 's':
+        if inventory_choice == 'w':
             self.hud()
             # stuff = Counter(item.name for item in self.pack)
             # items = [item for item in self.pack if item.item_type == "weapon"]
-            self.pack.sort(key=lambda x: x.damage_bonus)
+            #self.pack.sort(key=lambda x: x.damage_bonus)
             # stuff = Counter(item.name for item in items)
             stuff = {}
             for item in self.pack:
                 # if getattr(item, item.item_type) == "weapon":
+                monster_key = random.randint(1, (player_1.level + 1))
+                monster_cls = random.choice(monster_dict[monster_key])
                 stuff[item] = self.pack.index(item)
             for key, value in stuff.items():
                 print(value, ':', key)
@@ -80,6 +82,10 @@ pack = {
     'cloak': [],
     'ring_reg': [],
     'ring_prot': [],
+    'scroll': []
+
+}
+loot_dict = {
 
 }
 

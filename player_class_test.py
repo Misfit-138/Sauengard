@@ -1,6 +1,7 @@
 # import random
 import operator
 import pprint
+import random
 import time
 import os
 import gc
@@ -105,22 +106,193 @@ class ShortAxe(Weapon):
 short_axe = ShortAxe()
 
 
-class HealingPotion:
+class Armor:
+
     def __init__(self):
-        self.name = "Potion of healing"
-        self.item_type = "potion"
-        self.heal_points = 10
+        self.name = ""
+        self.item_type = "armor"
+        self.armor_bonus = 0
+        self.sell_price = 0
+        self.buy_price = 0
+        self.minimum_level = 1
 
     def __repr__(self):
         return self.name
 
 
-healing_potion = HealingPotion()
+class LeatherArmor(Armor):
+    def __init__(self):
+        super().__init__()
+        self.name = "Leather Armor"
+        self.item_type = "armor"
+        self.armor_bonus = 0
+        self.sell_price = 50
+        self.buy_price = 50
+        self.minimum_level = 1
+
+
+leather_armor = LeatherArmor()
+
+
+class Shield:
+
+    def __init__(self):
+        self.name = ""
+        self.item_type = "shield"
+        self.armor_bonus = 0
+        self.sell_price = 0
+        self.buy_price = 0
+        self.minimum_level = 1
+
+    def __repr__(self):
+        return self.name
+
+
+class Buckler(Shield):
+    def __init__(self):
+        super().__init__()
+        self.name = "Buckler"
+        self.item_type = "shield"
+        self.armor_bonus = 1
+        self.sell_price = 50
+        self.buy_price = 50
+        self.minimum_level = 1
+
+    def __repr__(self):
+        return self.name
+
+
+buckler = Buckler()
+
+
+class Boots:
+
+    def __init__(self):
+        self.name = ""
+        self.item_type = "boots"
+        self.armor_bonus = 0
+        self.sell_price = 0
+        self.buy_price = 0
+        self.minimum_level = 1
+
+    def __repr__(self):
+        return self.name
+
+
+class LeatherBoots(Boots):
+    def __init__(self):
+        super().__init__()
+        self.name = "Leather Boots"
+        self.item_type = "boots"
+        self.armor_bonus = 0
+        self.sell_price = 50
+        self.buy_price = 50
+        self.minimum_level = 1
+
+
+leather_boots = LeatherBoots()
+
+
+class Cloak:
+
+    def __init__(self):
+        self.name = ""
+        self.item_type = "cloak"
+        self.armor_bonus = 0
+        self.sell_price = 0
+        self.buy_price = 0
+        self.minimum_level = 1
+
+    def __repr__(self):
+        return self.name
+
+
+class CanvasCloak(Cloak):
+    def __init__(self):
+        super().__init__()
+        self.name = "Canvas Cloak"
+        self.item_type = "cloak"
+        self.dexterity_bonus = 0
+        self.sell_price = 50
+        self.buy_price = 50
+        self.minimum_level = 1
+
+
+canvas_cloak = CanvasCloak()
+
+
+class HealingPotion:
+    def __init__(self):
+        self.name = ""
+        self.item_type = "potion"
+        self.heal_points = 0
+
+    def __repr__(self):
+        return self.name
+
+
+class MinorHealingPotion:
+    def __init__(self):
+        self.name = "Minor Healing Potion"
+        self.item_type = "potion"
+        self.heal_points = 10
+
+
+minor_healing_potion = MinorHealingPotion()
+
+
+class RingOfRegeneration:
+
+    def __init__(self):
+        self.name = ""
+        self.item_type = "ring_reg"
+        self.regenerate = 1
+        self.sell_price = 10000
+        self.buy_price = 10000
+        self.minimum_level = 1
+
+    def __repr__(self):
+        return self.name
+
+
+ring_of_regeneration = RingOfRegeneration
+
+
+class RingOfProtection:
+
+    def __init__(self):
+        self.name = ""
+        self.item_type = "ring_prot"
+        self.protect = 1
+        self.sell_price = 10000
+        self.buy_price = 10000
+        self.minimum_level = 1
+
+    def __repr__(self):
+        return self.name
+
+
+ring_of_protection = RingOfProtection
+
+
+class ScrollOfTownPortal:
+
+    def __init__(self):
+        self.name = "Scroll of Town Portal"
+        self.item_type = "scroll"
+        self.protect = 1
+        self.sell_price = 1000
+        self.buy_price = 1000
+        self.minimum_level = 1
+
+    def __repr__(self):
+        return self.name
+
+
+scroll_of_town_portal = ScrollOfTownPortal
 
 
 class Player:
-
-    # wielded_weapon: object
 
     def __init__(self, name):  # level, experience, gold, weapon_bonus, armor_bonus, shield, armor_class, strength,
         # dexterity,
@@ -132,6 +304,7 @@ class Player:
         self.gold = 500000
         self.wielded_weapon = short_sword
         self.weapon_bonus = self.wielded_weapon.damage_bonus  # self.weapon_bonus no longer used
+        self.armor = leather_armor
         self.armor_bonus = 0
         self.shield_bonus = 0
         self.strength = 15  # random.randint(14, 16)
@@ -527,6 +700,22 @@ class Player:
 
     def loot(self):
         pass
+        loot_dict = {
+            'weapon': [short_sword, short_axe, quantum_sword, broad_sword],
+            'healing': [minor_healing_potion],
+            'armor': [leather_armor],
+            'shield': [buckler],
+            'boot': [leather_boots],
+            'cloak': [canvas_cloak],
+            'ring_reg': [ring_of_regeneration],
+            'ring_prot': [ring_of_protection],
+            'scroll': [scroll_of_town_portal]
+
+        }
+
+        loot_key_list = ['weapon', 'healing', 'armor', 'shield', 'boot', 'cloak', 'ring_reg', 'ring_prot', 'scroll']
+        loot_key = random.choice(loot_key_list)
+        rndm_loot = random.choice(loot_dict[loot_key])
 
 
 '''

@@ -253,7 +253,9 @@ while True:
                         1: [Kobold, Goblin, WingedKobold],
                         2: [Shadow, Skeleton, Drow, Orc, Ghoul]
                     }
+                    loot_dict = {
 
+                    }
                     # MONSTERS = [Ghoul]
 
                     # def create_monster():

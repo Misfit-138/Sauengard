@@ -241,7 +241,7 @@ while True:
                             break
                         if dice_roll(1, 20) == 20:  # (player_1.dexterity + player_1.dexterity_modifier):
                             attack_or_steal = dice_roll(1, 20)
-                            if attack_or_steal > 16:  # (player_1.dexterity + player_1.dexterity_modifier):
+                            if attack_or_steal > 10:  # (player_1.dexterity + player_1.dexterity_modifier):
                                 player_1.hud()
                                 print(f"The {monster.name} attacks with blinding speed! You are caught off guard!")
                                 damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity,
@@ -315,7 +315,8 @@ while True:
                             if not in_proximity_to_monster:
                                 break
                             # monster turn:
-                            if not monster.check_dead():  # if monster is not dead
+
+                            if not monster.check_dead():  # and quantum_energy = False
                                 damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity,
                                                                  monster.strength,
                                                                  monster.weapon_bonus,
@@ -325,7 +326,7 @@ while True:
                                 player_1.reduce_health(damage_to_player)
                                 if not player_1.check_dead():  # if player not dead
 
-                                    if dice_roll(1, 20) > 17 and monster.undead and monster.can_paralyze:
+                                    if dice_roll(1, 20) > 17 and monster.can_paralyze:
                                         print(f"It lurches forward, grabbing your arm!")
                                         time.sleep(1)
                                         player_1.is_paralyzed = monster.paralyze(monster.name, monster.level,
@@ -364,6 +365,7 @@ while True:
                                     # in_town = False
                                     break
                                 player_1.hud()
-
+                            # elif not monster.check_dead() and monster.quantum_energy:
+                                # quantum_or_swing = dice_roll(1, 20)
                             else:
                                 break

@@ -258,7 +258,8 @@ class Monster:
                 time.sleep(3.5)
                 return damage_to_opponent
             else:
-                print(f"The {name} strikes with Quantum Powers, but you dodge the attack!")  # zero damage to player result
+                print(
+                    f"The {name} strikes with Quantum Powers, but you dodge the attack!")  # zero damage to player result
                 time.sleep(2)
                 return 0  # 0 points damage to player
         else:
@@ -454,6 +455,7 @@ class Shadow(Monster):
         self.can_paralyze = True
         self.can_drain = False
         self.undead = True
+        self.quantum_energy = True
         # self.human_player_level = human_player_level
         self.difficulty_class = 2
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -504,6 +506,7 @@ class Skeleton(Monster):
         self.can_paralyze = False
         self.can_drain = False
         self.undead = True
+        self.quantum_energy = False
         # self.human_player_level = human_player_level
         self.difficulty_class = 2
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -534,7 +537,6 @@ class Skeleton(Monster):
                             f"battle-cry at you from behind its slack, gaping jaw!\n" \
                             f"The air bristles with Quantum Energy.."
         self.is_discovered = False
-
 
     name = "Skeleton"
 
@@ -668,6 +670,7 @@ class Ghoul(Monster):
         self.can_paralyze = True
         self.can_drain = False
         self.undead = True
+        self.quantum_energy = False
         self.human_player_level = 0
         self.difficulty_class = 2
         self.proficiency_bonus = 1  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up

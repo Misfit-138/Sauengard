@@ -510,6 +510,8 @@ class Player:
         after_proficiency_bonus = self.proficiency_bonus
         after_level = self.level
         if after_level > before_level:
+            print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points.")
+            time.sleep(2)
             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav', winsound.SND_ASYNC)
             print(f"You went up a level!!")
             time.sleep(2)
@@ -529,8 +531,6 @@ class Player:
             if after_proficiency_bonus > before_proficiency_bonus:
                 print(f"Your proficiency bonus increases from {before_proficiency_bonus} to {after_proficiency_bonus}!")
                 time.sleep(2)
-            print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points.")
-            time.sleep(2)
             self.hud()
         else:
             print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points")

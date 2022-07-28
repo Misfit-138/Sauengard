@@ -162,6 +162,7 @@ class Monster:
         self.quantum_attack_5 = 0
         self.quantum_attack_5_phrase = ""
         self.introduction = ""
+        self.is_discovered = False
 
     def reduce_health(self, damage):
         self.hit_points -= damage
@@ -331,6 +332,7 @@ class Kobold(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "It whips its tail!"
         self.introduction = f"You have encountered a {self.name}."
+        self.is_discovered = False
 
     name = "Kobold"
 
@@ -379,6 +381,7 @@ class Goblin(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "Its scimitar flashes with impossible speed!"
         self.introduction = f"You have encountered a {self.name}."
+        self.is_discovered = False
 
     name = "Goblin"
 
@@ -427,6 +430,7 @@ class WingedKobold(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "It raises its spear!"
         self.introduction = f"You have encountered a {self.name}."
+        self.is_discovered = False
 
     name = "Winged Kobold"
 
@@ -476,6 +480,7 @@ class Shadow(Monster):
         self.attack_5_phrase = "It attempts to grab you with necrotic malice!"
         self.introduction = f"You have encountered a {self.name}..an unnatural abomination with form, " \
                             f"and yet without form.. You feel the air bristling with quantum energy.."
+        self.is_discovered = False
 
     name = "Shadow"
 
@@ -528,6 +533,7 @@ class Skeleton(Monster):
                             f"grin forever emblazoned on its bony countenance, it shouts an absent, yet echoing\n" \
                             f"battle-cry at you from behind its slack, gaping jaw!\n" \
                             f"The air bristles with Quantum Energy.."
+        self.is_discovered = False
 
 
     name = "Skeleton"
@@ -587,6 +593,7 @@ class Drow(Monster):
         self.quantum_attack_5 = 0
         self.quantum_attack_5_phrase = ""
         self.introduction = f"You have encountered a {self.name}."
+        self.is_discovered = False
 
     name = "Drow"
 
@@ -637,6 +644,7 @@ class Orc(Monster):
         self.introduction = f"You have encountered a savage Orc. Stooping forward with its piggish face " \
                             f"and prominent teeth,\nit prepares to satisfy its bloodlust by slaying any " \
                             f"humanoids that stand against it.."
+        self.is_discovered = False
 
     name = "Orc"
 
@@ -689,6 +697,7 @@ class Ghoul(Monster):
                             "it drops the skull and rises to its feet, hissing through razor-sharp teeth and\n" \
                             "working its jagged claws. Driven by an insatiable hunger for humanoid flesh,\n " \
                             "its bulbous black eyes grow impossibly wide as it draws in its serpentine tongue. "
+        self.is_discovered = False
 
     name = "Ghoul"
 

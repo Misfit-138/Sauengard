@@ -34,7 +34,6 @@ import pickle
 from player_class_test import *
 #from player_class_module import *
 from monster_module import *
-#from monster_class_module import *
 from typing_module import *
 import random
 import os
@@ -202,6 +201,7 @@ while True:
             time.sleep(1)
             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
                                winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+            discovered_monsters = []
             while in_dungeon:
                 encounter = dice_roll(1, 20)
                 dungeon_command = input(
@@ -256,19 +256,13 @@ while True:
                     loot_dict = {
 
                     }
-                    # MONSTERS = [Ghoul]
-
-                    # def create_monster():
-                    #    return random.choice(MONSTERS)
                     # in proximity loop contains battle loop within it
                     in_proximity_to_monster = True
-
                     # ************ OFFLOAD AS MUCH OF THIS LOGIC AS POSSIBLE TO THE OTHER MODULES!!! **************
                     while in_proximity_to_monster:
                         if player_1.check_dead():
                             winsound.PlaySound(None, winsound.SND_ASYNC)
                             player_1.hud()
-
                             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav',
                                                winsound.SND_ASYNC)
                             print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
@@ -277,7 +271,6 @@ while True:
                             in_dungeon = False
                             in_town = False
                             while True:
-
                                 try_again = input("Do you wish to play again (y/n)? ").lower()
                                 if try_again == "y":
                                     time.sleep(1)
@@ -291,27 +284,32 @@ while True:
                                     continue
                         if not in_proximity_to_monster:
                             break
-
                         monster_key = random.randint(1, (player_1.level + 1))
                         monster_cls = random.choice(monster_dict[monster_key])
+                        monster = monster_cls()  # create a monster object from the random class
                         # monster_level = dungeon_level  # + random.randint(0, 2)
-                        monster_level = player_1.level
+                        ##monster_level = player_1.level
                         # monster_cls = "MonsterLevel", player_1.level
                         # monster_stats list index:
                         # 0level, 1experience_award, 2gold, 3weapon_bonus, 4armor,5shield,6armor_class,7strength,
                         # 8dexterity,9constitution,10intelligence,11wisdom,12charisma,13hit_points,14can_paralyze,
                         # 15can_drain, 16undead,17human_player_level, 18difficulty_class, 19proficiency,
                         # 20damage, 21challenge_rating
-                        monster_stats = [monster_level, 0, 0, 0, 0, 0, 0, *random.sample(range(3, 18), 6), 0, False,
-                                         False,
-                                         False, player_1.level, 0, 0, 0, 0]
-                        monster_hit_points = (monster_stats[9])  # equal to constitution (index 9) for now..
-                        monster_stats[13] = round(monster_hit_points)  # make index 13(hp) = constitution for now
-                        monster = monster_cls()
+                        ##monster_stats = [monster_level, 0, 0, 0, 0, 0, 0, *random.sample(range(3, 18), 6), 0, False,
+                        #                 False,
+                        #                False, player_1.level, 0, 0, 0, 0]
+                        ##monster_hit_points = (monster_stats[9])  # equal to constitution (index 9) for now..
+                        ##monster_stats[13] = round(monster_hit_points)  # make index 13(hp) = constitution for now
+
                         #monster = monster_cls(*monster_stats)  # send stats to class and create 'monster' as object
                         player_1.hud()
-                        print(f"{monster.introduction}")
-                        # print(f"You have encountered a level {monster.level} {monster.name}.")
+
+                        print(discovered_monsters)
+                        if monster.name in discovered_monsters:
+                            print(f"You have encountered a level {monster.level} {monster.name}.")
+                        else:
+                            print(f"{monster.introduction}")
+                            discovered_monsters.append(monster.name)
                         print(f"{monster.constitution_modifier} {monster.hit_points}")
                         # time.sleep(2.5)
                         os.system('pause')

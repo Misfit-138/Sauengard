@@ -1,18 +1,9 @@
-# import random
-import operator
-import pprint
-import random
 import time
 import os
-import gc
-import operator as op
 from collections import Counter
-
 import winsound
 from dice_roll_module import *
 
-# from main import monster
-# from monster_class_module import *
 '''Target
 Identify your target to the table. 
 Attack
@@ -552,7 +543,7 @@ class Player:
             if gift_item == 3:
                 self.wielded_weapon.damage_bonus += 1
                 self.wielded_weapon.damage_bonus = self.wielded_weapon.damage_bonus
-                # *****ADD LOGIC TO APPEND PREFIX TO WEAPON NAME, LIKE, 'ENHANCED', ETC ***********************************
+                # *****ADD LOGIC TO APPEND PREFIX TO WEAPON NAME, LIKE, 'ENHANCED', ETC *******************************
                 print(f"He enhances your sword to + {self.wielded_weapon.damage_bonus}!")
                 return True
             if gift_item == 4:
@@ -572,7 +563,7 @@ class Player:
             print(f"He steals your {stolen_item}!")
             return
         else:
-            print("You have nothing in your pack!")
+            print("You have nothing he wants to steal!")
             return
 
     def reduce_health(self, damage):
@@ -587,6 +578,7 @@ class Player:
 
     def swing(self, name, level, dexterity, strength, weapon_bonus, monster_level, monster_name, monster_dexterity,
               monster_armor_class):
+        # add evade logic
         self.hud()
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"You strike at the {monster_name}..")
@@ -712,7 +704,6 @@ class Player:
             'scroll': [scroll_of_town_portal]
 
         }
-
         loot_key_list = ['weapon', 'healing', 'armor', 'shield', 'boot', 'cloak', 'ring_reg', 'ring_prot', 'scroll']
         loot_key = random.choice(loot_key_list)
         rndm_loot = random.choice(loot_dict[loot_key])

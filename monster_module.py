@@ -209,7 +209,7 @@ class Monster:
                 print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll}")
                 print(f"Strength modifier---> {self.strength_modifier}\nAttack bonus---> {attack_bonus}")
                 print(f"It does {damage_to_opponent} points of damage!")
-                time.sleep(3.5)
+                time.sleep(2.5)
                 return damage_to_opponent
             else:
                 print(f"The {name} strikes, but you block the attack!")  # zero damage to player result
@@ -255,7 +255,7 @@ class Monster:
                 print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll}")
                 print(f"Wisdom modifier---> {self.wisdom_modifier}\nAttack bonus---> {attack_bonus}")
                 print(f"It does {damage_to_opponent} points of damage!")
-                time.sleep(3.5)
+                time.sleep(2.5)
                 return damage_to_opponent
             else:
                 print(
@@ -267,23 +267,15 @@ class Monster:
             time.sleep(2)
             return 0
 
-    def paralyze(self, name, level, monster_wisdom, monster_wisdom_modifier, dexterity, strength, weapon,
-                 human_player_level, human_player_hit_points,
-                 human_player_dexterity, human_player_armor_class, human_player_wisdom, human_player_wisdom_modifier):
+    def paralyze(self, human_player_wisdom):
         paralyze_chance = dice_roll(1, 20)
-        if paralyze_chance == 20 or paralyze_chance > 17 and (self.wisdom + self.wisdom_modifier) >= (
+        if paralyze_chance > 17 or paralyze_chance > 16 and (self.wisdom + self.wisdom_modifier) >= (
                 human_player_wisdom):
             print("You're paralyzed!!")
             time.sleep(1)
             print("As you stand, frozen and defenseless, it savagely gores you!")
             time.sleep(1)
             return True
-            # damage_to_player = self.swing(name, level, dexterity, strength,
-            #                              weapon,
-            #                              human_player_level, human_player_hit_points, human_player_dexterity,
-            #                              human_player_armor_class)
-            # if damage_to_player > 0:
-
         else:
             print("You ignore its wiles and break free from its grip!")
             return False

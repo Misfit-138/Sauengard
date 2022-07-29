@@ -26,6 +26,10 @@ Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighte
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.'''
 
 
+def sleep(seconds):
+    time.sleep(seconds)
+
+
 class Weapon:
 
     def __init__(self):
@@ -574,6 +578,46 @@ class Player:
         if self.hit_points > 0:
             return False
         else:
+            # return True
+            print(f"You are unconscious and clinically dead!")
+            sleep(.5)
+            print(f"Death save attempt!")
+            sleep(.5)
+            successes = 0
+            fails = 0
+            attempt = 0
+            while successes < 3 or fails < 3:
+                if successes == 3:
+                    print(f"You are revived!")
+                    sleep(1)
+                    self.hit_points = 1
+                    return False
+                if fails >= 3:
+                    print(f"Death saving throw failed!")
+                    sleep(.5)
+                    return True
+                death_save = dice_roll(1, 20)
+                attempt += 1
+                print(f"Attempt {attempt}: {death_save}")
+                sleep(.5)
+                if death_save == 20:
+                    print(f"20 Roll! You are revived!")
+                    sleep(.5)
+                    self.hit_points = 1
+                    return False
+                if death_save > 9:
+                    successes += 1
+                    print(f"{successes} Successful saves..")
+                    sleep(.5)
+                if 10 > death_save > 1:
+                    fails += 1
+                    print(f"{fails} Failed saves..")
+                    sleep(.5)
+                if death_save == 1:
+                    fails += 2
+                    print(f"Rolling a 1 adds 2 failed saves. ")
+                    print(f"{fails} Failed saves..")
+                    sleep(.5)
             return True
 
     def swing(self, name, level, dexterity, strength, weapon_bonus, monster_level, monster_name, monster_dexterity,

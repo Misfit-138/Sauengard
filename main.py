@@ -37,6 +37,7 @@ from typing_module import *
 import random
 import os
 import winsound
+
 winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\originalsound.wav',
                    winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 os.system('cls')
@@ -140,6 +141,7 @@ while True:
             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
                                winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
             discovered_monsters = []
+            # dungeon navigation loop
             while in_dungeon:
                 encounter = dice_roll(1, 20)
                 dungeon_command = input(
@@ -182,10 +184,10 @@ while True:
                     player_1.hud()
                     print("Unknown command")
                     continue
-                if encounter > 12:
+                if encounter > 11:
                     player_1.hud()
                     print("This should create monster now..")
-                    dungeon_level = 1
+                    # dungeon_level = 1
                     # monster dictionary. keys correspond to difficulty
                     monster_dict = {
                         1: [Kobold, Goblin, WingedKobold],
@@ -194,11 +196,12 @@ while True:
                     loot_dict = {
 
                     }
-                    # in proximity loop contains battle loop within it
+                    # in proximity to monster loop contains battle loop within it
                     in_proximity_to_monster = True
-                    # ************ OFFLOAD AS MUCH OF THIS LOGIC AS POSSIBLE TO THE OTHER MODULES!!! **************
+                    player_is_dead = False
                     while in_proximity_to_monster:
-                        if player_1.check_dead():
+                        if player_is_dead:
+                            # if player_1.check_dead():
                             winsound.PlaySound(None, winsound.SND_ASYNC)
                             player_1.hud()
                             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav',
@@ -213,7 +216,7 @@ while True:
                                 if try_again == "y":
                                     time.sleep(1)
                                     os.system('cls')
-                                    break
+                                    break  # break out of prox to monster, dungeon and town up to top loop
                                 if try_again == "n":
                                     exit()
                                 if try_again not in ("y", "n"):
@@ -232,7 +235,7 @@ while True:
                         else:
                             print(f"{monster.introduction}")
                             discovered_monsters.append(monster.name)
-                        print(f"{monster.constitution_modifier} {monster.hit_points}")
+                        print(f"{monster.constitution_modifier} {monster.hit_points}")  # remove after testing
                         # time.sleep(2.5)
                         os.system('pause')
                         # if dice_roll(1, 20) > 0:  # == 20 and player_1.charisma > 15:
@@ -241,7 +244,7 @@ while True:
                             break
                         if dice_roll(1, 20) == 20:  # (player_1.dexterity + player_1.dexterity_modifier):
                             attack_or_steal = dice_roll(1, 20)
-                            if attack_or_steal > 10:  # (player_1.dexterity + player_1.dexterity_modifier):
+                            if attack_or_steal > 12:  # (player_1.dexterity + player_1.dexterity_modifier):
                                 player_1.hud()
                                 print(f"The {monster.name} attacks with blinding speed! You are caught off guard!")
                                 damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity,
@@ -255,6 +258,8 @@ while True:
                                     player_1.hud()
                                     print(f"You were caught off guard!")
                                     time.sleep(1.5)
+                                    print(f"You died!")
+                                    player_is_dead = True
                                     continue
                             else:
                                 player_1.hud()
@@ -263,15 +268,18 @@ while True:
                                 player_1.quick_move()
                                 time.sleep(1.5)
                                 in_proximity_to_monster = False
-                                break
+                                break  # go to dungeon navigation
                         # battle loop
                         while True:
                             player_1.hud()
+                            player_initiative = dice_roll(1, 20) + player_1.dexterity_modifier
+                            monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier
+                            #if player_initiative > monster_initiative:
                             choice = input("Fight Cast or Evade?\n F/C/E --> ").lower()
                             if choice == "e":
                                 evade_success = player_1.evade(monster.name, monster.dexterity)
                                 if evade_success:
-                                    in_proximity_to_monster = False
+                                    in_proximity_to_monster = False  # get out of battle loop
                                     # in_town = True
                                     break
                                 else:
@@ -314,6 +322,7 @@ while True:
                                 break
                             if not in_proximity_to_monster:
                                 break
+
                             # monster turn:
 
                             if not monster.check_dead():  # and quantum_energy = False
@@ -329,18 +338,7 @@ while True:
                                     if dice_roll(1, 20) > 17 and monster.can_paralyze:
                                         print(f"It lurches forward, grabbing your arm!")
                                         time.sleep(1)
-                                        player_1.is_paralyzed = monster.paralyze(monster.name, monster.level,
-                                                                                 monster.wisdom,
-                                                                                 monster.wisdom_modifier,
-                                                                                 monster.dexterity,
-                                                                                 monster.strength,
-                                                                                 monster.weapon_bonus,
-                                                                                 player_1.level,
-                                                                                 player_1.hit_points,
-                                                                                 player_1.dexterity,
-                                                                                 player_1.armor_class,
-                                                                                 player_1.wisdom,
-                                                                                 player_1.wisdom_modifier)
+                                        player_1.is_paralyzed = monster.paralyze(player_1.wisdom)
                                         if player_1.is_paralyzed:
                                             paralyze_damage = dice_roll(monster.number_of_hd, monster.hit_dice)
                                             player_1.reduce_health(paralyze_damage)
@@ -355,6 +353,7 @@ while True:
                                             # in_proximity_to_monster = False
                                             # in_dungeon = False
                                             # in_town = False
+                                            player_is_dead = True
                                             break
 
                                 else:
@@ -363,9 +362,10 @@ while True:
                                     # in_proximity_to_monster = False
                                     # in_dungeon = False
                                     # in_town = False
+                                    player_is_dead = True
                                     break
                                 player_1.hud()
                             # elif not monster.check_dead() and monster.quantum_energy:
-                                # quantum_or_swing = dice_roll(1, 20)
+                            # quantum_or_swing = dice_roll(1, 20)
                             else:
                                 break

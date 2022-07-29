@@ -143,7 +143,9 @@ while True:
             discovered_monsters = []
             # dungeon navigation loop
             while in_dungeon:
+                player_1.regenerate()
                 encounter = dice_roll(1, 20)
+                player_1.hud()
                 dungeon_command = input(
                     "Town (P)ortal, (H)ealing potion, (I)nventory or WASD to navigate. --> ").lower()
                 if dungeon_command == 'p':
@@ -167,19 +169,19 @@ while True:
                     if dungeon_command == 'w':
                         player_1.hud()
                         print("You go north")
-                        player_1.regenerate()
+
                     if dungeon_command == 'a':
                         player_1.hud()
                         print("You go west")
-                        player_1.regenerate()
+
                     if dungeon_command == 's':
                         player_1.hud()
                         print("You go south")
-                        player_1.regenerate()
+
                     if dungeon_command == 'd':
                         player_1.hud()
                         print("You go east")
-                        player_1.regenerate()
+
                 if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h', 'i'):
                     player_1.hud()
                     print("Unknown command")
@@ -190,7 +192,7 @@ while True:
                     # dungeon_level = 1
                     # monster dictionary. keys correspond to difficulty
                     monster_dict = {
-                        1: [Kobold, Goblin, WingedKobold],
+                        1: [Quasit, Kobold, Cultist, Goblin, WingedKobold],
                         2: [Shadow, Skeleton, Drow, Orc, Ghoul]
                     }
                     loot_dict = {
@@ -311,7 +313,7 @@ while True:
                             if not monster.check_dead():  # if monster is not dead
                                 # print(f"{monster.name} is not dead.")
                                 print(f"It has {monster.hit_points} hit points.")
-                                time.sleep(2)
+                                time.sleep(1)
                             else:
                                 player_1.hud()
                                 # print(f"It has {monster.hit_points} hit points.")
@@ -335,15 +337,16 @@ while True:
                                 player_1.reduce_health(damage_to_player)
                                 if not player_1.check_dead():  # if player not dead
 
-                                    if dice_roll(1, 20) > 17 and monster.can_paralyze:
-                                        print(f"It lurches forward, grabbing your arm!")
+                                    if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
+
                                         time.sleep(1)
                                         player_1.is_paralyzed = monster.paralyze(player_1.wisdom)
                                         if player_1.is_paralyzed:
-                                            paralyze_damage = dice_roll(monster.number_of_hd, monster.hit_dice)
-                                            player_1.reduce_health(paralyze_damage)
-                                            print(f"You suffer {paralyze_damage} hit points!!")
-                                            time.sleep(1)
+                                            player_1.damage_while_paralyzed(monster.number_of_hd, monster.hit_dice)
+                                            #paralyze_damage = dice_roll(monster.number_of_hd, monster.hit_dice)
+                                            #player_1.reduce_health(paralyze_damage)
+                                            #print(f"You suffer {paralyze_damage} hit points!!")
+                                            #time.sleep(1)
                                         if not player_1.check_dead():  # if player not dead
                                             print(f"You regain your faculties.")
                                             time.sleep(2)

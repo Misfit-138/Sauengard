@@ -570,6 +570,12 @@ class Player:
             print("You have nothing he wants to steal!")
             return
 
+    def damage_while_paralyzed(self, monster_number_of_hd, monster_hit_dice):
+        paralyze_damage = dice_roll(monster_number_of_hd, monster_hit_dice)
+        self.reduce_health(paralyze_damage)
+        print(f"You suffer {paralyze_damage} hit points!!")
+        time.sleep(1)
+
     def reduce_health(self, damage):
         self.hit_points -= damage
         return  # damage

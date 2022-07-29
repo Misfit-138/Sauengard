@@ -268,9 +268,12 @@ class Monster:
             return 0
 
     def paralyze(self, human_player_wisdom):
+        print(f"It lurches forward, grabbing your arm!")
         paralyze_chance = dice_roll(1, 20)
-        if paralyze_chance > 17 or paralyze_chance > 16 and (self.wisdom + self.wisdom_modifier) >= (
+
+        if paralyze_chance > 18 or paralyze_chance > 17 and (self.wisdom + self.wisdom_modifier) >= (
                 human_player_wisdom):
+
             print("You're paralyzed!!")
             time.sleep(1)
             print("As you stand, frozen and defenseless, it savagely gores you!")
@@ -279,6 +282,58 @@ class Monster:
         else:
             print("You ignore its wiles and break free from its grip!")
             return False
+
+
+class Quasit(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 1
+        self.experience_award = 25  # MM says it should be 200 exp?!
+        self.gold = self.level * 273 * round(random.uniform(1, 2))
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = random.randint(4, 6)
+        self.dexterity = random.randint(16, 17)
+        self.constitution = random.randint(8, 10)
+        self.intelligence = random.randint(6, 8)
+        self.wisdom = random.randint(9, 10)
+        self.charisma = random.randint(9, 11)
+        self.can_paralyze = False
+        self.can_drain = False
+        self.undead = False
+        self.quantum_energy = False
+        self.difficulty_class = 1
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 1
+        self.hit_dice = 4  # tiny
+        self.number_of_hd = 1
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.hit_points = self.level * (random.randint(5, 6)) + self.constitution_modifier
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.armor_class = random.randint(11, 12)
+        self.attack_1 = 0  # attack bonus
+        self.attack_1_phrase = "It polymorphs into toad form.."
+        self.attack_2 = 0
+        self.attack_2_phrase = "It polymorphs into centipede form and rears up.."
+        self.attack_3 = 1
+        self.attack_3_phrase = "It polymorphs into bat form and darts at you with gaping jaws!."
+        self.attack_4 = 3
+        self.attack_4_phrase = "Croaking in disturbing malice, it swings its horrid claws.."
+        self.attack_5 = 3
+        self.attack_5_phrase = "With blinding speed, it kicks with its hind claws.."
+        self.introduction = f"You have encountered a {self.name}.\n" \
+                            f"Its large, lidless eyes stare blankly at you as it quickly readjusts its pointed ears\n" \
+                            f"with a continual twitching. Its long, serpentine tail wags with its sinews and scales\n" \
+                            f"as it lets out a high pitched, fiendish and wretched cry. The air around it becomes hazy.."
+        self.is_discovered = False
+
+    name = "Quasit"
 
 
 class Kobold(Monster):
@@ -305,8 +360,8 @@ class Kobold(Monster):
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
-        self.hit_dice = 6  # small
-        self.number_of_hd = self.level
+        self.hit_dice = 4  # small
+        self.number_of_hd = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)
@@ -328,6 +383,58 @@ class Kobold(Monster):
         self.is_discovered = False
 
     name = "Kobold"
+
+
+class Cultist(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 1
+        self.experience_award = 50
+        self.gold = self.level * 373 * round(random.uniform(1, 2))
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = random.randint(10, 12)
+        self.dexterity = random.randint(11, 13)
+        self.constitution = random.randint(9, 11)
+        self.intelligence = random.randint(9, 11)
+        self.wisdom = random.randint(10, 12)
+        self.charisma = random.randint(9, 11)
+        self.can_paralyze = False
+        self.can_drain = False
+        self.undead = False
+        self.quantum_energy = False
+        self.difficulty_class = 1
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 1
+        self.hit_dice = 6  #
+        self.number_of_hd = 1
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.hit_points = random.randint(8, 10) + self.constitution_modifier
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.armor_class = random.randint(11, 12)
+        self.attack_1 = 0  # attack bonus
+        self.attack_1_phrase = "It strikes at you with its dagger.."
+        self.attack_2 = 1
+        self.attack_2_phrase = "He swings his gleaming scimitar!"
+        self.attack_3 = 2
+        self.attack_3_phrase = "It throws an acrid powder at you!"
+        self.attack_4 = 2
+        self.attack_4_phrase = "With blinding speed, he swings his scimitar.."
+        self.attack_5 = 3
+        self.attack_5_phrase = "Crying out with insane hatred, he raises his scimitar with both hands in a mighty blow!"
+        self.introduction = f"You have encountered a Cultist adorned with a foul robe speckled with disgusting \n" \
+                            f" symbols. With face hidden in the deep shadow of his cowl, you see his insane eyes burn\n" \
+                            f"in the darkness. His loyalties long since revealed, he cries out in sworn allegiance\n " \
+                            f"to some dark Quantum Manipulator..."
+        self.is_discovered = False
+
+    name = "Cultist"
 
 
 class Goblin(Monster):
@@ -354,8 +461,8 @@ class Goblin(Monster):
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
-        self.hit_dice = 6  # small
-        self.number_of_hd = self.level
+        self.hit_dice = 6  # mm
+        self.number_of_hd = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)
@@ -368,7 +475,7 @@ class Goblin(Monster):
         self.attack_2 = 1
         self.attack_2_phrase = "It feints to the side and swings!"
         self.attack_3 = 2
-        self.attack_3_phrase = "It swings its mace!"
+        self.attack_3_phrase = "It swings its scimitar wildly!"
         self.attack_4 = 2
         self.attack_4_phrase = "It raises its scimitar overhead with both hands for a mighty blow.."
         self.attack_5 = 3
@@ -403,8 +510,8 @@ class WingedKobold(Monster):
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
-        self.hit_dice = 6  # small
-        self.number_of_hd = self.level
+        self.hit_dice = 4  # mm
+        self.number_of_hd = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)
@@ -416,9 +523,9 @@ class WingedKobold(Monster):
         self.attack_1_phrase = "It strikes at you with its dagger.."
         self.attack_2 = 1
         self.attack_2_phrase = "It thrusts forward and bites with its jaws!"
-        self.attack_3 = 2
+        self.attack_3 = 3
         self.attack_3_phrase = "It raises its spear!"
-        self.attack_4 = 2
+        self.attack_4 = 3
         self.attack_4_phrase = "It kicks with its horrid claws.."
         self.attack_5 = 3
         self.attack_5_phrase = "It raises its spear!"
@@ -448,13 +555,12 @@ class Shadow(Monster):
         self.can_drain = False
         self.undead = True
         self.quantum_energy = True
-        # self.human_player_level = human_player_level
         self.difficulty_class = 2
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
-        self.hit_dice = 8  # medium
-        self.number_of_hd = self.level
+        self.hit_dice = 6  # mm
+        self.number_of_hd = 2
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)
@@ -504,8 +610,8 @@ class Skeleton(Monster):
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
-        self.hit_dice = 8  # medium
-        self.number_of_hd = self.level
+        self.hit_dice = 6  # mm
+        self.number_of_hd = 1  # mm
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)
@@ -557,8 +663,8 @@ class Drow(Monster):
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
-        self.hit_dice = 8  # medium
-        self.number_of_hd = self.level
+        self.hit_dice = 6  # mm
+        self.number_of_hd = 1  # mm
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)
@@ -592,6 +698,57 @@ class Drow(Monster):
     name = "Drow"
 
 
+class Troglodyte(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 2
+        self.experience_award = 50
+        self.gold = 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.weapon_bonus = 2
+        self.armor = 0
+        self.shield = 0
+        self.strength = random.randint(13, 15)
+        self.dexterity = random.randint(9, 11)
+        self.constitution = random.randint(13, 15)
+        self.intelligence = random.randint(6, 7)
+        self.wisdom = random.randint(9, 11)
+        self.charisma = random.randint(5, 7)
+        self.can_paralyze = False
+        self.can_drain = False
+        self.undead = False
+        self.quantum_energy = False
+        self.difficulty_class = 1
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 1
+        self.hit_dice = 4  # mm
+        self.number_of_hd = 1  # mm
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.hit_points = random.randint(12, 14)
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.armor_class = random.randint(12, 12)
+        self.attack_1 = 0  # attack bonus
+        self.attack_1_phrase = "It strikes at you with its greataxe.."
+        self.attack_2 = 1
+        self.attack_2_phrase = "It swings its greataxe with blinding speed!"
+        self.attack_3 = 2
+        self.attack_3_phrase = "It swings its mace!"
+        self.attack_4 = 2
+        self.attack_4_phrase = "It thrusts mightily forward with its javelin!"
+        self.attack_5 = 3
+        self.attack_5_phrase = "It raises its greataxe overhead with both hands for a mighty blow.."
+        self.introduction = f"You have encountered a savage Orc. Stooping forward with its piggish face " \
+                            f"and prominent teeth,\nit prepares to satisfy its bloodlust by slaying any " \
+                            f"humanoids that stand against it.."
+        self.is_discovered = False
+
+    name = "Troglodyte"
+
+
 class Orc(Monster):
 
     def __init__(self):
@@ -599,7 +756,7 @@ class Orc(Monster):
         self.level = 2
         self.experience_award = 100
         self.gold = 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
-        self.weapon_bonus = 2
+        self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
         self.strength = random.randint(14, 16)
@@ -616,8 +773,8 @@ class Orc(Monster):
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
-        self.hit_dice = 8  # medium
-        self.number_of_hd = self.level
+        self.hit_dice = 12  # MM says should be 1d12
+        self.number_of_hd = 1  # mm
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)
@@ -630,8 +787,8 @@ class Orc(Monster):
         self.attack_2 = 1
         self.attack_2_phrase = "It swings its greataxe with blinding speed!"
         self.attack_3 = 2
-        self.attack_3_phrase = "It swings its mace!"
-        self.attack_4 = 2
+        self.attack_3_phrase = "It roars and swings its greataxe with murderous rage!"
+        self.attack_4 = 0
         self.attack_4_phrase = "It thrusts mightily forward with its javelin!"
         self.attack_5 = 3
         self.attack_5_phrase = "It raises its greataxe overhead with both hands for a mighty blow.."
@@ -668,8 +825,8 @@ class Ghoul(Monster):
         self.proficiency_bonus = 1  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
-        self.hit_dice = 8  # 12 for huge monster, 20 for gargantuan
-        self.number_of_hd = self.level
+        self.hit_dice = 6  # 12 for huge monster, 20 for gargantuan
+        self.number_of_hd = 2
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)

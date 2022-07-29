@@ -825,8 +825,8 @@ class Ghoul(Monster):
         self.proficiency_bonus = 1  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
-        self.hit_dice = 6  # 12 for huge monster, 20 for gargantuan
-        self.number_of_hd = 2
+        self.hit_dice = 6  # mm
+        self.number_of_hd = 2  # mm
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)

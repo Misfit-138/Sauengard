@@ -40,7 +40,7 @@ def inventory(self):
             for item in self.pack:
                 # if getattr(item, item.item_type) == "weapon":
                 monster_key = random.randint(1, (player_1.level + 1))
-                monster_cls = random.choice(monster_dict[monster_key])
+                monster_cls = random.battle_choice(monster_dict[monster_key])
                 stuff[item] = self.pack.index(item)
             for key, value in stuff.items():
                 print(value, ':', key)

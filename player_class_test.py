@@ -333,7 +333,7 @@ class Player:
         if self.hit_points < self.maximum_hit_points and self.ring_of_reg > 0:
             self.hit_points += self.ring_of_reg
             print(f"You regenerate + {self.ring_of_reg}")
-            time.sleep(1)
+            sleep(1)
             return
 
     def inventory(self):
@@ -387,17 +387,17 @@ class Player:
                     self.wielded_weapon = self.pack[new_weapon]
                 except (IndexError, ValueError):
                     print("Invalid entry..")
-                    time.sleep(1)
+                    sleep(1)
                     break
                 print(f"You remove the {self.pack[new_weapon]} from your pack and are now wielding it.\n"
                       f"You place the {old_weapon} in your pack.")
                 self.pack.pop(new_weapon)
                 self.pack.append(old_weapon)
                 self.pack.sort(key=lambda x: x.damage_bonus)
-                time.sleep(1)
+                sleep(1)
                 if not len(self.pack):
                     print("Your pack is now empty.")
-                    time.sleep(1)
+                    sleep(1)
                     return
             else:
                 print("Your pack is empty..see if this statement is ever seen")
@@ -491,7 +491,7 @@ class Player:
         return
 
     def increase_experience(self, exp_award):
-        self.experience += exp_award
+        self.experience += exp_award  # this should be redundant now
         return
 
     def level_up(self, exp_award, monster_gold):
@@ -499,19 +499,20 @@ class Player:
         self.gold += monster_gold
         before_level = self.level
         before_proficiency_bonus = self.proficiency_bonus
-        self.increase_experience(exp_award)  # EXPERIENCE UP!!
+        self.experience += exp_award
+        #self.increase_experience(exp_award)  # EXPERIENCE UP!!
         self.calculate_current_level()
         self.calculate_proficiency_bonus()
         after_proficiency_bonus = self.proficiency_bonus
         after_level = self.level
         if after_level > before_level:
             print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points.")
-            time.sleep(2)
+            sleep(2)
             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav', winsound.SND_ASYNC)
             print(f"You went up a level!!")
-            time.sleep(2)
+            sleep(2)
             print(f"You are now level {self.level}.")
-            time.sleep(2)
+            sleep(2)
             self.calculate_proficiency_bonus()  # according to DnD 5e
             gain_hit_points = dice_roll(1, self.hit_dice) + self.constitution_modifier
             if gain_hit_points < 1:
@@ -519,17 +520,17 @@ class Player:
             self.hit_points += gain_hit_points  # (previous HP + Hit Die roll + CON modifier)
             self.maximum_hit_points += gain_hit_points
             print(f"You gain {gain_hit_points} hit points")
-            time.sleep(2)
+            sleep(2)
             if self.level == 5:
                 print("You gain the Extra Attack skill!!")
-                time.sleep(2)
+                sleep(2)
             if after_proficiency_bonus > before_proficiency_bonus:
                 print(f"Your proficiency bonus increases from {before_proficiency_bonus} to {after_proficiency_bonus}!")
-                time.sleep(2)
+                sleep(2)
             self.hud()
         else:
             print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points")
-            time.sleep(2)
+            sleep(2)
             self.hud()
 
     def monster_likes_you(self, monster_name, monster_intel):
@@ -561,20 +562,33 @@ class Player:
         else:
             return False
 
-    def quick_move(self):
-        if len(self.pack):
-            stolen_item = random.choice(self.pack)
-            print(f"He steals your {stolen_item}!")
-            return
+    def quick_move(self, monster_name):
+        quick_move_roll = dice_roll(1, 20)
+        #player_initiative_roll = dice_roll(1, 20)
+        if quick_move_roll == 20:
+            print(f"The {monster_name} makes a quick move...")
+            sleep(1.5)
+            if len(self.pack):
+                stolen_item = random.choice(self.pack)
+                print(f"He steals your {stolen_item}!")
+                sleep(1.5)
+                return
+            else:
+                print("You have nothing he wants to steal!")
+                sleep(1.5)
+                return
         else:
-            print("You have nothing he wants to steal!")
+            print(f"The {monster_name} makes a quick move...")
+            sleep(1)
+            print(f"..but this time, you are quicker!\nIt gets away with nothing..")
+            sleep(1.5)
             return
 
     def damage_while_paralyzed(self, monster_number_of_hd, monster_hit_dice):
         paralyze_damage = dice_roll(monster_number_of_hd, monster_hit_dice)
         self.reduce_health(paralyze_damage)
         print(f"You suffer {paralyze_damage} hit points!!")
-        time.sleep(1)
+        sleep(1)
 
     def reduce_health(self, damage):
         self.hit_points -= damage
@@ -586,9 +600,9 @@ class Player:
         else:
             # return True
             print(f"You are unconscious and clinically dead!")
-            sleep(.5)
+            sleep(1)
             print(f"Death save attempt!")
-            sleep(.5)
+            sleep(1)
             successes = 0
             fails = 0
             attempt = 0
@@ -600,30 +614,30 @@ class Player:
                     return False
                 if fails >= 3:
                     print(f"Death saving throw failed!")
-                    sleep(.5)
+                    sleep(1)
                     return True
                 death_save = dice_roll(1, 20)
                 attempt += 1
                 print(f"Attempt {attempt}: {death_save}")
-                sleep(.5)
+                sleep(1)
                 if death_save == 20:
                     print(f"20 Roll! You are revived!")
-                    sleep(.5)
+                    sleep(1)
                     self.hit_points = 1
                     return False
                 if death_save > 9:
                     successes += 1
                     print(f"{successes} Successful saves..")
-                    sleep(.5)
+                    sleep(1)
                 if 10 > death_save > 1:
                     fails += 1
                     print(f"{fails} Failed saves..")
-                    sleep(.5)
+                    sleep(1)
                 if death_save == 1:
                     fails += 2
                     print(f"Rolling a 1 adds 2 failed saves. ")
                     print(f"{fails} Failed saves..")
-                    sleep(.5)
+                    sleep(1)
             return True
 
     def swing(self, name, level, dexterity, strength, weapon_bonus, monster_level, monster_name, monster_dexterity,
@@ -633,53 +647,55 @@ class Player:
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"You strike at the {monster_name}..")
         print(f"{name} rolls 20 sided die---> {roll_d20}")
-        time.sleep(1)
+        sleep(1)
         if roll_d20 == 1:
             print("You missed.")
             print(f"You rolled a 1. 1 means failure..")
-            time.sleep(1)
+            sleep(1)
             return 0
         if roll_d20 == 20:
             critical_bonus = 2
-            print(f"CRITICAL HIT!!")
+            hit_statement = "CRITICAL HIT!!"
+
         else:
             critical_bonus = 1
+            hit_statement = "You hit!"
         print(f"Dexterity modifier {self.dexterity_modifier}\nProficiency bonus {self.proficiency_bonus}")
         print(f"Monster armor class {monster_armor_class}")
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
             damage_roll = dice_roll((self.level * critical_bonus), self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus)
             if damage_to_opponent > 0:
-                print(f"You hit!")
-                time.sleep(1)
+                print(hit_statement)
+                sleep(1)
                 print(
                     f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll} + weapon bonus {self.wielded_weapon.damage_bonus}"
                     f"+ {self.strength_modifier} "
                     f"Strength modifier = {damage_to_opponent} ")
                 print(f"You do {damage_to_opponent} points of damage!")
-                time.sleep(2)
+                sleep(3)
                 self.hud()
                 return damage_to_opponent
             else:
                 print(f"It blocks!")  # zero damage result
-                time.sleep(1)
+                sleep(1)
                 return 0
         elif self.level > 4:
             print("You missed..")
-            time.sleep(2)
+            sleep(2)
             print("Extra Attack Skill chance to hit!")
-            time.sleep(2)
+            sleep(2)
             roll_d20 = dice_roll(1, 20)
             if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
                 damage_roll = dice_roll(self.level, self.hit_dice)
                 damage_to_opponent = round(damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) + 1
                 print(f"You manage to attack for {damage_to_opponent} points of damage!")
-                time.sleep(2)
+                sleep(2)
                 self.hud()
                 return damage_to_opponent
             else:
                 print("You miss again.")
-                time.sleep(1)
+                sleep(1)
                 return 0
         else:
             print(f"You missed...")
@@ -721,22 +737,22 @@ class Player:
                 print(f"You buy a {sale_item}")
                 self.gold -= sale_item.buy_price
                 self.pack.append(sale_item)
-                time.sleep(1)
+                sleep(1)
                 self.hud()
                 continue
             elif self.gold < sale_item.sell_price:
                 print(f"You do not have enough gold")
-                time.sleep(1)
+                sleep(1)
                 self.hud()
                 continue
             elif self.level < sale_item.minimum_level:
                 print(f"The minimum level requirement is {sale_item.minimum_level}. You are level {self.level}")
-                time.sleep(1)
+                sleep(1)
                 self.hud()
                 continue
             else:
                 print(f"You already have a {sale_item}")
-                time.sleep(1)
+                sleep(1)
                 self.hud()
                 continue
 

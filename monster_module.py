@@ -90,6 +90,7 @@ Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighte
 # "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
 """
 
+import os
 import random
 import time
 
@@ -198,18 +199,30 @@ class Monster:
             print(f"..it awkwardly strikes and you easily block.")
             time.sleep(2)
             return 0
+        if roll20 == 20:
+            critical_bonus = 2
+            hit_statement = "CRITICAL HIT!!"
+        else:
+            critical_bonus = 1
+            hit_statement = "It hits!"
         print(f"Dexterity modifier {self.dexterity_modifier}")
         print(f"Your armor class ---> {player_armor_class}")
         if roll20 + self.dexterity_modifier >= player_armor_class:
-            damage_roll = dice_roll(self.number_of_hd, self.hit_dice)
+            damage_roll = dice_roll((self.number_of_hd * critical_bonus), self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus + self.weapon_bonus)
+            if roll20 == 20 and damage_to_opponent < 1:
+                damage_to_opponent = 1  # a natural 20 must always hit - 5e rules
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
                 print(f"{attack_phrase}")
-                time.sleep(1)
+                time.sleep(1.5)
+                print(hit_statement)
                 print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll}")
+                time.sleep(1.5)
                 print(f"Strength modifier---> {self.strength_modifier}\nAttack bonus---> {attack_bonus}")
+                time.sleep(1.5)
                 print(f"It does {damage_to_opponent} points of damage!")
-                time.sleep(2.5)
+                #os.system('pause')
+                time.sleep(5)
                 return damage_to_opponent
             else:
                 print(f"The {name} strikes, but you block the attack!")  # zero damage to player result
@@ -429,10 +442,10 @@ class Cultist(Monster):
         self.attack_4_phrase = "With blinding speed, he swings his scimitar.."
         self.attack_5 = 3
         self.attack_5_phrase = "Crying out with insane hatred, he raises his scimitar with both hands in a mighty blow!"
-        self.introduction = f"You have encountered a Cultist adorned with a foul robe speckled with disgusting \n" \
-                            f" symbols. With face hidden in the deep shadow of his cowl, you see his insane eyes burn\n" \
-                            f"in the darkness. His loyalties long since revealed, he cries out in sworn allegiance\n " \
-                            f"to some dark Quantum Manipulator..."
+        self.introduction = f"You have encountered a Cultist. Adorned with a foul robe speckled with disgusting \n" \
+                            f" symbols, and face hidden in the deep shadow of his cowl, you see his insane eyes\n " \
+                            f"smoulder in the darkness. His loyalties long since revealed, he cries out in sworn\n" \
+                            f" allegiance to some dark Quantum Manipulator..."
         self.is_discovered = False
 
     name = "Cultist"

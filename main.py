@@ -149,7 +149,7 @@ while True:
                 encounter = dice_roll(1, 20)
                 player_1.hud()
                 dungeon_command = input(
-                    "Town (P)ortal, (H)ealing potion, (I)nventory or WASD to navigate. --> ").lower()
+                    "(Q)uit, Town (P)ortal, (H)ealing potion, (I)nventory or WASD to navigate. --> ").lower()
                 if dungeon_command == 'p':
                     in_town = True
                     in_dungeon = False
@@ -158,6 +158,16 @@ while True:
                     time.sleep(2)
                     winsound.PlaySound(None, winsound.SND_ASYNC)
                     break
+                if dungeon_command == 'q':
+                    print("Quit game..")
+                    while True:
+                        confirm_quit = input("Are you sure? (y/n) ").lower()
+                        if confirm_quit not in ('y', 'n'):
+                            continue
+                        elif confirm_quit == 'y':
+                            exit()
+                        elif confirm_quit == 'n':
+                            break
                 if dungeon_command == 'h':
                     player_1.hud()
                     print("You chug a healing potion.")
@@ -184,14 +194,13 @@ while True:
                         player_1.hud()
                         print("You go east")
                     time.sleep(.5)
-                if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h', 'i'):
+                if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h', 'i', 'q'):
                     player_1.hud()
                     print("Unknown command")
                     continue
                 if encounter > 11:
                     player_1.hud()
                     print("This should create monster now..")
-                    # dungeon_level = 1
                     # monster dictionary. keys correspond to difficulty
                     monster_dict = {
                         1: [Quasit, Kobold, Cultist, Goblin, WingedKobold],
@@ -242,23 +251,26 @@ while True:
                         print(f"{monster.constitution_modifier} {monster.hit_points}")  # remove after testing
                         # time.sleep(2.5)
                         os.system('pause')
-                        # if dice_roll(1, 20) > 0:  # == 20 and player_1.charisma > 15:
                         if player_1.monster_likes_you(monster.name, monster.intelligence):
                             in_proximity_to_monster = False
                             break
                         player_initiative = dice_roll(1, 20) + player_1.dexterity_modifier
                         monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier
                         print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
-                        time.sleep(.5)
+                        time.sleep(2)
                         if monster_initiative > player_initiative:
-                        #if dice_roll(1, 20) == 20:  # (player_1.dexterity + player_1.dexterity_modifier):
                             attack_or_steal = dice_roll(1, 20)
                             if attack_or_steal > player_1.armor_class:  # (player_1.dexterity + player_1.dexterity_modifier):
                                 player_1.hud()
                                 print(f"The {monster.name} attacks with blinding speed! You are caught off guard!")
-                                damage_to_player = monster.swing(monster.name, player_1.armor_class)
-
-                                player_1.reduce_health(damage_to_player)
+                                melee_or_quantum = dice_roll(1, 100)
+                                if monster.quantum_energy and melee_or_quantum > 50:
+                                    damage_to_player = monster.quantum_energy_attack(monster.name,
+                                                                                     player_1.dexterity_modifier)
+                                    player_1.reduce_health(damage_to_player)
+                                else:
+                                    damage_to_player = monster.swing(monster.name, player_1.armor_class)
+                                    player_1.reduce_health(damage_to_player)
                                 if player_1.check_dead():  # if player  dead
                                     player_1.hud()
                                     print(f"You were caught off guard!")
@@ -268,20 +280,17 @@ while True:
                                     continue
                             else:
                                 player_1.hud()
-                                print(f"The {monster.name} makes a quick move...")
-                                time.sleep(1.5)
-                                player_1.quick_move()
-                                time.sleep(1.5)
-                                in_proximity_to_monster = False
-                                break  # go to dungeon navigation
-                        # battle loop
+                                print(f"The {monster.name} attacks and you dodge, swiftly foiling its advantage!")
+                                time.sleep(2)
+                                #player_1.quick_move(monster.name)
+                                #in_proximity_to_monster = False
+                                #break  # go to dungeon navigation
+                        # ********************************* BATTLE LOOP ***********************************************
                         while True:
                             player_1.hud()
-
-                            #
-
-                            choice = input("Fight Cast or Evade?\n F/C/E --> ").lower()
-                            if choice == "e":
+                            print(f"Lvl {monster.level} {monster.name} {monster.hit_points} hp {monster.number_of_hd}d {monster.hit_dice}")
+                            battle_choice = input("Fight Cast or Evade?\n F/C/E --> ").lower()
+                            if battle_choice == "e":
                                 evade_success = player_1.evade(monster.name, monster.dexterity)
                                 if evade_success:
                                     in_proximity_to_monster = False  # get out of battle loop
@@ -295,11 +304,11 @@ while True:
                                     time.sleep(.5)
                                     print(f"You raise your {player_1.wielded_weapon}..")
                                     time.sleep(1)
-                            elif choice == "c":
+                            elif battle_choice == "c":
                                 player_1.hud()
                                 print(f"Cast")
                                 continue
-                            elif choice == "f":
+                            elif battle_choice == "f":
                                 player_1.hud()
                                 print(f"Fight.")
                             else:
@@ -349,7 +358,7 @@ while True:
 
                                         if not player_1.check_dead():  # if player not dead
                                             print(f"You regain your faculties.")
-                                            time.sleep(2)
+                                            time.sleep(3)
                                             continue
                                         else:
                                             print("You are dead and paralyzed!")

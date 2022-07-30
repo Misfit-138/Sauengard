@@ -31,6 +31,8 @@ and its documentation and return value (usually None) support this, the behavior
 # "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
 
 import pickle
+import time
+
 from player_class_test import *
 from monster_module import *
 from typing_module import *
@@ -181,7 +183,7 @@ while True:
                     if dungeon_command == 'd':
                         player_1.hud()
                         print("You go east")
-
+                    time.sleep(.5)
                 if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h', 'i'):
                     player_1.hud()
                     print("Unknown command")
@@ -244,9 +246,14 @@ while True:
                         if player_1.monster_likes_you(monster.name, monster.intelligence):
                             in_proximity_to_monster = False
                             break
-                        if dice_roll(1, 20) == 20:  # (player_1.dexterity + player_1.dexterity_modifier):
+                        player_initiative = dice_roll(1, 20) + player_1.dexterity_modifier
+                        monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier
+                        print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
+                        time.sleep(.5)
+                        if monster_initiative > player_initiative:
+                        #if dice_roll(1, 20) == 20:  # (player_1.dexterity + player_1.dexterity_modifier):
                             attack_or_steal = dice_roll(1, 20)
-                            if attack_or_steal > 12:  # (player_1.dexterity + player_1.dexterity_modifier):
+                            if attack_or_steal > player_1.armor_class:  # (player_1.dexterity + player_1.dexterity_modifier):
                                 player_1.hud()
                                 print(f"The {monster.name} attacks with blinding speed! You are caught off guard!")
                                 damage_to_player = monster.swing(monster.name, player_1.armor_class)
@@ -270,9 +277,9 @@ while True:
                         # battle loop
                         while True:
                             player_1.hud()
-                            player_initiative = dice_roll(1, 20) + player_1.dexterity_modifier
-                            monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier
-                            #if player_initiative > monster_initiative:
+
+                            #
+
                             choice = input("Fight Cast or Evade?\n F/C/E --> ").lower()
                             if choice == "e":
                                 evade_success = player_1.evade(monster.name, monster.dexterity)

@@ -229,7 +229,8 @@ whip and a
 gust of their
 	   disagreeable breath. A good beginner's tip is "Never fight a
 Dragon!"
-
+*****************************************************************************************************************
+    END OF TELENGARD MANUAL
 *****************************************************************************************************************
 
 Choose a challenge rating (CR) for your trap, object, effect, or creature

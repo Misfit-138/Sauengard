@@ -249,12 +249,8 @@ while True:
                             if attack_or_steal > 12:  # (player_1.dexterity + player_1.dexterity_modifier):
                                 player_1.hud()
                                 print(f"The {monster.name} attacks with blinding speed! You are caught off guard!")
-                                damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity,
-                                                                 monster.strength,
-                                                                 monster.weapon_bonus,
-                                                                 player_1.level, player_1.hit_points,
-                                                                 player_1.dexterity,
-                                                                 player_1.armor_class)
+                                damage_to_player = monster.swing(monster.name, player_1.armor_class)
+
                                 player_1.reduce_health(damage_to_player)
                                 if player_1.check_dead():  # if player  dead
                                     player_1.hud()
@@ -327,14 +323,14 @@ while True:
 
                             # monster turn:
 
-                            if not monster.check_dead():  # and quantum_energy = False
-                                damage_to_player = monster.swing(monster.name, monster.level, monster.dexterity,
-                                                                 monster.strength,
-                                                                 monster.weapon_bonus,
-                                                                 player_1.level, player_1.hit_points,
-                                                                 player_1.dexterity,
-                                                                 player_1.armor_class)
-                                player_1.reduce_health(damage_to_player)
+                            if not monster.check_dead():
+                                melee_or_quantum = dice_roll(1, 100)
+                                if monster.quantum_energy and melee_or_quantum > 50:
+                                    damage_to_player = monster.quantum_energy_attack(monster.name, player_1.dexterity_modifier)
+                                    player_1.reduce_health(damage_to_player)
+                                else:
+                                    damage_to_player = monster.swing(monster.name, player_1.armor_class)
+                                    player_1.reduce_health(damage_to_player)
                                 if not player_1.check_dead():  # if player not dead
 
                                     if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
@@ -343,10 +339,7 @@ while True:
                                         player_1.is_paralyzed = monster.paralyze(player_1.wisdom)
                                         if player_1.is_paralyzed:
                                             player_1.damage_while_paralyzed(monster.number_of_hd, monster.hit_dice)
-                                            #paralyze_damage = dice_roll(monster.number_of_hd, monster.hit_dice)
-                                            #player_1.reduce_health(paralyze_damage)
-                                            #print(f"You suffer {paralyze_damage} hit points!!")
-                                            #time.sleep(1)
+
                                         if not player_1.check_dead():  # if player not dead
                                             print(f"You regain your faculties.")
                                             time.sleep(2)
@@ -358,7 +351,6 @@ while True:
                                             # in_town = False
                                             player_is_dead = True
                                             break
-
                                 else:
                                     print(f"You died!")
                                     time.sleep(3)
@@ -368,7 +360,5 @@ while True:
                                     player_is_dead = True
                                     break
                                 player_1.hud()
-                            # elif not monster.check_dead() and monster.quantum_energy:
-                            # quantum_or_swing = dice_roll(1, 20)
                             else:
                                 break

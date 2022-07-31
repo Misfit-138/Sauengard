@@ -153,9 +153,6 @@ class Buckler(Shield):
         self.buy_price = 50
         self.minimum_level = 1
 
-    def __repr__(self):
-        return self.name
-
 
 buckler = Buckler()
 
@@ -216,31 +213,50 @@ class CanvasCloak(Cloak):
 canvas_cloak = CanvasCloak()
 
 
-class HealingPotion:
+class MinorHealingPotion:
     def __init__(self):
-        self.name = ""
-        self.item_type = "potion"
-        self.heal_points = 0
+        self.name = "Minor Healing Potion"
+        self.item_type = "healing potion"
+        self.heal_points = 10
 
     def __repr__(self):
         return self.name
 
 
-class MinorHealingPotion:
-    def __init__(self):
-        self.name = "Minor Healing Potion"
-        self.item_type = "potion"
-        self.heal_points = 10
-
-
 minor_healing_potion = MinorHealingPotion()
+
+
+class MajorHealingPotion:
+    def __init__(self):
+        self.name = ""
+        self.item_type = "healing potion"
+        self.heal_points = 20
+
+    def __repr__(self):
+        return self.name
+
+
+major_healing_potion = MajorHealingPotion()
+
+
+class SuperHealingPotion:
+    def __init__(self):
+        self.name = "Super Healing Potion"
+        self.item_type = "healing potion"
+        self.heal_points = 50
+
+    def __repr__(self):
+        return self.name
+
+
+super_healing_potion = SuperHealingPotion()
 
 
 class RingOfRegeneration:
 
     def __init__(self):
-        self.name = ""
-        self.item_type = "ring_reg"
+        self.name = "Ring of Regeneration"
+        self.item_type = "ring of regeneration"
         self.regenerate = 1
         self.sell_price = 10000
         self.buy_price = 10000
@@ -250,14 +266,14 @@ class RingOfRegeneration:
         return self.name
 
 
-ring_of_regeneration = RingOfRegeneration
+ring_of_regeneration = RingOfRegeneration()
 
 
 class RingOfProtection:
 
     def __init__(self):
-        self.name = ""
-        self.item_type = "ring_prot"
+        self.name = "Ring Of Protection"
+        self.item_type = "ring of protection"
         self.protect = 1
         self.sell_price = 10000
         self.buy_price = 10000
@@ -267,14 +283,14 @@ class RingOfProtection:
         return self.name
 
 
-ring_of_protection = RingOfProtection
+ring_of_protection = RingOfProtection()
 
 
 class ScrollOfTownPortal:
 
     def __init__(self):
         self.name = "Scroll of Town Portal"
-        self.item_type = "scroll"
+        self.item_type = "town portal scroll"
         self.protect = 1
         self.sell_price = 1000
         self.buy_price = 1000
@@ -284,7 +300,7 @@ class ScrollOfTownPortal:
         return self.name
 
 
-scroll_of_town_portal = ScrollOfTownPortal
+scroll_of_town_portal = ScrollOfTownPortal()
 
 
 class Player:
@@ -328,6 +344,13 @@ class Player:
         self.armor_class = 10 + self.dexterity_modifier + self.armor_bonus + self.shield_bonus + self.boots_bonus
         # self.weapon_name = "sword"
         self.pack = []
+
+    def print_wielded_weapon_stats(self):
+        print(f"{self.wielded_weapon.name}:")
+        print(f"Damage bonus: {self.wielded_weapon.damage_bonus}")
+        print(f"To hit: {self.wielded_weapon.to_hit_bonus}")
+        print(f"Sell price: {self.wielded_weapon.sell_price}")
+        print(f"Minimum level requirement: {self.wielded_weapon.minimum_level}")
 
     def regenerate(self):
         if self.hit_points < self.maximum_hit_points and self.ring_of_reg > 0:
@@ -500,7 +523,7 @@ class Player:
         before_level = self.level
         before_proficiency_bonus = self.proficiency_bonus
         self.experience += exp_award
-        #self.increase_experience(exp_award)  # EXPERIENCE UP!!
+        # self.increase_experience(exp_award)  # EXPERIENCE UP!!
         self.calculate_current_level()
         self.calculate_proficiency_bonus()
         after_proficiency_bonus = self.proficiency_bonus
@@ -564,7 +587,7 @@ class Player:
 
     def quick_move(self, monster_name):
         quick_move_roll = dice_roll(1, 20)
-        #player_initiative_roll = dice_roll(1, 20)
+        # player_initiative_roll = dice_roll(1, 20)
         if quick_move_roll == 20:
             print(f"The {monster_name} makes a quick move...")
             sleep(1.5)
@@ -669,11 +692,11 @@ class Player:
                 print(hit_statement)
                 sleep(1)
                 print(
-                    f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll} + weapon bonus {self.wielded_weapon.damage_bonus}"
-                    f"+ {self.strength_modifier} "
-                    f"Strength modifier = {damage_to_opponent} ")
+                    f"{name} rolls {self.level * critical_bonus}d{self.hit_dice} ---> {damage_roll} + weapon bonus "
+                    f"({self.wielded_weapon.damage_bonus}) + "
+                    f"Strength modifier ({self.strength_modifier}) = {damage_to_opponent} ")
                 print(f"You do {damage_to_opponent} points of damage!")
-                sleep(3)
+                sleep(4)
                 self.hud()
                 return damage_to_opponent
             else:

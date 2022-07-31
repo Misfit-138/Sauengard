@@ -1,5 +1,6 @@
-from player_class_module import Weapon, Player, short_sword, short_axe, quantum_sword, broad_sword, healing_potion, \
-    Counter, time
+from player_class_test import Weapon, Player, short_sword, short_axe, quantum_sword, broad_sword, minor_healing_potion, \
+    Counter, time, buckler, leather_armor, leather_boots, canvas_cloak, scroll_of_town_portal, ring_of_regeneration, \
+    ring_of_protection, major_healing_potion
 
 
 def inventory(self):
@@ -34,7 +35,7 @@ def inventory(self):
             self.hud()
             # stuff = Counter(item.name for item in self.pack)
             # items = [item for item in self.pack if item.item_type == "weapon"]
-            #self.pack.sort(key=lambda x: x.damage_bonus)
+            # self.pack.sort(key=lambda x: x.damage_bonus)
             # stuff = Counter(item.name for item in items)
             stuff = {}
             for item in self.pack:
@@ -74,31 +75,38 @@ def inventory(self):
 
 item_type = 'weapon'
 pack = {
-    'weapon': [short_sword, short_axe, quantum_sword, broad_sword],
-    'healing': [healing_potion],
-    'armor': [],
-    'shield': [],
-    'boot': [],
-    'cloak': [],
-    'ring_reg': [],
-    'ring_prot': [],
-    'scroll': []
+    'weapon': [short_axe, quantum_sword, broad_sword],
+    'healing potion': [minor_healing_potion, major_healing_potion],
+    'armor': [leather_armor],
+    'shield': [buckler, buckler],
+    'boot': [leather_boots],
+    'cloak': [canvas_cloak],
+    'ring of regeneration': [ring_of_regeneration],
+    'ring of protection': [ring_of_protection],
+    'town portal scroll': [scroll_of_town_portal]
 
 }
 loot_dict = {
 
 }
 
-print(*pack[
-    item_type])  # print list without any brackets or commas. 'pack' is the dictionary, 'weapon' is the key for the list of weapons
-(pack[item_type]).sort(key=lambda x: x.damage_bonus)  # sort the weapon list by damage_bonus, ascending
-stuff_dict = Counter(item.name for item in
-                     pack[item_type])  # create a dictionary of the sorted list, which is within the pack dictionary
-for key, value in stuff_dict.items():  # loop through each key and value
-    print(key, 's', ':    ', value, sep='')  # print each key and value. add an 's' and a colon, without any spaces
 
-number_of_items = len(pack[item_type])
-print(f"You have {number_of_items} items in your pack.")
+def print_item_type_inventory(item_type):
+    # print(*pack[item_type])  # print list without any brackets or commas. 'pack' is the dictionary, 'weapon' is the key for the list of weapons
+    (pack[item_type]).sort(key=lambda x: x.name)  # sort the weapon list by damage_bonus, ascending
+    stuff_dict = Counter(item.name for item in
+                         pack[item_type])  # create a dictionary of the sorted list, which is within the pack dictionary
+    total_number_of_items = len(pack[item_type])
+    if total_number_of_items:
+        print(f"You currently have {total_number_of_items} items in your {item_type} inventory:")
+        for key, value in stuff_dict.items():  # loop through each key and value
+            print(key, ':    ', value, sep='')
+            #print(key, 's', ':    ', value, sep='')  # print each key and value. add an 's' and a colon, without any spaces
+    # total_number_of_items = len(pack[item_type])
+    # print(f"You have {total_number_of_items} items in your {item_type} pack.")
+    else:
+        return
+
 found_item = short_sword
 
 print(f"You have found a {found_item.name}")
@@ -109,18 +117,30 @@ if found_item not in pack[item_type]:
     for key, value in stuff_dict.items():
         print(key, 's', ':    ', value, sep='')
     number_of_items = len(pack[item_type])
-    print(f"You now have {number_of_items} items in your {found_item.item_type} pack.")
+    print(f"You now have {number_of_items} items in your {found_item.item_type} inventory.")
 else:
     print(f"You already have a {found_item.name}")
 
-
 # Get all values of a dictionary as list
 list_of_values = list(pack.values())
-stuff_dict = Counter(item.name for item in list(pack.values()))
+# stuff_dict = Counter(item.name for item in list(pack.values()))
 # Print the list containing all values of dictionary
-print(list_of_values)
+print(*list_of_values)
 print()
-#list_of_values.sort()
-stuff_dict = Counter(item.name for item in list_of_values)
-for key, value in stuff_dict.items():
-    print(key, 's', ':    ', value, sep='')
+
+
+# list_of_values.sort()
+# stuff_dict = Counter(item.name for item in list_of_values)
+# for key, value in stuff_dict.items():
+#    print(key, 's', ':    ', value, sep='')
+def print_whole_inventory():
+    print_item_type_inventory('weapon')
+    print_item_type_inventory('healing potion')
+    print_item_type_inventory('armor')
+    print_item_type_inventory('shield')
+    print_item_type_inventory('boot')
+    print_item_type_inventory('cloak')
+    print_item_type_inventory('ring of regeneration')
+    print_item_type_inventory('ring of protection')
+    print_item_type_inventory('town portal scroll')
+print_whole_inventory()

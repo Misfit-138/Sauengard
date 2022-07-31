@@ -262,11 +262,12 @@ while True:
                             attack_or_steal = dice_roll(1, 20)
                             if attack_or_steal > player_1.armor_class:  # (player_1.dexterity + player_1.dexterity_modifier):
                                 player_1.hud()
-                                print(f"The {monster.name} attacks with blinding speed! You are caught off guard!")
+                                print(f"You are caught off guard!")
                                 melee_or_quantum = dice_roll(1, 100)
                                 if monster.quantum_energy and melee_or_quantum > 50:
                                     damage_to_player = monster.quantum_energy_attack(monster.name,
-                                                                                     player_1.dexterity_modifier)
+                                                                                     player_1.dexterity_modifier,
+                                                                                     player_1.ring_of_prot)
                                     player_1.reduce_health(damage_to_player)
                                 else:
                                     damage_to_player = monster.swing(monster.name, player_1.armor_class)
@@ -281,14 +282,14 @@ while True:
                             else:
                                 player_1.hud()
                                 print(f"The {monster.name} attacks and you dodge, swiftly foiling its advantage!")
-                                time.sleep(2)
+                                time.sleep(3)
                                 #player_1.quick_move(monster.name)
                                 #in_proximity_to_monster = False
                                 #break  # go to dungeon navigation
                         # ********************************* BATTLE LOOP ***********************************************
                         while True:
                             player_1.hud()
-                            print(f"Lvl {monster.level} {monster.name} {monster.hit_points} hp {monster.number_of_hd}d {monster.hit_dice}")
+                            print(f"Lvl {monster.level} {monster.name} {monster.hit_points} hp {monster.number_of_hd}d{monster.hit_dice}")
                             battle_choice = input("Fight Cast or Evade?\n F/C/E --> ").lower()
                             if battle_choice == "e":
                                 evade_success = player_1.evade(monster.name, monster.dexterity)
@@ -322,35 +323,36 @@ while True:
                                                                player_1.strength, player_1.weapon_bonus, monster.level,
                                                                monster.name, monster.dexterity, monster.armor_class)
                             monster.reduce_health(damage_to_monster)  # take returned damage to monster
-                            if not monster.check_dead():  # if monster is not dead
+                            #if not monster.check_dead():  # if monster is not dead
                                 # print(f"{monster.name} is not dead.")
-                                print(f"It has {monster.hit_points} hit points.")
-                                time.sleep(1)
-                            else:
+                                #print(f"It has {monster.hit_points} hit points.")
+                                #time.sleep(1)
+
+                            #else:
+                            if monster.check_dead():
                                 player_1.hud()
-                                # print(f"It has {monster.hit_points} hit points.")
                                 print(f"It died..")
                                 time.sleep(2)
                                 player_1.level_up(monster.experience_award, monster.gold)
                                 in_proximity_to_monster = False
                                 break
-                            if not in_proximity_to_monster:
-                                break
+                            #if not in_proximity_to_monster:
+                            #    break
 
                             # monster turn:
 
                             if not monster.check_dead():
                                 melee_or_quantum = dice_roll(1, 100)
                                 if monster.quantum_energy and melee_or_quantum > 50:
-                                    damage_to_player = monster.quantum_energy_attack(monster.name, player_1.dexterity_modifier)
+                                    damage_to_player = monster.quantum_energy_attack(monster.name,
+                                                                                     player_1.dexterity_modifier,
+                                                                                     player_1.ring_of_prot)
                                     player_1.reduce_health(damage_to_player)
                                 else:
                                     damage_to_player = monster.swing(monster.name, player_1.armor_class)
                                     player_1.reduce_health(damage_to_player)
                                 if not player_1.check_dead():  # if player not dead
-
                                     if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
-
                                         time.sleep(1)
                                         player_1.is_paralyzed = monster.paralyze(player_1.wisdom)
                                         if player_1.is_paralyzed:
@@ -358,7 +360,7 @@ while True:
 
                                         if not player_1.check_dead():  # if player not dead
                                             print(f"You regain your faculties.")
-                                            time.sleep(3)
+                                            os.system('pause')
                                             continue
                                         else:
                                             print("You are dead and paralyzed!")

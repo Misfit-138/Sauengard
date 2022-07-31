@@ -204,7 +204,7 @@ class Monster:
             hit_statement = "CRITICAL HIT!!"
         else:
             critical_bonus = 1
-            hit_statement = "It hits!"
+            hit_statement = ""
         print(f"Dexterity modifier {self.dexterity_modifier}")
         print(f"Your armor class ---> {player_armor_class}")
         if roll20 + self.dexterity_modifier >= player_armor_class:
@@ -216,13 +216,13 @@ class Monster:
                 print(f"{attack_phrase}")
                 time.sleep(1.5)
                 print(hit_statement)
-                print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll}")
+                print(f"{name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} ---> {damage_roll}")  # hit dice
                 time.sleep(1.5)
                 print(f"Strength modifier---> {self.strength_modifier}\nAttack bonus---> {attack_bonus}")
                 time.sleep(1.5)
                 print(f"It does {damage_to_opponent} points of damage!")
-                #os.system('pause')
-                time.sleep(5)
+                os.system('pause')
+                #time.sleep(5)
                 return damage_to_opponent
             else:
                 print(f"The {name} strikes, but you block the attack!")  # zero damage to player result
@@ -230,10 +230,10 @@ class Monster:
                 return 0  # 0 points damage to player
         else:
             print(f"It missed..")
-            time.sleep(2)
+            time.sleep(3)
             return 0
 
-    def quantum_energy_attack(self, name, player_dexterity_modifier):
+    def quantum_energy_attack(self, name, player_dexterity_modifier, player_ring_of_prot):
         attack_bonus = random.randint(1, 100)
         if attack_bonus <= 50:
             attack_bonus = self.quantum_attack_1
@@ -257,18 +257,27 @@ class Monster:
             print(f"..its attempts to procure the universal forces fail miserably.")
             time.sleep(2)
             return 0
+        if roll20 == 20:
+            critical_bonus = 2
+            hit_statement = "CRITICAL HIT!!"
+        else:
+            critical_bonus = 1
+            hit_statement = ""
         print(f"Wisdom modifier {self.wisdom_modifier}")
-        print(f"Your roll: {player_roll20} + dexterity modifier ---> {player_dexterity_modifier}. Total: {player_roll20 + player_dexterity_modifier}")
-        if roll20 + self.wisdom_modifier >= player_roll20 + player_dexterity_modifier:
-            damage_roll = dice_roll(self.number_of_hd, self.hit_dice)
+        print(f"Your roll: {player_roll20} + dexterity modifier ({player_dexterity_modifier}) + ring of protection "
+              f"({player_ring_of_prot}). Total: {player_roll20 + player_dexterity_modifier}")
+        if roll20 + self.wisdom_modifier >= player_roll20 + player_dexterity_modifier + player_ring_of_prot:
+            damage_roll = dice_roll(self.number_of_hd * critical_bonus, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
                 print(f"{attack_phrase}")
-                time.sleep(1)
-                print(f"{name} rolls {self.hit_dice} sided hit dice---> {damage_roll}")
+                time.sleep(1.5)
+                print(hit_statement)
+                print(f"{name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} hit dice---> {damage_roll}")
                 print(f"Wisdom modifier---> {self.wisdom_modifier}\nAttack bonus---> {attack_bonus}")
                 print(f"It does {damage_to_opponent} points of damage!")
-                time.sleep(2.5)
+                os.system('pause')
+                #time.sleep(5)
                 return damage_to_opponent
             else:
                 print(
@@ -276,8 +285,8 @@ class Monster:
                 time.sleep(2)
                 return 0  # 0 points damage to player
         else:
-            print(f"It fails to harness the mysterious Quantum energies..")
-            time.sleep(2)
+            print(f"It fails to harness the mysterious powers..")
+            time.sleep(3)
             return 0
 
     def paralyze(self, human_player_wisdom):

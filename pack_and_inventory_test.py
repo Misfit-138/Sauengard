@@ -3,84 +3,15 @@ import random
 # from main import player_1, monster_dict
 from player_class_test import Weapon, Player, short_sword, short_axe, quantum_sword, broad_sword, minor_healing_potion, \
     Counter, time, buckler, leather_armor, leather_boots, canvas_cloak, scroll_of_town_portal, ring_of_regeneration, \
-    ring_of_protection, major_healing_potion, super_healing_potion
-
-
-def inventory(self):
-    while True:
-        if len(self.pack):
-            self.hud()
-            print("Your pack contains:")
-            print("Item                       Quantity")
-            print()
-
-            self.pack.sort(key=lambda x: x.damage_bonus)
-            stuff_dict = Counter(item.name for item in self.pack)
-
-            for key, value in stuff_dict.items():
-                print(key, 's', ':    ', value, sep='')
-                # print(value, ':', key)
-            print()
-        else:
-            print("Your pack is empty")
-        print(f"Your current wielded weapon: "
-              f"{self.wielded_weapon}\n"
-              f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
-              f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
-        if not len(self.pack):
-            return
-        inventory_choice = input(f"Manage (W)eapons or (E)xit: ").lower()
-        if inventory_choice not in ('w', 'e'):
-            continue
-        if inventory_choice == 'e':
-            return
-        if inventory_choice == 'w':
-            self.hud()
-            # stuff = Counter(item.name for item in self.pack)
-            # items = [item for item in self.pack if item.item_type == "weapon"]
-            # self.pack.sort(key=lambda x: x.damage_bonus)
-            # stuff = Counter(item.name for item in items)
-            stuff = {}
-            for item in self.pack:
-                # if getattr(item, item.item_type) == "weapon":
-                monster_key = random.randint(1, (player_1.level + 1))
-                monster_cls = random.battle_choice(monster_dict[monster_key])
-                stuff[item] = self.pack.index(item)
-            for key, value in stuff.items():
-                print(value, ':', key)
-            old_weapon = self.wielded_weapon
-            print(f"Your current wielded weapon: "
-                  f"{self.wielded_weapon}\n"
-                  f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
-                  f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
-            try:
-                new_weapon = int(input(f"Enter the number of the weapon from your pack you wish to wield: "))
-                # try:
-                self.wielded_weapon = self.pack[new_weapon]
-            except (IndexError, ValueError):
-                print("Invalid entry..")
-                time.sleep(1)
-                continue
-            print(f"You remove the {self.pack[new_weapon]} from your pack and are now wielding it.\n"
-                  f"You place the {old_weapon} in your pack.")
-            self.pack.pop(new_weapon)
-            self.pack.append(old_weapon)
-            self.pack.sort(key=lambda x: x.damage_bonus)
-            time.sleep(1)
-            if not len(self.pack):
-                print("Your pack is now empty.")
-                time.sleep(1)
-                return
-        else:
-            print("Your pack is empty..see if this statement is ever seen")
-            return
-
-
+    ring_of_protection, major_healing_potion, super_healing_potion, sleep
+player_1 = Player()
 # ****************************************************************************************************************************
 
 pack = {
-    'Weapons': [short_sword, short_axe, quantum_sword, broad_sword],
-    'Healing Potions': [minor_healing_potion, major_healing_potion, super_healing_potion],
+    'Weapons': [],
+    # 'Weapons': [short_sword, short_axe, quantum_sword, broad_sword],
+    #'Healing Potions': [minor_healing_potion, major_healing_potion, super_healing_potion],
+    'Healing Potions': [],
     'Armor': [leather_armor],
     'Shields': [buckler],
     'Boots': [leather_boots],
@@ -115,13 +46,15 @@ def item_type_inventory(item_type):
     if total_number_of_items:
         print(f"{item_type}")
         # print(f"You currently have {total_number_of_items} items in your {item_type} inventory:")
-        for key, value in stuff_dict.items():  # loop through each key and value
+        for key, value in stuff_dict.items():  # loop through the key and values
             print(key, ':    ', value, sep='')
+            return True
             # print(key, 's', ':    ', value, sep='')  # print each key and value. add an 's' and a colon, without any spaces
     # total_number_of_items = len(pack[item_type])
     # print(f"You have {total_number_of_items} items in your {item_type} pack.")
     else:
-        return
+        print(f"You currently have no {item_type} in your inventory.")
+        return False
 
 
 # list_of_values = list(pack.values())
@@ -185,8 +118,74 @@ print_whole_inventory()'''
 def whole_inventory():
     item_type_lst = ['Weapons', 'Healing Potions', 'Armor', 'Shields', 'Boots', 'Cloaks', 'Rings of Regeneration',
                      'Rings of Protection', 'Town Portal Implements']
+    current_items = []
     for each_item in item_type_lst:
-        item_type_inventory(each_item)
-
+        is_item_on_list = item_type_inventory(each_item)
+        print(is_item_on_list)
+        if is_item_on_list:
+            current_items.append(each_item)
+    print(current_items)
 
 whole_inventory()
+#dic.values()[index]
+print(pack.values())
+def inventory(self):
+    while True:
+        item_type_lst = ['Weapons', 'Healing Potions', 'Armor', 'Shields', 'Boots', 'Cloaks', 'Rings of Regeneration',
+                         'Rings of Protection', 'Town Portal Implements']
+        current_items = []
+        for each_item in item_type_lst:
+            is_item_on_list = item_type_inventory(each_item)
+            print(is_item_on_list)
+            if is_item_on_list:
+                current_items.append(each_item)
+        print(f"Your current wielded weapon: "
+              f"{self.wielded_weapon}\n"
+              f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
+              f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
+        if not len(current_items):
+            return
+        inventory_choice = input(f"(S)ubstitute wielded weapon or (E)xit: ").lower()
+        if inventory_choice not in ('s', 'e'):
+            continue
+        if inventory_choice == 'e':
+            return
+        if inventory_choice == 's':
+            self.hud()
+            # stuff = Counter(item.name for item in self.pack)
+            # items = [item for item in self.pack if item.item_type == "weapon"]
+            # self.pack.sort(key=lambda x: x.damage_bonus)
+            (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus)
+            # stuff = Counter(item.name for item in items)
+            stuff = {}
+            for item in self.pack['Weapons']:
+                stuff[item] = (self.pack['Weapons']).index(item)
+            for key, value in stuff.items():
+                print(value, ':', key)
+            old_weapon = self.wielded_weapon
+            print(f"Your current wielded weapon: "
+                  f"{self.wielded_weapon}\n"
+                  f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
+                  f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
+            try:
+                new_weapon = int(input(f"Enter the number of the weapon from your pack you wish to wield: "))
+                #dic.values()[index]
+                # (pack[found_item.item_type]).append(found_item)
+                self.wielded_weapon = (self.pack['Weapons'])[new_weapon]
+            except (IndexError, ValueError):
+                print("Invalid entry..")
+                sleep(1)
+                break
+            print(f"You remove the {self.pack[new_weapon]} from your pack and are now wielding it.\n"
+                  f"You place the {old_weapon} in your pack.")
+            self.pack.pop(new_weapon)
+            self.pack.append(old_weapon)
+            self.pack.sort(key=lambda x: x.damage_bonus)
+            sleep(1)
+            if not len(self.pack):
+                print("Your pack is now empty.")
+                sleep(1)
+                return
+        else:
+            print("Your pack is empty..see if this statement is ever seen")
+            return

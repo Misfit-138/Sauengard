@@ -661,7 +661,7 @@ class Player:
                     print(f"Rolling a 1 adds 2 failed saves. ")
                     print(f"{fails} Failed saves..")
                     sleep(1)
-            return True
+            return True  # do i need this statement?
 
     def swing(self, name, level, dexterity, strength, weapon_bonus, monster_level, monster_name, monster_dexterity,
               monster_armor_class):

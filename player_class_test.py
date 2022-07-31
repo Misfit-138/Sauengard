@@ -34,7 +34,7 @@ class Weapon:
 
     def __init__(self):
         self.name = ""
-        self.item_type = "weapon"
+        self.item_type = "Weapons"
         self.damage_bonus = 0
         self.to_hit_bonus = 0
         self.sell_price = 0
@@ -49,7 +49,7 @@ class ShortSword(Weapon):
     def __init__(self):
         super().__init__()
         self.name = "Short Sword"
-        self.item_type = "weapon"
+        self.item_type = "Weapons"
         self.damage_bonus = 0
         self.to_hit_bonus = 0
         self.sell_price = 75
@@ -61,7 +61,7 @@ class BroadSword(Weapon):
     def __init__(self):
         super().__init__()
         self.name = "Broad Sword"
-        self.item_type = "weapon"
+        self.item_type = "Weapons"
         self.damage_bonus = 1
         self.to_hit_bonus = 0
         self.sell_price = 75
@@ -73,7 +73,7 @@ class QuantumSword(Weapon):
     def __init__(self):
         super().__init__()
         self.name = "Rudimentary Quantum Sword"
-        self.item_type = "weapon"
+        self.item_type = "Weapons"
         self.damage_bonus = 10  # 5
         self.to_hit_bonus = 2
         self.sell_price = 5000
@@ -90,7 +90,7 @@ class ShortAxe(Weapon):
     def __init__(self):
         super().__init__()
         self.name = "Short Axe"
-        self.item_type = "weapon"
+        self.item_type = "Weapons"
         self.damage_bonus = 2
         self.to_hit_bonus = -1
         self.sell_price = 200
@@ -105,7 +105,7 @@ class Armor:
 
     def __init__(self):
         self.name = ""
-        self.item_type = "armor"
+        self.item_type = "Armor"
         self.armor_bonus = 0
         self.sell_price = 0
         self.buy_price = 0
@@ -119,7 +119,7 @@ class LeatherArmor(Armor):
     def __init__(self):
         super().__init__()
         self.name = "Leather Armor"
-        self.item_type = "armor"
+        self.item_type = "Armor"
         self.armor_bonus = 0
         self.sell_price = 50
         self.buy_price = 50
@@ -133,7 +133,7 @@ class Shield:
 
     def __init__(self):
         self.name = ""
-        self.item_type = "shield"
+        self.item_type = "Shields"
         self.armor_bonus = 0
         self.sell_price = 0
         self.buy_price = 0
@@ -147,7 +147,7 @@ class Buckler(Shield):
     def __init__(self):
         super().__init__()
         self.name = "Buckler"
-        self.item_type = "shield"
+        self.item_type = "Shields"
         self.armor_bonus = 1
         self.sell_price = 50
         self.buy_price = 50
@@ -161,7 +161,7 @@ class Boots:
 
     def __init__(self):
         self.name = ""
-        self.item_type = "boots"
+        self.item_type = "Boots"
         self.armor_bonus = 0
         self.sell_price = 0
         self.buy_price = 0
@@ -175,7 +175,7 @@ class LeatherBoots(Boots):
     def __init__(self):
         super().__init__()
         self.name = "Leather Boots"
-        self.item_type = "boots"
+        self.item_type = "Boots"
         self.armor_bonus = 0
         self.sell_price = 50
         self.buy_price = 50
@@ -189,7 +189,7 @@ class Cloak:
 
     def __init__(self):
         self.name = ""
-        self.item_type = "cloak"
+        self.item_type = "Cloaks"
         self.armor_bonus = 0
         self.sell_price = 0
         self.buy_price = 0
@@ -203,7 +203,7 @@ class CanvasCloak(Cloak):
     def __init__(self):
         super().__init__()
         self.name = "Canvas Cloak"
-        self.item_type = "cloak"
+        self.item_type = "Cloaks"
         self.dexterity_bonus = 0
         self.sell_price = 50
         self.buy_price = 50
@@ -213,40 +213,44 @@ class CanvasCloak(Cloak):
 canvas_cloak = CanvasCloak()
 
 
-class MinorHealingPotion:
+class HealingPotion:
     def __init__(self):
-        self.name = "Minor Healing Potion"
-        self.item_type = "healing potion"
+        self.name = ""
+        self.item_type = "Healing Potions"
         self.heal_points = 10
 
     def __repr__(self):
         return self.name
 
 
+class MinorHealingPotion(HealingPotion):
+    def __init__(self):
+        super().__init__()
+        self.name = "Minor Healing Potion"
+        self.item_type = "Healing Potions"
+        self.heal_points = 10
+
+
 minor_healing_potion = MinorHealingPotion()
 
 
-class MajorHealingPotion:
+class MajorHealingPotion(HealingPotion):
     def __init__(self):
-        self.name = ""
-        self.item_type = "healing potion"
+        super().__init__()
+        self.name = "Major Healing Potion"
+        self.item_type = "Healing Potions"
         self.heal_points = 20
-
-    def __repr__(self):
-        return self.name
 
 
 major_healing_potion = MajorHealingPotion()
 
 
-class SuperHealingPotion:
+class SuperHealingPotion(HealingPotion):
     def __init__(self):
+        super().__init__()
         self.name = "Super Healing Potion"
-        self.item_type = "healing potion"
+        self.item_type = "Healing Potions"
         self.heal_points = 50
-
-    def __repr__(self):
-        return self.name
 
 
 super_healing_potion = SuperHealingPotion()
@@ -255,8 +259,8 @@ super_healing_potion = SuperHealingPotion()
 class RingOfRegeneration:
 
     def __init__(self):
-        self.name = "Ring of Regeneration"
-        self.item_type = "ring of regeneration"
+        self.name = "Generic Ring of Regeneration"
+        self.item_type = "Rings of Regeneration"
         self.regenerate = 1
         self.sell_price = 10000
         self.buy_price = 10000
@@ -272,8 +276,8 @@ ring_of_regeneration = RingOfRegeneration()
 class RingOfProtection:
 
     def __init__(self):
-        self.name = "Ring Of Protection"
-        self.item_type = "ring of protection"
+        self.name = "Generic Ring Of Protection"
+        self.item_type = "Rings of Protection"
         self.protect = 1
         self.sell_price = 10000
         self.buy_price = 10000
@@ -286,21 +290,22 @@ class RingOfProtection:
 ring_of_protection = RingOfProtection()
 
 
-class ScrollOfTownPortal:
+class TownPortalImplements:
 
     def __init__(self):
         self.name = "Scroll of Town Portal"
-        self.item_type = "town portal scroll"
+        self.item_type = "Town Portal Implements"
         self.protect = 1
         self.sell_price = 1000
         self.buy_price = 1000
         self.minimum_level = 1
+        self.uses = 1
 
     def __repr__(self):
         return self.name
 
 
-scroll_of_town_portal = ScrollOfTownPortal()
+scroll_of_town_portal = TownPortalImplements()
 
 
 class Player:

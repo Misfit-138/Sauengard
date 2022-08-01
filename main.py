@@ -32,8 +32,8 @@ and its documentation and return value (usually None) support this, the behavior
 
 import pickle
 import time
-
-from player_class_test import *
+from player_and_inventory_testing import *
+#from player_class_module_reliable import *
 from monster_module import *
 from typing_module import *
 import random

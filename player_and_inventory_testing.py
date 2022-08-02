@@ -894,9 +894,13 @@ class Player:
             if is_item_on_list:
                 current_items.append(each_item)
                 # print(current_items)  # for testing
+
         if not len(current_items):
             print(f"Your inventory is empty.")
             return False
+        else:
+            pause()
+            return
 
     def loot(self):
 

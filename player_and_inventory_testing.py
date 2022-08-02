@@ -767,32 +767,37 @@ class Player:
             print(
                 f"3 Quantum Sword          {quantum_sword.minimum_level}                    {quantum_sword.buy_price}")
             print(f"You have {self.gold} gold pieces.")
-            sale_item_key = input("Enter item number to buy, Weapons (I)nventory, or (E)xit the blacksmith: ").lower()
-            if sale_item_key not in ('1', '2', '3', 'i', 'e'):
+            sale_item_key = input("Enter item number to buy, (M)anage Weapons Inventory or (E)xit the blacksmith: ").lower()
+            if sale_item_key not in ('1', '2', '3', 'e', 'm'):
                 continue
-            if sale_item_key == 'i':
+            '''if sale_item_key == 'i':
                 self.hud()
                 inventory_from_blacksmith = self.item_type_inventory('Weapons')
                 if not inventory_from_blacksmith:
                     print(f"Your weapons inventory is empty")
                 os.system('pause')
                 self.hud()
-                continue
+                continue'''
             if sale_item_key == 'e':
                 return
+            if sale_item_key == 'm':
+                self.weapon_management()
+                continue
             sale_item = (sale_items_dict[sale_item_key])
-            if self.gold >= sale_item.sell_price and self.level >= sale_item.minimum_level:
+            # ADD LOGIC TO PREVENT BUYING A WEAPON THAT IS WIELDED!!!! *************************************
+            if self.gold >= sale_item.sell_price and sale_item not in (self.pack['Weapons']) and self.level >= sale_item.minimum_level:
                 print(f"You buy a {sale_item}")
                 self.gold -= sale_item.buy_price
                 (self.pack[sale_item.item_type]).append(sale_item)
+                number_of_items = len(self.pack[sale_item.item_type])
+                print(f"You now have {number_of_items} items in your {sale_item.item_type} inventory:")
                 (self.pack[sale_item.item_type]).sort(key=lambda x: x.name)
                 stuff_dict = Counter(item.name for item in self.pack[sale_item.item_type])
                 for key, value in stuff_dict.items():
-                    print(key, 's', ':    ', value, sep='')
-                number_of_items = len(self.pack[sale_item.item_type])
-                print(f"You now have {number_of_items} items in your {sale_item.item_type} inventory.")
-                sleep(1)
-                self.hud()
+                    print(key)
+                    #print(key, 's', ':    ', value, sep='')
+
+                pause()
                 continue
             elif self.gold < sale_item.sell_price:
                 print(f"You do not have enough gold")
@@ -823,6 +828,60 @@ class Player:
         else:
             # print(f"You currently have no {item_type} in your inventory.")
             return False
+
+    def weapon_management(self):
+        self.hud()
+        if len(self.pack['Weapons']) > 0:
+            print(f"Your current weapon inventory:")
+            (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus)
+            stuff = {}
+            for item in (self.pack['Weapons']):
+                stuff[item] = (self.pack['Weapons']).index(item)
+            for key, value in stuff.items():
+                print(value + 1, ':', key)  # indexing starts at zero, so add 1
+            print()
+            '''self.pack[item_type].sort(key=lambda x: x.name)
+            stuff_dict = Counter(item.name for item in self.pack[item_type])
+            for key, value in stuff_dict.items():
+            print(key, 's', ':    ', value, sep='')
+            number_of_items = len(self.pack[item_type])'''
+        else:
+            print(f"You have nothing in your weapons inventory..")
+            pause()
+            return
+        old_weapon = self.wielded_weapon
+        print(f"Your current wielded weapon: "
+              f"{self.wielded_weapon}\n"
+              f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
+              f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
+        wield_or_exit = input(f"(S)wap wielded weapon, or (E)xit: ").lower()
+        if wield_or_exit == "e":
+            return
+        elif wield_or_exit == "s":
+            try:
+                new_weapon_index = int(input(f"Enter the number of the weapon from your pack you wish to wield: "))
+                new_weapon_index -= 1  # again, indexing starts at 0 and is awkward
+                # ******************ADD LOGIC TO PREVENT WIELDING AND CARRYING SAME WEAPON****************************
+                # a = (pack['Weapons'])[2]
+                self.wielded_weapon = (self.pack['Weapons'])[new_weapon_index]
+                # self.wielded_weapon = self.pack['Weapons']new_weapon  # find syntax
+            except (IndexError, ValueError):
+                print("Invalid entry..")
+                sleep(1)
+                return
+            print(f"You remove the {(self.pack['Weapons'])[new_weapon_index]} from your pack and are now wielding it.\n"
+                  f"You place the {old_weapon} in your pack.")
+
+            (self.pack['Weapons']).pop(new_weapon_index)
+            (self.pack['Weapons']).append(old_weapon)
+            (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus)
+            # self.pack.append(old_weapon)
+            # self.pack.sort(key=lambda x: x.damage_bonus)
+            pause()
+            if not len(self.pack['Weapons']):
+                print("Your weapons inventory is now empty at this point.")
+                sleep(3)
+                return
 
     def inventory(self):
         self.hud()
@@ -856,9 +915,9 @@ class Player:
                              'Rings of Regeneration',
                              'Rings of Protection', 'Town Portal Implements']
         found_item = random.choice(loot_dict[random.choice(item_type_key_lst)])
-        #key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
-        #rndm_item_index = random.randrange(len(loot_dict[key]))
-        #rndm_item = loot_dict[key][rndm_item_index]
+        # key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
+        # rndm_item_index = random.randrange(len(loot_dict[key]))
+        # rndm_item = loot_dict[key][rndm_item_index]
         self.hud()
         print(f"You have found a {found_item.name}")
 
@@ -890,7 +949,7 @@ class Player:
         else:
             print(f"You already have a {found_item.name}")
         pause()
-        #sleep(2)
+        # sleep(2)
 
 
 '''

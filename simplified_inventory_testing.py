@@ -72,14 +72,51 @@ print(pack)
 sub_item_type = short_axe.item_type
 sub_item = short_axe
 (pack[sub_item_type]).remove(sub_item)
-# code to index weapons into dictionary
-(pack[sub_item_type]).sort(key=lambda x: x.damage_bonus)
+# syntax for indexing list within dictionary !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+a = (pack['Weapons'])[2]
 
-stuff = {}
-for item in (pack[sub_item_type]):
-    # if getattr(item, item.item_type) == "weapon":
-    stuff[item] = (pack[sub_item_type]).index(item)
-for key, value in stuff.items():
-    print(value + 1, ':', key)
+print(a)
+
+
+# code to index weapons into dictionary
+    (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus)
+    stuff = {}
+    for item in (self.pack['Weapons']):
+        stuff[item] = (pack['Weapons']).index(item)
+    for key, value in stuff.items():
+        print(value + 1, ':', key)
+# *******************************************************************      
+    old_weapon = self.wielded_weapon
+    print(f"Your current wielded weapon: "
+          f"{self.wielded_weapon}\n"
+          f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
+          f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
+    try:
+        new_weapon = int(input(f"Enter the number of the weapon from your pack you wish to wield: "))
+        new_weapon = new_weapon - 1
+
+        #a = (pack['Weapons'])[2]
+        self.wielded_weapon = (self.pack['Weapons'])[new_weapon]
+        # self.wielded_weapon = self.pack['Weapons']new_weapon  # find syntax
+    except (IndexError, ValueError):
+        print("Invalid entry..")
+        sleep(1)
+        break
+    print(f"You remove the {(self.pack['Weapons'])[new_weapon]} from your pack and are now wielding it.\n"
+          f"You place the {old_weapon} in your pack.")
+
+    (self.pack['Weapons']).remove(new_weapon)
+    #self.pack.pop(new_weapon)
+    (self.pack['Weapons']).append(old_weapon)
+    (self.pack[sub_item_type]).sort(key=lambda x: x.damage_bonus)
+    #self.pack.append(old_weapon)
+    #self.pack.sort(key=lambda x: x.damage_bonus)
+    sleep(1)
+    if not len(self.pack['Weapons']):
+        print("Your weapons inventory is now empty.")
+        sleep(1)
+        return
+
+
 
 print(pack)

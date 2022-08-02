@@ -97,6 +97,7 @@ while True:
     in_town = True
     in_dungeon = False
     while in_town:
+        player_1.hud()
         town_functions = input(
             "You are in town. (S)ave, (Q)uit game, (R)estart the game, (I)nventory, (B)lacksmith, (C)hemist or ("
             "E)nter dungeon "
@@ -111,23 +112,41 @@ while True:
             print("Exiting..")
             exit()
         if town_functions == 's':
-            print(f"Saving {player_1.name}...")
-            character_filename = player_1.name + ".sav"
-            with open(character_filename, 'wb') as player_save:
-                pickle.dump(player_1, player_save)
-                print(f"{player_1.name} saved.")
-                time.sleep(2)
+            save_a_character = player_name + ".sav"
+            if os.path.isfile(save_a_character):
+                while True:
+                    confirm_save = input(f"{player_name} already saved. Overwrite? (y/n) ").lower()
+                    if confirm_save not in ('y', 'n'):
+                        continue
+                    elif confirm_save == 'n':
+                        break
+                    elif confirm_save == 'y':
+                        print(f"Saving {player_1.name}...")
+                        character_filename = player_1.name + ".sav"
+                        with open(character_filename, 'wb') as player_save:
+                            pickle.dump(player_1, player_save)
+                            print(f"{player_1.name} saved.")
+                            time.sleep(2)
+                            break
+            else:
+                print(f"Saving {player_1.name}...")
+                character_filename = player_1.name + ".sav"
+                with open(character_filename, 'wb') as player_save:
+                    pickle.dump(player_1, player_save)
+                    print(f"{player_1.name} saved.")
+                    time.sleep(2)
+
         if town_functions == 'i':
-            player_1.hud()
+
             player_1.inventory()
             os.system('pause')
-            player_1.hud()
+
         if town_functions == 'b':
-            player_1.hud()
+
             print("You visit the blacksmith")
             at_blacksmith = True
             player_1.blacksmith_sale()
-            player_1.hud()
+
         if town_functions == 'c':
             player_1.hud()
             print("You visit the quantum chemist. He heals you to full strength.")
@@ -137,7 +156,7 @@ while True:
         if town_functions == 'e':
             in_town = False
             in_dungeon = True
-            player_1.hud()
+
             print("You enter the dungeon..")
             time.sleep(1)
             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
@@ -146,6 +165,7 @@ while True:
             # dungeon navigation loop
             while in_dungeon:
                 player_1.regenerate()
+                player_1.loot()
                 encounter = dice_roll(1, 20)
                 player_1.hud()
                 dungeon_command = input(
@@ -153,7 +173,7 @@ while True:
                 if dungeon_command == 'p':
                     in_town = True
                     in_dungeon = False
-                    player_1.hud()
+
                     print(f"The portal appears before you; a seemingly impossible gateway between distant places..")
                     time.sleep(2)
                     winsound.PlaySound(None, winsound.SND_ASYNC)
@@ -195,11 +215,11 @@ while True:
                         print("You go east")
                     time.sleep(.5)
                 if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h', 'i', 'q'):
-                    player_1.hud()
+
                     print("Unknown command")
                     continue
                 if encounter > 11:
-                    player_1.hud()
+
                     print("This should create monster now..")
                     # monster dictionary. keys correspond to difficulty
                     monster_dict = {
@@ -273,14 +293,14 @@ while True:
                                     damage_to_player = monster.swing(monster.name, player_1.armor_class)
                                     player_1.reduce_health(damage_to_player)
                                 if player_1.check_dead():  # if player  dead
-                                    player_1.hud()
+
                                     print(f"You were caught off guard!")
                                     time.sleep(1.5)
                                     print(f"You died!")
                                     player_is_dead = True
                                     continue
                             else:
-                                player_1.hud()
+
                                 print(f"The {monster.name} attacks and you dodge, swiftly foiling its advantage!")
                                 time.sleep(3)
                                 #player_1.quick_move(monster.name)
@@ -298,7 +318,7 @@ while True:
                                     # in_town = True
                                     break
                                 else:
-                                    player_1.hud()
+
                                     print(f"The {monster.name} swiftly blocks your escape.")
                                     time.sleep(.5)
                                     print(f"You are rooted to the spot. You must stand your ground!")
@@ -310,10 +330,10 @@ while True:
                                 print(f"Cast")
                                 continue
                             elif battle_choice == "f":
-                                player_1.hud()
+
                                 print(f"Fight.")
                             else:
-                                player_1.hud()
+
                                 print(f"The {monster.name} is not amused.")
                                 time.sleep(1)
                                 player_1.hud()

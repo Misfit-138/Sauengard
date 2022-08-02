@@ -26,6 +26,10 @@ Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighte
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.'''
 
 
+def pause():
+    os.system('pause')
+
+
 def sleep(seconds):
     time.sleep(seconds)
 
@@ -359,7 +363,7 @@ class Player:
             'Rings of Protection': [],
             'Town Portal Implements': []
 
-}
+        }
 
     def print_wielded_weapon_stats(self):
         print(f"{self.wielded_weapon.name}:")
@@ -611,7 +615,7 @@ class Player:
             if len(self.pack):
                 stolen_item = random.choice(self.pack[random.choice(item_type_key_lst)])
                 self.pack.pop(stolen_item)
-                #stolen_item = random.choice(self.pack)
+                # stolen_item = random.choice(self.pack)
                 print(f"He steals your {stolen_item}!")
                 sleep(1.5)
                 return
@@ -813,27 +817,27 @@ class Player:
         for key, value in stuff_dict.items():
             print(key, 's', ':    ', value, sep='')
         number_of_items = len(self.pack[item_type])
-        #print(f"You now have {number_of_items} items in your {item_type} inventory.")
+        # print(f"You now have {number_of_items} items in your {item_type} inventory.")
         if number_of_items:
             return True
         else:
-            #print(f"You currently have no {item_type} in your inventory.")
+            # print(f"You currently have no {item_type} in your inventory.")
             return False
 
     def inventory(self):
+        self.hud()
         item_type_lst = ['Weapons', 'Healing Potions', 'Armor', 'Shields', 'Boots', 'Cloaks', 'Rings of Regeneration',
                          'Rings of Protection', 'Town Portal Implements']
         current_items = []
         for each_item in item_type_lst:
             is_item_on_list = self.item_type_inventory(each_item)  # item_type_inv returns True or False
-            #print(is_item_on_list)  # True or False for testing
+            # print(is_item_on_list)  # True or False for testing
             if is_item_on_list:
                 current_items.append(each_item)
-                #print(current_items)  # for testing
+                # print(current_items)  # for testing
         if not len(current_items):
             print(f"Your inventory is empty.")
             return False
-
 
     def loot(self):
 
@@ -852,11 +856,14 @@ class Player:
                              'Rings of Regeneration',
                              'Rings of Protection', 'Town Portal Implements']
         found_item = random.choice(loot_dict[random.choice(item_type_key_lst)])
-
+        #key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
+        #rndm_item_index = random.randrange(len(loot_dict[key]))
+        #rndm_item = loot_dict[key][rndm_item_index]
+        self.hud()
         print(f"You have found a {found_item.name}")
 
         if found_item.item_type != 'Healing Potions' and found_item.item_type != 'Town Portal Implements' and found_item not in \
-                self.pack[found_item.item_type]:
+                self.pack[found_item.item_type]:  # you can only carry one of each item, except t.p. and potions
             (self.pack[found_item.item_type]).append(found_item)
             (self.pack[found_item.item_type]).sort(key=lambda x: x.name)
             stuff_dict = Counter(item.name for item in self.pack[found_item.item_type])
@@ -882,6 +889,8 @@ class Player:
             print(f"You now have {number_of_items} items in your {found_item.item_type} inventory.")
         else:
             print(f"You already have a {found_item.name}")
+        pause()
+        #sleep(2)
 
 
 '''

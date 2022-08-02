@@ -39,7 +39,7 @@ loot_dict = {
 
 def item_type_inventory(item_type):  # list items in inventory by type
     # print(*pack[item_type])  # print list without any brackets or commas. 'pack' is the dictionary, 'weapon' is the key for the list of weapons
-    (pack[item_type]).sort(key=lambda x: x.name)  # sort the weapon list by damage_bonus, ascending
+    (pack[item_type]).sort(key=lambda x: x.name)  # sort the list
     stuff_dict = Counter(item.name for item in
                          pack[item_type])  # create a dictionary of the sorted list, which is within the pack dictionary
     total_number_of_items = len(pack[item_type])
@@ -137,25 +137,21 @@ def whole_inventory():
             current_items.append(each_item)
     #print(current_items)  # for testing
 
-#whole_inventory()
-pack = {
-    'Weapons': [short_sword, short_axe, quantum_sword, broad_sword],
-    'Healing Potions': [minor_healing_potion, major_healing_potion, super_healing_potion],
-
-    'Armor': [leather_armor],
-    'Shields': [buckler],
-    'Boots': [leather_boots],
-    'Cloaks': [canvas_cloak],
-    'Rings of Regeneration': [ring_of_regeneration],
-    'Rings of Protection': [ring_of_protection],
-    'Town Portal Implements': [scroll_of_town_portal]
-
-}
-key, value = random.choice(list(pack.items()))
-del value
-#pack.pop(random.choice(list(pack.values())))
-print()
-print()
 whole_inventory()
+
+#pack = {'Weapons': [short_sword, short_axe, quantum_sword, broad_sword]}
+value, key = random.choice(list(pack.items()))
+found_item = random.choice(loot_dict[value])
+#del value
+#pack.pop(random.choice(list(pack.values())))
+print(key)
+#del key
+#pack.pop(key, None)
+whole_inventory()
+print(found_item)
+#(pack[found_item.item_type]).pop(found_item)
+#pack.pop(key[, None])
+whole_inventory()
+#whole_inventory()
 #dic.values()[index]
 #print(pack.values())

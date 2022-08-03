@@ -379,71 +379,6 @@ class Player:
             sleep(1)
             return
 
-    def inventory_old(self):
-        while True:
-            if len(self.pack):
-                self.hud()
-                print("Your pack contains:")
-                print("Item                       Quantity")
-                print()
-                self.pack.sort(key=lambda x: x.damage_bonus)
-                stuff_dict = Counter(item.name for item in self.pack)
-                for key, value in stuff_dict.items():
-                    print(key, 's', ':    ', value, sep='')
-                    # print(value, ':', key)
-                print()
-            else:
-                print("Your pack is empty")
-            print(f"Your current wielded weapon: "
-                  f"{self.wielded_weapon}\n"
-                  f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
-                  f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
-            if not len(self.pack):
-                return
-            inventory_choice = input(f"(S)ubstitute wielded weapon or (E)xit: ").lower()
-            if inventory_choice not in ('s', 'e'):
-                continue
-            if inventory_choice == 'e':
-                return
-            if inventory_choice == 's':
-                self.hud()
-                # stuff = Counter(item.name for item in self.pack)
-                # items = [item for item in self.pack if item.item_type == "weapon"]
-                self.pack.sort(key=lambda x: x.damage_bonus)
-                # stuff = Counter(item.name for item in items)
-                stuff = {}
-                for item in self.pack:
-                    # if getattr(item, item.item_type) == "weapon":
-                    stuff[item] = self.pack.index(item)
-                for key, value in stuff.items():
-                    print(value, ':', key)
-                old_weapon = self.wielded_weapon
-                print(f"Your current wielded weapon: "
-                      f"{self.wielded_weapon}\n"
-                      f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
-                      f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
-                try:
-                    new_weapon = int(input(f"Enter the number of the weapon from your pack you wish to wield: "))
-                    # try:
-                    self.wielded_weapon = self.pack[new_weapon]
-                except (IndexError, ValueError):
-                    print("Invalid entry..")
-                    sleep(1)
-                    break
-                print(f"You remove the {self.pack[new_weapon]} from your pack and are now wielding it.\n"
-                      f"You place the {old_weapon} in your pack.")
-                self.pack.pop(new_weapon)
-                self.pack.append(old_weapon)
-                self.pack.sort(key=lambda x: x.damage_bonus)
-                sleep(1)
-                if not len(self.pack):
-                    print("Your pack is now empty.")
-                    sleep(1)
-                    return
-            else:
-                print("Your pack is empty..see if this statement is ever seen")
-                return
-
     def hud(self):
         os.system('cls')
         print(f"                                                                     Name: {self.name}")
@@ -568,6 +503,7 @@ class Player:
             if after_proficiency_bonus > before_proficiency_bonus:
                 print(f"Your proficiency bonus increases from {before_proficiency_bonus} to {after_proficiency_bonus}!")
                 sleep(2)
+            # self.ring_of_reg  ADD RING LOGIC...UP WITH EACH LEVEL
             self.hud()
         else:
             print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points")
@@ -575,7 +511,7 @@ class Player:
             self.hud()
 
     def monster_likes_you(self, monster_name, monster_intel):
-        if dice_roll(1, 20) == 20 and monster_intel > 8:  # and self.charisma > 15:
+        if dice_roll(1, 20) > 18 and monster_intel > 9:  # and self.charisma > 15:
             print(f"The {monster_name} likes you!")
             gift_item = dice_roll(1, 5)
             if gift_item == 1:
@@ -588,9 +524,8 @@ class Player:
                 return True
             if gift_item == 3:
                 self.wielded_weapon.damage_bonus += 1
-                self.wielded_weapon.damage_bonus = self.wielded_weapon.damage_bonus
                 # *****ADD LOGIC TO APPEND PREFIX TO WEAPON NAME, LIKE, 'ENHANCED', ETC *******************************
-                print(f"He enhances your sword to + {self.wielded_weapon.damage_bonus}!")
+                print(f"He enhances your weapon damage bonus to + {self.wielded_weapon.damage_bonus}!")
                 return True
             if gift_item == 4:
                 self.boots_bonus += 1
@@ -604,31 +539,35 @@ class Player:
             return False
 
     def quick_move(self, monster_name):
-        item_type_key_lst = ['Weapons', 'Healing Potions', 'Armor', 'Shields', 'Boots', 'Cloaks',
-                             'Rings of Regeneration',
-                             'Rings of Protection', 'Town Portal Implements']
         quick_move_roll = dice_roll(1, 20)
         # player_initiative_roll = dice_roll(1, 20)
         if quick_move_roll == 20:
             print(f"The {monster_name} makes a quick move...")
             sleep(1.5)
-            if len(self.pack):
-                stolen_item = random.choice(self.pack[random.choice(item_type_key_lst)])
-                self.pack.pop(stolen_item)
-                # stolen_item = random.choice(self.pack)
-                print(f"He steals your {stolen_item}!")
-                sleep(1.5)
-                return
+            available_item_types_to_steal = []
+            for i in self.pack.keys():  # gather all available
+                if len(self.pack[i]) > 0:  # item types to steal based on player's current item TYPES and put them
+                    available_item_types_to_steal.append(i)  # in available_item_types_to_steal = []
+                    item_type = random.choice(
+                        available_item_types_to_steal)  # Get an item *TYPE* you want to "steal" (i.e. Weapon, Armor, etc.)
+            if len(available_item_types_to_steal) > 0:
+                if len(self.pack[item_type]) > 0:  # If the player has an item of type "item_type"
+                    stolen_item = (self.pack[item_type].pop(
+                        random.randint(0,
+                                       len(self.pack[item_type]) - 1)))  # pop it. subtract 1 because indexes start at 0
+                    print(f"He steals a {stolen_item}")  # from your {item_type}")
+                    pause()
+                    return True  # True means monster gets away clean
             else:
                 print("You have nothing he wants to steal!")
-                sleep(1.5)
-                return
+                sleep(2)
+                return True  # False here means your inventory is empty and monster sticks around to fight
         else:
-            print(f"The {monster_name} makes a quick move...")
-            sleep(1)
-            print(f"..but this time, you are quicker!\nIt gets away with nothing..")
-            sleep(1.5)
-            return
+            # print(f"The {monster_name} makes a quick move...")
+            # sleep(1.5)
+            # print(f"..but this time, you are quicker!..")
+            # sleep(2)
+            return False  # False here means monster failed check and monster sticks around to fight
 
     def damage_while_paralyzed(self, monster_number_of_hd, monster_hit_dice):
         paralyze_damage = dice_roll(monster_number_of_hd, monster_hit_dice)
@@ -767,7 +706,8 @@ class Player:
             print(
                 f"3 Quantum Sword          {quantum_sword.minimum_level}                    {quantum_sword.buy_price}")
             print(f"You have {self.gold} gold pieces.")
-            sale_item_key = input("Enter item number to buy, (M)anage Weapons Inventory or (E)xit the blacksmith: ").lower()
+            sale_item_key = input(
+                "Enter item number to buy, (M)anage Weapons Inventory or (E)xit the blacksmith: ").lower()
             if sale_item_key not in ('1', '2', '3', 'e', 'm'):
                 continue
             '''if sale_item_key == 'i':
@@ -784,8 +724,10 @@ class Player:
                 self.weapon_management()
                 continue
             sale_item = (sale_items_dict[sale_item_key])
-            # ADD LOGIC TO PREVENT BUYING A WEAPON THAT IS WIELDED!!!! *************************************
-            if self.gold >= sale_item.sell_price and sale_item not in (self.pack['Weapons']) and self.level >= sale_item.minimum_level:
+            # ADD ARMOR, BOOTS AND SHIELDS *************************************
+            if self.gold >= sale_item.sell_price and sale_item not in (
+                    self.pack[
+                        'Weapons']) and sale_item != self.wielded_weapon and self.level >= sale_item.minimum_level:
                 print(f"You buy a {sale_item}")
                 self.gold -= sale_item.buy_price
                 (self.pack[sale_item.item_type]).append(sale_item)
@@ -795,7 +737,7 @@ class Player:
                 stuff_dict = Counter(item.name for item in self.pack[sale_item.item_type])
                 for key, value in stuff_dict.items():
                     print(key)
-                    #print(key, 's', ':    ', value, sep='')
+                    # print(key, 's', ':    ', value, sep='')
 
                 pause()
                 continue
@@ -817,10 +759,12 @@ class Player:
 
     def item_type_inventory(self, item_type):  # list items in inventory by type
         # print(*pack[item_type])  # print list without any brackets or commas. 'pack' is the dictionary, 'weapon' is the key for the list of weapons
+        print(f"{item_type}:")
         self.pack[item_type].sort(key=lambda x: x.name)
         stuff_dict = Counter(item.name for item in self.pack[item_type])
         for key, value in stuff_dict.items():
-            print(key, 's', ':    ', value, sep='')
+            print(key, ':    ', value, sep='')
+            # print(key, 's', ':    ', value, sep='')
         number_of_items = len(self.pack[item_type])
         # print(f"You now have {number_of_items} items in your {item_type} inventory.")
         if number_of_items:
@@ -833,12 +777,13 @@ class Player:
         self.hud()
         if len(self.pack['Weapons']) > 0:
             print(f"Your current weapon inventory:")
-            (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus)
-            stuff = {}
+            print(f"(Sorted by highest damage bonus)")
+            (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus, reverse=True)
+            weapon_mgmt_dict = {}
             for item in (self.pack['Weapons']):
-                stuff[item] = (self.pack['Weapons']).index(item)
-            for key, value in stuff.items():
-                print(value + 1, ':', key)  # indexing starts at zero, so add 1
+                weapon_mgmt_dict[item] = (self.pack['Weapons']).index(item)
+            for key, value in weapon_mgmt_dict.items():
+                print(value + 1, ':', key)  # value is index. indexing starts at zero, so add 1
             print()
             '''self.pack[item_type].sort(key=lambda x: x.name)
             stuff_dict = Counter(item.name for item in self.pack[item_type])
@@ -859,37 +804,35 @@ class Player:
             return
         elif wield_or_exit == "s":
             try:
-                new_weapon_index = int(input(f"Enter the number of the weapon from your pack you wish to wield: "))
+                new_weapon_index = int(input(f"Enter the number of the weapon you wish to wield: "))
                 new_weapon_index -= 1  # again, indexing starts at 0 and is awkward
-                # ******************ADD LOGIC TO PREVENT WIELDING AND CARRYING SAME WEAPON****************************
-                # a = (pack['Weapons'])[2]
-                self.wielded_weapon = (self.pack['Weapons'])[new_weapon_index]
-                # self.wielded_weapon = self.pack['Weapons']new_weapon  # find syntax
+                self.wielded_weapon = (self.pack['Weapons'])[new_weapon_index]  # SYNTAX FOR INDEX
+                # self.wielded_weapon = self.pack['Weapons']new_weapon  # find syntax...on the right track
             except (IndexError, ValueError):
                 print("Invalid entry..")
                 sleep(1)
                 return
-            print(f"You remove the {(self.pack['Weapons'])[new_weapon_index]} from your pack and are now wielding it.\n"
-                  f"You place the {old_weapon} in your pack.")
+            print(f"You remove the {(self.pack['Weapons'])[new_weapon_index]} from your back and are now wielding it.\n"
+                  f"You place the {old_weapon} on your back.")
 
-            (self.pack['Weapons']).pop(new_weapon_index)
-            (self.pack['Weapons']).append(old_weapon)
+            (self.pack['Weapons']).pop(new_weapon_index)  # INDEX SYNTAX
+            (self.pack['Weapons']).append(old_weapon)  # old_weapon represents an object, not an index
             (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus)
-            # self.pack.append(old_weapon)
-            # self.pack.sort(key=lambda x: x.damage_bonus)
+            # self.pack.append(old_weapon)  # for the old list inventory method
             pause()
-            if not len(self.pack['Weapons']):
-                print("Your weapons inventory is now empty at this point.")
-                sleep(3)
-                return
+            # if not len(self.pack['Weapons']):  # this code seems unreachable..because of the if condition above
+            #    print("Your weapons inventory is now empty at this point.")
+            #    sleep(3)
+            #   return
 
     def inventory(self):
         self.hud()
+        print(f"Your entire inventory:")
         item_type_lst = ['Weapons', 'Healing Potions', 'Armor', 'Shields', 'Boots', 'Cloaks', 'Rings of Regeneration',
                          'Rings of Protection', 'Town Portal Implements']
         current_items = []
         for each_item in item_type_lst:
-            is_item_on_list = self.item_type_inventory(each_item)  # item_type_inv returns True or False
+            is_item_on_list = self.item_type_inventory(each_item)  # item_type_inv function returns True or False
             # print(is_item_on_list)  # True or False for testing
             if is_item_on_list:
                 current_items.append(each_item)
@@ -897,13 +840,12 @@ class Player:
 
         if not len(current_items):
             print(f"Your inventory is empty.")
-            return False
+            return False  # need this False for when called from..?
         else:
             pause()
             return
 
     def loot(self):
-
         loot_dict = {
             'Weapons': [short_sword, short_axe, quantum_sword, broad_sword],
             'Healing Potions': [minor_healing_potion, major_healing_potion, super_healing_potion],
@@ -915,45 +857,63 @@ class Player:
             'Rings of Protection': [ring_of_protection],
             'Town Portal Implements': [scroll_of_town_portal]
         }
-        item_type_key_lst = ['Weapons', 'Healing Potions', 'Armor', 'Shields', 'Boots', 'Cloaks',
-                             'Rings of Regeneration',
-                             'Rings of Protection', 'Town Portal Implements']
-        found_item = random.choice(loot_dict[random.choice(item_type_key_lst)])
-        # key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
-        # rndm_item_index = random.randrange(len(loot_dict[key]))
-        # rndm_item = loot_dict[key][rndm_item_index]
-        self.hud()
-        print(f"You have found a {found_item.name}")
 
-        if found_item.item_type != 'Healing Potions' and found_item.item_type != 'Town Portal Implements' and found_item not in \
-                self.pack[found_item.item_type]:  # you can only carry one of each item, except t.p. and potions
-            (self.pack[found_item.item_type]).append(found_item)
-            (self.pack[found_item.item_type]).sort(key=lambda x: x.name)
-            stuff_dict = Counter(item.name for item in self.pack[found_item.item_type])
-            for key, value in stuff_dict.items():
-                print(key, 's', ':    ', value, sep='')
-            number_of_items = len(self.pack[found_item.item_type])
-            print(f"You now have {number_of_items} items in your {found_item.item_type} inventory.")
-        elif found_item.item_type == 'Healing Potions':
-            (self.pack[found_item.item_type]).append(found_item)
-            (self.pack[found_item.item_type]).sort(key=lambda x: x.name)
-            stuff_dict = Counter(item.name for item in self.pack[found_item.item_type])
-            for key, value in stuff_dict.items():
-                print(key, 's', ':    ', value, sep='')
-            number_of_items = len(self.pack[found_item.item_type])
-            print(f"You now have {number_of_items} items in your {found_item.item_type} inventory.")
-        elif found_item.item_type == 'Town Portal Implements':
-            (self.pack[found_item.item_type]).append(found_item)
-            (self.pack[found_item.item_type]).sort(key=lambda x: x.name)
-            stuff_dict = Counter(item.name for item in self.pack[found_item.item_type])
-            for key, value in stuff_dict.items():
-                print(key, 's', ':    ', value, sep='')
-            number_of_items = len(self.pack[found_item.item_type])
-            print(f"You now have {number_of_items} items in your {found_item.item_type} inventory.")
-        else:
-            print(f"You already have a {found_item.name}")
-        pause()
-        # sleep(2)
+        while True:
+            loot_roll = dice_roll(1, 20)
+            print(f"Loot roll ---> {loot_roll}")
+            pause()
+            if loot_roll > 9:
+
+                key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
+                rndm_item_index = random.randrange(len(loot_dict[key]))
+                found_item = loot_dict[key][rndm_item_index]
+                self.hud()
+                print(f"You see a {found_item.name} !")
+                sleep(1)
+                print(f"You snarf it.")
+
+                # ****** NOTICE THE DIFFERENCE BETWEEN found.item and found_item.item_type !! ************************
+                if found_item.item_type != 'Healing Potions' and found_item.item_type != 'Town Portal Implements' and found_item not in \
+                        self.pack[
+                            found_item.item_type]:  # you can only carry one of each item, except t.p. and potions type
+                    (self.pack[found_item.item_type]).append(found_item)
+                    # self.item_type_inventory(found_item.item_type)
+                    '''(self.pack[found_item.item_type]).sort(key=lambda x: x.name)
+                    stuff_dict = Counter(item.name for item in self.pack[found_item.item_type])
+                    for key, value in stuff_dict.items():
+                        print(key, ':    ', value, sep='')
+                    number_of_items = len(self.pack[found_item.item_type])
+                    print(f"You now have {number_of_items} items in your {found_item.item_type} inventory.")'''
+                    pause()
+                    continue
+                elif found_item.item_type == 'Healing Potions':
+                    (self.pack[found_item.item_type]).append(found_item)
+                    '''(self.pack[found_item.item_type]).sort(key=lambda x: x.name)
+                    stuff_dict = Counter(item.name for item in self.pack[found_item.item_type])
+                    for key, value in stuff_dict.items():
+                        print(key, 's', ':    ', value, sep='')
+                    number_of_items = len(self.pack[found_item.item_type])
+                    print(f"You now have {number_of_items} items in your {found_item.item_type} inventory.")'''
+                    pause()
+                    continue
+                elif found_item.item_type == 'Town Portal Implements':
+                    (self.pack[found_item.item_type]).append(found_item)
+                    '''(self.pack[found_item.item_type]).sort(key=lambda x: x.name)
+                    stuff_dict = Counter(item.name for item in self.pack[found_item.item_type])
+                    for key, value in stuff_dict.items():
+                        print(key, 's', ':    ', value, sep='')
+                    number_of_items = len(self.pack[found_item.item_type])
+                    print(f"You now have {number_of_items} items in your {found_item.item_type} inventory.")'''
+                    pause()
+                    continue
+                else:
+                    print(f"You cannot carry more than one {found_item.name}")
+                    pause()
+                    continue
+            else:
+                return
+                # pause()
+            # sleep(2)
 
 
 '''
@@ -1131,3 +1091,86 @@ Experience Points	Level	Proficiency Bonus
 305,000	            19	    +6
 355,000	            20	    +6
 '''
+'''
+item_type_key_lst = ['Weapons', 'Healing Potions', 'Armor', 'Shields', 'Boots', 'Cloaks',
+                             'Rings of Regeneration',
+                             'Rings of Protection', 'Town Portal Implements']
+
+if len(self.pack):
+                stolen_item = random.choice(self.pack[random.choice(item_type_key_lst)])
+                self.pack.pop(stolen_item)
+                # stolen_item = random.choice(self.pack)
+                print(f"He steals your {stolen_item}!")
+                
+                item_type_key_lst = ['Weapons', 'Healing Potions', 'Armor', 'Shields', 'Boots', 'Cloaks',
+                             'Rings of Regeneration',
+                             'Rings of Protection', 'Town Portal Implements']
+        # found_item = random.choice(loot_dict[random.choice(item_type_key_lst)])
+                
+                
+                
+                '''
+'''   def inventory_old(self):
+       while True:
+           if len(self.pack):
+               self.hud()
+               print("Your pack contains:")
+               print("Item                       Quantity")
+               print()
+               self.pack.sort(key=lambda x: x.damage_bonus)
+               stuff_dict = Counter(item.name for item in self.pack)
+               for key, value in stuff_dict.items():
+                   print(key, 's', ':    ', value, sep='')
+                   # print(value, ':', key)
+               print()
+           else:
+               print("Your pack is empty")
+           print(f"Your current wielded weapon: "
+                 f"{self.wielded_weapon}\n"
+                 f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
+                 f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
+           if not len(self.pack):
+               return
+           inventory_choice = input(f"(S)ubstitute wielded weapon or (E)xit: ").lower()
+           if inventory_choice not in ('s', 'e'):
+               continue
+           if inventory_choice == 'e':
+               return
+           if inventory_choice == 's':
+               self.hud()
+               # stuff = Counter(item.name for item in self.pack)
+               # items = [item for item in self.pack if item.item_type == "weapon"]
+               self.pack.sort(key=lambda x: x.damage_bonus)
+               # stuff = Counter(item.name for item in items)
+               stuff = {}
+               for item in self.pack:
+                   # if getattr(item, item.item_type) == "weapon":
+                   stuff[item] = self.pack.index(item)
+               for key, value in stuff.items():
+                   print(value, ':', key)
+               old_weapon = self.wielded_weapon
+               print(f"Your current wielded weapon: "
+                     f"{self.wielded_weapon}\n"
+                     f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
+                     f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
+               try:
+                   new_weapon = int(input(f"Enter the number of the weapon from your pack you wish to wield: "))
+                   # try:
+                   self.wielded_weapon = self.pack[new_weapon]
+               except (IndexError, ValueError):
+                   print("Invalid entry..")
+                   sleep(1)
+                   break
+               print(f"You remove the {self.pack[new_weapon]} from your pack and are now wielding it.\n"
+                     f"You place the {old_weapon} in your pack.")
+               self.pack.pop(new_weapon)
+               self.pack.append(old_weapon)
+               self.pack.sort(key=lambda x: x.damage_bonus)
+               sleep(1)
+               if not len(self.pack):
+                   print("Your pack is now empty.")
+                   sleep(1)
+                   return
+           else:
+               print("Your pack is empty..see if this statement is ever seen")
+               return'''

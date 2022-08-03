@@ -64,20 +64,31 @@ print(t)
 if len(available) > 0:
     if len(pack[t]) > 0:  # If the player has an item of type "t",
         # print(t, i)
-        pack[t].pop(random.randint(0, len(pack[t]) - 1))  # remove it
+        #stolen_item = random.randint(0, len(pack[t]) - 1)
+        #print(stolen_item)
+        #pack[t].pop(stolen_item)
+        stolen_item = (pack[t].pop(random.randint(0, len(pack[t]) - 1)))  # remove it
+        print(stolen_item)
 else:
     print()
 print(pack)
+
+#This randomly chooses a type and then randomly chooses an item of that type -
+#which means that the canvas cloak is more likely to be stolen than the broad sword. –
+#Martin Bonner supports Monica
+# 23 hours ago
+#Better to add an (item_type, item_index) tuple to available and then delete *that item*.
+#(The OP might want to add some items multiple times if they are particularly easy/attractive to steal.)
 # code for explicitly removing item from list within dictionary!!!!!!!!!!!!!!!!
-sub_item_type = short_axe.item_type
-sub_item = short_axe
-(pack[sub_item_type]).remove(sub_item)
+#sub_item_type = short_axe.item_type
+#sub_item = short_axe
+#(pack[sub_item_type]).remove(sub_item)
 # syntax for indexing list within dictionary !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-a = (pack['Weapons'])[2]
+#a = (pack['Weapons'])[2]
 
-print(a)
+#print(a)
 
-
+'''
 # code to index weapons into dictionary
     (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus)
     stuff = {}
@@ -116,7 +127,7 @@ print(a)
         print("Your weapons inventory is now empty.")
         sleep(1)
         return
-
+'''
 
 
 print(pack)

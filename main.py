@@ -165,7 +165,7 @@ while True:
             # dungeon navigation loop
             while in_dungeon:
                 player_1.regenerate()
-                player_1.loot()
+                #player_1.loot()
                 encounter = dice_roll(1, 20)
                 player_1.hud()
                 dungeon_command = input(
@@ -265,15 +265,20 @@ while True:
                         print(discovered_monsters)
                         if monster.name in discovered_monsters:
                             print(f"You have encountered a level {monster.level} {monster.name}.")
+                            time.sleep(2)
                         else:
                             print(f"{monster.introduction}")
                             discovered_monsters.append(monster.name)
-                        print(f"{monster.constitution_modifier} {monster.hit_points}")  # remove after testing
-                        # time.sleep(2.5)
-                        os.system('pause')
+                            os.system('pause')
+                        #print(f"{monster.constitution_modifier} {monster.hit_points}")  # remove after testing
+                        #time.sleep(2.5)
+
                         if player_1.monster_likes_you(monster.name, monster.intelligence):
                             in_proximity_to_monster = False
                             break
+                        if player_1.quick_move(monster.name):
+                            in_proximity_to_monster = False
+                            break  # if monster steals something he gets away clean, if not, battle
                         player_initiative = dice_roll(1, 20) + player_1.dexterity_modifier
                         monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier
                         print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
@@ -355,6 +360,7 @@ while True:
                                 time.sleep(2)
                                 player_1.level_up(monster.experience_award, monster.gold)
                                 in_proximity_to_monster = False
+                                player_1.loot()
                                 break
                             #if not in_proximity_to_monster:
                             #    break

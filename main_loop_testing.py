@@ -96,6 +96,7 @@ while True:
     player_1.hud()
     in_town = True
     in_dungeon = False
+    discovered_monsters = []
     while in_town:
         player_1.hud()
         town_functions = input(
@@ -161,7 +162,7 @@ while True:
             time.sleep(1)
             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
                                winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-            discovered_monsters = []
+            #discovered_monsters = []
             # dungeon navigation loop
             while in_dungeon:
                 player_1.regenerate()
@@ -331,8 +332,42 @@ while True:
                             elif battle_choice == 'h':
                                 if healing_potion in player_1.pack['Healing Potions']:
                                     player_1.drink_healing_potion()
-                                    #print(f"You have {player_1.hit_points} hit points.")
                                     time.sleep(1)
+                                    # monster turn, after you swig potion
+                                    if not monster.check_dead():
+                                        melee_or_quantum = dice_roll(1, 100)
+                                        if monster.quantum_energy and melee_or_quantum > 50:
+                                            damage_to_player = monster.quantum_energy_attack(monster.name,
+                                                                                             player_1.dexterity_modifier,
+                                                                                             player_1.ring_of_prot)
+                                            player_1.reduce_health(damage_to_player)
+                                        else:
+                                            damage_to_player = monster.swing(monster.name, player_1.armor_class)
+                                            player_1.reduce_health(damage_to_player)
+
+                                        if not player_1.check_dead():  # if player not dead
+                                            if dice_roll(1, 20) > 17 and monster.can_paralyze:
+                                                time.sleep(1)
+                                                player_1.is_paralyzed = monster.paralyze(player_1.wisdom)
+                                                if player_1.is_paralyzed:
+                                                    player_1.damage_while_paralyzed(monster.number_of_hd,
+                                                                                    monster.hit_dice)
+                                                if not player_1.check_dead():  # if player not dead
+                                                    print(f"You regain your faculties.")
+                                                    os.system('pause')
+                                                    continue
+                                                else:
+                                                    print("You are dead and paralyzed!")
+                                                    player_is_dead = True
+                                                    break
+                                        else:
+                                            print(f"You died!")
+                                            time.sleep(3)
+                                            player_is_dead = True
+                                            break
+                                        player_1.hud()
+                                    else:
+                                        break
                                 else:
                                     print(f"You have no potions....")
                                     time.sleep(1)
@@ -376,7 +411,6 @@ while True:
                                         player_1.is_paralyzed = monster.paralyze(player_1.wisdom)
                                         if player_1.is_paralyzed:
                                             player_1.damage_while_paralyzed(monster.number_of_hd, monster.hit_dice)
-
                                         if not player_1.check_dead():  # if player not dead
                                             print(f"You regain your faculties.")
                                             os.system('pause')

@@ -235,7 +235,7 @@ class MinorHealingPotion(HealingPotion):
         self.heal_points = 10
 
 
-minor_healing_potion = MinorHealingPotion()
+healing_potion = MinorHealingPotion()
 
 
 class MajorHealingPotion(HealingPotion):
@@ -354,7 +354,7 @@ class Player:
         # self.weapon_name = "sword"
         self.pack = {
             'Weapons': [],
-            'Healing Potions': [],
+            'Healing Potions': [healing_potion, healing_potion],
             'Armor': [],
             'Shields': [],
             'Boots': [],
@@ -410,7 +410,8 @@ class Player:
         else:
             print(
                 f"                                                                     Cloak: Elven Cloak + {self.boots_bonus}")
-
+        number_of_potions = len(self.pack['Healing Potions'])
+        print(f"                                                                     Healing Potions: {number_of_potions}")
     def calculate_proficiency_bonus(self):
         if self.level <= 4:
             self.proficiency_bonus = 2
@@ -645,7 +646,8 @@ class Player:
         else:
             critical_bonus = 1
             hit_statement = "You hit!"
-        print(f"Dexterity modifier {self.dexterity_modifier}\nProficiency bonus {self.proficiency_bonus}")
+        print(f"Dexterity modifier {self.dexterity_modifier}\nProficiency bonus {self.proficiency_bonus}\n"
+              f"Weapon to hit bonus {self.wielded_weapon.to_hit_bonus}")
         print(f"Monster armor class {monster_armor_class}")
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
             damage_roll = dice_roll((self.level * critical_bonus), self.hit_dice)
@@ -758,7 +760,6 @@ class Player:
                 continue
 
     def item_type_inventory(self, item_type):  # list items in inventory by type
-        # print(*pack[item_type])  # print list without any brackets or commas. 'pack' is the dictionary, 'weapon' is the key for the list of weapons
         print(f"{item_type}:")
         self.pack[item_type].sort(key=lambda x: x.name)
         stuff_dict = Counter(item.name for item in self.pack[item_type])
@@ -825,21 +826,45 @@ class Player:
             #    sleep(3)
             #   return
 
+    def drink_healing_potion(self):
+        self.hud()
+        if healing_potion in self.pack['Healing Potions']:
+            if self.hit_points >= self.maximum_hit_points:
+                print(f"You are already at maximum health!")
+                sleep(1)
+                #print(f"You just wasted a combat turn!")
+                return
+            print(f"You chug a potion")
+            (self.pack['Healing Potions'].remove(healing_potion))
+            self.hit_points = self.hit_points + round(self.maximum_hit_points * .66)
+            if self.hit_points > self.maximum_hit_points:
+                self.hit_points = self.maximum_hit_points
+            sleep(1)
+            print(f"You now have {self.hit_points} hit points.")
+            # (pack[sub_item_type]).remove(sub_item)
+            return True
+        else:
+            print("You have no potions!")
+            return False
+
     def inventory(self):
         self.hud()
         print(f"Your entire inventory:")
         item_type_lst = ['Weapons', 'Healing Potions', 'Armor', 'Shields', 'Boots', 'Cloaks', 'Rings of Regeneration',
                          'Rings of Protection', 'Town Portal Implements']
+        #number_of_items = len(self.pack[item_type])
         current_items = []
         for each_item in item_type_lst:
-            is_item_on_list = self.item_type_inventory(each_item)  # item_type_inv function returns True or False
+            is_item_on_list = len(self.pack[each_item])
+            #is_item_on_list = self.item_type_inventory(each_item)  # item_type_inv function returns True or False
             # print(is_item_on_list)  # True or False for testing
-            if is_item_on_list:
+            if is_item_on_list > 0:
                 current_items.append(each_item)
+                self.item_type_inventory(each_item)
                 # print(current_items)  # for testing
-
         if not len(current_items):
             print(f"Your inventory is empty.")
+            pause()
             return False  # need this False for when called from..?
         else:
             pause()
@@ -848,7 +873,7 @@ class Player:
     def loot(self):
         loot_dict = {
             'Weapons': [short_sword, short_axe, quantum_sword, broad_sword],
-            'Healing Potions': [minor_healing_potion, major_healing_potion, super_healing_potion],
+            'Healing Potions': [healing_potion],  #, major_healing_potion, super_healing_potion],
             'Armor': [leather_armor],
             'Shields': [buckler],
             'Boots': [leather_boots],
@@ -862,7 +887,7 @@ class Player:
             loot_roll = dice_roll(1, 20)
             print(f"Loot roll ---> {loot_roll}")
             pause()
-            if loot_roll > 9:
+            if loot_roll > 4:
 
                 key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
                 rndm_item_index = random.randrange(len(loot_dict[key]))
@@ -870,7 +895,7 @@ class Player:
                 self.hud()
                 print(f"You see a {found_item.name} !")
                 sleep(1)
-                print(f"You snarf it.")
+                #print(f"You snarf it.")
 
                 # ****** NOTICE THE DIFFERENCE BETWEEN found.item and found_item.item_type !! ************************
                 if found_item.item_type != 'Healing Potions' and found_item.item_type != 'Town Portal Implements' and found_item not in \
@@ -878,34 +903,17 @@ class Player:
                             found_item.item_type]:  # you can only carry one of each item, except t.p. and potions type
                     (self.pack[found_item.item_type]).append(found_item)
                     # self.item_type_inventory(found_item.item_type)
-                    '''(self.pack[found_item.item_type]).sort(key=lambda x: x.name)
-                    stuff_dict = Counter(item.name for item in self.pack[found_item.item_type])
-                    for key, value in stuff_dict.items():
-                        print(key, ':    ', value, sep='')
-                    number_of_items = len(self.pack[found_item.item_type])
-                    print(f"You now have {number_of_items} items in your {found_item.item_type} inventory.")'''
+                    print(f"You snarf it.")
+
                     pause()
                     continue
-                elif found_item.item_type == 'Healing Potions':
+                elif found_item.item_type == 'Healing Potions' or found_item.item_type == 'Town Portal Implements':
                     (self.pack[found_item.item_type]).append(found_item)
-                    '''(self.pack[found_item.item_type]).sort(key=lambda x: x.name)
-                    stuff_dict = Counter(item.name for item in self.pack[found_item.item_type])
-                    for key, value in stuff_dict.items():
-                        print(key, 's', ':    ', value, sep='')
-                    number_of_items = len(self.pack[found_item.item_type])
-                    print(f"You now have {number_of_items} items in your {found_item.item_type} inventory.")'''
+                    print(f"You snarf it.")
+
                     pause()
                     continue
-                elif found_item.item_type == 'Town Portal Implements':
-                    (self.pack[found_item.item_type]).append(found_item)
-                    '''(self.pack[found_item.item_type]).sort(key=lambda x: x.name)
-                    stuff_dict = Counter(item.name for item in self.pack[found_item.item_type])
-                    for key, value in stuff_dict.items():
-                        print(key, 's', ':    ', value, sep='')
-                    number_of_items = len(self.pack[found_item.item_type])
-                    print(f"You now have {number_of_items} items in your {found_item.item_type} inventory.")'''
-                    pause()
-                    continue
+
                 else:
                     print(f"You cannot carry more than one {found_item.name}")
                     pause()

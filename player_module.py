@@ -385,8 +385,8 @@ class Player:
         print(f"                                                                     Level: {self.level}")
         print(f"                                                                     Experience: {self.experience}")
         print(f"                                                                     Gold: {self.gold}")
-        print(
-            f"                                                                     Weapon + {self.wielded_weapon.damage_bonus}")
+        print(f"                                                                     Weapon: {self.wielded_weapon} + {self.wielded_weapon.damage_bonus}")
+        print(f"                                                                     {self.wielded_weapon} to hit bonus: + {self.wielded_weapon.to_hit_bonus}")
         print(
             f"                                                                     Armor Class {self.armor_class}")
         print(f"                                                                     Shield + {self.shield_bonus}")
@@ -689,10 +689,21 @@ class Player:
             return 0
 
     def evade(self, monster_name, monster_dexterity):
+        print(f"You attempt an evasive maneuver..")
+        sleep(1)
         evade_success = dice_roll(1, 20)
         if evade_success + self.dexterity_modifier >= monster_dexterity or evade_success == 20:
-            print(f"You successfully evade the {monster_name}.")
+            print(f"You successfully evade the {monster_name}!")
+            sleep(1.5)
             return True
+        else:
+            print(f"The {monster_name} swiftly blocks your escape!")
+            time.sleep(.5)
+            print(f"You are rooted to the spot. You must stand your ground!")
+            time.sleep(.5)
+            print(f"You raise your {self.wielded_weapon}..")
+            time.sleep(1)
+            return  # False
 
     def blacksmith_sale(self):
         sale_items_dict = {'1': short_sword,
@@ -870,6 +881,45 @@ class Player:
             pause()
             return
 
+    def found_weapon_substitution(self, found_item):
+        if self.wielded_weapon.damage_bonus < self.level:
+            found_item.damage_bonus = (self.level + 1)
+            if found_item.name == self.wielded_weapon.name:
+                print(f"Quantum wierdness fills the air...\nYour {self.wielded_weapon} is enhanced to + {found_item.damage_bonus}!")
+                self.wielded_weapon.damage_bonus = found_item.damage_bonus
+                pause()
+                return True
+            else:
+                print(f"You have found a {found_item}")
+                print(f"You are currently wielding a {self.wielded_weapon}. Damage bonus: {self.wielded_weapon.damage_bonus}")
+                print(f"The {found_item}'s damage bonus is {found_item.damage_bonus}.")
+            while True:
+                replace_weapon = input(f"Do you wish to wield it instead? y/n: ").lower()
+                if replace_weapon == 'y':
+                    old_weapon = self.wielded_weapon
+                    self.wielded_weapon = found_item
+                    print(f"You are now wielding the {found_item}")
+                    if old_weapon not in self.pack['Weapons']:
+                        (self.pack['Weapons']).append(old_weapon)
+                        print(f"You place the {old_weapon} upon your back..")
+                    else:
+                        print(f"You drop the {old_weapon}.")
+
+                    return True
+                elif replace_weapon == 'n':
+                    print(f"You don't wield the {found_item}.")
+                    if found_item not in self.pack[found_item.item_type]:
+                        (self.pack[found_item.item_type]).append(found_item)
+                        print(f"You place the {found_item} on your back.")
+                    else:
+                        print(f"You leave the {found_item}")
+                    return False
+                elif replace_weapon not in ("y", "n"):
+                    continue
+        else:
+            print(f"Wielded_weapon.damage_bonus already > self.level!!!")  # remove after testing
+            return False
+
     def loot(self):
         loot_dict = {
             'Weapons': [short_sword, short_axe, quantum_sword, broad_sword],
@@ -887,41 +937,47 @@ class Player:
             loot_roll = dice_roll(1, 20)
             print(f"Loot roll ---> {loot_roll}")
             pause()
-            if loot_roll > 4:
+            if loot_roll > 10:
 
                 key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
                 rndm_item_index = random.randrange(len(loot_dict[key]))
                 found_item = loot_dict[key][rndm_item_index]
                 self.hud()
-                print(f"You see a {found_item.name} !")
-                sleep(1)
+                #print(f"You see a {found_item.name} !")
+                #sleep(1)
                 #print(f"You snarf it.")
-
+                if found_item.item_type == 'Weapons':
+                    #print(f"You see a {found_item.name} !")
+                    #weapon_replaced = self.found_weapon_substitution(found_item)
+                    #if weapon_replaced:
+                    self.found_weapon_substitution(found_item)
+                    continue
                 # ****** NOTICE THE DIFFERENCE BETWEEN found.item and found_item.item_type !! ************************
-                if found_item.item_type != 'Healing Potions' and found_item.item_type != 'Town Portal Implements' and found_item not in \
+                if found_item.item_type != 'Weapons' and found_item.item_type != 'Healing Potions' and \
+                        found_item.item_type != 'Town Portal Implements' and found_item not in \
                         self.pack[
                             found_item.item_type]:  # you can only carry one of each item, except t.p. and potions type
+                    print(f"You see a {found_item.name} !")
+                    sleep(1)
                     (self.pack[found_item.item_type]).append(found_item)
-                    # self.item_type_inventory(found_item.item_type)
-                    print(f"You snarf it.")
-
+                    print(f"(You snarf it.)")
                     pause()
                     continue
                 elif found_item.item_type == 'Healing Potions' or found_item.item_type == 'Town Portal Implements':
                     (self.pack[found_item.item_type]).append(found_item)
-                    print(f"You snarf it.")
-
+                    print(f"You see a {found_item.name} !")
+                    sleep(1)
+                    print(f"You place it in your dungeoneer's pack..")
                     pause()
                     continue
-
                 else:
-                    print(f"You cannot carry more than one {found_item.name}")
-                    pause()
+                    print(f"You already have a {found_item.name} if equal or greater value.."
+                          f"(remove this statement after testing.)")
+                    pause()  # remove this pause after testing
                     continue
             else:
                 return
-                # pause()
-            # sleep(2)
+
 
 
 '''

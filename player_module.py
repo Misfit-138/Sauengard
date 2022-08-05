@@ -512,7 +512,7 @@ class Player:
             self.hud()
 
     def monster_likes_you(self, monster_name, monster_intel):
-        if dice_roll(1, 20) > 18 and monster_intel > 9:  # and self.charisma > 15:
+        if dice_roll(1, 20) > 18 and monster_intel > 7:  # and self.charisma > 15:
             print(f"The {monster_name} likes you!")
             gift_item = dice_roll(1, 5)
             if gift_item == 1:

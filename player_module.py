@@ -111,6 +111,7 @@ class Armor:
         self.name = ""
         self.item_type = "Armor"
         self.armor_bonus = 0
+        self.ac = 0
         self.sell_price = 0
         self.buy_price = 0
         self.minimum_level = 1
@@ -124,6 +125,7 @@ class LeatherArmor(Armor):
         super().__init__()
         self.name = "Leather Armor"
         self.item_type = "Armor"
+        self.ac = 10
         self.armor_bonus = 0
         self.sell_price = 50
         self.buy_price = 50
@@ -131,6 +133,21 @@ class LeatherArmor(Armor):
 
 
 leather_armor = LeatherArmor()
+
+
+class StuddedLeatherArmor(Armor):
+    def __init__(self):
+        super().__init__()
+        self.name = "Leather Armor"
+        self.item_type = "Armor"
+        self.ac = 12
+        self.armor_bonus = 0
+        self.sell_price = 50
+        self.buy_price = 50
+        self.minimum_level = 1
+
+
+studded_leather_armor = StuddedLeatherArmor()
 
 
 class Shield:
@@ -325,8 +342,9 @@ class Player:
         self.wielded_weapon = short_sword
         self.weapon_bonus = self.wielded_weapon.damage_bonus  # self.weapon_bonus no longer used
         self.armor = leather_armor
-        self.armor_bonus = 0
-        self.shield_bonus = 0
+        self.shield = buckler
+        self.boots = leather_boots
+        self.armor_bonus = self.armor.armor_bonus + self.shield.armor_bonus + self.boots.armor_bonus
         self.strength = 15  # random.randint(14, 16)
         self.dexterity = 14  # random.randint(13, 15)
         self.dexterity_modifier = round((self.dexterity - 10) / 2)
@@ -344,24 +362,24 @@ class Player:
         self.maximum_hit_points = 10 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.is_paralyzed = False
-        self.boots_bonus = 0
-        self.cloak = 0
+
+        self.cloak = canvas_cloak
         self.ring_of_prot = 0
-        self.ring_of_reg = 1
+        self.ring_of_reg = 0
         self.two_handed = False
         self.extra_attack = 0
-        self.armor_class = 10 + self.dexterity_modifier + self.armor_bonus + self.shield_bonus + self.boots_bonus
+        self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.armor_bonus + self.boots.armor_bonus + self.dexterity_modifier
         # self.weapon_name = "sword"
         self.pack = {
             'Weapons': [],
-            'Healing Potions': [healing_potion, healing_potion],
+            'Healing Potions': [healing_potion],
             'Armor': [],
             'Shields': [],
             'Boots': [],
             'Cloaks': [],
             'Rings of Regeneration': [],
             'Rings of Protection': [],
-            'Town Portal Implements': []
+            'Town Portal Implements': [scroll_of_town_portal]
 
         }
 
@@ -374,8 +392,11 @@ class Player:
 
     def regenerate(self):
         if self.hit_points < self.maximum_hit_points and self.ring_of_reg > 0:
-            self.hit_points += self.ring_of_reg
-            print(f"You regenerate + {self.ring_of_reg}")
+            regeneration = self.ring_of_reg
+            self.hit_points = self.hit_points + regeneration
+            if self.hit_points > self.maximum_hit_points:
+                self.hit_points = self.maximum_hit_points
+            print(f"You regenerate + {regeneration}")
             sleep(1)
             return
 
@@ -385,11 +406,13 @@ class Player:
         print(f"                                                                     Level: {self.level}")
         print(f"                                                                     Experience: {self.experience}")
         print(f"                                                                     Gold: {self.gold}")
-        print(f"                                                                     Weapon: {self.wielded_weapon} + {self.wielded_weapon.damage_bonus}")
-        print(f"                                                                     {self.wielded_weapon} to hit bonus: + {self.wielded_weapon.to_hit_bonus}")
+        print(
+            f"                                                                     Weapon: {self.wielded_weapon} + {self.wielded_weapon.damage_bonus}")
+        print(
+            f"                                                                     {self.wielded_weapon} to hit bonus: + {self.wielded_weapon.to_hit_bonus}")
         print(
             f"                                                                     Armor Class {self.armor_class}")
-        print(f"                                                                     Shield + {self.shield_bonus}")
+        print(f"                                                                     Shield + {self.shield.armor_bonus}")
         print(
             f"                                                                     Constitution {self.constitution}")
         print(
@@ -400,18 +423,20 @@ class Player:
         print(f"                                                                     Charisma: {self.charisma}")
         print(f"                                                                     Hit points: {self.hit_points}/"
               f"{self.maximum_hit_points}")
-        if self.boots_bonus == 0:
-            print(f"                                                                     Boots: Leather")
-        else:
-            print(
-                f"                                                                     Boots: Elven Boots + {self.boots_bonus}")
-        if self.cloak == 0:
-            print(f"                                                                     Cloak: none")
-        else:
-            print(
-                f"                                                                     Cloak: Elven Cloak + {self.boots_bonus}")
+
+        print(f"                                                                     Boots: {self.boots}")
+        print(f"                                                                     Cloak: none")
+
         number_of_potions = len(self.pack['Healing Potions'])
-        print(f"                                                                     Healing Potions: {number_of_potions}")
+        print(
+            f"                                                                     Healing Potions: {number_of_potions}")
+        number_of_portal_scrolls = len(self.pack['Town Portal Implements'])
+        print(
+            f"                                                                     Town Portal Scrolls: {number_of_portal_scrolls}")
+        if self.ring_of_reg > 0:
+            print(
+                f"                                                                     Ring of Reg: +{self.ring_of_reg}")
+
     def calculate_proficiency_bonus(self):
         if self.level <= 4:
             self.proficiency_bonus = 2
@@ -512,30 +537,27 @@ class Player:
             self.hud()
 
     def monster_likes_you(self, monster_name, monster_intel):
-        if dice_roll(1, 20) > 18 and monster_intel > 7:  # and self.charisma > 15:
+        if dice_roll(1, 20) > 17 and monster_intel > 7:  # and self.charisma > 15:
             print(f"The {monster_name} likes you!")
-            gift_item = dice_roll(1, 5)
+            sleep(1)
+            gift_item = dice_roll(1, 3)
             if gift_item == 1:
-                self.armor_bonus += 1
-                print(f"He enhances your armor to + {self.armor_bonus}!")
+                self.armor.armor_bonus += 1
+                print(f"He enhances your armor to + {self.armor.armor_bonus}!")
+                pause()
                 return True
             if gift_item == 2:
-                self.shield_bonus += 1
-                print(f"He enhances your shield to + {self.shield_bonus}!")
+                self.shield.armor_bonus += 1
+                print(f"He enhances your shield to + {self.shield.armor_bonus}!")
+                pause()
                 return True
             if gift_item == 3:
                 self.wielded_weapon.damage_bonus += 1
                 # *****ADD LOGIC TO APPEND PREFIX TO WEAPON NAME, LIKE, 'ENHANCED', ETC *******************************
                 print(f"He enhances your weapon damage bonus to + {self.wielded_weapon.damage_bonus}!")
+                pause()
                 return True
-            if gift_item == 4:
-                self.boots_bonus += 1
-                print(f"He gives you Elven boots + {self.boots_bonus}!")
-                return True
-            if gift_item == 5:
-                self.cloak += 1
-                print(f"He gives you an Elven cloak + {self.cloak}!")
-                return True
+
         else:
             return False
 
@@ -770,21 +792,6 @@ class Player:
                 self.hud()
                 continue
 
-    def item_type_inventory(self, item_type):  # list items in inventory by type
-        print(f"{item_type}:")
-        self.pack[item_type].sort(key=lambda x: x.name)
-        stuff_dict = Counter(item.name for item in self.pack[item_type])
-        for key, value in stuff_dict.items():
-            print(key, ':    ', value, sep='')
-            # print(key, 's', ':    ', value, sep='')
-        number_of_items = len(self.pack[item_type])
-        # print(f"You now have {number_of_items} items in your {item_type} inventory.")
-        if number_of_items:
-            return True
-        else:
-            # print(f"You currently have no {item_type} in your inventory.")
-            return False
-
     def weapon_management(self):
         self.hud()
         if len(self.pack['Weapons']) > 0:
@@ -837,13 +844,22 @@ class Player:
             #    sleep(3)
             #   return
 
+    def use_scroll_of_town_portal(self):
+        self.hud()
+        # if scroll_of_town_portal in self.pack['Town Portal Implements']:
+        (self.pack['Town Portal Implements'].remove(scroll_of_town_portal))
+        print(f"The portal appears before you; a seemingly impossible gateway between distant places..")
+        time.sleep(2)
+        winsound.PlaySound(None, winsound.SND_ASYNC)
+        return
+
     def drink_healing_potion(self):
         self.hud()
         if healing_potion in self.pack['Healing Potions']:
             if self.hit_points >= self.maximum_hit_points:
                 print(f"You are already at maximum health!")
                 sleep(1)
-                #print(f"You just wasted a combat turn!")
+
                 return
             print(f"You chug a potion")
             (self.pack['Healing Potions'].remove(healing_potion))
@@ -853,9 +869,24 @@ class Player:
             sleep(1)
             print(f"You now have {self.hit_points} hit points.")
             # (pack[sub_item_type]).remove(sub_item)
-            return True
+            return
         else:
             print("You have no potions!")
+            return
+
+    def item_type_inventory(self, item_type):  # list items in inventory by type
+        print(f"{item_type}:")
+        self.pack[item_type].sort(key=lambda x: x.name)
+        stuff_dict = Counter(item.name for item in self.pack[item_type])
+        for key, value in stuff_dict.items():
+            print(key, ':    ', value, sep='')
+            # print(key, 's', ':    ', value, sep='')
+        number_of_items = len(self.pack[item_type])
+        # print(f"You now have {number_of_items} items in your {item_type} inventory.")
+        if number_of_items:
+            return True
+        else:
+            # print(f"You currently have no {item_type} in your inventory.")
             return False
 
     def inventory(self):
@@ -863,15 +894,15 @@ class Player:
         print(f"Your entire inventory:")
         item_type_lst = ['Weapons', 'Healing Potions', 'Armor', 'Shields', 'Boots', 'Cloaks', 'Rings of Regeneration',
                          'Rings of Protection', 'Town Portal Implements']
-        #number_of_items = len(self.pack[item_type])
+        # number_of_items = len(self.pack[item_type])
         current_items = []
         for each_item in item_type_lst:
             is_item_on_list = len(self.pack[each_item])
-            #is_item_on_list = self.item_type_inventory(each_item)  # item_type_inv function returns True or False
+            # is_item_on_list = self.item_type_inventory(each_item)  # item_type_inv function returns True or False
             # print(is_item_on_list)  # True or False for testing
             if is_item_on_list > 0:
                 current_items.append(each_item)
-                self.item_type_inventory(each_item)
+                self.item_type_inventory(each_item)  # call the item_type_inventory for each item in inv.
                 # print(current_items)  # for testing
         if not len(current_items):
             print(f"Your inventory is empty.")
@@ -883,15 +914,17 @@ class Player:
 
     def found_weapon_substitution(self, found_item):
         if self.wielded_weapon.damage_bonus < self.level:
-            found_item.damage_bonus = (self.level + 1)
+            found_item.damage_bonus = self.level
             if found_item.name == self.wielded_weapon.name:
-                print(f"Quantum wierdness fills the air...\nYour {self.wielded_weapon} is enhanced to + {found_item.damage_bonus}!")
+                print(
+                    f"Quantum wierdness fills the air...\nYour {self.wielded_weapon} is enhanced to + {found_item.damage_bonus}!")
                 self.wielded_weapon.damage_bonus = found_item.damage_bonus
                 pause()
                 return True
             else:
                 print(f"You have found a {found_item}")
-                print(f"You are currently wielding a {self.wielded_weapon}. Damage bonus: {self.wielded_weapon.damage_bonus}")
+                print(
+                    f"You are currently wielding a {self.wielded_weapon}. Damage bonus: {self.wielded_weapon.damage_bonus}")
                 print(f"The {found_item}'s damage bonus is {found_item.damage_bonus}.")
             while True:
                 replace_weapon = input(f"Do you wish to wield it instead? y/n: ").lower()
@@ -920,11 +953,27 @@ class Player:
             print(f"Wielded_weapon.damage_bonus already > self.level!!!")  # remove after testing
             return False
 
+    def found_ring_of_reg_substitution(self, found_item):
+        if self.ring_of_reg < round(self.maximum_hit_points * .17):
+            old_ring = self.ring_of_reg
+            self.ring_of_reg = (self.ring_of_reg + 1)
+            print(f"Quantum wierdness fills the air...")
+            if old_ring > 0:
+                print(f"Your {ring_of_regeneration} is enhanced to {self.ring_of_reg} !")
+                pause()
+                return
+            else:
+                print(f"A Ring of Regeneration + {self.ring_of_reg} appears on your finger!")
+        else:
+            print("Ring of reg already equal to or more than 17% of max hit points")
+            pause()
+            return
+
     def loot(self):
         loot_dict = {
             'Weapons': [short_sword, short_axe, quantum_sword, broad_sword],
-            'Healing Potions': [healing_potion],  #, major_healing_potion, super_healing_potion],
-            'Armor': [leather_armor],
+            'Healing Potions': [healing_potion],  # , major_healing_potion, super_healing_potion],
+            'Armor': [leather_armor, studded_leather_armor],
             'Shields': [buckler],
             'Boots': [leather_boots],
             'Cloaks': [canvas_cloak],
@@ -937,23 +986,26 @@ class Player:
             loot_roll = dice_roll(1, 20)
             print(f"Loot roll ---> {loot_roll}")
             pause()
-            if loot_roll > 10:
+            if loot_roll > 9:
 
                 key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
                 rndm_item_index = random.randrange(len(loot_dict[key]))
                 found_item = loot_dict[key][rndm_item_index]
                 self.hud()
-                #print(f"You see a {found_item.name} !")
-                #sleep(1)
-                #print(f"You snarf it.")
+                # print(f"You see a {found_item.name} !")
+                # sleep(1)
+                # print(f"You snarf it.")
                 if found_item.item_type == 'Weapons':
-                    #print(f"You see a {found_item.name} !")
-                    #weapon_replaced = self.found_weapon_substitution(found_item)
-                    #if weapon_replaced:
+                    # print(f"You see a {found_item.name} !")
+                    # weapon_replaced = self.found_weapon_substitution(found_item)
+                    # if weapon_replaced:
                     self.found_weapon_substitution(found_item)
                     continue
                 # ****** NOTICE THE DIFFERENCE BETWEEN found.item and found_item.item_type !! ************************
-                if found_item.item_type != 'Weapons' and found_item.item_type != 'Healing Potions' and \
+                if found_item.item_type == 'Rings of Regeneration':
+                    self.found_ring_of_reg_substitution(found_item)
+                    continue
+                if found_item.item_type != 'Rings of Regeneration' and found_item.item_type != 'Weapons' and found_item.item_type != 'Healing Potions' and \
                         found_item.item_type != 'Town Portal Implements' and found_item not in \
                         self.pack[
                             found_item.item_type]:  # you can only carry one of each item, except t.p. and potions type
@@ -977,7 +1029,6 @@ class Player:
                     continue
             else:
                 return
-
 
 
 '''

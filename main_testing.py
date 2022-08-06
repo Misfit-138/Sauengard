@@ -29,11 +29,13 @@ An in-place algorithm is impure and non-idempotent, but if the state that it mod
 and its documentation and return value (usually None) support this, the behavior is predictable and comprehensible."""
 # MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
 # "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
-
+# introduction_file = open("trett.txt", "r")
+# if introduction_file.readable():
+#    print(introduction_file.read())
 import pickle
 import time
 from player_module import *
-#from player_class_module_reliable import *
+# from player_class_module_reliable import *
 from monster_module import *
 from typing_module import *
 import random
@@ -93,7 +95,7 @@ while True:
             player_1.hud()
     print(f"You enter the town of Fieldenberg.")
     time.sleep(1.5)
-    player_1.hud()
+    #player_1.hud()
     in_town = True
     in_dungeon = False
     discovered_monsters = []
@@ -138,12 +140,10 @@ while True:
                     time.sleep(2)
 
         if town_functions == 'i':
-
             player_1.inventory()
-            #os.system('pause')
+            # os.system('pause')
 
         if town_functions == 'b':
-
             print("You visit the blacksmith")
             at_blacksmith = True
             player_1.blacksmith_sale()
@@ -162,8 +162,8 @@ while True:
             time.sleep(1)
             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
                                winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-            #discovered_monsters = []
-            # dungeon navigation loop
+            # discovered_monsters = []
+            # DUNGEON NAVIGATION LOOP:
             while in_dungeon:
                 player_1.regenerate()
 
@@ -173,13 +173,15 @@ while True:
                 dungeon_command = input(
                     "(Q)uit, Town (P)ortal, (H)ealing potion, (I)nventory or WASD to navigate. --> ").lower()
                 if dungeon_command == 'p':
-                    in_town = True
-                    in_dungeon = False
-
-                    print(f"The portal appears before you; a seemingly impossible gateway between distant places..")
-                    time.sleep(2)
-                    winsound.PlaySound(None, winsound.SND_ASYNC)
-                    break
+                    if scroll_of_town_portal not in player_1.pack['Town Portal Implements']:
+                        print(f"You have no scrolls!")
+                        time.sleep(2)
+                        continue
+                    else:
+                        player_1.use_scroll_of_town_portal()
+                        in_town = True
+                        in_dungeon = False
+                        break
                 if dungeon_command == 'q':
                     print("Quit game..")
                     while True:
@@ -216,7 +218,6 @@ while True:
                         print("You go east")
                     time.sleep(.5)
                 if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h', 'i', 'q'):
-
                     print("Unknown command")
                     continue
                 if encounter > 11:
@@ -310,21 +311,22 @@ while True:
                         # ********************************* BATTLE LOOP ***********************************************
                         while True:
                             player_1.hud()
-                            print(f"Lvl {monster.level} {monster.name} {monster.hit_points} hp {monster.number_of_hd}d{monster.hit_dice}")
+                            print(
+                                f"Lvl {monster.level} {monster.name} {monster.hit_points} hp {monster.number_of_hd}d{monster.hit_dice}")
                             battle_choice = input("(F)ight, (H)ealing potion, (C)ast or (E)vade\nF/H/C/E --> ").lower()
                             if battle_choice == "e":
                                 evade_success = player_1.evade(monster.name, monster.dexterity)
                                 if evade_success:
                                     in_proximity_to_monster = False  # get out of battle loop
                                     break
-                                #else:
-                                    # continue
-                                    #print(f"The {monster.name} swiftly blocks your escape.")
-                                    #time.sleep(.5)
-                                    #print(f"You are rooted to the spot. You must stand your ground!")
-                                    #time.sleep(.5)
-                                    #print(f"You raise your {player_1.wielded_weapon}..")
-                                    #time.sleep(1)
+                                # else:
+                                # continue
+                                # print(f"The {monster.name} swiftly blocks your escape.")
+                                # time.sleep(.5)
+                                # print(f"You are rooted to the spot. You must stand your ground!")
+                                # time.sleep(.5)
+                                # print(f"You raise your {player_1.wielded_weapon}..")
+                                # time.sleep(1)
                             elif battle_choice == "c":
                                 player_1.hud()
                                 print(f"Cast")
@@ -338,7 +340,7 @@ while True:
                                     player_1.drink_healing_potion()
                                     time.sleep(1)
                                     # ********MONSTER TURN AFTER YOU SWIG POTION***********************
-                                    #if not monster.check_dead():
+                                    # if not monster.check_dead():
                                     melee_or_quantum = dice_roll(1, 20)
                                     if monster.quantum_energy and melee_or_quantum > 10:
                                         damage_to_player = monster.quantum_energy_attack(monster.name,
@@ -371,7 +373,7 @@ while True:
                                         break
                                     player_1.hud()
                                     continue
-                                    #else:  # if monster not dead
+                                    # else:  # if monster not dead
                                     #    break
 
                             elif battle_choice == "f":

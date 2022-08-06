@@ -404,7 +404,7 @@ class Player:
             current_items = []
             for each_item in item_type_lst:
 
-                is_item_on_list = item_type_inventory(each_item)
+                is_item_on_list = self.item_type_inventory(each_item)
                 print(is_item_on_list)
                 if is_item_on_list:
                     current_items.append(each_item)

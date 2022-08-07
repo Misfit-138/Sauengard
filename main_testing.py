@@ -228,9 +228,7 @@ while True:
                         1: [Quasit, Kobold, Cultist, Goblin, WingedKobold],
                         2: [Shadow, Skeleton, Drow, Orc, Ghoul]
                     }
-                    loot_dict = {
 
-                    }
                     # in proximity to monster loop contains battle loop within it
                     in_proximity_to_monster = True
                     player_is_dead = False

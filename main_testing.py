@@ -251,6 +251,7 @@ while True:
                                     os.system('cls')
                                     break  # break out of prox to monster, dungeon and town up to top loop
                                 if try_again == "n":
+                                    print(f"Farewell.")
                                     exit()
                                 if try_again not in ("y", "n"):
                                     print("Please enter y or n ")
@@ -262,7 +263,7 @@ while True:
                         monster_cls = random.choice(monster_dict[monster_key])
                         monster = monster_cls()  # create a monster object from the random class
                         player_1.hud()
-                        print(discovered_monsters)
+                        print(discovered_monsters)  # remove after testing
                         if monster.name in discovered_monsters:
                             print(f"You have encountered a level {monster.level} {monster.name}.")
                             time.sleep(2)
@@ -302,9 +303,9 @@ while True:
                                     player_is_dead = True
                                     continue
                             else:
-
-                                print(f"The {monster.name} attacks and you dodge, swiftly foiling its advantage!")
-                                time.sleep(3)
+                                print(f"The {monster.name} attacks!")
+                                time.sleep(1.5)
+                                print(f"You dodge, swiftly foiling its advantage!")
 
                         # ********************************* BATTLE LOOP ***********************************************
                         while True:

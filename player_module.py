@@ -215,7 +215,7 @@ class Shield:
     def __init__(self):
         self.name = ""
         self.item_type = "Shields"
-        self.armor_bonus = 0
+        self.ac = 0
         self.sell_price = 0
         self.buy_price = 0
         self.minimum_level = 1
@@ -229,7 +229,7 @@ class NoShield(Shield):  # default
         super().__init__()
         self.name = "No Shield"
         self.item_type = "Shields"
-        self.armor_bonus = 0
+        self.ac = 0
         self.sell_price = 0
         self.buy_price = 0
         self.minimum_level = 1
@@ -243,7 +243,7 @@ class Buckler(Shield):
         super().__init__()
         self.name = "Buckler"
         self.item_type = "Shields"
-        self.armor_bonus = 1
+        self.ac = 1
         self.sell_price = 10000
         self.buy_price = 20000
         self.minimum_level = 1  # 2
@@ -257,13 +257,27 @@ class KiteShield(Shield):
         super().__init__()
         self.name = "Kite Shield"
         self.item_type = "Shields"
-        self.armor_bonus = 2
+        self.ac = 2
         self.sell_price = 50000
         self.buy_price = 50000
-        self.minimum_level = 1  # 3
+        self.minimum_level = 1  # 5
 
 
 kite_shield = KiteShield()
+
+
+class QuantumTowerShield(Shield):
+    def __init__(self):
+        super().__init__()
+        self.name = "Quantum Tower Shield"
+        self.item_type = "Shields"
+        self.ac = 3
+        self.sell_price = 50000
+        self.buy_price = 50000
+        self.minimum_level = 1  # 10
+
+
+quantum_tower_shield = QuantumTowerShield()
 
 
 class Boots:
@@ -412,7 +426,7 @@ class Player:
         self.armor = padded_armor
         self.shield = no_shield
         self.boots = leather_boots
-        self.armor_bonus = self.armor.armor_bonus + self.shield.armor_bonus + self.boots.armor_bonus
+        self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.armor_bonus
         self.strength = 15  # random.randint(14, 16)
         self.dexterity = 14  # random.randint(13, 15)
         self.dexterity_modifier = round((self.dexterity - 10) / 2)
@@ -435,7 +449,7 @@ class Player:
         self.ring_of_reg = 0
         self.two_handed = False
         self.extra_attack = 0
-        self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.armor_bonus + self.boots.armor_bonus + self.dexterity_modifier
+        self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.armor_bonus + self.dexterity_modifier
         self.stealth = 0
         self.pack = {
             'Weapons': [],
@@ -480,7 +494,7 @@ class Player:
         print(
             f"                                                                     Armor Class {self.armor_class}")
         print(
-            f"                                                                     Shield + {self.shield.armor_bonus}")
+            f"                                                                     Shield + {self.shield.ac}")
         print(
             f"                                                                     Constitution {self.constitution}")
         print(
@@ -504,6 +518,11 @@ class Player:
         if self.ring_of_reg > 0:
             print(
                 f"                                                                     Ring of Reg: +{self.ring_of_reg}")
+        return
+
+    def calculate_armor_class(self):
+        self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.armor_bonus + self.dexterity_modifier
+        return
 
     def calculate_proficiency_bonus(self):
         if self.level <= 4:
@@ -516,6 +535,7 @@ class Player:
             self.proficiency_bonus = 5
         if self.level > 16:
             self.proficiency_bonus = 6
+        return
 
     def calculate_current_level(self):
         if self.experience < 300:
@@ -605,18 +625,22 @@ class Player:
             self.hud()
 
     def monster_likes_you(self, monster_name, monster_intel):
-        if dice_roll(1, 20) > 17 and monster_intel > 7:  # and self.charisma > 15:
+        if dice_roll(1, 20) > 17 and monster_intel > 8:  # and self.charisma > 15:
             print(f"The {monster_name} likes you!")
             sleep(1)
             gift_item = dice_roll(1, 3)
             if gift_item == 1:
-                self.armor.armor_bonus += 1
-                print(f"He enhances your armor to + {self.armor.armor_bonus}!")
+                self.armor.ac += 1
+                self.calculate_armor_class()
+                #self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.armor_bonus + self.dexterity_modifier
+                print(f"He enhances your armor to + {self.armor.ac}!")
                 pause()
                 return True
             if gift_item == 2:
-                self.shield.armor_bonus += 1
-                print(f"He enhances your shield to + {self.shield.armor_bonus}!")
+                self.shield.ac += 1
+                self.calculate_armor_class()
+                #self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.armor_bonus + self.dexterity_modifier
+                print(f"He enhances your shield to + {self.shield.ac}!")
                 pause()
                 return True
             if gift_item == 3:
@@ -960,8 +984,10 @@ class Player:
     def inventory(self):
         self.hud()
 
-        print(f"Your are wielding a {self.wielded_weapon.name}. Damage bonus: {self.wielded_weapon.damage_bonus}. To hit: {self.wielded_weapon.to_hit_bonus}.")
-        print(f"You are wearing:\n{self.armor.name}. Armor class: {self.armor.ac}. Armor bonus: {self.armor.armor_bonus}")
+        print(
+            f"Your are wielding a {self.wielded_weapon.name}. Damage bonus: {self.wielded_weapon.damage_bonus}. To hit: {self.wielded_weapon.to_hit_bonus}.")
+        print(
+            f"You are wearing:\n{self.armor.name}. Armor class: {self.armor.ac}. Armor bonus: {self.armor.armor_bonus}")
         if self.ring_of_reg > 0:
             print(f"A Ring of Regeneration + {self.ring_of_reg}")
         if self.ring_of_prot > 0:
@@ -989,15 +1015,16 @@ class Player:
 
     def found_weapon_substitution(self, found_item):
         if self.wielded_weapon.damage_bonus < self.level:
-            found_item.damage_bonus = self.level
+            # found_item.damage_bonus = self.level
             if found_item.name == self.wielded_weapon.name:
                 print(
-                    f"Quantum wierdness fills the air...\nYour {self.wielded_weapon.name} is enhanced to + {found_item.damage_bonus}!")
-                self.wielded_weapon.damage_bonus = found_item.damage_bonus
+                    f"Quantum wierdness fills the air...\nYour {self.wielded_weapon.name} is enhanced to + {found_item.damage_bonus + 1}!")
+                self.wielded_weapon.damage_bonus = found_item.damage_bonus + 1
                 pause()
-                return True
+                return
             else:
-                print(f"You have found a {found_item.name}. Damage bonus: {found_item.damage_bonus}. To hit bonus: {found_item.to_hit_bonus}.")
+                print(
+                    f"You have found a {found_item.name}. Damage bonus: {found_item.damage_bonus}. To hit bonus: {found_item.to_hit_bonus}.")
                 print(
                     f"You are currently wielding a {self.wielded_weapon.name}. Damage bonus: {self.wielded_weapon.damage_bonus}. To hit bonus: {self.wielded_weapon.to_hit_bonus}.")
             while True:
@@ -1006,12 +1033,15 @@ class Player:
                     old_weapon = self.wielded_weapon
                     self.wielded_weapon = found_item
                     print(f"You are now wielding the {found_item.name}")
+                    print(
+                        f"Damage bonus: {self.wielded_weapon.damage_bonus}. To hit: {self.wielded_weapon.to_hit_bonus}")
                     if old_weapon not in self.pack['Weapons']:
                         (self.pack['Weapons']).append(old_weapon)
                         print(f"You place the {old_weapon.name} upon your back..")
                     else:
                         print(f"You drop the {old_weapon.name}.")
-                    return True
+                    pause()
+                    return
                 elif replace_weapon == 'n':
                     print(f"You don't wield the {found_item.name}.")
                     if found_item not in self.pack[found_item.item_type]:
@@ -1019,53 +1049,117 @@ class Player:
                         print(f"You place the {found_item.name} on your back.")
                     else:
                         print(f"You can't carry any more weapons of this type. You leave the {found_item.name}")
+                        pause()
                     return False
                 elif replace_weapon not in ("y", "n"):
                     continue
         else:
             print(f"Wielded_weapon.damage_bonus already >= self.level!!!")  # remove after testing
-            return False
+            pause()
+            return
 
     def found_armor_substitution(self, found_item):
         # ADD armor_bonus FOR FOUND PLATE ARMOR AFTER PLAYER REACHES CERTAIN LEVEL?
         if self.armor.ac < found_item.ac:
             if found_item.name == 'Full Plate Armor' and found_item.name == self.armor.name:
                 found_item.ac += 1
-                print(f"Quantum wierdness fills the air...\nYour {self.armor.name} is enhanced to armor class {found_item.ac}!")
+                print(
+                    f"Quantum wierdness fills the air...\nYour {self.armor.name} is enhanced to armor class {found_item.ac}!")
                 self.armor.ac = found_item.ac
-                self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.armor_bonus + self.boots.armor_bonus + self.dexterity_modifier
+                self.calculate_armor_class()
+                #self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.armor_bonus + self.dexterity_modifier
                 pause()
-                return True
+                return
             else:
                 print(f"You have found {found_item.name}!! Armor Class: {found_item.ac}")
                 print(f"Your current {self.armor.name} Armor Class: {self.armor.ac}")
-                #print(f"The {found_item}'s Armor Class is {found_item.ac}.")
+                # print(f"The {found_item}'s Armor Class is {found_item.ac}.")
             while True:
                 replace_armor = input(f"Do you wish to wear the {found_item.name} instead? y/n: ").lower()
                 if replace_armor == 'y':
                     old_armor = self.armor
                     self.armor = found_item
                     print(f"You are now wearing the {found_item.name}")
-                    self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.armor_bonus + self.boots.armor_bonus + self.dexterity_modifier
+                    self.calculate_armor_class()
+                    #self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.armor_bonus + self.dexterity_modifier
                     if old_armor not in self.pack[found_item.item_type]:
                         (self.pack['Armor']).append(old_armor)
                         print(f"You place the {old_armor.name} upon your back..")
                     else:
                         print(f"You drop your {old_armor.name}.")
-                    return True
+                        pause()
+                    return
                 elif replace_armor == 'n':
                     print(f"You don't wear the {found_item.name}.")
                     if found_item not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(found_item)
                         print(f"You place the {found_item.name} on your back.")
+                        pause()
                     else:
                         print(f"You can't carry any more {found_item.name}. You leave it.")  # can't carry any more
-                    return False
+                        pause()
+                    return
                 elif replace_armor not in ("y", "n"):
                     continue
         else:
             print(f"Worn armor >= found item...")  # remove after testing
-            return False
+            pause()
+            return
+
+    def found_shield_substitution(self, found_item):
+        #
+        if self.shield.ac < found_item.ac:
+            if found_item.name == 'Quantum Tower Shield' and found_item.name == self.shield.name:
+                found_item.ac += 1
+                print(
+                    f"Quantum wierdness fills the air...\nYour {self.shield.name} is enhanced to armor class {found_item.ac}!")
+                self.shield.ac = found_item.ac
+                self.calculate_armor_class()
+                #self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.armor_bonus + self.dexterity_modifier
+                pause()
+                return
+            else:
+                print(f"You have found a {found_item.name}!! Armor Class: {found_item.ac}")
+                if self.shield.name == 'No Shield':
+                    print(f"You currently hold no shield in your off hand.")
+                else:
+                    print(f"Your current {self.shield.name} Armor Class: {self.shield.ac}")
+
+            while True:
+                replace_shield = input(f"Do you wish to wield the {found_item.name} instead? y/n: ").lower()
+                if replace_shield == 'y':
+                    old_shield = self.shield
+                    self.shield = found_item
+                    print(f"You are now wielding the {found_item.name}")
+                    self.calculate_armor_class()
+                    #self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.armor_bonus + self.dexterity_modifier
+                    if old_shield.name == 'No Shield':
+                        pause()
+                        return
+                    elif old_shield not in self.pack[found_item.item_type]:
+                        (self.pack['Shields']).append(old_shield)
+                        print(f"You place the {old_shield.name} on your back..")
+                        pause()
+                    else:
+                        print(f"You drop your {old_shield.name}.")
+                        pause()
+                    return
+                elif replace_shield == 'n':
+                    print(f"You don't wield the {found_item.name}.")
+                    if found_item not in self.pack[found_item.item_type]:
+                        (self.pack[found_item.item_type]).append(found_item)
+                        print(f"You place the {found_item.name} on your back.")
+                        pause()
+                    else:
+                        print(f"You can't carry any more {found_item.name}. You leave it.")  # can't carry any more
+                        pause()
+                    return
+                elif replace_shield not in ("y", "n"):
+                    continue
+        else:
+            print(f"Wielded shield >= found item...")  # remove after testing
+            pause()
+            return
 
     def found_ring_of_reg_substitution(self, found_item):
         if self.ring_of_reg < round(self.maximum_hit_points * .17):
@@ -1078,6 +1172,8 @@ class Player:
                 return
             else:
                 print(f"A Ring of Regeneration + {self.ring_of_reg} appears on your finger!")
+                pause()
+                return
         else:
             print("Ring of reg already equal to or more than 17% of max hit points")  # remove after testing
             pause()
@@ -1088,7 +1184,7 @@ class Player:
             'Weapons': [short_sword, short_axe, quantum_sword, broad_sword],  # upgrade logic added
             'Healing Potions': [healing_potion],  # upgrade logic not needed
             'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],  # upgrade logic added
-            'Shields': [buckler, kite_shield],
+            'Shields': [buckler, kite_shield, quantum_tower_shield],
             'Boots': [leather_boots],
             'Cloaks': [canvas_cloak],
             'Rings of Regeneration': [ring_of_regeneration],  # upgrade logic added
@@ -1097,6 +1193,7 @@ class Player:
         }
 
         while True:
+            # ****** NOTICE THE DIFFERENCE BETWEEN found.item and found_item.item_type !! ************************
             loot_roll = dice_roll(1, 20)
             print(f"Loot roll ---> {loot_roll}")
             pause()
@@ -1104,20 +1201,23 @@ class Player:
                 key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
                 rndm_item_index = random.randrange(len(loot_dict[key]))
                 found_item = loot_dict[key][rndm_item_index]
-                print(found_item)
+                print(found_item)  # REMOVE AFTER TESTING *****************************************************
                 if self.level >= found_item.minimum_level:
                     if found_item.item_type == 'Armor':
                         self.found_armor_substitution(found_item)
                         continue
+                    if found_item.item_type == 'Shields':
+                        self.found_shield_substitution(found_item)
+                        continue
                     if found_item.item_type == 'Weapons':
                         self.found_weapon_substitution(found_item)
                         continue
-                    # ****** NOTICE THE DIFFERENCE BETWEEN found.item and found_item.item_type !! ************************
+
                     if found_item.item_type == 'Rings of Regeneration':
                         self.found_ring_of_reg_substitution(found_item)
                         continue
-                    if found_item.item_type != 'Armor' and found_item.item_type != 'Rings of Regeneration' and found_item.item_type != 'Weapons' and found_item.item_type != 'Healing Potions' and \
-                            found_item.item_type != 'Town Portal Implements' and found_item not in \
+                    # if found_item.item_type == 'Boots' or found_item.item_type == 'Cloaks' or found_item.item_type == 'Rings of Protection' and found_item not in self.pack[found_item.item_type]:
+                    if found_item.item_type != 'Armor' and found_item.item_type != 'Shields' and found_item.item_type != 'Rings of Regeneration' and found_item.item_type != 'Weapons' and found_item.item_type != 'Healing Potions' and found_item.item_type != 'Town Portal Implements' and found_item not in \
                             self.pack[
                                 found_item.item_type]:  # you can only carry one of each item, except t.p. and potions type
                         print(f"You see a {found_item.name} !")

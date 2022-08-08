@@ -721,6 +721,7 @@ class Player:
             return False
         else:
             # return True
+            self.hud()
             print(f"You are unconscious and clinically dead!")
             sleep(1)
             print(f"Death save attempt!")

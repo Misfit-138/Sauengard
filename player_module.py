@@ -313,7 +313,7 @@ class Cloak:
     def __init__(self):
         self.name = ""
         self.item_type = "Cloaks"
-        self.armor_bonus = 0
+        self.stealth = 0
         self.sell_price = 0
         self.buy_price = 0
         self.minimum_level = 1
@@ -327,13 +327,27 @@ class CanvasCloak(Cloak):
         super().__init__()
         self.name = "Canvas Cloak"
         self.item_type = "Cloaks"
-        self.dexterity_bonus = 0
+        self.stealth = 0
         self.sell_price = 50
         self.buy_price = 50
         self.minimum_level = 1
 
 
 canvas_cloak = CanvasCloak()
+
+
+class ElvenCloak(Cloak):
+    def __init__(self):
+        super().__init__()
+        self.name = "Elven Cloak"
+        self.item_type = "Cloaks"
+        self.stealth = 1
+        self.sell_price = 5000
+        self.buy_price = 8000
+        self.minimum_level = 1
+
+
+elven_cloak = ElvenCloak()
 
 
 class HealingPotion:
@@ -347,16 +361,16 @@ class HealingPotion:
         return self.name
 
 
-class MinorHealingPotion(HealingPotion):
+class HealingPotion(HealingPotion):
     def __init__(self):
         super().__init__()
         self.name = "Healing Potion"
         self.item_type = "Healing Potions"
-        self.heal_points = 10
+        self.heal_points = 0
         self.minimum_level = 1
 
 
-healing_potion = MinorHealingPotion()
+healing_potion = HealingPotion()
 
 
 class RingOfRegeneration:
@@ -450,7 +464,7 @@ class Player:
         self.two_handed = False
         self.extra_attack = 0
         self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.armor_bonus + self.dexterity_modifier
-        self.stealth = 0
+        self.stealth = self.cloak.stealth
         self.pack = {
             'Weapons': [],
             'Healing Potions': [healing_potion],
@@ -510,7 +524,7 @@ class Player:
               f"{self.maximum_hit_points}")
 
         print(f"                                                                     Boots: {self.boots}")
-        print(f"                                                                     Cloak: {self.cloak.name}")
+        print(f"                                                                     Cloak: {self.cloak.name} (Stealth: {self.cloak.stealth})")
 
         number_of_potions = len(self.pack['Healing Potions'])
         print(
@@ -521,7 +535,12 @@ class Player:
         if self.ring_of_reg > 0:
             print(
                 f"                                                                     Ring of Reg: +{self.ring_of_reg}")
+        if self.ring_of_prot > 0:
+            print(f"                                                                     Ring of Prot: +{self.ring_of_prot}")
         return
+
+    def calculate_stealth(self):
+        self.stealth += self.cloak.stealth
 
     def calculate_armor_class(self):
         self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.armor_bonus + self.dexterity_modifier
@@ -636,14 +655,14 @@ class Player:
                 self.armor.ac += 1
                 self.calculate_armor_class()
                 # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.armor_bonus + self.dexterity_modifier
-                print(f"He enhances your armor to + {self.armor.ac}!")
+                print(f"He enhances your armor to AC {self.armor.ac}!")
                 pause()
                 return True
             if gift_item == 2:
                 self.shield.ac += 1
                 self.calculate_armor_class()
                 # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.armor_bonus + self.dexterity_modifier
-                print(f"He enhances your shield to + {self.shield.ac}!")
+                print(f"He enhances your shield to AC {self.shield.ac}!")
                 pause()
                 return True
             if gift_item == 3:
@@ -754,7 +773,8 @@ class Player:
         if roll_d20 == 1:
             print("You missed.")
             print(f"You rolled a 1. 1 means failure..")
-            sleep(1)
+            pause()
+            self.hud()
             return 0
         if roll_d20 == 20:
             critical_bonus = 2
@@ -803,13 +823,15 @@ class Player:
                 return 0
         else:
             print(f"You missed...")
+            pause()
+            self.hud()
             return 0
 
     def evade(self, monster_name, monster_dexterity):
         print(f"You attempt an evasive maneuver..")
         sleep(1)
         evade_success = dice_roll(1, 20)
-        if evade_success + self.dexterity_modifier >= monster_dexterity or evade_success == 20:
+        if evade_success + self.dexterity_modifier + self.stealth >= monster_dexterity or evade_success == 20:
             print(f"You successfully evade the {monster_name}!")
             pause()
             return True
@@ -993,6 +1015,7 @@ class Player:
             print(f"A {self.shield.name}. Armor class: {self.shield.ac}")
         print(
             f"You are wearing:\n{self.armor.name}. Armor class: {self.armor.ac}. Armor bonus: {self.armor.armor_bonus}")
+        print(f"{self.cloak.name}. Stealth: {self.cloak.stealth}")
         if self.ring_of_reg > 0:
             print(f"A Ring of Regeneration + {self.ring_of_reg}")
         if self.ring_of_prot > 0:
@@ -1169,6 +1192,52 @@ class Player:
             pause()
             return
 
+
+
+    def found_cloak_substitution(self, found_item):
+
+        if self.cloak.stealth < round(self.dexterity * .25):
+            if found_item.name == self.cloak.name:
+                found_item.stealth += 1
+                print(
+                    f"Quantum wierdness fills the air...\nYour {self.cloak.name} is enhanced to stealth + {found_item.stealth}!")
+                self.cloak.stealth = found_item.stealth
+                self.calculate_stealth()
+                pause()
+                return
+            else:
+                print(f"You have found a {found_item.name}!! Stealth: {found_item.stealth}")
+                print(f"Your current {self.cloak.name} Stealth: {self.cloak.stealth}")
+            while True:
+                replace_cloak = input(f"Do you wish to wear the {found_item.name} instead? y/n: ").lower()
+                if replace_cloak == 'y':
+                    old_cloak = self.cloak
+                    self.cloak = found_item
+                    print(f"You are now wearing the {found_item.name}")
+                    self.calculate_stealth()
+                    if old_cloak not in self.pack[found_item.item_type]:
+                        (self.pack[found_item.item_type]).append(old_cloak)
+                        print(f"You place the {old_cloak.name} in your dungeoneer's pack..")
+                    else:
+                        print(f"You drop your {old_cloak.name}.")
+                    pause()
+                    return
+                elif replace_cloak == 'n':
+                    print(f"You don't wear the {found_item.name}.")
+                    if found_item not in self.pack[found_item.item_type]:
+                        (self.pack[found_item.item_type]).append(found_item)
+                        print(f"You place the {found_item.name} into your dungeoneer's pack.")
+                    else:
+                        print(f"You can't carry any more {found_item.name}s. You leave it.")  # can't carry any more
+                    pause()
+                    return
+                elif replace_cloak not in ("y", "n"):
+                    continue
+        else:
+            print(f"Stealth already >= .25 * dex...")  # remove after testing
+            pause()
+            return
+
     def found_ring_of_reg_substitution(self, found_item):
         if self.ring_of_reg < round(self.maximum_hit_points * .17):
             old_ring = self.ring_of_reg
@@ -1208,14 +1277,14 @@ class Player:
 
     def loot(self):
         loot_dict = {
-            'Weapons': [short_sword, short_axe, quantum_sword, broad_sword],  # upgrade logic added
+            'Weapons': [short_sword, short_axe, quantum_sword, broad_sword],  # upgrade logic done
             'Healing Potions': [healing_potion],  # upgrade logic not needed
-            'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],  # upgrade logic added
-            'Shields': [buckler, kite_shield, quantum_tower_shield],
+            'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],  # upgrade logic done
+            'Shields': [buckler, kite_shield, quantum_tower_shield],  # upgrade logic done
             'Boots': [leather_boots],
-            'Cloaks': [canvas_cloak],
-            'Rings of Regeneration': [ring_of_regeneration],  # upgrade logic added
-            'Rings of Protection': [ring_of_protection],
+            'Cloaks': [elven_cloak],  # upgrade logic done
+            'Rings of Regeneration': [ring_of_regeneration],  # upgrade logic done
+            'Rings of Protection': [ring_of_protection],  # upgrade logic done
             'Town Portal Implements': [scroll_of_town_portal]  # upgrade logic not needed
         }
 
@@ -1244,10 +1313,12 @@ class Player:
                     elif found_item.item_type == 'Shields':
                         self.found_shield_substitution(found_item)
                         continue
+                    elif found_item.item_type == 'Cloaks':
+                        self.found_cloak_substitution(found_item)
+                        continue
                     elif found_item.item_type == 'Weapons':
                         self.found_weapon_substitution(found_item)
                         continue
-
                     elif found_item.item_type == 'Rings of Regeneration':
                         self.found_ring_of_reg_substitution(found_item)
                         continue
@@ -1255,7 +1326,7 @@ class Player:
                         self.found_ring_of_prot_substitution(found_item)
                         continue
                     # if found_item.item_type == 'Boots' or found_item.item_type == 'Cloaks' or found_item.item_type == 'Rings of Protection' and found_item not in self.pack[found_item.item_type]:
-                    elif found_item.item_type != 'Armor' and found_item.item_type != 'Shields' and found_item.item_type != 'Rings of Protection' and found_item.item_type != 'Rings of Regeneration' and found_item.item_type != 'Weapons' and found_item.item_type != 'Healing Potions' and found_item.item_type != 'Town Portal Implements' and found_item not in \
+                    elif found_item.item_type != 'Armor' and found_item.item_type != 'Shields' and found_item.item_type != 'Cloaks' and found_item.item_type != 'Rings of Protection' and found_item.item_type != 'Rings of Regeneration' and found_item.item_type != 'Weapons' and found_item.item_type != 'Healing Potions' and found_item.item_type != 'Town Portal Implements' and found_item not in \
                             self.pack[
                                 found_item.item_type]:  # you can only carry one of each item, except t.p. and potions type
                         print(f"You see a {found_item.name} !")
@@ -1271,8 +1342,8 @@ class Player:
                         pause()  # remove this pause after testing
                         continue
                 else:
-                    print(f"Minimum requirements not met.")
-                    pause()
+                    print(f"Minimum requirements not met.")  # remove after testing
+                    pause()  # remove after testing
                     continue
             else:
                 return

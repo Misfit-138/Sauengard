@@ -219,6 +219,7 @@ while True:
                     time.sleep(.5)
                 if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h', 'i', 'q'):
                     print("Unknown command")
+                    time.sleep(.25)
                     continue
                 if encounter > 11:
 

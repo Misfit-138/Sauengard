@@ -102,7 +102,7 @@ while True:
     while in_town:
         player_1.hud()
         town_functions = input(
-            "You are in town. (S)ave, (Q)uit game, (R)estart the game, (I)nventory, (B)lacksmith, (C)hemist or ("
+            "You are in town.\n(S)ave, (Q)uit game, (R)estart the game, (I)nventory, (B)lacksmith, (C)hemist or ("
             "E)nter dungeon "
             "--> ").lower()
         if town_functions == 'r':
@@ -306,6 +306,7 @@ while True:
                                 print(f"The {monster.name} attacks!")
                                 time.sleep(1.5)
                                 print(f"You dodge, swiftly foiling its advantage!")
+                                time.sleep(2)
 
                         # ********************************* BATTLE LOOP ***********************************************
                         while True:
@@ -353,7 +354,7 @@ while True:
                                     if not player_1.check_dead():  # if player not dead
                                         if dice_roll(1, 20) > 17 and monster.can_paralyze:
                                             time.sleep(1)
-                                            player_1.is_paralyzed = monster.paralyze(player_1.wisdom)
+                                            player_1.is_paralyzed = monster.paralyze(player_1.wisdom, player_1.ring_of_prot)
                                             if player_1.is_paralyzed:
                                                 player_1.damage_while_paralyzed(monster.number_of_hd,
                                                                                 monster.hit_dice)
@@ -411,7 +412,7 @@ while True:
                                 if not player_1.check_dead():  # if player not dead
                                     if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
                                         time.sleep(1)
-                                        player_1.is_paralyzed = monster.paralyze(player_1.wisdom)
+                                        player_1.is_paralyzed = monster.paralyze(player_1.wisdom, player_1.ring_of_prot)
                                         if player_1.is_paralyzed:
                                             player_1.damage_while_paralyzed(monster.number_of_hd, monster.hit_dice)
                                         if not player_1.check_dead():  # if player not dead

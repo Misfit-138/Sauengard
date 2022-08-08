@@ -176,7 +176,7 @@ class Monster:
         else:
             return True
 
-    def swing(self, name, player_armor_class):
+    def swing(self, name, human_player_armor_class):
         attack_bonus = random.randint(1, 100)
         if attack_bonus <= 50:
             attack_bonus = self.attack_1
@@ -206,8 +206,8 @@ class Monster:
             critical_bonus = 1
             hit_statement = ""
         print(f"Dexterity modifier {self.dexterity_modifier}")
-        print(f"Your armor class ---> {player_armor_class}")
-        if roll20 + self.dexterity_modifier >= player_armor_class:
+        print(f"Your armor class ---> {human_player_armor_class}")
+        if roll20 + self.dexterity_modifier >= human_player_armor_class:
             damage_roll = dice_roll((self.number_of_hd * critical_bonus), self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus + self.weapon_bonus)
             if roll20 == 20 and damage_to_opponent < 1:
@@ -230,10 +230,10 @@ class Monster:
                 return 0  # 0 points damage to player
         else:
             print(f"It missed..")
-            time.sleep(3)
+            os.system('pause')
             return 0
 
-    def quantum_energy_attack(self, name, player_dexterity_modifier, player_ring_of_prot):
+    def quantum_energy_attack(self, name, human_player_dexterity_modifier, human_player_ring_of_prot):
         attack_bonus = random.randint(1, 100)
         if attack_bonus <= 50:
             attack_bonus = self.quantum_attack_1
@@ -250,7 +250,7 @@ class Monster:
         if attack_bonus > 95:
             attack_bonus = self.quantum_attack_5
             attack_phrase = self.quantum_attack_5_phrase
-        player_roll20 = roll20 = dice_roll(1, 20)
+        human_player_rolld20 = roll20 = dice_roll(1, 20)
         roll20 = dice_roll(1, 20)
         print(f"The {name} attacks with Quantum Energy! (It rolls {roll20})")
         if roll20 == 1:
@@ -264,9 +264,9 @@ class Monster:
             critical_bonus = 1
             hit_statement = ""
         print(f"Wisdom modifier {self.wisdom_modifier}")
-        print(f"Your roll: {player_roll20} + dexterity modifier ({player_dexterity_modifier}) + ring of protection "
-              f"({player_ring_of_prot}). Total: {player_roll20 + player_dexterity_modifier}")
-        if roll20 + self.wisdom_modifier >= player_roll20 + player_dexterity_modifier + player_ring_of_prot:
+        print(f"Your roll: {human_player_rolld20} + dexterity modifier ({human_player_dexterity_modifier}) + ring of protection "
+              f"({human_player_ring_of_prot}). Total: {human_player_rolld20 + human_player_dexterity_modifier}")
+        if roll20 + self.wisdom_modifier >= human_player_rolld20 + human_player_dexterity_modifier + human_player_ring_of_prot:
             damage_roll = dice_roll(self.number_of_hd * critical_bonus, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
@@ -289,13 +289,12 @@ class Monster:
             time.sleep(3)
             return 0
 
-    def paralyze(self, human_player_wisdom):
+    def paralyze(self, human_player_wisdom, human_player_ring_of_prot):
         print(self.paralyze_phrase)
         #print(f"It lurches forward, grabbing your arm!")
         paralyze_chance = dice_roll(1, 20)
 
-        if paralyze_chance > 18 or paralyze_chance > 17 and (self.wisdom + self.wisdom_modifier) >= (
-                human_player_wisdom):
+        if (paralyze_chance + self.wisdom_modifier) >= (human_player_wisdom + human_player_ring_of_prot):
 
             print("You're paralyzed!!")
             time.sleep(1)

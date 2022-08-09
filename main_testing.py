@@ -166,7 +166,6 @@ while True:
             # DUNGEON NAVIGATION LOOP:
             while in_dungeon:
                 player_1.regenerate()
-
                 #player_1.loot()
                 encounter = dice_roll(1, 20)
                 player_1.hud()
@@ -291,7 +290,7 @@ while True:
                                 if monster.quantum_energy and melee_or_quantum > 50:
                                     damage_to_player = monster.quantum_energy_attack(monster.name,
                                                                                      player_1.dexterity_modifier,
-                                                                                     player_1.ring_of_prot)
+                                                                                     player_1.ring_of_prot.protect)
                                     player_1.reduce_health(damage_to_player)
                                 else:
                                     damage_to_player = monster.swing(monster.name, player_1.armor_class)
@@ -346,7 +345,7 @@ while True:
                                     if monster.quantum_energy and melee_or_quantum > 10:
                                         damage_to_player = monster.quantum_energy_attack(monster.name,
                                                                                          player_1.dexterity_modifier,
-                                                                                         player_1.ring_of_prot)
+                                                                                         player_1.ring_of_prot.protect)
                                         player_1.reduce_health(damage_to_player)
                                     else:
                                         damage_to_player = monster.swing(monster.name, player_1.armor_class)
@@ -355,7 +354,7 @@ while True:
                                     if not player_1.check_dead():  # if player not dead
                                         if dice_roll(1, 20) > 17 and monster.can_paralyze:
                                             time.sleep(1)
-                                            player_1.is_paralyzed = monster.paralyze(player_1.wisdom, player_1.ring_of_prot)
+                                            player_1.is_paralyzed = monster.paralyze(player_1.wisdom, player_1.ring_of_prot.protect)
                                             if player_1.is_paralyzed:
                                                 player_1.damage_while_paralyzed(monster.number_of_hd,
                                                                                 monster.hit_dice)
@@ -405,7 +404,7 @@ while True:
                                 if monster.quantum_energy and melee_or_quantum > 50:
                                     damage_to_player = monster.quantum_energy_attack(monster.name,
                                                                                      player_1.dexterity_modifier,
-                                                                                     player_1.ring_of_prot)
+                                                                                     player_1.ring_of_prot.protect)
                                     player_1.reduce_health(damage_to_player)
                                 else:
                                     damage_to_player = monster.swing(monster.name, player_1.armor_class)
@@ -413,7 +412,7 @@ while True:
                                 if not player_1.check_dead():  # if player not dead
                                     if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
                                         time.sleep(1)
-                                        player_1.is_paralyzed = monster.paralyze(player_1.wisdom, player_1.ring_of_prot)
+                                        player_1.is_paralyzed = monster.paralyze(player_1.wisdom, player_1.ring_of_prot.protect)
                                         if player_1.is_paralyzed:
                                             player_1.damage_while_paralyzed(monster.number_of_hd, monster.hit_dice)
                                         if not player_1.check_dead():  # if player not dead

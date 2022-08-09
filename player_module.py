@@ -76,12 +76,12 @@ class BroadSword(Weapon):
 class QuantumSword(Weapon):
     def __init__(self):
         super().__init__()
-        self.name = "Rudimentary Quantum Sword"
+        self.name = "Quantum Sword"
         self.item_type = "Weapons"
         self.damage_bonus = 10  # 5
         self.to_hit_bonus = 2
         self.sell_price = 5000
-        self.buy_price = 125  # 8000
+        self.buy_price = 8000
         self.minimum_level = 1  # 3
 
 
@@ -376,9 +376,9 @@ healing_potion = HealingPotion()
 class RingOfRegeneration:
 
     def __init__(self):
-        self.name = "Generic Ring of Regeneration"
+        self.name = "Ring of Regeneration"
         self.item_type = "Rings of Regeneration"
-        self.regenerate = 1
+        self.regenerate = 0
         self.sell_price = 10000
         self.buy_price = 10000
         self.minimum_level = 1
@@ -393,9 +393,9 @@ ring_of_regeneration = RingOfRegeneration()
 class RingOfProtection:
 
     def __init__(self):
-        self.name = "Generic Ring Of Protection"
+        self.name = "Ring Of Protection"
         self.item_type = "Rings of Protection"
-        self.protect = 1
+        self.protect = 0
         self.sell_price = 10000
         self.buy_price = 10000
         self.minimum_level = 1
@@ -459,8 +459,8 @@ class Player:
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.is_paralyzed = False
         self.cloak = canvas_cloak
-        self.ring_of_prot = 0
-        self.ring_of_reg = 0
+        self.ring_of_prot = ring_of_protection
+        self.ring_of_reg = ring_of_regeneration
         self.two_handed = False
         self.extra_attack = 0
         self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.armor_bonus + self.dexterity_modifier
@@ -486,8 +486,8 @@ class Player:
         print(f"Minimum level requirement: {self.wielded_weapon.minimum_level}")
 
     def regenerate(self):
-        if self.hit_points < self.maximum_hit_points and self.ring_of_reg > 0:
-            regeneration = self.ring_of_reg
+        if self.hit_points < self.maximum_hit_points and self.ring_of_reg.regenerate > 0:
+            regeneration = self.ring_of_reg.regenerate
             self.hit_points = self.hit_points + regeneration
             if self.hit_points > self.maximum_hit_points:
                 self.hit_points = self.maximum_hit_points
@@ -532,11 +532,11 @@ class Player:
         number_of_portal_scrolls = len(self.pack['Town Portal Implements'])
         print(
             f"                                                                     Town Portal Scrolls: {number_of_portal_scrolls}")
-        if self.ring_of_reg > 0:
+        if self.ring_of_reg.regenerate > 0:
             print(
-                f"                                                                     Ring of Reg: +{self.ring_of_reg}")
-        if self.ring_of_prot > 0:
-            print(f"                                                                     Ring of Prot: +{self.ring_of_prot}")
+                f"                                                                     Ring of Reg: +{self.ring_of_reg.regenerate}")
+        if self.ring_of_prot.protect > 0:
+            print(f"                                                                     Ring of Prot: +{self.ring_of_prot.protect}")
         return
 
     def calculate_stealth(self):
@@ -1017,14 +1017,14 @@ class Player:
         print(
             f"You are wearing:\n{self.armor.name}. Armor class: {self.armor.ac}. Armor bonus: {self.armor.armor_bonus}")
         print(f"{self.cloak.name}. Stealth: {self.cloak.stealth}")
-        if self.ring_of_reg > 0:
-            print(f"A Ring of Regeneration + {self.ring_of_reg}")
-        if self.ring_of_prot > 0:
-            print(f"A Ring of Protection + {self.ring_of_prot} ")
+        if self.ring_of_reg.regenerate > 0:
+            print(f"A Ring of Regeneration + {self.ring_of_reg.regenerate}")
+        if self.ring_of_prot.protect > 0:
+            print(f"A Ring of Protection + {self.ring_of_prot.protect} ")
         print(f"You are carrying:")
-        item_type_lst = ['Weapons', 'Healing Potions', 'Armor', 'Shields', 'Boots', 'Cloaks', 'Rings of Regeneration',
-                         'Rings of Protection', 'Town Portal Implements']
+        item_type_lst = ['Weapons', 'Healing Potions', 'Armor', 'Shields', 'Boots', 'Cloaks', 'Town Portal Implements']
         # number_of_items = len(self.pack[item_type])
+        #  'Rings of Regeneration', 'Rings of Protection', removed for clarity so they only appear to be worn
         current_items = []
         for each_item in item_type_lst:
             is_item_on_list = len(self.pack[each_item])
@@ -1240,37 +1240,44 @@ class Player:
             return
 
     def found_ring_of_reg_substitution(self, found_item):
-        if self.ring_of_reg < round(self.maximum_hit_points * .17):
+        print(f"Quantum wierdness fills the air...")
+        if self.ring_of_reg.regenerate == 0:
+            self.ring_of_reg.regenerate += 1
+            print(f"A Ring of Regeneration + {self.ring_of_reg.regenerate} appears on your finger!")
+            (self.pack[found_item.item_type]).append(found_item)
+            pause()
+            return
+        elif self.ring_of_reg.regenerate < round(self.maximum_hit_points * .17):
             old_ring = self.ring_of_reg
-            self.ring_of_reg = (self.ring_of_reg + 1)
-            print(f"Quantum wierdness fills the air...")
-            if old_ring > 0:
-                print(f"Your {ring_of_regeneration.name} is enhanced to {self.ring_of_reg} !")
-                pause()
-                return
-            else:
-                print(f"A Ring of Regeneration + {self.ring_of_reg} appears on your finger!")
-                pause()
-                return
+            self.ring_of_reg.regenerate = (self.ring_of_reg.regenerate + 1)
+            print(f"Your {ring_of_regeneration.name} is enhanced to {self.ring_of_reg.regenerate} !")
+            pause()
+            return
+            #else:
+                #print(f"A Ring of Regeneration + {self.ring_of_reg.regenerate} appears on your finger!")
+                #(self.pack[found_item.item_type]).append(found_item)
+                #pause()
+                #return
         else:
             print("Ring of reg already equal to or more than 17% of max hit points")  # remove after testing
             pause()
             return
 
     def found_ring_of_prot_substitution(self, found_item):
-        if self.ring_of_prot < round(self.wisdom * .33):
-            old_ring = self.ring_of_prot
-            print(f"Old ring: {old_ring}")
-            self.ring_of_prot += 1
-            print(f"Quantum wierdness fills the air...")
-            if old_ring > 0:
-                print(f"Your {ring_of_protection.name} is enhanced to {self.ring_of_prot} !")
-                pause()
-                return
-            else:
-                print(f"A Ring of Protection + {self.ring_of_prot} appears on your finger!")
-                pause()
-                return
+        print(f"Quantum wierdness fills the air...")
+        if self.ring_of_prot.protect == 0:
+            self.ring_of_prot.protect += 1
+            (self.pack[found_item.item_type]).append(found_item)
+            print(f"A Ring of Protection + {self.ring_of_prot.protect} appears on your finger!")
+            pause()
+            return
+        elif self.ring_of_prot.protect < round(self.wisdom * .33):
+            #old_ring = self.ring_of_prot.protect
+            #print(f"Old ring: {old_ring}")
+            self.ring_of_prot.protect += 1
+            print(f"Your {ring_of_protection.name} is enhanced to {self.ring_of_prot.protect} !")
+            pause()
+            return
         else:
             print("Ring of prot already equal to or more than 33% of wisdom")  # remove after testing
             pause()
@@ -1295,7 +1302,7 @@ class Player:
             self.hud()
             print(f"Loot roll ---> {loot_roll}")
             pause()
-            if loot_roll > 10:
+            if loot_roll > 9:
                 key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
                 rndm_item_index = random.randrange(len(loot_dict[key]))
                 found_item = loot_dict[key][rndm_item_index]

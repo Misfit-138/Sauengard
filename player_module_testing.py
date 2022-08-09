@@ -995,7 +995,7 @@ class Player:
 
     def sell_items(self):
         self.hud()
-        #print(f"Enter item type")
+
         if len(self.pack['Weapons']) > 0:
             print(f"Your current weapon inventory:")
             print(f"(Sorted by highest damage bonus)")

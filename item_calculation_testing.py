@@ -1,4 +1,4 @@
-from player_module import *
+from player_module_stable import *
 
 found_item = short_axe
 

@@ -34,8 +34,9 @@ and its documentation and return value (usually None) support this, the behavior
 #    print(introduction_file.read())
 import pickle
 import time
-from player_module import *
-# from player_class_module_reliable import *
+from player_module_testing import *
+#from player_module_stable import *
+
 from monster_module import *
 from typing_module import *
 import random
@@ -166,11 +167,11 @@ while True:
             # DUNGEON NAVIGATION LOOP:
             while in_dungeon:
                 player_1.regenerate()
-                #player_1.loot()
+                player_1.loot()
                 encounter = dice_roll(1, 20)
                 player_1.hud()
                 dungeon_command = input(
-                    "(Q)uit, Town (P)ortal, (H)ealing potion, (I)nventory or WASD to navigate. --> ").lower()
+                    "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage weapons, (I)nventory or WASD to navigate. --> ").lower()
                 if dungeon_command == 'p':
                     if scroll_of_town_portal not in player_1.pack['Town Portal Implements']:
                         print(f"You have no scrolls!")
@@ -181,7 +182,7 @@ while True:
                         in_town = True
                         in_dungeon = False
                         break
-                if dungeon_command == 'q':
+                elif dungeon_command == 'q':
                     print("Quit game..")
                     while True:
                         confirm_quit = input("Are you sure? (y/n) ").lower()
@@ -191,15 +192,17 @@ while True:
                             exit()
                         elif confirm_quit == 'n':
                             break
-                if dungeon_command == 'h':
+                elif dungeon_command == 'h':
                     player_1.drink_healing_potion()
                     print(f"You have {player_1.hit_points} hit points.")
                     time.sleep(1)
                     player_1.hud()
-
-                if dungeon_command == 'i':
+                elif dungeon_command == 'm':
+                    player_1.weapon_management()
+                    continue
+                elif dungeon_command == 'i':
                     player_1.inventory()
-                if dungeon_command == 'w' or 'a' or 's' or 'd':
+                elif dungeon_command == 'w' or 'a' or 's' or 'd':
                     if dungeon_command == 'w':
                         player_1.hud()
                         print("You go north")
@@ -216,7 +219,7 @@ while True:
                         player_1.hud()
                         print("You go east")
                     time.sleep(.5)
-                if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h', 'i', 'q'):
+                if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h', 'm', 'i', 'q'):
                     print("Unknown command")
                     time.sleep(.25)
                     continue
@@ -280,7 +283,7 @@ while True:
                         player_initiative = dice_roll(1, 20) + player_1.dexterity_modifier
                         monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier
                         print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
-                        time.sleep(2)
+                        time.sleep(1)
                         if monster_initiative > player_initiative:
                             attack_or_steal = dice_roll(1, 20)
                             if attack_or_steal > player_1.armor_class:  # (player_1.dexterity + player_1.dexterity_modifier):
@@ -306,7 +309,7 @@ while True:
                                 print(f"The {monster.name} attacks!")
                                 time.sleep(1.5)
                                 print(f"You dodge, swiftly foiling its advantage!")
-                                time.sleep(2)
+                                os.system('pause')
 
                         # ********************************* BATTLE LOOP ***********************************************
                         while True:

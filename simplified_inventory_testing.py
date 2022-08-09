@@ -1,6 +1,6 @@
 import random
 
-from player_module import leather_armor, buckler, leather_boots, canvas_cloak, ring_of_regeneration, \
+from player_module_stable import leather_armor, buckler, leather_boots, canvas_cloak, ring_of_regeneration, \
     ring_of_protection, scroll_of_town_portal, short_sword, short_axe, quantum_sword, broad_sword, minor_healing_potion, \
     major_healing_potion, super_healing_potion
 

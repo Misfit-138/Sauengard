@@ -32,7 +32,7 @@ and its documentation and return value (usually None) support this, the behavior
 
 import pickle
 import time
-from player_module import *
+from player_module_stable import *
 #from player_class_module_reliable import *
 from monster_module import *
 from typing_module import *

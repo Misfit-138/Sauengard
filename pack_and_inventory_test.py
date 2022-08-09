@@ -74,7 +74,7 @@ loot_dict = {
     'Rings of Protection': [ring_of_protection],
     'Town Portal Implements': [scroll_of_town_portal]
 }
-item_type_key_lst = ['Weapons', 'Healing Potions', 'Armor', 'Shields', 'Boots', 'Cloaks', 'Rings of Regeneration',
+item_type_key_lst = ['Weapons', 'Healing', 'Armor', 'Shields', 'Boots', 'Cloaks', 'Rings of Regeneration',
                      'Rings of Protection', 'Town Portal Implements']
 #found_item = random.choice(loot_dict[random.choice(item_type_key_lst)])
 for i in range(5):

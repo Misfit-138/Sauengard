@@ -293,7 +293,8 @@ class Monster:
         print(self.paralyze_phrase)
         #print(f"It lurches forward, grabbing your arm!")
         paralyze_chance = dice_roll(1, 20)
-
+        print(f"Paralyze roll: {paralyze_chance} + monster wisdom modifier: {self.wisdom_modifier}")  # remove after testing
+        print(f"Your wisdom: {human_player_wisdom} Your ring of prot: {human_player_ring_of_prot}")  # remove after testing
         if (paralyze_chance + self.wisdom_modifier) >= (human_player_wisdom + human_player_ring_of_prot):
 
             print("You're paralyzed!!")

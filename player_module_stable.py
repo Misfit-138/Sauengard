@@ -919,11 +919,11 @@ class Player:
                         'Weapons']) and sale_item != self.wielded_weapon and self.level >= sale_item.minimum_level:
                 print(f"You buy a {sale_item}")
                 self.gold -= sale_item.buy_price
-                (self.pack[sale_item.item_type]).append(sale_item)
-                number_of_items = len(self.pack[sale_item.item_type])
-                print(f"You now have {number_of_items} items in your {sale_item.item_type} inventory:")
-                (self.pack[sale_item.item_type]).sort(key=lambda x: x.name)
-                stuff_dict = Counter(item.name for item in self.pack[sale_item.item_type])
+                (self.pack[sale_item.item_type_to_sell]).append(sale_item)
+                number_of_items = len(self.pack[sale_item.item_type_to_sell])
+                print(f"You now have {number_of_items} items in your {sale_item.item_type_to_sell} inventory:")
+                (self.pack[sale_item.item_type_to_sell]).sort(key=lambda x: x.name)
+                stuff_dict = Counter(item.name for item in self.pack[sale_item.item_type_to_sell])
                 for key, value in stuff_dict.items():
                     print(key)
                     # print(key, 's', ':    ', value, sep='')
@@ -1105,7 +1105,7 @@ class Player:
                     print(
                         f"Damage bonus: {self.wielded_weapon.damage_bonus}. To hit: {self.wielded_weapon.to_hit_bonus}")
                     if old_weapon not in self.pack['Weapons']:
-                        (self.pack[found_item.item_type]).append(old_weapon)
+                        (self.pack[found_item.item_type_to_sell]).append(old_weapon)
                         print(f"You place the {old_weapon.name} upon your back..")
 
                     else:
@@ -1114,8 +1114,8 @@ class Player:
                     return
                 elif replace_weapon == 'n':
                     print(f"You don't wield the {found_item.name}.")
-                    if found_item not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(found_item)
+                    if found_item not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(found_item)
                         print(f"You place the {found_item.name} on your back.")
 
                     else:
@@ -1153,8 +1153,8 @@ class Player:
                     print(f"You are now wearing the {found_item.name}")
                     self.calculate_armor_class()
                     # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
-                    if old_armor not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(old_armor)
+                    if old_armor not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(old_armor)
                         print(f"You place the {old_armor.name} upon your back..")
 
                     else:
@@ -1163,8 +1163,8 @@ class Player:
                     return
                 elif replace_armor == 'n':
                     print(f"You don't wear the {found_item.name}.")  # remove after testing
-                    if found_item not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(found_item)
+                    if found_item not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(found_item)
                         print(f"You place the {found_item.name} on your back.")
 
                     else:
@@ -1208,8 +1208,8 @@ class Player:
                     if old_shield.name == 'No Shield':
                         pause()
                         return
-                    elif old_shield not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(old_shield)
+                    elif old_shield not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(old_shield)
                         print(f"You place the {old_shield.name} on your back..")
 
                     else:
@@ -1218,8 +1218,8 @@ class Player:
                     return
                 elif replace_shield == 'n':
                     print(f"You don't wield the {found_item.name}.")
-                    if found_item not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(found_item)
+                    if found_item not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(found_item)
                         print(f"You place the {found_item.name} on your back.")
 
                     else:
@@ -1257,8 +1257,8 @@ class Player:
                     print(f"You are now wearing the {found_item.name}")
                     self.calculate_armor_class()
                     # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
-                    if old_boots not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(old_boots)
+                    if old_boots not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(old_boots)
                         print(f"You place the {old_boots.name} in your dungeoneer's pack..")
 
                     else:
@@ -1267,8 +1267,8 @@ class Player:
                     return
                 elif replace_boots == 'n':
                     print(f"You don't wear the {found_item.name}.")  # remove after testing
-                    if found_item not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(found_item)
+                    if found_item not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(found_item)
                         print(f"You place the {found_item.name} in your dungeoneer's pack.")
 
                     else:
@@ -1303,8 +1303,8 @@ class Player:
                     self.cloak = found_item
                     print(f"You are now wearing the {found_item.name}")
                     self.calculate_stealth()
-                    if old_cloak not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(old_cloak)
+                    if old_cloak not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(old_cloak)
                         print(f"You place the {old_cloak.name} in your dungeoneer's pack..")
                     else:
                         print(f"You drop your {old_cloak.name}.")
@@ -1312,8 +1312,8 @@ class Player:
                     return
                 elif replace_cloak == 'n':
                     print(f"You don't wear the {found_item.name}.")  # remove after testing
-                    if found_item not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(found_item)
+                    if found_item not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(found_item)
                         print(f"You place the {found_item.name} into your dungeoneer's pack.")
                     else:
                         print(f"You can't carry any more {found_item.name}s. You leave it.")  # can't carry any more
@@ -1333,7 +1333,7 @@ class Player:
             self.ring_of_reg = found_item  # += 1
             print(f"Quantum wierdness fills the air...")
             print(f"A Ring of Regeneration + {self.ring_of_reg.regenerate} appears on your finger!")
-            (self.pack[found_item.item_type]).append(found_item)  # place in inventory in case you want to sell it
+            (self.pack[found_item.item_type_to_sell]).append(found_item)  # place in inventory in case you want to sell it
             pause()
             return
         elif self.ring_of_reg.regenerate < round(self.maximum_hit_points * .17):
@@ -1357,7 +1357,7 @@ class Player:
 
         if self.ring_of_prot.protect == 0:
             self.ring_of_prot.protect += 1
-            (self.pack[found_item.item_type]).append(found_item)
+            (self.pack[found_item.item_type_to_sell]).append(found_item)
             print(f"Quantum wierdness fills the air...")
             print(f"A Ring of Protection + {self.ring_of_prot.protect} appears on your finger!")
             pause()
@@ -1400,32 +1400,32 @@ class Player:
                 found_item = loot_dict[key][rndm_item_index]
                 print(found_item)  # REMOVE AFTER TESTING *****************************************************
                 if self.level >= found_item.minimum_level:
-                    if found_item.item_type == 'Healing' or found_item.item_type == 'Town Portal Implements':
-                        (self.pack[found_item.item_type]).append(found_item)
+                    if found_item.item_type_to_sell == 'Healing' or found_item.item_type_to_sell == 'Town Portal Implements':
+                        (self.pack[found_item.item_type_to_sell]).append(found_item)
                         print(f"You see a {found_item.name} !")
                         sleep(1)
                         print(f"You snarf it..")
                         pause()
                         continue
-                    elif found_item.item_type == 'Armor':
+                    elif found_item.item_type_to_sell == 'Armor':
                         self.found_armor_substitution(found_item)
                         continue
-                    elif found_item.item_type == 'Shields':
+                    elif found_item.item_type_to_sell == 'Shields':
                         self.found_shield_substitution(found_item)
                         continue
-                    elif found_item.item_type == 'Cloaks':
+                    elif found_item.item_type_to_sell == 'Cloaks':
                         self.found_cloak_substitution(found_item)
                         continue
-                    elif found_item.item_type == 'Weapons':
+                    elif found_item.item_type_to_sell == 'Weapons':
                         self.found_weapon_substitution(found_item)
                         continue
-                    elif found_item.item_type == 'Rings of Regeneration':
+                    elif found_item.item_type_to_sell == 'Rings of Regeneration':
                         self.found_ring_of_reg_substitution(found_item)
                         continue
-                    elif found_item.item_type == 'Rings of Protection':
+                    elif found_item.item_type_to_sell == 'Rings of Protection':
                         self.found_ring_of_prot_substitution(found_item)
                         continue
-                    elif found_item.item_type == 'Boots':
+                    elif found_item.item_type_to_sell == 'Boots':
                         self.found_boots_substitution(found_item)
                         continue
                     else:

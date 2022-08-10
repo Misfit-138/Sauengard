@@ -4,7 +4,7 @@ found_item = short_axe
 
 
 def found_item_calculation(self, found_item):
-    if found_item.item_type == 'Weapons':
+    if found_item.item_type_to_sell == 'Weapons':
         if self.wielded_weapon.damage_bonus < self.level:
             found_item.damage_bonus = (self.level + 1)
             if found_item.name == self.wielded_weapon.name:

@@ -103,7 +103,7 @@ while True:
     while in_town:
         player_1.hud()
         town_functions = input(
-            "You are in town.\n(S)ave, (Q)uit game, (R)estart the game, (I)nventory, (B)lacksmith, (C)hemist or ("
+            "You are in town.\n(S)ave, (Q)uit game, (M)arket, (R)estart the game, (I)nventory, (B)lacksmith, (C)hemist or ("
             "E)nter dungeon "
             "--> ").lower()
         if town_functions == 'r':
@@ -112,10 +112,10 @@ while True:
             os.system('cls')
             in_town = False
             break
-        if town_functions == 'q':
+        elif town_functions == 'q':
             print("Exiting..")
             exit()
-        if town_functions == 's':
+        elif town_functions == 's':
             save_a_character = player_name + ".sav"
             if os.path.isfile(save_a_character):
                 while True:
@@ -140,22 +140,25 @@ while True:
                     print(f"{player_1.name} saved.")
                     time.sleep(2)
 
-        if town_functions == 'i':
+        elif town_functions == 'i':
             player_1.inventory()
             # os.system('pause')
-
-        if town_functions == 'b':
+        elif town_functions == 'm':
+            print("You visit the market bazarre")
+            sleep(1.5)
+            player_1.sell_items()
+        elif town_functions == 'b':
             print("You visit the blacksmith")
             at_blacksmith = True
             player_1.blacksmith_sale()
 
-        if town_functions == 'c':
+        elif town_functions == 'c':
             player_1.hud()
             print("You visit the quantum chemist. He heals you to full strength.")
             time.sleep(1.5)
             player_1.hit_points = player_1.maximum_hit_points
             player_1.hud()
-        if town_functions == 'e':
+        elif town_functions == 'e':
             in_town = False
             in_dungeon = True
 

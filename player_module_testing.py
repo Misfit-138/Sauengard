@@ -995,52 +995,66 @@ class Player:
 
     def sell_items(self):
         self.hud()
-
-        if len(self.pack['Weapons']) > 0:
-            print(f"Your current weapon inventory:")
-            print(f"(Sorted by highest damage bonus)")
-            (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus, reverse=True)
-            weapon_mgmt_dict = {}
-            for item in (self.pack['Weapons']):
-                weapon_mgmt_dict[item] = (self.pack['Weapons']).index(item)
-            for key, value in weapon_mgmt_dict.items():
-                print(value + 1, ':', key)  # value is index. indexing starts at zero, so add 1
-            print()
-            '''self.pack[item_type].sort(key=lambda x: x.name)
-            stuff_dict = Counter(item.name for item in self.pack[item_type])
-            for key, value in stuff_dict.items():
-            print(key, 's', ':    ', value, sep='')
-            number_of_items = len(self.pack[item_type])'''
-        else:
-            print(f"You have nothing in your weapons inventory..")
-            pause()
-            return
-        old_weapon = self.wielded_weapon
-        print(f"Your current wielded weapon: "
-              f"{self.wielded_weapon}\n"
-              f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
-              f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
-        wield_or_exit = input(f"(S)wap wielded weapon, or (E)xit: ").lower()
-        if wield_or_exit == "e":
-            return
-        elif wield_or_exit == "s":
+        print(f"Inventory item types eligible for sale:")
+        while True:
+            non_empty_item_type_lst = []
+            # make a list of non-empty inventory item keys from player's inventory
+            for key in self.pack:
+                if len(self.pack[key]) > 0:
+                    non_empty_item_type_lst.append(key)
+            if not len(non_empty_item_type_lst):
+                print(f"Empty")
+                return
+            # make a dictionary from the non_empty item type list, index and print
+            item_type_dict = {}
+            for item_type in self.pack:
+                if len(self.pack[item_type]):
+                    item_type_dict[item_type] = non_empty_item_type_lst.index(item_type)
+            for key, value in item_type_dict.items():
+                print(value + 1, ':', key)
             try:
-                new_weapon_index = int(input(f"Enter the number of the weapon you wish to wield: "))
-                new_weapon_index -= 1  # again, indexing starts at 0 and is awkward
-                self.wielded_weapon = (self.pack['Weapons'])[new_weapon_index]  # SYNTAX FOR INDEX
+                item_type_index_to_sell = int(input(f"Enter type of item to sell:"))
+                item_type_to_sell = non_empty_item_type_lst[item_type_index_to_sell - 1]
+            except (IndexError, ValueError):
+                print("Invalid entry..")
+                sleep(1)
+                return
+
+            print(f"Your current {item_type_to_sell} inventory eligible for sale:")
+            mgmt_dict = {}
+            for item in (self.pack[item_type_to_sell]):
+                mgmt_dict[item] = (self.pack[item_type_to_sell]).index(item)
+            for key, value in mgmt_dict.items():
+                print(value + 1, ':', key)
+            # item_index_to_sell = int(input(f"Enter item to sell:"))
+            # item = new_item_type_lst[item_type_index_to_sell - 1]
+            # (self.pack[item_type_to_sell]).pop(item_index_to_sell - 1)
+            # print(f"{self.pack[item_type_to_sell]}")
+
+            try:
+                item_index_to_sell = int(input(f"Enter the number of the item you wish to sell: "))
+                item_index_to_sell -= 1
+                print(f"the {(self.pack[item_type_to_sell])[item_index_to_sell]} .")
+                #item_index_to_sell -= 1  # again, indexing starts at 0 and is awkward
+                #self.wielded_weapon = (self.pack[item_type_to_sell])[item_index_to_sell]  # SYNTAX FOR INDEX
                 # self.wielded_weapon = self.pack['Weapons']new_weapon  # find syntax...on the right track
             except (IndexError, ValueError):
                 print("Invalid entry..")
                 sleep(1)
                 return
-            print(f"You remove the {(self.pack['Weapons'])[new_weapon_index]} from your back and are now wielding it.\n"
-                  f"You place the {old_weapon} on your back.")
+            print(f"You sell the {(self.pack[item_type_to_sell])[item_index_to_sell]} .")
+            (self.pack[item_type_to_sell]).pop(item_index_to_sell)
+            self.item_type_inventory(item_type_to_sell)
 
-            (self.pack['Weapons']).pop(new_weapon_index)  # INDEX SYNTAX
-            (self.pack['Weapons']).append(old_weapon)  # old_weapon represents an object, not an index
-            (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus)
-            # self.pack.append(old_weapon)  # for the old list inventory method
-            pause()
+            while True:
+                sell_again = input(f"Sell more items (y/n) : ")
+                if sell_again == 'y':
+                    break
+                elif sell_again == 'n':
+                    return
+                else:
+                    # if sell_again not in ('y', 'n'):
+                    continue
 
     def use_scroll_of_town_portal(self):
         self.hud()
@@ -1438,7 +1452,7 @@ class Player:
             self.hud()
             print(f"Loot roll ---> {loot_roll}")
             pause()
-            if loot_roll > 9:
+            if loot_roll > 5:
                 key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
                 rndm_item_index = random.randrange(len(loot_dict[key]))
                 found_item = loot_dict[key][rndm_item_index]

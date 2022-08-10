@@ -385,6 +385,7 @@ class HealingPotion:
         self.name = ""
         self.item_type = "Healing"
         self.heal_points = 10
+        self.sell_price = 5
         self.minimum_level = 1
 
     def __repr__(self):
@@ -397,6 +398,7 @@ class HealingPotion(HealingPotion):
         self.name = "Minor Healing Potion"
         self.item_type = "Healing"
         self.heal_points = 0
+        self.sell_price = 5
         self.minimum_level = 1
 
 
@@ -1002,53 +1004,62 @@ class Player:
             for key in self.pack:
                 if len(self.pack[key]) > 0:
                     non_empty_item_type_lst.append(key)
-            if not len(non_empty_item_type_lst):
-                print(f"Empty")
+            if len(non_empty_item_type_lst) < 1:
+                print(f"Your inventory is empty")
+                pause()
                 return
-            # make a dictionary from the non_empty item type list, index and print
-            item_type_dict = {}
-            for item_type in self.pack:
-                if len(self.pack[item_type]):
-                    item_type_dict[item_type] = non_empty_item_type_lst.index(item_type)
-            for key, value in item_type_dict.items():
-                print(value + 1, ':', key)
-            try:
-                item_type_index_to_sell = int(input(f"Enter type of item to sell:"))
-                item_type_to_sell = non_empty_item_type_lst[item_type_index_to_sell - 1]
-            except (IndexError, ValueError):
-                print("Invalid entry..")
-                sleep(1)
-                return
-
-            print(f"Your current {item_type_to_sell} inventory eligible for sale:")
+            else:
+                print(non_empty_item_type_lst)  # remove after testing
+                # make a dictionary from the non_empty item type list. index, and print
+                item_type_dict = {}
+                for item_type in self.pack:
+                    if len(self.pack[
+                               item_type]) and item_type != 'Rings of Protection' and item_type != 'Rings of Regeneration':
+                        item_type_dict[item_type] = non_empty_item_type_lst.index(item_type)
+                for key, value in item_type_dict.items():
+                    print(value + 1, ':', key)
+                #sell_or_exit = input(f"(S)ell items, or (E)xit: ").lower()
+                try:
+                    item_type_index_to_sell = int(input(f"Enter type of item to sell: "))
+                    item_type_to_sell = non_empty_item_type_lst[item_type_index_to_sell - 1]
+                except (IndexError, ValueError):
+                    print("Invalid entry..")
+                    sleep(1)
+                    continue
+            self.hud()
+            persistent_item_type = item_type_to_sell
+            print(f"Your {item_type_to_sell} inventory eligible for sale:")
+            # self.item_type_inventory(item_type_to_sell)
             mgmt_dict = {}
             for item in (self.pack[item_type_to_sell]):
                 mgmt_dict[item] = (self.pack[item_type_to_sell]).index(item)
             for key, value in mgmt_dict.items():
                 print(value + 1, ':', key)
-            # item_index_to_sell = int(input(f"Enter item to sell:"))
-            # item = new_item_type_lst[item_type_index_to_sell - 1]
-            # (self.pack[item_type_to_sell]).pop(item_index_to_sell - 1)
-            # print(f"{self.pack[item_type_to_sell]}")
-
             try:
                 item_index_to_sell = int(input(f"Enter the number of the item you wish to sell: "))
-                item_index_to_sell -= 1
-                print(f"the {(self.pack[item_type_to_sell])[item_index_to_sell]} .")
-                #item_index_to_sell -= 1  # again, indexing starts at 0 and is awkward
-                #self.wielded_weapon = (self.pack[item_type_to_sell])[item_index_to_sell]  # SYNTAX FOR INDEX
-                # self.wielded_weapon = self.pack['Weapons']new_weapon  # find syntax...on the right track
+                item_index_to_sell -= 1  # again, indexing starts at 0 and is awkward
+
             except (IndexError, ValueError):
                 print("Invalid entry..")
                 sleep(1)
-                return
-            print(f"You sell the {(self.pack[item_type_to_sell])[item_index_to_sell]} .")
-            (self.pack[item_type_to_sell]).pop(item_index_to_sell)
-            self.item_type_inventory(item_type_to_sell)
+                continue
+            sold_item = (self.pack[item_type_to_sell])[item_index_to_sell]
 
+            print(f"You sell the {(self.pack[item_type_to_sell])[item_index_to_sell]} for {sold_item.sell_price} GP.")
+            self.gold += sold_item.sell_price
+            (self.pack[item_type_to_sell]).pop(item_index_to_sell)
+            pause()
+            self.hud()
+            if len(self.pack[item_type_to_sell]) > 0:
+                self.item_type_inventory(item_type_to_sell)
+            else:
+                print(f"Your {persistent_item_type} inventory is now empty.")
+                pause()
+                self.hud()
             while True:
                 sell_again = input(f"Sell more items (y/n) : ")
                 if sell_again == 'y':
+                    self.hud()
                     break
                 elif sell_again == 'n':
                     return
@@ -1087,7 +1098,7 @@ class Player:
             return
 
     def item_type_inventory(self, item_type):  # list items in inventory by type
-        print(f"{item_type}:")
+        print(f"{item_type} inventory:")
         self.pack[item_type].sort(key=lambda x: x.name)
         stuff_dict = Counter(item.name for item in self.pack[item_type])
         for key, value in stuff_dict.items():
@@ -1391,7 +1402,9 @@ class Player:
             self.ring_of_reg = found_item  # += 1
             print(f"Quantum wierdness fills the air...")
             print(f"A Ring of Regeneration + {self.ring_of_reg.regenerate} appears on your finger!")
-            (self.pack[found_item.item_type]).append(found_item)  # place in inventory in case you want to sell it
+            sleep(1)
+            print(f"It becomes permanently affixed..fused to your flesh and bone!")
+            # (self.pack[found_item.item_type]).append(found_item)  # place in inventory in case you want to sell it
             pause()
             return
         elif self.ring_of_reg.regenerate < round(self.maximum_hit_points * .17):
@@ -1415,9 +1428,11 @@ class Player:
 
         if self.ring_of_prot.protect == 0:
             self.ring_of_prot.protect += 1
-            (self.pack[found_item.item_type]).append(found_item)
+            # (self.pack[found_item.item_type]).append(found_item) you can't sell rings. new rule
             print(f"Quantum wierdness fills the air...")
             print(f"A Ring of Protection + {self.ring_of_prot.protect} appears on your finger!")
+            sleep(1)
+            print(f"Tunneling through realities, it permanently fuses to flesh and bone!")
             pause()
             return
         elif self.ring_of_prot.protect < round(self.wisdom * .33):
@@ -1461,7 +1476,7 @@ class Player:
                     if found_item.item_type == 'Healing' or found_item.item_type == 'Town Portal Implements':
                         (self.pack[found_item.item_type]).append(found_item)
                         print(f"You see a {found_item.name} !")
-                        sleep(1)
+                        sleep(.5)
                         print(f"You snarf it..")
                         pause()
                         continue

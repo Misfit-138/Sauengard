@@ -144,12 +144,14 @@ while True:
             player_1.inventory()
             # os.system('pause')
         elif town_functions == 'm':
-            print("You visit the market bazarre")
+            print("You visit the seller's market..")
             sleep(1.5)
             player_1.sell_items()
         elif town_functions == 'b':
-            print("You visit the blacksmith")
+            print("You visit the blacksmith..")
+            sleep(1.5)
             at_blacksmith = True
+            #player_1.buy_blacksmith_items()
             player_1.blacksmith_sale()
 
         elif town_functions == 'c':
@@ -170,7 +172,7 @@ while True:
             # DUNGEON NAVIGATION LOOP:
             while in_dungeon:
                 player_1.regenerate()
-                player_1.loot()
+                # player_1.loot()  # for testing
                 encounter = dice_roll(1, 20)
                 player_1.hud()
                 dungeon_command = input(

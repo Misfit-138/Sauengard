@@ -892,8 +892,8 @@ class Player:
             cls()
             # self.hud()
             print(f"Jeffrey, the Fieldenberg blacksmith is here, hammering at his anvil.\n"
-                  f"He notices you, grumbles, and continues hammering...\n")
-            print(f"\nYour gold: {self.gold} GP")
+                  f"He notices you, grumbles, and continues hammering...")
+            print(f"Your gold: {self.gold} GP")
             sale_item_key = input(
                 "(P)urchase items, (M)anage Wielded Weapons or (E)xit the blacksmith: ").lower()
             if sale_item_key not in ('p', 'e', 'm'):
@@ -998,10 +998,10 @@ class Player:
                     cls()
                     # self.hud()
                     print(f"{item_type_to_buy} for sale:")
-
                     mgmt_dict = {}
                     for item in (blacksmith_dict[item_type_to_buy]):
                         mgmt_dict[item] = (blacksmith_dict[item_type_to_buy]).index(item)
+                        custom_item = mgmt_dict[item]
                     for key, value in mgmt_dict.items():
                         print(value + 1, ':', key)
                     print(f"Your gold: {self.gold} GP")

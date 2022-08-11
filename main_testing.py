@@ -399,7 +399,7 @@ while True:
                             if monster.check_dead():
                                 player_1.hud()
                                 print(f"It died..")
-                                time.sleep(2)
+                                time.sleep(1.5)
                                 player_1.level_up(monster.experience_award, monster.gold)
                                 in_proximity_to_monster = False
                                 player_1.loot()

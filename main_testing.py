@@ -172,7 +172,7 @@ while True:
             # DUNGEON NAVIGATION LOOP:
             while in_dungeon:
                 player_1.regenerate()
-                # player_1.loot()  # for testing
+                #player_1.loot()  # for testing
                 encounter = dice_roll(1, 20)
                 player_1.hud()
                 dungeon_command = input(

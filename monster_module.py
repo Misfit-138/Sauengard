@@ -1,4 +1,6 @@
-"""Choose a challenge rating (CR) for your trap, object, effect, or creature
+"""
+
+Choose a challenge rating (CR) for your trap, object, effect, or creature
 between 1 and 30. Write down its statistics from the following formulas:
 • AC = 12 + ½ CR (or choose between 10 and 20 based on the story)
 • DC = 12 + ½ CR
@@ -88,6 +90,38 @@ Hit Points at 1st Level: 10 + your Constitution modifier
 Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighter level after 1st
 # MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
 # "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
+average treasure per encounter per level:
+1-75.15
+2-107.15
+3-151.9
+4-209.6
+5-280
+6-376
+7-536
+8-760
+9-1048
+10-1400
+11-1880
+12-2680
+13-3800
+14-5240
+15-7000
+16-9400
+17-13400
+18-19000
+19-26200
+20-35000
+21-47000
+22-67000
+23-95000
+24-131000
+25-175000
+26-235000
+27-285000
+28-325000
+29-355000
+30-437500
+
 """
 
 import os
@@ -313,7 +347,7 @@ class Quasit(Monster):
         super().__init__()
         self.level = 1
         self.experience_award = 25  # MM says it should be 200 exp?!
-        self.gold = self.level * 273 * round(random.uniform(1, 2))
+        self.gold = random.randint(2, 10)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -365,7 +399,7 @@ class Kobold(Monster):
         super().__init__()
         self.level = 1
         self.experience_award = 25
-        self.gold = self.level * 273 * round(random.uniform(1, 2))
+        self.gold = random.randint(2, 15)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -414,7 +448,7 @@ class Cultist(Monster):
         super().__init__()
         self.level = 1
         self.experience_award = 50
-        self.gold = self.level * 373 * round(random.uniform(1, 2))
+        self.gold = random.randint(2, 20)  # self.level * 373 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -466,7 +500,7 @@ class Goblin(Monster):
         super().__init__()
         self.level = 1
         self.experience_award = self.level * 50
-        self.gold = self.level * 200 * round(random.uniform(1, 2))
+        self.gold = random.randint(2, 25)  # self.level * 200 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -515,7 +549,7 @@ class WingedKobold(Monster):
         super().__init__()
         self.level = 1
         self.experience_award = 50
-        self.gold = self.level * 273 * round(random.uniform(1, 2))
+        self.gold = random.randint(2, 15)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -564,7 +598,7 @@ class Shadow(Monster):
         super().__init__()
         self.level = 2
         self.experience_award = 100
-        self.gold = 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.gold = random.randint(5, 10)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -637,7 +671,7 @@ class Skeleton(Monster):
         super().__init__()
         self.level = 2
         self.experience_award = 100
-        self.gold = 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -691,7 +725,7 @@ class Drow(Monster):
         super().__init__()
         self.level = 2
         self.experience_award = 100
-        self.gold = self.level * 300 * round(random.uniform(1, 2))
+        self.gold = random.randint(5, 12)  # self.level * 300 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -754,7 +788,7 @@ class Troglodyte(Monster):
         super().__init__()
         self.level = 2
         self.experience_award = 50
-        self.gold = 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 2
         self.armor = 0
         self.shield = 0
@@ -803,7 +837,7 @@ class Orc(Monster):
         super().__init__()
         self.level = 2
         self.experience_award = 100
-        self.gold = 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -854,7 +888,7 @@ class Ghoul(Monster):
         super().__init__()
         self.level = 2
         self.experience_award = 200
-        self.gold = self.level * 103 * round(random.uniform(1, 2))  # ghouls shouldn't have much gold
+        self.gold = random.randint(6, 16)  # self.level * 103 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0

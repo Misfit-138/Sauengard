@@ -956,7 +956,7 @@ class Player:
             time.sleep(1.5)
             return  # False
 
-    def blacksmith_sale(self):
+    def blacksmith_main(self):
 
         while True:
             self.hud()
@@ -1293,13 +1293,19 @@ class Player:
                         break
 
     def use_scroll_of_town_portal(self):
-        self.hud()
-        # if scroll_of_town_portal in self.pack['Town Portal Implements']:
-        (self.pack['Town Portal Implements'].remove(scroll_of_town_portal))
-        print(f"The portal appears before you; a seemingly impossible gateway between distant places..")
-        time.sleep(2)
-        winsound.PlaySound(None, winsound.SND_ASYNC)
-        return
+        if scroll_of_town_portal not in self.pack['Town Portal Implements']:
+            print(f"You have no scrolls!")
+            time.sleep(2)
+            return False
+        else:
+            self.hud()
+            (self.pack['Town Portal Implements'].remove(scroll_of_town_portal))
+            print(f"The portal appears before you; a seemingly impossible gateway between distant places..")
+            time.sleep(2)
+            #winsound.PlaySound(None, winsound.SND_ASYNC)
+            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_theme.wav',
+                               winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+            return True
 
     def drink_healing_potion(self):
         self.hud()

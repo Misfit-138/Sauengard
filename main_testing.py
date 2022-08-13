@@ -35,7 +35,7 @@ and its documentation and return value (usually None) support this, the behavior
 import pickle
 import time
 from player_module_testing import *
-#from player_module_stable import *
+# from player_module_stable import *
 
 from monster_module import *
 from typing_module import *
@@ -96,10 +96,12 @@ while True:
             player_1.hud()
     print(f"You enter the town of Fieldenberg.")
     time.sleep(1.5)
-    #player_1.hud()
+    # player_1.hud()
     in_town = True
     in_dungeon = False
     discovered_monsters = []
+    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_theme.wav',
+                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
     while in_town:
         player_1.hud()
         town_functions = input(
@@ -150,9 +152,7 @@ while True:
         elif town_functions == 'b':
             print("You visit the blacksmith..")
             sleep(1.5)
-            at_blacksmith = True
-            #player_1.buy_blacksmith_items()
-            player_1.blacksmith_sale()
+            player_1.blacksmith_main()
 
         elif town_functions == 'c':
             player_1.hud()
@@ -168,25 +168,22 @@ while True:
             time.sleep(1)
             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
                                winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-            # discovered_monsters = []
+
             # DUNGEON NAVIGATION LOOP:
             while in_dungeon:
                 player_1.regenerate()
-                #player_1.loot()  # for testing
+                # player_1.loot()  # for testing
                 encounter = dice_roll(1, 20)
                 player_1.hud()
                 dungeon_command = input(
                     "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage weapons, (I)nventory or WASD to navigate. --> ").lower()
                 if dungeon_command == 'p':
-                    if scroll_of_town_portal not in player_1.pack['Town Portal Implements']:
-                        print(f"You have no scrolls!")
-                        time.sleep(2)
-                        continue
-                    else:
-                        player_1.use_scroll_of_town_portal()
+                    if player_1.use_scroll_of_town_portal():
                         in_town = True
                         in_dungeon = False
                         break
+                    else:
+                        continue
                 elif dungeon_command == 'q':
                     print("Quit game..")
                     while True:
@@ -228,6 +225,7 @@ while True:
                     print("Unknown command")
                     time.sleep(.25)
                     continue
+                # eventually, make encounter a returned boolean from navigation function
                 if encounter > 11:
 
                     print("This should create monster now..")
@@ -362,7 +360,8 @@ while True:
                                     if not player_1.check_dead():  # if player not dead
                                         if dice_roll(1, 20) > 17 and monster.can_paralyze:
                                             time.sleep(1)
-                                            player_1.is_paralyzed = monster.paralyze(player_1.wisdom, player_1.ring_of_prot.protect)
+                                            player_1.is_paralyzed = monster.paralyze(player_1.wisdom,
+                                                                                     player_1.ring_of_prot.protect)
                                             if player_1.is_paralyzed:
                                                 player_1.damage_while_paralyzed(monster.number_of_hd,
                                                                                 monster.hit_dice)
@@ -420,7 +419,8 @@ while True:
                                 if not player_1.check_dead():  # if player not dead
                                     if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
                                         time.sleep(1)
-                                        player_1.is_paralyzed = monster.paralyze(player_1.wisdom, player_1.ring_of_prot.protect)
+                                        player_1.is_paralyzed = monster.paralyze(player_1.wisdom,
+                                                                                 player_1.ring_of_prot.protect)
                                         if player_1.is_paralyzed:
                                             player_1.damage_while_paralyzed(monster.number_of_hd, monster.hit_dice)
                                         if not player_1.check_dead():  # if player not dead

@@ -11,7 +11,7 @@ dungeonMap = [["0", "0", "0", "0", "0", "0", "0", "0", "0"],
 playerMap = [[".", ".", ".", ".", ".", ".", ".", ".", "."],
              [".", ".", ".", ".", ".", ".", ".", ".", "."],
              [".", ".", ".", ".", ".", ".", ".", ".", "."],
-             [".", "s", ".", ".", ".", ".", ".", ".", "E"],
+             ["S", ".", ".", ".", ".", ".", ".", ".", "E"],
              [".", ".", ".", ".", ".", ".", ".", ".", "."],
              [".", ".", ".", ".", ".", ".", ".", ".", "."],
              [".", ".", ".", ".", ".", ".", ".", ".", "."],
@@ -35,7 +35,7 @@ position = mapChoice[0][0]
 
 def main(mapChoice, playerMap, position):
     # players starting position
-    x = 1
+    x = 0
     y = 3
     # players inventory
     key = False
@@ -53,19 +53,16 @@ def main(mapChoice, playerMap, position):
         if movement == "N":
             y = y - 1
 
-        elif movement == "S":
+        if movement == "S":
             y = y + 1
 
-        elif movement == "E":
+        if movement == "E":
             x = x + 1
 
-        elif movement == "W":
+        if movement == "W":
             x = x - 1
-            #if x < 0:
-            #    print(f"You can't go that way")
-            #x += 1
 
-        elif movement == "MAP":
+        if movement == "MAP":
             displayMap(playerMap)
 
         position = mapChoice[y][x]

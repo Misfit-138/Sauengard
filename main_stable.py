@@ -32,11 +32,9 @@ and its documentation and return value (usually None) support this, the behavior
 # introduction_file = open("trett.txt", "r")
 # if introduction_file.readable():
 #    print(introduction_file.read())
-
-
 import pickle
 import time
-from player_module_testing import *
+from player_module_stable import *
 # from player_module_stable import *
 
 from monster_module import *
@@ -44,30 +42,6 @@ from typing_module import *
 import random
 import os
 import winsound
-from dungeon_1 import *
-
-
-# Displaying the map
-def display_map(maps):
-    for x in range(0, 8):
-        print(maps[x])
-
-
-def pause():
-    os.system('pause')
-
-
-def sleep(seconds):
-    time.sleep(seconds)
-
-
-# selecting a map
-current_dungeon_map = dungeon_1_map
-current_player_map = dungeon_1_player_map
-display_map(dungeon_1_player_map)
-
-# initialising the players position
-#position = current_dungeon_map[0][0]
 
 winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\originalsound.wav',
                    winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
@@ -196,15 +170,11 @@ while True:
                                winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
             # DUNGEON NAVIGATION LOOP:
-
             while in_dungeon:
-                previousX = x
-                previousY = y
                 player_1.regenerate()
                 # player_1.loot()  # for testing
                 encounter = dice_roll(1, 20)
                 player_1.hud()
-
                 dungeon_command = input(
                     "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage weapons, (I)nventory or WASD to navigate. --> ").lower()
                 if dungeon_command == 'p':
@@ -234,54 +204,29 @@ while True:
                     continue
                 elif dungeon_command == 'i':
                     player_1.inventory()
-                elif dungeon_command == 'w' or 'a' or 's' or 'd' or 'map':
+                elif dungeon_command == 'w' or 'a' or 's' or 'd':
                     if dungeon_command == 'w':
                         player_1.hud()
                         print("You go north")
-                        y = y - 1
 
                     if dungeon_command == 'a':
                         player_1.hud()
                         print("You go west")
-                        x = x - 1
 
                     if dungeon_command == 's':
                         player_1.hud()
                         print("You go south")
-                        y = y + 1
 
                     if dungeon_command == 'd':
                         player_1.hud()
                         print("You go east")
-                        x = x + 1
-
-                    if dungeon_command == 'map':
-                        player_1.hud()
-                        print("You look at the map..")
-                        display_map(current_player_map)
-                        pause()
-                    position = current_dungeon_map[y][x]
-                    current_player_map[y][x] = "X"
-
-                if dungeon_command not in ('w', 'a', 's', 'd', 'map', 'p', 'h', 'm', 'i', 'q'):
+                    time.sleep(.5)
+                if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h', 'm', 'i', 'q'):
                     print("Unknown command")
                     time.sleep(.25)
                     continue
-                if position == "0" or position == "1":
-                    print("You can't go that way...")
-                    x = previousX
-                    y = previousY
-                    position = current_dungeon_map[y][x]
-                    sleep(1.5)
-                if position == ".":
-                    print("You are in a dark corridor, there are doors leading in each direction...")
-                    sleep(1.5)
-                if position == "E":
-                    print("You found the exit...")
-                    pause()
-                    break
                 # eventually, make encounter a returned boolean from navigation function
-                if encounter > 20:
+                if encounter > 11:
 
                     print("This should create monster now..")
                     # monster dictionary. keys correspond to difficulty

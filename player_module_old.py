@@ -3,7 +3,6 @@ import os
 from collections import Counter
 import winsound
 from dice_roll_module import *
-from typing_module import typing
 
 '''Target
 Identify your target to the table. 
@@ -27,9 +26,8 @@ Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighte
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.'''
 
 
-def cls():
-    os.system('cls')
-
+# add ancestral footsteps
+# add weapon stats function call
 
 def pause():
     os.system('pause')
@@ -61,8 +59,8 @@ class ShortSword(Weapon):
         self.item_type = "Weapons"
         self.damage_bonus = 0
         self.to_hit_bonus = 0
-        self.sell_price = 5
-        self.buy_price = 10
+        self.sell_price = 75
+        self.buy_price = 50
         self.minimum_level = 1
 
 
@@ -73,8 +71,8 @@ class BroadSword(Weapon):
         self.item_type = "Weapons"
         self.damage_bonus = 1
         self.to_hit_bonus = 0
-        self.sell_price = 5
-        self.buy_price = 15
+        self.sell_price = 75
+        self.buy_price = 125
         self.minimum_level = 1
 
 
@@ -102,8 +100,8 @@ class ShortAxe(Weapon):
         self.item_type = "Weapons"
         self.damage_bonus = 2
         self.to_hit_bonus = -1
-        self.sell_price = 20
-        self.buy_price = 50
+        self.sell_price = 200
+        self.buy_price = 1000
         self.minimum_level = 1
 
 
@@ -132,8 +130,8 @@ class PaddedArmor(Armor):
         self.item_type = "Armor"
         self.ac = 10
         self.armor_bonus = 0
-        self.sell_price = 1
-        self.buy_price = 5
+        self.sell_price = 50
+        self.buy_price = 50
         self.minimum_level = 1
 
 
@@ -147,8 +145,8 @@ class LeatherArmor(Armor):
         self.item_type = "Armor"
         self.ac = 11
         self.armor_bonus = 0
-        self.sell_price = 5
-        self.buy_price = 10
+        self.sell_price = 1000
+        self.buy_price = 1500
         self.minimum_level = 1
 
 
@@ -158,12 +156,12 @@ leather_armor = LeatherArmor()
 class StuddedLeatherArmor(Armor):
     def __init__(self):
         super().__init__()
-        self.name = "Studded Leather Armor"
+        self.name = "Leather Armor"
         self.item_type = "Armor"
         self.ac = 12
         self.armor_bonus = 0
-        self.sell_price = 30
-        self.buy_price = 45
+        self.sell_price = 3000
+        self.buy_price = 5000
         self.minimum_level = 1  # 2
 
 
@@ -177,8 +175,8 @@ class ScaleMail(Armor):
         self.item_type = "Armor"
         self.ac = 14
         self.armor_bonus = 0
-        self.sell_price = 300
-        self.buy_price = 400
+        self.sell_price = 10000
+        self.buy_price = 15000
         self.minimum_level = 1  # 4
 
 
@@ -192,8 +190,8 @@ class HalfPlate(Armor):
         self.item_type = "Armor"
         self.ac = 16
         self.armor_bonus = 0
-        self.sell_price = 550
-        self.buy_price = 750
+        self.sell_price = 20000
+        self.buy_price = 25000
         self.minimum_level = 1  # 6
 
 
@@ -207,8 +205,8 @@ class FullPlate(Armor):
         self.item_type = "Armor"
         self.ac = 18
         self.armor_bonus = 0
-        self.sell_price = 1000
-        self.buy_price = 1500
+        self.sell_price = 30000
+        self.buy_price = 55000
         self.minimum_level = 1  # 10
 
 
@@ -249,8 +247,8 @@ class Buckler(Shield):
         self.name = "Buckler"
         self.item_type = "Shields"
         self.ac = 1
-        self.sell_price = 5
-        self.buy_price = 50
+        self.sell_price = 10000
+        self.buy_price = 20000
         self.minimum_level = 1  # 2
 
 
@@ -263,8 +261,8 @@ class KiteShield(Shield):
         self.name = "Kite Shield"
         self.item_type = "Shields"
         self.ac = 2
-        self.sell_price = 50
-        self.buy_price = 100
+        self.sell_price = 50000
+        self.buy_price = 50000
         self.minimum_level = 1  # 5
 
 
@@ -277,8 +275,8 @@ class QuantumTowerShield(Shield):
         self.name = "Quantum Tower Shield"
         self.item_type = "Shields"
         self.ac = 3
-        self.sell_price = 275
-        self.buy_price = 500
+        self.sell_price = 50000
+        self.buy_price = 50000
         self.minimum_level = 1  # 10
 
 
@@ -319,7 +317,7 @@ class ElvenBoots(Boots):
         self.name = "Elven Boots"
         self.item_type = "Boots"
         self.ac = 1
-        self.sell_price = 30
+        self.sell_price = 50
         self.buy_price = 50
         self.minimum_level = 1
 
@@ -333,8 +331,8 @@ class AncestralFootsteps(Boots):
         self.name = "Ancestral Footsteps"
         self.item_type = "Boots"
         self.ac = 2
-        self.sell_price = 300
-        self.buy_price = 500
+        self.sell_price = 50
+        self.buy_price = 50
         self.minimum_level = 1
 
 
@@ -375,8 +373,8 @@ class ElvenCloak(Cloak):
         self.name = "Elven Cloak"
         self.item_type = "Cloaks"
         self.stealth = 1
-        self.sell_price = 25
-        self.buy_price = 50
+        self.sell_price = 5000
+        self.buy_price = 8000
         self.minimum_level = 1
 
 
@@ -387,9 +385,7 @@ class HealingPotion:
     def __init__(self):
         self.name = ""
         self.item_type = "Healing"
-        self.heal_points = 0
-        self.buy_price = 0
-        self.sell_price = 0
+        self.heal_points = 10
         self.minimum_level = 1
 
     def __repr__(self):
@@ -402,15 +398,13 @@ class HealingPotion(HealingPotion):
         self.name = "Minor Healing Potion"
         self.item_type = "Healing"
         self.heal_points = 0
-        self.buy_price = 50
-        self.sell_price = 20
         self.minimum_level = 1
 
 
 healing_potion = HealingPotion()
 
 
-class Regeneration:
+class RingOfRegeneration:
 
     def __init__(self):
         self.name = "Ring of Regeneration"
@@ -422,41 +416,16 @@ class Regeneration:
 
     def __repr__(self):
         return self.name
-
-
-class DefaultRingOfRegeneration(Regeneration):
-    def __init__(self):
-        super().__init__()
-        self.name = "No Ring"
-        self.item_type = "Rings of Regeneration"
-        self.regenerate = 0
-        self.sell_price = 10000
-        self.buy_price = 10000
-        self.minimum_level = 1
-
-
-default_ring_of_regeneration = DefaultRingOfRegeneration()
-
-
-class RingOfRegeneration(Regeneration):
-    def __init__(self):
-        super().__init__()
-        self.name = "Ring of Regeneration"
-        self.item_type = "Rings of Regeneration"
-        self.regenerate = 1
-        self.sell_price = 10000
-        self.buy_price = 10000
-        self.minimum_level = 1
 
 
 ring_of_regeneration = RingOfRegeneration()
 
 
-class Protection:
+class RingOfProtection:
 
     def __init__(self):
-        self.name = "Ring"
-        self.item_type = "Rings"
+        self.name = "Ring Of Protection"
+        self.item_type = "Rings of Protection"
         self.protect = 0
         self.sell_price = 10000
         self.buy_price = 10000
@@ -464,31 +433,6 @@ class Protection:
 
     def __repr__(self):
         return self.name
-
-
-class DefaultRingOfProtection(Protection):
-    def __init__(self):
-        super().__init__()
-        self.name = "No Ring"
-        self.item_type = "Rings of Protection"
-        self.protect = 0
-        self.sell_price = 10000
-        self.buy_price = 10000
-        self.minimum_level = 1
-
-
-default_ring_of_protection = DefaultRingOfProtection()
-
-
-class RingOfProtection(Protection):
-    def __init__(self):
-        super().__init__()
-        self.name = "Ring Of Protection"
-        self.item_type = "Rings of Protection"
-        self.protect = 1
-        self.sell_price = 10000
-        self.buy_price = 10000
-        self.minimum_level = 1
 
 
 ring_of_protection = RingOfProtection()
@@ -500,8 +444,8 @@ class TownPortalImplements:
         self.name = "Scroll of Town Portal"
         self.item_type = "Town Portal Implements"
         self.protect = 1
-        self.sell_price = 100
-        self.buy_price = 300
+        self.sell_price = 1000
+        self.buy_price = 1000
         self.minimum_level = 1
         self.uses = 1
 
@@ -521,7 +465,7 @@ class Player:
         self.name = name
         self.level = 1
         self.experience = 0
-        self.gold = 0  # 500000
+        self.gold = 500000
         self.wielded_weapon = short_sword
         self.weapon_bonus = self.wielded_weapon.damage_bonus  # self.weapon_bonus no longer used
         self.armor = padded_armor
@@ -546,8 +490,8 @@ class Player:
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.is_paralyzed = False
         self.cloak = canvas_cloak
-        self.ring_of_prot = default_ring_of_protection
-        self.ring_of_reg = default_ring_of_regeneration
+        self.ring_of_prot = ring_of_protection
+        self.ring_of_reg = ring_of_regeneration
         self.two_handed = False
         self.extra_attack = 0
         self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
@@ -565,30 +509,12 @@ class Player:
 
         }
 
-    def print_weapon_stats(self, weapon):
-        print(f"{weapon.name}:")
-        print(f"Damage bonus: {weapon.damage_bonus}")
-        print(f"To hit: {weapon.to_hit_bonus}")
-        print(f"Sell price: {weapon.sell_price}")
-        print(f"Minimum level requirement: {weapon.minimum_level}")
-
-    def print_armor_stats(self, armor):
-        print(f"{armor.name}:")
-        print(f"AC: {armor.ac}")
-        print(f"Sell Price: {armor.sell_price}")
-        print(f"Minimum level requirement: {armor.minimum_level}")
-
-    def print_shield_stats(self, shield):
-        print(f"{shield.name}:")
-        print(f"AC: {shield.ac}")
-        print(f"Sell Price: {shield.sell_price}")
-        print(f"Minimum level requirement: {shield.minimum_level}")
-
-    def print_boots_stats(self, boots):
-        print(f"{boots.name}:")
-        print(f"AC: {boots.ac}")
-        print(f"Sell Price: {boots.sell_price}")
-        print(f"Minimum level requirement: {boots.minimum_level}")
+    def print_wielded_weapon_stats(self):
+        print(f"{self.wielded_weapon.name}:")
+        print(f"Damage bonus: {self.wielded_weapon.damage_bonus}")
+        print(f"To hit: {self.wielded_weapon.to_hit_bonus}")
+        print(f"Sell price: {self.wielded_weapon.sell_price}")
+        print(f"Minimum level requirement: {self.wielded_weapon.minimum_level}")
 
     def regenerate(self):
         if self.hit_points < self.maximum_hit_points and self.ring_of_reg.regenerate > 0:
@@ -721,6 +647,7 @@ class Player:
         before_level = self.level
         before_proficiency_bonus = self.proficiency_bonus
         self.experience += exp_award
+        # self.increase_experience(exp_award)  # EXPERIENCE UP!!
         self.calculate_current_level()
         self.calculate_proficiency_bonus()
         after_proficiency_bonus = self.proficiency_bonus
@@ -733,8 +660,6 @@ class Player:
             sleep(2)
             print(f"You are now level {self.level}.")
             sleep(2)
-            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
-                               winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
             self.calculate_proficiency_bonus()  # according to DnD 5e
             gain_hit_points = dice_roll(1, self.hit_dice) + self.constitution_modifier
             if gain_hit_points < 1:
@@ -956,39 +881,69 @@ class Player:
             time.sleep(1.5)
             return  # False
 
-    def blacksmith_main(self):
-
+    def blacksmith_sale(self):
+        sale_items_dict = {'1': short_sword,
+                           '2': broad_sword,
+                           '3': quantum_sword
+                           }
         while True:
             self.hud()
-            print(f"Jeffrey, the Fieldenberg blacksmith is here, hammering at his anvil.\n"
-                  f"He notices you, grumbles, and continues hammering...")
-            print(f"Your gold: {self.gold} GP")
+            print("The following items are for sale:")
+            print(f"Item             Level Requirement          Price")
+            print(f"1 Shortsword             {short_sword.minimum_level}                    {short_sword.buy_price}   ")
+            print(f"2 Broad Sword            {broad_sword.minimum_level}                    {broad_sword.buy_price}   ")
+            print(
+                f"3 Quantum Sword          {quantum_sword.minimum_level}                    {quantum_sword.buy_price}")
+            print(f"You have {self.gold} gold pieces.")
             sale_item_key = input(
-                "(P)urchase items, Manage (W)eapons, (A)rmor, (S)hields, (B)oots, (I)nventory, or (E)xit the blacksmith: ").lower()
-            if sale_item_key not in ('p', 'w', 'a', 's', 'b', 'i', 'e'):
+                "Enter item number to buy, (M)anage Weapons Inventory or (E)xit the blacksmith: ").lower()
+            if sale_item_key not in ('1', '2', '3', 'e', 'm'):
                 continue
-            elif sale_item_key == 'p':
-                self.buy_blacksmith_items()
-                continue
-            elif sale_item_key == 'w':
-                self.item_management('Weapons', self.wielded_weapon)
-                # self.weapon_management()
-                continue
-            elif sale_item_key == 'a':
-                self.item_management('Armor', self.armor)
-                continue
-            elif sale_item_key == 's':
-                self.item_management('Shields', self.shield)
-                continue
-            elif sale_item_key == 'b':
-                self.item_management('Boots', self.boots)
-                continue
-            elif sale_item_key == 'i':
-                self.inventory()
-                continue
-            elif sale_item_key == 'e':
+            '''if sale_item_key == 'i':
+                self.hud()
+                inventory_from_blacksmith = self.item_type_inventory('Weapons')
+                if not inventory_from_blacksmith:
+                    print(f"Your weapons inventory is empty")
+                os.system('pause')
+                self.hud()
+                continue'''
+            if sale_item_key == 'e':
                 return
+            if sale_item_key == 'm':
+                self.weapon_management()
+                continue
+            sale_item = (sale_items_dict[sale_item_key])
+            # ADD ARMOR, BOOTS AND SHIELDS *************************************
+            if self.gold >= sale_item.sell_price and sale_item not in (
+                    self.pack[
+                        'Weapons']) and sale_item != self.wielded_weapon and self.level >= sale_item.minimum_level:
+                print(f"You buy a {sale_item}")
+                self.gold -= sale_item.buy_price
+                (self.pack[sale_item.item_type_to_sell]).append(sale_item)
+                number_of_items = len(self.pack[sale_item.item_type_to_sell])
+                print(f"You now have {number_of_items} items in your {sale_item.item_type_to_sell} inventory:")
+                (self.pack[sale_item.item_type_to_sell]).sort(key=lambda x: x.name)
+                stuff_dict = Counter(item.name for item in self.pack[sale_item.item_type_to_sell])
+                for key, value in stuff_dict.items():
+                    print(key)
+                    # print(key, 's', ':    ', value, sep='')
+
+                pause()
+                continue
+            elif self.gold < sale_item.sell_price:
+                print(f"You do not have enough gold")
+                sleep(1)
+                self.hud()
+                continue
+            elif self.level < sale_item.minimum_level:
+                print(f"The minimum level requirement is {sale_item.minimum_level}. You are level {self.level}")
+                sleep(1)
+                self.hud()
+                continue
             else:
+                print(f"You already have a {sale_item}")
+                sleep(1)
+                self.hud()
                 continue
 
     def weapon_management(self):
@@ -1003,7 +958,11 @@ class Player:
             for key, value in weapon_mgmt_dict.items():
                 print(value + 1, ':', key)  # value is index. indexing starts at zero, so add 1
             print()
-
+            '''self.pack[item_type].sort(key=lambda x: x.name)
+            stuff_dict = Counter(item.name for item in self.pack[item_type])
+            for key, value in stuff_dict.items():
+            print(key, 's', ':    ', value, sep='')
+            number_of_items = len(self.pack[item_type])'''
         else:
             print(f"You have nothing in your weapons inventory..")
             pause()
@@ -1013,8 +972,8 @@ class Player:
               f"{self.wielded_weapon}\n"
               f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
               f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
-        wield_or_exit = input(f"(S)wap wielded weapon, or go (B)ack: ").lower()
-        if wield_or_exit == "b":
+        wield_or_exit = input(f"(S)wap wielded weapon, or (E)xit: ").lower()
+        if wield_or_exit == "e":
             return
         elif wield_or_exit == "s":
             try:
@@ -1034,278 +993,19 @@ class Player:
             (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus)
             # self.pack.append(old_weapon)  # for the old list inventory method
             pause()
-
-    def item_management(self, item_type, current_item):
-        self.hud()
-        if len(self.pack[item_type]) > 0:
-            print(f"Your current {item_type} inventory:")
-            (self.pack[item_type]).sort(key=lambda x: x.buy_price)
-            item_mgmt_dict = {}
-            for item in (self.pack[item_type]):
-                item_mgmt_dict[item] = (self.pack[item_type]).index(item)
-            for key, value in item_mgmt_dict.items():
-                print(value + 1, ':', key)  # value is index. indexing starts at zero, so add 1
-            print()
-
-        else:
-            print(f"You have nothing in your {item_type} inventory..")
-            pause()
-            return
-        old_item = current_item
-        print(f"You are currently using: ")
-        if item_type == 'Weapons':
-            self.print_weapon_stats(self.wielded_weapon)
-        elif item_type == 'Armor':
-            self.print_armor_stats(self.armor)
-        elif item_type == 'Shields':
-            self.print_shield_stats(self.shield)
-        elif item_type == 'Boots':
-            self.print_boots_stats(self.boots)
-        swap_or_exit = input(f"(S)wap item, or go (B)ack: ").lower()
-        if swap_or_exit == "b":
-            return
-        elif swap_or_exit == "s":
-            try:
-                new_item_index = int(input(f"Enter the number of the item you wish to use: "))
-                new_item_index -= 1  # again, indexing starts at 0 and is awkward
-                if item_type == 'Weapons':
-                    new_weapon = (self.pack[item_type])[new_item_index]
-                    self.print_weapon_stats(new_weapon)
-                    self.wielded_weapon = new_weapon
-                    # (self.pack[item_type])[new_item_index]  # SYNTAX FOR INDEX
-                if item_type == 'Armor':
-                    new_armor = (self.pack[item_type])[new_item_index]
-                    self.print_armor_stats(new_armor)
-                    self.armor = new_armor
-                if item_type == 'Shields':
-                    new_shield = (self.pack[item_type])[new_item_index]
-                    self.print_shield_stats(new_shield)
-                    self.shield = new_shield
-                if item_type == 'Boots':
-                    new_boots = (self.pack[item_type])[new_item_index]
-                    self.print_boots_stats(new_boots)
-                    self.boots = new_boots
-                self.calculate_armor_class()
-            except (IndexError, ValueError):
-                print("Invalid entry..")
-                sleep(1)
-                return
-            print(f"You are now using the {(self.pack[item_type])[new_item_index]}.")
-            if old_item.name != 'No Shield':
-                print(f"you place the {old_item} in your inventory.")
-            (self.pack[item_type]).pop(new_item_index)  # INDEX SYNTAX
-            (self.pack[item_type]).append(old_item)  # old_weapon represents an object, not an index
-            (self.pack[item_type]).sort(key=lambda x: x.buy_price)
-            pause()
-
-    def buy_blacksmith_items(self):
-
-        blacksmith_dict = {
-            'Weapons': [short_sword, short_axe, quantum_sword, broad_sword],
-            'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
-            'Shields': [buckler, kite_shield, quantum_tower_shield],
-            'Boots': [elven_boots, ancestral_footsteps]
-        }
-        while True:
-            self.hud()
-            print(f"Armory for sale:")
-            # create a list of blacksmith item types:
-            item_type_lst = list(blacksmith_dict.keys())
-            # create a dictionary from list of blacksmith items types, print out, add 1 to indexing
-            item_type_dict = {}
-            for item_type in item_type_lst:
-                item_type_dict[item_type] = item_type_lst.index(item_type)
-            for key, value in item_type_dict.items():
-                print(value + 1, ':', key)
-            print(f"Your gold: {self.gold} GP")
-            buy_or_exit = input("(P)ick item type, or go (B)ack: ").lower()
-            if buy_or_exit not in ('p', 'b'):
-                self.hud()
-                continue
-            elif buy_or_exit == 'b':
-                return
-                # break
-            elif buy_or_exit == 'p':
-                try:
-                    item_type_index_to_buy = int(input(f"Enter the category of the item to buy by number: "))
-                    item_type_to_buy = item_type_lst[item_type_index_to_buy - 1]
-                except (IndexError, ValueError):
-                    print("Invalid entry..")
-                    sleep(1)
-                    continue
-                while True:
-                    self.hud()
-                    print(f"{item_type_to_buy} for sale:")
-                    item_dict = {}
-                    blacksmith_dict[item_type_to_buy].sort(key=lambda x: x.buy_price)
-                    for item in (blacksmith_dict[item_type_to_buy]):
-                        item_dict[item] = (blacksmith_dict[item_type_to_buy]).index(item)
-                    for key, value in item_dict.items():
-                        print(value + 1, ':', key)
-                    print(f"Your gold: {self.gold} GP")
-                    buy_or_exit = input("(P)ick item by number, or go (B)ack: ").lower()
-                    if buy_or_exit not in ('p', 'b'):
-                        self.hud()
-                        continue
-                    elif buy_or_exit == 'b':
-                        break
-                    elif buy_or_exit == 'p':
-                        try:
-                            item_index_to_buy = int(input(f"Enter the number of the item you wish to purchase: "))
-                            item_index_to_buy -= 1  # again, indexing starts at 0 and is awkward
-                            sale_item = (blacksmith_dict[item_type_to_buy])[item_index_to_buy]
-                        except (IndexError, ValueError):
-                            print("Invalid entry..")
-                            sleep(1)
-                            continue
-                        confirm_purchase = input(f"Purchase {sale_item} for {sale_item.buy_price} (y/n)? ")
-                        if confirm_purchase == 'y':
-                            if self.gold >= sale_item.buy_price:
-                                if self.level >= sale_item.minimum_level:
-                                    if sale_item not in (self.pack['Boots']) \
-                                            and sale_item not in (self.pack['Shields']) \
-                                            and sale_item not in (self.pack['Armor']) \
-                                            and sale_item not in (self.pack['Weapons']) \
-                                            and sale_item != self.wielded_weapon \
-                                            and sale_item != self.boots \
-                                            and sale_item != self.shield \
-                                            and sale_item != self.armor:
-                                        self.hud()
-                                        print(f"You buy a {sale_item}")
-                                        self.gold -= sale_item.buy_price
-                                        (self.pack[sale_item.item_type]).append(sale_item)
-                                        self.item_type_inventory(sale_item.item_type)
-                                        pause()
-                                        continue
-                                    else:
-                                        print(f"You already have a {sale_item}")
-                                        pause()
-                                        continue
-                                else:
-                                    print(f"Minimum requirements not met.")
-                                    pause()
-                                    continue
-                            else:
-                                print("You do not have enough gold.")
-                                pause()
-                                continue
-                        else:
-                            continue
-
-    def sell_items(self):
-
-        while True:
-            cls()
-            # self.hud()
-            print(f"You have items eligible to sell in the following categories:")
-            non_empty_item_type_lst = []
-            # make a list of non-empty inventory item keys from player's inventory
-            for key in self.pack:
-                if len(self.pack[key]) > 0:
-                    non_empty_item_type_lst.append(key)
-            if len(non_empty_item_type_lst) < 1:
-                print(f"Your inventory is empty")
-                pause()
-                return
-            else:
-                # print(non_empty_item_type_lst)  # remove after testing
-
-                # make a dictionary from the non_empty item type list. index, and print
-                item_type_dict = {}
-                for item_type in self.pack:
-                    if len(self.pack[
-                               item_type]) and item_type != 'Rings of Protection' and item_type != 'Rings of Regeneration':
-                        item_type_dict[item_type] = non_empty_item_type_lst.index(item_type)
-                for key, value in item_type_dict.items():
-                    print(value + 1, ':', key)
-
-                try:
-                    print(f"Your gold: {self.gold} GP")
-                    sell_or_exit = input("(S)ell items, or (E)xit the market: ").lower()
-                    if sell_or_exit not in ('s', 'e'):
-                        cls()
-                        # self.hud()
-                        continue
-                    if sell_or_exit == 'e':
-                        break
-                    item_type_index_to_sell = int(input(f"Enter the category of the item to sell by number: "))
-                    item_type_to_sell = non_empty_item_type_lst[item_type_index_to_sell - 1]
-                except (IndexError, ValueError):
-                    print("Invalid entry..")
-                    sleep(1)
-                    continue
-            while True:
-                cls()
-                # self.hud()
-                persistent_item_type = item_type_to_sell
-                print(f"Your {item_type_to_sell} inventory eligible for sale:")
-                # self.item_type_inventory(item_type_to_sell)
-                mgmt_dict = {}
-                for item in (self.pack[item_type_to_sell]):
-                    mgmt_dict[item] = (self.pack[item_type_to_sell]).index(item)
-                for key, value in mgmt_dict.items():
-                    print(value + 1, ':', key)
-                print(f"Your gold: {self.gold} GP")
-                sell_or_exit = input("(S)ell an item, or go (B)ack: ").lower()
-                if sell_or_exit not in ('s', 'b'):
-                    cls()
-                    # self.hud()
-                    continue
-                if sell_or_exit == 'b':
-                    break
-                elif sell_or_exit == 's':
-
-                    try:
-
-                        item_index_to_sell = int(input(f"Enter the number of the item you wish to sell: "))
-                        item_index_to_sell -= 1  # again, indexing starts at 0 and is awkward
-                        sold_item = (self.pack[item_type_to_sell])[item_index_to_sell]
-                    except (IndexError, ValueError):
-                        print("Invalid entry..")
-                        sleep(1)
-                        continue
-                    # sold_item = (self.pack[item_type_to_sell])[item_index_to_sell]
-
-                    print(
-                        f"You sell the {(self.pack[item_type_to_sell])[item_index_to_sell]} for {sold_item.sell_price} GP")
-                    self.gold += sold_item.sell_price
-                    (self.pack[item_type_to_sell]).pop(item_index_to_sell)
-                    print(f"Your gold: {self.gold} GP")
-                    pause()
-                    cls()
-                    # self.hud()
-                    if len(self.pack[item_type_to_sell]) > 0:
-                        self.item_type_inventory(item_type_to_sell)
-                        print(f"Your gold: {self.gold} GP")
-                        sell_again = input(
-                            f"(S)ell more {persistent_item_type} (B)ack to main market menu or (E)xit to town: ")
-                        if sell_again == 's':
-                            continue
-                        elif sell_again == 'b':
-                            break
-                        else:
-                            # if sell_again not in ('y', 'n'):
-                            return
-                    else:
-                        # print(f"Your gold: {self.gold} GP")
-                        print(f"Your {persistent_item_type} inventory is now empty.")
-                        pause()
-                        break
+            # if not len(self.pack['Weapons']):  # this code seems unreachable..because of the if condition above
+            #    print("Your weapons inventory is now empty at this point.")
+            #    sleep(3)
+            #   return
 
     def use_scroll_of_town_portal(self):
-        if scroll_of_town_portal not in self.pack['Town Portal Implements']:
-            print(f"You have no scrolls!")
-            time.sleep(2)
-            return False
-        else:
-            self.hud()
-            (self.pack['Town Portal Implements'].remove(scroll_of_town_portal))
-            print(f"The portal appears before you; a seemingly impossible gateway between distant places..")
-            time.sleep(2)
-            # winsound.PlaySound(None, winsound.SND_ASYNC)
-            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_theme.wav',
-                               winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-            return True
+        self.hud()
+        # if scroll_of_town_portal in self.pack['Town Portal Implements']:
+        (self.pack['Town Portal Implements'].remove(scroll_of_town_portal))
+        print(f"The portal appears before you; a seemingly impossible gateway between distant places..")
+        time.sleep(2)
+        winsound.PlaySound(None, winsound.SND_ASYNC)
+        return
 
     def drink_healing_potion(self):
         self.hud()
@@ -1329,11 +1029,11 @@ class Player:
             return
 
     def item_type_inventory(self, item_type):  # list items in inventory by type
-        print(f"{item_type} inventory:")
+        print(f"{item_type}:")
         self.pack[item_type].sort(key=lambda x: x.name)
         stuff_dict = Counter(item.name for item in self.pack[item_type])
         for key, value in stuff_dict.items():
-            # print(key, ':    ', value, sep='')
+            #print(key, ':    ', value, sep='')
             if value > 1:
                 print(value, ' ', key, 's', sep='')
                 # print(key, 's', ':    ', value, sep='')
@@ -1405,7 +1105,7 @@ class Player:
                     print(
                         f"Damage bonus: {self.wielded_weapon.damage_bonus}. To hit: {self.wielded_weapon.to_hit_bonus}")
                     if old_weapon not in self.pack['Weapons']:
-                        (self.pack[found_item.item_type]).append(old_weapon)
+                        (self.pack[found_item.item_type_to_sell]).append(old_weapon)
                         print(f"You place the {old_weapon.name} upon your back..")
 
                     else:
@@ -1414,8 +1114,8 @@ class Player:
                     return
                 elif replace_weapon == 'n':
                     print(f"You don't wield the {found_item.name}.")
-                    if found_item not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(found_item)
+                    if found_item not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(found_item)
                         print(f"You place the {found_item.name} on your back.")
 
                     else:
@@ -1444,7 +1144,7 @@ class Player:
             else:
                 print(f"You have found {found_item.name}!! Armor Class: {found_item.ac}")
                 print(f"Your current {self.armor.name} Armor Class: {self.armor.ac}")
-                # USE THIS NEXT BLOCK OF CODE FOR WEARING ARMOR AT THE BLACKSMITH:
+                # print(f"The {found_item}'s Armor Class is {found_item.ac}.")
             while True:
                 replace_armor = input(f"Do you wish to wear the {found_item.name} instead? y/n: ").lower()
                 if replace_armor == 'y':
@@ -1453,8 +1153,8 @@ class Player:
                     print(f"You are now wearing the {found_item.name}")
                     self.calculate_armor_class()
                     # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
-                    if old_armor not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(old_armor)
+                    if old_armor not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(old_armor)
                         print(f"You place the {old_armor.name} upon your back..")
 
                     else:
@@ -1463,8 +1163,8 @@ class Player:
                     return
                 elif replace_armor == 'n':
                     print(f"You don't wear the {found_item.name}.")  # remove after testing
-                    if found_item not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(found_item)
+                    if found_item not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(found_item)
                         print(f"You place the {found_item.name} on your back.")
 
                     else:
@@ -1508,8 +1208,8 @@ class Player:
                     if old_shield.name == 'No Shield':
                         pause()
                         return
-                    elif old_shield not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(old_shield)
+                    elif old_shield not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(old_shield)
                         print(f"You place the {old_shield.name} on your back..")
 
                     else:
@@ -1518,8 +1218,8 @@ class Player:
                     return
                 elif replace_shield == 'n':
                     print(f"You don't wield the {found_item.name}.")
-                    if found_item not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(found_item)
+                    if found_item not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(found_item)
                         print(f"You place the {found_item.name} on your back.")
 
                     else:
@@ -1557,8 +1257,8 @@ class Player:
                     print(f"You are now wearing the {found_item.name}")
                     self.calculate_armor_class()
                     # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
-                    if old_boots not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(old_boots)
+                    if old_boots not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(old_boots)
                         print(f"You place the {old_boots.name} in your dungeoneer's pack..")
 
                     else:
@@ -1567,8 +1267,8 @@ class Player:
                     return
                 elif replace_boots == 'n':
                     print(f"You don't wear the {found_item.name}.")  # remove after testing
-                    if found_item not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(found_item)
+                    if found_item not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(found_item)
                         print(f"You place the {found_item.name} in your dungeoneer's pack.")
 
                     else:
@@ -1603,8 +1303,8 @@ class Player:
                     self.cloak = found_item
                     print(f"You are now wearing the {found_item.name}")
                     self.calculate_stealth()
-                    if old_cloak not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(old_cloak)
+                    if old_cloak not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(old_cloak)
                         print(f"You place the {old_cloak.name} in your dungeoneer's pack..")
                     else:
                         print(f"You drop your {old_cloak.name}.")
@@ -1612,8 +1312,8 @@ class Player:
                     return
                 elif replace_cloak == 'n':
                     print(f"You don't wear the {found_item.name}.")  # remove after testing
-                    if found_item not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(found_item)
+                    if found_item not in self.pack[found_item.item_type_to_sell]:
+                        (self.pack[found_item.item_type_to_sell]).append(found_item)
                         print(f"You place the {found_item.name} into your dungeoneer's pack.")
                     else:
                         print(f"You can't carry any more {found_item.name}s. You leave it.")  # can't carry any more
@@ -1628,14 +1328,12 @@ class Player:
 
     def found_ring_of_reg_substitution(self, found_item):
 
-        if self.ring_of_reg == default_ring_of_regeneration:  # self.ring_of_reg.regenerate == 0:
-            # found_item.regenerate += 1  # self.ring_of_regeneration and default class object has 0 regenerate
-            self.ring_of_reg = found_item
+        if self.ring_of_reg.regenerate == 0:  # default player state.
+            found_item.regenerate += 1  # self.ring_of_regeneration and default class object has 0 regenerate
+            self.ring_of_reg = found_item  # += 1
             print(f"Quantum wierdness fills the air...")
             print(f"A Ring of Regeneration + {self.ring_of_reg.regenerate} appears on your finger!")
-            sleep(1)
-            print(f"It becomes permanently affixed..fused to your flesh and bone!")
-            # (self.pack[found_item.item_type]).append(found_item)  # place in inventory in case you want to sell it
+            (self.pack[found_item.item_type_to_sell]).append(found_item)  # place in inventory in case you want to sell it
             pause()
             return
         elif self.ring_of_reg.regenerate < round(self.maximum_hit_points * .17):
@@ -1657,13 +1355,11 @@ class Player:
 
     def found_ring_of_prot_substitution(self, found_item):
 
-        if self.ring_of_prot == default_ring_of_protection:  # default ring is transparent placeholder
-            self.ring_of_prot = found_item
-            # (self.pack[found_item.item_type]).append(found_item) you can't sell rings. new rule
+        if self.ring_of_prot.protect == 0:
+            self.ring_of_prot.protect += 1
+            (self.pack[found_item.item_type_to_sell]).append(found_item)
             print(f"Quantum wierdness fills the air...")
             print(f"A Ring of Protection + {self.ring_of_prot.protect} appears on your finger!")
-            sleep(1)
-            print(f"Tunneling through realities, it permanently fuses to flesh and bone!")
             pause()
             return
         elif self.ring_of_prot.protect < round(self.wisdom * .33):
@@ -1681,7 +1377,7 @@ class Player:
 
     def loot(self):
         loot_dict = {
-            'Weapons': [short_axe, quantum_sword, broad_sword],  # upgrade logic done
+            'Weapons': [short_sword, short_axe, quantum_sword, broad_sword],  # upgrade logic done
             'Healing': [healing_potion],  # upgrade logic not needed
             'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],  # upgrade logic done
             'Shields': [buckler, kite_shield, quantum_tower_shield],  # upgrade logic done
@@ -1698,38 +1394,38 @@ class Player:
             self.hud()
             print(f"Loot roll ---> {loot_roll}")
             pause()
-            if loot_roll > 9:
+            if loot_roll > 5:
                 key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
                 rndm_item_index = random.randrange(len(loot_dict[key]))
                 found_item = loot_dict[key][rndm_item_index]
                 print(found_item)  # REMOVE AFTER TESTING *****************************************************
                 if self.level >= found_item.minimum_level:
-                    if found_item.item_type == 'Healing' or found_item.item_type == 'Town Portal Implements':
-                        (self.pack[found_item.item_type]).append(found_item)
+                    if found_item.item_type_to_sell == 'Healing' or found_item.item_type_to_sell == 'Town Portal Implements':
+                        (self.pack[found_item.item_type_to_sell]).append(found_item)
                         print(f"You see a {found_item.name} !")
-                        sleep(.5)
+                        sleep(1)
                         print(f"You snarf it..")
                         pause()
                         continue
-                    elif found_item.item_type == 'Armor':
+                    elif found_item.item_type_to_sell == 'Armor':
                         self.found_armor_substitution(found_item)
                         continue
-                    elif found_item.item_type == 'Shields':
+                    elif found_item.item_type_to_sell == 'Shields':
                         self.found_shield_substitution(found_item)
                         continue
-                    elif found_item.item_type == 'Cloaks':
+                    elif found_item.item_type_to_sell == 'Cloaks':
                         self.found_cloak_substitution(found_item)
                         continue
-                    elif found_item.item_type == 'Weapons':
+                    elif found_item.item_type_to_sell == 'Weapons':
                         self.found_weapon_substitution(found_item)
                         continue
-                    elif found_item.item_type == 'Rings of Regeneration':
+                    elif found_item.item_type_to_sell == 'Rings of Regeneration':
                         self.found_ring_of_reg_substitution(found_item)
                         continue
-                    elif found_item.item_type == 'Rings of Protection':
+                    elif found_item.item_type_to_sell == 'Rings of Protection':
                         self.found_ring_of_prot_substitution(found_item)
                         continue
-                    elif found_item.item_type == 'Boots':
+                    elif found_item.item_type_to_sell == 'Boots':
                         self.found_boots_substitution(found_item)
                         continue
                     else:
@@ -1744,10 +1440,6 @@ class Player:
             else:
                 return
 
-
-
-
-#    main(mapChoice, playerMap, position)
 
 '''
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.
@@ -1934,14 +1626,14 @@ if len(self.pack):
                 self.pack.pop(stolen_item)
                 # stolen_item = random.choice(self.pack)
                 print(f"He steals your {stolen_item}!")
-
+                
                 item_type_key_lst = ['Weapons', 'Healing', 'Armor', 'Shields', 'Boots', 'Cloaks',
                              'Rings of Regeneration',
                              'Rings of Protection', 'Town Portal Implements']
         # found_item = random.choice(loot_dict[random.choice(item_type_key_lst)])
-
-
-
+                
+                
+                
                 '''
 '''   def inventory_old(self):
        while True:
@@ -2011,58 +1703,3 @@ if len(self.pack):
 
                             self.pack[
                                 found_item.item_type]: '''
-'''if sale_item_key == 'i':
-        self.hud()
-        inventory_from_blacksmith = self.item_type_inventory('Weapons')
-        if not inventory_from_blacksmith:
-            print(f"Your weapons inventory is empty")
-        os.system('pause')
-        self.hud()
-        continue'''
-''' old blacksmith code
-print("The following items are for sale:")
-            print(f"Item             Level Requirement          Price")
-            print(f"1 Shortsword             {short_sword.minimum_level}                    {short_sword.buy_price}   ")
-            print(f"2 Broad Sword            {broad_sword.minimum_level}                    {broad_sword.buy_price}   ")
-            print(
-                f"3 Quantum Sword          {quantum_sword.minimum_level}                    {quantum_sword.buy_price}")
-            print(f"You have {self.gold} gold pieces.")
-            #sale_item_key = input("Enter item number to buy, (M)anage Wielded Weapons or (E)xit the blacksmith: ").lower()
-            #if sale_item_key not in ('1', '2', '3', 'e', 'm'):'''
-'''old blacksmith buy items code
-sale_item = (sale_items_dict[sale_item_key])
-            if self.gold >= sale_item.sell_price and sale_item not in (
-                    self.pack[
-                        'Weapons']) and sale_item != self.wielded_weapon and self.level >= sale_item.minimum_level:
-                self.hud()
-                print(f"You buy a {sale_item}")
-                self.gold -= sale_item.buy_price
-                (self.pack[sale_item.item_type]).append(sale_item)
-                number_of_items = len(self.pack[sale_item.item_type])
-                print(f"You now have {number_of_items} items in your {sale_item.item_type} inventory:")
-                (self.pack[sale_item.item_type]).sort(key=lambda x: x.name)
-                stuff_dict = Counter(item.name for item in self.pack[sale_item.item_type])
-                for key, value in stuff_dict.items():
-                    print(key)
-                    # print(key, 's', ':    ', value, sep='')
-                pause()
-                continue
-            elif self.gold < sale_item.sell_price:
-                print(f"You do not have enough gold")
-                sleep(1)
-                self.hud()
-                continue
-            elif self.level < sale_item.minimum_level:
-                print(f"The minimum level requirement is {sale_item.minimum_level}. You are level {self.level}")
-                sleep(1)
-                self.hud()
-                continue
-            else:
-                print(f"You already have a {sale_item}")
-                sleep(1)
-                self.hud()
-                continue'''
-'''sale_items_dict = {'1': short_sword,
-                           '2': broad_sword,
-                           '3': quantum_sword
-                           }'''

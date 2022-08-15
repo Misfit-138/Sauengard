@@ -3,6 +3,7 @@ import os
 from collections import Counter
 import winsound
 from dice_roll_module import *
+from dungeons import *
 from typing_module import typing
 
 '''Target
@@ -552,6 +553,13 @@ class Player:
         self.extra_attack = 0
         self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
         self.stealth = self.cloak.stealth
+        self.position = 0
+        self.current_dungeon_level = 1
+        self.dungeon_key = 1
+        self.dungeon = dungeon_dict[self.dungeon_key]
+        self.position = 0
+        self.x = 0
+        self.y = 0
         self.pack = {
             'Weapons': [],
             'Healing': [healing_potion],
@@ -646,6 +654,7 @@ class Player:
         if self.ring_of_prot.protect > 0:
             print(
                 f"                                                                     Ring of Prot: +{self.ring_of_prot.protect}")
+
         return
 
     def calculate_stealth(self):
@@ -1743,8 +1752,6 @@ class Player:
                     continue
             else:
                 return
-
-
 
 
 #    main(mapChoice, playerMap, position)

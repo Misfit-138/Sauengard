@@ -35,22 +35,65 @@ and its documentation and return value (usually None) support this, the behavior
 
 
 import pickle
-import time
+
 from player_module_testing import *
-# from player_module_stable import *
 
 from monster_module import *
 from typing_module import *
 import random
 import os
 import winsound
-from dungeon_1 import *
+from dungeons import *
+
+
+def next_dungeon(player_1):
+    # broken....this loops around and keeps adding dungeon keys...
+    print("You found the exit...")
+    player_1.dungeon_key += 1
+    player_1.dungeon = dungeon_dict[player_1.dungeon_key]
+    x = player_1.dungeon.starting_x
+    y = player_1.dungeon.starting_y
+    player_1.position = 0
+    player_1.current_dungeon_level = player_1.dungeon.level
+    player_1.current_dungeon_level_name = player_1.dungeon.name
+    player_1.position = player_1.dungeon.grid[y][x]  # test
+    return
+
+
+def dungeon_description(player_1):
+    # broken....this loops in a wacky way and keeps adding dungeon keys...
+    if player_1.position == "0":
+        print("You can't go that way...")
+        x = previousX
+        y = previousY
+        player_1.position = player_1.dungeon.grid[y][x]  # current_dungeon_map[y][x]
+
+        return
+    if player_1.position == ".":
+        print("You are in a dark corridor. There are exits in each direction...")
+        return
+    '''    if player_1.position == "E":
+        player_1.position = 0
+        print(f"Dungeon key: {player_1.dungeon_key}")
+        print("You found the exit...")
+        player_1.dungeon_key += 1
+        player_1.dungeon = dungeon_dict[player_1.dungeon_key]
+        print(f"Dungeon key: {player_1.dungeon_key}")
+        # current_dungeon_map = player_1.dungeon.grid
+        # current_player_map = player_1.dungeon.player_grid
+        x = player_1.dungeon.starting_x
+        y = player_1.dungeon.starting_y
+
+        player_1.current_dungeon_level = player_1.dungeon.level
+        player_1.current_dungeon_level_name = player_1.dungeon.name
+        pause()
+        return'''
 
 
 # Displaying the map
 def display_map(maps):
-    for x in range(0, 8):
-        print(maps[x])
+    for element in range(0, 8):
+        print(maps[element])
 
 
 def pause():
@@ -62,12 +105,14 @@ def sleep(seconds):
 
 
 # selecting a map
-current_dungeon_map = dungeon_1_map
-current_player_map = dungeon_1_player_map
-display_map(dungeon_1_player_map)
+# current_dungeon_map = dungeon_1_map
+# current_player_map = dungeon_1_player_map
+
+
+# display_map(dungeon_1_player_map)
 
 # initialising the players position
-#position = current_dungeon_map[0][0]
+# position = current_dungeon_map[0][0]
 
 winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\originalsound.wav',
                    winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
@@ -92,6 +137,18 @@ while True:
                 player_1 = pickle.load(saved_player)
                 time.sleep(1)
                 print(f"{player_name} read.")
+                dungeon_key = player_1.dungeon_key
+                dungeon = dungeon_dict[player_1.dungeon_key]
+                # current_dungeon_map = player_1.dungeon.grid
+                # current_player_map = player_1.dungeon.player_grid
+                x = player_1.x
+                y = player_1.y
+                # player_1.position = current_dungeon_map[y][x]
+                player_1.current_dungeon_level = dungeon.level
+                player_1.current_dungeon_level_name = dungeon.name
+                print(dungeon.name)
+                print(x)
+                print(y)
                 time.sleep(1)
         else:
             print(f"Could not find {player_name} ")
@@ -116,15 +173,25 @@ while True:
             print(f"Wisdom modifier: {player_1.wisdom_modifier}")
             print(f"Charisma modifier: {player_1.charisma_modifier}")
             print(f"Proficiency bonus: {player_1.proficiency_bonus}")
-            accept_stats = input("Accept stats y/n ? ").lower()
+            accept_stats = input("Ok to continue? ").lower()
         # a while loop's 'else' part runs if no break occurs and the condition is false
         if accept_stats == "y":
+            player_1.dungeon_key = 1
+            player_1.dungeon = dungeon_dict[player_1.dungeon_key]
+            # current_dungeon_map = player_1.dungeon.grid
+            # current_player_map = player_1.dungeon.player_grid
+            x = player_1.dungeon.starting_x
+            y = player_1.dungeon.starting_y
+            player_1.position = 0
+            player_1.current_dungeon_level = player_1.dungeon.level
+            player_1.current_dungeon_level_name = player_1.dungeon.name
             player_1.hud()
     print(f"You enter the town of Fieldenberg.")
     time.sleep(1.5)
     # player_1.hud()
     in_town = True
     in_dungeon = False
+    town_portal = False
     discovered_monsters = []
     winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_theme.wav',
                        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
@@ -144,6 +211,7 @@ while True:
             print("Exiting..")
             exit()
         elif town_functions == 's':
+
             save_a_character = player_name + ".sav"
             if os.path.isfile(save_a_character):
                 while True:
@@ -189,8 +257,10 @@ while True:
         elif town_functions == 'e':
             in_town = False
             in_dungeon = True
-
-            print("You enter the dungeon..")
+            if town_portal:
+                print(f"You re-enter the portal.")
+            else:
+                print("You enter the dungeon..")
             time.sleep(1)
             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
                                winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
@@ -200,17 +270,25 @@ while True:
             while in_dungeon:
                 previousX = x
                 previousY = y
+                player_1.x = x
+                player_1.y = y
                 player_1.regenerate()
                 # player_1.loot()  # for testing
                 encounter = dice_roll(1, 20)
                 player_1.hud()
-
+                print(f"{player_1.dungeon.name}")
                 dungeon_command = input(
                     "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage weapons, (I)nventory or WASD to navigate. --> ").lower()
+
+                if dungeon_command not in ('w', 'a', 's', 'd', 'map', 'p', 'h', 'm', 'i', 'q'):
+                    print("Unknown command")
+                    time.sleep(.25)
+                    continue
                 if dungeon_command == 'p':
                     if player_1.use_scroll_of_town_portal():
                         in_town = True
                         in_dungeon = False
+                        town_portal = True
                         break
                     else:
                         continue
@@ -235,53 +313,70 @@ while True:
                 elif dungeon_command == 'i':
                     player_1.inventory()
                 elif dungeon_command == 'w' or 'a' or 's' or 'd' or 'map':
+
                     if dungeon_command == 'w':
                         player_1.hud()
-                        print("You go north")
+                        print("North")
                         y = y - 1
 
                     if dungeon_command == 'a':
                         player_1.hud()
-                        print("You go west")
+                        print("West")
                         x = x - 1
 
                     if dungeon_command == 's':
                         player_1.hud()
-                        print("You go south")
+                        print("South")
                         y = y + 1
 
                     if dungeon_command == 'd':
                         player_1.hud()
-                        print("You go east")
+                        print("East")
                         x = x + 1
-
                     if dungeon_command == 'map':
                         player_1.hud()
                         print("You look at the map..")
-                        display_map(current_player_map)
+                        print(player_1.position)
+                        # if player_1.position == 0:
+                        #    print("You are at the bottom of a staircase with a locked door above...")
+                        player_1.dungeon.player_grid[y][x] = "X"  # place an X on the grid
+                        display_map(player_1.dungeon.player_grid)  #
+                        player_1.dungeon.player_grid[y][x] = "."  # replace the X with a dot, so it does not remain
                         pause()
-                    position = current_dungeon_map[y][x]
-                    current_player_map[y][x] = "X"
+                    # NOTE INDENT
+                    player_1.position = player_1.dungeon.grid[y][x]  # note indent
 
-                if dungeon_command not in ('w', 'a', 's', 'd', 'map', 'p', 'h', 'm', 'i', 'q'):
-                    print("Unknown command")
-                    time.sleep(.25)
-                    continue
-                if position == "0" or position == "1":
-                    print("You can't go that way...")
-                    x = previousX
-                    y = previousY
-                    position = current_dungeon_map[y][x]
-                    sleep(1.5)
-                if position == ".":
-                    print("You are in a dark corridor, there are doors leading in each direction...")
-                    sleep(1.5)
-                if position == "E":
-                    print("You found the exit...")
-                    pause()
-                    break
-                # eventually, make encounter a returned boolean from navigation function
-                if encounter > 20:
+                    # the following line will leave a trail of x's throughout the map to see where you've been.
+                    # player_1.dungeon.player_grid[y][x] = "x"  # current_player_map[y][x] = "X"
+                    # the following line can be used to replace the code in the map section, to replace X with  dot
+                    # player_1.dungeon.player_grid[y][x] = "."
+
+                    if player_1.position == "0":
+                        print("You can't go that way...")
+                        x = previousX
+                        y = previousY
+                        player_1.position = player_1.dungeon.grid[y][x]  # current_dungeon_map[y][x]
+                        sleep(1.5)
+                    if player_1.position == ".":
+                        print("You are in a dark corridor, there are doors leading in each direction...")
+                        sleep(1.5)
+                    if player_1.position == "E":
+                        #player_1.position = 0
+                        #next_dungeon(player_1)  # broken....this loops around and keeps adding dungeon keys...
+                        print("You found the exit...")
+                        player_1.dungeon_key += 1
+                        player_1.dungeon = dungeon_dict[player_1.dungeon_key]
+                        x = player_1.dungeon.starting_x
+                        y = player_1.dungeon.starting_y
+                        player_1.position = 0
+                        player_1.current_dungeon_level = player_1.dungeon.level
+                        player_1.current_dungeon_level_name = player_1.dungeon.name
+                        pause()
+
+                    #dungeon_description(player_1)  # broken... keeps adding dungeon keys....wacky looping
+                    #sleep(1.5)
+                # eventually, make encounter a returned boolean from navigation function?
+                if encounter > 10:
 
                     print("This should create monster now..")
                     # monster dictionary. keys correspond to difficulty
@@ -494,4 +589,22 @@ while True:
                                 player_1.hud()
                             else:
                                 break
-                            #
+                else:  # NEW..test
+                    continue
+        #
+
+'''                if player_1.position == ".":
+                    print("You are in a dark corridor, there are doors leading in each direction...")
+                    sleep(1.5)
+                if player_1.position == "E":
+                    print("You found the exit...")
+                    player_1.dungeon_key += 1
+                    player_1.dungeon = dungeon_dict[player_1.dungeon_key]
+                    # current_dungeon_map = player_1.dungeon.grid
+                    # current_player_map = player_1.dungeon.player_grid
+                    x = player_1.dungeon.starting_x
+                    y = player_1.dungeon.starting_y
+                    player_1.position = 0
+                    player_1.current_dungeon_level = player_1.dungeon.level
+                    player_1.current_dungeon_level_name = player_1.dungeon.name
+                    pause()'''

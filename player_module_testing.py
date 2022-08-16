@@ -501,8 +501,8 @@ class TownPortalImplements:
         self.name = "Scroll of Town Portal"
         self.item_type = "Town Portal Implements"
         self.protect = 1
-        self.sell_price = 100
-        self.buy_price = 300
+        self.sell_price = 25
+        self.buy_price = 50
         self.minimum_level = 1
         self.uses = 1
 
@@ -778,10 +778,15 @@ class Player:
                 pause()
                 return True
             if gift_item == 2:
-                self.shield.ac += 1
-                self.calculate_armor_class()
-                # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
-                print(f"He enhances your shield to AC {self.shield.ac}!")
+                if self.shield.name != 'No Shield':
+                    self.shield.ac += 1
+                    self.calculate_armor_class()
+                    # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
+                    print(f"He enhances your shield to AC {self.shield.ac}!")
+                else:
+                    self.shield = buckler
+                    print(f"He gives you a {self.shield.name}!")
+                    self.calculate_armor_class()
                 pause()
                 return True
             if gift_item == 3:
@@ -1160,14 +1165,14 @@ class Player:
                         break
                     elif buy_or_exit == 'p':
                         try:
-                            item_index_to_buy = int(input(f"Enter the number of the item you wish to purchase: "))
+                            item_index_to_buy = int(input(f"Enter the number of the item you wish to examine for purchase: "))
                             item_index_to_buy -= 1  # again, indexing starts at 0 and is awkward
                             sale_item = (blacksmith_dict[item_type_to_buy])[item_index_to_buy]
                         except (IndexError, ValueError):
                             print("Invalid entry..")
                             sleep(1)
                             continue
-                        confirm_purchase = input(f"Purchase {sale_item} for {sale_item.buy_price} (y/n)? ")
+                        confirm_purchase = input(f"Purchase {sale_item} for {sale_item.buy_price} GP (y/n)? ")
                         if confirm_purchase == 'y':
                             if self.gold >= sale_item.buy_price:
                                 if self.level >= sale_item.minimum_level:
@@ -1274,32 +1279,35 @@ class Player:
                         sleep(1)
                         continue
                     # sold_item = (self.pack[item_type_to_sell])[item_index_to_sell]
-
-                    print(
-                        f"You sell the {(self.pack[item_type_to_sell])[item_index_to_sell]} for {sold_item.sell_price} GP")
-                    self.gold += sold_item.sell_price
-                    (self.pack[item_type_to_sell]).pop(item_index_to_sell)
-                    print(f"Your gold: {self.gold} GP")
-                    pause()
-                    cls()
-                    # self.hud()
-                    if len(self.pack[item_type_to_sell]) > 0:
-                        self.item_type_inventory(item_type_to_sell)
+                    confirm_sale = input(f"Sell {sold_item} for {sold_item.sell_price} GP (y/n)? ")
+                    if confirm_sale == 'y':
+                        print(
+                            f"You sell the {(self.pack[item_type_to_sell])[item_index_to_sell]} for {sold_item.sell_price} GP")
+                        self.gold += sold_item.sell_price
+                        (self.pack[item_type_to_sell]).pop(item_index_to_sell)
                         print(f"Your gold: {self.gold} GP")
-                        sell_again = input(
-                            f"(S)ell more {persistent_item_type} (B)ack to main market menu or (E)xit to town: ")
-                        if sell_again == 's':
-                            continue
-                        elif sell_again == 'b':
-                            break
-                        else:
-                            # if sell_again not in ('y', 'n'):
-                            return
-                    else:
-                        # print(f"Your gold: {self.gold} GP")
-                        print(f"Your {persistent_item_type} inventory is now empty.")
                         pause()
-                        break
+                        cls()
+                        # self.hud()
+                        if len(self.pack[item_type_to_sell]) > 0:
+                            self.item_type_inventory(item_type_to_sell)
+                            print(f"Your gold: {self.gold} GP")
+                            sell_again = input(
+                                f"(S)ell more {persistent_item_type} (B)ack to main market menu or (E)xit to town: ")
+                            if sell_again == 's':
+                                continue
+                            elif sell_again == 'b':
+                                break
+                            else:
+                                # if sell_again not in ('y', 'n'):
+                                return
+                        else:
+                            # print(f"Your gold: {self.gold} GP")
+                            print(f"Your {persistent_item_type} inventory is now empty.")
+                            pause()
+                            break
+                    else:
+                        continue
 
     def use_scroll_of_town_portal(self):
         if scroll_of_town_portal not in self.pack['Town Portal Implements']:
@@ -1753,8 +1761,107 @@ class Player:
             else:
                 return
 
+    # NAVIGATION
+    def dungeon_description(self, previous_x, previous_y):
+        # DEAD END Only 1 exit!
+        # 1 exit to the north
+        # 2 exit to the south
+        # 3 exit to the east
+        # 4 exit to the west
+        # STRAIGHT HALLWAY:
+        # 5 exits north and south
+        # 6 exits east and west
+        # CORNERS:
+        # 7 exits to the south and east UPPER LEFT
+        # 8 exits to the north and east LOWER LEFT
+        # 9 exits to the south and west UPPER RIGHT
+        # - exits to the north and west LOWER RIGHT
+        # WALLS:
+        # \  exits to the south. east and west  NORTH WALL
+        # / exits to the north, east and west SOUTH WALL
+        # > exits to the north, south and east WEST WALL
+        # < exits to the north, south and west EAST WALL
+        # ^ <> v dungeon exit in the indicated direction!
+        if self.position == 0:  # integer representing starting position
+            print("You are at the bottom of a staircase with a locked door above...")
+        elif self.position == "*":  # string representing walls
+            print("You can't go that way...")
+            self.x = previous_x
+            self.y = previous_y
+            self.position = self.dungeon.grid[self.y][self.x]
+            # sleep(1.5)
+            return
+        elif self.position == ".":
+            print("You are in a dark corridor. There are exits in each direction...")
+            # sleep(1.5)
+            return
+        # 7 exits to the south and east UPPER LEFT
+        elif self.position == "7":
+            print(f"You are in a corner. Exits are to the south and east.")
+        # 8 exits to the north and east LOWER LEFT
+        elif self.position == "8":
+            print(f"You are in a corner. Exits are to the north and east.")
+        # 9 exits to the south and west UPPER RIGHT
+        elif self.position == "9":
+            print(f"You are in a corner. Exits are to the south and west.")
+        # "-" exits to the north and west LOWER RIGHT
+        elif self.position == "-":
+            print(f"You are in a corner. Exits are to the north and west.")
+        elif self.position == ">":
+            print(f"You see the exit to the East!")
+            pause()
 
-#    main(mapChoice, playerMap, position)
+
+
+    def display_map(self, maps):
+        self.hud()
+        print("You look at the map..")
+        print(self.position)
+        if self.position == 0:
+            print("You are at the bottom of a staircase with a locked door above...")
+        print(self.dungeon.name)
+        if self.position != 0:
+            self.dungeon.player_grid[self.y][self.x] = "X"
+        for element in range(0, 8):
+            print(maps[element])
+        self.dungeon.player_grid[self.y][
+            self.x] = "."  # replace the X with a dot so that it doesn't leave a trail
+        # the following line will leave a trail of x's throughout the map to see where you've been.
+        # player_1.dungeon.player_grid[player.y][player.x] = "x"
+        self.position = self.dungeon.grid[self.y][self.x]
+
+    def next_dungeon(self):
+        '''monster_key = (player_1.level + 1)
+                        monster_cls = random.choice(monster_dict[monster_key])
+                        boss = monster_cls()
+                        boss_fight = True
+                        encounter = 99'''
+        print("You found the exit...\nYou begin to descend the stairs, deeper into the dungeon...\nYet, you sense you are not alone!")
+        self.dungeon_key += 1
+        self.dungeon = dungeon_dict[self.dungeon_key]
+        self.x = self.dungeon.starting_x
+        self.y = self.dungeon.starting_y
+        self.position = 0
+        pause()
+        return
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 '''
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.

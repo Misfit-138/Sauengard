@@ -227,13 +227,13 @@ class Monster:
         if attack_bonus > 95:
             attack_bonus = self.attack_5
             attack_phrase = self.attack_5_phrase
-        roll20 = dice_roll(1, 20)
-        print(f"The {name} attacks! (It rolls {roll20})")
-        if roll20 == 1:
+        roll_d20 = dice_roll(1, 20)
+        print(f"The {name} attacks! (It rolls {roll_d20})")
+        if roll_d20 == 1:
             print(f"..it awkwardly strikes and you easily block.")
             time.sleep(2)
             return 0
-        if roll20 == 20:
+        if roll_d20 == 20:
             critical_bonus = 2
             hit_statement = "CRITICAL HIT!!"
         else:
@@ -241,22 +241,23 @@ class Monster:
             hit_statement = ""
         print(f"Dexterity modifier {self.dexterity_modifier}")
         print(f"Your armor class ---> {human_player_armor_class}")
-        if roll20 + self.dexterity_modifier >= human_player_armor_class:
+        if roll_d20 + self.dexterity_modifier >= human_player_armor_class:
             damage_roll = dice_roll((self.number_of_hd * critical_bonus), self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus + self.weapon_bonus)
-            if roll20 == 20 and damage_to_opponent < 1:
+            if roll_d20 == 20 and damage_to_opponent < 1:
                 damage_to_opponent = 1  # a natural 20 must always hit - 5e rules
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
                 print(f"{attack_phrase}")
                 time.sleep(1.5)
                 print(hit_statement)
-                print(f"{name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} ---> {damage_roll}")  # hit dice
+                print(
+                    f"{name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} ---> {damage_roll}")  # hit dice
                 time.sleep(1.5)
                 print(f"Strength modifier---> {self.strength_modifier}\nAttack bonus---> {attack_bonus}")
                 time.sleep(1.5)
                 print(f"It does {damage_to_opponent} points of damage!")
                 os.system('pause')
-                #time.sleep(5)
+                # time.sleep(5)
                 return damage_to_opponent
             else:
                 print(f"The {name} strikes, but you block the attack!")  # zero damage to player result
@@ -284,23 +285,24 @@ class Monster:
         if attack_bonus > 95:
             attack_bonus = self.quantum_attack_5
             attack_phrase = self.quantum_attack_5_phrase
-        human_player_rolld20 = roll20 = dice_roll(1, 20)
-        roll20 = dice_roll(1, 20)
-        print(f"The {name} attacks with Quantum Energy! (It rolls {roll20})")
-        if roll20 == 1:
+        human_player_roll_d20 = dice_roll(1, 20)
+        roll_d20 = dice_roll(1, 20)
+        print(f"The {name} attacks with Quantum Energy! (It rolls {roll_d20})")
+        if roll_d20 == 1:
             print(f"..its attempts to procure the universal forces fail miserably.")
             time.sleep(2)
             return 0
-        if roll20 == 20:
+        if roll_d20 == 20:
             critical_bonus = 2
             hit_statement = "CRITICAL HIT!!"
         else:
             critical_bonus = 1
             hit_statement = ""
         print(f"Wisdom modifier {self.wisdom_modifier}")
-        print(f"Your roll: {human_player_rolld20} + dexterity modifier ({human_player_dexterity_modifier}) + ring of protection "
-              f"({human_player_ring_of_prot}). Total: {human_player_rolld20 + human_player_dexterity_modifier}")
-        if roll20 + self.wisdom_modifier >= human_player_rolld20 + human_player_dexterity_modifier + human_player_ring_of_prot:
+        print(
+            f"Your roll: {human_player_roll_d20} + dexterity modifier ({human_player_dexterity_modifier}) + ring of protection "
+            f"({human_player_ring_of_prot}). Total: {human_player_roll_d20 + human_player_dexterity_modifier}")
+        if roll_d20 + self.wisdom_modifier >= human_player_roll_d20 + human_player_dexterity_modifier + human_player_ring_of_prot:
             damage_roll = dice_roll(self.number_of_hd * critical_bonus, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
@@ -311,7 +313,7 @@ class Monster:
                 print(f"Wisdom modifier---> {self.wisdom_modifier}\nAttack bonus---> {attack_bonus}")
                 print(f"It does {damage_to_opponent} points of damage!")
                 os.system('pause')
-                #time.sleep(5)
+                # time.sleep(5)
                 return damage_to_opponent
             else:
                 print(
@@ -325,10 +327,12 @@ class Monster:
 
     def paralyze(self, human_player_wisdom, human_player_ring_of_prot):
         print(self.paralyze_phrase)
-        #print(f"It lurches forward, grabbing your arm!")
+        # print(f"It lurches forward, grabbing your arm!")
         paralyze_chance = dice_roll(1, 20)
-        print(f"Paralyze roll: {paralyze_chance} + monster wisdom modifier: {self.wisdom_modifier}")  # remove after testing
-        print(f"Your wisdom: {human_player_wisdom} Your ring of prot: {human_player_ring_of_prot}")  # remove after testing
+        print(
+            f"Paralyze roll: {paralyze_chance} + monster wisdom modifier: {self.wisdom_modifier}")  # remove after testing
+        print(
+            f"Your wisdom: {human_player_wisdom} Your ring of prot: {human_player_ring_of_prot}")  # remove after testing
         if (paralyze_chance + self.wisdom_modifier) >= (human_player_wisdom + human_player_ring_of_prot):
 
             print("You're paralyzed!!")
@@ -933,9 +937,15 @@ class Ghoul(Monster):
                             "its bulbous black eyes grow impossibly wide as it draws in its serpentine tongue. "
         self.is_discovered = False
         self.paralyze_phrase = "It lurches forward, grabbing your arm in its cold, sinewy and awful claws!"
+
     name = "Ghoul"
 
 
+# monster dictionary. keys correspond to difficulty
+monster_dict = {
+    1: [Quasit, Kobold, Cultist, Goblin, WingedKobold],
+    2: [Shadow, Skeleton, Drow, Orc, Ghoul]
+}
 # For monster hit points..take hit dice and add (constitution modifier x number of hit dice).
 # For example, if a monster has a Constitution of 12 (+1 modifier) and 2d8 Hit Dice, it has 2d8 + 2 Hit Points
 # self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier)

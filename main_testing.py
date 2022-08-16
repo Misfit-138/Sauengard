@@ -375,7 +375,7 @@ while True:
                         monster_cls = random.choice(monster_dict[monster_key])
                         monster = monster_cls()  # create a monster object from the random class
                         if encounter == 99:
-                            monster = Ghoul()
+                            monster = Ghoul()  # for testing. change logic to be a boss 1 level above player
                         player_1.hud()
                         print(discovered_monsters)  # remove after testing
                         if monster.name in discovered_monsters:

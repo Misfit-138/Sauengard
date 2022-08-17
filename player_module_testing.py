@@ -1,3 +1,4 @@
+import random
 import time
 import os
 from collections import Counter
@@ -26,6 +27,12 @@ The caster rolls d20 + Spellcasting Ability Modifier + Proficiency Bonus to hit 
 Hit Points at 1st Level: 10 + your Constitution modifier
 Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighter level after 1st
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.'''
+rndm_aroma_lst = ['agarwood', 'angelica root', 'anise', 'basil', 'bergamot', 'calamodin', 'calamus', 'camphor',
+                  'cardamom', 'cedar', 'camomile', 'cinnamon', 'citron', 'clary sage', 'clove', 'davana', 'eucalyptus',
+                  'frankincense', 'galbanum', 'hemlock', 'jasmine', 'lavender', 'lemongrass', 'mugwort oil',
+                  'pennyroyal', 'peppermint,' 'sage', 'sandalwood', 'sassafrass', 'garden mint', 'spikenard',
+                  'spruce oil', 'star anise oil', 'tea tree oil', 'tarragon oil', 'tsuga', 'valerian',
+                  'vanilla sweet grass', 'warionia', 'vetiver', 'wintergreen', 'yarrow oil']
 
 
 def cls():
@@ -982,9 +989,10 @@ class Player:
 
         while True:
             self.hud()
-            print(f"Jahns, the Fieldenberg chemist is here, busying himself at the crucible.\n"
-                  f"Mortars and pestles litter the counter and the smell of (something random) fills the air...")
-            print("The aroma and aura fill your nostrils and lungs...healing you to full strength.")
+            rndm_aroma = random.choice(rndm_aroma_lst)
+            print(f"Jahns, the Fieldenberg quantum chemist is here, busying himself at the crucible.\n"
+                  f"Mortars and pestles litter the counter and the smell of {rndm_aroma} fills the air...")
+            print("The aura fills your nostrils and lungs...healing you to full strength.")
             self.hit_points = self.maximum_hit_points
             print(f"Your gold: {self.gold} GP")
             sale_item_key = input(
@@ -1053,7 +1061,8 @@ class Player:
                         break
                     elif buy_or_exit == 'p':
                         try:
-                            item_index_to_buy = int(input(f"Enter the number of the item you wish to examine for purchase: "))
+                            item_index_to_buy = int(
+                                input(f"Enter the number of the item you wish to examine for purchase: "))
                             item_index_to_buy -= 1  # again, indexing starts at 0 and is awkward
                             sale_item = (chemist_dict[item_type_to_buy])[item_index_to_buy]
                         except (IndexError, ValueError):
@@ -1170,7 +1179,8 @@ class Player:
                         break
                     elif buy_or_exit == 'p':
                         try:
-                            item_index_to_buy = int(input(f"Enter the number of the item you wish to examine for purchase: "))
+                            item_index_to_buy = int(
+                                input(f"Enter the number of the item you wish to examine for purchase: "))
                             item_index_to_buy -= 1  # again, indexing starts at 0 and is awkward
                             sale_item = (blacksmith_dict[item_type_to_buy])[item_index_to_buy]
                         except (IndexError, ValueError):
@@ -1210,50 +1220,6 @@ class Player:
                                 continue
                         else:
                             continue
-
-    '''    def weapon_management(self):
-        self.hud()
-        if len(self.pack['Weapons']) > 0:
-            print(f"Your current weapon inventory:")
-            print(f"(Sorted by highest damage bonus)")
-            (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus, reverse=True)
-            weapon_mgmt_dict = {}
-            for item in (self.pack['Weapons']):
-                weapon_mgmt_dict[item] = (self.pack['Weapons']).index(item)
-            for key, value in weapon_mgmt_dict.items():
-                print(value + 1, ':', key)  # value is index. indexing starts at zero, so add 1
-            print()
-
-        else:
-            print(f"You have nothing in your weapons inventory..")
-            pause()
-            return
-        old_weapon = self.wielded_weapon
-        print(f"Your current wielded weapon: "
-              f"{self.wielded_weapon}\n"
-              f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
-              f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
-        wield_or_exit = input(f"(S)wap wielded weapon, or go (B)ack: ").lower()
-        if wield_or_exit == "b":
-            return
-        elif wield_or_exit == "s":
-            try:
-                new_weapon_index = int(input(f"Enter the number of the weapon you wish to wield: "))
-                new_weapon_index -= 1  # again, indexing starts at 0 and is awkward
-                self.wielded_weapon = (self.pack['Weapons'])[new_weapon_index]  # SYNTAX FOR INDEX
-                # self.wielded_weapon = self.pack['Weapons']new_weapon  # find syntax...on the right track
-            except (IndexError, ValueError):
-                print("Invalid entry..")
-                sleep(1)
-                return
-            print(f"You remove the {(self.pack['Weapons'])[new_weapon_index]} from your back and are now wielding it.\n"
-                  f"You place the {old_weapon} on your back.")
-
-            (self.pack['Weapons']).pop(new_weapon_index)  # INDEX SYNTAX
-            (self.pack['Weapons']).append(old_weapon)  # old_weapon represents an object, not an index
-            (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus)
-            # self.pack.append(old_weapon)  # for the old list inventory method
-            pause()'''
 
     def item_management(self, item_type, current_item):
         self.hud()
@@ -1923,8 +1889,6 @@ class Player:
             print(f"You see the exit to the East!")
             pause()
 
-
-
     def display_map(self, maps):
         self.hud()
         print("You look at the map..")
@@ -1948,7 +1912,8 @@ class Player:
                         boss = monster_cls()
                         boss_fight = True
                         encounter = 99'''
-        print("You found the exit...\nYou begin to descend the stairs, deeper into the dungeon...\nYet, you sense you are not alone!")
+        print(
+            "You found the exit...\nYou begin to descend the stairs, deeper into the dungeon...\nYet, you sense you are not alone!")
         self.dungeon_key += 1
         self.dungeon = dungeon_dict[self.dungeon_key]
         self.x = self.dungeon.starting_x
@@ -1956,23 +1921,6 @@ class Player:
         self.position = 0
         pause()
         return
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 '''
@@ -2292,3 +2240,46 @@ sale_item = (sale_items_dict[sale_item_key])
                            '2': broad_sword,
                            '3': quantum_sword
                            }'''
+'''    def weapon_management(self):
+    self.hud()
+    if len(self.pack['Weapons']) > 0:
+        print(f"Your current weapon inventory:")
+        print(f"(Sorted by highest damage bonus)")
+        (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus, reverse=True)
+        weapon_mgmt_dict = {}
+        for item in (self.pack['Weapons']):
+            weapon_mgmt_dict[item] = (self.pack['Weapons']).index(item)
+        for key, value in weapon_mgmt_dict.items():
+            print(value + 1, ':', key)  # value is index. indexing starts at zero, so add 1
+        print()
+
+    else:
+        print(f"You have nothing in your weapons inventory..")
+        pause()
+        return
+    old_weapon = self.wielded_weapon
+    print(f"Your current wielded weapon: "
+          f"{self.wielded_weapon}\n"
+          f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
+          f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
+    wield_or_exit = input(f"(S)wap wielded weapon, or go (B)ack: ").lower()
+    if wield_or_exit == "b":
+        return
+    elif wield_or_exit == "s":
+        try:
+            new_weapon_index = int(input(f"Enter the number of the weapon you wish to wield: "))
+            new_weapon_index -= 1  # again, indexing starts at 0 and is awkward
+            self.wielded_weapon = (self.pack['Weapons'])[new_weapon_index]  # SYNTAX FOR INDEX
+            # self.wielded_weapon = self.pack['Weapons']new_weapon  # find syntax...on the right track
+        except (IndexError, ValueError):
+            print("Invalid entry..")
+            sleep(1)
+            return
+        print(f"You remove the {(self.pack['Weapons'])[new_weapon_index]} from your back and are now wielding it.\n"
+              f"You place the {old_weapon} on your back.")
+
+        (self.pack['Weapons']).pop(new_weapon_index)  # INDEX SYNTAX
+        (self.pack['Weapons']).append(old_weapon)  # old_weapon represents an object, not an index
+        (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus)
+        # self.pack.append(old_weapon)  # for the old list inventory method
+        pause()'''

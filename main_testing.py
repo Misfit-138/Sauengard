@@ -301,7 +301,7 @@ while True:
                     time.sleep(1)
                     player_1.hud()
                 elif dungeon_command == 'm':
-                    player_1.weapon_management()
+                    player_1.item_management('Weapons', player_1.wielded_weapon)
                     continue
                 elif dungeon_command == 'i':
                     player_1.inventory()

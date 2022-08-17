@@ -58,8 +58,11 @@ class Weapon:
         self.buy_price = 0
         self.minimum_level = 1
 
-    def __repr__(self):
-        return self.name
+    #   def __repr__(self):
+    #       return self.name
+
+    def __str__(self):
+        return f'{self.name} - Damage Bonus: {self.damage_bonus}  To hit: {self.to_hit_bonus}  Price: {self.buy_price} GP'
 
 
 class ShortSword(Weapon):
@@ -129,9 +132,10 @@ class Armor:
         self.buy_price = 0
         self.minimum_level = 1
 
-    def __repr__(self):
-        return self.name
-
+#    def __repr__(self):
+#        return self.name
+    def __str__(self):
+        return f'{self.name} - AC: {self.ac}  Armor bonus: {self.armor_bonus}  Price: {self.buy_price} GP'
 
 class PaddedArmor(Armor):
     def __init__(self):
@@ -529,7 +533,7 @@ class Player:
         self.name = name
         self.level = 1
         self.experience = 0
-        self.gold = 0  # 500000
+        self.gold = 500000
         self.wielded_weapon = short_sword
         self.weapon_bonus = self.wielded_weapon.damage_bonus  # self.weapon_bonus no longer used
         self.armor = padded_armor
@@ -861,7 +865,7 @@ class Player:
             self.hud()
             print(f"You are unconscious and clinically dead!")
             sleep(1)
-            print(f"Death save attempt!")
+            print(f"Saving throw!")
             sleep(1)
             successes = 0
             fails = 0
@@ -1069,12 +1073,12 @@ class Player:
                             print("Invalid entry..")
                             sleep(1)
                             continue
-                        confirm_purchase = input(f"Purchase {sale_item} for {sale_item.buy_price} GP (y/n)? ")
+                        confirm_purchase = input(f"Purchase {sale_item.name} for {sale_item.buy_price} GP (y/n)? ")
                         if confirm_purchase == 'y':
                             if self.gold >= sale_item.buy_price:
                                 if self.level >= sale_item.minimum_level:
                                     self.hud()
-                                    print(f"You buy a {sale_item}")
+                                    print(f"You buy a {sale_item.name}")
                                     self.gold -= sale_item.buy_price
                                     (self.pack[sale_item.item_type]).append(sale_item)
                                     self.item_type_inventory(sale_item.item_type)
@@ -1187,7 +1191,7 @@ class Player:
                             print("Invalid entry..")
                             sleep(1)
                             continue
-                        confirm_purchase = input(f"Purchase {sale_item} for {sale_item.buy_price} GP (y/n)? ")
+                        confirm_purchase = input(f"Purchase {sale_item.name} for {sale_item.buy_price} GP (y/n)? ")
                         if confirm_purchase == 'y':
                             if self.gold >= sale_item.buy_price:
                                 if self.level >= sale_item.minimum_level:
@@ -1200,14 +1204,14 @@ class Player:
                                             and sale_item != self.shield \
                                             and sale_item != self.armor:
                                         self.hud()
-                                        print(f"You buy a {sale_item}")
+                                        print(f"You buy a {sale_item.name}")
                                         self.gold -= sale_item.buy_price
                                         (self.pack[sale_item.item_type]).append(sale_item)
                                         self.item_type_inventory(sale_item.item_type)
                                         pause()
                                         continue
                                     else:
-                                        print(f"You already have a {sale_item}")
+                                        print(f"You already have a {sale_item.name}")
                                         pause()
                                         continue
                                 else:
@@ -1252,7 +1256,7 @@ class Player:
             return
         elif swap_or_exit == "s":
             try:
-                new_item_index = int(input(f"Enter the number of the item you wish to use: "))
+                new_item_index = int(input(f"Enter the number of the item from your inventory that you wish to use: "))
                 new_item_index -= 1  # again, indexing starts at 0 and is awkward
                 if item_type == 'Weapons':
                     new_weapon = (self.pack[item_type])[new_item_index]
@@ -1336,7 +1340,7 @@ class Player:
                 for item in (self.pack[item_type_to_sell]):
                     mgmt_dict[item] = (self.pack[item_type_to_sell]).index(item)
                 for key, value in mgmt_dict.items():
-                    print(value + 1, ':', key)
+                    print(value + 1, ':', key.name, '- Sell price:', key.sell_price, 'GP')
                 print(f"Your gold: {self.gold} GP")
                 sell_or_exit = input("(S)ell an item, or go (B)ack: ").lower()
                 if sell_or_exit not in ('s', 'b'):
@@ -1469,8 +1473,9 @@ class Player:
                 current_items.append(each_item)
                 self.item_type_inventory(each_item)  # call the item_type_inventory for each item in inv.
                 # print(current_items)  # for testing
+
         if not len(current_items):
-            print(f"Your inventory is empty.")
+            print(f"Nothing but cobwebs..")
             pause()
             return False  # need this False for when called from..?
         else:

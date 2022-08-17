@@ -657,6 +657,8 @@ class Player:
 
         return
 
+    # CALCULATION
+
     def calculate_stealth(self):
         self.stealth += self.cloak.stealth
 
@@ -720,6 +722,8 @@ class Player:
             self.level = 20
         return
 
+    # LEVEL AND EXPERIENCE
+
     def increase_experience(self, exp_award):
         self.experience += exp_award  # this should be redundant now
         return
@@ -764,6 +768,8 @@ class Player:
             print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points")
             sleep(2)
             self.hud()
+
+    # BATTLE AND PROXIMITY TO MONSTER OCCURRENCES
 
     def monster_likes_you(self, monster_name, monster_intel):
         if dice_roll(1, 20) > 17 and monster_intel > 8:  # and self.charisma > 15:
@@ -970,6 +976,112 @@ class Player:
             time.sleep(1.5)
             return  # False
 
+    # INVENTORY AND ITEMS
+
+    def chemist_main(self):
+
+        while True:
+            self.hud()
+            print(f"Jahns, the Fieldenberg chemist is here, busying himself at the crucible.\n"
+                  f"Mortars and pestles litter the counter and the smell of (something random) fills the air...")
+            print("The aroma and aura fill your nostrils and lungs...healing you to full strength.")
+            self.hit_points = self.maximum_hit_points
+            print(f"Your gold: {self.gold} GP")
+            sale_item_key = input(
+                "(P)urchase items, (I)nventory, or (E)xit the chemist: ").lower()
+            if sale_item_key not in ('p', 'i', 'e'):
+                continue
+            elif sale_item_key == 'p':
+                self.buy_chemist_items()
+                continue
+            elif sale_item_key == 'i':
+                self.inventory()
+                continue
+            elif sale_item_key == 'e':
+                return
+            else:
+                continue
+
+    def buy_chemist_items(self):
+
+        chemist_dict = {
+            'Healing': [healing_potion],
+            'Town Portal Implements': [scroll_of_town_portal],
+        }
+        while True:
+            self.hud()
+            print(f"Items for sale:")
+            # create a list of blacksmith item types:
+            item_type_lst = list(chemist_dict.keys())
+            # create a dictionary from list of blacksmith items types, print out, add 1 to indexing
+            item_type_dict = {}
+            for item_type in item_type_lst:
+                item_type_dict[item_type] = item_type_lst.index(item_type)
+            for key, value in item_type_dict.items():
+                print(value + 1, ':', key)
+            print(f"Your gold: {self.gold} GP")
+            buy_or_exit = input("(P)ick item type, or go (B)ack: ").lower()
+            if buy_or_exit not in ('p', 'b'):
+                self.hud()
+                continue
+            elif buy_or_exit == 'b':
+                return
+                # break
+            elif buy_or_exit == 'p':
+                try:
+                    item_type_index_to_buy = int(input(f"Enter the category of the item to buy by number: "))
+                    item_type_to_buy = item_type_lst[item_type_index_to_buy - 1]
+                except (IndexError, ValueError):
+                    print("Invalid entry..")
+                    sleep(1)
+                    continue
+                while True:
+                    self.hud()
+                    print(f"{item_type_to_buy} for sale:")
+                    item_dict = {}
+                    chemist_dict[item_type_to_buy].sort(key=lambda x: x.buy_price)
+                    for item in (chemist_dict[item_type_to_buy]):
+                        item_dict[item] = (chemist_dict[item_type_to_buy]).index(item)
+                    for key, value in item_dict.items():
+                        print(value + 1, ':', key)
+                    print(f"Your gold: {self.gold} GP")
+                    buy_or_exit = input("(P)ick item by number, or go (B)ack: ").lower()
+                    if buy_or_exit not in ('p', 'b'):
+                        self.hud()
+                        continue
+                    elif buy_or_exit == 'b':
+                        break
+                    elif buy_or_exit == 'p':
+                        try:
+                            item_index_to_buy = int(input(f"Enter the number of the item you wish to examine for purchase: "))
+                            item_index_to_buy -= 1  # again, indexing starts at 0 and is awkward
+                            sale_item = (chemist_dict[item_type_to_buy])[item_index_to_buy]
+                        except (IndexError, ValueError):
+                            print("Invalid entry..")
+                            sleep(1)
+                            continue
+                        confirm_purchase = input(f"Purchase {sale_item} for {sale_item.buy_price} GP (y/n)? ")
+                        if confirm_purchase == 'y':
+                            if self.gold >= sale_item.buy_price:
+                                if self.level >= sale_item.minimum_level:
+                                    self.hud()
+                                    print(f"You buy a {sale_item}")
+                                    self.gold -= sale_item.buy_price
+                                    (self.pack[sale_item.item_type]).append(sale_item)
+                                    self.item_type_inventory(sale_item.item_type)
+                                    pause()
+                                    continue
+                                else:
+                                    print(f"Minimum requirements not met.")
+                                    pause()
+                                    continue
+                            else:
+                                print("You do not have enough gold.")
+                                pause()
+                                continue
+                        else:
+                            continue
+
     def blacksmith_main(self):
 
         while True:
@@ -1004,113 +1116,6 @@ class Player:
                 return
             else:
                 continue
-
-    def weapon_management(self):
-        self.hud()
-        if len(self.pack['Weapons']) > 0:
-            print(f"Your current weapon inventory:")
-            print(f"(Sorted by highest damage bonus)")
-            (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus, reverse=True)
-            weapon_mgmt_dict = {}
-            for item in (self.pack['Weapons']):
-                weapon_mgmt_dict[item] = (self.pack['Weapons']).index(item)
-            for key, value in weapon_mgmt_dict.items():
-                print(value + 1, ':', key)  # value is index. indexing starts at zero, so add 1
-            print()
-
-        else:
-            print(f"You have nothing in your weapons inventory..")
-            pause()
-            return
-        old_weapon = self.wielded_weapon
-        print(f"Your current wielded weapon: "
-              f"{self.wielded_weapon}\n"
-              f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
-              f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
-        wield_or_exit = input(f"(S)wap wielded weapon, or go (B)ack: ").lower()
-        if wield_or_exit == "b":
-            return
-        elif wield_or_exit == "s":
-            try:
-                new_weapon_index = int(input(f"Enter the number of the weapon you wish to wield: "))
-                new_weapon_index -= 1  # again, indexing starts at 0 and is awkward
-                self.wielded_weapon = (self.pack['Weapons'])[new_weapon_index]  # SYNTAX FOR INDEX
-                # self.wielded_weapon = self.pack['Weapons']new_weapon  # find syntax...on the right track
-            except (IndexError, ValueError):
-                print("Invalid entry..")
-                sleep(1)
-                return
-            print(f"You remove the {(self.pack['Weapons'])[new_weapon_index]} from your back and are now wielding it.\n"
-                  f"You place the {old_weapon} on your back.")
-
-            (self.pack['Weapons']).pop(new_weapon_index)  # INDEX SYNTAX
-            (self.pack['Weapons']).append(old_weapon)  # old_weapon represents an object, not an index
-            (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus)
-            # self.pack.append(old_weapon)  # for the old list inventory method
-            pause()
-
-    def item_management(self, item_type, current_item):
-        self.hud()
-        if len(self.pack[item_type]) > 0:
-            print(f"Your current {item_type} inventory:")
-            (self.pack[item_type]).sort(key=lambda x: x.buy_price)
-            item_mgmt_dict = {}
-            for item in (self.pack[item_type]):
-                item_mgmt_dict[item] = (self.pack[item_type]).index(item)
-            for key, value in item_mgmt_dict.items():
-                print(value + 1, ':', key)  # value is index. indexing starts at zero, so add 1
-            print()
-
-        else:
-            print(f"You have nothing in your {item_type} inventory..")
-            pause()
-            return
-        old_item = current_item
-        print(f"You are currently using: ")
-        if item_type == 'Weapons':
-            self.print_weapon_stats(self.wielded_weapon)
-        elif item_type == 'Armor':
-            self.print_armor_stats(self.armor)
-        elif item_type == 'Shields':
-            self.print_shield_stats(self.shield)
-        elif item_type == 'Boots':
-            self.print_boots_stats(self.boots)
-        swap_or_exit = input(f"(S)wap item, or go (B)ack: ").lower()
-        if swap_or_exit == "b":
-            return
-        elif swap_or_exit == "s":
-            try:
-                new_item_index = int(input(f"Enter the number of the item you wish to use: "))
-                new_item_index -= 1  # again, indexing starts at 0 and is awkward
-                if item_type == 'Weapons':
-                    new_weapon = (self.pack[item_type])[new_item_index]
-                    self.print_weapon_stats(new_weapon)
-                    self.wielded_weapon = new_weapon
-                    # (self.pack[item_type])[new_item_index]  # SYNTAX FOR INDEX
-                if item_type == 'Armor':
-                    new_armor = (self.pack[item_type])[new_item_index]
-                    self.print_armor_stats(new_armor)
-                    self.armor = new_armor
-                if item_type == 'Shields':
-                    new_shield = (self.pack[item_type])[new_item_index]
-                    self.print_shield_stats(new_shield)
-                    self.shield = new_shield
-                if item_type == 'Boots':
-                    new_boots = (self.pack[item_type])[new_item_index]
-                    self.print_boots_stats(new_boots)
-                    self.boots = new_boots
-                self.calculate_armor_class()
-            except (IndexError, ValueError):
-                print("Invalid entry..")
-                sleep(1)
-                return
-            print(f"You are now using the {(self.pack[item_type])[new_item_index]}.")
-            if old_item.name != 'No Shield':
-                print(f"you place the {old_item} in your inventory.")
-            (self.pack[item_type]).pop(new_item_index)  # INDEX SYNTAX
-            (self.pack[item_type]).append(old_item)  # old_weapon represents an object, not an index
-            (self.pack[item_type]).sort(key=lambda x: x.buy_price)
-            pause()
 
     def buy_blacksmith_items(self):
 
@@ -1205,6 +1210,113 @@ class Player:
                                 continue
                         else:
                             continue
+
+    '''    def weapon_management(self):
+        self.hud()
+        if len(self.pack['Weapons']) > 0:
+            print(f"Your current weapon inventory:")
+            print(f"(Sorted by highest damage bonus)")
+            (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus, reverse=True)
+            weapon_mgmt_dict = {}
+            for item in (self.pack['Weapons']):
+                weapon_mgmt_dict[item] = (self.pack['Weapons']).index(item)
+            for key, value in weapon_mgmt_dict.items():
+                print(value + 1, ':', key)  # value is index. indexing starts at zero, so add 1
+            print()
+
+        else:
+            print(f"You have nothing in your weapons inventory..")
+            pause()
+            return
+        old_weapon = self.wielded_weapon
+        print(f"Your current wielded weapon: "
+              f"{self.wielded_weapon}\n"
+              f"Damage bonus: {self.wielded_weapon.damage_bonus}\n"
+              f"To hit bonus: {self.wielded_weapon.to_hit_bonus}\n")
+        wield_or_exit = input(f"(S)wap wielded weapon, or go (B)ack: ").lower()
+        if wield_or_exit == "b":
+            return
+        elif wield_or_exit == "s":
+            try:
+                new_weapon_index = int(input(f"Enter the number of the weapon you wish to wield: "))
+                new_weapon_index -= 1  # again, indexing starts at 0 and is awkward
+                self.wielded_weapon = (self.pack['Weapons'])[new_weapon_index]  # SYNTAX FOR INDEX
+                # self.wielded_weapon = self.pack['Weapons']new_weapon  # find syntax...on the right track
+            except (IndexError, ValueError):
+                print("Invalid entry..")
+                sleep(1)
+                return
+            print(f"You remove the {(self.pack['Weapons'])[new_weapon_index]} from your back and are now wielding it.\n"
+                  f"You place the {old_weapon} on your back.")
+
+            (self.pack['Weapons']).pop(new_weapon_index)  # INDEX SYNTAX
+            (self.pack['Weapons']).append(old_weapon)  # old_weapon represents an object, not an index
+            (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus)
+            # self.pack.append(old_weapon)  # for the old list inventory method
+            pause()'''
+
+    def item_management(self, item_type, current_item):
+        self.hud()
+        if len(self.pack[item_type]) > 0:
+            print(f"Your current {item_type} inventory:")
+            (self.pack[item_type]).sort(key=lambda x: x.buy_price)
+            item_mgmt_dict = {}
+            for item in (self.pack[item_type]):
+                item_mgmt_dict[item] = (self.pack[item_type]).index(item)
+            for key, value in item_mgmt_dict.items():
+                print(value + 1, ':', key)  # value is index. indexing starts at zero, so add 1
+            print()
+
+        else:
+            print(f"You have nothing in your {item_type} inventory..")
+            pause()
+            return
+        old_item = current_item
+        print(f"You are currently using: ")
+        if item_type == 'Weapons':
+            self.print_weapon_stats(self.wielded_weapon)
+        elif item_type == 'Armor':
+            self.print_armor_stats(self.armor)
+        elif item_type == 'Shields':
+            self.print_shield_stats(self.shield)
+        elif item_type == 'Boots':
+            self.print_boots_stats(self.boots)
+        swap_or_exit = input(f"(S)wap item, or go (B)ack: ").lower()
+        if swap_or_exit == "b":
+            return
+        elif swap_or_exit == "s":
+            try:
+                new_item_index = int(input(f"Enter the number of the item you wish to use: "))
+                new_item_index -= 1  # again, indexing starts at 0 and is awkward
+                if item_type == 'Weapons':
+                    new_weapon = (self.pack[item_type])[new_item_index]
+                    self.print_weapon_stats(new_weapon)
+                    self.wielded_weapon = new_weapon
+                    # (self.pack[item_type])[new_item_index]  # SYNTAX FOR INDEX
+                if item_type == 'Armor':
+                    new_armor = (self.pack[item_type])[new_item_index]
+                    self.print_armor_stats(new_armor)
+                    self.armor = new_armor
+                if item_type == 'Shields':
+                    new_shield = (self.pack[item_type])[new_item_index]
+                    self.print_shield_stats(new_shield)
+                    self.shield = new_shield
+                if item_type == 'Boots':
+                    new_boots = (self.pack[item_type])[new_item_index]
+                    self.print_boots_stats(new_boots)
+                    self.boots = new_boots
+                self.calculate_armor_class()
+            except (IndexError, ValueError):
+                print("Invalid entry..")
+                sleep(1)
+                return
+            print(f"You are now using the {(self.pack[item_type])[new_item_index]}.")
+            if old_item.name != 'No Shield':
+                print(f"you place the {old_item} in your inventory.")
+            (self.pack[item_type]).pop(new_item_index)  # INDEX SYNTAX
+            (self.pack[item_type]).append(old_item)  # old_weapon represents an object, not an index
+            (self.pack[item_type]).sort(key=lambda x: x.buy_price)
+            pause()
 
     def sell_items(self):
 

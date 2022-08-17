@@ -244,11 +244,10 @@ while True:
             player_1.blacksmith_main()
 
         elif town_functions == 'c':
-            player_1.hud()
-            print("You visit the quantum chemist. He heals you to full strength.")
+            print("You make your way to the chemist manipulator.")
             time.sleep(1.5)
-            player_1.hit_points = player_1.maximum_hit_points
-            player_1.hud()
+            player_1.chemist_main()
+
         elif town_functions == 'e':
             in_town = False
             in_dungeon = True

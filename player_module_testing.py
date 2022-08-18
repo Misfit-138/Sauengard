@@ -1848,11 +1848,11 @@ class Player:
                     elif found_item.item_type == 'Boots':
                         self.found_boots_substitution(found_item)
                         continue
-                    else:
+                    '''                    else:
                         print(f"You already have a {found_item.name} of equal or greater value.."
                               f"(remove this statement after testing.)")  # remove after tesing
                         pause()  # remove this pause after testing
-                        continue
+                        continue'''
                 else:
                     print(f"{found_item.name}\nMinimum requirements not met.")  # remove after testing
                     pause()  # remove after testing
@@ -1913,20 +1913,20 @@ class Player:
     def display_map(self, maps):
         self.hud()
         print("You look at the map..")
-        print(self.position)
-        if self.position == 0:
-            print("You are at the bottom of a staircase with a locked door above...")
+        print(self.position)  # remove after testing
+        #if self.position == 0:
+        #    print("You are at the bottom of a staircase with a locked door above...")
         print(self.dungeon.name)
         if self.position != 0:
             self.dungeon.player_grid[self.y][self.x] = "X"
         for element in range(0, 8):
-            print(maps[element])
+            print(*maps[element])
         self.dungeon.player_grid[self.y][
             self.x] = "."  # replace the X with a dot so that it doesn't leave a trail
         # the following line will leave a trail of x's throughout the map to see where you've been.
         # player_1.dungeon.player_grid[player.y][player.x] = "x"
         self.position = self.dungeon.grid[self.y][self.x]
-
+        print(f"X = your position E = Exit")
     def next_dungeon(self):
         '''monster_key = (player_1.level + 1)
                         monster_cls = random.choice(monster_dict[monster_key])

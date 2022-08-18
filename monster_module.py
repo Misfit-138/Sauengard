@@ -212,6 +212,7 @@ class Monster:
 
     def swing(self, name, human_player_armor_class):
         attack_bonus = random.randint(1, 100)
+        print(f"Monster attack bonus roll: {attack_bonus}")  # remove after testing
         if attack_bonus <= 50:
             attack_bonus = self.attack_1
             attack_phrase = self.attack_1_phrase
@@ -239,6 +240,7 @@ class Monster:
         else:
             critical_bonus = 1
             hit_statement = ""
+
         print(f"Dexterity modifier {self.dexterity_modifier}")
         print(f"Your armor class ---> {human_player_armor_class}")
         if roll_d20 + self.dexterity_modifier >= human_player_armor_class:

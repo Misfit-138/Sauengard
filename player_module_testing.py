@@ -58,11 +58,12 @@ class Weapon:
         self.buy_price = 0
         self.minimum_level = 1
 
-    #   def __repr__(self):
+    def __repr__(self):
+        return f"{self.name} - Damage Bonus: {self.damage_bonus}  To hit: {self.to_hit_bonus}  Purchase Price: {self.buy_price} GP"
     #       return self.name
 
-    def __str__(self):
-        return f'{self.name} - Damage Bonus: {self.damage_bonus}  To hit: {self.to_hit_bonus}  Purchase Price: {self.buy_price} GP'
+    #def __str__(self):
+    #    return f'{self.name} - Damage Bonus: {self.damage_bonus}  To hit: {self.to_hit_bonus}  Purchase Price: {self.buy_price} GP'
 
 
 class ShortSword(Weapon):
@@ -132,9 +133,9 @@ class Armor:
         self.buy_price = 0
         self.minimum_level = 1
 
-    #    def __repr__(self):
+    def __repr__(self):
     #        return self.name
-    def __str__(self):
+    #def __str__(self):
         return f'{self.name} - AC: {self.ac}  Armor bonus: {self.armor_bonus}  Purchase Price: {self.buy_price} GP'
 
 
@@ -238,10 +239,10 @@ class Shield:
         self.buy_price = 0
         self.minimum_level = 1
 
-    #    def __repr__(self):
+    def __repr__(self):
     #        return self.name
 
-    def __str__(self):
+    #def __str__(self):
         return f'{self.name} - AC: {self.ac} Purchase Price: {self.buy_price} GP'
 
 
@@ -311,10 +312,10 @@ class Boots:
         self.buy_price = 0
         self.minimum_level = 1
 
-    #    def __repr__(self):
+    def __repr__(self):
     #        return self.name
 
-    def __str__(self):
+    #def __str__(self):
         return f'{self.name} - AC: {self.ac} Purchase Price: {self.buy_price} GP'
 
 
@@ -370,10 +371,10 @@ class Cloak:
         self.buy_price = 0
         self.minimum_level = 1
 
-    #    def __repr__(self):
+    def __repr__(self):
     #        return self.name
 
-    def __str__(self):
+    #def __str__(self):
         return f'{self.name} - Stealth: {self.stealth} Purchase Price: {self.buy_price} GP'
 
 
@@ -414,9 +415,9 @@ class Healing:
         self.sell_price = 0
         self.minimum_level = 1
 
-    #    def __repr__(self):
+    def __repr__(self):
     #        return self.name
-    def __str__(self):
+    #def __str__(self):
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
 
 
@@ -529,9 +530,9 @@ class TownPortalImplements:
         self.minimum_level = 1
         self.uses = 1
 
-    #    def __repr__(self):
+    def __repr__(self):
     #        return self.name
-    def __str__(self):
+    #def __str__(self):
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
 
 
@@ -640,9 +641,9 @@ class Player:
         print(f"                                                                     Experience: {self.experience}")
         print(f"                                                                     Gold: {self.gold}")
         print(
-            f"                                                                     Weapon: {self.wielded_weapon} + {self.wielded_weapon.damage_bonus}")
+            f"                                                                     Weapon: {self.wielded_weapon.name} + {self.wielded_weapon.damage_bonus}")
         print(
-            f"                                                                     {self.wielded_weapon} to hit bonus: + {self.wielded_weapon.to_hit_bonus}")
+            f"                                                                     To hit bonus: + {self.wielded_weapon.to_hit_bonus}")
         print(
             f"                                                                     Armor: {self.armor.name} (AC: {self.armor.ac})")
 
@@ -663,7 +664,7 @@ class Player:
               f"{self.maximum_hit_points}")
 
         print(
-            f"                                                                     Boots: {self.boots} (AC: {self.boots.ac})")
+            f"                                                                     Boots: {self.boots.name} (AC: {self.boots.ac})")
         print(
             f"                                                                     Cloak: {self.cloak.name} (Stealth: {self.cloak.stealth})")
 
@@ -997,7 +998,7 @@ class Player:
             print(f"You are rooted to the spot. You must stand your ground!")
             time.sleep(1)
             self.hud()
-            print(f"You raise your {self.wielded_weapon}..")
+            print(f"You raise your {self.wielded_weapon.name}..")
             time.sleep(1.5)
             return  # False
 
@@ -1081,7 +1082,7 @@ class Player:
                     elif buy_or_exit == 'p':
                         try:
                             item_index_to_buy = int(
-                                input(f"Enter the number of the item you wish to examine for purchase: "))
+                                input(f"Enter the number of the item you wish to consider for purchase: "))
                             item_index_to_buy -= 1  # again, indexing starts at 0 and is awkward
                             sale_item = (chemist_dict[item_type_to_buy])[item_index_to_buy]
                         except (IndexError, ValueError):
@@ -1114,7 +1115,7 @@ class Player:
 
         while True:
             self.hud()
-            print(f"Jeffrey, the Fieldenberg blacksmith is here, hammering at his anvil.\n"
+            print(f"Lucino, the Fieldenberg blacksmith is here, hammering at his anvil.\n"
                   f"He notices you, grumbles, and continues hammering...")
             print(f"Your gold: {self.gold} GP")
             sale_item_key = input(
@@ -1174,7 +1175,7 @@ class Player:
                 # break
             elif buy_or_exit == 'p':
                 try:
-                    item_type_index_to_buy = int(input(f"Enter the category of the item to buy by number: "))
+                    item_type_index_to_buy = int(input(f"Enter the number of the category of the item to buy: "))
                     item_type_to_buy = item_type_lst[item_type_index_to_buy - 1]
                 except (IndexError, ValueError):
                     print("Invalid entry..")
@@ -1199,7 +1200,7 @@ class Player:
                     elif buy_or_exit == 'p':
                         try:
                             item_index_to_buy = int(
-                                input(f"Enter the number of the item you wish to examine for purchase: "))
+                                input(f"Enter the number of the item you wish to consider for purchase: "))
                             item_index_to_buy -= 1  # again, indexing starts at 0 and is awkward
                             sale_item = (blacksmith_dict[item_type_to_buy])[item_index_to_buy]
                         except (IndexError, ValueError):
@@ -1339,7 +1340,7 @@ class Player:
                         continue
                     if sell_or_exit == 'e':
                         break
-                    item_type_index_to_sell = int(input(f"Enter the category of the item to sell by number: "))
+                    item_type_index_to_sell = int(input(f"Enter the number of the category of the item to sell: "))
                     item_type_to_sell = non_empty_item_type_lst[item_type_index_to_sell - 1]
                 except (IndexError, ValueError):
                     print("Invalid entry..")
@@ -1813,7 +1814,7 @@ class Player:
             self.hud()
             print(f"Loot roll ---> {loot_roll}")
             pause()
-            if loot_roll > 5:
+            if loot_roll > 9:
                 key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
                 rndm_item_index = random.randrange(len(loot_dict[key]))
                 found_item = loot_dict[key][rndm_item_index]

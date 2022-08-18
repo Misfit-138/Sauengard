@@ -322,7 +322,7 @@ class Monster:
                 return 0  # 0 points damage to player
         else:
             print(f"It fails to harness the mysterious powers..")
-            time.sleep(3)
+            os.system('pause')
             return 0
 
     def paralyze(self, human_player_wisdom, human_player_ring_of_prot):

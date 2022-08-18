@@ -123,6 +123,8 @@ winsound.PlaySound(None, winsound.SND_ASYNC)
 os.system('cls')
 
 while True:
+    town_portal = False
+    loaded_game = False
     new_game_or_load = input("(S)tart a new character or (L)oad a saved one? ").lower()
     if new_game_or_load not in ('s', 'l'):
         continue
@@ -135,15 +137,15 @@ while True:
                 player_1 = pickle.load(saved_player)
                 time.sleep(1)
                 print(f"{player_name} read.")
+                time.sleep(1)
                 dungeon_key = player_1.dungeon_key
                 dungeon = dungeon_dict[player_1.dungeon_key]
-
-                x = player_1.x
-                y = player_1.y
-
+                #x = player_1.x
+                #y = player_1.y
                 print(dungeon.name)
-                print(x)
-                print(y)
+                print(player_1.x)
+                print(player_1.y)
+                loaded_game = True
                 time.sleep(1)
         else:
             print(f"Could not find {player_name} ")
@@ -186,27 +188,26 @@ while True:
     # player_1.hud()
     in_town = True
     in_dungeon = False
-    town_portal = False
+    #town_portal = False
     discovered_monsters = []
     winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_theme.wav',
                        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
     while in_town:
         player_1.hud()
         town_functions = input(
-            "You are in town.\n(S)ave, (Q)uit game, (M)arket, (R)estart the game, (I)nventory, (B)lacksmith, (C)hemist or ("
+            "You are in town.\n(S)ave, (Q)uit game, (M)arket, (I)nventory, (B)lacksmith, (C)hemist or ("
             "E)nter dungeon "
             "--> ").lower()
-        if town_functions == 'r':
+        '''        if town_functions == 'r':
             print("Restart")
             time.sleep(2)
             os.system('cls')
             in_town = False
-            break
-        elif town_functions == 'q':
+            break'''
+        if town_functions == 'q':
             print("Exiting..")
             exit()
         elif town_functions == 's':
-
             save_a_character = player_name + ".sav"
             if os.path.isfile(save_a_character):
                 while True:
@@ -230,10 +231,8 @@ while True:
                     pickle.dump(player_1, player_save)
                     print(f"{player_1.name} saved.")
                     time.sleep(2)
-
         elif town_functions == 'i':
             player_1.inventory()
-            # os.system('pause')
         elif town_functions == 'm':
             print("You visit the seller's market..")
             sleep(1.5)
@@ -242,18 +241,16 @@ while True:
             print("You visit the blacksmith..")
             sleep(1.5)
             player_1.blacksmith_main()
-
         elif town_functions == 'c':
             print("You make your way to the chemist manipulator.")
             time.sleep(1.5)
             player_1.chemist_main()
-
         elif town_functions == 'e':
             in_town = False
             in_dungeon = True
-
-            if town_portal:
+            if town_portal or loaded_game:
                 print(f"You re-enter the portal.")
+                #town_portal = False
             else:
                 print("You enter the dungeon..")
             time.sleep(1)
@@ -266,7 +263,7 @@ while True:
                 previous_x = player_1.x
                 previous_y = player_1.y
                 player_1.regenerate()
-                # player_1.loot()  # for testing
+                player_1.loot()  # for testing
                 encounter = dice_roll(1, 20)
                 player_1.hud()
                 if player_1.position == 0:

@@ -848,7 +848,7 @@ class Player:
                     stolen_item = (self.pack[item_type].pop(
                         random.randint(0,
                                        len(self.pack[item_type]) - 1)))  # pop it. subtract 1 because indexes start at 0
-                    print(f"He steals a {stolen_item}")  # from your {item_type}")
+                    print(f"He steals a {stolen_item.name}")  # from your {item_type}")
                     pause()
                     return True  # True means monster gets away clean
             else:

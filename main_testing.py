@@ -204,8 +204,8 @@ while True:
             while in_dungeon:
                 previous_x = player_1.x
                 previous_y = player_1.y
-                #player_1.regenerate()
-                #player_1.loot()  # for testing
+                # player_1.regenerate()
+                player_1.loot()  # for testing
                 encounter = dice_roll(1, 20)
                 player_1.hud()
                 if player_1.position == 0:

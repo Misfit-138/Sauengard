@@ -32,16 +32,27 @@ and its documentation and return value (usually None) support this, the behavior
 # introduction_file = open("trett.txt", "r")
 # if introduction_file.readable():
 #    print(introduction_file.read())
+
+
 import pickle
-import time
+
 from player_module_stable import *
-# from player_module_stable import *
 
 from monster_module import *
 from typing_module import *
 import random
 import os
 import winsound
+from dungeons import *
+
+
+def pause():
+    os.system('pause')
+
+
+def sleep(seconds):
+    time.sleep(seconds)
+
 
 winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\originalsound.wav',
                    winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
@@ -54,6 +65,8 @@ winsound.PlaySound(None, winsound.SND_ASYNC)
 os.system('cls')
 
 while True:
+    town_portal = False
+    loaded_game = False
     new_game_or_load = input("(S)tart a new character or (L)oad a saved one? ").lower()
     if new_game_or_load not in ('s', 'l'):
         continue
@@ -66,6 +79,15 @@ while True:
                 player_1 = pickle.load(saved_player)
                 time.sleep(1)
                 print(f"{player_name} read.")
+                time.sleep(1)
+                dungeon_key = player_1.dungeon_key
+                dungeon = dungeon_dict[player_1.dungeon_key]
+                # x = player_1.x
+                # y = player_1.y
+                print(dungeon.name)
+                print(player_1.x)  # remove after testing
+                print(player_1.y)  # remove after testing
+                loaded_game = True
                 time.sleep(1)
         else:
             print(f"Could not find {player_name} ")
@@ -90,31 +112,41 @@ while True:
             print(f"Wisdom modifier: {player_1.wisdom_modifier}")
             print(f"Charisma modifier: {player_1.charisma_modifier}")
             print(f"Proficiency bonus: {player_1.proficiency_bonus}")
-            accept_stats = input("Accept stats y/n ? ").lower()
+            accept_stats = input("Ok to continue? ").lower()
         # a while loop's 'else' part runs if no break occurs and the condition is false
         if accept_stats == "y":
+            player_1.dungeon_key = 1
+            player_1.dungeon = dungeon_dict[player_1.dungeon_key]
+            # current_dungeon_map = player_1.dungeon.grid
+            # current_player_map = player_1.dungeon.player_grid
+            player_1.x = player_1.dungeon.starting_x
+            player_1.y = player_1.dungeon.starting_y
+            player_1.position = 0
+            # player_1.current_dungeon_level = player_1.dungeon.level
+            # player_1.current_dungeon_level_name = player_1.dungeon.name
             player_1.hud()
     print(f"You enter the town of Fieldenberg.")
     time.sleep(1.5)
     # player_1.hud()
     in_town = True
     in_dungeon = False
+    # town_portal = False
     discovered_monsters = []
     winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_theme.wav',
                        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
     while in_town:
         player_1.hud()
         town_functions = input(
-            "You are in town.\n(S)ave, (Q)uit game, (M)arket, (R)estart the game, (I)nventory, (B)lacksmith, (C)hemist or ("
+            "You are in town.\n(S)ave, (Q)uit game, (M)arket, (I)nventory, (B)lacksmith, (C)hemist or ("
             "E)nter dungeon "
             "--> ").lower()
-        if town_functions == 'r':
+        '''        if town_functions == 'r':
             print("Restart")
             time.sleep(2)
             os.system('cls')
             in_town = False
-            break
-        elif town_functions == 'q':
+            break'''
+        if town_functions == 'q':
             print("Exiting..")
             exit()
         elif town_functions == 's':
@@ -141,10 +173,8 @@ while True:
                     pickle.dump(player_1, player_save)
                     print(f"{player_1.name} saved.")
                     time.sleep(2)
-
         elif town_functions == 'i':
             player_1.inventory()
-            # os.system('pause')
         elif town_functions == 'm':
             print("You visit the seller's market..")
             sleep(1.5)
@@ -153,34 +183,45 @@ while True:
             print("You visit the blacksmith..")
             sleep(1.5)
             player_1.blacksmith_main()
-
         elif town_functions == 'c':
-            player_1.hud()
-            print("You visit the quantum chemist. He heals you to full strength.")
+            print("You make your way to the chemist manipulator.")
             time.sleep(1.5)
-            player_1.hit_points = player_1.maximum_hit_points
-            player_1.hud()
+            player_1.chemist_main()
         elif town_functions == 'e':
             in_town = False
             in_dungeon = True
-
-            print("You enter the dungeon..")
+            if town_portal or loaded_game:
+                print(f"You re-enter the portal.")
+                # town_portal = False
+            else:
+                print("You enter the dungeon..")
             time.sleep(1)
             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
                                winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
             # DUNGEON NAVIGATION LOOP:
+
             while in_dungeon:
-                player_1.regenerate()
-                # player_1.loot()  # for testing
+                previous_x = player_1.x
+                previous_y = player_1.y
+                #player_1.regenerate()
+                #player_1.loot()  # for testing
                 encounter = dice_roll(1, 20)
                 player_1.hud()
+                if player_1.position == 0:
+                    player_1.dungeon_description(previous_x, previous_y)
+                print(f"{player_1.dungeon.name}")
                 dungeon_command = input(
                     "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage weapons, (I)nventory or WASD to navigate. --> ").lower()
+                if dungeon_command not in ('w', 'a', 's', 'd', 'map', 'p', 'h', 'm', 'i', 'q'):
+                    print("Unknown command")
+                    time.sleep(.25)
+                    continue
                 if dungeon_command == 'p':
                     if player_1.use_scroll_of_town_portal():
                         in_town = True
                         in_dungeon = False
+                        town_portal = True
                         break
                     else:
                         continue
@@ -196,45 +237,47 @@ while True:
                             break
                 elif dungeon_command == 'h':
                     player_1.drink_healing_potion()
-                    print(f"You have {player_1.hit_points} hit points.")
                     time.sleep(1)
                     player_1.hud()
                 elif dungeon_command == 'm':
-                    player_1.weapon_management()
+                    player_1.item_management('Weapons', player_1.wielded_weapon)
                     continue
                 elif dungeon_command == 'i':
                     player_1.inventory()
-                elif dungeon_command == 'w' or 'a' or 's' or 'd':
+                elif dungeon_command == 'w' or 'a' or 's' or 'd' or 'map':
                     if dungeon_command == 'w':
                         player_1.hud()
-                        print("You go north")
-
+                        print("North")
+                        player_1.y -= 1
                     if dungeon_command == 'a':
                         player_1.hud()
-                        print("You go west")
-
+                        print("West")
+                        player_1.x -= 1
                     if dungeon_command == 's':
                         player_1.hud()
-                        print("You go south")
-
+                        print("South")
+                        player_1.y += 1
                     if dungeon_command == 'd':
                         player_1.hud()
-                        print("You go east")
-                    time.sleep(.5)
-                if dungeon_command not in ('w', 'a', 's', 'd', 'p', 'h', 'm', 'i', 'q'):
-                    print("Unknown command")
-                    time.sleep(.25)
-                    continue
-                # eventually, make encounter a returned boolean from navigation function
-                if encounter > 11:
+                        print("East")
+                        player_1.x += 1
+                    if dungeon_command == 'map':
+                        player_1.display_map(player_1.dungeon.player_grid)  #
+                        pause()
+                        continue
+                    # !!!!!!!!!!!!!!!! V NOTE the INDENT V !!!!!!!!!!!!!!!!
+                    player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
+                    player_1.dungeon_description(previous_x, previous_y)
+                    sleep(1.5)
+                    if player_1.position == "E":
+                        encounter = 99
+                        player_1.next_dungeon()
+                player_1.regenerate()
+                # eventually, make encounter a returned boolean from navigation function?
+                if encounter > 10:
 
                     print("This should create monster now..")
-                    # monster dictionary. keys correspond to difficulty
-                    monster_dict = {
-                        1: [Quasit, Kobold, Cultist, Goblin, WingedKobold],
-                        2: [Shadow, Skeleton, Drow, Orc, Ghoul]
-                    }
-
+                    # monster dictionary imported from monster module. keys correspond to difficulty
                     # in proximity to monster loop contains battle loop within it
                     in_proximity_to_monster = True
                     player_is_dead = False
@@ -265,9 +308,12 @@ while True:
                                     continue
                         if not in_proximity_to_monster:
                             break
+
                         monster_key = random.randint(1, (player_1.level + 1))
                         monster_cls = random.choice(monster_dict[monster_key])
                         monster = monster_cls()  # create a monster object from the random class
+                        if encounter == 99:
+                            monster = Ghoul()  # for testing. change logic to be a boss 1 level above player
                         player_1.hud()
                         print(discovered_monsters)  # remove after testing
                         if monster.name in discovered_monsters:
@@ -283,6 +329,7 @@ while True:
                         if player_1.quick_move(monster.name):
                             in_proximity_to_monster = False
                             break  # if monster steals something he gets away clean, if not, battle
+                        # PLAYER INITIATIVE, MONSTER INITIATIVE
                         player_initiative = dice_roll(1, 20) + player_1.dexterity_modifier
                         monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier
                         print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
@@ -325,14 +372,7 @@ while True:
                                 if evade_success:
                                     in_proximity_to_monster = False  # get out of battle loop
                                     break
-                                # else:
-                                # continue
-                                # print(f"The {monster.name} swiftly blocks your escape.")
-                                # time.sleep(.5)
-                                # print(f"You are rooted to the spot. You must stand your ground!")
-                                # time.sleep(.5)
-                                # print(f"You raise your {player_1.wielded_weapon}..")
-                                # time.sleep(1)
+
                             elif battle_choice == "c":
                                 player_1.hud()
                                 print(f"Cast")
@@ -402,6 +442,7 @@ while True:
                                 player_1.level_up(monster.experience_award, monster.gold)
                                 in_proximity_to_monster = False
                                 player_1.loot()
+
                                 break
 
                             # monster turn:
@@ -439,4 +480,22 @@ while True:
                                 player_1.hud()
                             else:
                                 break
-                            #
+                else:  # NEW..test
+                    continue
+        #
+
+'''                if player_1.position == ".":
+                    print("You are in a dark corridor, there are doors leading in each direction...")
+                    sleep(1.5)
+                if player_1.position == "E":
+                    print("You found the exit...")
+                    player_1.dungeon_key += 1
+                    player_1.dungeon = dungeon_dict[player_1.dungeon_key]
+                    # current_dungeon_map = player_1.dungeon.grid
+                    # current_player_map = player_1.dungeon.player_grid
+                    x = player_1.dungeon.starting_x
+                    y = player_1.dungeon.starting_y
+                    player_1.position = 0
+                    player_1.current_dungeon_level = player_1.dungeon.level
+                    player_1.current_dungeon_level_name = player_1.dungeon.name
+                    pause()'''

@@ -27,6 +27,7 @@ The caster rolls d20 + Spellcasting Ability Modifier + Proficiency Bonus to hit 
 Hit Points at 1st Level: 10 + your Constitution modifier
 Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighter level after 1st
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.'''
+
 rndm_aroma_lst = ['agarwood', 'angelica root', 'anise', 'basil', 'bergamot', 'calamodin', 'calamus', 'camphor',
                   'cardamom', 'cedar', 'camomile', 'cinnamon', 'citron', 'clary sage', 'clove', 'davana', 'eucalyptus',
                   'frankincense', 'galbanum', 'hemlock', 'jasmine', 'lavender', 'lemongrass', 'mugwort oil',
@@ -59,10 +60,10 @@ class Weapon:
         self.minimum_level = 1
 
     def __repr__(self):
-        return f"{self.name} - Damage Bonus: {self.damage_bonus}  To hit: {self.to_hit_bonus}  Purchase Price: {self.buy_price} GP"
+        return f"{self.name} - Damage Bonus: {self.damage_bonus}  To hit: {self.to_hit_bonus}  Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP"
     #       return self.name
 
-    #def __str__(self):
+    # def __str__(self):
     #    return f'{self.name} - Damage Bonus: {self.damage_bonus}  To hit: {self.to_hit_bonus}  Purchase Price: {self.buy_price} GP'
 
 
@@ -134,9 +135,9 @@ class Armor:
         self.minimum_level = 1
 
     def __repr__(self):
-    #        return self.name
-    #def __str__(self):
-        return f'{self.name} - AC: {self.ac}  Armor bonus: {self.armor_bonus}  Purchase Price: {self.buy_price} GP'
+        #        return self.name
+        # def __str__(self):
+        return f'{self.name} - AC: {self.ac}  Armor bonus: {self.armor_bonus}  Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP'
 
 
 class PaddedArmor(Armor):
@@ -240,10 +241,10 @@ class Shield:
         self.minimum_level = 1
 
     def __repr__(self):
-    #        return self.name
+        #        return self.name
 
-    #def __str__(self):
-        return f'{self.name} - AC: {self.ac} Purchase Price: {self.buy_price} GP'
+        # def __str__(self):
+        return f'{self.name} - AC: {self.ac}  Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP'
 
 
 class NoShield(Shield):  # default
@@ -313,10 +314,10 @@ class Boots:
         self.minimum_level = 1
 
     def __repr__(self):
-    #        return self.name
+        #        return self.name
 
-    #def __str__(self):
-        return f'{self.name} - AC: {self.ac} Purchase Price: {self.buy_price} GP'
+        # def __str__(self):
+        return f'{self.name} - AC: {self.ac}  Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP'
 
 
 class LeatherBoots(Boots):
@@ -372,10 +373,10 @@ class Cloak:
         self.minimum_level = 1
 
     def __repr__(self):
-    #        return self.name
+        #        return self.name
 
-    #def __str__(self):
-        return f'{self.name} - Stealth: {self.stealth} Purchase Price: {self.buy_price} GP'
+        # def __str__(self):
+        return f'{self.name} - Stealth: {self.stealth}  Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP'
 
 
 class CanvasCloak(Cloak):
@@ -416,15 +417,15 @@ class Healing:
         self.minimum_level = 1
 
     def __repr__(self):
-    #        return self.name
-    #def __str__(self):
+        #        return self.name
+        # def __str__(self):
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
 
 
 class HealingPotion(Healing):
     def __init__(self):
         super().__init__()
-        self.name = "Minor Healing Potion"
+        self.name = "Potion of Healing"
         self.item_type = "Healing"
         self.heal_points = 0
         self.buy_price = 50
@@ -531,8 +532,8 @@ class TownPortalImplements:
         self.uses = 1
 
     def __repr__(self):
-    #        return self.name
-    #def __str__(self):
+        #        return self.name
+        # def __str__(self):
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
 
 
@@ -579,6 +580,8 @@ class Player:
         self.extra_attack = 0
         self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
         self.stealth = self.cloak.stealth
+        self.town_portals = 1
+        self.potions_of_healing = 1
         self.position = 0
         self.current_dungeon_level = 1
         self.dungeon_key = 1
@@ -587,42 +590,17 @@ class Player:
         self.x = 0
         self.y = 0
         self.pack = {
-            'Weapons': [],
-            'Healing': [healing_potion],
+            'Weapons': [short_sword, short_axe, broad_sword, quantum_sword],
+            # 'Healing': [],  #[healing_potion],
             'Armor': [],
             'Shields': [],
             'Boots': [],
             'Cloaks': [],
             'Rings of Regeneration': [],
-            'Rings of Protection': [],
-            'Town Portal Implements': [scroll_of_town_portal]
+            'Rings of Protection': []
+            # 'Town Portal Implements': []  # [scroll_of_town_portal]
 
         }
-
-    def print_weapon_stats(self, weapon):
-        print(f"{weapon.name}:")
-        print(f"Damage bonus: {weapon.damage_bonus}")
-        print(f"To hit: {weapon.to_hit_bonus}")
-        print(f"Sell price: {weapon.sell_price}")
-        print(f"Minimum level requirement: {weapon.minimum_level}")
-
-    def print_armor_stats(self, armor):
-        print(f"{armor.name}:")
-        print(f"AC: {armor.ac}")
-        print(f"Sell Price: {armor.sell_price}")
-        print(f"Minimum level requirement: {armor.minimum_level}")
-
-    def print_shield_stats(self, shield):
-        print(f"{shield.name}:")
-        print(f"AC: {shield.ac}")
-        print(f"Sell Price: {shield.sell_price}")
-        print(f"Minimum level requirement: {shield.minimum_level}")
-
-    def print_boots_stats(self, boots):
-        print(f"{boots.name}:")
-        print(f"AC: {boots.ac}")
-        print(f"Sell Price: {boots.sell_price}")
-        print(f"Minimum level requirement: {boots.minimum_level}")
 
     def regenerate(self):
         if self.hit_points < self.maximum_hit_points and self.ring_of_reg.regenerate > 0:
@@ -650,9 +628,11 @@ class Player:
         print(
             f"                                                                     Shield: {self.shield.name} (AC: {self.shield.ac})")
         print(
+            f"                                                                     Boots: {self.boots.name} (AC: {self.boots.ac})")
+        print(
             f"                                                                     Your Armor Class: {self.armor_class}")
         print(f"                                                                     Strength: {self.strength}")
-        print(f"                                                                     Dexterity: {self.dexterity}")
+        print(f"                                                                     Dexterity: {self.dexterity} (Modifier: {self.dexterity_modifier})")
         print(
             f"                                                                     Constitution: {self.constitution}")
         print(
@@ -663,15 +643,14 @@ class Player:
         print(f"                                                                     Hit points: {self.hit_points}/"
               f"{self.maximum_hit_points}")
 
-        print(
-            f"                                                                     Boots: {self.boots.name} (AC: {self.boots.ac})")
+
         print(
             f"                                                                     Cloak: {self.cloak.name} (Stealth: {self.cloak.stealth})")
 
-        number_of_potions = len(self.pack['Healing'])
+        number_of_potions = self.potions_of_healing  # len(self.pack['Healing'])
         print(
             f"                                                                     Healing Potions: {number_of_potions}")
-        number_of_portal_scrolls = len(self.pack['Town Portal Implements'])
+        number_of_portal_scrolls = self.town_portals  # len(self.pack['Town Portal Implements'])
         print(
             f"                                                                     Town Portal Scrolls: {number_of_portal_scrolls}")
         if self.ring_of_reg.name != default_ring_of_regeneration.name:
@@ -780,7 +759,7 @@ class Player:
                 gain_hit_points = 1
             self.hit_points += gain_hit_points  # (previous HP + Hit Die roll + CON modifier)
             self.maximum_hit_points += gain_hit_points
-            print(f"You gain {gain_hit_points} hit points")
+            print(f"You heal and gain {gain_hit_points} maximum hit points")
             sleep(2)
             if self.level == 5:
                 print("You gain the Extra Attack skill!!")
@@ -854,7 +833,7 @@ class Player:
             else:
                 print("You have nothing he wants to steal!")
                 sleep(2)
-                return True  # False here means your inventory is empty and monster sticks around to fight
+                return True  # Putting False here means your inventory is empty and monster sticks around to fight
         else:
             # print(f"The {monster_name} makes a quick move...")
             # sleep(1.5)
@@ -1014,9 +993,11 @@ class Player:
             if self.hit_points < self.maximum_hit_points:
                 print("The aura fills your nostrils and lungs...healing you to full strength!")
                 self.hit_points = self.maximum_hit_points
+                pause()
+                self.hud()
             print(f"Your gold: {self.gold} GP")
             chemist_choice = input(
-                "(P)urchase items, (I)nventory, or (E)xit the chemist: ").lower()
+                "(P)urchase items, Display your (I)nventory, or (E)xit the chemist: ").lower()
             if chemist_choice not in ('p', 'i', 'e'):
                 continue
             elif chemist_choice == 'p':
@@ -1038,7 +1019,7 @@ class Player:
         }
         while True:
             self.hud()
-            print(f"Items for sale:")
+            print(f"Jahns has items for sale in the following categories:")
             # create a list of item types:
             item_type_lst = list(chemist_dict.keys())
             # create a dictionary from list of item types, print out, add 1 to indexing
@@ -1048,9 +1029,12 @@ class Player:
             for key, value in item_type_dict.items():
                 print(value + 1, ':', key)
             print(f"Your gold: {self.gold} GP")
-            buy_or_exit = input("(P)ick item type, or go (B)ack: ").lower()
-            if buy_or_exit not in ('p', 'b'):
+            buy_or_exit = input("Display your (I)nventory, (P)ick item type, or go (B)ack: ").lower()
+            if buy_or_exit not in ('i', 'p', 'b'):
                 self.hud()
+                continue
+            elif buy_or_exit == 'i':
+                self.inventory()
                 continue
             elif buy_or_exit == 'b':
                 return
@@ -1073,9 +1057,12 @@ class Player:
                     for key, value in item_dict.items():
                         print(value + 1, ':', key)
                     print(f"Your gold: {self.gold} GP")
-                    buy_or_exit = input("(P)ick item by number, or go (B)ack: ").lower()
-                    if buy_or_exit not in ('p', 'b'):
+                    buy_or_exit = input("Display your (I)nventory, (P)ick item by number, or go (B)ack: ").lower()
+                    if buy_or_exit not in ('i', 'p', 'b'):
                         self.hud()
+                        continue
+                    elif buy_or_exit == 'i':
+                        self.inventory()
                         continue
                     elif buy_or_exit == 'b':
                         break
@@ -1093,10 +1080,16 @@ class Player:
                         if confirm_purchase == 'y':
                             if self.gold >= sale_item.buy_price:
                                 if self.level >= sale_item.minimum_level:
+
+                                    self.gold -= sale_item.buy_price
+                                    if sale_item.name == 'Scroll of Town Portal':
+                                        self.town_portals += 1
+                                    if sale_item.name == 'Potion of Healing':
+                                        self.potions_of_healing += 1
+
                                     self.hud()
                                     print(f"You buy a {sale_item.name}")
-                                    self.gold -= sale_item.buy_price
-                                    (self.pack[sale_item.item_type]).append(sale_item)
+                                    # (self.pack[sale_item.item_type]).append(sale_item)
                                     self.item_type_inventory(sale_item.item_type)
                                     pause()
                                     continue
@@ -1152,11 +1145,13 @@ class Player:
             'Weapons': [short_sword, short_axe, quantum_sword, broad_sword],
             'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
             'Shields': [buckler, kite_shield, quantum_tower_shield],
-            'Boots': [elven_boots, ancestral_footsteps]
+            'Boots': [elven_boots, ancestral_footsteps],
+            'Cloaks': [elven_cloak]
         }
         while True:
             self.hud()
             print(f"Armory for sale:")
+
             # create a list of blacksmith item types:
             item_type_lst = list(blacksmith_dict.keys())
             # create a dictionary from list of blacksmith items types, print out, add 1 to indexing
@@ -1166,13 +1161,16 @@ class Player:
             for key, value in item_type_dict.items():
                 print(value + 1, ':', key)
             print(f"Your gold: {self.gold} GP")
-            buy_or_exit = input("(P)ick item type, or go (B)ack: ").lower()
-            if buy_or_exit not in ('p', 'b'):
+            buy_or_exit = input("Display your (I)nventory, (P)ick item type, or go (B)ack: ").lower()
+            if buy_or_exit not in ('i', 'p', 'b'):
                 self.hud()
+                continue
+            elif buy_or_exit == 'i':
+                self.inventory()
                 continue
             elif buy_or_exit == 'b':
                 return
-                # break
+
             elif buy_or_exit == 'p':
                 try:
                     item_type_index_to_buy = int(input(f"Enter the number of the category of the item to buy: "))
@@ -1191,9 +1189,12 @@ class Player:
                     for key, value in item_dict.items():
                         print(value + 1, ':', key)
                     print(f"Your gold: {self.gold} GP")
-                    buy_or_exit = input("(P)ick item by number, or go (B)ack: ").lower()
-                    if buy_or_exit not in ('p', 'b'):
+                    buy_or_exit = input("Display your (I)nventory, (P)ick item by number, or go (B)ack: ").lower()
+                    if buy_or_exit not in ('i', 'p', 'b'):
                         self.hud()
+                        continue
+                    elif buy_or_exit == 'i':
+                        self.inventory()
                         continue
                     elif buy_or_exit == 'b':
                         break
@@ -1210,15 +1211,20 @@ class Player:
                         confirm_purchase = input(f"Purchase {sale_item.name} for {sale_item.buy_price} GP (y/n)? ")
                         if confirm_purchase == 'y':
                             if self.gold >= sale_item.buy_price:
+                                # print("Enough gold")
                                 if self.level >= sale_item.minimum_level:
-                                    if sale_item not in (self.pack['Boots']) \
-                                            and sale_item not in (self.pack['Shields']) \
-                                            and sale_item not in (self.pack['Armor']) \
-                                            and sale_item not in (self.pack['Weapons']) \
-                                            and sale_item.name != self.wielded_weapon.name \
-                                            and sale_item.name != self.boots.name \
-                                            and sale_item.name != self.shield.name \
-                                            and sale_item.name != self.armor.name:
+                                    # print("Minimum level ok")
+                                    # print(self.item_is_in_inventory(sale_item.item_type, sale_item))
+                                    # print("Item in inventory function right before this line")
+                                    if not self.duplicate_item(sale_item.item_type, sale_item):
+                                        '''if sale_item not in (self.pack['Boots']) \
+                                                and sale_item not in (self.pack['Shields']) \
+                                                and sale_item not in (self.pack['Armor']) \
+                                                and sale_item not in (self.pack['Weapons']) \
+                                                and sale_item.name != self.wielded_weapon.name \
+                                                and sale_item.name != self.boots.name \
+                                                and sale_item.name != self.shield.name \
+                                                and sale_item.name != self.armor.name:'''
                                         self.hud()
                                         print(f"You buy a {sale_item.name}")
                                         self.gold -= sale_item.buy_price
@@ -1260,13 +1266,17 @@ class Player:
         old_item = current_item
         print(f"You are currently using: ")
         if item_type == 'Weapons':
-            self.print_weapon_stats(self.wielded_weapon)
+            print(f"{self.wielded_weapon}, Sell Price: {self.wielded_weapon.sell_price} GP")
+            # self.print_weapon_stats(self.wielded_weapon)
         elif item_type == 'Armor':
-            self.print_armor_stats(self.armor)
+            print(f"{self.armor}, Sell Price: {self.armor.sell_price} GP")
+            # self.print_armor_stats(self.armor)
         elif item_type == 'Shields':
-            self.print_shield_stats(self.shield)
+            print(f"{self.shield}, Sell Price: {self.shield.sell_price} GP")
+            # self.print_shield_stats(self.shield)
         elif item_type == 'Boots':
-            self.print_boots_stats(self.boots)
+            print(f"{self.boots}, Sell Price: {self.boots.sell_price} GP")
+            # self.print_boots_stats(self.boots)
         swap_or_exit = input(f"(S)wap item, or go (B)ack: ").lower()
         if swap_or_exit == "b":
             return
@@ -1276,20 +1286,24 @@ class Player:
                 new_item_index -= 1  # again, indexing starts at 0 and is awkward
                 if item_type == 'Weapons':
                     new_weapon = (self.pack[item_type])[new_item_index]
-                    self.print_weapon_stats(new_weapon)
+                    print(f"{new_weapon}")
+                    # self.print_weapon_stats(new_weapon)
                     self.wielded_weapon = new_weapon
                     # (self.pack[item_type])[new_item_index]  # SYNTAX FOR INDEX
                 if item_type == 'Armor':
                     new_armor = (self.pack[item_type])[new_item_index]
-                    self.print_armor_stats(new_armor)
+                    print(f"{new_armor}")
+                    # self.print_armor_stats(new_armor)
                     self.armor = new_armor
                 if item_type == 'Shields':
                     new_shield = (self.pack[item_type])[new_item_index]
-                    self.print_shield_stats(new_shield)
+                    print(f"{new_shield}")
+                    # self.print_shield_stats(new_shield)
                     self.shield = new_shield
                 if item_type == 'Boots':
                     new_boots = (self.pack[item_type])[new_item_index]
-                    self.print_boots_stats(new_boots)
+                    print(f"{new_boots}")
+                    # self.print_boots_stats(new_boots)
                     self.boots = new_boots
                 self.calculate_armor_class()
             except (IndexError, ValueError):
@@ -1298,13 +1312,13 @@ class Player:
                 return
             print(f"You are now using the {(self.pack[item_type])[new_item_index]}.")
             if old_item.name != 'No Shield':
-                print(f"you place the {old_item} in your inventory.")
+                print(f"you place the {old_item.name} in your inventory.")
             (self.pack[item_type]).pop(new_item_index)  # INDEX SYNTAX
             (self.pack[item_type]).append(old_item)  # old_weapon represents an object, not an index
             (self.pack[item_type]).sort(key=lambda x: x.buy_price)
             pause()
 
-    def sell_items(self):
+    def sell_items(self):  # make this sell_blacksmith_items. then, create sell_chemist_items
 
         while True:
             cls()
@@ -1358,12 +1372,15 @@ class Player:
                 for key, value in mgmt_dict.items():
                     print(value + 1, ':', key.name, '- Sell price:', key.sell_price, 'GP')
                 print(f"Your gold: {self.gold} GP")
-                sell_or_exit = input("(S)ell an item, or go (B)ack: ").lower()
-                if sell_or_exit not in ('s', 'b'):
+                sell_or_exit = input("Show entire (I)nventory, (S)ell an item, or go (B)ack: ").lower()
+                if sell_or_exit not in ('i', 's', 'b'):
                     cls()
                     # self.hud()
                     continue
-                if sell_or_exit == 'b':
+                elif sell_or_exit == 'i':
+                    self.inventory()
+                    continue
+                elif sell_or_exit == 'b':
                     break
                 elif sell_or_exit == 's':
 
@@ -1408,13 +1425,15 @@ class Player:
                         continue
 
     def use_scroll_of_town_portal(self):
-        if scroll_of_town_portal not in self.pack['Town Portal Implements']:
+        if self.town_portals < 1:
+            # if not self.duplicate_item(scroll_of_town_portal.item_type, scroll_of_town_portal): # scroll_of_town_portal not in self.pack['Town Portal Implements']:
             print(f"You have no scrolls!")
             time.sleep(2)
             return False
         else:
             self.hud()
-            (self.pack['Town Portal Implements'].remove(scroll_of_town_portal))
+            # (self.pack['Town Portal Implements'].remove(scroll_of_town_portal))
+            self.town_portals -= 1
             print(f"The portal appears before you; a seemingly impossible gateway between distant places..")
             time.sleep(2)
             # winsound.PlaySound(None, winsound.SND_ASYNC)
@@ -1424,43 +1443,80 @@ class Player:
 
     def drink_healing_potion(self):
         self.hud()
-        if healing_potion in self.pack['Healing']:
+        if self.potions_of_healing > 0:
+        #if healing_potion in self.pack['Healing']:
             if self.hit_points >= self.maximum_hit_points:
                 print(f"You are already at maximum health!")
                 sleep(1)
-
                 return
-            print(f"You chug a potion")
-            (self.pack['Healing'].remove(healing_potion))
-            self.hit_points = self.hit_points + round(self.maximum_hit_points * .66)
-            if self.hit_points > self.maximum_hit_points:
-                self.hit_points = self.maximum_hit_points
-            sleep(1)
-            print(f"You now have {self.hit_points} hit points.")
-            # (pack[sub_item_type]).remove(sub_item)
-            return
+            else:
+                print(f"You chug a potion")
+                self.potions_of_healing -= 1
+                #(self.pack['Healing'].remove(healing_potion))
+                self.hit_points = self.hit_points + round(self.maximum_hit_points * .66)
+                if self.hit_points > self.maximum_hit_points:
+                    self.hit_points = self.maximum_hit_points
+                sleep(1)
+                print(f"You now have {self.hit_points} hit points.")
+                # (pack[sub_item_type]).remove(sub_item)
+                return
         else:
             print("You have no potions!")
             return
 
-    def item_type_inventory(self, item_type):  # list items in inventory by type
-        print(f"{item_type} inventory:")
-        self.pack[item_type].sort(key=lambda x: x.name)
-        stuff_dict = Counter(item.name for item in self.pack[item_type])
-        for key, value in stuff_dict.items():
+    def duplicate_item(self, item_type, possible_duplicate):
+        duplicate_item_name_lst = []
+        # self.pack[item_type].sort(key=lambda x: x.name)
+        inv_dict = Counter(item for item in self.pack[item_type])
+        # print(inv_dict)  # for testing
+        for key, value in inv_dict.items():
             # print(key, ':    ', value, sep='')
-            if value > 1:
-                print(value, ' ', key, 's', sep='')
-                # print(key, 's', ':    ', value, sep='')
-            else:
-                print(value, ' ', key, sep='')
-        number_of_items = len(self.pack[item_type])
-        # print(f"You now have {number_of_items} items in your {item_type} inventory.")
-        if number_of_items:
+            duplicate_item_name_lst.append(key.name)
+        # print(duplicate_item_name_lst)  # for testing
+        if possible_duplicate.name in duplicate_item_name_lst or \
+                possible_duplicate.name == self.wielded_weapon.name or \
+                possible_duplicate.name == self.armor.name or \
+                possible_duplicate.name == self.shield.name or \
+                possible_duplicate.name == self.boots.name:
             return True
+            # print(value, ' ', key, 's', sep='')
+            # print(key, 's', ':    ', value, sep='')
         else:
-            # print(f"You currently have no {item_type} in your inventory.")
             return False
+
+    def item_type_inventory(self, item_type):  # list items in inventory by type
+        if item_type != 'Town Portal Implements' and item_type != 'Healing':
+            print(f"{item_type}:")
+            self.pack[item_type].sort(key=lambda x: x.name)
+            stuff_dict = Counter(item.name for item in self.pack[item_type])
+            for key, value in stuff_dict.items():
+                # print(key, ':    ', value, sep='')
+                if value > 1:
+                    print(value, ' ', key, 's', sep='')
+                    # print(key, 's', ':    ', value, sep='')
+                else:
+                    print(value, ' ', key, sep='')
+            number_of_items = len(self.pack[item_type])
+            # print(f"You now have {number_of_items} items in your {item_type} inventory.")
+            if number_of_items:
+                return True
+            else:
+                # print(f"You currently have no {item_type} in your inventory.")
+                return False
+        elif item_type == 'Town Portal Implements':
+            if self.town_portals > 0:
+                print(f"You have {self.town_portals} Scrolls of Town Portal")
+                return True
+            else:
+                print(f"You have no scrolls of town portal.")
+                return False
+        elif item_type == 'Healing':
+            if self.potions_of_healing > 0:
+                print(f"You have {self.potions_of_healing} Potions of Healing")
+                return True
+            else:
+                print(f"You have no potions of healing.")
+                return False
 
     def inventory(self):
         self.hud()
@@ -1476,10 +1532,15 @@ class Player:
             print(f"A Ring of Regeneration + {self.ring_of_reg.regenerate}")
         if self.ring_of_prot.name != 'No Ring':
             print(f"A Ring of Protection + {self.ring_of_prot.protect} ")
-        print(f"Your dungeoneer's pack contains:")
-        item_type_lst = ['Weapons', 'Healing', 'Armor', 'Shields', 'Boots', 'Cloaks', 'Town Portal Implements']
+        if self.town_portals or self.potions_of_healing > 0:
+            print(f"On your belt, you are carrying:")
+            print(f"{self.potions_of_healing} Potions of healing")
+            print(f"{self.town_portals} Town Portal Scrolls")
+        item_type_lst = ['Weapons', 'Armor', 'Shields', 'Boots', 'Cloaks']
+        # item_type_lst = ['Weapons', 'Healing', 'Armor', 'Shields', 'Boots', 'Cloaks', 'Town Portal Implements']
         # number_of_items = len(self.pack[item_type])
         #  'Rings of Regeneration', 'Rings of Protection', removed for clarity so they only appear to be worn
+        print(f"You dungeoneer's pack contains:")
         current_items = []
         for each_item in item_type_lst:
             is_item_on_list = len(self.pack[each_item])
@@ -1520,7 +1581,8 @@ class Player:
                     print(f"You are now wielding the {found_item.name}")
                     print(
                         f"Damage bonus: {self.wielded_weapon.damage_bonus}. To hit: {self.wielded_weapon.to_hit_bonus}")
-                    if old_weapon not in self.pack['Weapons']:
+                    if not self.duplicate_item(old_weapon.item_type,
+                                               old_weapon):  # old_weapon not in self.pack['Weapons']:
                         (self.pack[found_item.item_type]).append(old_weapon)
                         print(f"You place the {old_weapon.name} upon your back..")
 
@@ -1530,7 +1592,8 @@ class Player:
                     return
                 elif replace_weapon == 'n':
                     print(f"You don't wield the {found_item.name}.")
-                    if found_item not in self.pack[found_item.item_type]:
+                    if not self.duplicate_item(found_item.item_type,
+                                               found_item):  # found_item not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(found_item)
                         print(f"You place the {found_item.name} on your back.")
 
@@ -1569,7 +1632,8 @@ class Player:
                     print(f"You are now wearing the {found_item.name}")
                     self.calculate_armor_class()
                     # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
-                    if old_armor not in self.pack[found_item.item_type]:
+                    if not self.duplicate_item(found_item.item_type, old_armor):
+                        # if old_armor not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(old_armor)
                         print(f"You place the {old_armor.name} upon your back..")
 
@@ -1579,7 +1643,8 @@ class Player:
                     return
                 elif replace_armor == 'n':
                     print(f"You don't wear the {found_item.name}.")  # remove after testing
-                    if found_item not in self.pack[found_item.item_type]:
+                    if not self.duplicate_item(found_item.item_type, found_item):
+                        # if found_item not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(found_item)
                         print(f"You place the {found_item.name} on your back.")
 
@@ -1591,7 +1656,7 @@ class Player:
                     continue
         else:
             print(f"Worn armor >= found item...")  # remove after testing
-            pause()
+            pause()  # remove after testing
             return
 
     def found_shield_substitution(self, found_item):
@@ -1624,7 +1689,8 @@ class Player:
                     if old_shield.name == 'No Shield':
                         pause()
                         return
-                    elif old_shield not in self.pack[found_item.item_type]:
+                    elif not self.duplicate_item(old_shield.item_type,
+                                                 old_shield):  # old_shield not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(old_shield)
                         print(f"You place the {old_shield.name} on your back..")
 
@@ -1634,12 +1700,13 @@ class Player:
                     return
                 elif replace_shield == 'n':
                     print(f"You don't wield the {found_item.name}.")
-                    if found_item not in self.pack[found_item.item_type]:
+                    if not self.duplicate_item(found_item.item_type,
+                                               found_item):  # found_item not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(found_item)
                         print(f"You place the {found_item.name} on your back.")
 
                     else:
-                        print(f"You can't carry any more {found_item.name}. You leave it.")  # can't carry any more
+                        print(f"You can't carry any more {found_item.name}s. You leave it.")  # can't carry any more
                     pause()
                     return
                 elif replace_shield not in ("y", "n"):
@@ -1673,7 +1740,8 @@ class Player:
                     print(f"You are now wearing the {found_item.name}")
                     self.calculate_armor_class()
                     # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
-                    if old_boots not in self.pack[found_item.item_type]:
+                    if not self.duplicate_item(old_boots.item_type,
+                                               old_boots):  # old_boots not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(old_boots)
                         print(f"You place the {old_boots.name} in your dungeoneer's pack..")
 
@@ -1683,7 +1751,8 @@ class Player:
                     return
                 elif replace_boots == 'n':
                     print(f"You don't wear the {found_item.name}.")  # remove after testing
-                    if found_item not in self.pack[found_item.item_type]:
+                    if not self.duplicate_item(found_item.item_type,
+                                               found_item):  # found_item not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(found_item)
                         print(f"You place the {found_item.name} in your dungeoneer's pack.")
 
@@ -1719,7 +1788,8 @@ class Player:
                     self.cloak = found_item
                     print(f"You are now wearing the {found_item.name}")
                     self.calculate_stealth()
-                    if old_cloak not in self.pack[found_item.item_type]:
+                    if not self.duplicate_item(old_cloak.item_type,
+                                               old_cloak):  # old_cloak not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(old_cloak)
                         print(f"You place the {old_cloak.name} in your dungeoneer's pack..")
                     else:
@@ -1728,7 +1798,8 @@ class Player:
                     return
                 elif replace_cloak == 'n':
                     print(f"You don't wear the {found_item.name}.")  # remove after testing
-                    if found_item not in self.pack[found_item.item_type]:
+                    if not self.duplicate_item(found_item.item_type,
+                                               found_item):  # found_item not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(found_item)
                         print(f"You place the {found_item.name} into your dungeoneer's pack.")
                     else:
@@ -1814,17 +1885,26 @@ class Player:
             self.hud()
             print(f"Loot roll ---> {loot_roll}")
             pause()
-            if loot_roll > 9:
+            if loot_roll > 5:
                 key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
                 rndm_item_index = random.randrange(len(loot_dict[key]))
                 found_item = loot_dict[key][rndm_item_index]
                 print(found_item)  # REMOVE AFTER TESTING *****************************************************
                 if self.level >= found_item.minimum_level:
-                    if found_item.item_type == 'Healing' or found_item.item_type == 'Town Portal Implements':
-                        (self.pack[found_item.item_type]).append(found_item)
+                    if found_item.item_type == 'Town Portal Implements':
+                        # (self.pack[found_item.item_type]).append(found_item)
                         print(f"You see a {found_item.name} !")
                         sleep(.5)
                         print(f"You snarf it..")
+                        self.town_portals += 1
+                        pause()
+                        continue
+                    elif found_item.item_type == 'Healing':  # or found_item.item_type == 'Town Portal Implements':
+                        # (self.pack[found_item.item_type]).append(found_item)
+                        print(f"You see a {found_item.name} !")
+                        sleep(.5)
+                        print(f"You snarf it..")
+                        self.potions_of_healing += 1
                         pause()
                         continue
                     elif found_item.item_type == 'Armor':
@@ -1914,7 +1994,7 @@ class Player:
         self.hud()
         print("You look at the map..")
         print(self.position)  # remove after testing
-        #if self.position == 0:
+        # if self.position == 0:
         #    print("You are at the bottom of a staircase with a locked door above...")
         print(self.dungeon.name)
         if self.position != 0:
@@ -1927,6 +2007,7 @@ class Player:
         # player_1.dungeon.player_grid[player.y][player.x] = "x"
         self.position = self.dungeon.grid[self.y][self.x]
         print(f"X = your position E = Exit")
+
     def next_dungeon(self):
         '''monster_key = (player_1.level + 1)
                         monster_cls = random.choice(monster_dict[monster_key])
@@ -2304,3 +2385,27 @@ sale_item = (sale_items_dict[sale_item_key])
         (self.pack['Weapons']).sort(key=lambda x: x.damage_bonus)
         # self.pack.append(old_weapon)  # for the old list inventory method
         pause()'''
+'''    def print_weapon_stats(self, weapon):
+        print(f"{weapon.name}:")
+        print(f"Damage bonus: {weapon.damage_bonus}")
+        print(f"To hit: {weapon.to_hit_bonus}")
+        print(f"Sell price: {weapon.sell_price}")
+        print(f"Minimum level requirement: {weapon.minimum_level}")
+
+    def print_armor_stats(self, armor):  # should be deprecated
+        print(f"{armor.name}:")
+        print(f"AC: {armor.ac}")
+        print(f"Sell Price: {armor.sell_price}")
+        print(f"Minimum level requirement: {armor.minimum_level}")
+
+    def print_shield_stats(self, shield):  # should be deprecated
+        print(f"{shield.name}:")
+        print(f"AC: {shield.ac}")
+        print(f"Sell Price: {shield.sell_price}")
+        print(f"Minimum level requirement: {shield.minimum_level}")
+
+    def print_boots_stats(self, boots):  # should be deprecated
+        print(f"{boots.name}:")
+        print(f"AC: {boots.ac}")
+        print(f"Sell Price: {boots.sell_price}")
+        print(f"Minimum level requirement: {boots.minimum_level}")'''

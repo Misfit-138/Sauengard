@@ -32,15 +32,29 @@ def sell_everything(player):
     sell_all = []
     print(f"Sell everything but potions, scrolls:")
     item_type_lst = ['Weapons', 'Armor', 'Shields', 'Boots', 'Cloaks']
-    item_type_dict = {}
-    for item_type in player.pack:
-        if len(player.pack[item_type]) and item_type != 'Rings of Protection' and item_type != 'Rings of Regeneration':
-            item_type_dict[item_type] = item_type_lst.index(item_type)
-    for key, value in item_type_dict.items():
-        print(key)
-        mgmt_dict = {}
-        for item in (player.pack[item_type]):
-            mgmt_dict[item] = (player.pack[item_type]).index(item)
-        for key, value in mgmt_dict.items():
-            print(value + 1, ':', key.name, '- Sell price:', key.sell_price, 'GP')
+    #        if len(player.pack[item_type]) and item_type != 'Rings of Protection' and item_type != 'Rings of Regeneration':
+    mgmt_dict = {}
+    for each_item_type in item_type_lst:
+        if len(player.pack[each_item_type]):
+            for item in (player.pack[each_item_type]):
+                mgmt_dict[item] = (player.pack[each_item_type]).index(item)
+    for key, value in mgmt_dict.items():
+        print(key.name, '- Sell price:', key.sell_price, 'GP')
+        sell_all.append(key.sell_price)
+        #(player.pack[each_item_type]).clear()
+        #print(player.pack[each_item_type])
+    #print(player.pack)
+    total = sum(sell_all)
+    print(f"Total: {total}")
+    for each_item_type in item_type_lst:
+        (player.pack[each_item_type]).clear()
+    total = sum(sell_all)
+    print(player.pack)
+    #print(total)
+
+''' print((player.pack[each_item_type]))
+(player.pack[each_item_type]).clear()
+print((player.pack[each_item_type]))
+print(sum(sell_all))
+'''
 sell_everything(player_1)

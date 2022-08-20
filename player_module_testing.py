@@ -593,8 +593,8 @@ class Player:
             'Weapons': [short_sword, short_axe, broad_sword, quantum_sword],
             # 'Healing': [],  #[healing_potion],
             'Armor': [],
-            'Shields': [],
-            'Boots': [],
+            'Shields': [quantum_tower_shield],
+            'Boots': [elven_boots, ancestral_footsteps],
             'Cloaks': [],
             'Rings of Regeneration': [],
             'Rings of Protection': []
@@ -632,7 +632,8 @@ class Player:
         print(
             f"                                                                     Your Armor Class: {self.armor_class}")
         print(f"                                                                     Strength: {self.strength}")
-        print(f"                                                                     Dexterity: {self.dexterity} (Modifier: {self.dexterity_modifier})")
+        print(
+            f"                                                                     Dexterity: {self.dexterity} (Modifier: {self.dexterity_modifier})")
         print(
             f"                                                                     Constitution: {self.constitution}")
         print(
@@ -642,7 +643,6 @@ class Player:
         print(f"                                                                     Charisma: {self.charisma}")
         print(f"                                                                     Hit points: {self.hit_points}/"
               f"{self.maximum_hit_points}")
-
 
         print(
             f"                                                                     Cloak: {self.cloak.name} (Stealth: {self.cloak.stealth})")
@@ -997,11 +997,14 @@ class Player:
                 self.hud()
             print(f"Your gold: {self.gold} GP")
             chemist_choice = input(
-                "(P)urchase items, Display your (I)nventory, or (E)xit the chemist: ").lower()
-            if chemist_choice not in ('p', 'i', 'e'):
+                "(P)urchase items, (S)ell quantum items, Display your (I)nventory, or (E)xit the chemist: ").lower()
+            if chemist_choice not in ('p', 's', 'i', 'e'):
                 continue
             elif chemist_choice == 'p':
                 self.buy_chemist_items()
+                continue
+            elif chemist_choice == 's':
+                self.sell_chemist_items()
                 continue
             elif chemist_choice == 'i':
                 self.inventory()
@@ -1010,6 +1013,108 @@ class Player:
                 return
             else:
                 continue
+
+    def alternate_sell_chemist_items(self):  # redo this and make default if possible
+        chemist_sell_dict = {
+            'Healing': [healing_potion],
+            'Town Portal Implements': [scroll_of_town_portal],
+        }
+        while True:
+            # create a list of item types:
+            item_type_lst = list(chemist_sell_dict.keys())
+            # create a dictionary from list of item types, print out, add 1 to indexing
+            item_type_dict = {}
+            for item_type in item_type_lst:
+                item_type_dict[item_type] = item_type_lst.index(item_type)
+            for key, value in item_type_dict.items():
+                print(value + 1, ':', key)
+            print(f"Your gold: {self.gold} GP")
+            sell = input("Display your (I)nventory, (P)ick item type, or go (B)ack: ").lower()
+            if sell not in ('i', 'p', 'b'):
+                self.hud()
+                continue
+            elif sell == 'i':
+                self.inventory()
+                continue
+            elif sell == 'b':
+                return
+                # break
+            elif sell == 'p':
+                try:
+                    item_type_index_to_buy = int(input(f"Enter the category of the item to sell by number: "))
+                    item_type_to_buy = item_type_lst[item_type_index_to_buy - 1]
+                except (IndexError, ValueError):
+                    print("Invalid entry..")
+                    sleep(1)
+                    continue
+
+    def sell_chemist_items(self):
+
+        while True:
+            self.hud()
+            if self.potions_of_healing == 0 and self.town_portals == 0:
+                print(f"You have no quantum items to sell..")
+                pause()
+                return
+            print(f"You currently carry the following quantum items:")
+            print(f"1: Potions of Healing - Quantity: {self.potions_of_healing}")
+            print(f"2: Scrolls of Town Portal - Quantity: {self.town_portals}")
+            print(f"Your gold: {self.gold} GP")
+            sell_or_not = input(f"(S)ell items or go (B)ack: ").lower()
+            if sell_or_not == 'b':
+                return
+            elif sell_or_not == 's':
+                type_to_sell = input(f"Enter the category of item you wish to sell: ")
+
+                if type_to_sell == '1':
+                    your_item = "potions"
+                    if self.potions_of_healing < 1:
+                        print(f"You don't have any {your_item}..")
+                        sleep(1)
+                        continue
+
+                elif type_to_sell == '2':
+                    your_item = "scrolls of town portal"
+                    if self.town_portals < 1:
+                        print(f"You don't have any {your_item}..")
+                        sleep(1)
+                        continue
+
+                else:
+                    print(f"Invalid..")
+                    continue
+
+                try:
+                    number_of_items_to_sell = int(input(f"Enter number of {your_item} to sell: "))
+                    if type_to_sell == '1' and number_of_items_to_sell > 0:
+                        if self.potions_of_healing >= number_of_items_to_sell:
+                            self.potions_of_healing -= number_of_items_to_sell
+                            gold_recieved = (healing_potion.sell_price * number_of_items_to_sell)
+                            self.gold += gold_recieved
+                            print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
+                            pause()
+                            continue
+                        else:
+                            print(f"Invalid.")
+                            sleep(1)
+                            continue
+                    elif type_to_sell == '2' and number_of_items_to_sell > 0:
+                        if self.town_portals >= number_of_items_to_sell:
+                            self.town_portals -= number_of_items_to_sell
+                            gold_recieved = (scroll_of_town_portal.sell_price * number_of_items_to_sell)
+                            self.gold += gold_recieved
+                            print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
+                            pause()
+                            continue
+                        else:
+                            print(f"Invalid.")
+                            sleep(1)
+                            continue
+                    else:
+                        print(f"")
+                except ValueError:
+                    print("Invalid input")
+                    continue
 
     def buy_chemist_items(self):
 
@@ -1112,11 +1217,14 @@ class Player:
                   f"He notices you, grumbles, and continues hammering...")
             print(f"Your gold: {self.gold} GP")
             sale_item_key = input(
-                "(P)urchase items, Manage (W)eapons, (A)rmor, (S)hields, (B)oots, (I)nventory, or (E)xit the blacksmith: ").lower()
-            if sale_item_key not in ('p', 'w', 'a', 's', 'b', 'i', 'e'):
+                "(P)urchase items, (L)iquidate items, Manage (W)eapons, (A)rmor, (S)hields, (B)oots, (I)nventory, or (E)xit the blacksmith: ").lower()
+            if sale_item_key not in ('p', 'l', 'w', 'a', 's', 'b', 'i', 'e'):
                 continue
             elif sale_item_key == 'p':
                 self.buy_blacksmith_items()
+                continue
+            elif sale_item_key == 'l':
+                self.sell_blacksmith_items()
                 continue
             elif sale_item_key == 'w':
                 self.item_management('Weapons', self.wielded_weapon)
@@ -1318,7 +1426,7 @@ class Player:
             (self.pack[item_type]).sort(key=lambda x: x.buy_price)
             pause()
 
-    def sell_items(self):  # make this sell_blacksmith_items. then, create sell_chemist_items
+    def sell_blacksmith_items(self):  # make this sell_blacksmith_items. then, create sell_chemist_items
 
         while True:
             cls()
@@ -1347,12 +1455,15 @@ class Player:
 
                 try:
                     print(f"Your gold: {self.gold} GP")
-                    sell_or_exit = input("(S)ell items, or (E)xit the market: ").lower()
-                    if sell_or_exit not in ('s', 'e'):
+                    sell_or_exit = input("(S)ell, (L)iquidate entire armory, or go (B)ack: ").lower()
+                    if sell_or_exit not in ('s', 'l', 'b'):
                         cls()
                         # self.hud()
                         continue
-                    if sell_or_exit == 'e':
+                    if sell_or_exit == 'l':
+                        self.sell_everything()
+                        return
+                    if sell_or_exit == 'b':
                         break
                     item_type_index_to_sell = int(input(f"Enter the number of the category of the item to sell: "))
                     item_type_to_sell = non_empty_item_type_lst[item_type_index_to_sell - 1]
@@ -1366,17 +1477,42 @@ class Player:
                 persistent_item_type = item_type_to_sell
                 print(f"Your {item_type_to_sell} inventory eligible for sale:")
                 # self.item_type_inventory(item_type_to_sell)
+                sell_all = []
                 mgmt_dict = {}
                 for item in (self.pack[item_type_to_sell]):
                     mgmt_dict[item] = (self.pack[item_type_to_sell]).index(item)
                 for key, value in mgmt_dict.items():
                     print(value + 1, ':', key.name, '- Sell price:', key.sell_price, 'GP')
+                    sell_all.append(key.sell_price)
+                gold_for_all_items = sum(sell_all)
+                if not len(sell_all):
+                    # if gold_for_all_items == 0:
+                    print(f"You have no {item_type_to_sell} to sell.")
+                    pause()
+                    break
+                else:
+                    print(f"Total sell price for all {item_type_to_sell}: {gold_for_all_items} GP")
                 print(f"Your gold: {self.gold} GP")
-                sell_or_exit = input("Show entire (I)nventory, (S)ell an item, or go (B)ack: ").lower()
-                if sell_or_exit not in ('i', 's', 'b'):
+                sell_or_exit = input(
+                    f"Show entire (I)nventory, (S)ell an item, Sell (A)ll {item_type_to_sell} or go (B)ack: ").lower()
+                if sell_or_exit not in ('i', 's', 'a', 'b'):
                     cls()
                     # self.hud()
                     continue
+                elif sell_or_exit == 'a':
+
+                    while True:
+                        yes_or_no = input(f"Sell all {item_type_to_sell} for {gold_for_all_items} GP? ").lower()
+                        if yes_or_no not in ('y', 'n'):
+                            continue
+                        elif yes_or_no == 'y':
+                            print(f"You sell all of your {item_type_to_sell} for {gold_for_all_items} GP.")
+                            self.gold += gold_for_all_items
+                            (self.pack[item_type_to_sell]).clear()
+                            pause()
+                            break
+                        elif yes_or_no == 'n':
+                            break
                 elif sell_or_exit == 'i':
                     self.inventory()
                     continue
@@ -1424,6 +1560,31 @@ class Player:
                     else:
                         continue
 
+    def sell_everything(self):
+        liquidate_lst = []
+        item_type_lst = ['Weapons', 'Armor', 'Shields', 'Boots', 'Cloaks']
+        mgmt_dict = {}
+        for each_category in item_type_lst:
+            if len(self.pack[each_category]):
+                for item in (self.pack[each_category]):
+                    mgmt_dict[item] = (self.pack[each_category]).index(item)
+        for key, value in mgmt_dict.items():
+            print(key.name, '- Sell price:', key.sell_price, 'GP')
+            liquidate_lst.append(key.sell_price)
+            # (self.pack[each_category]).clear()
+        total = sum(liquidate_lst)
+        print(f"Total: {total}")
+        confirm_liquidate = input(f"Sell everything for {total} GP? ")
+        if confirm_liquidate == 'y':
+            for each_category in item_type_lst:
+                (self.pack[each_category]).clear()
+            print(f"You sell your entire armory inventory for {total} GP.")
+            self.gold += total
+            pause()
+            return
+        else:
+            return
+
     def use_scroll_of_town_portal(self):
         if self.town_portals < 1:
             # if not self.duplicate_item(scroll_of_town_portal.item_type, scroll_of_town_portal): # scroll_of_town_portal not in self.pack['Town Portal Implements']:
@@ -1444,7 +1605,7 @@ class Player:
     def drink_healing_potion(self):
         self.hud()
         if self.potions_of_healing > 0:
-        #if healing_potion in self.pack['Healing']:
+            # if healing_potion in self.pack['Healing']:
             if self.hit_points >= self.maximum_hit_points:
                 print(f"You are already at maximum health!")
                 sleep(1)
@@ -1452,7 +1613,7 @@ class Player:
             else:
                 print(f"You chug a potion")
                 self.potions_of_healing -= 1
-                #(self.pack['Healing'].remove(healing_potion))
+                # (self.pack['Healing'].remove(healing_potion))
                 self.hit_points = self.hit_points + round(self.maximum_hit_points * .66)
                 if self.hit_points > self.maximum_hit_points:
                     self.hit_points = self.maximum_hit_points

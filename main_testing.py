@@ -137,7 +137,7 @@ while True:
     while in_town:
         player_1.hud()
         town_functions = input(
-            "You are in town.\n(S)ave, (Q)uit game, (M)arket, (I)nventory, (B)lacksmith, (C)hemist or ("
+            "You are in town.\n(S)ave, (Q)uit game, (I)nventory, (B)lacksmith, (C)hemist or ("
             "E)nter dungeon "
             "--> ").lower()
         '''        if town_functions == 'r':
@@ -175,10 +175,7 @@ while True:
                     time.sleep(2)
         elif town_functions == 'i':
             player_1.inventory()
-        elif town_functions == 'm':
-            print("You visit the seller's market..")
-            sleep(1.5)
-            player_1.sell_items()
+
         elif town_functions == 'b':
             print("You visit the blacksmith..")
             sleep(1.5)
@@ -499,3 +496,7 @@ while True:
                     player_1.current_dungeon_level = player_1.dungeon.level
                     player_1.current_dungeon_level_name = player_1.dungeon.name
                     pause()'''
+'''elif town_functions == 'm':
+            print("You visit the seller's market..")
+            sleep(1.5)
+            player_1.sell_items()'''

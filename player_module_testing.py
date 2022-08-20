@@ -16,7 +16,8 @@ Add your modifiers.
 Armor Class 
 If the modified result is ≥ target’s Armor Class (AC) , the attack hits the target. 
 Damage Roll Damage Dice and add modifiers. The target’s HP are reduced, factoring resistances and vulnerabilities. 
-Spell Attack Many spells count as attacks. 
+Spell Attack 
+Many spells count as attacks. 
 The caster rolls d20 + Spellcasting Ability Modifier + Proficiency Bonus to hit vs AC. PHB 205'''
 
 # name0, level1, experience2, gold3, weapon_bonus4, armor5, shield6, constitution7,
@@ -590,11 +591,11 @@ class Player:
         self.x = 0
         self.y = 0
         self.pack = {
-            'Weapons': [short_sword, short_axe, broad_sword, quantum_sword],
+            'Weapons': [],
             # 'Healing': [],  #[healing_potion],
             'Armor': [],
-            'Shields': [quantum_tower_shield],
-            'Boots': [elven_boots, ancestral_footsteps],
+            'Shields': [],
+            'Boots': [],
             'Cloaks': [],
             'Rings of Regeneration': [],
             'Rings of Protection': []
@@ -1013,40 +1014,6 @@ class Player:
                 return
             else:
                 continue
-
-    def alternate_sell_chemist_items(self):  # redo this and make default if possible
-        chemist_sell_dict = {
-            'Healing': [healing_potion],
-            'Town Portal Implements': [scroll_of_town_portal],
-        }
-        while True:
-            # create a list of item types:
-            item_type_lst = list(chemist_sell_dict.keys())
-            # create a dictionary from list of item types, print out, add 1 to indexing
-            item_type_dict = {}
-            for item_type in item_type_lst:
-                item_type_dict[item_type] = item_type_lst.index(item_type)
-            for key, value in item_type_dict.items():
-                print(value + 1, ':', key)
-            print(f"Your gold: {self.gold} GP")
-            sell = input("Display your (I)nventory, (P)ick item type, or go (B)ack: ").lower()
-            if sell not in ('i', 'p', 'b'):
-                self.hud()
-                continue
-            elif sell == 'i':
-                self.inventory()
-                continue
-            elif sell == 'b':
-                return
-                # break
-            elif sell == 'p':
-                try:
-                    item_type_index_to_buy = int(input(f"Enter the category of the item to sell by number: "))
-                    item_type_to_buy = item_type_lst[item_type_index_to_buy - 1]
-                except (IndexError, ValueError):
-                    print("Invalid entry..")
-                    sleep(1)
-                    continue
 
     def sell_chemist_items(self):
 
@@ -2046,7 +2013,7 @@ class Player:
             self.hud()
             print(f"Loot roll ---> {loot_roll}")
             pause()
-            if loot_roll > 5:
+            if loot_roll > 9:
                 key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
                 rndm_item_index = random.randrange(len(loot_dict[key]))
                 found_item = loot_dict[key][rndm_item_index]
@@ -2103,6 +2070,8 @@ class Player:
 
     # NAVIGATION
     def dungeon_description(self, previous_x, previous_y):
+        if self.x == 2 and self.y == 3:
+            print(f"A testing description...")
         # DEAD END Only 1 exit!
         # 1 exit to the north
         # 2 exit to the south
@@ -2135,37 +2104,110 @@ class Player:
             print("You are in a dark corridor. There are exits in each direction...")
             # sleep(1.5)
             return
+        # DEAD ENDs - Only 1 exit!
+        # 1 exit to the north
+        elif self.position == "1":
+            print("You are at a dead end. Exit is to the north...")
+            # sleep(1.5)
+            return
+        # 2 exit to the south
+        elif self.position == "2":
+            print("You are at a dead end. Exit is to the south...")
+            # sleep(1.5)
+            return
+        # 3 exit to the east
+        elif self.position == "3":
+            print("You are at a dead end. Exit is to the east...")
+            # sleep(1.5)
+            return
+        # 4 exit to the west
+        elif self.position == "4":
+            print("You are at a dead end. Exit is to the west...")
+            # sleep(1.5)
+            return
+        # STRAIGHT HALLWAYs:
+
+        # 5 exits north and south
+        elif self.position == "5":
+            print("You are in a corridor. Exits are to the North and South...")
+            # sleep(1.5)
+            return
+        # 6 exits east and west
+        elif self.position == "6":
+            print("You are in a corridor. Exits are to the East and West...")
+            # sleep(1.5)
+            return
+        # CORNERS:
         # 7 exits to the south and east UPPER LEFT
         elif self.position == "7":
-            print(f"You are in a corner. Exits are to the south and east.")
-        # 8 exits to the north and east LOWER LEFT
+            print(f"You are in a corner. Exits are to the South and East.")
+            return
+            # 8 exits to the north and east LOWER LEFT
         elif self.position == "8":
-            print(f"You are in a corner. Exits are to the north and east.")
-        # 9 exits to the south and west UPPER RIGHT
+            print(f"You are in a corner. Exits are to the North and East.")
+            return
+            # 9 exits to the south and west UPPER RIGHT
         elif self.position == "9":
-            print(f"You are in a corner. Exits are to the south and west.")
-        # "-" exits to the north and west LOWER RIGHT
+            print(f"You are in a corner. Exits are to the South and West.")
+            return
+            # "-" exits to the north and west LOWER RIGHT
         elif self.position == "-":
-            print(f"You are in a corner. Exits are to the north and west.")
+            print(f"You are in a corner. Exits are to the North and West.")
+            return
+
+        # WALLS:
+        # |  exits to the south. east and west  NORTH WALL
+        elif self.position == "|":
+            print(f"You are against a wall to the North. Exits are to the South, East and West.")
+            return
+            # / exits to the north, east and west SOUTH WALL
+        elif self.position == "/":
+            print(f"You are against a wall to the South. Exits are to the North, East and West.")
+            return
+            # ( exits to the north, south and east WEST WALL
+        elif self.position == "(":
+            print(f"You are against a wall to the West. Exits are to the North, South and East.")
+            return
+            # ) exits to the north, south and west EAST WALL
+        elif self.position == ")":
+            print(f"You are against a wall to the East. Exits are to the North, South and West.")
+            return
+            # ^ <> v dungeon EXIT in the indicated direction!
         elif self.position == ">":
-            print(f"You see the exit to the East!")
-            pause()
+            print(f"You feel a draft... ")
+            sleep(1.25)
+            print("You see the dungeon exit to the East!")
+            return
+        elif self.position == "<":
+            print(f"You feel a draft... ")
+            sleep(1.25)
+            print("You see the dungeon exit to the West!")
+            return
+        elif self.position == "^":
+            print(f"You feel a draft... ")
+            sleep(1.25)
+            print("You see the dungeon exit to the North!")
+            return
+        elif self.position == "v":
+            print(f"You feel a draft... ")
+            sleep(1.25)
+            print("You see the dungeon exit to the South!")
+            return
 
     def display_map(self, maps):
         self.hud()
         print("You look at the map..")
         print(self.position)  # remove after testing
-        # if self.position == 0:
-        #    print("You are at the bottom of a staircase with a locked door above...")
+        if self.position == 0:
+            print("You are at the bottom of a staircase with a locked door above...")
         print(self.dungeon.name)
         if self.position != 0:
             self.dungeon.player_grid[self.y][self.x] = "X"
-        for element in range(0, 8):
+        for element in range(0, 20):
             print(*maps[element])
-        self.dungeon.player_grid[self.y][
-            self.x] = "."  # replace the X with a dot so that it doesn't leave a trail
-        # the following line will leave a trail of x's throughout the map to see where you've been.
-        # player_1.dungeon.player_grid[player.y][player.x] = "x"
+        self.dungeon.player_grid[self.y][self.x] = "."  # replace the X with a dot so that it doesn't leave a trail
+        # place the following line in the main file to leave a trail of x's throughout the map to see where you've been.
+        # player_1.dungeon.player_grid[player_1.y][player_1.x] = "x"
         self.position = self.dungeon.grid[self.y][self.x]
         print(f"X = your position E = Exit")
 
@@ -2175,6 +2217,7 @@ class Player:
                         boss = monster_cls()
                         boss_fight = True
                         encounter = 99'''
+        # dungeon dictionary in dungeons.py
         print(
             "You found the exit...\nYou begin to descend the stairs, deeper into the dungeon...\nYet, you sense you are not alone!")
         self.dungeon_key += 1
@@ -2570,3 +2613,36 @@ sale_item = (sale_items_dict[sale_item_key])
         print(f"AC: {boots.ac}")
         print(f"Sell Price: {boots.sell_price}")
         print(f"Minimum level requirement: {boots.minimum_level}")'''
+'''    def alternate_sell_chemist_items(self):  # redo this and make default if possible
+        chemist_sell_dict = {
+            'Healing': [healing_potion],
+            'Town Portal Implements': [scroll_of_town_portal],
+        }
+        while True:
+            # create a list of item types:
+            item_type_lst = list(chemist_sell_dict.keys())
+            # create a dictionary from list of item types, print out, add 1 to indexing
+            item_type_dict = {}
+            for item_type in item_type_lst:
+                item_type_dict[item_type] = item_type_lst.index(item_type)
+            for key, value in item_type_dict.items():
+                print(value + 1, ':', key)
+            print(f"Your gold: {self.gold} GP")
+            sell = input("Display your (I)nventory, (P)ick item type, or go (B)ack: ").lower()
+            if sell not in ('i', 'p', 'b'):
+                self.hud()
+                continue
+            elif sell == 'i':
+                self.inventory()
+                continue
+            elif sell == 'b':
+                return
+                # break
+            elif sell == 'p':
+                try:
+                    item_type_index_to_buy = int(input(f"Enter the category of the item to sell by number: "))
+                    item_type_to_buy = item_type_lst[item_type_index_to_buy - 1]
+                except (IndexError, ValueError):
+                    print("Invalid entry..")
+                    sleep(1)
+                    continue'''

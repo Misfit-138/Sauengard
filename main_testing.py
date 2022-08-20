@@ -202,15 +202,16 @@ while True:
                 previous_x = player_1.x
                 previous_y = player_1.y
                 # player_1.regenerate()
-                player_1.loot()  # for testing
+                #player_1.loot()  # for testing
                 encounter = dice_roll(1, 20)
                 player_1.hud()
                 if player_1.position == 0:
                     player_1.dungeon_description(previous_x, previous_y)
                 print(f"{player_1.dungeon.name}")
+                print(f"You can always (L)ook, or use (MAP) without wasting a turn.")
                 dungeon_command = input(
                     "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage weapons, (I)nventory or WASD to navigate. --> ").lower()
-                if dungeon_command not in ('w', 'a', 's', 'd', 'map', 'p', 'h', 'm', 'i', 'q'):
+                if dungeon_command not in ('w', 'a', 's', 'd', 'l', 'map', 'p', 'h', 'm', 'i', 'q'):
                     print("Unknown command")
                     time.sleep(.25)
                     continue
@@ -241,7 +242,7 @@ while True:
                     continue
                 elif dungeon_command == 'i':
                     player_1.inventory()
-                elif dungeon_command == 'w' or 'a' or 's' or 'd' or 'map':
+                elif dungeon_command == 'w' or 'a' or 's' or 'd' or 'l' or 'map':
                     if dungeon_command == 'w':
                         player_1.hud()
                         print("North")
@@ -258,6 +259,10 @@ while True:
                         player_1.hud()
                         print("East")
                         player_1.x += 1
+                    if dungeon_command == 'l':
+                        player_1.dungeon_description(previous_x, previous_y)
+                        pause()
+                        continue
                     if dungeon_command == 'map':
                         player_1.display_map(player_1.dungeon.player_grid)  #
                         pause()
@@ -265,7 +270,8 @@ while True:
                     # !!!!!!!!!!!!!!!! V NOTE the INDENT V !!!!!!!!!!!!!!!!
                     player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
                     player_1.dungeon_description(previous_x, previous_y)
-                    sleep(1.5)
+                    #sleep(1.5)
+                    pause()
                     if player_1.position == "E":
                         encounter = 99
                         player_1.next_dungeon()
@@ -273,7 +279,7 @@ while True:
                 # eventually, make encounter a returned boolean from navigation function?
                 if encounter > 10:
 
-                    print("This should create monster now..")
+                    print("This should create monster now..")  # remove after testing
                     # monster dictionary imported from monster module. keys correspond to difficulty
                     # in proximity to monster loop contains battle loop within it
                     in_proximity_to_monster = True

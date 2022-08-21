@@ -210,8 +210,8 @@ while True:
                 print(f"{player_1.dungeon.name}")
                 print(f"You can always (L)ook, or use (MAP) without wasting a turn.")
                 dungeon_command = input(
-                    "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage weapons, (I)nventory or WASD to navigate. --> ").lower()
-                if dungeon_command not in ('w', 'a', 's', 'd', 'l', 'map', 'p', 'h', 'm', 'i', 'q'):
+                    "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage weapons, (G)iant strength potion, (I)nventory or WASD to navigate. --> ").lower()
+                if dungeon_command not in ('w', 'a', 's', 'd', 'l', 'map', 'p', 'g', 'h', 'm', 'i', 'q'):
                     print("Unknown command")
                     time.sleep(.25)
                     continue
@@ -223,6 +223,10 @@ while True:
                         break
                     else:
                         continue
+                elif dungeon_command == 'g':
+                    player_1.drink_potion_of_strength()
+                    player_1.potion_of_strength_uses = 0
+                    continue
                 elif dungeon_command == 'q':
                     print("Quit game..")
                     while True:

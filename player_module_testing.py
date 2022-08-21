@@ -437,6 +437,24 @@ class HealingPotion(Healing):
 healing_potion = HealingPotion()
 
 
+class StrengthPotion:
+    def __init__(self):
+        self.name = "Potion of Strength"
+        self.item_type = "Potions of Strength"
+        self.duration = 5
+        self.buy_price = 50
+        self.sell_price = 20
+        self.minimum_level = 1
+
+    def __repr__(self):
+        #        return self.name
+        # def __str__(self):
+        return f'{self.name} - Purchase Price: {self.buy_price} GP'
+
+
+strength_potion = StrengthPotion()
+
+
 class Regeneration:
 
     def __init__(self):
@@ -583,6 +601,9 @@ class Player:
         self.stealth = self.cloak.stealth
         self.town_portals = 1
         self.potions_of_healing = 1
+        self.potions_of_strength = 2
+        self.potion_of_strength_effect = False
+        self.potion_of_strength_uses = 0
         self.position = 0
         self.current_dungeon_level = 1
         self.dungeon_key = 1
@@ -648,13 +669,22 @@ class Player:
 
         print(
             f"                                                                     Cloak: {self.cloak.name} (Stealth: {self.cloak.stealth})")
-
-        number_of_potions = self.potions_of_healing  # len(self.pack['Healing'])
+        if self.potions_of_strength > 0:
+            number_of_potions_of_strength = self.potions_of_strength
+            print(
+                f"                                                                     Strength Potions: {number_of_potions_of_strength}")
         print(
-            f"                                                                     Healing Potions: {number_of_potions}")
-        number_of_portal_scrolls = self.town_portals  # len(self.pack['Town Portal Implements'])
+            f"                                                                     Strength effect: ({self.potion_of_strength_effect})")
         print(
-            f"                                                                     Town Portal Scrolls: {number_of_portal_scrolls}")
+            f"                                                                     Strength Potion uses: ({self.potion_of_strength_uses})")
+        if self.potions_of_healing > 0:
+            number_of_potions_of_healing = self.potions_of_healing  # len(self.pack['Healing'])
+            print(
+                f"                                                                     Healing Potions: {number_of_potions_of_healing}")
+        if self.town_portals > 0:
+            number_of_portal_scrolls = self.town_portals  # len(self.pack['Town Portal Implements'])
+            print(
+                f"                                                                     Town Portal Scrolls: {number_of_portal_scrolls}")
         if self.ring_of_reg.name != default_ring_of_regeneration.name:
             print(
                 f"                                                                     Ring of Reg: +{self.ring_of_reg.regenerate}")
@@ -812,13 +842,26 @@ class Player:
         else:
             return False
 
+    def drink_potion_of_strength(self):
+        if self.potions_of_strength > 0:
+            print(f"You dunk a strength potion!")
+            self.potion_of_strength_effect = True
+            self.potions_of_strength -= 1
+            self.potion_of_strength_uses = 0
+            pause()
+            return self.potion_of_strength_effect
+        else:
+            print(f"You have no potions!")
+            pause()
+            return False
+
     def quick_move(self, monster_name):
+        # self.hud()
         quick_move_roll = dice_roll(1, 20)  # - self.stealth
         # player_initiative_roll = dice_roll(1, 20)
         if quick_move_roll == 20:
             print(f"The {monster_name} makes a quick move...")
             sleep(1.5)
-
             available_item_types_to_steal = []
             for i in self.pack.keys():  # gather all available
                 if len(self.pack[i]) > 0:  # item types to steal based on player's current item TYPES and put them
@@ -835,14 +878,19 @@ class Player:
                     return True  # True means monster gets away clean
             # Quantum item inventory is handled differently..This is clunky but should work.
             #
-            elif self.potions_of_healing > 0 and self.town_portals > 0:
-                potion_or_scroll = dice_roll(1, 20)
-                if potion_or_scroll > 10:
+            elif self.potions_of_healing > 0 and self.potions_of_strength > 0 and self.town_portals > 0:
+                potion_or_scroll = dice_roll(1, 3)
+                if potion_or_scroll == 1:
                     print(f"He steals a potion of healing.")
                     self.potions_of_healing -= 1
                     pause()
                     return True
-                else:
+                elif potion_or_scroll == 2 and self.potions_of_strength > 0:
+                    print(f"He steals a potion of strength.")
+                    self.potions_of_strength -= 1
+                    pause()
+                    return True
+                elif potion_or_scroll == 3 and self.town_portals > 0:
                     print(f"He steals a scroll of town portal.")
                     self.town_portals -= 1
                     pause()
@@ -853,6 +901,11 @@ class Player:
                 self.potions_of_healing -= 1
                 pause()
                 return True
+            elif self.potions_of_strength > 0:
+                print(f"He steals a potion of strength.")
+                self.potions_of_strength -= 1
+                pause()
+                return True
             elif self.town_portals > 0:
                 print(f"He steals a scroll of town portal.")
                 self.town_portals -= 1
@@ -861,7 +914,8 @@ class Player:
 
             else:
                 print("You have nothing he wants to steal!")
-                sleep(2)
+                pause()
+                # sleep(2)
                 return True  # Putting False here means your inventory is empty and monster sticks around to fight
 
         else:
@@ -869,7 +923,7 @@ class Player:
             # sleep(1.5)
             # print(f"..but this time, you are quicker!..")
             # sleep(2)
-            return False  # False here means monster failed check and monster sticks around to fight
+            return False  # False here means monster failed check, and he sticks around to fight; invisible to player
 
     def damage_while_paralyzed(self, monster_number_of_hd, monster_hit_dice):
         paralyze_damage = dice_roll(monster_number_of_hd, monster_hit_dice)
@@ -928,9 +982,11 @@ class Player:
                     sleep(1)
             return True  # do i need this statement?
 
-    def swing(self, name, level, dexterity, strength, weapon_bonus, monster_level, monster_name, monster_dexterity,
-              monster_armor_class):
+    def swing(self, name, monster_name, monster_armor_class, strength_effect):
         # add evade logic
+        strength_bonus = 0
+        if self.potion_of_strength_effect:
+            strength_bonus = round(self.strength * .5)
         self.hud()
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"You strike at the {monster_name}..")
@@ -954,14 +1010,15 @@ class Player:
         print(f"Monster armor class {monster_armor_class}")
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
             damage_roll = dice_roll((self.level * critical_bonus), self.hit_dice)
-            damage_to_opponent = round(damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus)
+
+            damage_to_opponent = round(damage_roll + self.strength_modifier + strength_bonus + self.wielded_weapon.damage_bonus)
             if damage_to_opponent > 0:
                 print(hit_statement)
                 sleep(1)
                 print(
                     f"{name} rolls {self.level * critical_bonus}d{self.hit_dice} ---> {damage_roll} + weapon bonus "
                     f"({self.wielded_weapon.damage_bonus}) + "
-                    f"Strength modifier ({self.strength_modifier}) = {damage_to_opponent} ")
+                    f"Strength modifier ({self.strength_modifier}) + Strength Bonus ({strength_bonus}) = {damage_to_opponent} ")
                 print(f"You do {damage_to_opponent} points of damage!")
                 pause()
                 self.hud()
@@ -1689,10 +1746,12 @@ class Player:
             print(f"A Ring of Regeneration + {self.ring_of_reg.regenerate}")
         if self.ring_of_prot.name != 'No Ring':
             print(f"A Ring of Protection + {self.ring_of_prot.protect} ")
-        if self.town_portals or self.potions_of_healing > 0:
+        if self.town_portals or self.potions_of_healing or self.potions_of_strength > 0:
             print(f"On your belt, you are carrying:")
-            print(f"{self.potions_of_healing} Potions of healing")
+            print(f"{self.potions_of_strength} Potions of Strength")
+            print(f"{self.potions_of_healing} Potions of Healing")
             print(f"{self.town_portals} Town Portal Scrolls")
+
         item_type_lst = ['Weapons', 'Armor', 'Shields', 'Boots', 'Cloaks']
         # item_type_lst = ['Weapons', 'Healing', 'Armor', 'Shields', 'Boots', 'Cloaks', 'Town Portal Implements']
         # number_of_items = len(self.pack[item_type])
@@ -2033,7 +2092,8 @@ class Player:
             'Cloaks': [elven_cloak],  # upgrade logic done
             'Rings of Regeneration': [ring_of_regeneration],  # upgrade logic done
             'Rings of Protection': [ring_of_protection],  # upgrade logic done
-            'Town Portal Implements': [scroll_of_town_portal]  # upgrade logic not needed
+            'Town Portal Implements': [scroll_of_town_portal],  # upgrade logic not needed
+            'Potions of Strength': [strength_potion]
         }
 
         while True:
@@ -2062,6 +2122,15 @@ class Player:
                         sleep(.5)
                         print(f"You snarf it..")
                         self.potions_of_healing += 1
+                        pause()
+                        continue
+                    elif found_item.item_type == 'Potions of Strength':
+                        # (self.pack[found_item.item_type]).append(found_item)
+
+                        print(f"You see a {found_item.name} !")
+                        sleep(.5)
+                        print(f"You snarf it..")
+                        self.potions_of_strength += 1
                         pause()
                         continue
                     elif found_item.item_type == 'Armor':
@@ -2100,10 +2169,17 @@ class Player:
     # NAVIGATION
     def dungeon_description(self, previous_x, previous_y):
         # if self.dungeon.event == self.dungeon.grid[self.y][self.x]:
-        print(self.dungeon.grid[self.y][self.x])
-
-        if self.dungeon.grid[self.y][self.x] == self.dungeon.event:
-        #if self.x == 2 and self.y == 3:
+        #print(self.dungeon.grid[self.y][self.x])
+        #if self.dungeon.event == self.dungeon.grid[self.y][self.x]:
+        #if self.dungeon.grid[self.y][self.x] == self.dungeon.event:
+            # if self.x == 2 and self.y == 3:
+        #print(previous_x, previous_y)
+        #print(self.x, self.y)
+        proximity = (self.x, self.y)
+        print(proximity)
+        print(self.dungeon.event)
+        if proximity == self.dungeon.event:
+        #if (self.x, self.y) == self.dungeon.event:
             print(f"A testing description...")
         # DEAD END Only 1 exit!
         # 1 exit to the north

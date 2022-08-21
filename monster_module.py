@@ -232,7 +232,8 @@ class Monster:
         print(f"The {name} attacks! (It rolls {roll_d20})")
         if roll_d20 == 1:
             print(f"..it awkwardly strikes and you easily block.")
-            time.sleep(2)
+            #time.sleep(2)
+            os.system('pause')
             return 0
         if roll_d20 == 20:
             critical_bonus = 2

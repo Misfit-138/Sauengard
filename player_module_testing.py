@@ -587,6 +587,7 @@ class Player:
         self.current_dungeon_level = 1
         self.dungeon_key = 1
         self.dungeon = dungeon_dict[self.dungeon_key]
+
         self.position = 0
         self.x = 0
         self.y = 0
@@ -817,6 +818,7 @@ class Player:
         if quick_move_roll == 20:
             print(f"The {monster_name} makes a quick move...")
             sleep(1.5)
+
             available_item_types_to_steal = []
             for i in self.pack.keys():  # gather all available
                 if len(self.pack[i]) > 0:  # item types to steal based on player's current item TYPES and put them
@@ -831,10 +833,37 @@ class Player:
                     print(f"He steals a {stolen_item.name}")  # from your {item_type}")
                     pause()
                     return True  # True means monster gets away clean
+            # Quantum item inventory is handled differently..This is clunky but should work.
+            #
+            elif self.potions_of_healing > 0 and self.town_portals > 0:
+                potion_or_scroll = dice_roll(1, 20)
+                if potion_or_scroll > 10:
+                    print(f"He steals a potion of healing.")
+                    self.potions_of_healing -= 1
+                    pause()
+                    return True
+                else:
+                    print(f"He steals a scroll of town portal.")
+                    self.town_portals -= 1
+                    pause()
+                    return True
+                # if player has one or the other
+            elif self.potions_of_healing > 0:
+                print(f"He steals a potion of healing.")
+                self.potions_of_healing -= 1
+                pause()
+                return True
+            elif self.town_portals > 0:
+                print(f"He steals a scroll of town portal.")
+                self.town_portals -= 1
+                pause()
+                return True
+
             else:
                 print("You have nothing he wants to steal!")
                 sleep(2)
                 return True  # Putting False here means your inventory is empty and monster sticks around to fight
+
         else:
             # print(f"The {monster_name} makes a quick move...")
             # sleep(1.5)
@@ -2070,7 +2099,11 @@ class Player:
 
     # NAVIGATION
     def dungeon_description(self, previous_x, previous_y):
-        if self.x == 2 and self.y == 3:
+        # if self.dungeon.event == self.dungeon.grid[self.y][self.x]:
+        print(self.dungeon.grid[self.y][self.x])
+
+        if self.dungeon.grid[self.y][self.x] == self.dungeon.event:
+        #if self.x == 2 and self.y == 3:
             print(f"A testing description...")
         # DEAD END Only 1 exit!
         # 1 exit to the north
@@ -2646,3 +2679,47 @@ sale_item = (sale_items_dict[sale_item_key])
                     print("Invalid entry..")
                     sleep(1)
                     continue'''
+'''            elif self.potions_of_healing > 0 and self.town_portals > 0:
+                potion_or_scroll = dice_roll(1, 20)
+                if potion_or_scroll > 10:
+                    print(f"He steals a potion of healing.")
+                    self.potions_of_healing -= 1
+                    pause()
+                    return True
+                else:
+                    print(f"He steals a scroll of town portal.")
+                    self.town_portals -= 1
+                    pause()
+                    return True
+            # if player has one or the other, potions are stolen first,
+            elif self.potions_of_healing > 0:
+                print(f"He steals a potion of healing.")
+                self.potions_of_healing -= 1
+                pause()
+                return True
+            elif self.town_portals > 0:
+                print(f"He steals a scroll of town portal.")
+                self.town_portals -= 1
+                pause()
+                return True'''
+'''quantum_item_list = [self.potions_of_healing, self.town_portals]
+            for quantum_item in quantum_item_list:
+                if quantum_item < 1:
+                    quantum_item_list.remove(quantum_item)
+            print(quantum_item_list)
+            if len(quantum_item_list):
+                stolen_item = random.choice(quantum_item_list)
+                if stolen_item == self.potions_of_healing:
+                    print(f"He steals a potion of healing.")
+                    quantum_item_list.remove(self.potions_of_healing)
+                    self.potions_of_healing -= 1
+
+                    pause()
+                    return True
+                elif stolen_item == self.town_portals:
+                    print(f"He steals a scroll of town portal.")
+                    quantum_item_list.remove(self.town_portals)
+                    self.town_portals -= 1
+
+                    pause()
+                    return True'''

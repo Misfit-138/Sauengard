@@ -202,7 +202,7 @@ while True:
                 previous_x = player_1.x
                 previous_y = player_1.y
                 # player_1.regenerate()
-                #player_1.loot()  # for testing
+                # player_1.loot()  # for testing
                 encounter = dice_roll(1, 20)
                 player_1.hud()
                 if player_1.position == 0:
@@ -270,7 +270,7 @@ while True:
                     # !!!!!!!!!!!!!!!! V NOTE the INDENT V !!!!!!!!!!!!!!!!
                     player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
                     player_1.dungeon_description(previous_x, previous_y)
-                    #sleep(1.5)
+                    # sleep(1.5)
                     pause()
                     if player_1.position == "E":
                         encounter = 99
@@ -316,7 +316,7 @@ while True:
                         monster_cls = random.choice(monster_dict[monster_key])
                         monster = monster_cls()  # create a monster object from the random class
                         if encounter == 99:
-                            monster = Ghoul()  # for testing. change logic to be a boss 1 level above player
+                            monster = Ghoul()  # boss for testing. change logic to be a boss 1 level above player
                         player_1.hud()
                         print(discovered_monsters)  # remove after testing
                         if monster.name in discovered_monsters:
@@ -338,8 +338,8 @@ while True:
                         print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
                         time.sleep(1)
                         if monster_initiative > player_initiative:
-                            attack_or_steal = dice_roll(1, 20)
-                            if attack_or_steal > player_1.armor_class:  # (player_1.dexterity + player_1.dexterity_modifier):
+                            monster_gets_the_jump = dice_roll(1, 20)
+                            if monster_gets_the_jump > player_1.armor_class:  # (player_1.dexterity + player_1.dexterity_modifier):
                                 player_1.hud()
                                 print(f"You are caught off guard!")
                                 melee_or_quantum = dice_roll(1, 100)

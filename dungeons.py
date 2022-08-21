@@ -39,6 +39,7 @@ class Dungeon1(Dungeon):
         super().__init__()
         self.name = "Dungeon Level 1"
         self.level = 1
+
         self.position = 0
         self.starting_x = 1
         self.starting_y = 3
@@ -84,6 +85,7 @@ class Dungeon1(Dungeon):
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]]
+        self.event = self.grid[2][3]
 
 
 dungeon_1 = Dungeon1()

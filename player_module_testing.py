@@ -85,8 +85,8 @@ class BroadSword(Weapon):
         super().__init__()
         self.name = "Broad Sword"
         self.item_type = "Weapons"
-        self.damage_bonus = 1
-        self.to_hit_bonus = 0
+        self.damage_bonus = 2
+        self.to_hit_bonus = 1
         self.sell_price = 5
         self.buy_price = 15
         self.minimum_level = 1
@@ -98,10 +98,10 @@ class QuantumSword(Weapon):
         self.name = "Quantum Sword"
         self.item_type = "Weapons"
         self.damage_bonus = 10  # 5
-        self.to_hit_bonus = 2
+        self.to_hit_bonus = 5
         self.sell_price = 5000
         self.buy_price = 8000
-        self.minimum_level = 1  # 3
+        self.minimum_level = 5  # 3
 
 
 short_sword = ShortSword()
@@ -116,12 +116,42 @@ class ShortAxe(Weapon):
         self.item_type = "Weapons"
         self.damage_bonus = 2
         self.to_hit_bonus = -1
-        self.sell_price = 20
-        self.buy_price = 50
+        self.sell_price = 1
+        self.buy_price = 5
         self.minimum_level = 1
 
 
 short_axe = ShortAxe()
+
+
+class BattleAxe(Weapon):
+    def __init__(self):
+        super().__init__()
+        self.name = "Battle Axe"
+        self.item_type = "Weapons"
+        self.damage_bonus = 3
+        self.to_hit_bonus = 0
+        self.sell_price = 5
+        self.buy_price = 15
+        self.minimum_level = 2
+
+
+battle_axe = BattleAxe()
+
+
+class GreatAxe(Weapon):
+    def __init__(self):
+        super().__init__()
+        self.name = "Great Axe"
+        self.item_type = "Weapons"
+        self.damage_bonus = 4
+        self.to_hit_bonus = 0
+        self.sell_price = 15
+        self.buy_price = 30
+        self.minimum_level = 2
+
+
+great_axe = GreatAxe()
 
 
 class Armor:
@@ -180,7 +210,7 @@ class StuddedLeatherArmor(Armor):
         self.armor_bonus = 0
         self.sell_price = 30
         self.buy_price = 45
-        self.minimum_level = 1  # 2
+        self.minimum_level = 2
 
 
 studded_leather_armor = StuddedLeatherArmor()
@@ -195,7 +225,7 @@ class ScaleMail(Armor):
         self.armor_bonus = 0
         self.sell_price = 300
         self.buy_price = 400
-        self.minimum_level = 1  # 4
+        self.minimum_level = 4
 
 
 scale_mail = ScaleMail()
@@ -210,7 +240,7 @@ class HalfPlate(Armor):
         self.armor_bonus = 0
         self.sell_price = 550
         self.buy_price = 750
-        self.minimum_level = 1  # 6
+        self.minimum_level = 6
 
 
 half_plate = HalfPlate()
@@ -225,7 +255,7 @@ class FullPlate(Armor):
         self.armor_bonus = 0
         self.sell_price = 1000
         self.buy_price = 1500
-        self.minimum_level = 1  # 10
+        self.minimum_level = 10
 
 
 full_plate = FullPlate()
@@ -284,7 +314,7 @@ class KiteShield(Shield):
         self.ac = 2
         self.sell_price = 50
         self.buy_price = 100
-        self.minimum_level = 1  # 5
+        self.minimum_level = 5
 
 
 kite_shield = KiteShield()
@@ -296,9 +326,9 @@ class QuantumTowerShield(Shield):
         self.name = "Quantum Tower Shield"
         self.item_type = "Shields"
         self.ac = 3
-        self.sell_price = 275
-        self.buy_price = 500
-        self.minimum_level = 1  # 10
+        self.sell_price = 375
+        self.buy_price = 700
+        self.minimum_level = 7
 
 
 quantum_tower_shield = QuantumTowerShield()
@@ -357,7 +387,7 @@ class AncestralFootsteps(Boots):
         self.ac = 2
         self.sell_price = 300
         self.buy_price = 500
-        self.minimum_level = 1
+        self.minimum_level = 5
 
 
 ancestral_footsteps = AncestralFootsteps()
@@ -570,7 +600,7 @@ class Player:
         self.experience = 0
         self.gold = 500000
         self.wielded_weapon = short_sword
-        self.weapon_bonus = self.wielded_weapon.damage_bonus  # self.weapon_bonus no longer used
+        # self.weapon_bonus = self.wielded_weapon.damage_bonus  # self.weapon_bonus no longer used
         self.armor = padded_armor
         self.shield = no_shield
         self.boots = leather_boots
@@ -601,10 +631,10 @@ class Player:
         self.stealth = self.cloak.stealth
         self.town_portals = 1
         self.potions_of_healing = 1
-        self.potions_of_strength = 2
+        self.potions_of_strength = 1
         self.potion_of_strength_effect = False
         self.potion_of_strength_uses = 0
-        self.position = 0
+
         self.current_dungeon_level = 1
         self.dungeon_key = 1
         self.dungeon = dungeon_dict[self.dungeon_key]
@@ -612,6 +642,7 @@ class Player:
         self.position = 0
         self.x = 0
         self.y = 0
+        self.proximity = (self.x, self.y)
         self.pack = {
             'Weapons': [],
             # 'Healing': [],  #[healing_potion],
@@ -673,10 +704,11 @@ class Player:
             number_of_potions_of_strength = self.potions_of_strength
             print(
                 f"                                                                     Strength Potions: {number_of_potions_of_strength}")
-        print(
-            f"                                                                     Strength effect: ({self.potion_of_strength_effect})")
-        print(
-            f"                                                                     Strength Potion uses: ({self.potion_of_strength_uses})")
+        if self.potion_of_strength_effect:
+            print(
+                f"                                                                     (GIANT STRENGTH EFFECT)")
+            print(
+                f"                                                                     Strength Potion uses: ({self.potion_of_strength_uses}/5)")
         if self.potions_of_healing > 0:
             number_of_potions_of_healing = self.potions_of_healing  # len(self.pack['Healing'])
             print(
@@ -842,18 +874,7 @@ class Player:
         else:
             return False
 
-    def drink_potion_of_strength(self):
-        if self.potions_of_strength > 0:
-            print(f"You dunk a strength potion!")
-            self.potion_of_strength_effect = True
-            self.potions_of_strength -= 1
-            self.potion_of_strength_uses = 0
-            pause()
-            return self.potion_of_strength_effect
-        else:
-            print(f"You have no potions!")
-            pause()
-            return False
+
 
     def quick_move(self, monster_name):
         # self.hud()
@@ -1011,7 +1032,8 @@ class Player:
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
             damage_roll = dice_roll((self.level * critical_bonus), self.hit_dice)
 
-            damage_to_opponent = round(damage_roll + self.strength_modifier + strength_bonus + self.wielded_weapon.damage_bonus)
+            damage_to_opponent = round(
+                damage_roll + self.strength_modifier + strength_bonus + self.wielded_weapon.damage_bonus)
             if damage_to_opponent > 0:
                 print(hit_statement)
                 sleep(1)
@@ -1105,13 +1127,14 @@ class Player:
 
         while True:
             self.hud()
-            if self.potions_of_healing == 0 and self.town_portals == 0:
+            if self.potions_of_healing == 0 and self.town_portals == 0 and self.potions_of_strength == 0:
                 print(f"You have no quantum items to sell..")
                 pause()
                 return
             print(f"You currently carry the following quantum items:")
             print(f"1: Potions of Healing - Quantity: {self.potions_of_healing}")
             print(f"2: Scrolls of Town Portal - Quantity: {self.town_portals}")
+            print(f"3: Potions of Strength - Quantity: {self.potions_of_strength}")
             print(f"Your gold: {self.gold} GP")
             sell_or_not = input(f"(S)ell items or go (B)ack: ").lower()
             if sell_or_not == 'b':
@@ -1129,6 +1152,12 @@ class Player:
                 elif type_to_sell == '2':
                     your_item = "scrolls of town portal"
                     if self.town_portals < 1:
+                        print(f"You don't have any {your_item}..")
+                        sleep(1)
+                        continue
+                elif type_to_sell == '3':
+                    your_item = "potions of strength"
+                    if self.potions_of_strength < 1:
                         print(f"You don't have any {your_item}..")
                         sleep(1)
                         continue
@@ -1163,8 +1192,20 @@ class Player:
                             print(f"Invalid.")
                             sleep(1)
                             continue
+                    elif type_to_sell == '3' and number_of_items_to_sell > 0:
+                        if self.potions_of_strength >= number_of_items_to_sell:
+                            self.potions_of_strength -= number_of_items_to_sell
+                            gold_recieved = (strength_potion.sell_price * number_of_items_to_sell)
+                            self.gold += gold_recieved
+                            print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
+                            pause()
+                            continue
+                        else:
+                            print(f"Invalid.")
+                            sleep(1)
+                            continue
                     else:
-                        print(f"")
+                        print(f"Invalid entry..")
                 except ValueError:
                     print("Invalid input")
                     continue
@@ -1173,6 +1214,7 @@ class Player:
 
         chemist_dict = {
             'Healing': [healing_potion],
+            'Potions of Strength': [strength_potion],
             'Town Portal Implements': [scroll_of_town_portal],
         }
         while True:
@@ -1238,11 +1280,12 @@ class Player:
                         if confirm_purchase == 'y':
                             if self.gold >= sale_item.buy_price:
                                 if self.level >= sale_item.minimum_level:
-
                                     self.gold -= sale_item.buy_price
                                     if sale_item.name == 'Scroll of Town Portal':
                                         self.town_portals += 1
-                                    if sale_item.name == 'Potion of Healing':
+                                    elif sale_item.name == 'Potion of Strength':
+                                        self.potions_of_strength += 1
+                                    elif sale_item.name == 'Potion of Healing':
                                         self.potions_of_healing += 1
 
                                     self.hud()
@@ -1261,6 +1304,33 @@ class Player:
                                 continue
                         else:
                             continue
+
+    def item_management_sub_menu(self):
+        while True:
+            self.hud()
+            item_to_manage = input(f"Manage (W)eapons, (A)rmor, (S)hields, (B)oots, View your (I)nventory, or (E)xit: ")
+            if item_to_manage == 'w':
+                self.item_management('Weapons', self.wielded_weapon)
+                # self.weapon_management()
+                continue
+
+            elif item_to_manage == 'a':
+                self.item_management('Armor', self.armor)
+                continue
+
+            elif item_to_manage == 's':
+                self.item_management('Shields', self.shield)
+                continue
+            elif item_to_manage == 'b':
+                self.item_management('Boots', self.boots)
+                continue
+            elif item_to_manage == 'i':
+                self.inventory()
+                continue
+            elif item_to_manage == 'e':
+                return
+            else:
+                continue
 
     def blacksmith_main(self):
 
@@ -1303,11 +1373,12 @@ class Player:
     def buy_blacksmith_items(self):
 
         blacksmith_dict = {
-            'Weapons': [short_sword, short_axe, quantum_sword, broad_sword],
+            'Weapons': [short_axe, broad_sword, quantum_sword, battle_axe, great_axe],
             'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
             'Shields': [buckler, kite_shield, quantum_tower_shield],
             'Boots': [elven_boots, ancestral_footsteps],
             'Cloaks': [elven_cloak]
+
         }
         while True:
             self.hud()
@@ -1374,18 +1445,9 @@ class Player:
                             if self.gold >= sale_item.buy_price:
                                 # print("Enough gold")
                                 if self.level >= sale_item.minimum_level:
-                                    # print("Minimum level ok")
-                                    # print(self.item_is_in_inventory(sale_item.item_type, sale_item))
-                                    # print("Item in inventory function right before this line")
+
                                     if not self.duplicate_item(sale_item.item_type, sale_item):
-                                        '''if sale_item not in (self.pack['Boots']) \
-                                                and sale_item not in (self.pack['Shields']) \
-                                                and sale_item not in (self.pack['Armor']) \
-                                                and sale_item not in (self.pack['Weapons']) \
-                                                and sale_item.name != self.wielded_weapon.name \
-                                                and sale_item.name != self.boots.name \
-                                                and sale_item.name != self.shield.name \
-                                                and sale_item.name != self.armor.name:'''
+
                                         self.hud()
                                         print(f"You buy a {sale_item.name}")
                                         self.gold -= sale_item.buy_price
@@ -1648,12 +1710,35 @@ class Player:
             self.hud()
             # (self.pack['Town Portal Implements'].remove(scroll_of_town_portal))
             self.town_portals -= 1
-            print(f"The portal appears before you; a seemingly impossible gateway between distant places..")
+            print(f"The quantum portal appears before you; a seemingly impossible gateway between distant places..")
             time.sleep(2)
             # winsound.PlaySound(None, winsound.SND_ASYNC)
             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_theme.wav',
                                winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
             return True
+
+    def drink_potion_of_strength(self):
+        self.hud()
+        rndm_drinking_phrases = [
+            "Tilting it to your lips, you empty the vial and the strength of giants surges through you!",
+            "Retrieving the vial from your belt, you pop the cork and down the sweet liquid...\n"
+            "Great power courses through your body!",
+            "No sooner is the tincture running down your throat, than does the great\n "
+            "and overwhelming strength fill your body! You feel invincible!"
+
+        ]
+        drink_phrase = random.choice(rndm_drinking_phrases)
+        if self.potions_of_strength > 0:
+            print(f"{drink_phrase}")
+            self.potion_of_strength_effect = True
+            self.potions_of_strength -= 1
+            self.potion_of_strength_uses = 0
+            pause()
+            return self.potion_of_strength_effect
+        else:
+            print(f"You have no potions!")
+            pause()
+            return False
 
     def drink_healing_potion(self):
         self.hud()
@@ -1664,18 +1749,23 @@ class Player:
                 sleep(1)
                 return
             else:
-                print(f"You chug a potion")
+                print(f"You retrieve the vial from your belt and eagerly drain its contents into your mouth...")
+                sleep(2.25)
                 self.potions_of_healing -= 1
-                # (self.pack['Healing'].remove(healing_potion))
                 self.hit_points = self.hit_points + round(self.maximum_hit_points * .66)
                 if self.hit_points > self.maximum_hit_points:
                     self.hit_points = self.maximum_hit_points
+                self.hud()
+                print(f"Your vitality increases.")
                 sleep(1)
-                print(f"You now have {self.hit_points} hit points.")
+
+                #print(f"You now have {self.hit_points} hit points.")
                 # (pack[sub_item_type]).remove(sub_item)
+                pause()
                 return
         else:
             print("You have no potions!")
+            pause()
             return
 
     def duplicate_item(self, item_type, possible_duplicate):
@@ -1699,7 +1789,7 @@ class Player:
             return False
 
     def item_type_inventory(self, item_type):  # list items in inventory by type
-        if item_type != 'Town Portal Implements' and item_type != 'Healing':
+        if item_type != 'Town Portal Implements' and item_type != 'Potions of Strength' and item_type != 'Healing':
             print(f"{item_type}:")
             self.pack[item_type].sort(key=lambda x: x.name)
             stuff_dict = Counter(item.name for item in self.pack[item_type])
@@ -1723,6 +1813,13 @@ class Player:
                 return True
             else:
                 print(f"You have no scrolls of town portal.")
+                return False
+        elif item_type == 'Potions of Strength':
+            if self.potions_of_strength > 0:
+                print(f"You have {self.potions_of_strength} Potions of Strength")
+                return True
+            else:
+                print(f"You have no Potions of Strength.")
                 return False
         elif item_type == 'Healing':
             if self.potions_of_healing > 0:
@@ -2084,15 +2181,15 @@ class Player:
 
     def loot(self):
         loot_dict = {
-            'Weapons': [short_axe, quantum_sword, broad_sword],  # upgrade logic done
-            'Healing': [healing_potion],  # upgrade logic not needed
-            'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],  # upgrade logic done
-            'Shields': [buckler, kite_shield, quantum_tower_shield],  # upgrade logic done
-            'Boots': [elven_boots, ancestral_footsteps],  # upgrade logic done
-            'Cloaks': [elven_cloak],  # upgrade logic done
-            'Rings of Regeneration': [ring_of_regeneration],  # upgrade logic done
-            'Rings of Protection': [ring_of_protection],  # upgrade logic done
-            'Town Portal Implements': [scroll_of_town_portal],  # upgrade logic not needed
+            'Weapons': [short_axe, broad_sword, quantum_sword, battle_axe, great_axe],
+            'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
+            'Shields': [buckler, kite_shield, quantum_tower_shield],
+            'Boots': [elven_boots, ancestral_footsteps],
+            'Cloaks': [elven_cloak],
+            'Healing': [healing_potion],
+            'Rings of Regeneration': [ring_of_regeneration],
+            'Rings of Protection': [ring_of_protection],
+            'Town Portal Implements': [scroll_of_town_portal],
             'Potions of Strength': [strength_potion]
         }
 
@@ -2160,7 +2257,7 @@ class Player:
                         pause()  # remove this pause after testing
                         continue'''
                 else:
-                    print(f"{found_item.name}\nMinimum requirements not met.")  # remove after testing
+                    print(f"Minimum requirements not met for {found_item.name}.")  # remove after testing
                     pause()  # remove after testing
                     continue
             else:
@@ -2169,17 +2266,18 @@ class Player:
     # NAVIGATION
     def dungeon_description(self, previous_x, previous_y):
         # if self.dungeon.event == self.dungeon.grid[self.y][self.x]:
-        #print(self.dungeon.grid[self.y][self.x])
-        #if self.dungeon.event == self.dungeon.grid[self.y][self.x]:
-        #if self.dungeon.grid[self.y][self.x] == self.dungeon.event:
-            # if self.x == 2 and self.y == 3:
-        #print(previous_x, previous_y)
-        #print(self.x, self.y)
-        proximity = (self.x, self.y)
-        print(proximity)
-        print(self.dungeon.event)
-        if proximity == self.dungeon.event:
-        #if (self.x, self.y) == self.dungeon.event:
+        # print(self.dungeon.grid[self.y][self.x])
+        # if self.dungeon.event == self.dungeon.grid[self.y][self.x]:
+        # if self.dungeon.grid[self.y][self.x] == self.dungeon.event:
+        # if self.x == 2 and self.y == 3:
+        # print(previous_x, previous_y)
+        # print(self.x, self.y)
+        self.hud()
+        #self.proximity = (self.x, self.y)
+        print(self.proximity)  # remove after testing
+        print(self.dungeon.event)  # remove after testing
+        if self.proximity == self.dungeon.event:
+            # if (self.x, self.y) == self.dungeon.event:
             print(f"A testing description...")
         # DEAD END Only 1 exit!
         # 1 exit to the north

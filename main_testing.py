@@ -210,7 +210,7 @@ while True:
                 print(f"{player_1.dungeon.name}")
                 print(f"You can always (L)ook, or use (MAP) without wasting a turn.")
                 dungeon_command = input(
-                    "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage weapons, (G)iant strength potion, (I)nventory or WASD to navigate. --> ").lower()
+                    "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage inventory,\n(G)iant strength potion, (I)nventory or WASD to navigate. --> ").lower()
                 if dungeon_command not in ('w', 'a', 's', 'd', 'l', 'map', 'p', 'g', 'h', 'm', 'i', 'q'):
                     print("Unknown command")
                     time.sleep(.25)
@@ -242,7 +242,7 @@ while True:
                     time.sleep(1)
                     player_1.hud()
                 elif dungeon_command == 'm':
-                    player_1.item_management('Weapons', player_1.wielded_weapon)
+                    player_1.item_management_sub_menu()
                     continue
                 elif dungeon_command == 'i':
                     player_1.inventory()
@@ -251,18 +251,22 @@ while True:
                         player_1.hud()
                         print("North")
                         player_1.y -= 1
+                        sleep(.5)
                     if dungeon_command == 'a':
                         player_1.hud()
                         print("West")
                         player_1.x -= 1
+                        sleep(.5)
                     if dungeon_command == 's':
                         player_1.hud()
                         print("South")
                         player_1.y += 1
+                        sleep(.5)
                     if dungeon_command == 'd':
                         player_1.hud()
                         print("East")
                         player_1.x += 1
+                        sleep(.5)
                     if dungeon_command == 'l':
                         player_1.dungeon_description(previous_x, previous_y)
                         pause()
@@ -271,9 +275,19 @@ while True:
                         player_1.display_map(player_1.dungeon.player_grid)  #
                         pause()
                         continue
+                    # ***** END OF NAVIGATION TURN *************************************************************
                     # !!!!!!!!!!!!!!!! V NOTE the INDENT V !!!!!!!!!!!!!!!!
                     player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
+                    player_1.proximity = (player_1.x, player_1.y)
                     player_1.dungeon_description(previous_x, previous_y)
+                    # Potion of strength wears off after each movement in addition to attacks.
+                    if player_1.potion_of_strength_effect:
+                        player_1.potion_of_strength_uses += 1
+                        if player_1.potion_of_strength_uses > 4:
+                            player_1.potion_of_strength_effect = False
+                            player_1.potion_of_strength_uses = 0
+                            print(f"The giant strength leaves your body..")
+
                     # sleep(1.5)
                     pause()
                     if player_1.position == "E":
@@ -324,7 +338,7 @@ while True:
                         player_1.hud()
                         print(discovered_monsters)  # remove after testing
                         if monster.name in discovered_monsters:
-                            print(f"You have encountered a level {monster.level} {monster.name}.")
+                            print(f"You have encountered a level {monster.level} {monster.name}.")  # remove level after testing
                             time.sleep(2)
                         else:
                             print(f"{monster.introduction}")
@@ -370,7 +384,7 @@ while True:
                             player_1.hud()
                             print(
                                 f"Lvl {monster.level} {monster.name} {monster.hit_points} hp {monster.number_of_hd}d{monster.hit_dice}")
-                            battle_choice = input("(F)ight, (H)ealing potion, (S)trength potion, (C)ast or (E)vade\nF/H/S/C/E --> ").lower()
+                            battle_choice = input("(F)ight, (H)ealing potion, (G)iant Strength potion, (C)ast or (E)vade\nF/H/S/C/E --> ").lower()
                             if battle_choice == "e":
                                 evade_success = player_1.evade(monster.name, monster.dexterity)
                                 if evade_success:
@@ -384,15 +398,16 @@ while True:
                                 player_1.hud()
                                 print(f"Cast")
                                 continue
-                            elif battle_choice == 'h' or battle_choice == 's':
+                            elif battle_choice == 'h' or battle_choice == 'g':
                                 if battle_choice == 'h':
                                     player_1.drink_healing_potion()
-                                    time.sleep(1)
-                                elif battle_choice == 's':
+                                    # time.sleep(1)
+                                elif battle_choice == 'g':
                                     player_1.drink_potion_of_strength()
                                     player_1.potion_of_strength_uses = 0
                                 # ********MONSTER TURN AFTER YOU SWIG POTION***********************
                                 # if not monster.check_dead():
+                                player_1.hud()
                                 melee_or_quantum = dice_roll(1, 20)
                                 if monster.quantum_energy and melee_or_quantum > 10:
                                     damage_to_player = monster.quantum_energy_attack(monster.name,
@@ -444,16 +459,15 @@ while True:
                                 if player_1.potion_of_strength_uses > 4:
                                     player_1.potion_of_strength_effect = False
                                     player_1.potion_of_strength_uses = 0
+                                    print(f"The giant strength ebbs away, leaving you feeling empty.. ")
+                                    pause()
                             if monster.check_dead():
                                 player_1.hud()
                                 print(f"It died..")
-                                time.sleep(1.5)
+                                pause()
                                 player_1.level_up(monster.experience_award, monster.gold)
                                 in_proximity_to_monster = False
-                                #player_1.potion_of_strength_effect = False  # these lines make it harder
-                                #player_1.potion_of_strength_uses = 0
                                 player_1.loot()
-
                                 break
 
                             # monster turn:

@@ -147,6 +147,7 @@ class Monster:
 
     def __init__(self):
         self.monster = "Super class"
+        self.name = ""
         self.level = 0
         self.experience_award = 0
         self.gold = 0
@@ -211,23 +212,25 @@ class Monster:
             return True
 
     def swing(self, name, human_player_armor_class):
-        attack_bonus = random.randint(1, 100)
-        print(f"Monster attack bonus roll: {attack_bonus}")  # remove after testing
-        if attack_bonus <= 50:
+
+        attack_bonus_roll = random.randint(1, 100)
+        print(f"Monster attack bonus roll: {attack_bonus_roll}")  # remove after testing
+        if attack_bonus_roll <= 50:
             attack_bonus = self.attack_1
             attack_phrase = self.attack_1_phrase
-        if attack_bonus > 50 <= 75:
+        if attack_bonus_roll > 50 <= 75:
             attack_bonus = self.attack_2
             attack_phrase = self.attack_2_phrase
-        if attack_bonus > 75 <= 85:
+        if attack_bonus_roll > 75 <= 85:
             attack_bonus = self.attack_3
             attack_phrase = self.attack_3_phrase
-        if attack_bonus > 85 <= 95:
+        if attack_bonus_roll > 85 <= 95:
             attack_bonus = self.attack_4
             attack_phrase = self.attack_4_phrase
-        if attack_bonus > 95:
+        if attack_bonus_roll > 95:
             attack_bonus = self.attack_5
             attack_phrase = self.attack_5_phrase
+        print(f"Monster attack bonus: {attack_bonus}")
         roll_d20 = dice_roll(1, 20)
         print(f"The {name} attacks! (It rolls {roll_d20})")
         if roll_d20 == 1:
@@ -264,7 +267,7 @@ class Monster:
                 return damage_to_opponent
             else:
                 print(f"The {name} strikes, but you block the attack!")  # zero damage to player result
-                time.sleep(2)
+                os.system('pause')
                 return 0  # 0 points damage to player
         else:
             print(f"It missed..")
@@ -272,20 +275,20 @@ class Monster:
             return 0
 
     def quantum_energy_attack(self, name, human_player_dexterity_modifier, human_player_ring_of_prot):
-        attack_bonus = random.randint(1, 100)
-        if attack_bonus <= 50:
+        attack_bonus_roll = random.randint(1, 100)
+        if attack_bonus_roll <= 50:
             attack_bonus = self.quantum_attack_1
             attack_phrase = self.quantum_attack_1_phrase
-        if attack_bonus > 50 <= 75:
+        if attack_bonus_roll > 50 <= 75:
             attack_bonus = self.quantum_attack_2
             attack_phrase = self.quantum_attack_2_phrase
-        if attack_bonus > 75 <= 85:
+        if attack_bonus_roll > 75 <= 85:
             attack_bonus = self.quantum_attack_3
             attack_phrase = self.quantum_attack_3_phrase
-        if attack_bonus > 85 <= 95:
+        if attack_bonus_roll > 85 <= 95:
             attack_bonus = self.quantum_attack_4
             attack_phrase = self.quantum_attack_4_phrase
-        if attack_bonus > 95:
+        if attack_bonus_roll > 95:
             attack_bonus = self.quantum_attack_5
             attack_phrase = self.quantum_attack_5_phrase
         human_player_roll_d20 = dice_roll(1, 20)
@@ -305,7 +308,7 @@ class Monster:
         print(
             f"Your roll: {human_player_roll_d20} + dexterity modifier ({human_player_dexterity_modifier}) + ring of protection "
             f"({human_player_ring_of_prot}). Total: {human_player_roll_d20 + human_player_dexterity_modifier}")
-        if roll_d20 + self.wisdom_modifier >= human_player_roll_d20 + human_player_dexterity_modifier + human_player_ring_of_prot:
+        if roll_d20 + self.wisdom_modifier >= (human_player_roll_d20 + human_player_dexterity_modifier + human_player_ring_of_prot):
             damage_roll = dice_roll(self.number_of_hd * critical_bonus, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
@@ -353,6 +356,7 @@ class Quasit(Monster):
     def __init__(self):
         super().__init__()
         self.level = 1
+        self.name = "Quasit"
         self.experience_award = 25  # MM says it should be 200 exp?!
         self.gold = random.randint(2, 10)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -397,7 +401,7 @@ class Quasit(Monster):
                             f"as it lets out a high pitched, fiendish and wretched cry. The air around it becomes hazy.."
         self.is_discovered = False
 
-    name = "Quasit"
+    #name = "Quasit"
 
 
 class Kobold(Monster):
@@ -405,6 +409,7 @@ class Kobold(Monster):
     def __init__(self):
         super().__init__()
         self.level = 1
+        self.name = "Kobold"
         self.experience_award = 25
         self.gold = random.randint(2, 15)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -446,7 +451,7 @@ class Kobold(Monster):
         self.introduction = f"You have encountered a {self.name}."
         self.is_discovered = False
 
-    name = "Kobold"
+    #name = "Kobold"
 
 
 class Cultist(Monster):
@@ -454,6 +459,7 @@ class Cultist(Monster):
     def __init__(self):
         super().__init__()
         self.level = 1
+        self.name = "Cultist"
         self.experience_award = 50
         self.gold = random.randint(2, 20)  # self.level * 373 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -498,7 +504,7 @@ class Cultist(Monster):
                             f" allegiance to some dark Quantum Manipulator..."
         self.is_discovered = False
 
-    name = "Cultist"
+    #name = "Cultist"
 
 
 class Goblin(Monster):
@@ -506,6 +512,7 @@ class Goblin(Monster):
     def __init__(self):
         super().__init__()
         self.level = 1
+        self.name = "Goblin"
         self.experience_award = self.level * 50
         self.gold = random.randint(2, 25)  # self.level * 200 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -547,7 +554,7 @@ class Goblin(Monster):
         self.introduction = f"You have encountered a {self.name}."
         self.is_discovered = False
 
-    name = "Goblin"
+    #name = "Goblin"
 
 
 class WingedKobold(Monster):
@@ -555,6 +562,7 @@ class WingedKobold(Monster):
     def __init__(self):
         super().__init__()
         self.level = 1
+        self.name = "Winged Kobold"
         self.experience_award = 50
         self.gold = random.randint(2, 15)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -596,7 +604,7 @@ class WingedKobold(Monster):
         self.introduction = f"You have encountered a {self.name}."
         self.is_discovered = False
 
-    name = "Winged Kobold"
+    #"Winged Kobold"
 
 
 class Shadow(Monster):
@@ -604,6 +612,7 @@ class Shadow(Monster):
     def __init__(self):
         super().__init__()
         self.level = 2
+        self.name = "Shadow"
         self.experience_award = 100
         self.gold = random.randint(5, 10)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -669,7 +678,7 @@ class Shadow(Monster):
                                "feel your motor skills quivering.."
         self.is_discovered = False
 
-    name = "Shadow"
+    #name = "Shadow"
 
 
 class Skeleton(Monster):
@@ -677,6 +686,7 @@ class Skeleton(Monster):
     def __init__(self):
         super().__init__()
         self.level = 2
+        self.name = "Skeleton"
         self.experience_award = 100
         self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -723,7 +733,7 @@ class Skeleton(Monster):
                             f"The air bristles with Quantum Energy.."
         self.is_discovered = False
 
-    name = "Skeleton"
+    #name = "Skeleton"
 
 
 class Drow(Monster):
@@ -731,6 +741,7 @@ class Drow(Monster):
     def __init__(self):
         super().__init__()
         self.level = 2
+        self.name = "Drow"
         self.experience_award = 100
         self.gold = random.randint(5, 12)  # self.level * 300 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -786,7 +797,7 @@ class Drow(Monster):
         self.introduction = f"You have encountered a {self.name}."
         self.is_discovered = False
 
-    name = "Drow"
+    #name = "Drow"
 
 
 class Troglodyte(Monster):
@@ -794,6 +805,7 @@ class Troglodyte(Monster):
     def __init__(self):
         super().__init__()
         self.level = 2
+        self.name = "Troglodyte"
         self.experience_award = 50
         self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 2
@@ -835,7 +847,7 @@ class Troglodyte(Monster):
         self.introduction = f"You have encountered a Troglodyte. "
         self.is_discovered = False
 
-    name = "Troglodyte"
+    #"Troglodyte"
 
 
 class Orc(Monster):
@@ -843,6 +855,7 @@ class Orc(Monster):
     def __init__(self):
         super().__init__()
         self.level = 2
+        self.name = "Orc"
         self.experience_award = 100
         self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -886,7 +899,7 @@ class Orc(Monster):
                             f"humanoids that stand against it.."
         self.is_discovered = False
 
-    name = "Orc"
+    #name = "Orc"
 
 
 class Ghoul(Monster):
@@ -894,6 +907,7 @@ class Ghoul(Monster):
     def __init__(self):
         super().__init__()
         self.level = 2
+        self.name = "Ghoul"
         self.experience_award = 200
         self.gold = random.randint(6, 16)  # self.level * 103 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -933,7 +947,7 @@ class Ghoul(Monster):
         self.attack_4 = 2
         self.attack_4_phrase = "It rushes straight at you!!"
         self.attack_5 = 3
-        self.attack_5_phrase = "It leaps upon you!!"
+        self.attack_5_phrase = "It leaps upon your shoulders, savagely swiping at you!!"
         self.introduction = "You have encountered a Ghoul, crouching and licking a skull. Noticing your approach,\n" \
                             "it drops the skull and rises to its feet, hissing through razor-sharp teeth and\n" \
                             "working its jagged claws. Driven by an insatiable hunger for humanoid flesh,\n " \
@@ -941,13 +955,13 @@ class Ghoul(Monster):
         self.is_discovered = False
         self.paralyze_phrase = "It lurches forward, grabbing your arm in its cold, sinewy and awful claws!"
 
-    name = "Ghoul"
+    #name = "Ghoul"
 
 
 # monster dictionary. keys correspond to difficulty
 monster_dict = {
     1: [Quasit, Kobold, Cultist, Goblin, WingedKobold],
-    2: [Shadow, Skeleton, Drow, Orc, Ghoul]
+    2: [Shadow, Skeleton, Drow, Troglodyte, Orc, Ghoul]
 }
 # For monster hit points..take hit dice and add (constitution modifier x number of hit dice).
 # For example, if a monster has a Constitution of 12 (+1 modifier) and 2d8 Hit Dice, it has 2d8 + 2 Hit Points

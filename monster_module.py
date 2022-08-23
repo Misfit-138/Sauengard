@@ -443,7 +443,7 @@ class Kobold(Monster):
         self.attack_2 = 1
         self.attack_2_phrase = "It thrusts forward and bites with its jaws!"
         self.attack_3 = 2
-        self.attack_3_phrase = "It raises its sling, in an attempt to bludgeon you!"
+        self.attack_3_phrase = "It raises its sling to bludgeon you!"
         self.attack_4 = 2
         self.attack_4_phrase = "With blinding speed, it kicks with its horrid claws.."
         self.attack_5 = 3

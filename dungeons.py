@@ -24,7 +24,7 @@ class Dungeon:
     def __init__(self):
         self.name = ""
         self.level = 0
-        self.position = 0
+        # self.position = 0
         self.starting_x = 0
         self.starting_y = 0
         self.grid = []
@@ -37,10 +37,12 @@ class Dungeon:
 class Dungeon1(Dungeon):
     def __init__(self):
         super().__init__()
-        self.name = "Dungeon Level 1"
+        self.name = "The Upper Catacombs"
         self.level = 1
-        self.event = (2, 3)
-        self.position = 0
+        # self.event = (2, 3)
+        self.throne = (2, 3)
+        self.fountain = (3, 3)
+        # self.position = 0
         self.starting_x = 1
         self.starting_y = 3
         self.grid = [
@@ -85,8 +87,6 @@ class Dungeon1(Dungeon):
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]]
-        #self.event = self.grid[2][3]
-
 
 
 dungeon_1 = Dungeon1()
@@ -97,7 +97,9 @@ class Dungeon2(Dungeon):
         super().__init__()
         self.name = "Dungeon level 2"
         self.level = 2
-        self.position = 0
+        self.throne = (2, 3)
+        self.fountain = (3, 3)
+        # self.position = 0
         self.starting_x = 2
         self.starting_y = 2
         self.grid = [
@@ -152,7 +154,9 @@ class Dungeon3(Dungeon):
         super().__init__()
         self.name = "Dungeon level 3"
         self.level = 3
-        self.position = 0
+        self.throne = (2, 3)
+        self.fountain = (3, 3)
+        # self.position = 0
         self.starting_x = 7
         self.starting_y = 1
         self.grid = [
@@ -178,9 +182,9 @@ class Dungeon3(Dungeon):
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"]]
         self.player_grid = [
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
+            [".", ".", ".", ".", ".", ".", ".", "S", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
-            [".", "S", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "E"],
+            [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "E"],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],

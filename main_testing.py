@@ -207,7 +207,7 @@ while True:
                 player_1.hud()
                 if player_1.position == 0:
                     player_1.dungeon_description(previous_x, previous_y)
-                print(f"{player_1.dungeon.name}")
+                print(f"(Dungeon level {player_1.dungeon.level})")
                 print(f"You can always (L)ook, or use (MAP) without wasting a turn.")
                 dungeon_command = input(
                     "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage inventory,\n(G)iant strength potion, (I)nventory or WASD to navigate. --> ").lower()
@@ -280,14 +280,18 @@ while True:
                     player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
                     player_1.proximity = (player_1.x, player_1.y)
                     player_1.dungeon_description(previous_x, previous_y)
-                    # Potion of strength wears off after each movement in addition to attacks.
+
+                    # Potion of strength wears off after each movement in addition to attacks:
                     if player_1.potion_of_strength_effect:
                         player_1.potion_of_strength_uses += 1
                         if player_1.potion_of_strength_uses > 4:
                             player_1.potion_of_strength_effect = False
                             player_1.potion_of_strength_uses = 0
                             print(f"The giant strength leaves your body..")
-
+                    #bar = getattr(foo, 'bar')
+                    #result = bar()
+                    if player_1.event_logic() == "King Boss":
+                        encounter = 98
                     # sleep(1.5)
                     pause()
                     if player_1.position == "E":
@@ -295,8 +299,7 @@ while True:
                         player_1.next_dungeon()
                 player_1.regenerate()
                 # eventually, make encounter a returned boolean from navigation function?
-                if encounter > 10:
-
+                if encounter > 20:
                     print("This should create monster now..")  # remove after testing
                     # monster dictionary imported from monster module. keys correspond to difficulty
                     # in proximity to monster loop contains battle loop within it
@@ -329,13 +332,18 @@ while True:
                                     continue
                         if not in_proximity_to_monster:
                             break
-
                         monster_key = random.randint(1, (player_1.level + 1))
                         monster_cls = random.choice(monster_dict[monster_key])
                         monster = monster_cls()  # create a monster object from the random class
                         if encounter == 99:
                             monster = Ghoul()  # boss for testing. change logic to be a boss 1 level above player
-                        player_1.hud()
+                        if encounter == 98:
+                            monster_key = (player_1.level + 1)
+                            monster_cls = random.choice(monster_dict[monster_key])
+                            monster = monster_cls()
+                            print(f"The {monster.name} king returns!")
+                            pause()
+                            player_1.hud()
                         print(discovered_monsters)  # remove after testing
                         if monster.name in discovered_monsters:
                             print(f"You have encountered a level {monster.level} {monster.name}.")  # remove level after testing
@@ -468,6 +476,8 @@ while True:
                                 player_1.level_up(monster.experience_award, monster.gold)
                                 in_proximity_to_monster = False
                                 player_1.loot()
+                                if encounter > 20:  # if you kill the boss, you get extra loot
+                                    player_1.loot()
                                 break
 
                             # monster turn:

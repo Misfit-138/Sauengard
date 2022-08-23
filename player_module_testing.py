@@ -642,7 +642,7 @@ class Player:
         self.position = 0
         self.x = 0
         self.y = 0
-        self.proximity = (self.x, self.y)
+        self.coordinates = (self.x, self.y)
         self.pack = {
             'Weapons': [],
             # 'Healing': [],  #[healing_potion],
@@ -873,8 +873,6 @@ class Player:
 
         else:
             return False
-
-
 
     def quick_move(self, monster_name):
         # self.hud()
@@ -1759,7 +1757,7 @@ class Player:
                 print(f"Your vitality increases.")
                 sleep(1)
 
-                #print(f"You now have {self.hit_points} hit points.")
+                # print(f"You now have {self.hit_points} hit points.")
                 # (pack[sub_item_type]).remove(sub_item)
                 pause()
                 return
@@ -1850,9 +1848,7 @@ class Player:
             print(f"{self.town_portals} Town Portal Scrolls")
 
         item_type_lst = ['Weapons', 'Armor', 'Shields', 'Boots', 'Cloaks']
-        # item_type_lst = ['Weapons', 'Healing', 'Armor', 'Shields', 'Boots', 'Cloaks', 'Town Portal Implements']
-        # number_of_items = len(self.pack[item_type])
-        #  'Rings of Regeneration', 'Rings of Protection', removed for clarity so they only appear to be worn
+
         print(f"You dungeoneer's pack contains:")
         current_items = []
         for each_item in item_type_lst:
@@ -2263,22 +2259,48 @@ class Player:
             else:
                 return
 
-    # NAVIGATION
+    def throne(self):
+        print(f"There is a gem encrusted throne here.")
+        sit = input(f"Do you wish to sit? ")
+        if sit == 'y':
+            print(f"You sit on the throne...")
+            return "King Boss"
+        else:
+            print("You don't sit...wonder what may have happened.")
+            return
+
+    def fountain(self):
+        print(f"You see a fountain...!")
+        drink = input(f"Do you wish to drink? ")
+        if drink == 'y':
+            print(f"Something random happens")
+        else:
+            print("You don't drink...wonder what may have happened.")
+            return
+
+    def event_logic(self):
+        # the event dictionary *key* is the dungeon tuple corresponding to
+        # x y coordinates of an event or item e.g. (2, 3)
+        # the event dictionary *value* is the corresponding player function
+        # if the player's coordinates exist as a key in event_dict,
+        # the dictionary value is given the variable 'event_function'
+        # finally, the proper function is returned to the main program
+        # using 'return event_function()'
+        self.coordinates = (self.x, self.y)
+        event_dict = {self.dungeon.throne: self.throne,
+                      self.dungeon.fountain: self.fountain
+                      }
+        if self.coordinates in event_dict:
+            event_function = (event_dict[self.coordinates])
+            return event_function()
+
+        # NAVIGATION
+
     def dungeon_description(self, previous_x, previous_y):
-        # if self.dungeon.event == self.dungeon.grid[self.y][self.x]:
-        # print(self.dungeon.grid[self.y][self.x])
-        # if self.dungeon.event == self.dungeon.grid[self.y][self.x]:
-        # if self.dungeon.grid[self.y][self.x] == self.dungeon.event:
-        # if self.x == 2 and self.y == 3:
-        # print(previous_x, previous_y)
-        # print(self.x, self.y)
         self.hud()
-        #self.proximity = (self.x, self.y)
-        print(self.proximity)  # remove after testing
-        print(self.dungeon.event)  # remove after testing
-        if self.proximity == self.dungeon.event:
-            # if (self.x, self.y) == self.dungeon.event:
-            print(f"A testing description...")
+        self.coordinates = (self.x, self.y)
+        print(self.coordinates)  # remove after testing
+
         # DEAD END Only 1 exit!
         # 1 exit to the north
         # 2 exit to the south
@@ -2298,111 +2320,69 @@ class Player:
         # > exits to the north, south and east WEST WALL
         # < exits to the north, south and west EAST WALL
         # ^ <> v dungeon exit in the indicated direction!
+        description_dict = {
+            ".": f"You are in a rather wide open area of {self.dungeon.name}. There are exits in each direction...",
+            "1": f"You are at a dead end. The only exit is to the North...",
+            "2": f"You are at a dead end. The only exit is to the South...",
+            "3": f"You are at a dead end. The only exit is to the East...",
+            "4": f"You are at a dead end. The only exit is to the West...",
+            "5": f"You are in a corridor. Exits are to the North and South...",
+            "6": f"You are in a corridor. Exits are to the East and West...",
+            "7": f"You are in a corner. Exits are to the South and East.",
+            "8": f"You are in a corner. Exits are to the North and East.",
+            "9": f"You are in a corner. Exits are to the South and West.",
+            "-": f"You are in a corner. Exits are to the North and West.",
+            "|": f"You are against a wall to the North. Exits are to the South, East and West.",
+            "/": f"You are against a wall to the South. Exits are to the North, East and West.",
+            "(": f"You are against a wall to the West. Exits are to the North, South and East.",
+            ")": f"You are against a wall to the East. Exits are to the North, South and West.",
+
+            }
         if self.position == 0:  # integer representing starting position
-            print("You are at the bottom of a staircase with a locked door above...")
-        elif self.position == "*":  # string representing walls
+            print(f"You find yourself at the bottom of a deep, spiral staircase..\n"
+                  f"The echo from the door above being locked behind you still echoes throughout the emptiness.\n"
+                  f"This is the entrance of {self.dungeon.name}.")
+            #pause()
+            #self.hud()
+            return
+        if self.position == "*":  # string representing walls
             print("You can't go that way...")
             self.x = previous_x
             self.y = previous_y
             self.position = self.dungeon.grid[self.y][self.x]
             # sleep(1.5)
             return
-        elif self.position == ".":
-            print("You are in a dark corridor. There are exits in each direction...")
-            # sleep(1.5)
-            return
-        # DEAD ENDs - Only 1 exit!
-        # 1 exit to the north
-        elif self.position == "1":
-            print("You are at a dead end. Exit is to the north...")
-            # sleep(1.5)
-            return
-        # 2 exit to the south
-        elif self.position == "2":
-            print("You are at a dead end. Exit is to the south...")
-            # sleep(1.5)
-            return
-        # 3 exit to the east
-        elif self.position == "3":
-            print("You are at a dead end. Exit is to the east...")
-            # sleep(1.5)
-            return
-        # 4 exit to the west
-        elif self.position == "4":
-            print("You are at a dead end. Exit is to the west...")
-            # sleep(1.5)
-            return
-        # STRAIGHT HALLWAYs:
 
-        # 5 exits north and south
-        elif self.position == "5":
-            print("You are in a corridor. Exits are to the North and South...")
-            # sleep(1.5)
-            return
-        # 6 exits east and west
-        elif self.position == "6":
-            print("You are in a corridor. Exits are to the East and West...")
-            # sleep(1.5)
-            return
-        # CORNERS:
-        # 7 exits to the south and east UPPER LEFT
-        elif self.position == "7":
-            print(f"You are in a corner. Exits are to the South and East.")
-            return
-            # 8 exits to the north and east LOWER LEFT
-        elif self.position == "8":
-            print(f"You are in a corner. Exits are to the North and East.")
-            return
-            # 9 exits to the south and west UPPER RIGHT
-        elif self.position == "9":
-            print(f"You are in a corner. Exits are to the South and West.")
-            return
-            # "-" exits to the north and west LOWER RIGHT
-        elif self.position == "-":
-            print(f"You are in a corner. Exits are to the North and West.")
-            return
+        if self.position in description_dict:
+            if self.x > 9:
+                direction = "Eastern"
+            elif self.x < 9:
+                direction = "Western"
+            print(f"({self.dungeon.name} {direction} region.)")
+            description = (description_dict[self.position])
+            print(description)
 
-        # WALLS:
-        # |  exits to the south. east and west  NORTH WALL
-        elif self.position == "|":
-            print(f"You are against a wall to the North. Exits are to the South, East and West.")
-            return
-            # / exits to the north, east and west SOUTH WALL
-        elif self.position == "/":
-            print(f"You are against a wall to the South. Exits are to the North, East and West.")
-            return
-            # ( exits to the north, south and east WEST WALL
-        elif self.position == "(":
-            print(f"You are against a wall to the West. Exits are to the North, South and East.")
-            return
-            # ) exits to the north, south and west EAST WALL
-        elif self.position == ")":
-            print(f"You are against a wall to the East. Exits are to the North, South and West.")
             return
             # ^ <> v dungeon EXIT in the indicated direction!
-        elif self.position == ">":
+        elif self.position == ">" or self.position == "<" or self.position == "^" or self.position == "v":
             print(f"You feel a draft... ")
             sleep(1.25)
-            print("You see the dungeon exit to the East!")
-            return
-        elif self.position == "<":
-            print(f"You feel a draft... ")
-            sleep(1.25)
-            print("You see the dungeon exit to the West!")
-            return
-        elif self.position == "^":
-            print(f"You feel a draft... ")
-            sleep(1.25)
-            print("You see the dungeon exit to the North!")
-            return
-        elif self.position == "v":
-            print(f"You feel a draft... ")
-            sleep(1.25)
-            print("You see the dungeon exit to the South!")
-            return
+            if self.position == ">":
+                print("You see the dungeon exit to the East!")
+                return
+            elif self.position == "<":
+                print("You see the dungeon exit to the West!")
+                return
+            elif self.position == "^":
+                print("You see the dungeon exit to the North!")
+                return
+            elif self.position == "v":
+                print("You see the dungeon exit to the South!")
+                return
 
     def display_map(self, maps):
-        self.hud()
+        #self.hud()
+        cls()
         print("You look at the map..")
         print(self.position)  # remove after testing
         if self.position == 0:
@@ -2897,3 +2877,75 @@ sale_item = (sale_items_dict[sale_item_key])
 
                     pause()
                     return True'''
+'''#elif self.position == ".":
+#    print(f"You are in a rather wide open area of {self.dungeon.name}. There are exits in each direction...")
+
+#    return
+# DEAD ENDs - Only 1 exit!
+# 1 exit to the north
+        elif self.position == "1":
+            print("You are at a dead end. Exit is to the north...")
+            # sleep(1.5)
+            return
+        # 2 exit to the south
+        elif self.position == "2":
+            print("You are at a dead end. Exit is to the south...")
+            # sleep(1.5)
+            return
+        # 3 exit to the east
+        elif self.position == "3":
+            print("You are at a dead end. Exit is to the east...")
+            # sleep(1.5)
+            return
+        # 4 exit to the west
+        elif self.position == "4":
+            print("You are at a dead end. Exit is to the west...")
+            # sleep(1.5)
+            return
+        # STRAIGHT HALLWAYs:
+
+        # 5 exits north and south
+        elif self.position == "5":
+            print("You are in a corridor. Exits are to the North and South...")
+            # sleep(1.5)
+            return
+        # 6 exits east and west
+        elif self.position == "6":
+            print("You are in a corridor. Exits are to the East and West...")
+            # sleep(1.5)
+            return
+        # CORNERS:
+        # 7 exits to the south and east UPPER LEFT
+        elif self.position == "7":
+            print(f"You are in a corner. Exits are to the South and East.")
+            return
+            # 8 exits to the north and east LOWER LEFT
+        elif self.position == "8":
+            print(f"You are in a corner. Exits are to the North and East.")
+            return
+            # 9 exits to the south and west UPPER RIGHT
+        elif self.position == "9":
+            print(f"You are in a corner. Exits are to the South and West.")
+            return
+            # "-" exits to the north and west LOWER RIGHT
+        elif self.position == "-":
+            print(f"You are in a corner. Exits are to the North and West.")
+            return
+
+        # WALLS:
+        # |  exits to the south. east and west  NORTH WALL
+        elif self.position == "|":
+            print(f"You are against a wall to the North. Exits are to the South, East and West.")
+            return
+            # / exits to the north, east and west SOUTH WALL
+        elif self.position == "/":
+            print(f"You are against a wall to the South. Exits are to the North, East and West.")
+            return
+            # ( exits to the north, south and east WEST WALL
+        elif self.position == "(":
+            print(f"You are against a wall to the West. Exits are to the North, South and East.")
+            return
+            # ) exits to the north, south and west EAST WALL
+        elif self.position == ")":
+            print(f"You are against a wall to the East. Exits are to the North, South and West.")
+            return'''

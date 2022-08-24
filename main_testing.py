@@ -199,14 +199,14 @@ while True:
             # DUNGEON NAVIGATION LOOP:
 
             while in_dungeon:
-                previous_x = player_1.x
-                previous_y = player_1.y
+                player_1.previous_x = player_1.x
+                player_1.previous_y = player_1.y
                 # player_1.regenerate()
                 # player_1.loot()  # for testing
                 encounter = dice_roll(1, 20)
                 player_1.hud()
                 if player_1.position == 0:
-                    player_1.dungeon_description(previous_x, previous_y)
+                    player_1.dungeon_description()
                 print(f"(Dungeon level {player_1.dungeon.level})")
                 print(f"You can always (L)ook, or use (MAP) without wasting a turn.")
                 dungeon_command = input(
@@ -268,7 +268,7 @@ while True:
                         player_1.x += 1
                         sleep(.5)
                     if dungeon_command == 'l':
-                        player_1.dungeon_description(previous_x, previous_y)
+                        player_1.dungeon_description()
                         pause()
                         continue
                     if dungeon_command == 'map':
@@ -279,8 +279,8 @@ while True:
                     # !!!!!!!!!!!!!!!! V NOTE the INDENT V !!!!!!!!!!!!!!!!
                     player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
                     player_1.proximity = (player_1.x, player_1.y)
-                    player_1.dungeon_description(previous_x, previous_y)
-
+                    player_1.dungeon_description()
+                    #player_1.increase_random_ability()
                     # Potion of strength wears off after each movement in addition to attacks:
                     if player_1.potion_of_strength_effect:
                         player_1.potion_of_strength_uses += 1

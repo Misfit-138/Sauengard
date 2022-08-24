@@ -643,6 +643,8 @@ class Player:
         self.x = 0
         self.y = 0
         self.coordinates = (self.x, self.y)
+        self.previous_x = 0
+        self.previous_y = 0
         self.pack = {
             'Weapons': [],
             # 'Healing': [],  #[healing_potion],
@@ -2269,26 +2271,95 @@ class Player:
             print("You don't sit...wonder what may have happened.")
             return
 
+    # You can increase your scores using the Ability Score Improvement (ASI) feature,
+    # which every class gains at levels 4, 8, 12, 16, and 19.
+    # Fighters gain additional ASIs at the 6th and 14th levels,
+    # When you reach those levels, there are three different things that you can choose from.
+    #
+    # Improve an ability score by two – you can choose a single ability score,
+    # such as charisma, and increase it by 2 points. Increasing a score by 2 points guarantees
+    # an improvement of the modifier, but it is recommended to do this to an even score.
+    # Improve two ability scores by one
+    # – you can assign two ability scores, such as charisma and constitution, by one.
+    # It is recommended to do this if you have odd ability scores as bringing them up to
+    # the next even number will increase the modifier.
+    # Choose a Feat – rather than improving ability scores,
+    # you can give yourself a feat that grants you some extra abilities.
+    # It is important to talk to your DM about this though as they may have restrictions on what feat you can choose.
+    # Some feats will also give you a +1 to a certain ability score,
+    # allowing you to increase your stats whilst gaining new abilities. These are commonly known as ‘half feats.’'''
+    def increase_random_ability(self):
+        # I was unable to come up with this code on my own.
+        # Thanks to Angus Nicolson from Stack Overflow!
+        # create a dictionary from self.__dict__
+        ability_dict = self.__dict__
+        # Define list of attributes you are allowed to change
+        attributes = ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"]
+        # ability_dict_subset = {k: v for k, v in ability_dict.items() if k in attributes}
+        ability_dict_subset = {key: value for key, value in ability_dict.items() if key in attributes}
+        # Choose random attribute name
+        random_attribute = random.choice(list(ability_dict_subset.keys()))
+        print("Random attribute:", random_attribute)
+        ability_dict[random_attribute] += 1
+
+    def increase_lowest_ability(self):
+        # this code I was unable to come up with on my own. thanks to Angus Nicolson from Stack Overflow!
+        ability_dict = self.__dict__
+
+        # Define list of attributes you are allowed to change
+        attributes = ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"]
+        ability_dict_subset = {key: value for key, value in ability_dict.items() if key in attributes}
+
+        # Find the minimum attribute name
+        min_attribute = min(ability_dict_subset, key=ability_dict_subset.get)
+        print("Minimum attribute:", min_attribute)
+
+        # Add one to min attribute
+        ability_dict[min_attribute] += 1
+        print(f"Your {min_attribute} has increased!")
+        # print(self.__dict__)
+
+        # Choose random attribute name
+        # random_attribute = random.choice(list(ability_dict_subset.keys()))
+        # print("Random attribute:", random_attribute)
+        # ability_dict[random_attribute] += 1
+
     def fountain(self):
         print(f"You see a fountain...!")
         drink = input(f"Do you wish to drink? ")
         if drink == 'y':
             print(f"Something random happens")
+            # return self.teleporter()
         else:
             print("You don't drink...wonder what may have happened.")
             return
 
+    def teleporter(self):
+        print(f"Zzzzzzap....You've been teleported.....")
+        self.dungeon_key += 1
+        self.dungeon = dungeon_dict[self.dungeon_key]
+        self.x = random.randint(1, 18)
+        self.y = random.randint(1, 18)
+        self.previous_x = self.x
+        self.previous_y = self.y
+        self.position = self.dungeon.grid[self.y][self.x]
+        # self.position = 0
+
+        return
+
     def event_logic(self):
         # the event dictionary *key* is the dungeon tuple corresponding to
-        # x y coordinates of an event or item e.g. (2, 3)
+        # dungeon x y coordinates of an event or item e.g. (2, 3)
         # the event dictionary *value* is the corresponding player function
         # if the player's coordinates exist as a key in event_dict,
         # the dictionary value is given the variable 'event_function'
-        # finally, the proper function is returned to the main program
+        # finally, the proper function is called and any
+        # function values are returned to the main program
         # using 'return event_function()'
         self.coordinates = (self.x, self.y)
         event_dict = {self.dungeon.throne: self.throne,
-                      self.dungeon.fountain: self.fountain
+                      self.dungeon.fountain: self.fountain,
+                      self.dungeon.teleporter: self.teleporter
                       }
         if self.coordinates in event_dict:
             event_function = (event_dict[self.coordinates])
@@ -2296,7 +2367,7 @@ class Player:
 
         # NAVIGATION
 
-    def dungeon_description(self, previous_x, previous_y):
+    def dungeon_description(self):
         self.hud()
         self.coordinates = (self.x, self.y)
         print(self.coordinates)  # remove after testing
@@ -2337,18 +2408,18 @@ class Player:
             "(": f"You are against a wall to the West. Exits are to the North, South and East.",
             ")": f"You are against a wall to the East. Exits are to the North, South and West.",
 
-            }
+        }
         if self.position == 0:  # integer representing starting position
             print(f"You find yourself at the bottom of a deep, spiral staircase..\n"
                   f"The echo from the door above being locked behind you still echoes throughout the emptiness.\n"
                   f"This is the entrance of {self.dungeon.name}.")
-            #pause()
-            #self.hud()
+            # pause()
+            # self.hud()
             return
         if self.position == "*":  # string representing walls
             print("You can't go that way...")
-            self.x = previous_x
-            self.y = previous_y
+            self.x = self.previous_x
+            self.y = self.previous_y
             self.position = self.dungeon.grid[self.y][self.x]
             # sleep(1.5)
             return
@@ -2381,7 +2452,7 @@ class Player:
                 return
 
     def display_map(self, maps):
-        #self.hud()
+        # self.hud()
         cls()
         print("You look at the map..")
         print(self.position)  # remove after testing
@@ -2411,6 +2482,8 @@ class Player:
         self.dungeon = dungeon_dict[self.dungeon_key]
         self.x = self.dungeon.starting_x
         self.y = self.dungeon.starting_y
+        self.previous_x = self.x
+        self.previous_y = self.y
         self.position = 0
         pause()
         return

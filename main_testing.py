@@ -281,6 +281,7 @@ while True:
                     player_1.proximity = (player_1.x, player_1.y)
                     player_1.dungeon_description()
                     #player_1.increase_random_ability()
+                    #player_1.asi()
                     # Potion of strength wears off after each movement in addition to attacks:
                     if player_1.potion_of_strength_effect:
                         player_1.potion_of_strength_uses += 1
@@ -288,8 +289,7 @@ while True:
                             player_1.potion_of_strength_effect = False
                             player_1.potion_of_strength_uses = 0
                             print(f"The giant strength leaves your body..")
-                    #bar = getattr(foo, 'bar')
-                    #result = bar()
+
                     if player_1.event_logic() == "King Boss":
                         encounter = 98
                     # sleep(1.5)

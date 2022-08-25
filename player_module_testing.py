@@ -606,18 +606,18 @@ class Player:
         self.boots = leather_boots
         self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = 15  # random.randint(14, 16)
+        self.strength_modifier = round((self.strength - 10) / 2)
         self.dexterity = 14  # random.randint(13, 15)
         self.dexterity_modifier = round((self.dexterity - 10) / 2)
         self.constitution = 13  # random.randint(12, 14)
-        self.intelligence = 12  # random.randint(11, 13)
-        self.wisdom = 8  # random.randint(7, 9)
-        self.charisma = 10  # random.randint(9, 11)
-        self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
-        self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.intelligence = 12  # random.randint(11, 13)
         self.intelligence_modifier = round((self.intelligence - 10) / 2)
+        self.wisdom = 8  # random.randint(7, 9)
         self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.charisma = 10  # random.randint(9, 11)
         self.charisma_modifier = round((self.charisma - 10) / 2)
+        self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
         self.proficiency_bonus = 2  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.maximum_hit_points = 10 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
@@ -737,6 +737,14 @@ class Player:
         self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
         return
 
+    def calculate_modifiers(self):
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.intelligence_modifier = round((self.intelligence - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.charisma_modifier = round((self.charisma - 10) / 2)
+
     def calculate_proficiency_bonus(self):
         if self.level <= 4:
             self.proficiency_bonus = 2
@@ -794,6 +802,80 @@ class Player:
         return
 
     # LEVEL AND EXPERIENCE
+    def asi(self):
+        # Ability Score Improvement at levels 4, 8, 12, 16, and 19.
+        # Fighters gain additional ASIs at the 6th and 14th levels
+        # so, 4, 6, 8, 12, 14, 16, 19
+        while True:
+            self.hud()
+            if self.level == 1 or self.level == 4 or self.level == 6 or self.level == 8 or self.level == 12 \
+                    or self.level == 14 or self.level == 16 or self.level == 19:
+                print(f"Ability Score Improvement!")
+                print(f"1. Strength: {self.strength}\n2. Dexterity: {self.dexterity}\n3. Constitution: {self.constitution}\n"
+                      f"4. Intelligence: {self.intelligence}\n5. Wisdom: {self.wisdom}\n6. Charisma: {self.charisma}")
+                one_or_two = input(f"You may choose:\n1. Improve 1 ability by 2 points\nor\n"
+                                   f"2. Improve 2 abilities by 1 point: ")
+                if one_or_two not in ('1', '2'):
+                    continue
+                elif one_or_two == '1':
+                    one_ability = input(f"Enter the number of the ability to improve. (NOTE: This is permanent!): ")
+                    if one_ability not in ('1', '2', '3', '4', '5', '6'):
+                        continue
+                    elif one_ability == '1':
+                        self.strength += 2
+                        print(f"Your strength is improved by 2 points!")
+                    elif one_ability == '2':
+                        self.dexterity += 2
+                        print(f"Your dexterity is improved by 2 points!")
+                    elif one_ability == '3':
+                        self.constitution += 2
+                        print(f"Your constitution is improved by 2 points!")
+                    elif one_ability == '4':
+                        self.intelligence += 2
+                        print(f"Your intelligence is improved by 2 points!")
+                    elif one_ability == '5':
+                        self.wisdom += 2
+                        print(f"Your wisdom is improved by 2 points!")
+                    elif one_ability == '6':
+                        self.charisma += 2
+                        print(f"Your charisma is improved by 2 points!")
+                    self.calculate_modifiers()
+                    pause()
+                    return
+                elif one_or_two == '2':
+                    while True:
+                        number = 0
+                        for i in range(2):
+                            number += 1
+                            if number == 1:
+                                adjective = "first"
+                            elif number == 2:
+                                adjective = "second"
+                            two_abilities = input(f"Enter the number of the {adjective} ability to improve. (NOTE: This is permanent!): ")
+                            if two_abilities == '1':
+                                self.strength += 1
+                                print(f"Your strength is improved by 1 point!")
+                            elif two_abilities == '2':
+                                self.dexterity += 1
+                                print(f"Your dexterity is improved by 1 point!")
+                            elif two_abilities == '3':
+                                self.constitution += 1
+                                print(f"Your constitution is improved by 1 point!")
+                            elif two_abilities == '4':
+                                self.intelligence += 1
+                                print(f"Your intelligence is improved by 1 point!")
+                            elif two_abilities == '5':
+                                self.wisdom += 1
+                                print(f"Your wisdom is improved by 1 point!")
+                            elif two_abilities == '6':
+                                self.charisma += 1
+                                print(f"Your charisma is improved by 1 point!")
+                            elif two_abilities not in ('1', '2', '3', '4', '5', '6'):
+                                break
+                            self.calculate_modifiers()
+                            pause()
+                            return
+                #return
 
     def increase_experience(self, exp_award):
         self.experience += exp_award  # this should be redundant now
@@ -827,8 +909,11 @@ class Player:
             self.maximum_hit_points += gain_hit_points
             print(f"You heal and gain {gain_hit_points} maximum hit points")
             sleep(2)
+            # Ability Score Improvement at levels 4, 8, 12, 16, and 19.
+            # Fighters gain additional ASIs at the 6th and 14th levels
+            # so, 4, 6, 8, 12, 14, 16, 19
             if self.level == 5:
-                print("You gain the Extra Attack skill!!")
+                print("You gain the Extra Attack skill!!")  # this works automatically in battle loop if level > 4, but change this to be a boolean attribute
                 sleep(2)
             if after_proficiency_bonus > before_proficiency_bonus:
                 print(f"Your proficiency bonus increases from {before_proficiency_bonus} to {after_proficiency_bonus}!")
@@ -2275,13 +2360,12 @@ class Player:
     # which every class gains at levels 4, 8, 12, 16, and 19.
     # Fighters gain additional ASIs at the 6th and 14th levels,
     # When you reach those levels, there are three different things that you can choose from.
-    #
     # Improve an ability score by two – you can choose a single ability score,
     # such as charisma, and increase it by 2 points. Increasing a score by 2 points guarantees
-    # an improvement of the modifier, but it is recommended to do this to an even score.
+    # an improvement of the modifier, but it is recommended to do this to an even score to maximize gain.
     # Improve two ability scores by one
     # – you can assign two ability scores, such as charisma and constitution, by one.
-    # It is recommended to do this if you have odd ability scores as bringing them up to
+    # It is recommended to do this if you have odd ability scores, as bringing them up to
     # the next even number will increase the modifier.
     # Choose a Feat – rather than improving ability scores,
     # you can give yourself a feat that grants you some extra abilities.
@@ -2291,7 +2375,13 @@ class Player:
     def increase_random_ability(self):
         # I was unable to come up with this code on my own.
         # Thanks to Angus Nicolson from Stack Overflow!
+        # By editing player.__dict__ directly,
+        # or a variable which you derived from it (ability_dict in the code below),
+        # you can edit your object's attributes.
         # create a dictionary from self.__dict__
+        # Note: Editing ability_dict_subset will not change the object's attributes,
+        # because it was made from a dict comprehension.
+        # You need to edit self.__dict__ or ability_dict.
         ability_dict = self.__dict__
         # Define list of attributes you are allowed to change
         attributes = ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"]

@@ -701,7 +701,7 @@ class Player:
               f"{self.maximum_hit_points}")
 
         print(
-            f"                                                                     Cloak: {self.cloak.name} (Stealth: {self.cloak.stealth})")
+            f"                                                                     Cloak: {self.cloak.name} (Stealth: {self.stealth})")
         if self.potions_of_strength > 0:
             number_of_potions_of_strength = self.potions_of_strength
             print(
@@ -736,6 +736,18 @@ class Player:
     def calculate_armor_class(self):
         self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
         return
+
+    def calculate_potion_of_strength(self):
+        if self.potion_of_strength_effect:
+            self.potion_of_strength_uses += 1
+
+            if self.potion_of_strength_uses > 4:
+                self.potion_of_strength_effect = False
+                self.potion_of_strength_uses = 0
+                print(f"The giant strength leaves your body..")
+                return False
+            else:
+                return True
 
     def calculate_modifiers(self):
         self.strength_modifier = round((self.strength - 10) / 2)
@@ -806,83 +818,84 @@ class Player:
         # Ability Score Improvement at levels 4, 8, 12, 16, and 19.
         # Fighters gain additional ASIs at the 6th and 14th levels
         # so, 4, 6, 8, 12, 14, 16, 19
+        ability_dict = self.__dict__
+        # Define list of attributes you are allowed to change
+        ability_dict_subset_too = {1: "strength", 2: "dexterity", 3: "constitution", 4: "intelligence", 5: "wisdom",
+                                   6: "charisma"}
         while True:
             self.hud()
-            if self.level == 1 or self.level == 4 or self.level == 6 or self.level == 8 or self.level == 12 \
-                    or self.level == 14 or self.level == 16 or self.level == 19:
-                print(f"Ability Score Improvement!")
-                print(f"1. Strength: {self.strength}\n2. Dexterity: {self.dexterity}\n3. Constitution: {self.constitution}\n"
-                      f"4. Intelligence: {self.intelligence}\n5. Wisdom: {self.wisdom}\n6. Charisma: {self.charisma}")
-                one_or_two = input(f"You may choose:\n1. Improve 1 ability by 2 points\nor\n"
-                                   f"2. Improve 2 abilities by 1 point: ")
-                if one_or_two not in ('1', '2'):
-                    continue
-                elif one_or_two == '1':
-                    one_ability = input(f"Enter the number of the ability to improve. (NOTE: This is permanent!): ")
-                    if one_ability not in ('1', '2', '3', '4', '5', '6'):
-                        continue
-                    elif one_ability == '1':
-                        self.strength += 2
-                        print(f"Your strength is improved by 2 points!")
-                    elif one_ability == '2':
-                        self.dexterity += 2
-                        print(f"Your dexterity is improved by 2 points!")
-                    elif one_ability == '3':
-                        self.constitution += 2
-                        print(f"Your constitution is improved by 2 points!")
-                    elif one_ability == '4':
-                        self.intelligence += 2
-                        print(f"Your intelligence is improved by 2 points!")
-                    elif one_ability == '5':
-                        self.wisdom += 2
-                        print(f"Your wisdom is improved by 2 points!")
-                    elif one_ability == '6':
-                        self.charisma += 2
-                        print(f"Your charisma is improved by 2 points!")
+            print(f"Ability Score Improvement for level {self.level}")
+            print(
+                f"1. Strength: {self.strength}\n2. Dexterity: {self.dexterity}\n3. Constitution: {self.constitution}\n"
+                f"4. Intelligence: {self.intelligence}\n5. Wisdom: {self.wisdom}\n6. Charisma: {self.charisma}")
+            print(f"You may choose:\n1. Improve 1 ability by 2 points\nor\n"
+                  f"2. Improve 2 abilities by 1 point ")
+            one_or_two = input(f"Your choice (1 / 2): ")
+            if one_or_two not in ('1', '2'):
+                continue
+            elif one_or_two == '1':
+                try:
+                    one_ability = int(
+                        input(f"Enter the number of the one ability you wish to improve by 2 points. "
+                              f"(NOTE: This is permanent!): "))
+                    ability_to_improve = (ability_dict_subset_too[one_ability])
+                    old_score = ability_dict[ability_to_improve]
+                    ability_dict[ability_to_improve] += 2
+                    print(
+                        f"Your {ability_to_improve} has been increased from {old_score} to {ability_dict[ability_to_improve]}!")
                     self.calculate_modifiers()
                     pause()
                     return
-                elif one_or_two == '2':
-                    while True:
-                        number = 0
-                        for i in range(2):
-                            number += 1
-                            if number == 1:
-                                adjective = "first"
-                            elif number == 2:
-                                adjective = "second"
-                            two_abilities = input(f"Enter the number of the {adjective} ability to improve. (NOTE: This is permanent!): ")
-                            if two_abilities == '1':
-                                self.strength += 1
-                                print(f"Your strength is improved by 1 point!")
-                            elif two_abilities == '2':
-                                self.dexterity += 1
-                                print(f"Your dexterity is improved by 1 point!")
-                            elif two_abilities == '3':
-                                self.constitution += 1
-                                print(f"Your constitution is improved by 1 point!")
-                            elif two_abilities == '4':
-                                self.intelligence += 1
-                                print(f"Your intelligence is improved by 1 point!")
-                            elif two_abilities == '5':
-                                self.wisdom += 1
-                                print(f"Your wisdom is improved by 1 point!")
-                            elif two_abilities == '6':
-                                self.charisma += 1
-                                print(f"Your charisma is improved by 1 point!")
-                            elif two_abilities not in ('1', '2', '3', '4', '5', '6'):
-                                break
-                            self.calculate_modifiers()
-                            pause()
-                            return
-                #return
+                except (ValueError, KeyError):
+                    print("Invalid entry..")
+                    sleep(1)
+                    continue
+            elif one_or_two == '2':
+                while True:
+                    self.hud()
+                    print(f"Ability Score Improvement")
+                    print(
+                        f"1. Strength: {self.strength}\n2. Dexterity: {self.dexterity}\n3. Constitution: {self.constitution}\n"
+                        f"4. Intelligence: {self.intelligence}\n5. Wisdom: {self.wisdom}\n6. Charisma: {self.charisma}")
+                    try:
+                        first_ability = int(
+                            input(
+                                f"Enter the number of the first ability to improve. (NOTE: This is permanent!): "))
+                        ability_to_improve = (ability_dict_subset_too[first_ability])
+                        old_score = ability_dict[ability_to_improve]
+                        ability_dict[ability_to_improve] += 1
+                        print(
+                            f"Your {ability_to_improve} has been increased from {old_score} to {ability_dict[ability_to_improve]}!")
+                        self.calculate_modifiers()
+                        while True:
+                            try:
+                                second_ability = int(
+                                    input(
+                                        f"Enter the number of the second ability to improve. (NOTE: This is permanent!): "))
+                                ability_to_improve = (ability_dict_subset_too[second_ability])
+                                old_score = ability_dict[ability_to_improve]
+                                ability_dict[ability_to_improve] += 1
+                                print(
+                                    f"Your {ability_to_improve} has been increased from {old_score} to {ability_dict[ability_to_improve]}!")
+                                self.calculate_modifiers()
+                                pause()
+                                return
+                            except (ValueError, KeyError):
+                                print("Invalid entry..")
+                                sleep(1)
+                                continue
 
-    def increase_experience(self, exp_award):
-        self.experience += exp_award  # this should be redundant now
-        return
+                    except (ValueError, KeyError):
+                        print("Invalid entry..")
+                        sleep(1)
+                        continue
+
+    # def increase_experience(self, exp_award):
+    #   self.experience += exp_award  # this should be redundant now
+    #    return
 
     def level_up(self, exp_award, monster_gold):
-        # *****************ADD LOGIC FOR EVERY STAT !!!!!!!!!!!!! *********************************************************
+        # *****************ADD LOGIC FOR EVERY STAT !!!!!!!!!!!!! ****************************************************
         self.gold += monster_gold
         before_level = self.level
         before_proficiency_bonus = self.proficiency_bonus
@@ -912,13 +925,18 @@ class Player:
             # Ability Score Improvement at levels 4, 8, 12, 16, and 19.
             # Fighters gain additional ASIs at the 6th and 14th levels
             # so, 4, 6, 8, 12, 14, 16, 19
+            if self.level == 4 or self.level == 6 or self.level == 8 or self.level == 12 \
+                    or self.level == 14 or self.level == 16 or self.level == 19:
+                self.asi()  # Ability Score Improvement calls calculate modifiers, so
+            self.calculate_modifiers()  # you may want to remove this call to calculate modifiers
             if self.level == 5:
-                print("You gain the Extra Attack skill!!")  # this works automatically in battle loop if level > 4, but change this to be a boolean attribute
+                print(
+                    "You gain the Extra Attack skill!!")  # this works automatically in battle loop if level > 4, but change this to be a boolean attribute
                 sleep(2)
             if after_proficiency_bonus > before_proficiency_bonus:
                 print(f"Your proficiency bonus increases from {before_proficiency_bonus} to {after_proficiency_bonus}!")
                 sleep(2)
-            # self.ring_of_reg  ADD RING LOGIC...UP WITH EACH LEVEL
+            # self.ring_of_reg  ADD RING LOGIC...UP WITH EACH LEVEL ?
             self.hud()
         else:
             print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points")
@@ -1393,7 +1411,7 @@ class Player:
     def item_management_sub_menu(self):
         while True:
             self.hud()
-            item_to_manage = input(f"Manage (W)eapons, (A)rmor, (S)hields, (B)oots, View your (I)nventory, or (E)xit: ")
+            item_to_manage = input(f"Manage (W)eapons, (A)rmor, (S)hields, (B)oots, (C)loaks, View your (I)nventory, or (E)xit: ")
             if item_to_manage == 'w':
                 self.item_management('Weapons', self.wielded_weapon)
                 # self.weapon_management()
@@ -1409,6 +1427,9 @@ class Player:
             elif item_to_manage == 'b':
                 self.item_management('Boots', self.boots)
                 continue
+            elif item_to_manage == 'c':
+                self.item_management('Cloaks', self.cloak)
+                continue
             elif item_to_manage == 'i':
                 self.inventory()
                 continue
@@ -1420,37 +1441,31 @@ class Player:
     def blacksmith_main(self):
 
         while True:
+            # you can make this into a dictionary, with each value being a function
+            # something like
+            # if blacksmith_choice in blacksmith_main_dict:
+            #   blacksmith_function = (blacksmith_main_dict[blacksmith_choice])
+            #   blacksmith_function()
+            # elif blacksmith_choice == 'e':
+            #   return
             self.hud()
             print(f"Lucino, the Fieldenberg blacksmith is here, hammering at his anvil.\n"
                   f"He notices you, grumbles, and continues hammering...")
             print(f"Your gold: {self.gold} GP")
-            sale_item_key = input(
-                "(P)urchase items, (L)iquidate items, Manage (W)eapons, (A)rmor, (S)hields, (B)oots, (I)nventory, or (E)xit the blacksmith: ").lower()
-            if sale_item_key not in ('p', 'l', 'w', 'a', 's', 'b', 'i', 'e'):
-                continue
-            elif sale_item_key == 'p':
+            blacksmith_choice = input(
+                "(P)urchase items, (L)iquidate items, (M)anage your inventory items, View (I)nventory, or (E)xit the blacksmith: ").lower()
+            if blacksmith_choice == 'p':
                 self.buy_blacksmith_items()
                 continue
-            elif sale_item_key == 'l':
+            elif blacksmith_choice == 'l':
                 self.sell_blacksmith_items()
                 continue
-            elif sale_item_key == 'w':
-                self.item_management('Weapons', self.wielded_weapon)
-                # self.weapon_management()
-                continue
-            elif sale_item_key == 'a':
-                self.item_management('Armor', self.armor)
-                continue
-            elif sale_item_key == 's':
-                self.item_management('Shields', self.shield)
-                continue
-            elif sale_item_key == 'b':
-                self.item_management('Boots', self.boots)
-                continue
-            elif sale_item_key == 'i':
+            elif blacksmith_choice == 'm':
+                self.item_management_sub_menu()
+            elif blacksmith_choice == 'i':
                 self.inventory()
                 continue
-            elif sale_item_key == 'e':
+            elif blacksmith_choice == 'e':
                 return
             else:
                 continue
@@ -1463,12 +1478,10 @@ class Player:
             'Shields': [buckler, kite_shield, quantum_tower_shield],
             'Boots': [elven_boots, ancestral_footsteps],
             'Cloaks': [elven_cloak]
-
         }
         while True:
             self.hud()
             print(f"Armory for sale:")
-
             # create a list of blacksmith item types:
             item_type_lst = list(blacksmith_dict.keys())
             # create a dictionary from list of blacksmith items types, print out, add 1 to indexing
@@ -1487,7 +1500,6 @@ class Player:
                 continue
             elif buy_or_exit == 'b':
                 return
-
             elif buy_or_exit == 'p':
                 try:
                     item_type_index_to_buy = int(input(f"Enter the number of the category of the item to buy: "))
@@ -1528,13 +1540,10 @@ class Player:
                         confirm_purchase = input(f"Purchase {sale_item.name} for {sale_item.buy_price} GP (y/n)? ")
                         if confirm_purchase == 'y':
                             if self.gold >= sale_item.buy_price:
-                                # print("Enough gold")
                                 if self.level >= sale_item.minimum_level:
-
                                     if not self.duplicate_item(sale_item.item_type, sale_item):
-
                                         self.hud()
-                                        print(f"You buy a {sale_item.name}")
+                                        print(f"You buy the {sale_item.name}")
                                         self.gold -= sale_item.buy_price
                                         (self.pack[sale_item.item_type]).append(sale_item)
                                         self.item_type_inventory(sale_item.item_type)
@@ -1566,7 +1575,6 @@ class Player:
             for key, value in item_mgmt_dict.items():
                 print(value + 1, ':', key)  # value is index. indexing starts at zero, so add 1
             print()
-
         else:
             print(f"You have nothing in your {item_type} inventory..")
             pause()
@@ -1575,44 +1583,49 @@ class Player:
         print(f"You are currently using: ")
         if item_type == 'Weapons':
             print(f"{self.wielded_weapon}, Sell Price: {self.wielded_weapon.sell_price} GP")
-            # self.print_weapon_stats(self.wielded_weapon)
+
         elif item_type == 'Armor':
             print(f"{self.armor}, Sell Price: {self.armor.sell_price} GP")
-            # self.print_armor_stats(self.armor)
+
         elif item_type == 'Shields':
-            print(f"{self.shield}, Sell Price: {self.shield.sell_price} GP")
-            # self.print_shield_stats(self.shield)
+            if self.shield.name != 'No Shield':
+                print(f"{self.shield}, Sell Price: {self.shield.sell_price} GP")
+            else:
+                print(f"{self.shield.name}")
         elif item_type == 'Boots':
             print(f"{self.boots}, Sell Price: {self.boots.sell_price} GP")
-            # self.print_boots_stats(self.boots)
+
+        elif item_type == 'Cloaks':
+            print(f"{self.cloak}, Sell Price: {self.cloak.sell_price} GP")
         swap_or_exit = input(f"(S)wap item, or go (B)ack: ").lower()
         if swap_or_exit == "b":
             return
         elif swap_or_exit == "s":
             try:
                 new_item_index = int(input(f"Enter the number of the item from your inventory that you wish to use: "))
-                new_item_index -= 1  # again, indexing starts at 0 and is awkward
+                new_item_index -= 1  # again, indexing starts at 0 so add 1
                 if item_type == 'Weapons':
-                    new_weapon = (self.pack[item_type])[new_item_index]
+                    new_weapon = (self.pack[item_type])[new_item_index]  # SYNTAX FOR INDEX
                     print(f"{new_weapon}")
-                    # self.print_weapon_stats(new_weapon)
                     self.wielded_weapon = new_weapon
-                    # (self.pack[item_type])[new_item_index]  # SYNTAX FOR INDEX
-                if item_type == 'Armor':
+                elif item_type == 'Armor':
                     new_armor = (self.pack[item_type])[new_item_index]
                     print(f"{new_armor}")
-                    # self.print_armor_stats(new_armor)
                     self.armor = new_armor
-                if item_type == 'Shields':
+                elif item_type == 'Shields':
                     new_shield = (self.pack[item_type])[new_item_index]
                     print(f"{new_shield}")
-                    # self.print_shield_stats(new_shield)
                     self.shield = new_shield
-                if item_type == 'Boots':
+                elif item_type == 'Boots':
                     new_boots = (self.pack[item_type])[new_item_index]
                     print(f"{new_boots}")
-                    # self.print_boots_stats(new_boots)
                     self.boots = new_boots
+                elif item_type == 'Cloaks':
+                    new_cloak = (self.pack[item_type])[new_item_index]
+                    print(f"{new_cloak}")
+                    self.cloak = new_cloak
+                # CALCULATE STEALTH AND ARMOR CLASS. NOTICE INDENT
+                self.calculate_stealth()
                 self.calculate_armor_class()
             except (IndexError, ValueError):
                 print("Invalid entry..")
@@ -1621,12 +1634,15 @@ class Player:
             print(f"You are now using the {(self.pack[item_type])[new_item_index]}.")
             if old_item.name != 'No Shield':
                 print(f"you place the {old_item.name} in your inventory.")
-            (self.pack[item_type]).pop(new_item_index)  # INDEX SYNTAX
-            (self.pack[item_type]).append(old_item)  # old_weapon represents an object, not an index
-            (self.pack[item_type]).sort(key=lambda x: x.buy_price)
-            pause()
+                (self.pack[item_type]).pop(new_item_index)  # INDEX SYNTAX
+                (self.pack[item_type]).append(old_item)  # old_weapon represents an object, not an index
+                # (self.pack[item_type]).sort(key=lambda x: x.buy_price)
+                pause()
+            else:
+                print(f"You are well equipped.")
+                pause()
 
-    def sell_blacksmith_items(self):  # make this sell_blacksmith_items. then, create sell_chemist_items
+    def sell_blacksmith_items(self):
 
         while True:
             cls()
@@ -1643,7 +1659,6 @@ class Player:
                 return
             else:
                 # print(non_empty_item_type_lst)  # remove after testing
-
                 # make a dictionary from the non_empty item type list. index, and print
                 item_type_dict = {}
                 for item_type in self.pack:
@@ -1761,6 +1776,7 @@ class Player:
                         continue
 
     def sell_everything(self):
+        # this code took me many hours to come up with
         liquidate_lst = []
         item_type_lst = ['Weapons', 'Armor', 'Shields', 'Boots', 'Cloaks']
         mgmt_dict = {}
@@ -1855,11 +1871,9 @@ class Player:
 
     def duplicate_item(self, item_type, possible_duplicate):
         duplicate_item_name_lst = []
-        # self.pack[item_type].sort(key=lambda x: x.name)
         inv_dict = Counter(item for item in self.pack[item_type])
         # print(inv_dict)  # for testing
         for key, value in inv_dict.items():
-            # print(key, ':    ', value, sep='')
             duplicate_item_name_lst.append(key.name)
         # print(duplicate_item_name_lst)  # for testing
         if possible_duplicate.name in duplicate_item_name_lst or \
@@ -1868,14 +1882,12 @@ class Player:
                 possible_duplicate.name == self.shield.name or \
                 possible_duplicate.name == self.boots.name:
             return True
-            # print(value, ' ', key, 's', sep='')
-            # print(key, 's', ':    ', value, sep='')
         else:
             return False
 
     def item_type_inventory(self, item_type):  # list items in inventory by type
         if item_type != 'Town Portal Implements' and item_type != 'Potions of Strength' and item_type != 'Healing':
-            print(f"{item_type}:")
+            print(f"Your {item_type}:")
             self.pack[item_type].sort(key=lambda x: x.name)
             stuff_dict = Counter(item.name for item in self.pack[item_type])
             for key, value in stuff_dict.items():
@@ -1946,7 +1958,6 @@ class Player:
                 current_items.append(each_item)
                 self.item_type_inventory(each_item)  # call the item_type_inventory for each item in inv.
                 # print(current_items)  # for testing
-
         if not len(current_items):
             print(f"Nothing but cobwebs..")
             pause()
@@ -2013,7 +2024,6 @@ class Player:
                     f"Quantum wierdness fills the air...\nYour {self.armor.name} is enhanced to armor class {found_item.ac}!")
                 self.armor.ac = found_item.ac
                 self.calculate_armor_class()
-                # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
                 pause()
                 return
             else:
@@ -2027,12 +2037,9 @@ class Player:
                     self.armor = found_item
                     print(f"You are now wearing the {found_item.name}")
                     self.calculate_armor_class()
-                    # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
                     if not self.duplicate_item(found_item.item_type, old_armor):
-                        # if old_armor not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(old_armor)
                         print(f"You place the {old_armor.name} upon your back..")
-
                     else:
                         print(f"You drop your {old_armor.name}.")
                     pause()
@@ -2135,7 +2142,6 @@ class Player:
                     self.boots = found_item
                     print(f"You are now wearing the {found_item.name}")
                     self.calculate_armor_class()
-                    # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
                     if not self.duplicate_item(old_boots.item_type,
                                                old_boots):  # old_boots not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(old_boots)
@@ -2212,13 +2218,12 @@ class Player:
     def found_ring_of_reg_substitution(self, found_item):
 
         if self.ring_of_reg.name == default_ring_of_regeneration.name:  # self.ring_of_reg.regenerate == 0:
-            # found_item.regenerate += 1  # self.ring_of_regeneration and default class object has 0 regenerate
+            # self.ring_of_regeneration and default class object has 0 regenerate
             self.ring_of_reg = found_item
             print(f"Quantum wierdness fills the air...")
             print(f"A Ring of Regeneration + {self.ring_of_reg.regenerate} appears on your finger!")
             sleep(1)
             print(f"It becomes permanently affixed..fused to your flesh and bone!")
-            # (self.pack[found_item.item_type]).append(found_item)  # place in inventory in case you want to sell it
             pause()
             return
         elif self.ring_of_reg.regenerate < round(self.maximum_hit_points * .17):
@@ -2228,11 +2233,7 @@ class Player:
             print(f"Your {ring_of_regeneration.name} is enhanced to + {self.ring_of_reg.regenerate} !")
             pause()
             return
-            # else:
-            # print(f"A Ring of Regeneration + {self.ring_of_reg.regenerate} appears on your finger!")
-            # (self.pack[found_item.item_type]).append(found_item)
-            # pause()
-            # return
+
         else:
             print("Ring of reg already equal to or more than 17% of max hit points")  # remove after testing
             pause()
@@ -2250,8 +2251,6 @@ class Player:
             pause()
             return
         elif self.ring_of_prot.protect < round(self.wisdom * .33):
-            # old_ring = self.ring_of_prot.protect
-            # print(f"Old ring: {old_ring}")
             self.ring_of_prot.protect += 1
             print(f"Quantum wierdness fills the air...")
             print(f"Your {ring_of_protection.name} is enhanced to + {self.ring_of_prot.protect} !")
@@ -2497,7 +2496,6 @@ class Player:
             "/": f"You are against a wall to the South. Exits are to the North, East and West.",
             "(": f"You are against a wall to the West. Exits are to the North, South and East.",
             ")": f"You are against a wall to the East. Exits are to the North, South and West.",
-
         }
         if self.position == 0:  # integer representing starting position
             print(f"You find yourself at the bottom of a deep, spiral staircase..\n"
@@ -2522,7 +2520,6 @@ class Player:
             print(f"({self.dungeon.name} {direction} region.)")
             description = (description_dict[self.position])
             print(description)
-
             return
             # ^ <> v dungeon EXIT in the indicated direction!
         elif self.position == ">" or self.position == "<" or self.position == "^" or self.position == "v":
@@ -2560,11 +2557,6 @@ class Player:
         print(f"X = your position E = Exit")
 
     def next_dungeon(self):
-        '''monster_key = (player_1.level + 1)
-                        monster_cls = random.choice(monster_dict[monster_key])
-                        boss = monster_cls()
-                        boss_fight = True
-                        encounter = 99'''
         # dungeon dictionary in dungeons.py
         print(
             "You found the exit...\nYou begin to descend the stairs, deeper into the dungeon...\nYet, you sense you are not alone!")
@@ -3112,3 +3104,19 @@ sale_item = (sale_items_dict[sale_item_key])
         elif self.position == ")":
             print(f"You are against a wall to the East. Exits are to the North, South and West.")
             return'''
+'''            elif sale_item_key == 'w':
+                self.item_management('Weapons', self.wielded_weapon)
+                # self.weapon_management()
+                continue
+            elif sale_item_key == 'a':
+                self.item_management('Armor', self.armor)
+                continue
+            elif sale_item_key == 's':
+                self.item_management('Shields', self.shield)
+                continue
+            elif sale_item_key == 'b':
+                self.item_management('Boots', self.boots)
+                continue
+            elif sale_item_key == 'c':
+                self.item_management('Cloaks', self.cloak)
+                continue'''

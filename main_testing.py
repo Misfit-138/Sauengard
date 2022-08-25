@@ -283,12 +283,7 @@ while True:
                     #player_1.increase_random_ability()
                     #player_1.asi()
                     # Potion of strength wears off after each movement in addition to attacks:
-                    if player_1.potion_of_strength_effect:
-                        player_1.potion_of_strength_uses += 1
-                        if player_1.potion_of_strength_uses > 4:
-                            player_1.potion_of_strength_effect = False
-                            player_1.potion_of_strength_uses = 0
-                            print(f"The giant strength leaves your body..")
+                    player_1.calculate_potion_of_strength()
 
                     if player_1.event_logic() == "King Boss":
                         encounter = 98
@@ -299,7 +294,7 @@ while True:
                         player_1.next_dungeon()
                 player_1.regenerate()
                 # eventually, make encounter a returned boolean from navigation function?
-                if encounter > 20:
+                if encounter > 10:
                     print("This should create monster now..")  # remove after testing
                     # monster dictionary imported from monster module. keys correspond to difficulty
                     # in proximity to monster loop contains battle loop within it
@@ -461,14 +456,8 @@ while True:
                                 continue  # if player enters anything other than the above
                             # player's turn:
                             damage_to_monster = player_1.swing(player_1.name, monster.name, monster.armor_class, player_1.potion_of_strength_effect)
-                            monster.reduce_health(damage_to_monster)  # take returned damage to monster
-                            if player_1.potion_of_strength_effect:
-                                player_1.potion_of_strength_uses += 1
-                                if player_1.potion_of_strength_uses > 4:
-                                    player_1.potion_of_strength_effect = False
-                                    player_1.potion_of_strength_uses = 0
-                                    print(f"The giant strength ebbs away, leaving you feeling empty.. ")
-                                    pause()
+                            monster.reduce_health(damage_to_monster)
+                            player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
                             if monster.check_dead():
                                 player_1.hud()
                                 print(f"It died..")

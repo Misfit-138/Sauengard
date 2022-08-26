@@ -280,8 +280,8 @@ while True:
                     player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
                     player_1.proximity = (player_1.x, player_1.y)
                     player_1.dungeon_description()
-                    #player_1.increase_random_ability()
-                    #player_1.asi()
+                    #player_1.increase_random_ability()  # remove after testing
+                    #player_1.asi()  # remove after testing
                     # Potion of strength wears off after each movement in addition to attacks:
                     player_1.calculate_potion_of_strength()
 
@@ -295,7 +295,7 @@ while True:
                 player_1.regenerate()
                 # eventually, make encounter a returned boolean from navigation function?
                 if encounter > 10:
-                    print("This should create monster now..")  # remove after testing
+                    # print("This should create monster now..")  # remove after testing
                     # monster dictionary imported from monster module. keys correspond to difficulty
                     # in proximity to monster loop contains battle loop within it
                     in_proximity_to_monster = True

@@ -1,3 +1,4 @@
+import math
 import random
 import time
 import os
@@ -606,19 +607,19 @@ class Player:
         self.boots = leather_boots
         self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = 15  # random.randint(14, 16)
-        self.strength_modifier = round((self.strength - 10) / 2)
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.dexterity = 14  # random.randint(13, 15)
-        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.constitution = 13  # random.randint(12, 14)
-        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.intelligence = 12  # random.randint(11, 13)
-        self.intelligence_modifier = round((self.intelligence - 10) / 2)
-        self.wisdom = 8  # random.randint(7, 9)
-        self.wisdom_modifier = round((self.wisdom - 10) / 2)
-        self.charisma = 10  # random.randint(9, 11)
-        self.charisma_modifier = round((self.charisma - 10) / 2)
+        self.intelligence_modifier = math.floor((self.intelligence - 10) / 2)
+        self.wisdom = 10  # random.randint(9, 11)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.charisma = 8  # random.randint(7, 9)
+        self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
-        self.proficiency_bonus = 2  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.proficiency_bonus = 2  # 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.maximum_hit_points = 10 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.is_paralyzed = False
@@ -687,16 +688,19 @@ class Player:
             f"                                                                     Boots: {self.boots.name} (AC: {self.boots.ac})")
         print(
             f"                                                                     Your Armor Class: {self.armor_class}")
-        print(f"                                                                     Strength: {self.strength}")
+        print(
+            f"                                                                     Strength: {self.strength} (Modifier: {self.strength_modifier})")
         print(
             f"                                                                     Dexterity: {self.dexterity} (Modifier: {self.dexterity_modifier})")
         print(
-            f"                                                                     Constitution: {self.constitution}")
+            f"                                                                     Constitution: {self.constitution} (Modifier: {self.constitution_modifier})")
         print(
-            f"                                                                     Intelligence: {self.intelligence}")
-        print(f"                                                                     Wisdom: {self.wisdom}")
+            f"                                                                     Intelligence: {self.intelligence} (Modifier: {self.intelligence_modifier})")
+        print(
+            f"                                                                     Wisdom: {self.wisdom} (Modifier: {self.wisdom_modifier})")
 
-        print(f"                                                                     Charisma: {self.charisma}")
+        print(
+            f"                                                                     Charisma: {self.charisma} (Modifier: {self.charisma_modifier})")
         print(f"                                                                     Hit points: {self.hit_points}/"
               f"{self.maximum_hit_points}")
 
@@ -750,12 +754,12 @@ class Player:
                 return True
 
     def calculate_modifiers(self):
-        self.strength_modifier = round((self.strength - 10) / 2)
-        self.dexterity_modifier = round((self.dexterity - 10) / 2)
-        self.constitution_modifier = round((self.constitution - 10) / 2)
-        self.intelligence_modifier = round((self.intelligence - 10) / 2)
-        self.wisdom_modifier = round((self.wisdom - 10) / 2)
-        self.charisma_modifier = round((self.charisma - 10) / 2)
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.intelligence_modifier = math.floor((self.intelligence - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.charisma_modifier = math.floor((self.charisma - 10) / 2)
 
     def calculate_proficiency_bonus(self):
         if self.level <= 4:
@@ -824,129 +828,80 @@ class Player:
         #                           6: "charisma"}
         if self.strength < 20 or self.dexterity < 20 or self.constitution < 20 or self.intelligence < 20 or self.wisdom < 20 or self.charisma < 20:
             os.system('cls')
-            print(f"*Ability Score Improvement*")
-            print(f"Improve one ability score by 2 points:\n"
-                  f"You may choose to improve a single ability score, such as strength, \n"
-                  f"and increase it by 2 points. While in ncreasing a score by 2 points guarantees\n"
-                  f"an improvement of the modifier, applying 2 points to an even-numbered score will maximize gain.\n"
-                  f"Improve two ability scores by 1 point:\n"
-                  f"You may choose to improve two ability scores, such as charisma and constitution, by 1 point each.\n"
-                  f"It is generally recommended to do this if you have odd-numbered ability scores,\n "
-                  f"as bringing them up to the next even number will increase the ability modifier.\n"
-                  f"         *The maximum score for any ability is 20*")
+            print(f"         *Ability Score Improvement*")
+            print()
+            print(
+                f"You may choose to improve a single ability score, such as strength, \n"
+                f"and increase it by 2 points.\n"
+                f"\n"
+                f"                     *OR*\n"
+                f"\n"
+                f"You may choose to improve two ability scores, such as charisma and constitution, by 1 point each.\n"
+                f"\n"
+                f"NOTES: \n"
+                f"Ability *modifiers* improve with each ascending even-numbered score, therefore, if unsure,\n"
+                f"it is generally recommended to apply 1 point to odd-numbered ability scores and apply \n"
+                f"2 points to even-numbered scores.\n"
+                f"\n"
+                f"    *The maximum score for any ability is 20*"
+                f"\n")
             pause()
 
             while True:
                 self.hud()
-                print(f"Ability Score Improvement for level {self.level}")
-                print(f"You may choose:\n1. Improve 1 ability by 2 points\nor\n"
-                      f"2. Improve 2 abilities by 1 point ")
-                one_or_two = input(f"Your choice (1 / 2): ")
-                if one_or_two not in ('1', '2'):
-                    continue
-                elif one_or_two == '1':
+                tries = 0
+                points = 2
+                while True:
                     self.hud()
+                    #print(f"Ability Score Improvement for level {self.level}")
+
+                    if tries > 1:
+                        print(f"You savor the empowering abilities you have gained..\n"
+                              f"And yet, the dungeon horde grows more powerful with you!")
+                        return
                     ability_dict = self.__dict__  # create variable as actual copy of player dict attribute
-                    # add all abilities  ability list
+                    # add all abilities < 20 to ability list
                     ability_lst = []
-                    if self.strength < 19:
-                        ability_lst.append('strength')
-                    if self.dexterity < 19:
-                        ability_lst.append('dexterity')
-                    if self.constitution < 19:
-                        ability_lst.append('constitution')
-                    if self.intelligence < 19:
-                        ability_lst.append('intelligence')
-                    if self.wisdom < 19:
-                        ability_lst.append('wisdom')
-                    if self.charisma < 19:
-                        ability_lst.append('charisma')
+                    working_dict = {'strength': self.strength, 'dexterity': self.dexterity,
+                                    'constitution': self.constitution, 'intelligence': self.intelligence,
+                                    'wisdom': self.wisdom, 'charisma': self.charisma}
+                    for key, value in working_dict.items():
+                        if value < 20:
+                            ability_lst.append(key)
+
                     if not len(ability_lst):  # if list is empty, no more improvements allowed
-                        print(f"You cannot improve any of your abilities by 2. "
-                              f"You can max out a 19 score with option 2.")
-                        pause()
-                        continue
+                        print(f"All of your abilities are at the maximum level!")  # this code should be unreachable
+                        # pause()
+                        return
+                    print(f"Ability Score Improvement for level {self.level}")
+                    print(f"Points to distribute: {points}")
                     # create a subset ability dictionary from ability list by indexing, and then print out
                     ability_dict_subset_too = {}
                     for ability in ability_lst:
                         if len(ability_lst):
                             ability_dict_subset_too[ability_lst.index(ability)] = ability
-                            # ability_dict_subset_too[ability] = ability_lst.index(ability)  # <-reverses key and value!
                     for key, value in ability_dict_subset_too.items():
-                        print(key + 1, ':', value.capitalize())  # add one because indexing starts at zero
+                        print(key + 1, ':', value.capitalize())
                     try:
-                        one_ability = int(
-                            input(f"Enter the number of the ability you wish to improve by 2 points. "
-                                  f"(NOTE: This is permanent!): "))
-                        one_ability -= 1  # subtract one because indexing starts at 0
-                        ability_to_improve = (ability_dict_subset_too[one_ability])
+                        ability_index = int(input(f"Enter the ability to improve, one point at a time.\n"
+                                                  f"(THIS IS PERMANENT!) : "))
+                        #
+                        ability_index -= 1
+                        ability_to_improve = (ability_dict_subset_too[ability_index])
                         old_score = ability_dict[ability_to_improve]
-                        ability_dict[ability_to_improve] += 2
-                        print(f"Your {ability_to_improve} has been increased from "
-                              f"{old_score} to {ability_dict[ability_to_improve]}!")
+                        ability_dict[ability_to_improve] += 1
+                        print(
+                            f"Your {ability_to_improve} has been increased from {old_score} "
+                            f"to {ability_dict[ability_to_improve]}!")
                         self.calculate_modifiers()
-                        # pause()
-                        return
-                    except(ValueError, KeyError):
+                        tries += 1
+                        points -= 1
+                        pause()
+                        continue
+                    except (ValueError, KeyError):
                         print("Invalid entry..")
                         sleep(1)
                         continue
-                elif one_or_two == '2':
-                    tries = 0
-                    while True:
-                        self.hud()
-                        if tries == 0:
-                            adjective = 'first'
-                        elif tries == 1:
-                            adjective = 'second'
-                        elif tries > 1:
-                            print(f"You savor the empowering abilities you have gained..\n"
-                                  f"And yet, the dungeon horde grows more powerful with you!")
-                            return
-                        ability_dict = self.__dict__  # create variable as actual copy of player dict attribute
-                        # add all abilities < 20 to ability list
-                        ability_lst = []
-                        if self.strength < 20:
-                            ability_lst.append('strength')
-                        if self.dexterity < 20:
-                            ability_lst.append('dexterity')
-                        if self.constitution < 20:
-                            ability_lst.append('constitution')
-                        if self.intelligence < 20:
-                            ability_lst.append('intelligence')
-                        if self.wisdom < 20:
-                            ability_lst.append('wisdom')
-                        if self.charisma < 20:
-                            ability_lst.append('charisma')
-                        if not len(ability_lst):  # if list is empty, no more improvements allowed
-                            print(f"All of your abilities are at the maximum level!")  # this code should be unreachable
-                            # pause()
-                            return
-                        print(f"Ability Score Improvement for level {self.level}")
-                        # create a subset ability dictionary from ability list by indexing, and then print out
-                        ability_dict_subset_too = {}
-                        for ability in ability_lst:
-                            if len(ability_lst):
-                                ability_dict_subset_too[ability_lst.index(ability)] = ability
-                        for key, value in ability_dict_subset_too.items():
-                            print(key + 1, ':', value.capitalize())
-                        try:
-                            option_two = int(input(f"Enter the number of the {adjective} ability to improve. "
-                                                      f"(NOTE: This is permanent!): "))
-                            option_two -= 1
-                            ability_to_improve = (ability_dict_subset_too[option_two])
-                            old_score = ability_dict[ability_to_improve]
-                            ability_dict[ability_to_improve] += 1
-                            print(
-                                f"Your {ability_to_improve} has been increased from {old_score} to {ability_dict[ability_to_improve]}!")
-                            self.calculate_modifiers()
-                            tries += 1
-                            pause()
-                            continue
-                        except (ValueError, KeyError):
-                            print("Invalid entry..")
-                            sleep(1)
-                            continue
         else:
             print(f"All abilities at maximum!")  # remove after testing
             return
@@ -1007,7 +962,7 @@ class Player:
     # BATTLE AND PROXIMITY TO MONSTER OCCURRENCES
 
     def monster_likes_you(self, monster_name, monster_intel):
-        if dice_roll(1, 20) > 17 and monster_intel > 8:  # and self.charisma > 15:
+        if dice_roll(1, 20) > 17 and monster_intel > 8 and self.charisma > 10:
             print(f"The {monster_name} likes you!")
             sleep(1)
             gift_item = dice_roll(1, 3)
@@ -1197,7 +1152,8 @@ class Player:
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
             damage_roll = dice_roll((self.level * critical_bonus), self.hit_dice)
 
-            damage_to_opponent = round((damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) * strength_bonus)
+            damage_to_opponent = round(
+                (damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) * strength_bonus)
             if damage_to_opponent > 0:
                 print(hit_statement)
                 sleep(1)
@@ -3172,4 +3128,77 @@ sale_item = (sale_items_dict[sale_item_key])
             elif sale_item_key == 'c':
                 self.item_management('Cloaks', self.cloak)
                 continue'''
-''''''
+'''                    if self.strength < 19:
+                        ability_lst.append('strength')
+                    if self.dexterity < 19:
+                        ability_lst.append('dexterity')
+                    if self.constitution < 19:
+                        ability_lst.append('constitution')
+                    if self.intelligence < 19:
+                        ability_lst.append('intelligence')
+                    if self.wisdom < 19:
+                        ability_lst.append('wisdom')
+                    if self.charisma < 19:
+                        ability_lst.append('charisma')'''
+'''                        if self.strength < 20:
+                            ability_lst.append('strength')
+                        if self.dexterity < 20:
+                            ability_lst.append('dexterity')
+                        if self.constitution < 20:
+                            ability_lst.append('constitution')
+                        if self.intelligence < 20:
+                            ability_lst.append('intelligence')
+                        if self.wisdom < 20:
+                            ability_lst.append('wisdom')
+                        if self.charisma < 20:
+                            ability_lst.append('charisma')'''
+'''print(f"You may choose:\n1. Improve 1 ability by 2 points\nor\n"
+                      f"2. Improve 2 abilities by 1 point ")
+                one_or_two = input(f"Your choice (1 / 2): ")
+                if one_or_two not in ('1', '2'):
+                    continue
+                elif one_or_two == '1':
+                    self.hud()
+                    ability_dict = self.__dict__  # create variable as actual copy of player dict attribute
+                    # create ability list
+                    ability_lst = []
+                    # create a working dictionary for all abilities
+                    working_dict = {'strength': self.strength, 'dexterity': self.dexterity,
+                                    'constitution': self.constitution, 'intelligence': self.intelligence,
+                                    'wisdom': self.wisdom, 'charisma': self.charisma}
+                    for key, value in working_dict.items():
+                        if value < 19:
+                            ability_lst.append(key)
+                    # add all keys for values less than 19 to the ability list
+                    if not len(ability_lst):  # if list is empty, no more improvements allowed
+                        print(f"You cannot improve any of your abilities by 2. "
+                              f"You can max out a 19 score with option 2.")
+                        pause()
+                        continue
+                    # create a subset ability dictionary from ability list by indexing, and then print out
+                    # this dictionary is the resulting abilities with indexed keys corresponding to each
+                    ability_dict_subset_too = {}
+                    for ability in ability_lst:
+                        if len(ability_lst):
+                            ability_dict_subset_too[ability_lst.index(ability)] = ability
+                            # ability_dict_subset_too[ability] = ability_lst.index(ability)  # <-reverses key and value!
+                    for key, value in ability_dict_subset_too.items():
+                        print(key + 1, ':', value.capitalize())  # add one because indexing starts at zero
+                    try:
+                        one_ability = int(
+                            input(f"Enter the number of the ability you wish to improve by 2 points. "
+                                  f"(NOTE: This is permanent!): "))
+                        one_ability -= 1  # subtract one because indexing starts at 0
+                        ability_to_improve = (ability_dict_subset_too[one_ability])
+                        old_score = ability_dict[ability_to_improve]
+                        ability_dict[ability_to_improve] += 2
+                        print(f"Your {ability_to_improve} has been increased from "
+                              f"{old_score} to {ability_dict[ability_to_improve]}!")
+                        print(f"The dungeon horde also grows in power...")
+                        self.calculate_modifiers()
+                        # pause()
+                        return
+                    except(ValueError, KeyError):
+                        print("Invalid entry..")
+                        sleep(1)
+                        continue'''

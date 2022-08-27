@@ -43,6 +43,7 @@ class Dungeon1(Dungeon):
         self.throne = (2, 3)
         self.fountain = (3, 3)
         self.teleporter = (4, 3)
+        self.staircase = (1, 3)
         # self.position = 0
         self.starting_x = 1
         self.starting_y = 3
@@ -89,7 +90,9 @@ class Dungeon1(Dungeon):
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]]
-
+        self.intro = "You find yourself at the bottom of a deep, spiral staircase..\n" \
+                     "The echo from the door above being locked behind you still echoes throughout the emptiness.\n" \
+                     "This is the entrance of the upper catacombs. The gloom and stench of filth surround you."
 
 dungeon_1 = Dungeon1()
 
@@ -102,6 +105,7 @@ class Dungeon2(Dungeon):
         self.throne = (2, 3)
         self.fountain = (3, 3)
         self.teleporter = (4, 3)
+        self.staircase = (1, 3)
         # self.position = 0
         self.starting_x = 1
         self.starting_y = 3
@@ -148,7 +152,9 @@ class Dungeon2(Dungeon):
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]]
-
+        self.intro = "You find yourself at the bottom of a deep, spiral staircase..\n" \
+                     "The echo from the door above being locked behind you still echoes throughout the emptiness.\n" \
+                     "This is the entrance of the mid-level catacombs. The gloom and stench of filth surround you."
 
 dungeon_2 = Dungeon2()
 
@@ -161,6 +167,7 @@ class Dungeon3(Dungeon):
         self.throne = (2, 3)
         self.fountain = (3, 3)
         self.teleporter = (4, 3)
+        self.staircase = (7, 1)
         # self.position = 0
         self.starting_x = 7
         self.starting_y = 1
@@ -207,7 +214,9 @@ class Dungeon3(Dungeon):
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]]
-
+        self.intro = "You find yourself at the bottom of a deep, spiral staircase..\n" \
+                     "The echo from the door above being locked behind you still echoes throughout the emptiness.\n" \
+                     "This is the entrance of the lower catacombs. The gloom and stench of filth surround you."
 
 dungeon_3 = Dungeon3()
 

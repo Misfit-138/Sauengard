@@ -312,12 +312,13 @@ while True:
                             in_proximity_to_monster = False
                             in_dungeon = False
                             in_town = False
+                            player_is_dead = False
                             while True:
                                 try_again = input("Do you wish to play again (y/n)? ").lower()
                                 if try_again == "y":
                                     time.sleep(1)
                                     os.system('cls')
-                                    break  # break out of prox to monster, dungeon and town up to top loop
+                                    break  # break out of prox to monster, dungeon and town, up to top loop
                                 if try_again == "n":
                                     print(f"Farewell.")
                                     exit()

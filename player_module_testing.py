@@ -824,16 +824,16 @@ class Player:
         #                           6: "charisma"}
         if self.strength < 20 or self.dexterity < 20 or self.constitution < 20 or self.intelligence < 20 or self.wisdom < 20 or self.charisma < 20:
             os.system('cls')
-            print(f"Ability Score Improvement for level {self.level}")
+            print(f"*Ability Score Improvement*")
             print(f"Improve one ability score by 2 points:\n"
-                  f"You may choose to improve a single ability score, such as charisma, \n"
-                  f"and increase it by 2 points. Increasing a score by 2 points guarantees\n"
-                  f"an improvement of the modifier. Applying 2 points to an even-numbered score will maximize gain.\n"
+                  f"You may choose to improve a single ability score, such as strength, \n"
+                  f"and increase it by 2 points. While in ncreasing a score by 2 points guarantees\n"
+                  f"an improvement of the modifier, applying 2 points to an even-numbered score will maximize gain.\n"
                   f"Improve two ability scores by 1 point:\n"
-                  f"You may choose to improve two ability scores, such as charisma and constitution, by one point.\n"
+                  f"You may choose to improve two ability scores, such as charisma and constitution, by 1 point each.\n"
                   f"It is generally recommended to do this if you have odd-numbered ability scores,\n "
-                  f"as bringing them up to the next even number will increase the modifier.\n"
-                  f"*The maximum score for any ability is 20*")
+                  f"as bringing them up to the next even number will increase the ability modifier.\n"
+                  f"         *The maximum score for any ability is 20*")
             pause()
 
             while True:
@@ -871,19 +871,19 @@ class Player:
                     for ability in ability_lst:
                         if len(ability_lst):
                             ability_dict_subset_too[ability_lst.index(ability)] = ability
-                            # ability_dict_subset_too[ability] = ability_lst.index(ability)  # this reverses the key and value!!
+                            # ability_dict_subset_too[ability] = ability_lst.index(ability)  # <-reverses key and value!
                     for key, value in ability_dict_subset_too.items():
-                        print(key + 1, ':', value)  # add one because indexing starts at zero
+                        print(key + 1, ':', value.capitalize())  # add one because indexing starts at zero
                     try:
                         one_ability = int(
-                            input(f"Enter the number of the one ability you wish to improve by 2 points. "
+                            input(f"Enter the number of the ability you wish to improve by 2 points. "
                                   f"(NOTE: This is permanent!): "))
                         one_ability -= 1  # subtract one because indexing starts at 0
                         ability_to_improve = (ability_dict_subset_too[one_ability])
                         old_score = ability_dict[ability_to_improve]
                         ability_dict[ability_to_improve] += 2
-                        print(
-                            f"Your {ability_to_improve} has been increased from {old_score} to {ability_dict[ability_to_improve]}!")
+                        print(f"Your {ability_to_improve} has been increased from "
+                              f"{old_score} to {ability_dict[ability_to_improve]}!")
                         self.calculate_modifiers()
                         # pause()
                         return
@@ -900,7 +900,8 @@ class Player:
                         elif tries == 1:
                             adjective = 'second'
                         elif tries > 1:
-                            print(f"ability improvement done")
+                            print(f"You savor the empowering abilities you have gained..\n"
+                                  f"And yet, the dungeon horde grows more powerful with you!")
                             return
                         ability_dict = self.__dict__  # create variable as actual copy of player dict attribute
                         # add all abilities < 20 to ability list
@@ -918,7 +919,7 @@ class Player:
                         if self.charisma < 20:
                             ability_lst.append('charisma')
                         if not len(ability_lst):  # if list is empty, no more improvements allowed
-                            print(f"All of your abilities are at the maximum level!")
+                            print(f"All of your abilities are at the maximum level!")  # this code should be unreachable
                             # pause()
                             return
                         print(f"Ability Score Improvement for level {self.level}")
@@ -928,14 +929,12 @@ class Player:
                             if len(ability_lst):
                                 ability_dict_subset_too[ability_lst.index(ability)] = ability
                         for key, value in ability_dict_subset_too.items():
-                            print(key + 1, ':', value)
-
+                            print(key + 1, ':', value.capitalize())
                         try:
-
-                            first_ability = int(input(f"Enter the number of the {adjective} ability to improve. "
+                            option_two = int(input(f"Enter the number of the {adjective} ability to improve. "
                                                       f"(NOTE: This is permanent!): "))
-                            first_ability -= 1
-                            ability_to_improve = (ability_dict_subset_too[first_ability])
+                            option_two -= 1
+                            ability_to_improve = (ability_dict_subset_too[option_two])
                             old_score = ability_dict[ability_to_improve]
                             ability_dict[ability_to_improve] += 1
                             print(
@@ -1173,11 +1172,11 @@ class Player:
         # add evade logic
         strength_bonus = 0
         if self.potion_of_strength_effect:
-            strength_bonus = round(self.strength * .5)
+            strength_bonus = 1.5  # round(self.strength * .5)
         self.hud()
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"You strike at the {monster_name}..")
-        print(f"{name} rolls 20 sided die---> {roll_d20}")
+        print(f"Attack roll---> {roll_d20}")
         sleep(1)
         if roll_d20 == 1:
             print("You missed.")
@@ -1198,15 +1197,14 @@ class Player:
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
             damage_roll = dice_roll((self.level * critical_bonus), self.hit_dice)
 
-            damage_to_opponent = round(
-                damage_roll + self.strength_modifier + strength_bonus + self.wielded_weapon.damage_bonus)
+            damage_to_opponent = round((damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) * strength_bonus)
             if damage_to_opponent > 0:
                 print(hit_statement)
                 sleep(1)
                 print(
-                    f"{name} rolls {self.level * critical_bonus}d{self.hit_dice} ---> {damage_roll} + weapon bonus "
+                    f"{self.level * critical_bonus}d{self.hit_dice} roll ---> {damage_roll} + weapon bonus "
                     f"({self.wielded_weapon.damage_bonus}) + "
-                    f"Strength modifier ({self.strength_modifier}) + Strength Bonus ({strength_bonus}) = {damage_to_opponent} ")
+                    f"Strength modifier ({self.strength_modifier}) * Strength Bonus ({strength_bonus}) = {damage_to_opponent} (rounded)")
                 print(f"You do {damage_to_opponent} points of damage!")
                 pause()
                 self.hud()
@@ -2479,6 +2477,15 @@ class Player:
 
         return
 
+    def staircase(self):
+        print(f"This is the staircase entrance to {self.dungeon.name}.")
+        if self.dungeon.level > 1:
+            previous_place = f"dungeon level {self.dungeon.level - 1}"
+        else:
+            previous_place = f"the town of Fieldenberg"
+            print(f"The stairs lead up to {previous_place}. However, there is no returning;\n"
+                  f"The dungeon horde have barricaded the archway. You must continue onward!")
+
     def event_logic(self):
         # the event dictionary *key* is the dungeon tuple corresponding to
         # dungeon x y coordinates of an event or item e.g. (2, 3)
@@ -2491,7 +2498,8 @@ class Player:
         self.coordinates = (self.x, self.y)
         event_dict = {self.dungeon.throne: self.throne,
                       self.dungeon.fountain: self.fountain,
-                      self.dungeon.teleporter: self.teleporter
+                      self.dungeon.teleporter: self.teleporter,
+                      self.dungeon.staircase: self.staircase
                       }
         if self.coordinates in event_dict:
             event_function = (event_dict[self.coordinates])
@@ -2541,10 +2549,7 @@ class Player:
             ")": f"You are against a wall to the East. Exits are to the North, South and West.",
         }
         if self.position == 0:  # integer representing starting position
-            print(f"You find yourself at the bottom of a deep, spiral staircase..\n"
-                  f"The echo from the door above being locked behind you still echoes throughout the emptiness.\n"
-                  f"This is the entrance of {self.dungeon.name}.")
-            # pause()
+            print(self.dungeon.intro)
             # self.hud()
             return
         if self.position == "*":  # string representing walls
@@ -2589,17 +2594,19 @@ class Player:
         print(self.position)  # remove after testing
         print(self.x, self.y)
         if self.position == 0:
-            print("You are at the bottom of a staircase with a locked door above...")
+            print(self.dungeon.intro)
         print(self.dungeon.name)
-        if self.position != 0:
+        if self.position != 0 and self.coordinates != self.dungeon.staircase:
             self.dungeon.player_grid[self.y][self.x] = "X"
         for element in range(0, 20):
             print(*maps[element])
-        self.dungeon.player_grid[self.y][self.x] = "."  # replace the X with a dot so that it doesn't leave a trail
+        # replace the X with a dot so that it doesn't leave a trail:
+        if self.position != 0 and self.coordinates != self.dungeon.staircase:
+            self.dungeon.player_grid[self.y][self.x] = "."
+        self.position = self.dungeon.grid[self.y][self.x]
+        print(f"S = Staircase X = your position E = Exit")
         # place the following line in the main file to leave a trail of x's throughout the map to see where you've been.
         # player_1.dungeon.player_grid[player_1.y][player_1.x] = "x"
-        self.position = self.dungeon.grid[self.y][self.x]
-        print(f"X = your position E = Exit")
 
     def next_dungeon(self):
         # dungeon dictionary in dungeons.py
@@ -3165,3 +3172,4 @@ sale_item = (sale_items_dict[sale_item_key])
             elif sale_item_key == 'c':
                 self.item_management('Cloaks', self.cloak)
                 continue'''
+''''''

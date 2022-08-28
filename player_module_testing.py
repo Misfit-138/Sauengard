@@ -883,7 +883,7 @@ class Player:
                     for key, value in ability_dict_subset_too.items():
                         print(key + 1, ':', value.capitalize())
                     try:
-                        ability_index = int(input(f"Enter the ability to improve, one point at a time.\n"
+                        ability_index = int(input(f"Enter the ability to improve.\n"
                                                   f"(THIS IS PERMANENT!) : "))
                         #
                         ability_index -= 1
@@ -2464,10 +2464,10 @@ class Player:
         # NAVIGATION
 
     def dungeon_description(self):
-        self.hud()
+        #self.hud()
         self.coordinates = (self.x, self.y)
-        print(self.coordinates)  # remove after testing
-
+        #print(self.coordinates)  # remove after testing
+        print(f"(Dungeon level {self.dungeon.level} {self.dungeon.name}) {self.coordinates}")
         # DEAD END Only 1 exit!
         # 1 exit to the north
         # 2 exit to the south
@@ -2493,8 +2493,8 @@ class Player:
             "2": f"You are at a dead end. The only exit is to the South...",
             "3": f"You are at a dead end. The only exit is to the East...",
             "4": f"You are at a dead end. The only exit is to the West...",
-            "5": f"You are in a corridor. Exits are to the North and South...",
-            "6": f"You are in a corridor. Exits are to the East and West...",
+            "5": f"This is a tunnel corridor of {self.dungeon.name}. Exits are to the North and South...",
+            "6": f"You are in a corridor of {self.dungeon.name}. Exits are to the East and West...",
             "7": f"You are in a corner. Exits are to the South and East.",
             "8": f"You are in a corner. Exits are to the North and East.",
             "9": f"You are in a corner. Exits are to the South and West.",
@@ -2548,10 +2548,11 @@ class Player:
         cls()
         print("You look at the map..")
         print(self.position)  # remove after testing
+        self.coordinates = (self.x, self.y)
         print(self.x, self.y)
         if self.position == 0:
             print(self.dungeon.intro)
-        print(self.dungeon.name)
+        print(f"(Dungeon level {self.dungeon.level} {self.dungeon.name}) ({self.coordinates})")
         if self.position != 0 and self.coordinates != self.dungeon.staircase:
             self.dungeon.player_grid[self.y][self.x] = "X"
         for element in range(0, 20):

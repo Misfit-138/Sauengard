@@ -201,13 +201,13 @@ while True:
             while in_dungeon:
                 player_1.previous_x = player_1.x
                 player_1.previous_y = player_1.y
-                # player_1.regenerate()
+
                 # player_1.loot()  # for testing
                 encounter = dice_roll(1, 20)
                 player_1.hud()
                 if player_1.position == 0:
                     player_1.dungeon_description()
-                print(f"(Dungeon level {player_1.dungeon.level})")
+                #print(f"(Dungeon level {player_1.dungeon.level}) {player_1.dungeon.name}")
                 print(f"You can always (L)ook, or use (MAP) without wasting a turn.")
                 dungeon_command = input(
                     "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage inventory,\n(G)iant strength potion, (I)nventory or WASD to navigate. --> ").lower()
@@ -278,11 +278,11 @@ while True:
                     # ***** END OF NAVIGATION TURN *************************************************************
                     # !!!!!!!!!!!!!!!! V NOTE the INDENT V !!!!!!!!!!!!!!!!
                     player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
-                    player_1.proximity = (player_1.x, player_1.y)
+                    player_1.coordinates = (player_1.x, player_1.y)
                     player_1.dungeon_description()
                     #player_1.increase_random_ability()  # remove after testing
-                    player_1.asi()  # remove after testing
-                    # Potion of strength wears off after each movement in addition to attacks:
+                    #player_1.asi()  # remove after testing
+                    # Potion of strength wears off after 5 turns. each navigation movement and each attack turn count!
                     player_1.calculate_potion_of_strength()
 
                     if player_1.event_logic() == "King Boss":
@@ -290,7 +290,7 @@ while True:
                     # sleep(1.5)
                     pause()
                     if player_1.position == "E":
-                        encounter = 99
+                        #encounter = 99
                         player_1.next_dungeon()
                 player_1.regenerate()
                 # eventually, make encounter a returned boolean from navigation function?

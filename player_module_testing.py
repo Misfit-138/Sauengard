@@ -2465,9 +2465,18 @@ class Player:
 
     def dungeon_description(self):
         #self.hud()
+
         self.coordinates = (self.x, self.y)
+        if self.x > 9:
+            east_west = "eastern"
+        elif self.x < 10:
+            east_west = "western"
+        if self.y > 9:
+            north_south = "south"
+        elif self.y < 10:
+            north_south = "north"
         #print(self.coordinates)  # remove after testing
-        print(f"(Dungeon level {self.dungeon.level} {self.dungeon.name}) {self.coordinates}")
+        #print(f"(Dungeon level {self.dungeon.level} {self.dungeon.name}) {self.coordinates}")
         # DEAD END Only 1 exit!
         # 1 exit to the north
         # 2 exit to the south
@@ -2517,13 +2526,13 @@ class Player:
             return
 
         if self.position in description_dict:
-            # if self.x >= 9:
+            # if self.x > 9:
             #    direction = "Eastern"
-            # elif self.x < 9:
+            # elif self.x < 10:
             #    direction = "Western"
-            print(f"({self.dungeon.name})")
+            print(f"({self.dungeon.name} {north_south}{east_west} region)")
             description = (description_dict[self.position])
-
+            #return description
             print(description)
             return
             # ^ <> v dungeon EXIT in the indicated direction!

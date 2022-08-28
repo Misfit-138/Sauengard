@@ -37,7 +37,7 @@ class Dungeon:
 class Dungeon1(Dungeon):
     def __init__(self):
         super().__init__()
-        self.name = "The Upper Catacombs"
+        self.name = "The Fieldenberg Catacombs"
         self.level = 1
         # self.event = (2, 3)
         self.throne = (2, 3)
@@ -100,7 +100,7 @@ dungeon_1 = Dungeon1()
 class Dungeon2(Dungeon):
     def __init__(self):
         super().__init__()
-        self.name = "Dungeon level 2"
+        self.name = "The Fieldenberg Lower Catacombs"
         self.level = 2
         self.throne = (2, 3)
         self.fountain = (3, 3)

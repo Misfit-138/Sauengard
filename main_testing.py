@@ -199,15 +199,20 @@ while True:
             # DUNGEON NAVIGATION LOOP:
 
             while in_dungeon:
+                player_1.hud()
+
+                #player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note
+                #player_1.dungeon_description()  #
+                player_1.coordinates = (player_1.x, player_1.y)
                 player_1.previous_x = player_1.x
                 player_1.previous_y = player_1.y
-
                 # player_1.loot()  # for testing
                 encounter = dice_roll(1, 20)
-                player_1.hud()
+
                 if player_1.position == 0:
                     player_1.dungeon_description()
-                #print(f"(Dungeon level {player_1.dungeon.level}) {player_1.dungeon.name}")
+                #player_1.dungeon_description()
+                print(f"(Dungeon level {player_1.dungeon.level} {player_1.dungeon.name}) {player_1.coordinates}")
                 print(f"You can always (L)ook, or use (MAP) without wasting a turn.")
                 dungeon_command = input(
                     "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage inventory,\n(G)iant strength potion, (I)nventory or WASD to navigate. --> ").lower()
@@ -275,11 +280,13 @@ while True:
                         player_1.display_map(player_1.dungeon.player_grid)  #
                         pause()
                         continue
+
                     # ***** END OF NAVIGATION TURN *************************************************************
                     # !!!!!!!!!!!!!!!! V NOTE the INDENT V !!!!!!!!!!!!!!!!
-                    player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
-                    player_1.coordinates = (player_1.x, player_1.y)
-                    player_1.dungeon_description()
+                    player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent uncomment to return to previous setup 8/28/22 15:52
+                    player_1.coordinates = (player_1.x, player_1.y)  # uncomment to return to previous setup 8/28/22 15:52
+                    player_1.dungeon_description()  # uncomment to return to previous setup 8/28/22 15:52
+
                     #player_1.increase_random_ability()  # remove after testing
                     #player_1.asi()  # remove after testing
                     # Potion of strength wears off after 5 turns. each navigation movement and each attack turn count!
@@ -288,7 +295,7 @@ while True:
                     if player_1.event_logic() == "King Boss":
                         encounter = 98
                     # sleep(1.5)
-                    pause()
+                    pause()  # uncomment to return to previous setup 8/28/22 15:52
                     if player_1.position == "E":
                         #encounter = 99
                         player_1.next_dungeon()

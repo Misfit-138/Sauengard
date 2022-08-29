@@ -235,7 +235,7 @@ class Monster:
         print(f"The {name} attacks! (It rolls {roll_d20})")
         if roll_d20 == 1:
             print(f"..it awkwardly strikes and you easily block.")
-            #time.sleep(2)
+            # time.sleep(2)
             os.system('pause')
             return 0
         if roll_d20 == 20:
@@ -245,7 +245,7 @@ class Monster:
             critical_bonus = 1
             hit_statement = ""
 
-        print(f"Dexterity modifier {self.dexterity_modifier}")
+        print(f"{self.name} dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
         print(f"Your armor class ---> {human_player_armor_class}")
         if roll_d20 + self.dexterity_modifier >= human_player_armor_class:
             damage_roll = dice_roll((self.number_of_hd * critical_bonus), self.hit_dice)
@@ -274,7 +274,7 @@ class Monster:
             os.system('pause')
             return 0
 
-    def quantum_energy_attack(self, name, human_player_dexterity_modifier, human_player_ring_of_prot):
+    def quantum_energy_attack(self, name, human_player_wisdom_modifier, human_player_ring_of_prot):
         attack_bonus_roll = random.randint(1, 100)
         if attack_bonus_roll <= 50:
             attack_bonus = self.quantum_attack_1
@@ -293,7 +293,8 @@ class Monster:
             attack_phrase = self.quantum_attack_5_phrase
         human_player_roll_d20 = dice_roll(1, 20)
         roll_d20 = dice_roll(1, 20)
-        print(f"The {name} attacks with Quantum Energy! (It rolls {roll_d20})")
+        print(f"The {name} attacks with Quantum Energy!\n"
+              f"(It rolls {roll_d20}) + Wisdom modifier: {self.wisdom_modifier} = {roll_d20 + self.wisdom_modifier}")
         if roll_d20 == 1:
             print(f"..its attempts to procure the universal forces fail miserably.")
             time.sleep(2)
@@ -304,11 +305,11 @@ class Monster:
         else:
             critical_bonus = 1
             hit_statement = ""
-        print(f"Wisdom modifier {self.wisdom_modifier}")
+        #print(f"{self.name} Wisdom modifier {self.wisdom_modifier}")  # MONSTER WISDOM MODIFIER
         print(
-            f"Your roll: {human_player_roll_d20} + dexterity modifier ({human_player_dexterity_modifier}) + ring of protection "
-            f"({human_player_ring_of_prot}). Total: {human_player_roll_d20 + human_player_dexterity_modifier}")
-        if roll_d20 + self.wisdom_modifier >= (human_player_roll_d20 + human_player_dexterity_modifier + human_player_ring_of_prot):
+            f"Your roll: {human_player_roll_d20} + wisdom modifier ({human_player_wisdom_modifier}) + ring of protection "
+            f"({human_player_ring_of_prot}) = {human_player_roll_d20 + human_player_wisdom_modifier}")
+        if roll_d20 + self.wisdom_modifier >= (human_player_roll_d20 + human_player_wisdom_modifier + human_player_ring_of_prot):
             damage_roll = dice_roll(self.number_of_hd * critical_bonus, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)
             if damage_to_opponent > 0:  # # at this point the player is the opponent!

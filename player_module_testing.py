@@ -4,9 +4,9 @@ import time
 import os
 from collections import Counter
 import winsound
-from dice_roll_module import *
+from dice_roll_module import dice_roll
 from dungeons import *
-from typing_module import typing
+# from typing_module import typing
 
 '''Target
 Identify your target to the table. 
@@ -665,7 +665,7 @@ class Player:
             self.hit_points = self.hit_points + regeneration
             if self.hit_points > self.maximum_hit_points:
                 self.hit_points = self.maximum_hit_points
-            print(f"You regenerate + {regeneration}")
+            print(f"You regenerate + {regeneration}")  # remove after testing
             sleep(1)
             return
 
@@ -748,7 +748,9 @@ class Player:
             if self.potion_of_strength_uses > 4:
                 self.potion_of_strength_effect = False
                 self.potion_of_strength_uses = 0
-                print(f"The giant strength leaves your body..")
+                print(f"The potion's effects wear off....the giant strength leaves your body..")
+                pause()
+
                 return False
             else:
                 return True
@@ -853,40 +855,44 @@ class Player:
                 points = 2
                 while True:
                     self.hud()
-                    #print(f"Ability Score Improvement for level {self.level}")
+                    # print(f"Ability Score Improvement for level {self.level}")
 
                     if tries > 1:
                         print(f"You savor the empowering abilities you have gained..\n"
                               f"And yet, the dungeon horde grows more powerful with you!")
                         return
+
                     ability_dict = self.__dict__  # create variable as actual copy of player dict attribute
-                    # add all abilities < 20 to ability list
+
                     ability_lst = []
+                    # the working dict and 'for' loop just takes the place of many 'if:' statements
                     working_dict = {'strength': self.strength, 'dexterity': self.dexterity,
                                     'constitution': self.constitution, 'intelligence': self.intelligence,
                                     'wisdom': self.wisdom, 'charisma': self.charisma}
+                    # add all abilities < 20 in working dict to ability list
                     for key, value in working_dict.items():
                         if value < 20:
                             ability_lst.append(key)
 
-                    if not len(ability_lst):  # if list is empty, no more improvements allowed
-                        print(f"All of your abilities are at the maximum level!")  # this code should be unreachable
+                    # this code should be reachable if stats are maxed out, and player level_up calls it
+                    if not len(ability_lst):  # if ability list is empty, all stats at 20; no more improvements allowed
+                        print(f"All of your abilities are at the maximum level!")
                         # pause()
                         return
                     print(f"Ability Score Improvement for level {self.level}")
                     print(f"Points to distribute: {points}")
-                    # create a subset ability dictionary from ability list by indexing, and then print out
+                    # create a subset ability dictionary from the ability list by indexing, and then print out
                     ability_dict_subset_too = {}
                     for ability in ability_lst:
                         if len(ability_lst):
                             ability_dict_subset_too[ability_lst.index(ability)] = ability
                     for key, value in ability_dict_subset_too.items():
-                        print(key + 1, ':', value.capitalize())
+                        print(key + 1, ':', value.capitalize())  # add 1 to key since indexing begins at 0
                     try:
                         ability_index = int(input(f"Enter the ability to improve.\n"
                                                   f"(THIS IS PERMANENT!) : "))
                         #
-                        ability_index -= 1
+                        ability_index -= 1  # indexing begins at zero...
                         ability_to_improve = (ability_dict_subset_too[ability_index])
                         old_score = ability_dict[ability_to_improve]
                         ability_dict[ability_to_improve] += 1
@@ -934,9 +940,9 @@ class Player:
             gain_hit_points = dice_roll(1, self.hit_dice) + self.constitution_modifier
             if gain_hit_points < 1:
                 gain_hit_points = 1
-            self.hit_points += gain_hit_points  # (previous HP + Hit Die roll + CON modifier)
+            self.hit_points += gain_hit_points  # you heal and gain max hp (previous HP + Hit Die roll + CON modifier)
             self.maximum_hit_points += gain_hit_points
-            print(f"You heal and gain {gain_hit_points} maximum hit points")
+            print(f"You heal, and gain {gain_hit_points} maximum hit points")
             sleep(2)
             # Ability Score Improvement at levels 4, 8, 12, 16, and 19.
             # Fighters gain additional ASIs at the 6th and 14th levels
@@ -996,7 +1002,7 @@ class Player:
             return False
 
     def quick_move(self, monster_name):
-        # self.hud()
+        self.hud()
         quick_move_roll = dice_roll(1, 20)  # - self.stealth
         # player_initiative_roll = dice_roll(1, 20)
         if quick_move_roll == 20:
@@ -1123,9 +1129,9 @@ class Player:
                     sleep(1)
             return True  # do i need this statement?
 
-    def swing(self, name, monster_name, monster_armor_class, strength_effect):
+    def swing(self, monster_name, monster_armor_class):
         # add evade logic
-        strength_bonus = 0
+        strength_bonus = 1
         if self.potion_of_strength_effect:
             strength_bonus = 1.5  # round(self.strength * .5)
         self.hud()
@@ -1152,7 +1158,7 @@ class Player:
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
             damage_roll = dice_roll((self.level * critical_bonus), self.hit_dice)
 
-            damage_to_opponent = round(
+            damage_to_opponent = math.ceil(
                 (damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) * strength_bonus)
             if damage_to_opponent > 0:
                 print(hit_statement)
@@ -1177,7 +1183,7 @@ class Player:
             roll_d20 = dice_roll(1, 20)
             if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
                 damage_roll = dice_roll(self.level, self.hit_dice)
-                damage_to_opponent = round(damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) + 1
+                damage_to_opponent = math.ceil(damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) + 1
                 print(f"You manage to attack for {damage_to_opponent} points of damage!")
                 sleep(2)
                 self.hud()
@@ -1871,7 +1877,7 @@ class Player:
                 print(f"You retrieve the vial from your belt and eagerly drain its contents into your mouth...")
                 sleep(2)
                 self.potions_of_healing -= 1
-                self.hit_points = self.hit_points + round(self.maximum_hit_points * .66)
+                self.hit_points = self.hit_points + math.ceil(self.maximum_hit_points * .66)
                 if self.hit_points > self.maximum_hit_points:
                     self.hit_points = self.maximum_hit_points
                 self.hud()
@@ -2184,7 +2190,7 @@ class Player:
 
     def found_cloak_substitution(self, found_item):
 
-        if self.cloak.stealth < round(self.dexterity * .25):
+        if self.cloak.stealth < math.ceil(self.dexterity * .25):
             if found_item.name == self.cloak.name:
                 found_item.stealth += 1
                 print(
@@ -2239,8 +2245,8 @@ class Player:
             print(f"It becomes permanently affixed..fused to your flesh and bone!")
             pause()
             return
-        elif self.ring_of_reg.regenerate < round(self.maximum_hit_points * .17):
-            old_ring = self.ring_of_reg
+        elif self.ring_of_reg.regenerate < math.ceil(self.maximum_hit_points * .17):
+            # old_ring = self.ring_of_reg
             self.ring_of_reg.regenerate = (self.ring_of_reg.regenerate + 1)
             print(f"Quantum wierdness fills the air...")
             print(f"Your {ring_of_regeneration.name} is enhanced to + {self.ring_of_reg.regenerate} !")
@@ -2263,7 +2269,7 @@ class Player:
             print(f"Tunneling through realities, it permanently fuses to flesh and bone!")
             pause()
             return
-        elif self.ring_of_prot.protect < round(self.wisdom * .33):
+        elif self.ring_of_prot.protect < math.ceil(self.wisdom * .33):
             self.ring_of_prot.protect += 1
             print(f"Quantum wierdness fills the air...")
             print(f"Your {ring_of_protection.name} is enhanced to + {self.ring_of_prot.protect} !")
@@ -2356,13 +2362,14 @@ class Player:
                     pause()  # remove after testing
                     continue
             else:
-                return
+                return self.dungeon_description()
 
     def throne(self):
         print(f"There is a gem encrusted throne here.")
         sit = input(f"Do you wish to sit? ")
         if sit == 'y':
             print(f"You sit on the throne...")
+            self.regenerate()  # testing
             return "King Boss"
         else:
             print("You don't sit...wonder what may have happened.")
@@ -2415,6 +2422,7 @@ class Player:
         drink = input(f"Do you wish to drink? ")
         if drink == 'y':
             print(f"Something random happens")
+            self.regenerate()  # it's only fair to regenerate and count this as a move...? testing
             # return self.teleporter()
         else:
             print("You don't drink...wonder what may have happened.")
@@ -2429,18 +2437,19 @@ class Player:
         self.previous_x = self.x
         self.previous_y = self.y
         self.position = self.dungeon.grid[self.y][self.x]
+        self.regenerate()  # testing
         # self.position = 0
 
         return
 
     def staircase(self):
-        print(f"This is the staircase entrance to {self.dungeon.name}.")
+        print(f"This is the spiral staircase entrance to {self.dungeon.name}.")
         if self.dungeon.level > 1:
             previous_place = f"dungeon level {self.dungeon.level - 1}"
         else:
             previous_place = f"the town of Fieldenberg"
-            print(f"The stairs lead up to {previous_place}. However, there is no returning;\n"
-                  f"The dungeon horde have barricaded the archway. You must continue onward!")
+        print(f"The stairs lead up to {previous_place}. However, there is no returning;\n"
+              f"The door is locked and barricaded. You must continue onward!")
 
     def event_logic(self):
         # the event dictionary *key* is the dungeon tuple corresponding to
@@ -2454,8 +2463,8 @@ class Player:
         self.coordinates = (self.x, self.y)
         event_dict = {self.dungeon.throne: self.throne,
                       self.dungeon.fountain: self.fountain,
-                      self.dungeon.teleporter: self.teleporter,
-                      self.dungeon.staircase: self.staircase
+                      self.dungeon.teleporter: self.teleporter
+                      #self.dungeon.staircase: self.staircase
                       }
         if self.coordinates in event_dict:
             event_function = (event_dict[self.coordinates])
@@ -2464,19 +2473,17 @@ class Player:
         # NAVIGATION
 
     def dungeon_description(self):
-        #self.hud()
-
-        self.coordinates = (self.x, self.y)
+        self.hud()
         if self.x > 9:
             east_west = "eastern"
         elif self.x < 10:
             east_west = "western"
         if self.y > 9:
-            north_south = "south"
+            north_south = "South"
         elif self.y < 10:
-            north_south = "north"
-        #print(self.coordinates)  # remove after testing
-        #print(f"(Dungeon level {self.dungeon.level} {self.dungeon.name}) {self.coordinates}")
+            north_south = "North"
+        # print(self.coordinates)  # remove after testing
+        # print(f"(Dungeon level {self.dungeon.level} {self.dungeon.name}) {self.coordinates}")
         # DEAD END Only 1 exit!
         # 1 exit to the north
         # 2 exit to the south
@@ -2513,55 +2520,56 @@ class Player:
             "(": f"You are against a wall to the West. Exits are to the North, South and East.",
             ")": f"You are against a wall to the East. Exits are to the North, South and West.",
         }
-        if self.position == 0:  # integer representing starting position
-            print(self.dungeon.intro)
+        #if self.position == 0:  # integer representing starting position
+        #    print(self.dungeon.intro)
             # self.hud()
-            return
+            # return
+
         if self.position == "*":  # string representing walls
             print("You can't go that way...")
             self.x = self.previous_x
             self.y = self.previous_y
+            self.coordinates = (self.x, self.y)
             self.position = self.dungeon.grid[self.y][self.x]
             # sleep(1.5)
-            return
-
+            # return
+        if self.coordinates == self.dungeon.staircase:
+            self.staircase()
         if self.position in description_dict:
-            # if self.x > 9:
-            #    direction = "Eastern"
-            # elif self.x < 10:
-            #    direction = "Western"
-            print(f"({self.dungeon.name} {north_south}{east_west} region)")
             description = (description_dict[self.position])
-            #return description
+            # return description
             print(description)
-            return
+            # return
             # ^ <> v dungeon EXIT in the indicated direction!
         elif self.position == ">" or self.position == "<" or self.position == "^" or self.position == "v":
             print(f"You feel a draft... ")
             sleep(1.25)
             if self.position == ">":
                 print("You see the dungeon exit to the East!")
-                return
+                # return
             elif self.position == "<":
                 print("You see the dungeon exit to the West!")
-                return
+                # return
             elif self.position == "^":
                 print("You see the dungeon exit to the North!")
-                return
+                # return
             elif self.position == "v":
                 print("You see the dungeon exit to the South!")
-                return
+                # return
+        self.coordinates = (self.x, self.y)
+        print(f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}, {north_south}{east_west} region) Coordinates: {self.coordinates}")
+        return
 
     def display_map(self, maps):
         # self.hud()
         cls()
         print("You look at the map..")
-        print(self.position)  # remove after testing
+        print(f"Position key: {self.position}")  # remove after testing
         self.coordinates = (self.x, self.y)
-        print(self.x, self.y)
+
         if self.position == 0:
             print(self.dungeon.intro)
-        print(f"(Dungeon level {self.dungeon.level} {self.dungeon.name}) ({self.coordinates})")
+        print(f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}) Coordintes: {self.coordinates}")
         if self.position != 0 and self.coordinates != self.dungeon.staircase:
             self.dungeon.player_grid[self.y][self.x] = "X"
         for element in range(0, 20):

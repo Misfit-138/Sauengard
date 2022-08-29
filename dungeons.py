@@ -90,9 +90,13 @@ class Dungeon1(Dungeon):
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]]
-        self.intro = "You find yourself at the bottom of a deep, spiral staircase..\n" \
-                     "The echo from the door above being locked behind you still echoes throughout the emptiness.\n" \
-                     "This is the entrance of the upper catacombs. The gloom and stench of filth surround you."
+        self.intro = "You descend the crumbling steps of a deep, spiral staircase, finding yourself in a\n" \
+                     "darkness more dense than any you have ever known. Taking a moment to adjust to the thick gloom,\n" \
+                     "you hear a disturbance from above, as the great door is slammed and barred shut!\n" \
+                     "As the echoes throughout the emptiness linger, you hear the muffled scraping of a mighty chain\n" \
+                     "being quickly wrestled into place, and finally, locked and released with a thud.\n" \
+                     "This is the entrance of the upper catacombs. Blackness and the stench of filth surround you."
+
 
 dungeon_1 = Dungeon1()
 
@@ -154,7 +158,8 @@ class Dungeon2(Dungeon):
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]]
         self.intro = "You find yourself at the bottom of a deep, spiral staircase..\n" \
                      "The echo from the door above being locked behind you still echoes throughout the emptiness.\n" \
-                     "This is the entrance of the mid-level catacombs. The gloom and stench of filth surround you."
+                     "This is the entrance of the lower catacombs. The gloom and stench of filth surround you."
+
 
 dungeon_2 = Dungeon2()
 
@@ -217,6 +222,7 @@ class Dungeon3(Dungeon):
         self.intro = "You find yourself at the bottom of a deep, spiral staircase..\n" \
                      "The echo from the door above being locked behind you still echoes throughout the emptiness.\n" \
                      "This is the entrance of the lower catacombs. The gloom and stench of filth surround you."
+
 
 dungeon_3 = Dungeon3()
 

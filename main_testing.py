@@ -56,13 +56,13 @@ def sleep(seconds):
 
 winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\originalsound.wav',
                    winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-os.system('cls')
+cls()
 typing("Welcome to Sauengard.")
 print("")
 print("")
-os.system('pause')
+pause()
 winsound.PlaySound(None, winsound.SND_ASYNC)
-os.system('cls')
+cls()
 
 while True:
     town_portal = False
@@ -98,7 +98,7 @@ while True:
         accept_stats = ""
         while accept_stats != "y":
             player_1 = Player(player_name)
-            os.system('cls')
+            cls()
             print(f"Strength: {player_1.strength}")
             print(f"Dexterity: {player_1.dexterity}")
             print(f"Constitution {player_1.constitution}")
@@ -143,7 +143,7 @@ while True:
         '''        if town_functions == 'r':
             print("Restart")
             time.sleep(2)
-            os.system('cls')
+            cls()
             in_town = False
             break'''
         if town_functions == 'q':
@@ -199,10 +199,7 @@ while True:
             # DUNGEON NAVIGATION LOOP:
 
             while in_dungeon:
-                player_1.hud()
-
-                #player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note
-                #player_1.dungeon_description()  #
+                #player_1.hud()
                 player_1.coordinates = (player_1.x, player_1.y)
                 player_1.previous_x = player_1.x
                 player_1.previous_y = player_1.y
@@ -210,16 +207,17 @@ while True:
                 encounter = dice_roll(1, 20)
 
                 if player_1.position == 0:
-                    player_1.dungeon_description()
-                #player_1.dungeon_description()
-                print(f"(Dungeon level {player_1.dungeon.level} {player_1.dungeon.name}) {player_1.coordinates}")
+                    print(player_1.dungeon.intro)
+                # 'continue' means you do not waste a turn. just add dungeon_description()
                 print(f"You can always (L)ook, or use (MAP) without wasting a turn.")
                 dungeon_command = input(
                     "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage inventory,\n(G)iant strength potion, (I)nventory or WASD to navigate. --> ").lower()
                 if dungeon_command not in ('w', 'a', 's', 'd', 'l', 'map', 'p', 'g', 'h', 'm', 'i', 'q'):
                     print("Unknown command")
                     time.sleep(.25)
+                    player_1.dungeon_description()
                     continue
+
                 if dungeon_command == 'p':
                     if player_1.use_scroll_of_town_portal():
                         in_town = True
@@ -231,7 +229,7 @@ while True:
                 elif dungeon_command == 'g':
                     player_1.drink_potion_of_strength()
                     player_1.potion_of_strength_uses = 0
-                    continue
+                    #continue
                 elif dungeon_command == 'q':
                     print("Quit game..")
                     while True:
@@ -245,10 +243,10 @@ while True:
                 elif dungeon_command == 'h':
                     player_1.drink_healing_potion()
                     time.sleep(1)
-                    player_1.hud()
+
                 elif dungeon_command == 'm':
                     player_1.item_management_sub_menu()
-                    continue
+                    #continue
                 elif dungeon_command == 'i':
                     player_1.inventory()
                 elif dungeon_command == 'w' or 'a' or 's' or 'd' or 'l' or 'map':
@@ -274,34 +272,39 @@ while True:
                         sleep(.5)
                     if dungeon_command == 'l':
                         player_1.dungeon_description()
+                        player_1.coordinates = (player_1.x, player_1.y)
+                        player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]
+                        #player_1.event_logic()
                         pause()
-                        continue
+                        #continue
                     if dungeon_command == 'map':
                         player_1.display_map(player_1.dungeon.player_grid)  #
                         pause()
-                        continue
+                        player_1.dungeon_description()
+                        #player_1.event_logic()
+                        #continue
 
                     # ***** END OF NAVIGATION TURN *************************************************************
                     # !!!!!!!!!!!!!!!! V NOTE the INDENT V !!!!!!!!!!!!!!!!
-                    player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent uncomment to return to previous setup 8/28/22 15:52
-                    player_1.coordinates = (player_1.x, player_1.y)  # uncomment to return to previous setup 8/28/22 15:52
-                    player_1.dungeon_description()  # uncomment to return to previous setup 8/28/22 15:52
-
-                    #player_1.increase_random_ability()  # remove after testing
-                    #player_1.asi()  # remove after testing
-                    # Potion of strength wears off after 5 turns. each navigation movement and each attack turn count!
-                    player_1.calculate_potion_of_strength()
-
-                    if player_1.event_logic() == "King Boss":
-                        encounter = 98
-                    # sleep(1.5)
-                    pause()  # uncomment to return to previous setup 8/28/22 15:52
-                    if player_1.position == "E":
-                        #encounter = 99
-                        player_1.next_dungeon()
+                # **********************************************************************************************>>>>
+                player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
+                player_1.coordinates = (player_1.x, player_1.y)  #
+                player_1.dungeon_description()  #
+                #player_1.increase_random_ability()  # remove after testing
+                #player_1.asi()  # remove after testing
+                if player_1.event_logic() == "King Boss":
+                    encounter = 98
+                # sleep(1.5)
+                #pause()
+                if player_1.position == "E":
+                    encounter = 99
+                    player_1.next_dungeon()
+                # ***********************************************************************************************>>>>
                 player_1.regenerate()
+                # Potion of strength wears off after 5 turns. each navigation movement and each attack turn count!
+                player_1.calculate_potion_of_strength()
                 # eventually, make encounter a returned boolean from navigation function?
-                if encounter > 20:
+                if encounter > 10:
                     # print("This should create monster now..")  # remove after testing
                     # monster dictionary imported from monster module. keys correspond to difficulty
                     # in proximity to monster loop contains battle loop within it
@@ -311,7 +314,8 @@ while True:
                         if player_is_dead:
                             # if player_1.check_dead():
                             winsound.PlaySound(None, winsound.SND_ASYNC)
-                            player_1.hud()
+                            cls()
+                            #player_1.hud()
                             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav',
                                                winsound.SND_ASYNC)
                             print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
@@ -324,7 +328,7 @@ while True:
                                 try_again = input("Do you wish to play again (y/n)? ").lower()
                                 if try_again == "y":
                                     time.sleep(1)
-                                    os.system('cls')
+                                    cls()
                                     break  # break out of prox to monster, dungeon and town, up to top loop
                                 if try_again == "n":
                                     print(f"Farewell.")
@@ -350,22 +354,25 @@ while True:
                         print(discovered_monsters)  # remove after testing
                         if monster.name in discovered_monsters:
                             print(f"You have encountered a level {monster.level} {monster.name}.")  # remove level after testing
-                            time.sleep(2)
+                            # time.sleep(2)
+                            pause()
                         else:
                             print(f"{monster.introduction}")
                             discovered_monsters.append(monster.name)
-                            os.system('pause')
+                            pause()
                         if player_1.monster_likes_you(monster.name, monster.intelligence):
                             in_proximity_to_monster = False
+                            player_1.dungeon_description()
                             break
                         if player_1.quick_move(monster.name):
                             in_proximity_to_monster = False
+                            player_1.dungeon_description()
                             break  # if monster steals something he gets away clean, if not, battle
                         # PLAYER INITIATIVE, MONSTER INITIATIVE
                         player_initiative = dice_roll(1, 20) + player_1.dexterity_modifier
                         monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier
                         print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
-                        time.sleep(1)
+                        pause()
                         if monster_initiative > player_initiative:
                             #monster_gets_the_jump = dice_roll(1, 20)
                             # if monster_gets_the_jump > player_1.armor_class:  # (player_1.dexterity + player_1.dexterity_modifier):
@@ -374,7 +381,7 @@ while True:
                             melee_or_quantum = dice_roll(1, 100)
                             if monster.quantum_energy and melee_or_quantum > 50:
                                 damage_to_player = monster.quantum_energy_attack(monster.name,
-                                                                                 player_1.dexterity_modifier,
+                                                                                 player_1.wisdom_modifier,
                                                                                  player_1.ring_of_prot.protect)
                                 player_1.reduce_health(damage_to_player)
                             else:
@@ -422,7 +429,7 @@ while True:
                                 melee_or_quantum = dice_roll(1, 20)
                                 if monster.quantum_energy and melee_or_quantum > 10:
                                     damage_to_player = monster.quantum_energy_attack(monster.name,
-                                                                                     player_1.dexterity_modifier,
+                                                                                     player_1.wisdom_modifier,
                                                                                      player_1.ring_of_prot.protect)
                                     player_1.reduce_health(damage_to_player)
                                 else:
@@ -439,7 +446,7 @@ while True:
                                                                             monster.hit_dice)
                                         if not player_1.check_dead():  # if player not dead
                                             print(f"You regain your faculties.")
-                                            os.system('pause')
+                                            pause()
                                             continue
                                         else:
                                             print("You are dead and paralyzed!")
@@ -463,7 +470,7 @@ while True:
                                 player_1.hud()
                                 continue  # if player enters anything other than the above
                             # player's turn:
-                            damage_to_monster = player_1.swing(player_1.name, monster.name, monster.armor_class, player_1.potion_of_strength_effect)
+                            damage_to_monster = player_1.swing(monster.name, monster.armor_class)
                             monster.reduce_health(damage_to_monster)
                             player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
                             if monster.check_dead():
@@ -483,7 +490,7 @@ while True:
                                 melee_or_quantum = dice_roll(1, 100)
                                 if monster.quantum_energy and melee_or_quantum > 50:
                                     damage_to_player = monster.quantum_energy_attack(monster.name,
-                                                                                     player_1.dexterity_modifier,
+                                                                                     player_1.wisdom_modifier,
                                                                                      player_1.ring_of_prot.protect)
                                     player_1.reduce_health(damage_to_player)
                                 else:
@@ -498,7 +505,7 @@ while True:
                                             player_1.damage_while_paralyzed(monster.number_of_hd, monster.hit_dice)
                                         if not player_1.check_dead():  # if player not dead
                                             print(f"You regain your faculties.")
-                                            os.system('pause')
+                                            pause()
                                             continue
                                         else:
                                             print("You are dead and paralyzed!")

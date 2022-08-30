@@ -209,9 +209,11 @@ while True:
                 if player_1.position == 0:
                     print(player_1.dungeon.intro)
                 # 'continue' means you do not waste a turn. just add dungeon_description()
-                print(f"You can always (L)ook, or use (MAP) without wasting a turn.")
+                #print(f"(L)ook at surroundings, use (MAP),")
                 dungeon_command = input(
-                    "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage inventory,\n(G)iant strength potion, (I)nventory or WASD to navigate. --> ").lower()
+                    "(L)ook at surroundings, use (MAP),\n"
+                    "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage inventory,\n"
+                    "(G)iant strength potion, (I)nventory or WASD to navigate. --> ").lower()
                 if dungeon_command not in ('w', 'a', 's', 'd', 'l', 'map', 'p', 'g', 'h', 'm', 'i', 'q'):
                     print("Unknown command")
                     time.sleep(.25)

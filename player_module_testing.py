@@ -2364,17 +2364,6 @@ class Player:
             else:
                 return self.dungeon_description()
 
-    def throne(self):
-        print(f"There is a gem encrusted throne here.")
-        sit = input(f"Do you wish to sit? ")
-        if sit == 'y':
-            print(f"You sit on the throne...")
-            self.regenerate()  # testing
-            return "King Boss"
-        else:
-            print("You don't sit...wonder what may have happened.")
-            return
-
     def increase_random_ability(self):
         # I was unable to come up with this code on my own.
         # Thanks to Angus Nicolson from Stack Overflow!
@@ -2417,7 +2406,18 @@ class Player:
         # print("Random attribute:", random_attribute)
         # ability_dict[random_attribute] += 1
 
-    def fountain(self):
+    def throne_event(self):
+        print(f"There is a gem encrusted throne here.")
+        sit = input(f"Do you wish to sit? ")
+        if sit == 'y':
+            print(f"You sit on the throne...")
+            self.regenerate()  # testing
+            return "King Boss"
+        else:
+            print("You don't sit...wonder what may have happened.")
+            return
+
+    def fountain_event(self):
         print(f"You see a fountain...!")
         drink = input(f"Do you wish to drink? ")
         if drink == 'y':
@@ -2428,7 +2428,7 @@ class Player:
             print("You don't drink...wonder what may have happened.")
             return
 
-    def teleporter(self):
+    def teleporter_event(self):
         print(f"Zzzzzzap....You've been teleported.....")
         self.dungeon_key += 1
         self.dungeon = dungeon_dict[self.dungeon_key]
@@ -2442,7 +2442,10 @@ class Player:
 
         return
 
-    def staircase(self):
+    def staircase_description(self):
+        # this is a description of the spiral staircase, if player navigates to it after the map is initialized
+        # it is not an 'event', since it is not really interactive.
+        # this function is called from the description function
         print(f"This is the spiral staircase entrance to {self.dungeon.name}.")
         if self.dungeon.level > 1:
             previous_place = f"dungeon level {self.dungeon.level - 1}"
@@ -2452,6 +2455,7 @@ class Player:
               f"The door is locked and barricaded. You must continue onward!")
 
     def event_logic(self):
+        # interactive events, items etc.
         # the event dictionary *key* is the dungeon tuple corresponding to
         # dungeon x y coordinates of an event or item e.g. (2, 3)
         # the event dictionary *value* is the corresponding player function
@@ -2461,9 +2465,9 @@ class Player:
         # function values are returned to the main program
         # using 'return event_function()'
         self.coordinates = (self.x, self.y)
-        event_dict = {self.dungeon.throne: self.throne,
-                      self.dungeon.fountain: self.fountain,
-                      self.dungeon.teleporter: self.teleporter
+        event_dict = {self.dungeon.throne: self.throne_event,
+                      self.dungeon.fountain: self.fountain_event,
+                      self.dungeon.teleporter: self.teleporter_event
                       #self.dungeon.staircase: self.staircase
                       }
         if self.coordinates in event_dict:
@@ -2534,13 +2538,14 @@ class Player:
             # sleep(1.5)
             # return
         if self.coordinates == self.dungeon.staircase:
-            self.staircase()
+            self.staircase_description()
         if self.position in description_dict:
             description = (description_dict[self.position])
             # return description
             print(description)
             # return
             # ^ <> v dungeon EXIT in the indicated direction!
+
         elif self.position == ">" or self.position == "<" or self.position == "^" or self.position == "v":
             print(f"You feel a draft... ")
             sleep(1.25)

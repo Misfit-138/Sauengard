@@ -33,11 +33,8 @@ and its documentation and return value (usually None) support this, the behavior
 # if introduction_file.readable():
 #    print(introduction_file.read())
 
-
 import pickle
-
 from player_module_testing import *
-
 from monster_module import *
 from typing_module import *
 import random
@@ -197,9 +194,42 @@ while True:
                                winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
             # DUNGEON NAVIGATION LOOP:
-
+            player_is_dead = False
             while in_dungeon:
-                #player_1.hud()
+
+                if player_is_dead:
+                    winsound.PlaySound(None, winsound.SND_ASYNC)
+                    cls()
+                    # player_1.hud()
+                    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav',
+                                       winsound.SND_ASYNC)
+                    print(f"Another adventurer has fallen prey (to the Sauengard Dungeon!)")
+                    time.sleep(2)
+                    in_proximity_to_monster = False
+                    in_dungeon = False
+                    in_town = False
+                    # player_is_dead = False
+                    # break
+                    while True:
+                        try_again = input("Do you wish to play again (y/n)? ").lower()
+                        if try_again == "y":
+                            time.sleep(1)
+                            cls()
+                            in_proximity_to_monster = False
+                            in_dungeon = False
+                            in_town = False
+                            player_is_dead = False
+                            break  # break
+                        if try_again == "n":
+                            print(f"Farewell.")
+                            exit()
+                        if try_again not in ("y", "n"):
+                            print("Please enter y or n ")
+                            time.sleep(.5)
+                            continue
+                if not in_dungeon:
+                    break
+                # player_1.hud()
                 player_1.coordinates = (player_1.x, player_1.y)
                 player_1.previous_x = player_1.x
                 player_1.previous_y = player_1.y
@@ -209,7 +239,7 @@ while True:
                 if player_1.position == 0:
                     print(player_1.dungeon.intro)
                 # 'continue' means you do not waste a turn. just add dungeon_description()
-                #print(f"(L)ook at surroundings, use (MAP),")
+
                 dungeon_command = input(
                     "(L)ook at surroundings, use (MAP),\n"
                     "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage inventory,\n"
@@ -231,7 +261,7 @@ while True:
                 elif dungeon_command == 'g':
                     player_1.drink_potion_of_strength()
                     player_1.potion_of_strength_uses = 0
-                    #continue
+                    # continue
                 elif dungeon_command == 'q':
                     print("Quit game..")
                     while True:
@@ -248,7 +278,7 @@ while True:
 
                 elif dungeon_command == 'm':
                     player_1.item_management_sub_menu()
-                    #continue
+                    # continue
                 elif dungeon_command == 'i':
                     player_1.inventory()
                 elif dungeon_command == 'w' or 'a' or 's' or 'd' or 'l' or 'map':
@@ -276,69 +306,51 @@ while True:
                         player_1.dungeon_description()
                         player_1.coordinates = (player_1.x, player_1.y)
                         player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]
-                        #player_1.event_logic()
+                        # player_1.event_logic()
                         pause()
-                        #continue
+                        # continue
                     if dungeon_command == 'map':
                         player_1.display_map(player_1.dungeon.player_grid)  #
                         pause()
                         player_1.dungeon_description()
-                        #player_1.event_logic()
-                        #continue
+                        # player_1.event_logic()
+                        # continue
 
                     # ***** END OF NAVIGATION TURN *************************************************************
                     # !!!!!!!!!!!!!!!! V NOTE the INDENT V !!!!!!!!!!!!!!!!
                 # **********************************************************************************************>>>>
                 player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
                 player_1.coordinates = (player_1.x, player_1.y)  #
-                player_1.dungeon_description()  #
-                #player_1.increase_random_ability()  # remove after testing
-                #player_1.asi()  # remove after testing
                 if player_1.event_logic() == "King Boss":
                     encounter = 98
+                if player_1.check_dead():
+                    player_is_dead = True
+                    continue
+                player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                player_1.regenerate()
+
+                player_1.dungeon_description()  # this seems to work best when put last
+                # player_1.increase_random_ability()  # remove after testing
+                # player_1.asi()  # remove after testing
+
                 # sleep(1.5)
-                #pause()
+                # pause()
                 if player_1.position == "E":
                     encounter = 99
                     player_1.next_dungeon()
                 # ***********************************************************************************************>>>>
-                player_1.regenerate()
-                # Potion of strength wears off after 5 turns. each navigation movement and each attack turn count!
-                player_1.calculate_potion_of_strength()
+
                 # eventually, make encounter a returned boolean from navigation function?
                 if encounter > 10:
-                    # print("This should create monster now..")  # remove after testing
+
                     # monster dictionary imported from monster module. keys correspond to difficulty
                     # in proximity to monster loop contains battle loop within it
                     in_proximity_to_monster = True
                     player_is_dead = False
                     while in_proximity_to_monster:
                         if player_is_dead:
-                            # if player_1.check_dead():
-                            winsound.PlaySound(None, winsound.SND_ASYNC)
-                            cls()
-                            #player_1.hud()
-                            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav',
-                                               winsound.SND_ASYNC)
-                            print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
-                            time.sleep(2)
-                            in_proximity_to_monster = False
-                            in_dungeon = False
-                            in_town = False
-                            player_is_dead = False
-                            while True:
-                                try_again = input("Do you wish to play again (y/n)? ").lower()
-                                if try_again == "y":
-                                    time.sleep(1)
-                                    cls()
-                                    break  # break out of prox to monster, dungeon and town, up to top loop
-                                if try_again == "n":
-                                    print(f"Farewell.")
-                                    exit()
-                                if try_again not in ("y", "n"):
-                                    print("Please enter y or n ")
-                                    time.sleep(.5)
-                                    continue
+                            break
                         if not in_proximity_to_monster:
                             break
                         monster_key = random.randint(1, (player_1.level + 1))
@@ -355,7 +367,8 @@ while True:
                             player_1.hud()
                         print(discovered_monsters)  # remove after testing
                         if monster.name in discovered_monsters:
-                            print(f"You have encountered a level {monster.level} {monster.name}.")  # remove level after testing
+                            print(
+                                f"You have encountered a level {monster.level} {monster.name}.")  # remove level after testing
                             # time.sleep(2)
                             pause()
                         else:
@@ -376,10 +389,9 @@ while True:
                         print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
                         pause()
                         if monster_initiative > player_initiative:
-                            #monster_gets_the_jump = dice_roll(1, 20)
-                            # if monster_gets_the_jump > player_1.armor_class:  # (player_1.dexterity + player_1.dexterity_modifier):
+
                             player_1.hud()
-                            #print(f"The {monster.name} attacks first!")
+                            # print(f"The {monster.name} attacks first!")
                             melee_or_quantum = dice_roll(1, 100)
                             if monster.quantum_energy and melee_or_quantum > 50:
                                 damage_to_player = monster.quantum_energy_attack(monster.name,
@@ -397,14 +409,14 @@ while True:
                                 player_is_dead = True
                                 continue
 
-
                         # ********************************* BATTLE LOOP ***********************************************
                         while True:
 
                             player_1.hud()
                             print(
                                 f"Lvl {monster.level} {monster.name} {monster.hit_points} hp {monster.number_of_hd}d{monster.hit_dice}")
-                            battle_choice = input("(F)ight, (H)ealing potion, (G)iant Strength potion, (C)ast or (E)vade\nF/H/S/C/E --> ").lower()
+                            battle_choice = input(
+                                "(F)ight, (H)ealing potion, (G)iant Strength potion, (C)ast or (E)vade\nF/H/S/C/E --> ").lower()
                             if battle_choice == "e":
                                 evade_success = player_1.evade(monster.name, monster.dexterity)
                                 if evade_success:
@@ -413,7 +425,9 @@ while True:
                             # elif battle_choice == 's':
                             #    player_1.drink_potion_of_strength()
                             #    player_1.potion_of_strength_uses = 0
-
+                            #  *********Get rid of monster turn after swigging potion..*************
+                            #  make elif battle_choice == h or g or c or f
+                            # ***********this will reduce the code by 40 lines!! ********************
                             elif battle_choice == "c":
                                 player_1.hud()
                                 print(f"Cast")
@@ -461,8 +475,8 @@ while True:
                                     break
                                 player_1.hud()
                                 continue
-                                    # else:  # if monster not dead
-                                    #    break
+                                # else:  # if monster not dead
+                                #    break
 
                             elif battle_choice == "f":
                                 print(f"Fight.")
@@ -475,6 +489,7 @@ while True:
                             damage_to_monster = player_1.swing(monster.name, monster.armor_class)
                             monster.reduce_health(damage_to_monster)
                             player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                            player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
                             if monster.check_dead():
                                 player_1.hud()
                                 print(f"It died..")
@@ -549,3 +564,28 @@ while True:
                                 time.sleep(1.5)
                                 print(f"You dodge, swiftly foiling its advantage!")
                                 os.system('pause')'''
+'''# if player_1.check_dead():
+                            winsound.PlaySound(None, winsound.SND_ASYNC)
+                            cls()
+                            #player_1.hud()
+                            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav',
+                                               winsound.SND_ASYNC)
+                            print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
+                            time.sleep(2)
+                            in_proximity_to_monster = False
+                            in_dungeon = False
+                            in_town = False
+                            player_is_dead = False
+                            while True:
+                                try_again = input("Do you wish to play again (y/n)? ").lower()
+                                if try_again == "y":
+                                    time.sleep(1)
+                                    cls()
+                                    break  # break out of prox to monster, dungeon and town, up to top loop
+                                if try_again == "n":
+                                    print(f"Farewell.")
+                                    exit()
+                                if try_again not in ("y", "n"):
+                                    print("Please enter y or n ")
+                                    time.sleep(.5)
+                                    continue'''

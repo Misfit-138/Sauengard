@@ -6,6 +6,7 @@ from collections import Counter
 import winsound
 from dice_roll_module import dice_roll
 from dungeons import *
+
 # from typing_module import typing
 
 '''Target
@@ -635,7 +636,8 @@ class Player:
         self.potions_of_strength = 1
         self.potion_of_strength_effect = False
         self.potion_of_strength_uses = 0
-
+        self.poisoned = False
+        self.poisoned_turns = 0
         self.current_dungeon_level = 1
         self.dungeon_key = 1
         self.dungeon = dungeon_dict[self.dungeon_key]
@@ -715,6 +717,11 @@ class Player:
                 f"                                                                     (GIANT STRENGTH EFFECT)")
             print(
                 f"                                                                     Strength Potion uses: ({self.potion_of_strength_uses}/5)")
+        if self.poisoned:
+            print(
+                f"                                                                     (POISONED)")
+            print(
+                f"                                                                     Poison clarifying: ({self.poisoned_turns}/5)")
         if self.potions_of_healing > 0:
             number_of_potions_of_healing = self.potions_of_healing  # len(self.pack['Healing'])
             print(
@@ -741,16 +748,29 @@ class Player:
         self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
         return
 
+    def calculate_poison(self):
+        #self.dungeon_description()
+        if self.poisoned:
+            self.poisoned_turns += 1
+            self.hit_points = (self.hit_points - self.dungeon.level)
+            if self.poisoned_turns > 4:
+                self.poisoned = False
+                self.poisoned_turns = 0
+                #self.hud()
+                print(f"The poison leaves your body..")
+                pause()
+                return False
+            else:
+                return True
+
     def calculate_potion_of_strength(self):
         if self.potion_of_strength_effect:
             self.potion_of_strength_uses += 1
-
             if self.potion_of_strength_uses > 4:
                 self.potion_of_strength_effect = False
                 self.potion_of_strength_uses = 0
                 print(f"The potion's effects wear off....the giant strength leaves your body..")
                 pause()
-
                 return False
             else:
                 return True
@@ -1183,7 +1203,8 @@ class Player:
             roll_d20 = dice_roll(1, 20)
             if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
                 damage_roll = dice_roll(self.level, self.hit_dice)
-                damage_to_opponent = math.ceil(damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) + 1
+                damage_to_opponent = math.ceil(
+                    damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) + 1
                 print(f"You manage to attack for {damage_to_opponent} points of damage!")
                 sleep(2)
                 self.hud()
@@ -1842,6 +1863,24 @@ class Player:
                                winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
             return True
 
+    def poison(self):
+        self.hud()
+        rndm_poisoned_phrases = ["You feel a disturbing weakness overcoming you..",
+                                 "An unnerving frailty spreads throughout your body...",
+                                 "Pain and tenderness courses through your body.."
+                                 ]
+        poisoned_phrase = random.choice(rndm_poisoned_phrases)
+        print(f"{poisoned_phrase}")
+        sleep(1.5)
+        print(f"You have been poisoned!")
+        self.poisoned = True
+        self.poisoned_turns = 0
+        #self.calculate_poison()
+        pause()
+        #self.dungeon_description()
+        self.hud()
+        return self.poisoned
+
     def drink_potion_of_strength(self):
         self.hud()
         rndm_drinking_phrases = [
@@ -2394,11 +2433,12 @@ class Player:
 
         # Find the minimum attribute name
         min_attribute = min(ability_dict_subset, key=ability_dict_subset.get)
-        print("Minimum attribute:", min_attribute)
+        print("Minimum attribute:", min_attribute)  # remove after testing
 
         # Add one to min attribute
         ability_dict[min_attribute] += 1
         print(f"Your {min_attribute} has increased!")
+        pause()
         # print(self.__dict__)
 
         # Choose random attribute name
@@ -2418,11 +2458,24 @@ class Player:
             return
 
     def fountain_event(self):
-        print(f"You see a fountain...!")
+        # WHITE GREEN CLEAR RED BLACK
+        # heal 3 * dungeon level + 1 hit points
+        # poison 3 * dungeon level + 1 hit points
+        # drunk
+        # lose items
+        # increase num of spells Magic power SURGES through your body
+        water_colors = ['white', 'green', 'crystal clear', 'red', 'black']
+        water_color = random.choice(water_colors)
+        print(f"A fountain with flowing {water_color} water is here. The tranquil sound eases your mind.")
         drink = input(f"Do you wish to drink? ")
         if drink == 'y':
-            print(f"Something random happens")
-            self.regenerate()  # it's only fair to regenerate and count this as a move...? testing
+            #print(f"Something random happens")
+            rndm_occurance_lst = [self.poison, self.increase_random_ability, self.increase_lowest_ability,
+                              self.teleporter_event]
+            rndm_occurance = random.choice(rndm_occurance_lst)
+            rndm_occurance()
+            #self.poison()
+            #self.regenerate()  # it's only fair to regenerate and count this as a move...? testing
             # return self.teleporter()
         else:
             print("You don't drink...wonder what may have happened.")
@@ -2430,17 +2483,55 @@ class Player:
 
     def teleporter_event(self):
         print(f"Zzzzzzap....You've been teleported.....")
-        self.dungeon_key += 1
+
+        self.dungeon_key += 1  # this will become random.randint(1, lastdungeonlevel) when dungeon levels are complete
         self.dungeon = dungeon_dict[self.dungeon_key]
         self.x = random.randint(1, 18)
         self.y = random.randint(1, 18)
         self.previous_x = self.x
         self.previous_y = self.y
         self.position = self.dungeon.grid[self.y][self.x]
-        self.regenerate()  # testing
+        #self.regenerate()  # testing
         # self.position = 0
-
+        pause()
+        self.hud()
         return
+
+    def pit_event(self):
+        print(f"The ground here is very unsteady..")
+        sleep(1.5)
+        print(f"You see a pit..")
+        sleep(1.5)
+        pit_challenge_rating = 10
+        pit_outcome = dice_roll(1, 20)
+        if (pit_outcome + self.dexterity_modifier + self.stealth) > pit_challenge_rating:
+            descend_or_not = input(f"Do you wish to descend (y/n)?: ")
+            if descend_or_not == 'y':
+                print(f"Carefully and craftily, you repel down the slick, treacherous pit walls.")
+                self.dungeon_key += 1
+                self.dungeon = dungeon_dict[self.dungeon_key]
+                (self.x, self.y) = self.dungeon.pit_landing
+                self.previous_x = self.x
+                self.previous_y = self.y
+                self.position = self.dungeon.grid[self.y][self.x]
+                pause()
+                return
+            else:
+                return
+        else:
+            print(f"The ground beneath your feet collapse! You fall in!")
+            damage = dice_roll(1, (3 * self.dungeon.level))  # dice_roll(1, self.dungeon.level)
+            self.hit_points -= damage
+            sleep(1)
+            print(f"You suffer {damage} hit points..")
+            pause()
+            self.dungeon_key += 1
+            self.dungeon = dungeon_dict[self.dungeon_key]
+            (self.x, self.y) = self.dungeon.pit_landing
+            self.previous_x = self.x
+            self.previous_y = self.y
+            self.position = self.dungeon.grid[self.y][self.x]
+            return
 
     def staircase_description(self):
         # this is a description of the spiral staircase, if player navigates to it after the map is initialized
@@ -2467,8 +2558,9 @@ class Player:
         self.coordinates = (self.x, self.y)
         event_dict = {self.dungeon.throne: self.throne_event,
                       self.dungeon.fountain: self.fountain_event,
-                      self.dungeon.teleporter: self.teleporter_event
-                      #self.dungeon.staircase: self.staircase
+                      self.dungeon.teleporter: self.teleporter_event,
+                      self.dungeon.pit: self.pit_event
+
                       }
         if self.coordinates in event_dict:
             event_function = (event_dict[self.coordinates])
@@ -2524,10 +2616,10 @@ class Player:
             "(": f"You are against a wall to the West. Exits are to the North, South and East.",
             ")": f"You are against a wall to the East. Exits are to the North, South and West.",
         }
-        #if self.position == 0:  # integer representing starting position
+        # if self.position == 0:  # integer representing starting position
         #    print(self.dungeon.intro)
-            # self.hud()
-            # return
+        # self.hud()
+        # return
 
         if self.position == "*":  # string representing walls
             print("You can't go that way...")
@@ -2562,7 +2654,8 @@ class Player:
                 print("You see the dungeon exit to the South!")
                 # return
         self.coordinates = (self.x, self.y)
-        print(f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}, {north_south}{east_west} region) Coordinates: {self.coordinates}")
+        print(
+            f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}, {north_south}{east_west} region) Coordinates: {self.coordinates}")
         return
 
     def display_map(self, maps):
@@ -2595,6 +2688,8 @@ class Player:
         self.dungeon = dungeon_dict[self.dungeon_key]
         self.x = self.dungeon.starting_x
         self.y = self.dungeon.starting_y
+        # self.coordinates will be set after first move..otherwise the intro will be printed, followed by the
+        # staircase description, which is awkward
         self.previous_x = self.x
         self.previous_y = self.y
         self.position = 0

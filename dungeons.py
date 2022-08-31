@@ -44,7 +44,8 @@ class Dungeon1(Dungeon):
         self.fountain = (3, 3)
         self.teleporter = (4, 3)
         self.staircase = (1, 3)
-        # self.position = 0
+        self.pit = (1, 4)
+        self.pit_landing = (1, 4)
         self.starting_x = 1
         self.starting_y = 3
         self.grid = [
@@ -110,7 +111,8 @@ class Dungeon2(Dungeon):
         self.fountain = (3, 3)
         self.teleporter = (4, 3)
         self.staircase = (1, 3)
-        # self.position = 0
+        self.pit = (1, 4)
+        self.pit_landing = (1, 4)
         self.starting_x = 1
         self.starting_y = 3
         self.grid = [
@@ -173,7 +175,8 @@ class Dungeon3(Dungeon):
         self.fountain = (3, 3)
         self.teleporter = (4, 3)
         self.staircase = (7, 1)
-        # self.position = 0
+        self.pit = (1, 4)
+        self.pit_landing = (1, 4)
         self.starting_x = 7
         self.starting_y = 1
         self.grid = [

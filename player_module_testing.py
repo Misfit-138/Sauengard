@@ -638,10 +638,12 @@ class Player:
         self.potion_of_strength_uses = 0
         self.poisoned = False
         self.poisoned_turns = 0
+        self.necrotic = False
+        self.necrotic_turns = 0
+        self.dot_multiplier = 1
         self.current_dungeon_level = 1
         self.dungeon_key = 1
         self.dungeon = dungeon_dict[self.dungeon_key]
-
         self.position = 0
         self.x = 0
         self.y = 0
@@ -722,6 +724,11 @@ class Player:
                 f"                                                                     (POISONED)")
             print(
                 f"                                                                     Poison clarifying: ({self.poisoned_turns}/5)")
+        if self.necrotic:
+            print(
+                f"                                                                     (NECROTIC)")
+            print(
+                f"                                                                     Necrotic clarifying: ({self.necrotic_turns}/5)")
         if self.potions_of_healing > 0:
             number_of_potions_of_healing = self.potions_of_healing  # len(self.pack['Healing'])
             print(
@@ -749,15 +756,32 @@ class Player:
         return
 
     def calculate_poison(self):
-        #self.dungeon_description()
+        # self.dungeon_description()
         if self.poisoned:
             self.poisoned_turns += 1
-            self.hit_points = (self.hit_points - self.dungeon.level)
+            self.hit_points = (self.hit_points - (1 * self.dot_multiplier))
+            print(f"*POISON DAMAGE*")
             if self.poisoned_turns > 4:
                 self.poisoned = False
                 self.poisoned_turns = 0
                 #self.hud()
-                print(f"The poison leaves your body..")
+                #print(f"The poison leaves your body..")
+                pause()
+                return False
+            else:
+                return True
+
+    def calculate_necrotic_dot(self):
+        # self.dungeon_description()
+        if self.necrotic:
+            self.necrotic_turns += 1
+            self.hit_points = (self.hit_points - (1 * self.dot_multiplier))
+            print(f"*NECROTIC DAMAGE*")
+            if self.necrotic_turns > 4:
+                self.necrotic = False
+                self.necrotic_turns = 0
+                # self.hud()
+                #print(f"The necrotic withering force leaves your body..")
                 pause()
                 return False
             else:
@@ -1108,7 +1132,16 @@ class Player:
         else:
             # return True
             self.hud()
-            print(f"You are unconscious and clinically dead!")
+            if self.necrotic:
+                necrotic = "necrotic,"
+            else:
+                necrotic = ""
+                #print(f"NECROTIC")
+            if self.poisoned:
+                poisoned = "poisoned,"
+            else:
+                poisoned = ""
+            print(f"You are {necrotic}{poisoned} unconscious and clinically dead!")
             sleep(1)
             print(f"Saving throw!")
             sleep(1)
@@ -1148,6 +1181,84 @@ class Player:
                     print(f"{fails} Failed saves..")
                     sleep(1)
             return True  # do i need this statement?
+
+    def poison_attack(self, monster_name, monster_dot_multiplier):
+        challenge_rating = self.constitution
+        roll_d20 = dice_roll(1, 20)  # attack roll
+        print(f"The {monster_name} hisses in evil glee..")
+        print(f"Attack roll---> {roll_d20}")
+        sleep(1)
+        if roll_d20 == 1:
+            print("You dodge!")
+            sleep(1)
+            print(f"And you perceive it was attempting to poison you!")
+            pause()
+            self.hud()
+            return False
+        else:
+            print(f"Your Constitution: {self.constitution}\nYour Constitution Modifier: {self.constitution_modifier}\n")
+            if roll_d20 == 20 or roll_d20 >= challenge_rating:  # self.constitution + self.constitution_modifier:
+                #return True
+                #self.hud()
+                self.dot_multiplier = monster_dot_multiplier
+                rndm_poisoned_phrases = ["You feel a disturbing weakness overcoming you..",
+                                         "An unnerving frailty spreads throughout your body...",
+                                         "Pain and tenderness courses through your body.."
+                                         ]
+                poisoned_phrase = random.choice(rndm_poisoned_phrases)
+                print(f"{poisoned_phrase}")
+                sleep(1.5)
+                print(f"You have been poisoned!")
+                self.poisoned = True
+                self.poisoned_turns = 0
+                # self.calculate_poison()
+                pause()
+                # self.dungeon_description()
+                self.hud()
+                return self.poisoned
+            else:
+                print(f"You swiftly dodge its poison attack!")
+                sleep(1)
+                pause()
+                self.hud()
+                return False
+
+    def necrotic_attack(self, monster_name, monster_dot_multiplier):
+        challenge_rating = self.constitution + self.constitution_modifier
+        roll_d20 = dice_roll(1, 20)  # attack roll
+        print(f"The {monster_name} harnesses its innate understanding of quantum natures..")
+        print(f"Attack roll---> {roll_d20}")
+        sleep(1)
+        if roll_d20 == 1:
+            print("You easily dodge the deadly necrotic attack!")
+            sleep(1)
+            pause()
+            self.hud()
+            return False
+        else:
+            print(f"Your Constitution: {self.constitution}\nYour Constitution Modifier: {self.constitution_modifier}\n")
+            if roll_d20 == 20 or roll_d20 >= challenge_rating:  # self.constitution + self.constitution_modifier:
+                self.dot_multiplier = monster_dot_multiplier
+                #self.hud()
+                rndm_necrotic_phrases = ["You feel absolute dread and withering overcoming you..",
+                                         "An unnerving pain, planted like a seed, germinates within you...",
+                                         "Agony creeps into your very veins..."
+                                         ]
+                necrotic_phrase = random.choice(rndm_necrotic_phrases)
+                print(f"{necrotic_phrase}")
+                sleep(1.5)
+                print(f"Necrotic forces ravage through your body!")
+                self.necrotic = True
+                self.necrotic_turns = 0
+                pause()
+                self.hud()
+                return self.necrotic
+            else:
+                print(f"You swiftly dodge its necrotic attack!")
+                sleep(1)
+                pause()
+                self.hud()
+                return False
 
     def swing(self, monster_name, monster_armor_class):
         # add evade logic
@@ -1865,6 +1976,7 @@ class Player:
 
     def poison(self):
         self.hud()
+        self.dot_multiplier = self.dungeon.level
         rndm_poisoned_phrases = ["You feel a disturbing weakness overcoming you..",
                                  "An unnerving frailty spreads throughout your body...",
                                  "Pain and tenderness courses through your body.."
@@ -1875,9 +1987,9 @@ class Player:
         print(f"You have been poisoned!")
         self.poisoned = True
         self.poisoned_turns = 0
-        #self.calculate_poison()
+        # self.calculate_poison()
         pause()
-        #self.dungeon_description()
+        # self.dungeon_description()
         self.hud()
         return self.poisoned
 
@@ -2469,13 +2581,13 @@ class Player:
         print(f"A fountain with flowing {water_color} water is here. The tranquil sound eases your mind.")
         drink = input(f"Do you wish to drink? ")
         if drink == 'y':
-            #print(f"Something random happens")
+            # print(f"Something random happens")
             rndm_occurance_lst = [self.poison, self.increase_random_ability, self.increase_lowest_ability,
-                              self.teleporter_event]
+                                  self.teleporter_event]
             rndm_occurance = random.choice(rndm_occurance_lst)
             rndm_occurance()
-            #self.poison()
-            #self.regenerate()  # it's only fair to regenerate and count this as a move...? testing
+            # self.poison()
+            # self.regenerate()  # it's only fair to regenerate and count this as a move...? testing
             # return self.teleporter()
         else:
             print("You don't drink...wonder what may have happened.")
@@ -2491,7 +2603,7 @@ class Player:
         self.previous_x = self.x
         self.previous_y = self.y
         self.position = self.dungeon.grid[self.y][self.x]
-        #self.regenerate()  # testing
+        # self.regenerate()  # testing
         # self.position = 0
         pause()
         self.hud()
@@ -3320,3 +3432,21 @@ sale_item = (sale_items_dict[sale_item_key])
                         print("Invalid entry..")
                         sleep(1)
                         continue'''
+''' def necrotic_dot(self, dot_multiplier):
+        self.dot_multiplier = dot_multiplier
+        self.hud()
+        rndm_necrotic_phrases = ["You feel absolute dread and withering overcoming you..",
+                                 "An unnerving pain, planted like a seed, germinates within you...",
+                                 "Agony creeps into your very veins..."
+                                 ]
+        necrotic_phrase = random.choice(rndm_necrotic_phrases)
+        print(f"{necrotic_phrase}")
+        sleep(1.5)
+        print(f"Necrotic forces ravage through your body!")
+        self.necrotic = True
+        self.necrotic_turns = 0
+
+        pause()
+
+        self.hud()
+        return self.necrotic'''

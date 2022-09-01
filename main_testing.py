@@ -203,7 +203,7 @@ while True:
                     # player_1.hud()
                     winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav',
                                        winsound.SND_ASYNC)
-                    print(f"Another adventurer has fallen prey (to the Sauengard Dungeon!)")
+                    print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
                     time.sleep(2)
                     in_proximity_to_monster = False
                     in_dungeon = False
@@ -326,11 +326,13 @@ while True:
                 if player_1.check_dead():
                     player_is_dead = True
                     continue
+
                 player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
                 player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                player_1.calculate_necrotic_dot()
                 player_1.regenerate()
-
                 player_1.dungeon_description()  # this seems to work best when put last
+
                 # player_1.increase_random_ability()  # remove after testing
                 # player_1.asi()  # remove after testing
 
@@ -356,6 +358,7 @@ while True:
                         monster_key = random.randint(1, (player_1.level + 1))
                         monster_cls = random.choice(monster_dict[monster_key])
                         monster = monster_cls()  # create a monster object from the random class
+                        monster = Drow()
                         if encounter == 99:
                             monster = Ghoul()  # boss for testing. change logic to be a boss 1 level above player
                         if encounter == 98:
@@ -392,15 +395,21 @@ while True:
 
                             player_1.hud()
                             # print(f"The {monster.name} attacks first!")
-                            melee_or_quantum = dice_roll(1, 100)
-                            if monster.quantum_energy and melee_or_quantum > 50:
+                            melee_or_quantum = dice_roll(1, 20)
+                            if monster.quantum_energy and melee_or_quantum > 10:
                                 damage_to_player = monster.quantum_energy_attack(monster.name,
                                                                                  player_1.wisdom_modifier,
                                                                                  player_1.ring_of_prot.protect)
                                 player_1.reduce_health(damage_to_player)
+                                player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                                player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                                player_1.calculate_necrotic_dot()
                             else:
                                 damage_to_player = monster.swing(monster.name, player_1.armor_class)
                                 player_1.reduce_health(damage_to_player)
+                                player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                                player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                                player_1.calculate_necrotic_dot()
                             if player_1.check_dead():  # if player  dead
 
                                 print(f"You were caught off guard!")
@@ -448,9 +457,15 @@ while True:
                                                                                      player_1.wisdom_modifier,
                                                                                      player_1.ring_of_prot.protect)
                                     player_1.reduce_health(damage_to_player)
+                                    player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                                    player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                                    player_1.calculate_necrotic_dot()
                                 else:
                                     damage_to_player = monster.swing(monster.name, player_1.armor_class)
                                     player_1.reduce_health(damage_to_player)
+                                    player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                                    player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                                    player_1.calculate_necrotic_dot()
 
                                 if not player_1.check_dead():  # if player not dead
                                     if dice_roll(1, 20) > 17 and monster.can_paralyze:
@@ -488,8 +503,9 @@ while True:
                             # player's turn:
                             damage_to_monster = player_1.swing(monster.name, monster.armor_class)
                             monster.reduce_health(damage_to_monster)
-                            player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
-                            player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                            #player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                            #player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                            #player_1.calculate_necrotic_dot()
                             if monster.check_dead():
                                 player_1.hud()
                                 print(f"It died..")
@@ -504,15 +520,38 @@ while True:
                             # monster turn:
 
                             elif not monster.check_dead():  # Changed from 'if' to 'elif' 11:41am 8/21/22
-                                melee_or_quantum = dice_roll(1, 100)
-                                if monster.quantum_energy and melee_or_quantum > 50:
-                                    damage_to_player = monster.quantum_energy_attack(monster.name,
-                                                                                     player_1.wisdom_modifier,
-                                                                                     player_1.ring_of_prot.protect)
-                                    player_1.reduce_health(damage_to_player)
+                                melee_or_quantum = dice_roll(1, 20)
+                                if monster.quantum_energy and melee_or_quantum > 10 and not player_1.poisoned \
+                                        and not player_1.necrotic:
+                                    if not monster.can_poison and not monster.necrotic:
+
+                                        damage_to_player = monster.quantum_energy_attack(monster.name,
+                                                                                         player_1.wisdom_modifier,
+                                                                                         player_1.ring_of_prot.protect)
+                                        player_1.reduce_health(damage_to_player)
+                                        player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                                        player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                                        player_1.calculate_necrotic_dot()
+                                    elif monster.can_poison and monster.necrotic:  # if monster has both poison
+                                        poison_or_necrotic = dice_roll(1, 20)  # and necrotic damage,
+                                        if poison_or_necrotic > 10:
+                                            player_1.poison_attack(monster.name, monster.dot_multiplier)
+
+                                        else:
+                                            player_1.necrotic_attack(monster.name, monster.dot_multiplier)
+
+                                    elif monster.can_poison:  # otherwise, if it can only poison, then attempt poison
+                                        player_1.poison_attack(monster.name, monster.dot_multiplier)
+                                    elif monster.necrotic:  # otherwise if it only has necrotic, then attempt necrotic
+                                        player_1.necrotic_attack(monster.name, monster.dot_multiplier)
+
                                 else:
+                                    # if it has neither, then melee attack
                                     damage_to_player = monster.swing(monster.name, player_1.armor_class)
                                     player_1.reduce_health(damage_to_player)
+                                    player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                                    player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                                    player_1.calculate_necrotic_dot()
                                 if not player_1.check_dead():  # if player not dead
                                     if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
                                         time.sleep(1)

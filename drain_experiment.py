@@ -1,4 +1,4 @@
-    if monster.can_drain:
+    if monster.can_poison:
         level_drain = monster.drain(monster.wisdom, monster.wisdom_modifier,
                                     player_1.level, player_1.wisdom,
                                     player_1.wisdom_modifier)

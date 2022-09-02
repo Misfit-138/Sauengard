@@ -214,9 +214,10 @@ class Monster:
             return True
 
     def swing(self, name, human_player_armor_class):
-
+        attack_bonus = 0
         attack_bonus_roll = random.randint(1, 100)
         print(f"Monster attack bonus roll: {attack_bonus_roll}")  # remove after testing
+        attack_phrase = ""
         if attack_bonus_roll <= 50:
             attack_bonus = self.attack_1
             attack_phrase = self.attack_1_phrase
@@ -277,6 +278,8 @@ class Monster:
             return 0
 
     def quantum_energy_attack(self, name, human_player_wisdom_modifier, human_player_ring_of_prot):
+        attack_bonus = 0
+        attack_phrase = ""
         attack_bonus_roll = random.randint(1, 100)
         if attack_bonus_roll <= 50:
             attack_bonus = self.quantum_attack_1
@@ -307,7 +310,7 @@ class Monster:
         else:
             critical_bonus = 1
             hit_statement = ""
-        #print(f"{self.name} Wisdom modifier {self.wisdom_modifier}")  # MONSTER WISDOM MODIFIER
+        # print(f"{self.name} Wisdom modifier {self.wisdom_modifier}")  # MONSTER WISDOM MODIFIER
         print(
             f"Your roll: {human_player_roll_d20} + wisdom modifier ({human_player_wisdom_modifier}) + ring of protection "
             f"({human_player_ring_of_prot}) = {human_player_roll_d20 + human_player_wisdom_modifier}")

@@ -196,7 +196,9 @@ while True:
             # DUNGEON NAVIGATION LOOP:
             player_is_dead = False
             while in_dungeon:
-
+                #if player_1.check_dead():
+                #    player_is_dead = True
+                    #continue
                 if player_is_dead:
                     winsound.PlaySound(None, winsound.SND_ASYNC)
                     cls()
@@ -233,7 +235,7 @@ while True:
                 player_1.coordinates = (player_1.x, player_1.y)
                 player_1.previous_x = player_1.x
                 player_1.previous_y = player_1.y
-                # player_1.loot()  # for testing
+                #player_1.loot()  # for testing
                 encounter = dice_roll(1, 20)
 
                 if player_1.position == 0:
@@ -241,10 +243,10 @@ while True:
                 # 'continue' means you do not waste a turn. just add dungeon_description()
 
                 dungeon_command = input(
-                    "(L)ook at surroundings, use (MAP),\n"
+                    "(L)ook at surroundings, use (MAP), Drink (E)lixir,\n"
                     "(Q)uit, Town (P)ortal, (H)ealing potion, (M)anage inventory,\n"
                     "(G)iant strength potion, (I)nventory or WASD to navigate. --> ").lower()
-                if dungeon_command not in ('w', 'a', 's', 'd', 'l', 'map', 'p', 'g', 'h', 'm', 'i', 'q'):
+                if dungeon_command not in ('w', 'a', 's', 'd', 'l', 'e', 'map', 'p', 'g', 'h', 'm', 'i', 'q'):
                     print("Unknown command")
                     time.sleep(.25)
                     player_1.dungeon_description()
@@ -274,7 +276,9 @@ while True:
                             break
                 elif dungeon_command == 'h':
                     player_1.drink_healing_potion()
-                    time.sleep(1)
+
+                elif dungeon_command == 'e':
+                    player_1.drink_elixir()
 
                 elif dungeon_command == 'm':
                     player_1.item_management_sub_menu()
@@ -323,14 +327,14 @@ while True:
                 player_1.coordinates = (player_1.x, player_1.y)  #
                 if player_1.event_logic() == "King Boss":
                     encounter = 98
-                if player_1.check_dead():
-                    player_is_dead = True
-                    continue
 
+                player_1.regenerate()  # put this first- it could save you from poisoning or necrosis
                 player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
                 player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
                 player_1.calculate_necrotic_dot()
-                player_1.regenerate()
+                if player_1.check_dead():
+                    player_is_dead = True
+                    continue
                 player_1.dungeon_description()  # this seems to work best when put last
 
                 # player_1.increase_random_ability()  # remove after testing
@@ -358,7 +362,7 @@ while True:
                         monster_key = random.randint(1, (player_1.level + 1))
                         monster_cls = random.choice(monster_dict[monster_key])
                         monster = monster_cls()  # create a monster object from the random class
-                        monster = Drow()
+                        monster = Drow()  # testing
                         if encounter == 99:
                             monster = Ghoul()  # boss for testing. change logic to be a boss 1 level above player
                         if encounter == 98:
@@ -402,12 +406,14 @@ while True:
                                                                                  player_1.ring_of_prot.protect)
                                 player_1.reduce_health(damage_to_player)
                                 player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                                player_1.regenerate()
                                 player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
                                 player_1.calculate_necrotic_dot()
                             else:
                                 damage_to_player = monster.swing(monster.name, player_1.armor_class)
                                 player_1.reduce_health(damage_to_player)
                                 player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                                player_1.regenerate()
                                 player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
                                 player_1.calculate_necrotic_dot()
                             if player_1.check_dead():  # if player  dead
@@ -420,7 +426,8 @@ while True:
 
                         # ********************************* BATTLE LOOP ***********************************************
                         while True:
-
+                            if not in_proximity_to_monster:
+                                break
                             player_1.hud()
                             print(
                                 f"Lvl {monster.level} {monster.name} {monster.hit_points} hp {monster.number_of_hd}d{monster.hit_dice}")
@@ -458,12 +465,14 @@ while True:
                                                                                      player_1.ring_of_prot.protect)
                                     player_1.reduce_health(damage_to_player)
                                     player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                                    player_1.regenerate()
                                     player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
                                     player_1.calculate_necrotic_dot()
                                 else:
                                     damage_to_player = monster.swing(monster.name, player_1.armor_class)
                                     player_1.reduce_health(damage_to_player)
                                     player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                                    player_1.regenerate()
                                     player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
                                     player_1.calculate_necrotic_dot()
 
@@ -503,13 +512,19 @@ while True:
                             # player's turn:
                             damage_to_monster = player_1.swing(monster.name, monster.armor_class)
                             monster.reduce_health(damage_to_monster)
-                            #player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
-                            #player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
-                            #player_1.calculate_necrotic_dot()
+
                             if monster.check_dead():
                                 player_1.hud()
                                 print(f"It died..")
                                 pause()
+                                player_1.regenerate()
+                                player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                                player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                                player_1.calculate_necrotic_dot()
+                                if player_1.check_dead():
+                                    player_is_dead = True
+                                    in_proximity_to_monster = False
+                                    break
                                 player_1.level_up(monster.experience_award, monster.gold)
                                 in_proximity_to_monster = False
                                 player_1.loot()
@@ -530,6 +545,7 @@ while True:
                                                                                          player_1.ring_of_prot.protect)
                                         player_1.reduce_health(damage_to_player)
                                         player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                                        player_1.regenerate()
                                         player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
                                         player_1.calculate_necrotic_dot()
                                     elif monster.can_poison and monster.necrotic:  # if monster has both poison
@@ -550,6 +566,7 @@ while True:
                                     damage_to_player = monster.swing(monster.name, player_1.armor_class)
                                     player_1.reduce_health(damage_to_player)
                                     player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                                    player_1.regenerate()
                                     player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
                                     player_1.calculate_necrotic_dot()
                                 if not player_1.check_dead():  # if player not dead

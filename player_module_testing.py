@@ -455,6 +455,22 @@ class Healing:
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
 
 
+class Elixir:
+    def __init__(self):
+        self.name = "Elixir"
+        self.item_type = "Elixirs"
+        self.uses = 0
+        self.buy_price = 50
+        self.sell_price = 20
+        self.minimum_level = 1
+
+    def __repr__(self):
+        return f'{self.name} - Purchase Price: {self.buy_price} GP'
+
+
+elixir = Elixir()
+
+
 class HealingPotion(Healing):
     def __init__(self):
         super().__init__()
@@ -632,6 +648,7 @@ class Player:
         self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
         self.stealth = self.cloak.stealth
         self.town_portals = 1
+        self.elixirs = 2
         self.potions_of_healing = 1
         self.potions_of_strength = 1
         self.potion_of_strength_effect = False
@@ -651,11 +668,11 @@ class Player:
         self.previous_x = 0
         self.previous_y = 0
         self.pack = {
-            'Weapons': [],
-            # 'Healing': [],  #[healing_potion],
+
             'Armor': [],
             'Shields': [],
             'Boots': [],
+            'Weapons': [],
             'Cloaks': [],
             'Rings of Regeneration': [],
             'Rings of Protection': []
@@ -733,6 +750,10 @@ class Player:
             number_of_potions_of_healing = self.potions_of_healing  # len(self.pack['Healing'])
             print(
                 f"                                                                     Healing Potions: {number_of_potions_of_healing}")
+        if self.elixirs > 0:
+            number_of_elixirs = self.elixirs  # len(self.pack['Healing'])
+            print(
+                f"                                                                     Elixirs: {number_of_elixirs}")
         if self.town_portals > 0:
             number_of_portal_scrolls = self.town_portals  # len(self.pack['Town Portal Implements'])
             print(
@@ -758,46 +779,48 @@ class Player:
     def calculate_poison(self):
         # self.dungeon_description()
         if self.poisoned:
-            self.poisoned_turns += 1
-            self.hit_points = (self.hit_points - (1 * self.dot_multiplier))
-            print(f"*POISON DAMAGE*")
             if self.poisoned_turns > 4:
                 self.poisoned = False
                 self.poisoned_turns = 0
-                #self.hud()
-                #print(f"The poison leaves your body..")
+                print(f"The poison leaves your body..")
                 pause()
-                return False
             else:
-                return True
+                self.poisoned = True
+                self.poisoned_turns += 1
+                poison_damage = (1 * self.dot_multiplier)
+                self.hit_points -= poison_damage
+                print(f"*POISON DAMAGE: {poison_damage}*")
+                sleep(1.5)
+        return self.poisoned
 
     def calculate_necrotic_dot(self):
         # self.dungeon_description()
         if self.necrotic:
-            self.necrotic_turns += 1
-            self.hit_points = (self.hit_points - (1 * self.dot_multiplier))
-            print(f"*NECROTIC DAMAGE*")
             if self.necrotic_turns > 4:
                 self.necrotic = False
                 self.necrotic_turns = 0
-                # self.hud()
-                #print(f"The necrotic withering force leaves your body..")
+                print(f"The necrotic plague leaves your body..")
                 pause()
-                return False
             else:
-                return True
+                self.necrotic = True
+                self.necrotic_turns += 1
+                necrotic_damage = (1 * self.dot_multiplier)
+                self.hit_points -= necrotic_damage
+                print(f"*NECROTIC DAMAGE: {necrotic_damage}*")
+                sleep(1.5)
+        return self.necrotic
 
     def calculate_potion_of_strength(self):
         if self.potion_of_strength_effect:
-            self.potion_of_strength_uses += 1
             if self.potion_of_strength_uses > 4:
                 self.potion_of_strength_effect = False
                 self.potion_of_strength_uses = 0
                 print(f"The potion's effects wear off....the giant strength leaves your body..")
                 pause()
-                return False
             else:
-                return True
+                self.potion_of_strength_effect = True
+                self.potion_of_strength_uses += 1
+        return self.potion_of_strength_effect
 
     def calculate_modifiers(self):
         self.strength_modifier = math.floor((self.strength - 10) / 2)
@@ -1067,53 +1090,40 @@ class Player:
                     print(f"He steals a {stolen_item.name}")  # from your {item_type}")
                     pause()
                     return True  # True means monster gets away clean
-            # Quantum item inventory is handled differently..This is clunky but should work.
-            #
-            elif self.potions_of_healing > 0 and self.potions_of_strength > 0 and self.town_portals > 0:
-                potion_or_scroll = dice_roll(1, 3)
-                if potion_or_scroll == 1:
-                    print(f"He steals a potion of healing.")
-                    self.potions_of_healing -= 1
-                    pause()
-                    return True
-                elif potion_or_scroll == 2 and self.potions_of_strength > 0:
-                    print(f"He steals a potion of strength.")
-                    self.potions_of_strength -= 1
-                    pause()
-                    return True
-                elif potion_or_scroll == 3 and self.town_portals > 0:
-                    print(f"He steals a scroll of town portal.")
-                    self.town_portals -= 1
-                    pause()
-                    return True
-                # if player has one or the other
-            elif self.potions_of_healing > 0:
-                print(f"He steals a potion of healing.")
-                self.potions_of_healing -= 1
-                pause()
-                return True
-            elif self.potions_of_strength > 0:
-                print(f"He steals a potion of strength.")
-                self.potions_of_strength -= 1
-                pause()
-                return True
-            elif self.town_portals > 0:
-                print(f"He steals a scroll of town portal.")
-                self.town_portals -= 1
-                pause()
-                return True
 
+            # Belt inventory is handled differently..This is clunky but should work.
+            elif self.potions_of_strength > 0 or self.potions_of_healing > 0 or self.town_portals > 0 or self.elixirs > 0:
+                item_string = ""
+                # Define list of attributes you are allowed to change
+                self_dict = self.__dict__  # create variable as actual copy of player dict attribute
+                stealing_lst = []
+                # the working dict and 'for' loop just takes the place of many 'if:' statements
+                working_dict = {'potions_of_strength': self.potions_of_strength,
+                                'potions_of_healing': self.potions_of_healing,
+                                'town_portals': self.town_portals, 'elixirs': self.elixirs}
+
+                # add all items > 0 in working dict to stealing list
+                for key, value in working_dict.items():
+                    if value > 0:
+                        stealing_lst.append(key)
+                random_stolen_item = random.choice(stealing_lst)
+                # i am proud of this next bit of code :)
+                grammar_dict = {'potions_of_strength': 'potion of strength',
+                                'potions_of_healing': 'potion of healing',
+                                'town_portals': 'scroll of town portal', 'elixirs': 'clarifying elixir'}
+                for key, value in grammar_dict.items():
+                    if random_stolen_item == key:
+                        item_string = value
+                print(f"It steals a {item_string} right off of your belt!")
+                self_dict[random_stolen_item] -= 1
+                pause()
+                return True  # True means monster gets away clean
             else:
                 print("You have nothing he wants to steal!")
                 pause()
                 # sleep(2)
                 return True  # Changing this to False means your inventory is empty and monster sticks around to fight
-
         else:
-            # print(f"The {monster_name} makes a quick move...")
-            # sleep(1.5)
-            # print(f"..but this time, you are quicker!..")
-            # sleep(2)
             return False  # False here means monster failed check, and he sticks around to fight; invisible to player
 
     def damage_while_paralyzed(self, monster_number_of_hd, monster_hit_dice):
@@ -1136,7 +1146,7 @@ class Player:
                 necrotic = "necrotic,"
             else:
                 necrotic = ""
-                #print(f"NECROTIC")
+                # print(f"NECROTIC")
             if self.poisoned:
                 poisoned = "poisoned,"
             else:
@@ -1198,8 +1208,8 @@ class Player:
         else:
             print(f"Your Constitution: {self.constitution}\nYour Constitution Modifier: {self.constitution_modifier}\n")
             if roll_d20 == 20 or roll_d20 >= challenge_rating:  # self.constitution + self.constitution_modifier:
-                #return True
-                #self.hud()
+                # return True
+                # self.hud()
                 self.dot_multiplier = monster_dot_multiplier
                 rndm_poisoned_phrases = ["You feel a disturbing weakness overcoming you..",
                                          "An unnerving frailty spreads throughout your body...",
@@ -1214,7 +1224,7 @@ class Player:
                 # self.calculate_poison()
                 pause()
                 # self.dungeon_description()
-                self.hud()
+                # self.hud()
                 return self.poisoned
             else:
                 print(f"You swiftly dodge its poison attack!")
@@ -1239,7 +1249,7 @@ class Player:
             print(f"Your Constitution: {self.constitution}\nYour Constitution Modifier: {self.constitution_modifier}\n")
             if roll_d20 == 20 or roll_d20 >= challenge_rating:  # self.constitution + self.constitution_modifier:
                 self.dot_multiplier = monster_dot_multiplier
-                #self.hud()
+                # self.hud()
                 rndm_necrotic_phrases = ["You feel absolute dread and withering overcoming you..",
                                          "An unnerving pain, planted like a seed, germinates within you...",
                                          "Agony creeps into your very veins..."
@@ -1393,6 +1403,7 @@ class Player:
             print(f"1: Potions of Healing - Quantity: {self.potions_of_healing}")
             print(f"2: Scrolls of Town Portal - Quantity: {self.town_portals}")
             print(f"3: Potions of Strength - Quantity: {self.potions_of_strength}")
+            print(f"4: Clarifying Elixirs - Quantity: {self.elixirs}")
             print(f"Your gold: {self.gold} GP")
             sell_or_not = input(f"(S)ell items or go (B)ack: ").lower()
             if sell_or_not == 'b':
@@ -1419,7 +1430,12 @@ class Player:
                         print(f"You don't have any {your_item}..")
                         sleep(1)
                         continue
-
+                elif type_to_sell == '4':
+                    your_item = "clarifying elixirs"
+                    if self.elixirs < 1:
+                        print(f"You don't have any {your_item}..")
+                        sleep(1)
+                        continue
                 else:
                     print(f"Invalid..")
                     continue
@@ -1462,6 +1478,18 @@ class Player:
                             print(f"Invalid.")
                             sleep(1)
                             continue
+                    elif type_to_sell == '4' and number_of_items_to_sell > 0:
+                        if self.elixirs >= number_of_items_to_sell:
+                            self.elixirs -= number_of_items_to_sell
+                            gold_recieved = (elixir.sell_price * number_of_items_to_sell)
+                            self.gold += gold_recieved
+                            print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
+                            pause()
+                            continue
+                        else:
+                            print(f"Invalid.")
+                            sleep(1)
+                            continue
                     else:
                         print(f"Invalid entry..")
                 except ValueError:
@@ -1474,6 +1502,7 @@ class Player:
             'Healing': [healing_potion],
             'Potions of Strength': [strength_potion],
             'Town Portal Implements': [scroll_of_town_portal],
+            'Elixirs': [elixir]
         }
         while True:
             self.hud()
@@ -1534,20 +1563,31 @@ class Player:
                             print("Invalid entry..")
                             sleep(1)
                             continue
-                        confirm_purchase = input(f"Purchase {sale_item.name} for {sale_item.buy_price} GP (y/n)? ")
-                        if confirm_purchase == 'y':
-                            if self.gold >= sale_item.buy_price:
-                                if self.level >= sale_item.minimum_level:
-                                    self.gold -= sale_item.buy_price
-                                    if sale_item.name == 'Scroll of Town Portal':
-                                        self.town_portals += 1
-                                    elif sale_item.name == 'Potion of Strength':
-                                        self.potions_of_strength += 1
-                                    elif sale_item.name == 'Potion of Healing':
-                                        self.potions_of_healing += 1
+                        # confirm_purchase = input(f"Purchase {sale_item.name} for {sale_item.buy_price} GP (y/n)? ")
+                        # if confirm_purchase == 'y':
 
+                        try:
+                            number_of_items = int(input(f"How many would you like to buy: "))
+                        except ValueError:
+                            print("Invalid entry..")
+                            sleep(1)
+                            continue
+                        if number_of_items > 0:
+                            purchase_price = sale_item.buy_price * number_of_items
+                            if self.gold >= purchase_price:
+                                if self.level >= sale_item.minimum_level:
+                                    self.gold -= purchase_price
+                                    # replace these if statements with dictionary in future
+                                    if sale_item.name == 'Scroll of Town Portal':
+                                        self.town_portals += number_of_items
+                                    elif sale_item.name == 'Potion of Strength':
+                                        self.potions_of_strength += number_of_items
+                                    elif sale_item.name == 'Potion of Healing':
+                                        self.potions_of_healing += number_of_items
+                                    elif sale_item.name == 'Elixir':
+                                        self.elixirs += number_of_items
                                     self.hud()
-                                    print(f"You buy a {sale_item.name}")
+                                    print(f"You buy {number_of_items} {sale_item.name}s")
                                     # (self.pack[sale_item.item_type]).append(sale_item)
                                     self.item_type_inventory(sale_item.item_type)
                                     pause()
@@ -1561,6 +1601,7 @@ class Player:
                                 pause()
                                 continue
                         else:
+                            print(f"Zero..")
                             continue
 
     def item_management_sub_menu(self):
@@ -2016,6 +2057,28 @@ class Player:
             pause()
             return False
 
+    def drink_elixir(self):
+        if self.elixirs > 0:
+            self.hud()
+            if not self.poisoned and not self.necrotic:
+                print(f"Your flesh is not corrupted!")
+                sleep(1)
+                return
+            else:
+                print(f"You retrieve the emerald vial from your belt and eagerly drain its contents into your mouth...")
+                sleep(2)
+                self.elixirs -= 1
+                self.hud()
+                print(f"You feel a cleansing of the flesh..")
+                sleep(1)
+                self.poisoned = False
+                self.poisoned_turns = 0
+                self.necrotic = False
+                self.necrotic_turns = 0
+                print(f"The foul corruption leaves your body..")
+                pause()
+                return
+
     def drink_healing_potion(self):
         self.hud()
         if self.potions_of_healing > 0:
@@ -2061,7 +2124,8 @@ class Player:
             return False
 
     def item_type_inventory(self, item_type):  # list items in inventory by type
-        if item_type != 'Town Portal Implements' and item_type != 'Potions of Strength' and item_type != 'Healing':
+        if item_type != 'Town Portal Implements' and item_type != 'Elixirs' \
+                and item_type != 'Potions of Strength' and item_type != 'Healing':
             print(f"Your {item_type}:")
             self.pack[item_type].sort(key=lambda x: x.name)
             stuff_dict = Counter(item.name for item in self.pack[item_type])
@@ -2100,6 +2164,13 @@ class Player:
             else:
                 print(f"You have no potions of healing.")
                 return False
+        elif item_type == 'Elixirs':
+            if self.elixirs > 0:
+                print(f"You have {self.elixirs} Clarifying Quantum Elixirs")
+                return True
+            else:
+                print(f"You have no Elixirs.")
+                return False
 
     def inventory(self):
         self.hud()
@@ -2120,10 +2191,10 @@ class Player:
             print(f"{self.potions_of_strength} Potions of Strength")
             print(f"{self.potions_of_healing} Potions of Healing")
             print(f"{self.town_portals} Town Portal Scrolls")
-
+            print(f"{self.elixirs} Clarifying Elixirs")
         item_type_lst = ['Weapons', 'Armor', 'Shields', 'Boots', 'Cloaks']
 
-        print(f"You dungeoneer's pack contains:")
+        print(f"Your dungeoneer's pack contains:")
         current_items = []
         for each_item in item_type_lst:
             is_item_on_list = len(self.pack[each_item])
@@ -2237,50 +2308,50 @@ class Player:
             pause()  # remove after testing
             return
 
-    def found_shield_substitution(self, found_item):
-        if self.shield.ac < found_item.ac:
-            if found_item.name == 'Quantum Tower Shield' and found_item.name == self.shield.name:
-                found_item.ac += 1
+    def found_shield_substitution(self, sub_item):
+        if self.shield.ac < sub_item.ac:
+            if sub_item.name == 'Quantum Tower Shield' and sub_item.name == self.shield.name:
+                sub_item.ac += 1
                 print(
-                    f"Quantum wierdness fills the air...\nYour {self.shield.name} is enhanced to armor class {found_item.ac}!")
-                self.shield.ac = found_item.ac
+                    f"Quantum wierdness fills the air...\nYour {self.shield.name} is enhanced to armor class {sub_item.ac}!")
+                self.shield.ac = sub_item.ac
                 self.calculate_armor_class()
                 # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
                 pause()
                 return
             else:
-                print(f"You have found a {found_item.name}!! Armor Class: {found_item.ac}")
+                print(f"You have found a {sub_item.name}!! Armor Class: {sub_item.ac}")
                 if self.shield.name == 'No Shield':
                     print(f"You currently hold no shield in your off hand.")
                 else:
                     print(f"Your current {self.shield.name} Armor Class: {self.shield.ac}")
             while True:
-                replace_shield = input(f"Do you wish to wield the {found_item.name} instead? y/n: ").lower()
+                replace_shield = input(f"Do you wish to wield the {sub_item.name} instead? y/n: ").lower()
                 if replace_shield == 'y':
                     old_shield = self.shield
-                    self.shield = found_item
-                    print(f"You are now wielding the {found_item.name}")
+                    self.shield = sub_item
+                    print(f"You are now wielding the {sub_item.name}")
                     self.calculate_armor_class()
                     if old_shield.name == 'No Shield':
                         pause()
                         return
                     elif not self.duplicate_item(old_shield.item_type,
                                                  old_shield):  # old_shield not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(old_shield)
+                        (self.pack[sub_item.item_type]).append(old_shield)
                         print(f"You place the {old_shield.name} on your back..")
                     else:
                         print(f"You drop your {old_shield.name}.")
                     pause()
                     return
                 elif replace_shield == 'n':
-                    print(f"You don't wield the {found_item.name}.")
-                    if not self.duplicate_item(found_item.item_type,
-                                               found_item):  # found_item not in self.pack[found_item.item_type]:
-                        (self.pack[found_item.item_type]).append(found_item)
-                        print(f"You place the {found_item.name} on your back.")
+                    print(f"You don't wield the {sub_item.name}.")
+                    if not self.duplicate_item(sub_item.item_type,
+                                               sub_item):  # found_item not in self.pack[found_item.item_type]:
+                        (self.pack[sub_item.item_type]).append(sub_item)
+                        print(f"You place the {sub_item.name} on your back.")
 
                     else:
-                        print(f"You can't carry any more {found_item.name}s. You leave it.")  # can't carry any more
+                        print(f"You can't carry any more {sub_item.name}s. You leave it.")  # can't carry any more
                     pause()
                     return
                 elif replace_shield not in ("y", "n"):
@@ -2394,6 +2465,7 @@ class Player:
             print(f"A Ring of Regeneration + {self.ring_of_reg.regenerate} appears on your finger!")
             sleep(1)
             print(f"It becomes permanently affixed..fused to your flesh and bone!")
+            self.regenerate()  # this is fair. this could save you from poison or necrosis
             pause()
             return
         elif self.ring_of_reg.regenerate < math.ceil(self.maximum_hit_points * .17):
@@ -2432,12 +2504,14 @@ class Player:
             return
 
     def loot(self):
+        # place armor first here; otherwise it will mess up the order of operations below
         loot_dict = {
-            'Weapons': [short_axe, broad_sword, quantum_sword, battle_axe, great_axe],
             'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
             'Shields': [buckler, kite_shield, quantum_tower_shield],
             'Boots': [elven_boots, ancestral_footsteps],
             'Cloaks': [elven_cloak],
+            'Weapons': [short_axe, broad_sword, quantum_sword, battle_axe, great_axe],
+            'Elixirs': [elixir],
             'Healing': [healing_potion],
             'Rings of Regeneration': [ring_of_regeneration],
             'Rings of Protection': [ring_of_protection],
@@ -2446,7 +2520,7 @@ class Player:
         }
 
         while True:
-            # ****** NOTICE THE DIFFERENCE BETWEEN found.item and found_item.item_type !! ************************
+            # ****** NOTICE THE DIFFERENCE BETWEEN found_item and found_item.item_type !! ************************
             loot_roll = dice_roll(1, 20)
             self.hud()
             print(f"Loot roll ---> {loot_roll}")
@@ -2457,32 +2531,7 @@ class Player:
                 found_item = loot_dict[key][rndm_item_index]
                 print(found_item)  # REMOVE AFTER TESTING *****************************************************
                 if self.level >= found_item.minimum_level:
-                    if found_item.item_type == 'Town Portal Implements':
-                        # (self.pack[found_item.item_type]).append(found_item)
-                        print(f"You see a {found_item.name} !")
-                        sleep(.5)
-                        print(f"You snarf it..")
-                        self.town_portals += 1
-                        pause()
-                        continue
-                    elif found_item.item_type == 'Healing':  # or found_item.item_type == 'Town Portal Implements':
-                        # (self.pack[found_item.item_type]).append(found_item)
-                        print(f"You see a {found_item.name} !")
-                        sleep(.5)
-                        print(f"You snarf it..")
-                        self.potions_of_healing += 1
-                        pause()
-                        continue
-                    elif found_item.item_type == 'Potions of Strength':
-                        # (self.pack[found_item.item_type]).append(found_item)
-
-                        print(f"You see a {found_item.name} !")
-                        sleep(.5)
-                        print(f"You snarf it..")
-                        self.potions_of_strength += 1
-                        pause()
-                        continue
-                    elif found_item.item_type == 'Armor':
+                    if found_item.item_type == 'Armor':
                         self.found_armor_substitution(found_item)
                         continue
                     elif found_item.item_type == 'Shields':
@@ -2502,6 +2551,34 @@ class Player:
                         continue
                     elif found_item.item_type == 'Boots':
                         self.found_boots_substitution(found_item)
+                        continue
+                    elif found_item.item_type == 'Town Portal Implements':
+                        print(f"You see a {found_item.name} !")
+                        sleep(.5)
+                        print(f"You snarf it..")
+                        self.town_portals += 1
+                        pause()
+                        continue
+                    elif found_item.item_type == 'Healing':
+                        print(f"You see a {found_item.name} !")
+                        sleep(.5)
+                        print(f"You snarf it..")
+                        self.potions_of_healing += 1
+                        pause()
+                        continue
+                    elif found_item.item_type == 'Potions of Strength':
+                        print(f"You see a {found_item.name} !")
+                        sleep(.5)
+                        print(f"You snarf it..")
+                        self.potions_of_strength += 1
+                        pause()
+                        continue
+                    elif found_item.item_type == 'Elixirs':
+                        print(f"You see an {found_item.name} !")
+                        sleep(.5)
+                        print(f"You snarf it..")
+                        self.elixirs += 1
+                        pause()
                         continue
                     '''                    else:
                         print(f"You already have a {found_item.name} of equal or greater value.."
@@ -2682,6 +2759,8 @@ class Player:
 
     def dungeon_description(self):
         self.hud()
+        north_south = ""
+        east_west = ""
         if self.x > 9:
             east_west = "eastern"
         elif self.x < 10:
@@ -3450,3 +3529,48 @@ sale_item = (sale_items_dict[sale_item_key])
 
         self.hud()
         return self.necrotic'''
+'''            elif self.potions_of_healing > 0 and self.potions_of_strength > 0 and self.town_portals > 0 and self.elixirs > 0:
+                potion_or_scroll = dice_roll(1, 4)
+                if potion_or_scroll == 1:
+                    print(f"He steals a potion of healing.")
+                    self.potions_of_healing -= 1
+                    pause()
+                    return True
+                elif potion_or_scroll == 2 and self.potions_of_strength > 0:
+                    print(f"He steals a potion of strength.")
+                    self.potions_of_strength -= 1
+                    pause()
+                    return True
+                elif potion_or_scroll == 3 and self.town_portals > 0:
+                    print(f"He steals a scroll of town portal.")
+                    self.town_portals -= 1
+                    pause()
+                    return True
+                elif potion_or_scroll == 4 and self.town_portals > 0:
+                    print(f"He steals a clarifying elixir.")
+                    self.elixirs -= 1
+                    pause()
+                    return True
+            # if player has one or the other- make this into lists and dictionaries in the future!
+
+            elif self.potions_of_healing > 0:
+                print(f"He steals a potion of healing.")
+                self.potions_of_healing -= 1
+                pause()
+                return True
+            elif self.potions_of_strength > 0:
+                print(f"He steals a potion of strength.")
+                self.potions_of_strength -= 1
+                pause()
+                return True
+            elif self.elixirs > 0:
+                print(f"He steals a clarifying elixir.")
+                self.elixirs -= 1
+                pause()
+                return True
+            elif self.town_portals > 0:
+                print(f"He steals a scroll of town portal.")
+                self.town_portals -= 1
+                pause()
+                return True
+'''

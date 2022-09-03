@@ -343,7 +343,7 @@ while True:
                 # sleep(1.5)
                 # pause()
                 if player_1.position == "E":
-                    encounter = 99
+                    encounter = 99  # dungeon level boss conditional
                     player_1.next_dungeon()
                 # ***********************************************************************************************>>>>
 
@@ -362,7 +362,7 @@ while True:
                         monster_key = random.randint(1, (player_1.level + 1))
                         monster_cls = random.choice(monster_dict[monster_key])
                         monster = monster_cls()  # create a monster object from the random class
-                        monster = Drow()  # testing
+                        # monster = Drow()  # testing
                         if encounter == 99:
                             monster = Ghoul()  # boss for testing. change logic to be a boss 1 level above player
                         if encounter == 98:
@@ -396,7 +396,6 @@ while True:
                         print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
                         pause()
                         if monster_initiative > player_initiative:
-
                             player_1.hud()
                             # print(f"The {monster.name} attacks first!")
                             melee_or_quantum = dice_roll(1, 20)
@@ -417,7 +416,6 @@ while True:
                                 player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
                                 player_1.calculate_necrotic_dot()
                             if player_1.check_dead():  # if player  dead
-
                                 print(f"You were caught off guard!")
                                 time.sleep(1.5)
                                 print(f"You died!")
@@ -512,7 +510,6 @@ while True:
                             # player's turn:
                             damage_to_monster = player_1.swing(monster.name, monster.armor_class)
                             monster.reduce_health(damage_to_monster)
-
                             if monster.check_dead():
                                 player_1.hud()
                                 print(f"It died..")
@@ -532,14 +529,14 @@ while True:
                                     player_1.loot()
                                 break
 
-                            # monster turn:
+                            # monster turn if still alive:
 
                             elif not monster.check_dead():  # Changed from 'if' to 'elif' 11:41am 8/21/22
                                 melee_or_quantum = dice_roll(1, 20)
                                 if monster.quantum_energy and melee_or_quantum > 10 and not player_1.poisoned \
                                         and not player_1.necrotic:
                                     if not monster.can_poison and not monster.necrotic:
-
+                                        #
                                         damage_to_player = monster.quantum_energy_attack(monster.name,
                                                                                          player_1.wisdom_modifier,
                                                                                          player_1.ring_of_prot.protect)
@@ -550,17 +547,14 @@ while True:
                                         player_1.calculate_necrotic_dot()
                                     elif monster.can_poison and monster.necrotic:  # if monster has both poison
                                         poison_or_necrotic = dice_roll(1, 20)  # and necrotic damage,
-                                        if poison_or_necrotic > 10:
+                                        if poison_or_necrotic > 10:  # greater than 10 for poison
                                             player_1.poison_attack(monster.name, monster.dot_multiplier)
-
                                         else:
                                             player_1.necrotic_attack(monster.name, monster.dot_multiplier)
-
                                     elif monster.can_poison:  # otherwise, if it can only poison, then attempt poison
                                         player_1.poison_attack(monster.name, monster.dot_multiplier)
                                     elif monster.necrotic:  # otherwise if it only has necrotic, then attempt necrotic
                                         player_1.necrotic_attack(monster.name, monster.dot_multiplier)
-
                                 else:
                                     # if it has neither, then melee attack
                                     damage_to_player = monster.swing(monster.name, player_1.armor_class)
@@ -592,9 +586,9 @@ while True:
                                 player_1.hud()
                             else:
                                 break
-                else:  # NEW..test
+                else:  # if encounter roll not greater than 10
                     continue
-        #
+# removed code:
 
 '''                if player_1.position == ".":
                     print("You are in a dark corridor, there are doors leading in each direction...")

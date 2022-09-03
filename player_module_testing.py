@@ -1075,6 +1075,7 @@ class Player:
         if quick_move_roll == 20:
             print(f"The {monster_name} makes a quick move...")
             sleep(1.5)
+            # pack inventory logic:
             available_item_types_to_steal = []
             for i in self.pack.keys():  # gather all available
                 if len(self.pack[i]) > 0:  # item types to steal based on player's current item TYPES and put them
@@ -1091,7 +1092,8 @@ class Player:
                     pause()
                     return True  # True means monster gets away clean
 
-            # Belt inventory is handled differently..This is clunky but should work.
+            # Belt inventory is handled differently. This is clunky but should work.
+            # belt inventory logic:
             elif self.potions_of_strength > 0 or self.potions_of_healing > 0 or self.town_portals > 0 or self.elixirs > 0:
                 item_string = ""
                 # Define list of attributes you are allowed to change
@@ -1107,7 +1109,7 @@ class Player:
                     if value > 0:
                         stealing_lst.append(key)
                 random_stolen_item = random.choice(stealing_lst)
-                # i am proud of this next bit of code :)
+                # I am proud of this next bit of code :)
                 grammar_dict = {'potions_of_strength': 'potion of strength',
                                 'potions_of_healing': 'potion of healing',
                                 'town_portals': 'scroll of town portal', 'elixirs': 'clarifying elixir'}
@@ -2609,31 +2611,26 @@ class Player:
         ability_dict_subset = {key: value for key, value in ability_dict.items() if key in attributes}
         # Choose random attribute name
         random_attribute = random.choice(list(ability_dict_subset.keys()))
-        print("Random attribute:", random_attribute)
+        print(f"Weird Quantum forces surge through your body..")
+        sleep(1.5)
+        print(f"You have gained unnatural {random_attribute}!")
         ability_dict[random_attribute] += 1
+        pause()
 
     def increase_lowest_ability(self):
-        # this code I was unable to come up with on my own. thanks to Angus Nicolson from Stack Overflow!
         ability_dict = self.__dict__
-
         # Define list of attributes you are allowed to change
         attributes = ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"]
         ability_dict_subset = {key: value for key, value in ability_dict.items() if key in attributes}
-
         # Find the minimum attribute name
         min_attribute = min(ability_dict_subset, key=ability_dict_subset.get)
-        print("Minimum attribute:", min_attribute)  # remove after testing
-
+        print()  # remove after testing
+        print(f"Weird sensations surge through your body..")
+        sleep(1.5)
+        print(f"You have gained {min_attribute}!")
         # Add one to min attribute
         ability_dict[min_attribute] += 1
-        print(f"Your {min_attribute} has increased!")
         pause()
-        # print(self.__dict__)
-
-        # Choose random attribute name
-        # random_attribute = random.choice(list(ability_dict_subset.keys()))
-        # print("Random attribute:", random_attribute)
-        # ability_dict[random_attribute] += 1
 
     def throne_event(self):
         print(f"There is a gem encrusted throne here.")
@@ -2646,8 +2643,82 @@ class Player:
             print("You don't sit...wonder what may have happened.")
             return
 
+    def heal_event(self):
+        heal = ((3 * self.dungeon.level) + 1)  # math right out of telengard!
+        self.hit_points += heal
+        print(f"You feel vitality bubbling up within you...")
+        sleep(1.5)
+        if self.poisoned or self.necrotic:
+            print(f"Your flesh no longer crawls with agony..")
+            sleep(1)
+            self.poisoned = False
+            self.poisoned_turns = 0
+            self.necrotic = False
+            self.necrotic_turns = 0
+            print(f"The foul corruption leaves your body..")
+            sleep(1)
+        if self.hit_points < self.maximum_hit_points:
+            print(f"You feel refreshing strength return.")
+            sleep(1)
+        else:
+            print(f"Your hit points have been unnaturally raised to {self.hit_points}!")
+            sleep(1)
+            print(f"You wonder how long this advantage will last..")
+            sleep(1)
+        pause()
+        return
+
+    def lose_items(self):
+        available_item_types_to_lose = []
+        for i in self.pack.keys():  # gather all available
+            if len(self.pack[i]) > 0:  # item types to lose based on player's current item TYPES and put them
+                available_item_types_to_lose.append(i)  # in available_item_types_to_lose = []
+        if len(available_item_types_to_lose) > 0:
+            item_type = random.choice(available_item_types_to_lose)  # Get random item *TYPE* you want to "steal"
+            if len(self.pack[item_type]) > 0:  # If the player has an item of type "item_type"
+                # pop random item from that item type. -1 because indexes start at 0
+                lost_item = (self.pack[item_type].pop(random.randint(0, len(self.pack[item_type]) - 1)))
+                print(f"Your load feels lighter..")
+                sleep(1)
+                print(f"The {lost_item.name} from your dungeoneer's pack is gone!")  # from your {item_type}")
+                pause()
+                return
+        elif self.potions_of_strength > 0 or self.potions_of_healing > 0 or self.town_portals > 0 or self.elixirs > 0:
+            item_string = ""
+            # Define list of attributes you are allowed to change
+            self_dict = self.__dict__  # create variable as actual copy of player dict attribute
+            stealing_lst = []
+            # the working dict and 'for' loop just takes the place of many 'if:' statements
+            working_dict = {'potions_of_strength': self.potions_of_strength,
+                            'potions_of_healing': self.potions_of_healing,
+                            'town_portals': self.town_portals, 'elixirs': self.elixirs}
+            # add all items > 0 in working dict to stealing list
+            for key, value in working_dict.items():
+                if value > 0:
+                    stealing_lst.append(key)
+            random_stolen_item = random.choice(stealing_lst)
+            # I am proud of this next bit of code :)
+            grammar_dict = {'potions_of_strength': 'potion of strength',
+                            'potions_of_healing': 'potion of healing',
+                            'town_portals': 'scroll of town portal', 'elixirs': 'clarifying elixir'}
+            for key, value in grammar_dict.items():
+                if random_stolen_item == key:
+                    item_string = value
+            print(f"Your load feels lighter...")
+            sleep(1)
+            print(f"A {item_string} has disappeared from your belt!")
+            self_dict[random_stolen_item] -= 1
+            pause()
+            return
+        else:
+            print("Nothing happens...")
+            pause()
+            # sleep(2)
+            return
+
     def fountain_event(self):
         # WHITE GREEN CLEAR RED BLACK
+        # telengard has these 5 random events:
         # heal 3 * dungeon level + 1 hit points
         # poison 3 * dungeon level + 1 hit points
         # drunk
@@ -2655,28 +2726,29 @@ class Player:
         # increase num of spells Magic power SURGES through your body
         water_colors = ['white', 'green', 'crystal clear', 'red', 'black']
         water_color = random.choice(water_colors)
-        print(f"A fountain with flowing {water_color} water is here. The tranquil sound eases your mind.")
+        print(f"A fountain with flowing {water_color} water is here.")
+        sleep(1)
+        print(f"The tranquil sound eases your mind.")
+        sleep(1)
         drink = input(f"Do you wish to drink? ")
         if drink == 'y':
-            # print(f"Something random happens")
-            rndm_occurance_lst = [self.poison, self.increase_random_ability, self.increase_lowest_ability,
-                                  self.teleporter_event]
-            rndm_occurance = random.choice(rndm_occurance_lst)
-            rndm_occurance()
-            # self.poison()
-            # self.regenerate()  # it's only fair to regenerate and count this as a move...? testing
-            # return self.teleporter()
+            rndm_occurrence_lst = [self.poison, self.increase_random_ability, self.teleporter_event,
+                                   self.increase_lowest_ability,
+                                   self.lose_items,
+                                   self.heal_event]
+            rndm_occurrence = random.choice(rndm_occurrence_lst)
+            rndm_occurrence()
         else:
-            print("You don't drink...wonder what may have happened.")
+            #print("You don't drink...wonder what may have happened.")
             return
 
     def teleporter_event(self):
         print(f"Zzzzzzap....You've been teleported.....")
-
-        self.dungeon_key += 1  # this will become random.randint(1, lastdungeonlevel) when dungeon levels are complete
+        self.dungeon_key += 1  # this will become random.randint(1, deepest dungeon level) in future
         self.dungeon = dungeon_dict[self.dungeon_key]
-        self.x = random.randint(1, 18)
-        self.y = random.randint(1, 18)
+        # self.x = random.randint(1, 18)
+        # self.y = random.randint(1, 18)
+        (self.x, self.y) = self.dungeon.teleporter_landing
         self.previous_x = self.x
         self.previous_y = self.y
         self.position = self.dungeon.grid[self.y][self.x]
@@ -2693,7 +2765,7 @@ class Player:
         sleep(1.5)
         pit_challenge_rating = 10
         pit_outcome = dice_roll(1, 20)
-        if (pit_outcome + self.dexterity_modifier + self.stealth) > pit_challenge_rating:
+        if (pit_outcome + self.dexterity_modifier + self.intelligence_modifier) > pit_challenge_rating:
             descend_or_not = input(f"Do you wish to descend (y/n)?: ")
             if descend_or_not == 'y':
                 print(f"Carefully and craftily, you repel down the slick, treacherous pit walls.")
@@ -2714,6 +2786,7 @@ class Player:
             sleep(1)
             print(f"You suffer {damage} hit points..")
             pause()
+            # falling into pits lands you on the next dungeon level at the dungeon.pit_landing coordinates
             self.dungeon_key += 1
             self.dungeon = dungeon_dict[self.dungeon_key]
             (self.x, self.y) = self.dungeon.pit_landing
@@ -2723,7 +2796,7 @@ class Player:
             return
 
     def staircase_description(self):
-        # this is a description of the spiral staircase, if player navigates to it after the map is initialized
+        # this is a description of the spiral staircase, if player navigates to it *after* the map is initialized
         # it is not an 'event', since it is not really interactive.
         # this function is called from the description function
         print(f"This is the spiral staircase entrance to {self.dungeon.name}.")
@@ -2877,8 +2950,9 @@ class Player:
             "You found the exit...\nYou begin to descend the stairs, deeper into the dungeon...\nYet, you sense you are not alone!")
         self.dungeon_key += 1
         self.dungeon = dungeon_dict[self.dungeon_key]
-        self.x = self.dungeon.starting_x
-        self.y = self.dungeon.starting_y
+        (self.x, self.y) = self.dungeon.start  # simplified with tuple by adding 'start' attribute to dungeon class
+        # self.x = self.dungeon.starting_x
+        # self.y = self.dungeon.starting_y
         # self.coordinates will be set after first move..otherwise the intro will be printed, followed by the
         # staircase description, which is awkward
         self.previous_x = self.x
@@ -3063,6 +3137,7 @@ Experience Points	Level	Proficiency Bonus
 305,000	            19	    +6
 355,000	            20	    +6
 '''
+# removed code:
 '''
 item_type_key_lst = ['Weapons', 'Healing', 'Armor', 'Shields', 'Boots', 'Cloaks',
                              'Rings of Regeneration',

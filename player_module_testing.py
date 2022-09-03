@@ -984,7 +984,7 @@ class Player:
     #    return
 
     def level_up(self, exp_award, monster_gold):
-        # *****************ADD LOGIC FOR EVERY STAT !!!!!!!!!!!!! ****************************************************
+        # *****************
         self.gold += monster_gold
         before_level = self.level
         before_proficiency_bonus = self.proficiency_bonus
@@ -996,7 +996,7 @@ class Player:
         if after_level > before_level:
             print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points.")
             sleep(2)
-            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav', winsound.SND_ASYNC)
+            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\gong.wav', winsound.SND_ASYNC)
             print(f"You went up a level!!")
             sleep(2)
             print(f"You are now level {self.level}.")
@@ -2094,7 +2094,7 @@ class Player:
                 print(f"You retrieve the vial from your belt and eagerly drain its contents into your mouth...")
                 sleep(2)
                 self.potions_of_healing -= 1
-                self.hit_points = self.hit_points + math.ceil(self.maximum_hit_points * .66)
+                self.hit_points = self.hit_points + math.ceil(self.maximum_hit_points * .75)
                 if self.hit_points > self.maximum_hit_points:
                     self.hit_points = self.maximum_hit_points
                 self.hud()
@@ -2634,13 +2634,22 @@ class Player:
         pause()
 
     def throne_event(self):
-        print(f"There is a gem encrusted throne here.")
+        rndm_throne_descriptions = ['There is a magnificent, gem-encrusted throne of gold here. Throughout its\n'
+                                    'shimmering surface are countless runes and symbols.',
+                                    'In the center of the room stands a majestic throne encrusted with many\n'
+                                    'gems and jewels, all laid in gold. Ancient runes cover its glimmering surface.',
+                                    'A great, golden throne, replete with many gems and inscribed with countless '
+                                    'runes stands here.']
+        rndm_throne_description = random.choice(rndm_throne_descriptions)
+        print(f"{rndm_throne_description}")
         sit = input(f"Do you wish to sit? ")
         if sit == 'y':
             print(f"You sit on the throne...")
             self.regenerate()  # testing
             return "King Boss"
         else:
+            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
+                               winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
             print("You don't sit...wonder what may have happened.")
             return
 
@@ -2880,6 +2889,7 @@ class Player:
             "/": f"You are against a {self.dungeon.barrier_name} to the South. Exits are to the North, East and West.",
             "(": f"You are against a {self.dungeon.barrier_name} to the West. Exits are to the North, South and East.",
             ")": f"You are against a {self.dungeon.barrier_name} to the East. Exits are to the North, South and West.",
+            "T": f"You are in a chamber of {self.dungeon.name} that seems to have been re-purposed as a sort of throne room."
         }
         # if self.position == 0:  # integer representing starting position
         #    print(self.dungeon.intro)

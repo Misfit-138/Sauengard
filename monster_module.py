@@ -703,7 +703,7 @@ class Skeleton(Monster):
 
     def __init__(self):
         super().__init__()
-        self.level = 2
+        self.level = 1  # I think level 1 is more appropriate.
         self.name = "Skeleton"
         self.experience_award = 100
         self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
@@ -988,8 +988,8 @@ class Ghoul(Monster):
 
 # monster dictionary. keys correspond to difficulty
 monster_dict = {
-    1: [Quasit, Kobold, Cultist, Goblin, WingedKobold],
-    2: [Shadow, Skeleton, Drow, Troglodyte, Orc, Ghoul]
+    1: [Quasit, Kobold, Cultist, Goblin, Skeleton, WingedKobold],
+    2: [Shadow, Drow, Troglodyte, Orc, Ghoul]
 }
 # For monster hit points..take hit dice and add (constitution modifier x number of hit dice).
 # For example, if a monster has a Constitution of 12 (+1 modifier) and 2d8 Hit Dice, it has 2d8 + 2 Hit Points

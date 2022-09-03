@@ -203,7 +203,7 @@ while True:
                     winsound.PlaySound(None, winsound.SND_ASYNC)
                     cls()
                     # player_1.hud()
-                    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav',
+                    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\gong.wav',
                                        winsound.SND_ASYNC)
                     print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
                     time.sleep(2)
@@ -359,7 +359,7 @@ while True:
                             break
                         if not in_proximity_to_monster:
                             break
-                        monster_key = random.randint(1, (player_1.level + 1))
+                        monster_key = random.randint(1, player_1.level)  # (player_1.level + 1)
                         monster_cls = random.choice(monster_dict[monster_key])
                         monster = monster_cls()  # create a monster object from the random class
                         # monster = Drow()  # testing
@@ -370,6 +370,8 @@ while True:
                             monster_cls = random.choice(monster_dict[monster_key])
                             monster = monster_cls()
                             print(f"The {monster.name} king returns!")
+                            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\mountain_king.wav',
+                                               winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
                             pause()
                             player_1.hud()
                         print(discovered_monsters)  # remove after testing
@@ -386,10 +388,11 @@ while True:
                             in_proximity_to_monster = False
                             player_1.dungeon_description()
                             break
-                        if player_1.quick_move(monster.name):
-                            in_proximity_to_monster = False
-                            player_1.dungeon_description()
-                            break  # if monster steals something he gets away clean, if not, battle
+                        if encounter < 21:  # if not a boss
+                            if player_1.quick_move(monster.name):
+                                in_proximity_to_monster = False
+                                player_1.dungeon_description()
+                                break  # if monster steals something he gets away clean, if not, battle
                         # PLAYER INITIATIVE, MONSTER INITIATIVE
                         player_initiative = dice_roll(1, 20) + player_1.dexterity_modifier
                         monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier
@@ -512,8 +515,18 @@ while True:
                             monster.reduce_health(damage_to_monster)
                             if monster.check_dead():
                                 player_1.hud()
-                                print(f"It died..")
+                                if encounter > 20:  # if you kill the boss, you get extra loot
+                                    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\gong.wav',
+                                                       winsound.SND_ASYNC)
+                                    print(f"You have vanquished the mighty enemy! You are victorious!")
+                                    sleep(1.5)
+                                    winsound.PlaySound(
+                                        'C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
+                                        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+                                else:
+                                    print(f"It died..")
                                 pause()
+
                                 player_1.regenerate()
                                 player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
                                 player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
@@ -526,6 +539,7 @@ while True:
                                 in_proximity_to_monster = False
                                 player_1.loot()
                                 if encounter > 20:  # if you kill the boss, you get extra loot
+
                                     player_1.loot()
                                 break
 
@@ -584,10 +598,11 @@ while True:
                                     player_is_dead = True
                                     break
                                 player_1.hud()
-                            else:
+                            else:  # this code seems unreachable
                                 break
                 else:  # if encounter roll not greater than 10
                     continue
+
 # removed code:
 
 '''                if player_1.position == ".":

@@ -1139,6 +1139,7 @@ class Player:
         return  # damage
 
     def check_dead(self):
+        # I am proud of this code...it was very difficult for me and took many hours
         if self.hit_points > 0:
             return False
         else:
@@ -1153,9 +1154,9 @@ class Player:
                 poisoned = "poisoned,"
             else:
                 poisoned = ""
-            print(f"You are {necrotic}{poisoned} unconscious and clinically dead!")
+            print(f"You are {necrotic} {poisoned} unconscious and moribund!")
             sleep(1)
-            print(f"Saving throw!")
+            print(f"Death saving throw!")
             sleep(1)
             successes = 0
             fails = 0
@@ -1192,7 +1193,7 @@ class Player:
                     print(f"Rolling a 1 adds 2 failed saves. ")
                     print(f"{fails} Failed saves..")
                     sleep(1)
-            return True  # do i need this statement?
+            return True  # player IS dead
 
     def poison_attack(self, monster_name, monster_dot_multiplier):
         challenge_rating = self.constitution
@@ -1242,7 +1243,7 @@ class Player:
         print(f"Attack roll---> {roll_d20}")
         sleep(1)
         if roll_d20 == 1:
-            print("You easily dodge the deadly necrotic attack!")
+            print("You dodge the deadly necrotic attack!")
             sleep(1)
             pause()
             self.hud()
@@ -1252,7 +1253,7 @@ class Player:
             if roll_d20 == 20 or roll_d20 >= challenge_rating:  # self.constitution + self.constitution_modifier:
                 self.dot_multiplier = monster_dot_multiplier
                 # self.hud()
-                rndm_necrotic_phrases = ["You feel absolute dread and withering overcoming you..",
+                rndm_necrotic_phrases = ["You feel morbid dread and withering overcoming you..",
                                          "An unnerving pain, planted like a seed, germinates within you...",
                                          "Agony creeps into your very veins..."
                                          ]
@@ -1266,7 +1267,7 @@ class Player:
                 self.hud()
                 return self.necrotic
             else:
-                print(f"You swiftly dodge its necrotic attack!")
+                print(f"You swiftly dodge its death-dealing necrotic attack!")
                 sleep(1)
                 pause()
                 self.hud()
@@ -2875,10 +2876,10 @@ class Player:
             "8": f"You are in a corner. Exits are to the North and East.",
             "9": f"You are in a corner. Exits are to the South and West.",
             "-": f"You are in a corner. Exits are to the North and West.",
-            "|": f"You are against a wall to the North. Exits are to the South, East and West.",
-            "/": f"You are against a wall to the South. Exits are to the North, East and West.",
-            "(": f"You are against a wall to the West. Exits are to the North, South and East.",
-            ")": f"You are against a wall to the East. Exits are to the North, South and West.",
+            "|": f"You are against a {self.dungeon.barrier_name} to the North. Exits are to the South, East and West.",
+            "/": f"You are against a {self.dungeon.barrier_name} to the South. Exits are to the North, East and West.",
+            "(": f"You are against a {self.dungeon.barrier_name} to the West. Exits are to the North, South and East.",
+            ")": f"You are against a {self.dungeon.barrier_name} to the East. Exits are to the North, South and West.",
         }
         # if self.position == 0:  # integer representing starting position
         #    print(self.dungeon.intro)

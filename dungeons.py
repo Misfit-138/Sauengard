@@ -40,6 +40,7 @@ class Dungeon1(Dungeon):
         self.name = "The Fieldenberg Catacombs"
         self.level = 1
         # self.event = (2, 3)
+        self.barrier_name = "wall of smooth, precisely quarried stone"
         self.throne = (2, 3)
         self.fountain = (3, 3)
         self.teleporter = (4, 3)
@@ -109,6 +110,7 @@ class Dungeon2(Dungeon):
         super().__init__()
         self.name = "The Fieldenberg Lower Catacombs"
         self.level = 2
+        self.barrier_name = "wall comprised of smooth stone"
         self.throne = (2, 3)
         self.fountain = (3, 3)
         self.teleporter = (4, 3)
@@ -175,6 +177,7 @@ class Dungeon3(Dungeon):
         super().__init__()
         self.name = "Dungeon level 3"
         self.level = 3
+        self.barrier_name = "wall comprised of smooth stone"
         self.throne = (2, 3)
         self.fountain = (3, 3)
         self.teleporter = (4, 3)

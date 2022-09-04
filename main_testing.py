@@ -51,6 +51,27 @@ def sleep(seconds):
     time.sleep(seconds)
 
 
+def gong():
+    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\gong.wav',
+                       winsound.SND_ASYNC)
+
+
+def mountain_king_theme():
+    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\mountain_king.wav',
+                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+
+
+def dungeon_theme():
+    winsound.PlaySound(
+        'C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
+        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+
+
+def town_theme():
+    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_theme.wav',
+                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+
+
 winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\originalsound.wav',
                    winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 cls()
@@ -129,8 +150,7 @@ while True:
     in_dungeon = False
     # town_portal = False
     discovered_monsters = []
-    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_theme.wav',
-                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    town_theme()
     while in_town:
         player_1.hud()
         town_functions = input(
@@ -190,23 +210,21 @@ while True:
             else:
                 print("You enter the dungeon..")
             time.sleep(1)
-            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
-                               winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+            dungeon_theme()
 
             # DUNGEON NAVIGATION LOOP:
             player_is_dead = False
             while in_dungeon:
-                #if player_1.check_dead():
+                # if player_1.check_dead():
                 #    player_is_dead = True
-                    #continue
+                # continue
                 if player_is_dead:
                     winsound.PlaySound(None, winsound.SND_ASYNC)
                     cls()
                     # player_1.hud()
-                    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\gong.wav',
-                                       winsound.SND_ASYNC)
+                    gong()
                     print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
-                    time.sleep(2)
+                    time.sleep(3)
                     in_proximity_to_monster = False
                     in_dungeon = False
                     in_town = False
@@ -235,7 +253,7 @@ while True:
                 player_1.coordinates = (player_1.x, player_1.y)
                 player_1.previous_x = player_1.x
                 player_1.previous_y = player_1.y
-                #player_1.loot()  # for testing
+                # player_1.loot()  # for testing
                 encounter = dice_roll(1, 20)
 
                 if player_1.position == 0:
@@ -370,8 +388,9 @@ while True:
                             monster_cls = random.choice(monster_dict[monster_key])
                             monster = monster_cls()
                             print(f"The {monster.name} king returns!")
-                            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\mountain_king.wav',
-                                               winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+                            gong()
+                            sleep(3)
+                            mountain_king_theme()
                             pause()
                             player_1.hud()
                         print(discovered_monsters)  # remove after testing
@@ -516,13 +535,10 @@ while True:
                             if monster.check_dead():
                                 player_1.hud()
                                 if encounter > 20:  # if you kill the boss, you get extra loot
-                                    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\gong.wav',
-                                                       winsound.SND_ASYNC)
+                                    gong()
                                     print(f"You have vanquished the mighty enemy! You are victorious!")
-                                    sleep(1.5)
-                                    winsound.PlaySound(
-                                        'C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
-                                        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+                                    sleep(3)
+
                                 else:
                                     print(f"It died..")
                                 pause()

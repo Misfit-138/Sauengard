@@ -2749,7 +2749,7 @@ class Player:
             rndm_occurrence = random.choice(rndm_occurrence_lst)
             rndm_occurrence()
         else:
-            #print("You don't drink...wonder what may have happened.")
+            # print("You don't drink...wonder what may have happened.")
             return
 
     def teleporter_event(self):

@@ -72,6 +72,12 @@ def dungeon_theme():
         winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
+def boss_battle_theme():
+    winsound.PlaySound(
+        'C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\boss_battle_2.wav',
+        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+
+
 def town_theme():
     winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_theme_2.wav',
                        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
@@ -119,8 +125,8 @@ while True:
     if new_game_or_load == 's':
         player_name = input("Thy name, noble sire? ")
         accept_stats = ""
+        player_1 = Player(player_name)
         while accept_stats != "y":
-            player_1 = Player(player_name)
             cls()
             print(f"Strength: {player_1.strength}")
             print(f"Dexterity: {player_1.dexterity}")
@@ -142,8 +148,9 @@ while True:
             player_1.dungeon = dungeon_dict[player_1.dungeon_key]
             # current_dungeon_map = player_1.dungeon.grid
             # current_player_map = player_1.dungeon.player_grid
-            player_1.x = player_1.dungeon.starting_x
-            player_1.y = player_1.dungeon.starting_y
+            (player_1.x, player_1.y) = player_1.dungeon.staircase
+            #player_1.x = player_1.dungeon.starting_x
+            #player_1.y = player_1.dungeon.starting_y
             player_1.position = 0
             # player_1.current_dungeon_level = player_1.dungeon.level
             # player_1.current_dungeon_level_name = player_1.dungeon.name
@@ -251,7 +258,7 @@ while True:
                             print(f"Farewell.")
                             exit()
                         if try_again not in ("y", "n"):
-                            print("Please enter y or n ")
+                            # print("Please enter y or n ")
                             time.sleep(.5)
                             continue
                 if not in_dungeon:
@@ -287,7 +294,7 @@ while True:
                         continue
                 elif dungeon_command == 'g':
                     player_1.drink_potion_of_strength()
-                    #player_1.potion_of_strength_uses = 0
+                    # player_1.potion_of_strength_uses = 0
                     # continue
                 elif dungeon_command == 'q':
                     print("Quit game..")
@@ -352,19 +359,16 @@ while True:
                 player_1.coordinates = (player_1.x, player_1.y)  #
                 if player_1.event_logic() == "King Boss":
                     encounter = 98
-
                 player_1.regenerate()  # put this first- it could save you from poisoning or necrosis
                 player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
                 player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
-                player_1.calculate_necrotic_dot()
+                player_1.calculate_necrotic_dot()  # same as poison
                 if player_1.check_dead():
                     player_is_dead = True
                     continue
                 player_1.dungeon_description()  # this seems to work best when put last
-
                 # player_1.increase_random_ability()  # remove after testing
                 # player_1.asi()  # remove after testing
-
                 # sleep(1.5)
                 # pause()
                 if player_1.position == "E":
@@ -373,8 +377,7 @@ while True:
                 # ***********************************************************************************************>>>>
 
                 # eventually, make encounter a returned boolean from navigation function?
-                if encounter > 10:
-
+                if encounter < 10 or encounter > 20:
                     # monster dictionary imported from monster module. keys correspond to difficulty
                     # in proximity to monster loop contains battle loop within it
                     in_proximity_to_monster = True
@@ -388,8 +391,18 @@ while True:
                         monster_cls = random.choice(monster_dict[monster_key])
                         monster = monster_cls()  # create a monster object from the random class
                         # monster = Drow()  # testing
-                        if encounter == 99:
-                            monster = Ghoul()  # boss for testing. change logic to be a boss 1 level above player
+                        if encounter == 99:  # level exit boss fight. make these uniques with names and epitaphs
+                            # monster = Ghoul()
+                            monster_key = (player_1.level + 1)
+                            monster_cls = random.choice(monster_dict[monster_key])
+                            monster = monster_cls()
+                            player_1.exit_boss_setup(monster)
+                            gong()
+                            sleep(4)
+                            boss_battle_theme()
+                            pause()
+                            player_1.hud()
+                            # boss for testing. change logic to be a boss 1 level above player
                         if encounter == 98:
                             monster_key = (player_1.level + 1)
                             monster_cls = random.choice(monster_dict[monster_key])
@@ -461,19 +474,15 @@ while True:
                             battle_choice = input(
                                 "(F)ight, (H)ealing potion, (G)iant Strength potion, (C)ast or (E)vade\nF/H/S/C/E --> ").lower()
                             if battle_choice == "e":
-                                evade_success = player_1.evade(monster.name, monster.dexterity)
-                                if evade_success:
+                                # evade_success = player_1.evade(monster.name, monster.dexterity)
+                                if player_1.evade(monster.name, monster.dexterity):
+                                    if encounter > 20:  # if evading boss,
+                                        dungeon_theme()  # go back to dungeon theme song
                                     in_proximity_to_monster = False  # get out of battle loop
                                     break
-                            # elif battle_choice == 's':
-                            #    player_1.drink_potion_of_strength()
-                            #    player_1.potion_of_strength_uses = 0
-                            #  *********Get rid of monster turn after swigging potion..*************
-                            #  make elif battle_choice == h or g or c or f
-                            # ***********this will reduce the code by 40 lines!! ********************
                             elif battle_choice == "c":
                                 player_1.hud()
-                                print(f"Cast")
+                                print(f"Cast not done..")
                                 continue
                             elif battle_choice == 'h' or battle_choice == 'g':
                                 if battle_choice == 'h':
@@ -491,14 +500,14 @@ while True:
                                                                                      player_1.wisdom_modifier,
                                                                                      player_1.ring_of_prot.protect)
                                     player_1.reduce_health(damage_to_player)
-                                    player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                                    player_1.calculate_potion_of_strength()  # potions of str have 5 uses; battle & nav
                                     player_1.regenerate()
                                     player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
                                     player_1.calculate_necrotic_dot()
                                 else:
                                     damage_to_player = monster.swing(monster.name, player_1.armor_class)
                                     player_1.reduce_health(damage_to_player)
-                                    player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                                    player_1.calculate_potion_of_strength()  # potions of str have 5 uses; battle & nav
                                     player_1.regenerate()
                                     player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
                                     player_1.calculate_necrotic_dot()

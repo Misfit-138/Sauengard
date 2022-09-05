@@ -1367,7 +1367,7 @@ class Player:
             self.hud()
             print(f"You raise your {self.wielded_weapon.name}..")
             time.sleep(1.5)
-            return  # False
+            return  False
 
     # INVENTORY AND ITEMS
 
@@ -2959,7 +2959,8 @@ class Player:
             "/": f"You are against a {self.dungeon.barrier_name} to the South. Exits are to the North, East and West.",
             "(": f"You are against a {self.dungeon.barrier_name} to the West. Exits are to the North, South and East.",
             ")": f"You are against a {self.dungeon.barrier_name} to the East. Exits are to the North, South and West.",
-            "T": f"You are in a chamber of {self.dungeon.name} that seems to have been re-purposed as a sort of throne room."
+            "T": f"You are in a chamber of {self.dungeon.name} that seems to have been "
+                 f"re-purposed as a sort of throne room."
         }
         # if self.position == 0:  # integer representing starting position
         #    print(self.dungeon.intro)
@@ -3027,13 +3028,11 @@ class Player:
 
     def next_dungeon(self):
         # dungeon dictionary in dungeons.py
-        print(
-            "You found the exit...\nYou begin to descend the stairs, deeper into the dungeon...\nYet, you sense you are not alone!")
+        print(f"With quiet resolve you turn to briefly look behind you, and then, continue onward toward your goal.")
+        sleep(2)
         self.dungeon_key += 1
         self.dungeon = dungeon_dict[self.dungeon_key]
-        (self.x, self.y) = self.dungeon.start  # simplified with tuple by adding 'start' attribute to dungeon class
-        # self.x = self.dungeon.starting_x
-        # self.y = self.dungeon.starting_y
+        (self.x, self.y) = self.dungeon.staircase  # simplified with tuple instead of self.x = and self.y =
         # self.coordinates will be set after first move..otherwise the intro will be printed, followed by the
         # staircase description, which is awkward
         self.previous_x = self.x
@@ -3042,6 +3041,11 @@ class Player:
         pause()
         return
 
+    def exit_boss_setup(self, monster):
+        # make a list of random intros...or, use boss intro.
+        print(f"In the archway to the {self.dungeon.name} exit "
+              f"stands the {monster.name} guardian. Without fear, without thought,\n"
+              f"it looks upon you and readies itself for battle...")
 
 '''
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.

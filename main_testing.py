@@ -61,6 +61,11 @@ def blacksmith_theme():
                        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
+def chemist_theme():
+    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\chemist_theme.wav',
+                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+
+
 def mountain_king_theme():
     winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\mountain_king.wav',
                        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
@@ -149,8 +154,8 @@ while True:
             # current_dungeon_map = player_1.dungeon.grid
             # current_player_map = player_1.dungeon.player_grid
             (player_1.x, player_1.y) = player_1.dungeon.staircase
-            #player_1.x = player_1.dungeon.starting_x
-            #player_1.y = player_1.dungeon.starting_y
+            # player_1.x = player_1.dungeon.starting_x
+            # player_1.y = player_1.dungeon.starting_y
             player_1.position = 0
             # player_1.current_dungeon_level = player_1.dungeon.level
             # player_1.current_dungeon_level_name = player_1.dungeon.name
@@ -214,7 +219,9 @@ while True:
         elif town_functions == 'c':
             print("You make your way to the chemist manipulator.")
             time.sleep(1.5)
+            chemist_theme()
             player_1.chemist_main()
+            town_theme()
         elif town_functions == 'e':
             in_town = False
             in_dungeon = True

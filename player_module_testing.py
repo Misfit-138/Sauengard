@@ -1606,7 +1606,8 @@ class Player:
                                     # (self.pack[sale_item.item_type]).append(sale_item)
                                     self.item_type_inventory(sale_item.item_type)
                                     pause()
-                                    continue
+                                    break
+                                    #continue
                                 else:
                                     print(f"Minimum requirements not met.")
                                     pause()

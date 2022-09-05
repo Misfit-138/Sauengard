@@ -7,6 +7,8 @@ import winsound
 from dice_roll_module import dice_roll
 from dungeons import *
 
+# from main_testing import dungeon_theme
+
 # from typing_module import typing
 
 '''Target
@@ -607,6 +609,16 @@ class TownPortalImplements:
 scroll_of_town_portal = TownPortalImplements()
 
 
+def king_returns():
+    return "King Boss"
+
+
+def nothing_happens():
+    print(f"Nothing happens....")
+    pause()
+    return
+
+
 class Player:
 
     def __init__(self, name):  # level, experience, gold, weapon_bonus, armor_bonus, shield, armor_class, strength,
@@ -979,10 +991,6 @@ class Player:
             print(f"All abilities at maximum!")  # remove after testing
             return
 
-    # def increase_experience(self, exp_award):
-    #   self.experience += exp_award  # this should be redundant now
-    #    return
-
     def level_up(self, exp_award, monster_gold):
         # *****************
         self.gold += monster_gold
@@ -1001,7 +1009,7 @@ class Player:
             sleep(2)
             print(f"You are now level {self.level}.")
             sleep(2)
-            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
+            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\dungeon_theme_2.wav',
                                winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
             self.calculate_proficiency_bonus()  # according to DnD 5e
             gain_hit_points = dice_roll(1, self.hit_dice) + self.constitution_modifier
@@ -1196,7 +1204,7 @@ class Player:
             return True  # player IS dead
 
     def poison_attack(self, monster_name, monster_dot_multiplier):
-        challenge_rating = self.constitution
+        difficulty_class = (self.constitution + self.constitution_modifier)
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"The {monster_name} hisses in evil glee..")
         print(f"Attack roll---> {roll_d20}")
@@ -1210,7 +1218,7 @@ class Player:
             return False
         else:
             print(f"Your Constitution: {self.constitution}\nYour Constitution Modifier: {self.constitution_modifier}\n")
-            if roll_d20 == 20 or roll_d20 >= challenge_rating:  # self.constitution + self.constitution_modifier:
+            if roll_d20 == 20 or roll_d20 >= difficulty_class:  # self.constitution + self.constitution_modifier:
                 # return True
                 # self.hud()
                 self.dot_multiplier = monster_dot_multiplier
@@ -1237,9 +1245,9 @@ class Player:
                 return False
 
     def necrotic_attack(self, monster_name, monster_dot_multiplier):
-        challenge_rating = self.constitution + self.constitution_modifier
+        difficulty_class = self.constitution + self.constitution_modifier
         roll_d20 = dice_roll(1, 20)  # attack roll
-        print(f"The {monster_name} harnesses its innate understanding of quantum natures..")
+        print(f"The {monster_name} attempts to harness its innate understanding of quantum necrosis..")
         print(f"Attack roll---> {roll_d20}")
         sleep(1)
         if roll_d20 == 1:
@@ -1250,7 +1258,7 @@ class Player:
             return False
         else:
             print(f"Your Constitution: {self.constitution}\nYour Constitution Modifier: {self.constitution_modifier}\n")
-            if roll_d20 == 20 or roll_d20 >= challenge_rating:  # self.constitution + self.constitution_modifier:
+            if roll_d20 == 20 or roll_d20 >= difficulty_class:  # self.constitution + self.constitution_modifier:
                 self.dot_multiplier = monster_dot_multiplier
                 # self.hud()
                 rndm_necrotic_phrases = ["You feel morbid dread and withering overcoming you..",
@@ -1399,7 +1407,7 @@ class Player:
         while True:
             self.hud()
             if self.potions_of_healing == 0 and self.town_portals == 0 and \
-               self.potions_of_strength == 0 and self.elixirs == 0:
+                    self.potions_of_strength == 0 and self.elixirs == 0:
                 print(f"You have no quantum items to sell..")
                 pause()
                 return
@@ -1412,7 +1420,7 @@ class Player:
             type_to_sell = input(f"Pick item to sell by number, or go (B)ack: ").lower()
             if type_to_sell == 'b':
                 return
-            #elif sell_or_not == 's':
+            # elif sell_or_not == 's':
             #    type_to_sell = input(f"Enter the category of item you wish to sell: ")
 
             elif type_to_sell == '1':
@@ -1521,7 +1529,7 @@ class Player:
                 print(value + 1, ':', key)
             print(f"Your gold: {self.gold} GP")
             buy_or_exit = input("Pick item type by number, Display your (I)nventory, or go (B)ack: ").lower()
-            #if buy_or_exit not in ('i', 'p', 'b'):
+            # if buy_or_exit not in ('i', 'p', 'b'):
             #    self.hud()
             #    continue
             if buy_or_exit == 'i':
@@ -1533,7 +1541,7 @@ class Player:
             elif buy_or_exit not in ('i', 'b'):
                 try:
                     item_type_index_to_buy = int(buy_or_exit)
-                    #item_type_index_to_buy = int(input(f"Enter the category of the item to buy by number: "))
+                    # item_type_index_to_buy = int(input(f"Enter the category of the item to buy by number: "))
                     item_type_to_buy = item_type_lst[item_type_index_to_buy - 1]
                 except (IndexError, ValueError):
                     print("Invalid entry..")
@@ -1550,7 +1558,7 @@ class Player:
                         print(value + 1, ':', key)
                     print(f"Your gold: {self.gold} GP")
                     buy_or_exit = input("Pick item by number, Display your (I)nventory, or go (B)ack: ").lower()
-                    #if buy_or_exit not in ('i', 'p', 'b'):
+                    # if buy_or_exit not in ('i', 'p', 'b'):
                     #    self.hud()
                     #    continue
                     if buy_or_exit == 'i':
@@ -1561,7 +1569,7 @@ class Player:
                     elif buy_or_exit not in ('i', 'b'):
                         try:
                             item_index_to_buy = int(buy_or_exit)
-                            #item_index_to_buy = int(
+                            # item_index_to_buy = int(
                             #    input(f"Enter the number of the item you wish to consider for purchase: "))
                             item_index_to_buy -= 1  # again, indexing starts at 0 and is awkward
                             sale_item = (chemist_dict[item_type_to_buy])[item_index_to_buy]
@@ -1696,7 +1704,7 @@ class Player:
                 print(value + 1, ':', key)
             print(f"Your gold: {self.gold} GP")
             buy_or_exit = input("Pick item type by number, Display your (I)nventory, or go (B)ack: ").lower()
-            #if buy_or_exit not in ('i', 'p', 'b'):
+            # if buy_or_exit not in ('i', 'p', 'b'):
             #    self.hud()
             #    continue
             if buy_or_exit == 'i':
@@ -1707,7 +1715,7 @@ class Player:
             elif buy_or_exit not in ('i', 'b'):
                 try:
                     item_type_index_to_buy = int(buy_or_exit)
-                    #item_type_index_to_buy = int(input(f"Enter the number of the category of the item to buy: "))
+                    # item_type_index_to_buy = int(input(f"Enter the number of the category of the item to buy: "))
                     item_type_to_buy = item_type_lst[item_type_index_to_buy - 1]
                 except (IndexError, ValueError):
                     print("Invalid entry..")
@@ -1724,7 +1732,7 @@ class Player:
                         print(value + 1, ':', key)
                     print(f"Your gold: {self.gold} GP")
                     buy_or_exit = input("Pick item by number, Display your (I)nventory, or go (B)ack: ").lower()
-                    #if buy_or_exit not in ('i', 'p', 'b'):
+                    # if buy_or_exit not in ('i', 'p', 'b'):
                     #    self.hud()
                     #    continue
                     if buy_or_exit == 'i':
@@ -1735,7 +1743,7 @@ class Player:
                     elif buy_or_exit not in ('i', 'b'):
                         try:
                             item_index_to_buy = int(buy_or_exit)
-                            #item_index_to_buy = int(
+                            # item_index_to_buy = int(
                             #    input(f"Enter the number of the item you wish to consider for purchase: "))
                             item_index_to_buy -= 1  # again, indexing starts at 0 and is awkward
                             sale_item = (blacksmith_dict[item_type_to_buy])[item_index_to_buy]
@@ -2085,6 +2093,14 @@ class Player:
                 self.necrotic = False
                 self.necrotic_turns = 0
                 print(f"The foul corruption leaves your body..")
+                sleep(1)
+                if self.hit_points < self.maximum_hit_points:
+                    self.hit_points = self.hit_points + math.ceil(self.maximum_hit_points * .25)
+                    if self.hit_points > self.maximum_hit_points:
+                        self.hit_points = self.maximum_hit_points
+                    # self.hud()
+                    print(f"Your wounds feel slightly better..")
+                    sleep(1)
                 pause()
                 return
 
@@ -2106,9 +2122,6 @@ class Player:
                 self.hud()
                 print(f"Your vitality increases.")
                 sleep(1)
-
-                # print(f"You now have {self.hit_points} hit points.")
-                # (pack[sub_item_type]).remove(sub_item)
                 pause()
                 return
         else:
@@ -2133,8 +2146,9 @@ class Player:
             return False
 
     def item_type_inventory(self, item_type):  # list items in inventory by type
+
         if item_type != 'Town Portal Implements' and item_type != 'Elixirs' \
-                and item_type != 'Potions of Strength' and item_type != 'Healing':
+                and item_type != 'Potions of Strength' and item_type != 'Healing':  # if item not in belt inventory
             print(f"Your {item_type}:")
             self.pack[item_type].sort(key=lambda x: x.name)
             stuff_dict = Counter(item.name for item in self.pack[item_type])
@@ -2183,9 +2197,9 @@ class Player:
 
     def inventory(self):
         self.hud()
-
         print(
-            f"You are wielding: \nA {self.wielded_weapon.name}. Damage bonus: {self.wielded_weapon.damage_bonus}. To hit: {self.wielded_weapon.to_hit_bonus}.")
+            f"You are wielding: \nA {self.wielded_weapon.name}. Damage bonus: {self.wielded_weapon.damage_bonus}. "
+            f"To hit: {self.wielded_weapon.to_hit_bonus}.")
         if self.shield.name != 'No Shield':
             print(f"A {self.shield.name}. Armor class: {self.shield.ac}")
         print(
@@ -2195,28 +2209,26 @@ class Player:
             print(f"A Ring of Regeneration + {self.ring_of_reg.regenerate}")
         if self.ring_of_prot.name != 'No Ring':
             print(f"A Ring of Protection + {self.ring_of_prot.protect} ")
-        if self.town_portals or self.potions_of_healing or self.potions_of_strength > 0:
-            print(f"On your belt, you are carrying:")
+        print(f"On your belt, you are carrying:")
+        print(f"A coil of rope")
+        if self.town_portals > 0 or self.potions_of_healing > 0 or self.potions_of_strength > 0 or self.elixirs > 0:
             print(f"{self.potions_of_strength} Potions of Strength")
             print(f"{self.potions_of_healing} Potions of Healing")
             print(f"{self.town_portals} Town Portal Scrolls")
             print(f"{self.elixirs} Clarifying Elixirs")
-        item_type_lst = ['Weapons', 'Armor', 'Shields', 'Boots', 'Cloaks']
 
+        item_type_lst = ['Weapons', 'Armor', 'Shields', 'Boots', 'Cloaks']
         print(f"Your dungeoneer's pack contains:")
         current_items = []
         for each_item in item_type_lst:
-            is_item_on_list = len(self.pack[each_item])
-            # is_item_on_list = self.item_type_inventory(each_item)  # item_type_inv function returns True or False
-            # print(is_item_on_list)  # True or False for testing
-            if is_item_on_list > 0:
+            if len(self.pack[each_item]) > 0:
                 current_items.append(each_item)
                 self.item_type_inventory(each_item)  # call the item_type_inventory for each item in inv.
                 # print(current_items)  # for testing
         if not len(current_items):
             print(f"Nothing but cobwebs..")
             pause()
-            return False  # need this False for when called from..?
+            return  # False  # don't know if this false is needed..
         else:
             pause()
             return
@@ -2583,17 +2595,13 @@ class Player:
                         pause()
                         continue
                     elif found_item.item_type == 'Elixirs':
-                        print(f"You see an {found_item.name} !")
+                        print(f"You see a {found_item.name}!")
                         sleep(.5)
                         print(f"You snarf it..")
                         self.elixirs += 1
                         pause()
                         continue
-                    '''                    else:
-                        print(f"You already have a {found_item.name} of equal or greater value.."
-                              f"(remove this statement after testing.)")  # remove after tesing
-                        pause()  # remove this pause after testing
-                        continue'''
+
                 else:
                     print(f"Minimum requirements not met for {found_item.name}.")  # remove after testing
                     pause()  # remove after testing
@@ -2622,6 +2630,7 @@ class Player:
         sleep(1.5)
         print(f"You have gained unnatural {random_attribute}!")
         ability_dict[random_attribute] += 1
+        self.calculate_modifiers()
         pause()
 
     def increase_lowest_ability(self):
@@ -2637,9 +2646,14 @@ class Player:
         print(f"You have gained {min_attribute}!")
         # Add one to min attribute
         ability_dict[min_attribute] += 1
+        self.calculate_modifiers()
         pause()
 
     def throne_event(self):
+        rndm_occurrence_lst = [nothing_happens, king_returns, self.increase_random_ability, self.teleporter_event,
+                               nothing_happens, king_returns, self.increase_lowest_ability, self.lose_items,
+                               king_returns, nothing_happens, self.heal_event, king_returns]
+        rndm_occurrence = random.choice(rndm_occurrence_lst)
         rndm_throne_descriptions = ['There is a magnificent, gem-encrusted throne of gold here. Throughout its\n'
                                     'shimmering surface are countless runes and symbols.',
                                     'In the center of the room stands a majestic throne encrusted with many\n'
@@ -2648,20 +2662,67 @@ class Player:
                                     'runes stands here.']
         rndm_throne_description = random.choice(rndm_throne_descriptions)
         print(f"{rndm_throne_description}")
-        sit = input(f"Do you wish to sit? ")
-        if sit == 'y':
+        print(f"It was undoubtedly stolen from an ancient kingdom.")
+        throne_action = input(f"(P)ry gems, attempt to (R)ead the Runes, (S)it on the throne or (I)gnore: ")
+        if throne_action == 's':
             print(f"You sit on the throne...")
-            self.regenerate()  # testing
-            return "King Boss"
+            sleep(1.5)
+            # self.regenerate()  # testing
+            return rndm_occurrence()
+            # return "King Boss"
+        elif throne_action == 'p':
+            difficulty_class = 12
+            pry_roll = dice_roll(1, 20)
+            if pry_roll > difficulty_class:
+                gem_value = (random.randint(1, 5) * self.dungeon.level)
+                print(f"They pop out into your greedy hands!")
+                sleep(1.5)
+                print(f"They are worth {gem_value} GP!")
+                self.gold += gem_value
+                pause()
+                return
+            else:
+                return king_returns()
+        elif throne_action == 'r':
+            difficulty_class = 15
+            read_roll = dice_roll(1, 20)
+            if read_roll + self.wisdom_modifier > difficulty_class:
+                print(f"You recognize the ancient language!")
+                sleep(1)
+                translate = input(f"Do you want to attempt to translate it into the common tongue? (y/n): ")
+                if translate == 'y':
+                    difficulty_class = 11
+                    translate_roll = dice_roll(1, 20)
+                    if translate_roll + self.intelligence_modifier > difficulty_class:
+                        rndm_ancient_wisdom = ["Do not withhold good from those to whom you should give it\n"
+                                               "If it is within your power to help.", "Do not plot harm against your "
+                                                                                      "neighbor when he lives in a sense of security with you.",
+                                               "The wise will inherit honor, but the stupid ones glorify "
+                                               "dishonor.", "Do not enter the path of the wicked, and do not walk in "
+                                                            "the way of evil men.\nShun it, do not take it; "
+                                                            "Turn away from it, and pass it by.",
+                                               "The way of the wicked is like "
+                                               "the darkness;\nThey do not know what makes them stumble.",
+                                               "Above all the things that you guard, safeguard your heart, "
+                                               "For out of it are the sources of life.", "Drink water from your own "
+                                                                                         "cistern\nAnd flowing water from your own well."]
+                        rndm_wisdom = random.choice(rndm_ancient_wisdom)
+                        print(f"The literal translation is, '{rndm_wisdom}...'")
+                        pause()
+                        return self.increase_random_ability()
+                    else:
+                        return king_returns()
+                else:
+                    return
+            else:
+                return king_returns()
         else:
-            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
-                               winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-            print("You don't sit...wonder what may have happened.")
+
             return
 
     def heal_event(self):
-        heal = ((3 * self.dungeon.level) + 1)  # math right out of telengard!
-        self.hit_points += heal
+        # healing event called from fountain
+        hit_point_overage = ((6 * self.dungeon.level) + 1)
         print(f"You feel vitality bubbling up within you...")
         sleep(1.5)
         if self.poisoned or self.necrotic:
@@ -2674,10 +2735,12 @@ class Player:
             print(f"The foul corruption leaves your body..")
             sleep(1)
         if self.hit_points < self.maximum_hit_points:
-            print(f"You feel refreshing strength return.")
+            print(f"You feel restorative powers welling up within you..")
             sleep(1)
+            self.hit_points = self.maximum_hit_points
         else:
             print(f"Your hit points have been unnaturally raised to {self.hit_points}!")
+            self.hit_points += hit_point_overage
             sleep(1)
             print(f"You wonder how long this advantage will last..")
             sleep(1)
@@ -2740,18 +2803,18 @@ class Player:
         # drunk
         # lose items
         # increase num of spells Magic power SURGES through your body
-        water_colors = ['white', 'green', 'crystal clear', 'red', 'black']
+        water_colors = ['white', 'green', 'bright green ', 'crystal clear',
+                        'deep red', 'red', 'black', 'pitch black']
         water_color = random.choice(water_colors)
-        print(f"A fountain with flowing {water_color} water is here.")
+        print(f"A fountain flowing with {water_color} water is here.")
         sleep(1)
         print(f"The tranquil sound eases your mind.")
         sleep(1)
         drink = input(f"Do you wish to drink? ")
         if drink == 'y':
-            rndm_occurrence_lst = [self.poison, self.increase_random_ability, self.teleporter_event,
-                                   self.increase_lowest_ability,
+            rndm_occurrence_lst = [nothing_happens, self.poison, self.increase_random_ability,
                                    self.lose_items,
-                                   self.heal_event]
+                                   self.heal_event, nothing_happens]
             rndm_occurrence = random.choice(rndm_occurrence_lst)
             rndm_occurrence()
         else:
@@ -2779,12 +2842,13 @@ class Player:
         sleep(1.5)
         print(f"You see a pit..")
         sleep(1.5)
-        pit_challenge_rating = 10
+        pit_difficulty_class = 10
         pit_outcome = dice_roll(1, 20)
-        if (pit_outcome + self.dexterity_modifier + self.intelligence_modifier) > pit_challenge_rating:
+        if (pit_outcome + self.dexterity_modifier + self.intelligence_modifier) > pit_difficulty_class:
             descend_or_not = input(f"Do you wish to descend (y/n)?: ")
             if descend_or_not == 'y':
-                print(f"Carefully and craftily, you repel down the slick, treacherous pit walls.")
+                print(f"Retrieving the rope from your belt, you carefully and craftily repel down the slick, "
+                      f"treacherous pit walls.")
                 self.dungeon_key += 1
                 self.dungeon = dungeon_dict[self.dungeon_key]
                 (self.x, self.y) = self.dungeon.pit_landing

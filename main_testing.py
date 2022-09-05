@@ -56,6 +56,11 @@ def gong():
                        winsound.SND_ASYNC)
 
 
+def blacksmith_theme():
+    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\blacksmith_theme_2.wav',
+                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+
+
 def mountain_king_theme():
     winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\mountain_king.wav',
                        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
@@ -63,12 +68,12 @@ def mountain_king_theme():
 
 def dungeon_theme():
     winsound.PlaySound(
-        'C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
+        'C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\dungeon_theme_2.wav',
         winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
 def town_theme():
-    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_theme.wav',
+    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_theme_2.wav',
                        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
@@ -196,7 +201,9 @@ while True:
         elif town_functions == 'b':
             print("You visit the blacksmith..")
             sleep(1.5)
+            blacksmith_theme()
             player_1.blacksmith_main()
+            town_theme()
         elif town_functions == 'c':
             print("You make your way to the chemist manipulator.")
             time.sleep(1.5)
@@ -219,12 +226,12 @@ while True:
                 #    player_is_dead = True
                 # continue
                 if player_is_dead:
-                    winsound.PlaySound(None, winsound.SND_ASYNC)
+                    # winsound.PlaySound(None, winsound.SND_ASYNC)
                     cls()
                     # player_1.hud()
                     gong()
                     print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
-                    time.sleep(3)
+                    time.sleep(4)
                     in_proximity_to_monster = False
                     in_dungeon = False
                     in_town = False
@@ -280,7 +287,7 @@ while True:
                         continue
                 elif dungeon_command == 'g':
                     player_1.drink_potion_of_strength()
-                    player_1.potion_of_strength_uses = 0
+                    #player_1.potion_of_strength_uses = 0
                     # continue
                 elif dungeon_command == 'q':
                     print("Quit game..")
@@ -389,7 +396,7 @@ while True:
                             monster = monster_cls()
                             print(f"The {monster.name} king returns!")
                             gong()
-                            sleep(3)
+                            sleep(4)
                             mountain_king_theme()
                             pause()
                             player_1.hud()
@@ -537,12 +544,11 @@ while True:
                                 if encounter > 20:  # if you kill the boss, you get extra loot
                                     gong()
                                     print(f"You have vanquished the mighty enemy! You are victorious!")
-                                    sleep(3)
-
+                                    sleep(4)
+                                    dungeon_theme()
                                 else:
                                     print(f"It died..")
                                 pause()
-
                                 player_1.regenerate()
                                 player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
                                 player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation

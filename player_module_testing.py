@@ -457,7 +457,7 @@ class Healing:
 
 class Elixir:
     def __init__(self):
-        self.name = "Elixir"
+        self.name = "Clarifying Elixir"
         self.item_type = "Elixirs"
         self.uses = 0
         self.buy_price = 50
@@ -1091,7 +1091,7 @@ class Player:
                     print(f"He steals a {stolen_item.name}")  # from your {item_type}")
                     pause()
                     return True  # True means monster gets away clean
-
+            # if pack is empty, the thief moves to the belt.
             # Belt inventory is handled differently. This is clunky but should work.
             # belt inventory logic:
             elif self.potions_of_strength > 0 or self.potions_of_healing > 0 or self.town_portals > 0 or self.elixirs > 0:
@@ -1398,7 +1398,8 @@ class Player:
 
         while True:
             self.hud()
-            if self.potions_of_healing == 0 and self.town_portals == 0 and self.potions_of_strength == 0:
+            if self.potions_of_healing == 0 and self.town_portals == 0 and \
+               self.potions_of_strength == 0 and self.elixirs == 0:
                 print(f"You have no quantum items to sell..")
                 pause()
                 return
@@ -1408,96 +1409,96 @@ class Player:
             print(f"3: Potions of Strength - Quantity: {self.potions_of_strength}")
             print(f"4: Clarifying Elixirs - Quantity: {self.elixirs}")
             print(f"Your gold: {self.gold} GP")
-            sell_or_not = input(f"(S)ell items or go (B)ack: ").lower()
-            if sell_or_not == 'b':
+            type_to_sell = input(f"Pick item to sell by number, or go (B)ack: ").lower()
+            if type_to_sell == 'b':
                 return
-            elif sell_or_not == 's':
-                type_to_sell = input(f"Enter the category of item you wish to sell: ")
+            #elif sell_or_not == 's':
+            #    type_to_sell = input(f"Enter the category of item you wish to sell: ")
 
-                if type_to_sell == '1':
-                    your_item = "potions"
-                    if self.potions_of_healing < 1:
-                        print(f"You don't have any {your_item}..")
-                        sleep(1)
-                        continue
+            elif type_to_sell == '1':
+                your_item = "potions"
+                if self.potions_of_healing < 1:
+                    print(f"You don't have any {your_item}..")
+                    sleep(1)
+                    continue
 
-                elif type_to_sell == '2':
-                    your_item = "scrolls of town portal"
-                    if self.town_portals < 1:
-                        print(f"You don't have any {your_item}..")
+            elif type_to_sell == '2':
+                your_item = "scrolls of town portal"
+                if self.town_portals < 1:
+                    print(f"You don't have any {your_item}..")
+                    sleep(1)
+                    continue
+            elif type_to_sell == '3':
+                your_item = "potions of strength"
+                if self.potions_of_strength < 1:
+                    print(f"You don't have any {your_item}..")
+                    sleep(1)
+                    continue
+            elif type_to_sell == '4':
+                your_item = "clarifying elixirs"
+                if self.elixirs < 1:
+                    print(f"You don't have any {your_item}..")
+                    sleep(1)
+                    continue
+            else:
+                print(f"Invalid..")
+                continue
+
+            try:
+                number_of_items_to_sell = int(input(f"Enter number of {your_item} to sell: "))
+                if type_to_sell == '1' and number_of_items_to_sell > 0:
+                    if self.potions_of_healing >= number_of_items_to_sell:
+                        self.potions_of_healing -= number_of_items_to_sell
+                        gold_recieved = (healing_potion.sell_price * number_of_items_to_sell)
+                        self.gold += gold_recieved
+                        print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
+                        pause()
+                        continue
+                    else:
+                        print(f"Invalid.")
                         sleep(1)
                         continue
-                elif type_to_sell == '3':
-                    your_item = "potions of strength"
-                    if self.potions_of_strength < 1:
-                        print(f"You don't have any {your_item}..")
+                elif type_to_sell == '2' and number_of_items_to_sell > 0:
+                    if self.town_portals >= number_of_items_to_sell:
+                        self.town_portals -= number_of_items_to_sell
+                        gold_recieved = (scroll_of_town_portal.sell_price * number_of_items_to_sell)
+                        self.gold += gold_recieved
+                        print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
+                        pause()
+                        continue
+                    else:
+                        print(f"Invalid.")
                         sleep(1)
                         continue
-                elif type_to_sell == '4':
-                    your_item = "clarifying elixirs"
-                    if self.elixirs < 1:
-                        print(f"You don't have any {your_item}..")
+                elif type_to_sell == '3' and number_of_items_to_sell > 0:
+                    if self.potions_of_strength >= number_of_items_to_sell:
+                        self.potions_of_strength -= number_of_items_to_sell
+                        gold_recieved = (strength_potion.sell_price * number_of_items_to_sell)
+                        self.gold += gold_recieved
+                        print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
+                        pause()
+                        continue
+                    else:
+                        print(f"Invalid.")
+                        sleep(1)
+                        continue
+                elif type_to_sell == '4' and number_of_items_to_sell > 0:
+                    if self.elixirs >= number_of_items_to_sell:
+                        self.elixirs -= number_of_items_to_sell
+                        gold_recieved = (elixir.sell_price * number_of_items_to_sell)
+                        self.gold += gold_recieved
+                        print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
+                        pause()
+                        continue
+                    else:
+                        print(f"Invalid.")
                         sleep(1)
                         continue
                 else:
-                    print(f"Invalid..")
-                    continue
-
-                try:
-                    number_of_items_to_sell = int(input(f"Enter number of {your_item} to sell: "))
-                    if type_to_sell == '1' and number_of_items_to_sell > 0:
-                        if self.potions_of_healing >= number_of_items_to_sell:
-                            self.potions_of_healing -= number_of_items_to_sell
-                            gold_recieved = (healing_potion.sell_price * number_of_items_to_sell)
-                            self.gold += gold_recieved
-                            print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
-                            pause()
-                            continue
-                        else:
-                            print(f"Invalid.")
-                            sleep(1)
-                            continue
-                    elif type_to_sell == '2' and number_of_items_to_sell > 0:
-                        if self.town_portals >= number_of_items_to_sell:
-                            self.town_portals -= number_of_items_to_sell
-                            gold_recieved = (scroll_of_town_portal.sell_price * number_of_items_to_sell)
-                            self.gold += gold_recieved
-                            print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
-                            pause()
-                            continue
-                        else:
-                            print(f"Invalid.")
-                            sleep(1)
-                            continue
-                    elif type_to_sell == '3' and number_of_items_to_sell > 0:
-                        if self.potions_of_strength >= number_of_items_to_sell:
-                            self.potions_of_strength -= number_of_items_to_sell
-                            gold_recieved = (strength_potion.sell_price * number_of_items_to_sell)
-                            self.gold += gold_recieved
-                            print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
-                            pause()
-                            continue
-                        else:
-                            print(f"Invalid.")
-                            sleep(1)
-                            continue
-                    elif type_to_sell == '4' and number_of_items_to_sell > 0:
-                        if self.elixirs >= number_of_items_to_sell:
-                            self.elixirs -= number_of_items_to_sell
-                            gold_recieved = (elixir.sell_price * number_of_items_to_sell)
-                            self.gold += gold_recieved
-                            print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
-                            pause()
-                            continue
-                        else:
-                            print(f"Invalid.")
-                            sleep(1)
-                            continue
-                    else:
-                        print(f"Invalid entry..")
-                except ValueError:
-                    print("Invalid input")
-                    continue
+                    print(f"Invalid entry..")
+            except ValueError:
+                print("Invalid input")
+                continue
 
     def buy_chemist_items(self):
 
@@ -1519,19 +1520,20 @@ class Player:
             for key, value in item_type_dict.items():
                 print(value + 1, ':', key)
             print(f"Your gold: {self.gold} GP")
-            buy_or_exit = input("Display your (I)nventory, (P)ick item type, or go (B)ack: ").lower()
-            if buy_or_exit not in ('i', 'p', 'b'):
-                self.hud()
-                continue
-            elif buy_or_exit == 'i':
+            buy_or_exit = input("Pick item type by number, Display your (I)nventory, or go (B)ack: ").lower()
+            #if buy_or_exit not in ('i', 'p', 'b'):
+            #    self.hud()
+            #    continue
+            if buy_or_exit == 'i':
                 self.inventory()
                 continue
             elif buy_or_exit == 'b':
                 return
                 # break
-            elif buy_or_exit == 'p':
+            elif buy_or_exit not in ('i', 'b'):
                 try:
-                    item_type_index_to_buy = int(input(f"Enter the category of the item to buy by number: "))
+                    item_type_index_to_buy = int(buy_or_exit)
+                    #item_type_index_to_buy = int(input(f"Enter the category of the item to buy by number: "))
                     item_type_to_buy = item_type_lst[item_type_index_to_buy - 1]
                 except (IndexError, ValueError):
                     print("Invalid entry..")
@@ -1547,21 +1549,23 @@ class Player:
                     for key, value in item_dict.items():
                         print(value + 1, ':', key)
                     print(f"Your gold: {self.gold} GP")
-                    buy_or_exit = input("Display your (I)nventory, (P)ick item by number, or go (B)ack: ").lower()
-                    if buy_or_exit not in ('i', 'p', 'b'):
-                        self.hud()
-                        continue
-                    elif buy_or_exit == 'i':
+                    buy_or_exit = input("Pick item by number, Display your (I)nventory, or go (B)ack: ").lower()
+                    #if buy_or_exit not in ('i', 'p', 'b'):
+                    #    self.hud()
+                    #    continue
+                    if buy_or_exit == 'i':
                         self.inventory()
                         continue
                     elif buy_or_exit == 'b':
                         break
-                    elif buy_or_exit == 'p':
+                    elif buy_or_exit not in ('i', 'b'):
                         try:
-                            item_index_to_buy = int(
-                                input(f"Enter the number of the item you wish to consider for purchase: "))
+                            item_index_to_buy = int(buy_or_exit)
+                            #item_index_to_buy = int(
+                            #    input(f"Enter the number of the item you wish to consider for purchase: "))
                             item_index_to_buy -= 1  # again, indexing starts at 0 and is awkward
                             sale_item = (chemist_dict[item_type_to_buy])[item_index_to_buy]
+
                         except (IndexError, ValueError):
                             print("Invalid entry..")
                             sleep(1)
@@ -1587,7 +1591,7 @@ class Player:
                                         self.potions_of_strength += number_of_items
                                     elif sale_item.name == 'Potion of Healing':
                                         self.potions_of_healing += number_of_items
-                                    elif sale_item.name == 'Elixir':
+                                    elif sale_item.name == 'Clarifying Elixir':
                                         self.elixirs += number_of_items
                                     self.hud()
                                     print(f"You buy {number_of_items} {sale_item.name}s")
@@ -1691,18 +1695,19 @@ class Player:
             for key, value in item_type_dict.items():
                 print(value + 1, ':', key)
             print(f"Your gold: {self.gold} GP")
-            buy_or_exit = input("Display your (I)nventory, (P)ick item type, or go (B)ack: ").lower()
-            if buy_or_exit not in ('i', 'p', 'b'):
-                self.hud()
-                continue
-            elif buy_or_exit == 'i':
+            buy_or_exit = input("Pick item type by number, Display your (I)nventory, or go (B)ack: ").lower()
+            #if buy_or_exit not in ('i', 'p', 'b'):
+            #    self.hud()
+            #    continue
+            if buy_or_exit == 'i':
                 self.inventory()
                 continue
             elif buy_or_exit == 'b':
                 return
-            elif buy_or_exit == 'p':
+            elif buy_or_exit not in ('i', 'b'):
                 try:
-                    item_type_index_to_buy = int(input(f"Enter the number of the category of the item to buy: "))
+                    item_type_index_to_buy = int(buy_or_exit)
+                    #item_type_index_to_buy = int(input(f"Enter the number of the category of the item to buy: "))
                     item_type_to_buy = item_type_lst[item_type_index_to_buy - 1]
                 except (IndexError, ValueError):
                     print("Invalid entry..")
@@ -1718,19 +1723,20 @@ class Player:
                     for key, value in item_dict.items():
                         print(value + 1, ':', key)
                     print(f"Your gold: {self.gold} GP")
-                    buy_or_exit = input("Display your (I)nventory, (P)ick item by number, or go (B)ack: ").lower()
-                    if buy_or_exit not in ('i', 'p', 'b'):
-                        self.hud()
-                        continue
-                    elif buy_or_exit == 'i':
+                    buy_or_exit = input("Pick item by number, Display your (I)nventory, or go (B)ack: ").lower()
+                    #if buy_or_exit not in ('i', 'p', 'b'):
+                    #    self.hud()
+                    #    continue
+                    if buy_or_exit == 'i':
                         self.inventory()
                         continue
                     elif buy_or_exit == 'b':
                         break
-                    elif buy_or_exit == 'p':
+                    elif buy_or_exit not in ('i', 'b'):
                         try:
-                            item_index_to_buy = int(
-                                input(f"Enter the number of the item you wish to consider for purchase: "))
+                            item_index_to_buy = int(buy_or_exit)
+                            #item_index_to_buy = int(
+                            #    input(f"Enter the number of the item you wish to consider for purchase: "))
                             item_index_to_buy -= 1  # again, indexing starts at 0 and is awkward
                             sale_item = (blacksmith_dict[item_type_to_buy])[item_index_to_buy]
                         except (IndexError, ValueError):

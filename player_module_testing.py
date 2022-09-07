@@ -685,6 +685,7 @@ class Player:
         self.current_dungeon_level = 1
         self.dungeon_key = 1
         self.dungeon = dungeon_dict[self.dungeon_key]
+        self.discovered_interactives = []
         self.position = 0
         self.x = 0
         self.y = 0
@@ -718,7 +719,8 @@ class Player:
         os.system('cls')
         print(f"                                                                            Name: {self.name}")
         print(f"                                                                            Level: {self.level}")
-        print(f"                                                                            Experience: {self.experience}")
+        print(
+            f"                                                                            Experience: {self.experience}")
         print(f"                                                                            Gold: {self.gold}")
         print(
             f"                                                                            Weapon: {self.wielded_weapon.name} + {self.wielded_weapon.damage_bonus}")
@@ -746,8 +748,9 @@ class Player:
 
         print(
             f"                                                                            Charisma: {self.charisma} (Modifier: {self.charisma_modifier})")
-        print(f"                                                                            Hit points: {self.hit_points}/"
-              f"{self.maximum_hit_points}")
+        print(
+            f"                                                                            Hit points: {self.hit_points}/"
+            f"{self.maximum_hit_points}")
 
         print(
             f"                                                                            Cloak: {self.cloak.name} (Stealth: {self.stealth})")
@@ -2663,10 +2666,12 @@ class Player:
         pause()
 
     def throne_event(self):
+        throne_discovery = f"level {self.dungeon.level} throne"
         rndm_occurrence_lst = [nothing_happens, king_returns, self.increase_random_ability, self.teleporter_event,
                                nothing_happens, king_returns, self.increase_lowest_ability, self.lose_items,
                                king_returns, nothing_happens, self.heal_event, king_returns]
         rndm_occurrence = random.choice(rndm_occurrence_lst)
+
         rndm_throne_descriptions = ['There is a magnificent, gem-encrusted throne of gold here. Throughout its\n'
                                     'shimmering surface are countless runes and symbols.',
                                     'In the center of the room stands a majestic throne encrusted with many\n'
@@ -2676,61 +2681,69 @@ class Player:
         rndm_throne_description = random.choice(rndm_throne_descriptions)
         print(f"{rndm_throne_description}")
         print(f"It was undoubtedly stolen from an ancient kingdom.")
-        throne_action = input(f"(P)ry gems, attempt to (R)ead the Runes, (S)it on the throne or (I)gnore: ").lower()
-        if throne_action == 's':
-            print(f"You sit on the throne...")
-            sleep(1.5)
-            # self.regenerate()  # testing
-            return rndm_occurrence()
-            # return "King Boss"
-        elif throne_action == 'p':
-            difficulty_class = 12
-            pry_roll = dice_roll(1, 20)
-            if pry_roll > difficulty_class:
-                gem_value = (random.randint(1, 5) * self.dungeon.level)
-                print(f"They pop out into your greedy hands!")
-                sleep(1.5)
-                print(f"They are worth {gem_value} GP!")
-                self.gold += gem_value
-                pause()
-                return
-            else:
-                return king_returns()
-        elif throne_action == 'r':
-            difficulty_class = 15
-            read_roll = dice_roll(1, 20)
-            if read_roll + self.wisdom_modifier > difficulty_class:  # wisdom to recognize language
-                print(f"You recognize the ancient language!")
-                sleep(1)
-                translate = input(f"Do you want to attempt to translate it into the common tongue? (y/n): ").lower()
-                if translate == 'y':
-                    difficulty_class = 8
-                    translate_roll = dice_roll(1, 20)
-                    if translate_roll + self.intelligence_modifier > difficulty_class:  # intelligence to translate
-                        rndm_ancient_wisdom = ["Do not withhold good from those to whom you should give it\n"
-                                               "If it is within your power to help.", "Do not plot harm against your "
-                                                                                      "neighbor when he lives in a sense of security with you.",
-                                               "The wise will inherit honor, but the stupid ones glorify "
-                                               "dishonor.", "Do not enter the path of the wicked, and do not walk in "
-                                                            "the way of evil men.\nShun it, do not take it; "
-                                                            "Turn away from it, and pass it by.",
-                                               "The way of the wicked is like "
-                                               "the darkness;\nThey do not know what makes them stumble.",
-                                               "Above all the things that you guard, safeguard your heart, "
-                                               "For out of it are the sources of life.", "Drink water from your own "
-                                                                                         "cistern\nAnd flowing water from your own well."]
-                        rndm_wisdom = random.choice(rndm_ancient_wisdom)
-                        print(f"The literal translation is, '{rndm_wisdom}...'")
-                        pause()
-                        return self.increase_random_ability()
-                    else:
-                        return king_returns()
-                else:
-                    return
-            else:
-                return king_returns()
-        else:
+        pause()
 
+        if throne_discovery not in self.discovered_interactives:
+            throne_action = input(f"(P)ry gems, attempt to (R)ead the Runes, (S)it on the throne or (I)gnore: ").lower()
+            if throne_action == 's':
+                print(f"You sit on the throne...")
+                # self.discovered_interactives.append(throne_discovery)
+                sleep(1.5)
+                # self.regenerate()  # testing
+                return rndm_occurrence()
+                # return "King Boss"
+            elif throne_action == 'p':
+                difficulty_class = 12
+                pry_roll = dice_roll(1, 20)
+                if pry_roll > difficulty_class:
+                    gem_value = (random.randint(1, 5) * self.dungeon.level)
+                    print(f"They pop out into your greedy hands!")
+                    sleep(1.5)
+                    print(f"They are worth {gem_value} GP!")
+                    self.gold += gem_value
+                    pause()
+                    return
+                else:
+                    return king_returns()
+            elif throne_action == 'r':
+                difficulty_class = 15
+                read_roll = dice_roll(1, 20)
+                if read_roll + self.wisdom_modifier > difficulty_class:  # wisdom to recognize language
+                    print(f"You recognize the ancient language!")
+                    sleep(1)
+                    translate = input(f"Do you want to attempt to translate it into the common tongue? (y/n): ").lower()
+                    if translate == 'y':
+                        difficulty_class = 8
+                        translate_roll = dice_roll(1, 20)
+                        if translate_roll + self.intelligence_modifier > difficulty_class:  # intelligence to translate
+                            rndm_ancient_wisdom = ["Do not withhold good from those to whom you should give it\n"
+                                                   "If it is within your power to help.",
+                                                   "Do not plot harm against your "
+                                                   "neighbor when he lives in a sense of security with you.",
+                                                   "The wise will inherit honor, but the stupid ones glorify "
+                                                   "dishonor.",
+                                                   "Do not enter the path of the wicked, and do not walk in "
+                                                   "the way of evil men.\nShun it, do not take it; "
+                                                   "Turn away from it, and pass it by.",
+                                                   "The way of the wicked is like "
+                                                   "the darkness;\nThey do not know what makes them stumble.",
+                                                   "Above all the things that you guard, safeguard your heart, "
+                                                   "For out of it are the sources of life.",
+                                                   "Drink water from your own "
+                                                   "cistern\nAnd flowing water from your own well."]
+                            rndm_wisdom = random.choice(rndm_ancient_wisdom)
+                            print(f"The literal translation is, '{rndm_wisdom}...'")
+                            pause()
+                            return self.increase_random_ability()
+                        else:
+                            return king_returns()
+                    else:
+                        return
+                else:
+                    return king_returns()
+            else:
+                return
+        else:
             return
 
     def heal_event(self):
@@ -2752,8 +2765,8 @@ class Player:
             sleep(1)
             self.hit_points = self.maximum_hit_points
         else:
-            print(f"Your hit points have been unnaturally raised to {self.hit_points}!")
             self.hit_points += hit_point_overage
+            print(f"Your hit points have been unnaturally raised to {self.hit_points}!")
             sleep(1)
             print(f"You wonder how long this advantage will last..")
             sleep(1)

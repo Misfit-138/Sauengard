@@ -33,11 +33,22 @@ Hit Points at 1st Level: 10 + your Constitution modifier
 Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighter level after 1st
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.'''
 
+'''DIFFICULTY CLASSES (HIPSTER’S REMIX)
+Task Difficulty	DC
+Very Easy	5
+Easy	8
+Medium	10
+Tricky	12
+Hard	15
+Very hard	20
+Incredibly hard	25
+Why bother?	30'''
+
 rndm_aroma_lst = ['agarwood', 'angelica root', 'anise', 'basil', 'bergamot', 'calamodin', 'calamus', 'camphor',
                   'cardamom', 'cedar', 'camomile', 'cinnamon', 'citron', 'clary sage', 'clove', 'davana', 'eucalyptus',
                   'frankincense', 'galbanum', 'hemlock', 'jasmine', 'lavender', 'lemongrass', 'mugwort oil',
-                  'pennyroyal', 'peppermint,' 'sage', 'sandalwood', 'sassafrass', 'garden mint', 'spikenard',
-                  'spruce oil', 'star anise oil', 'tea tree oil', 'tarragon oil', 'tsuga', 'valerian',
+                  'pennyroyal', 'peppermint', 'sage', 'sandalwood', 'sassafras', 'garden mint', 'spikenard',
+                  'spruce oil', 'star anise oil', 'tea tree oil', 'tarragon oil', 'tsuga oil', 'valerian',
                   'vanilla sweet grass', 'warionia', 'vetiver', 'wintergreen', 'yarrow oil']
 
 
@@ -65,11 +76,9 @@ class Weapon:
         self.minimum_level = 1
 
     def __repr__(self):
-        return f"{self.name} - Damage Bonus: {self.damage_bonus}  To hit: {self.to_hit_bonus}  Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP"
+        return f"{self.name} - Damage Bonus: {self.damage_bonus}  To hit: {self.to_hit_bonus}  " \
+               f"Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP"
     #       return self.name
-
-    # def __str__(self):
-    #    return f'{self.name} - Damage Bonus: {self.damage_bonus}  To hit: {self.to_hit_bonus}  Purchase Price: {self.buy_price} GP'
 
 
 class ShortSword(Weapon):
@@ -172,7 +181,8 @@ class Armor:
     def __repr__(self):
         #        return self.name
         # def __str__(self):
-        return f'{self.name} - AC: {self.ac}  Armor bonus: {self.armor_bonus}  Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP'
+        return f'{self.name} - AC: {self.ac}  Armor bonus: {self.armor_bonus}  ' \
+               f'Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP'
 
 
 class PaddedArmor(Armor):
@@ -411,7 +421,8 @@ class Cloak:
         #        return self.name
 
         # def __str__(self):
-        return f'{self.name} - Stealth: {self.stealth}  Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP'
+        return f'{self.name} - Stealth: {self.stealth}  Minimum level: {self.minimum_level}  ' \
+               f'Purchase Price: {self.buy_price} GP'
 
 
 class CanvasCloak(Cloak):
@@ -657,7 +668,8 @@ class Player:
         self.ring_of_reg = default_ring_of_regeneration
         self.two_handed = False
         self.extra_attack = 0
-        self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
+        self.armor_class = (self.armor.ac + self.armor.armor_bonus +
+                            self.shield.ac + self.boots.ac + self.dexterity_modifier)
         self.stealth = self.cloak.stealth
         self.town_portals = 1
         self.elixirs = 2
@@ -704,78 +716,78 @@ class Player:
 
     def hud(self):
         os.system('cls')
-        print(f"                                                                     Name: {self.name}")
-        print(f"                                                                     Level: {self.level}")
-        print(f"                                                                     Experience: {self.experience}")
-        print(f"                                                                     Gold: {self.gold}")
+        print(f"                                                                            Name: {self.name}")
+        print(f"                                                                            Level: {self.level}")
+        print(f"                                                                            Experience: {self.experience}")
+        print(f"                                                                            Gold: {self.gold}")
         print(
-            f"                                                                     Weapon: {self.wielded_weapon.name} + {self.wielded_weapon.damage_bonus}")
+            f"                                                                            Weapon: {self.wielded_weapon.name} + {self.wielded_weapon.damage_bonus}")
         print(
-            f"                                                                     To hit bonus: + {self.wielded_weapon.to_hit_bonus}")
+            f"                                                                            To hit bonus: + {self.wielded_weapon.to_hit_bonus}")
         print(
-            f"                                                                     Armor: {self.armor.name} (AC: {self.armor.ac})")
+            f"                                                                            Armor: {self.armor.name} (AC: {self.armor.ac})")
 
         print(
-            f"                                                                     Shield: {self.shield.name} (AC: {self.shield.ac})")
+            f"                                                                            Shield: {self.shield.name} (AC: {self.shield.ac})")
         print(
-            f"                                                                     Boots: {self.boots.name} (AC: {self.boots.ac})")
+            f"                                                                            Boots: {self.boots.name} (AC: {self.boots.ac})")
         print(
-            f"                                                                     Your Armor Class: {self.armor_class}")
+            f"                                                                            Your Armor Class: {self.armor_class}")
         print(
-            f"                                                                     Strength: {self.strength} (Modifier: {self.strength_modifier})")
+            f"                                                                            Strength: {self.strength} (Modifier: {self.strength_modifier})")
         print(
-            f"                                                                     Dexterity: {self.dexterity} (Modifier: {self.dexterity_modifier})")
+            f"                                                                            Dexterity: {self.dexterity} (Modifier: {self.dexterity_modifier})")
         print(
-            f"                                                                     Constitution: {self.constitution} (Modifier: {self.constitution_modifier})")
+            f"                                                                            Constitution: {self.constitution} (Modifier: {self.constitution_modifier})")
         print(
-            f"                                                                     Intelligence: {self.intelligence} (Modifier: {self.intelligence_modifier})")
+            f"                                                                            Intelligence: {self.intelligence} (Modifier: {self.intelligence_modifier})")
         print(
-            f"                                                                     Wisdom: {self.wisdom} (Modifier: {self.wisdom_modifier})")
+            f"                                                                            Wisdom: {self.wisdom} (Modifier: {self.wisdom_modifier})")
 
         print(
-            f"                                                                     Charisma: {self.charisma} (Modifier: {self.charisma_modifier})")
-        print(f"                                                                     Hit points: {self.hit_points}/"
+            f"                                                                            Charisma: {self.charisma} (Modifier: {self.charisma_modifier})")
+        print(f"                                                                            Hit points: {self.hit_points}/"
               f"{self.maximum_hit_points}")
 
         print(
-            f"                                                                     Cloak: {self.cloak.name} (Stealth: {self.stealth})")
+            f"                                                                            Cloak: {self.cloak.name} (Stealth: {self.stealth})")
         if self.potions_of_strength > 0:
             number_of_potions_of_strength = self.potions_of_strength
             print(
-                f"                                                                     Strength Potions: {number_of_potions_of_strength}")
+                f"                                                                            Strength Potions: {number_of_potions_of_strength}")
         if self.potion_of_strength_effect:
             print(
-                f"                                                                     (GIANT STRENGTH EFFECT)")
+                f"                                                                            (GIANT STRENGTH EFFECT)")
             print(
-                f"                                                                     Strength Potion uses: ({self.potion_of_strength_uses}/5)")
+                f"                                                                            Strength Potion uses: ({self.potion_of_strength_uses}/5)")
         if self.poisoned:
             print(
-                f"                                                                     (POISONED)")
+                f"                                                                            (POISONED)")
             print(
-                f"                                                                     Poison clarifying: ({self.poisoned_turns}/5)")
+                f"                                                                            Poison clarifying: ({self.poisoned_turns}/5)")
         if self.necrotic:
             print(
-                f"                                                                     (NECROTIC)")
+                f"                                                                            (NECROTIC)")
             print(
-                f"                                                                     Necrotic clarifying: ({self.necrotic_turns}/5)")
+                f"                                                                            Necrotic clarifying: ({self.necrotic_turns}/5)")
         if self.potions_of_healing > 0:
             number_of_potions_of_healing = self.potions_of_healing  # len(self.pack['Healing'])
             print(
-                f"                                                                     Healing Potions: {number_of_potions_of_healing}")
+                f"                                                                            Healing Potions: {number_of_potions_of_healing}")
         if self.elixirs > 0:
             number_of_elixirs = self.elixirs  # len(self.pack['Healing'])
             print(
-                f"                                                                     Elixirs: {number_of_elixirs}")
+                f"                                                                            Elixirs: {number_of_elixirs}")
         if self.town_portals > 0:
             number_of_portal_scrolls = self.town_portals  # len(self.pack['Town Portal Implements'])
             print(
-                f"                                                                     Town Portal Scrolls: {number_of_portal_scrolls}")
+                f"                                                                            Town Portal Scrolls: {number_of_portal_scrolls}")
         if self.ring_of_reg.name != default_ring_of_regeneration.name:
             print(
-                f"                                                                     Ring of Reg: +{self.ring_of_reg.regenerate}")
+                f"                                                                            Ring of Reg: +{self.ring_of_reg.regenerate}")
         if self.ring_of_prot.name != default_ring_of_protection.name:
             print(
-                f"                                                                     Ring of Prot: +{self.ring_of_prot.protect}")
+                f"                                                                            Ring of Prot: +{self.ring_of_prot.protect}")
 
         return
 
@@ -1367,7 +1379,7 @@ class Player:
             self.hud()
             print(f"You raise your {self.wielded_weapon.name}..")
             time.sleep(1.5)
-            return  False
+            return False
 
     # INVENTORY AND ITEMS
 
@@ -1607,7 +1619,7 @@ class Player:
                                     self.item_type_inventory(sale_item.item_type)
                                     pause()
                                     break
-                                    #continue
+                                    # continue
                                 else:
                                     print(f"Minimum requirements not met.")
                                     pause()
@@ -2664,7 +2676,7 @@ class Player:
         rndm_throne_description = random.choice(rndm_throne_descriptions)
         print(f"{rndm_throne_description}")
         print(f"It was undoubtedly stolen from an ancient kingdom.")
-        throne_action = input(f"(P)ry gems, attempt to (R)ead the Runes, (S)it on the throne or (I)gnore: ")
+        throne_action = input(f"(P)ry gems, attempt to (R)ead the Runes, (S)it on the throne or (I)gnore: ").lower()
         if throne_action == 's':
             print(f"You sit on the throne...")
             sleep(1.5)
@@ -2687,14 +2699,14 @@ class Player:
         elif throne_action == 'r':
             difficulty_class = 15
             read_roll = dice_roll(1, 20)
-            if read_roll + self.wisdom_modifier > difficulty_class:
+            if read_roll + self.wisdom_modifier > difficulty_class:  # wisdom to recognize language
                 print(f"You recognize the ancient language!")
                 sleep(1)
-                translate = input(f"Do you want to attempt to translate it into the common tongue? (y/n): ")
+                translate = input(f"Do you want to attempt to translate it into the common tongue? (y/n): ").lower()
                 if translate == 'y':
-                    difficulty_class = 11
+                    difficulty_class = 8
                     translate_roll = dice_roll(1, 20)
-                    if translate_roll + self.intelligence_modifier > difficulty_class:
+                    if translate_roll + self.intelligence_modifier > difficulty_class:  # intelligence to translate
                         rndm_ancient_wisdom = ["Do not withhold good from those to whom you should give it\n"
                                                "If it is within your power to help.", "Do not plot harm against your "
                                                                                       "neighbor when he lives in a sense of security with you.",
@@ -2811,7 +2823,7 @@ class Player:
         sleep(1)
         print(f"The tranquil sound eases your mind.")
         sleep(1)
-        drink = input(f"Do you wish to drink? ")
+        drink = input(f"Do you wish to drink? ").lower()
         if drink == 'y':
             rndm_occurrence_lst = [nothing_happens, self.poison, self.increase_random_ability,
                                    self.lose_items,
@@ -2839,14 +2851,14 @@ class Player:
         return
 
     def pit_event(self):
-        print(f"The ground here is very unsteady..")
+        print(f"The ground here is slippery and quite unsteady..")
         sleep(1.5)
         print(f"You see a pit..")
         sleep(1.5)
-        pit_difficulty_class = 10
+        pit_difficulty_class = 8
         pit_outcome = dice_roll(1, 20)
         if (pit_outcome + self.dexterity_modifier + self.intelligence_modifier) > pit_difficulty_class:
-            descend_or_not = input(f"Do you wish to descend (y/n)?: ")
+            descend_or_not = input(f"Do you wish to descend (y/n)?: ").lower()
             if descend_or_not == 'y':
                 print(f"Retrieving the rope from your belt, you carefully and craftily repel down the slick, "
                       f"treacherous pit walls.")
@@ -2861,20 +2873,30 @@ class Player:
             else:
                 return
         else:
-            print(f"The ground beneath your feet collapse! You fall in!")
-            damage = dice_roll(1, (3 * self.dungeon.level))  # dice_roll(1, self.dungeon.level)
-            self.hit_points -= damage
+            print(f"The ground beneath your feet collapses!")
             sleep(1)
-            print(f"You suffer {damage} hit points..")
-            pause()
-            # falling into pits lands you on the next dungeon level at the dungeon.pit_landing coordinates
-            self.dungeon_key += 1
-            self.dungeon = dungeon_dict[self.dungeon_key]
-            (self.x, self.y) = self.dungeon.pit_landing
-            self.previous_x = self.x
-            self.previous_y = self.y
-            self.position = self.dungeon.grid[self.y][self.x]
-            return
+            print(f"Desperately, you grab for a crag!")
+            sleep(1)
+            if dice_roll(1, 20) >= 15:
+                print(f"You succeed!")
+                pause()
+                return
+            else:
+                print(f"You fall in!")
+                damage = dice_roll(1, (3 * self.dungeon.level))  # dice_roll(1, self.dungeon.level)
+                self.hit_points -= damage
+                sleep(1)
+                print(f"You suffer {damage} hit points..")
+                sleep(1)
+                pause()
+                # falling into pits lands you on the next dungeon level at the dungeon.pit_landing coordinates
+                self.dungeon_key += 1
+                self.dungeon = dungeon_dict[self.dungeon_key]
+                (self.x, self.y) = self.dungeon.pit_landing
+                self.previous_x = self.x
+                self.previous_y = self.y
+                self.position = self.dungeon.grid[self.y][self.x]
+                return
 
     def staircase_description(self):
         # this is a description of the spiral staircase, if player navigates to it *after* the map is initialized
@@ -2888,11 +2910,56 @@ class Player:
         print(f"The stairs lead up to {previous_place}. However, there is no returning;\n"
               f"The door is locked and barricaded. You must continue onward!")
 
+    def elevator_event(self):
+        if self.dungeon.level > 1:
+            print(f"You have stepped onto a platform...")
+            sleep(1)
+            print(f"You feel a slight rumbling..")
+            sleep(1)
+            difficulty_class = 8
+            if dice_roll(1, 20) + self.intelligence_modifier >= difficulty_class:
+                stay_or_jump = input(f"You realize it is an elevation mechanism, drawing you up to the "
+                                     f"previous dungeon level.\nDo you wish to (S)tay on it or (J)ump? ").lower()
+                if stay_or_jump == 's':
+                    print(f"A cage closes on your position.")
+                    sleep(1)
+                    print(f"You feel heavy for a moment..")
+                    sleep(2)
+                    self.dungeon_key -= 1
+                    self.dungeon = dungeon_dict[self.dungeon_key]
+                    (self.x, self.y) = self.dungeon.elevator_landing
+                    self.coordinates = (self.x, self.y)
+                    self.previous_x = self.x
+                    self.previous_y = self.y
+                    self.position = self.dungeon.grid[self.y][self.x]
+                    print(f"You have arrived at {self.dungeon.name}, dungeon level {self.dungeon.level}.")
+                    sleep(2)
+                    print(f"Watch your step.")
+                    sleep(1)
+                    pause()
+                    return
+                else:
+                    return
+            else:
+                print(f"A cage closes upon you!")  # intelligence not enough to realize what is happening.
+                sleep(1)
+                print(f"You are being drawn upward!")
+                self.dungeon_key -= 1
+                self.dungeon = dungeon_dict[self.dungeon_key]
+                (self.x,
+                 self.y) = self.dungeon.elevator_landing  # simplified with tuple instead of self.x = and self.y =
+                self.coordinates = (self.x, self.y)
+                self.previous_x = self.x
+                self.previous_y = self.y
+                self.position = self.dungeon.grid[self.y][self.x]
+                pause()
+                return
+
     def event_logic(self):
         # interactive events, items etc.
         # the event dictionary *key* is the dungeon tuple corresponding to
         # dungeon x y coordinates of an event or item e.g. (2, 3)
-        # the event dictionary *value* is the corresponding player function
+        # the event dictionary *value* is the corresponding player function.
         # if the player's coordinates exist as a key in event_dict,
         # the dictionary value is given the variable 'event_function'
         # finally, the proper function is called and any
@@ -2900,13 +2967,16 @@ class Player:
         # using 'return event_function()'
         self.coordinates = (self.x, self.y)
         event_dict = {self.dungeon.throne: self.throne_event,
+                      self.dungeon.throne2: self.throne_event,
                       self.dungeon.fountain: self.fountain_event,
+                      self.dungeon.fountain2: self.fountain_event,
                       self.dungeon.teleporter: self.teleporter_event,
-                      self.dungeon.pit: self.pit_event
-
+                      self.dungeon.elevator: self.elevator_event,
+                      self.dungeon.pit: self.pit_event,
+                      self.dungeon.pit2: self.pit_event
                       }
-        if self.coordinates in event_dict:
-            event_function = (event_dict[self.coordinates])
+        if self.coordinates in event_dict.keys():
+            event_function = (event_dict[self.coordinates])  # (event_dict[self.coordinates])
             return event_function()
 
         # NAVIGATION
@@ -2961,7 +3031,9 @@ class Player:
             "(": f"You are against a {self.dungeon.barrier_name} to the West. Exits are to the North, South and East.",
             ")": f"You are against a {self.dungeon.barrier_name} to the East. Exits are to the North, South and West.",
             "T": f"You are in a chamber of {self.dungeon.name} that seems to have been "
-                 f"re-purposed as a sort of throne room."
+                 f"re-purposed as a sort of throne room.",
+            "L": f"You are on a slick patch of ground. High above you is a wide, gaping hole leading up to "
+                 f"dungeon level {self.dungeon.level - 1}."
         }
         # if self.position == 0:  # integer representing starting position
         #    print(self.dungeon.intro)
@@ -3029,7 +3101,8 @@ class Player:
 
     def next_dungeon(self):
         # dungeon dictionary in dungeons.py
-        print(f"With quiet resolve you turn to briefly look behind you, and then, continue onward toward your goal.")
+        print(f"You approach the exit. With quiet resolve you turn to briefly look\n"
+              f"behind you, and then continue onward, toward your goal.")
         sleep(2)
         self.dungeon_key += 1
         self.dungeon = dungeon_dict[self.dungeon_key]
@@ -3043,10 +3116,12 @@ class Player:
         return
 
     def exit_boss_setup(self, monster):
-        # make a list of random intros...or, use boss intro.
+        # temporary function
+        # make a list of random intros...or, use boss intro in future.
         print(f"In the archway to the {self.dungeon.name} exit "
               f"stands the {monster.name} guardian. Without fear, without thought,\n"
               f"it looks upon you and readies itself for battle...")
+
 
 '''
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.

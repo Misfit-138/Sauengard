@@ -24,7 +24,6 @@ class Dungeon:
     def __init__(self):
         self.name = ""
         self.level = 0
-        # self.position = 0
         self.starting_x = 0
         self.starting_y = 0
         self.grid = []
@@ -35,17 +34,24 @@ class Dungeon:
 
 
 class Dungeon1(Dungeon):
+
     def __init__(self):
         super().__init__()
         self.name = "The Fieldenberg Catacombs"
         self.level = 1
         self.barrier_name = "wall of smooth, precisely quarried stone"
         self.throne = (2, 3)
+        self.throne2 = (2, 4)
         self.fountain = (3, 3)
+        self.fountain2 = (3, 4)
         self.teleporter = (4, 3)
+        self.teleporter2 = (4, 4)
         self.teleporter_landing = (1, 3)  # NA for level one
-        self.staircase = (17, 3)  # same as start...get rid of start?
+        self.staircase = (1, 3)  # same as start...get rid of start?
+        self.elevator = (5, 4)  # NA for level one
+        self.elevator_landing = (5, 4)  # NA for level one
         self.pit = (1, 4)
+        self.pit2 = (1, 5)
         self.pit_landing = (1, 4)
         # self.start = (17, 3)
         self.exit = (19, 3)
@@ -113,13 +119,19 @@ class Dungeon2(Dungeon):
         self.level = 2
         self.barrier_name = "wall comprised of smooth stone"
         self.throne = (2, 3)
+        self.throne2 = (2, 4)
         self.fountain = (3, 3)
+        self.fountain2 = (3, 4)
         self.teleporter = (4, 3)
-        self.teleporter_landing = (1, 3)
-        self.staircase = (1, 3)
+        self.teleporter2 = (4, 4)
+        self.teleporter_landing = (1, 3)  # NA for level one
+        self.staircase = (1, 3)  # same as start...get rid of start?
+        self.elevator = (5, 4)
+        self.elevator_landing = (5, 5)
         self.pit = (1, 4)
-        self.pit_landing = (1, 4)
-        #self.start = (1, 3)
+        self.pit2 = (1, 5)
+        self.pit_landing = (1, 6)
+        # self.start = (1, 3)
         self.exit = (19, 3)
         self.starting_x = 1
         self.starting_y = 3
@@ -131,7 +143,7 @@ class Dungeon2(Dungeon):
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ">", "E"],  # 3
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 4
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 5
-            ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 6
+            ["*", "L", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 6
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 7
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 8
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 9
@@ -178,17 +190,23 @@ dungeon_2 = Dungeon2()
 class Dungeon3(Dungeon):
     def __init__(self):
         super().__init__()
-        self.name = "Dungeon level 3"
+        self.name = "The Deep Catacombs"
         self.level = 3
         self.barrier_name = "wall comprised of smooth stone"
         self.throne = (2, 3)
+        self.throne2 = (2, 4)
         self.fountain = (3, 3)
+        self.fountain2 = (3, 4)
         self.teleporter = (4, 3)
-        self.teleporter_landing = (1, 3)
-        self.staircase = (7, 1)
+        self.teleporter2 = (4, 4)
+        self.teleporter_landing = (1, 3)  # NA for level one
+        self.staircase = (1, 3)  # same as start...get rid of start?
+        self.elevator = (5, 4)
+        self.elevator_landing = (5, 5)
         self.pit = (1, 4)
-        self.pit_landing = (1, 4)
-        #self.start = (7, 1)
+        self.pit2 = (1, 5)
+        self.pit_landing = (1, 6)
+        # self.start = (7, 1)
         self.exit = (19, 3)
         self.starting_x = 7
         self.starting_y = 1
@@ -200,7 +218,7 @@ class Dungeon3(Dungeon):
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ">", "E"],  # 3
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 4
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 5
-            ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 6
+            ["*", "L", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 6
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 7
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 8
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 9

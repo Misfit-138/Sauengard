@@ -360,7 +360,7 @@ while True:
                         # continue
 
                     # ***** END OF NAVIGATION TURN *************************************************************
-                    # !!!!!!!!!!!!!!!! V NOTE the INDENT V !!!!!!!!!!!!!!!!
+                    # !!!!!!!!!!!!!!!! V NOTE the INDENT below V !!!!!!!!!!!!!!!!
                 # **********************************************************************************************>>>>
                 player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
                 player_1.coordinates = (player_1.x, player_1.y)  #
@@ -384,7 +384,7 @@ while True:
                 # ***********************************************************************************************>>>>
 
                 # eventually, make encounter a returned boolean from navigation function?
-                if encounter < 10 or encounter > 20:
+                if encounter > 20:  # < 10 or encounter > 20:
                     # monster dictionary imported from monster module. keys correspond to difficulty
                     # in proximity to monster loop contains battle loop within it
                     in_proximity_to_monster = True

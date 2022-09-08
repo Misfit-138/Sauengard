@@ -1,21 +1,25 @@
-# DEAD END Only 1 exit!
-# 1 exit to the north
-# 2 exit to the south
-# 3 exit to the east
-# 4 exit to the west
-# STRAIGHT HALLWAY:
-# 5 exits north and south
-# 6 exits east and west
-# CORNERS:
-# 7 exits to the south and east UPPER LEFT
-# 8 exits to the north and east LOWER LEFT
-# 9 exits to the south and west UPPER RIGHT
-# - exits to the north and west LOWER RIGHT
-# WALLS:
-# \  exits to the south. east and west  NORTH WALL
-# / exits to the north, east and west SOUTH WALL
-# > exits to the north, south and east WEST WALL
-# < exits to the north, south and west EAST WALL
+"""         ".": f"You are in a rather wide open area of {self.dungeon.name}. There are exits in each direction...",
+            "1": f"You are at a dead end. The only exit is to the North...",
+            "2": f"You are at a dead end. The only exit is to the South...",
+            "3": f"You are at a dead end. The only exit is to the East...",
+            "4": f"You are at a dead end. The only exit is to the West...",
+            "5": f"This is a tunnel corridor of {self.dungeon.name}. Exits are to the North and South...",
+            "6": f"You are in a corridor of {self.dungeon.name}. Exits are to the East and West...",
+            "7": f"You are in a corner. Exits are to the South and East.",
+            "8": f"You are in a corner. Exits are to the North and East.",
+            "9": f"You are in a corner. Exits are to the South and West.",
+            "-": f"You are in a corner. Exits are to the North and West.",
+            "|": f"You are against a {self.dungeon.barrier_name} to the North. Exits are to the South, East and West.",
+            "/": f"You are against a {self.dungeon.barrier_name} to the South. Exits are to the North, East and West.",
+            "(": f"You are against a {self.dungeon.barrier_name} to the West. Exits are to the North, South and East.",
+            ")": f"You are against a {self.dungeon.barrier_name} to the East. Exits are to the North, South and West.",
+            "T": f"You are in a chamber of {self.dungeon.name} that seems to have been "
+                 f"re-purposed as a sort of throne room.",
+            "L": f"You are on a slick patch of ground. High above you is a wide, gaping hole leading up to "
+                 f"dungeon level {self.dungeon.level - 1}.\"
+"""
+
+# from monster_module import Shadow, Specter, Ghoul, Orc
 
 
 # maps
@@ -39,6 +43,8 @@ class Dungeon1(Dungeon):
         super().__init__()
         self.name = "The Fieldenberg Catacombs"
         self.level = 1
+        #self.boss = Shadow()
+        #self.king = Orc()
         self.barrier_name = "wall of smooth, precisely quarried stone"
         self.throne = (2, 3)
         self.throne2 = (2, 4)
@@ -117,6 +123,8 @@ class Dungeon2(Dungeon):
         super().__init__()
         self.name = "The Fieldenberg Lower Catacombs"
         self.level = 2
+        #self.boss = Shadow()
+        #self.king = Orc()
         self.barrier_name = "wall comprised of smooth stone"
         self.throne = (2, 3)
         self.throne2 = (2, 4)
@@ -179,9 +187,8 @@ class Dungeon2(Dungeon):
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]]
         # the intro is similar to the staircase description. however, the intro is more of an active description
-        self.intro = "You find yourself at the bottom of a deep, spiral staircase..\n" \
-                     "The echo from the door above being locked behind you still echoes throughout the emptiness.\n" \
-                     "This is the entrance of the lower catacombs. The gloom and stench of filth surround you."
+        self.intro = f"The echo from the door above being locked behind you still echoes throughout the emptiness.\n" \
+                     f"Thick, oppressive gloom and disturbing sounds fill the air."
 
 
 dungeon_2 = Dungeon2()
@@ -192,6 +199,8 @@ class Dungeon3(Dungeon):
         super().__init__()
         self.name = "The Deep Catacombs"
         self.level = 3
+        #self.boss = Shadow()
+        #self.king = Orc()
         self.barrier_name = "wall comprised of smooth stone"
         self.throne = (2, 3)
         self.throne2 = (2, 4)

@@ -10,6 +10,8 @@ from dungeons import *
 # from main_testing import dungeon_theme
 
 # from typing_module import typing
+from monster_module import monster_dict, undead_monster_dict
+
 
 '''Target
 Identify your target to the table. 
@@ -660,7 +662,7 @@ class Player:
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
         self.proficiency_bonus = 2  # 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.maximum_hit_points = 10 + self.constitution_modifier
+        self.maximum_hit_points = 1000 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.is_paralyzed = False
         self.cloak = canvas_cloak
@@ -1056,16 +1058,36 @@ class Player:
             self.hud()
 
     # BATTLE AND PROXIMITY TO MONSTER OCCURRENCES
+    def regular_monster_generator(self):
+        regular_monster_key = random.randint(1, self.level)  # (player_1.level + 1)
+        regular_monster_cls = random.choice(monster_dict[regular_monster_key])
+        regular_monster = regular_monster_cls()
+        return regular_monster
+
+    def exit_boss_generator(self):
+        monster_key = (self.level + 1)
+        monster_cls = random.choice(monster_dict[monster_key])
+        exit_boss = monster_cls()
+        print(f"In the archway to the {self.dungeon.name} exit "
+              f"stands the {exit_boss.name} guardian. Without fear, without thought,\n"
+              f"it looks upon you and readies itself for battle...")
+        return exit_boss
+
+    def king_monster_generator(self):
+        monster_key = (self.level + 1)
+        monster_cls = random.choice(undead_monster_dict[monster_key])
+        king_monster = monster_cls()
+        print(f"The {king_monster.name} king returns!")
+        return king_monster
 
     def monster_likes_you(self, monster_name, monster_intel):
-        if dice_roll(1, 20) > 17 and monster_intel > 8 and self.charisma > 10:
+        if dice_roll(1, 20) > 17 and monster_intel > 9 and self.charisma > 10:
             print(f"The {monster_name} likes you!")
             sleep(1)
             gift_item = dice_roll(1, 3)
             if gift_item == 1:
                 self.armor.ac += 1
                 self.calculate_armor_class()
-                # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
                 print(f"He enhances your armor to AC {self.armor.ac}!")
                 pause()
                 return True
@@ -1073,7 +1095,6 @@ class Player:
                 if self.shield.name != no_shield.name:
                     self.shield.ac += 1
                     self.calculate_armor_class()
-                    # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
                     print(f"He enhances your shield to AC {self.shield.ac}!")
                 else:
                     self.shield = buckler
@@ -2623,6 +2644,15 @@ class Player:
                     pause()  # remove after testing
                     continue
             else:
+                # extra chance for potion
+                extra_chance = dice_roll(1, 20)
+                if extra_chance > 9:
+                    print(f"You see a potion of healing!")
+                    sleep(.5)
+                    print(f"You grab it..")
+                    self.potions_of_healing += 1
+                    pause()
+                    #continue
                 return self.dungeon_description()
 
     def increase_random_ability(self):
@@ -2680,71 +2710,69 @@ class Player:
                                     'runes stands here.']
         rndm_throne_description = random.choice(rndm_throne_descriptions)
         print(f"{rndm_throne_description}")
-        print(f"It was undoubtedly stolen from an ancient kingdom.")
+        print(f"The runes are of many unique origins...")
+        print(f"It was undoubtedly stolen and re-claimed multiple times from several different ancient kings.")
         pause()
-
-        if throne_discovery not in self.discovered_interactives:
-            throne_action = input(f"(P)ry gems, attempt to (R)ead the Runes, (S)it on the throne or (I)gnore: ").lower()
-            if throne_action == 's':
-                print(f"You sit on the throne...")
-                # self.discovered_interactives.append(throne_discovery)
+        #if throne_discovery not in self.discovered_interactives:
+        throne_action = input(f"(P)ry gems, attempt to (R)ead the Runes, (S)it on the throne or (I)gnore: ").lower()
+        if throne_action == 's':
+            print(f"You sit on the throne...")
+            # self.discovered_interactives.append(throne_discovery)
+            sleep(1.5)
+            # self.regenerate()  # testing
+            return rndm_occurrence()
+            # return "King Boss"
+        elif throne_action == 'p':
+            difficulty_class = 12
+            pry_roll = dice_roll(1, 20)
+            if pry_roll > difficulty_class:
+                gem_value = (random.randint(1, 5) * self.dungeon.level)
+                print(f"They pop out into your greedy hands!")
                 sleep(1.5)
-                # self.regenerate()  # testing
-                return rndm_occurrence()
-                # return "King Boss"
-            elif throne_action == 'p':
-                difficulty_class = 12
-                pry_roll = dice_roll(1, 20)
-                if pry_roll > difficulty_class:
-                    gem_value = (random.randint(1, 5) * self.dungeon.level)
-                    print(f"They pop out into your greedy hands!")
-                    sleep(1.5)
-                    print(f"They are worth {gem_value} GP!")
-                    self.gold += gem_value
-                    pause()
-                    return
-                else:
-                    return king_returns()
-            elif throne_action == 'r':
-                difficulty_class = 15
-                read_roll = dice_roll(1, 20)
-                if read_roll + self.wisdom_modifier > difficulty_class:  # wisdom to recognize language
-                    print(f"You recognize the ancient language!")
-                    sleep(1)
-                    translate = input(f"Do you want to attempt to translate it into the common tongue? (y/n): ").lower()
-                    if translate == 'y':
-                        difficulty_class = 8
-                        translate_roll = dice_roll(1, 20)
-                        if translate_roll + self.intelligence_modifier > difficulty_class:  # intelligence to translate
-                            rndm_ancient_wisdom = ["Do not withhold good from those to whom you should give it\n"
-                                                   "If it is within your power to help.",
-                                                   "Do not plot harm against your "
-                                                   "neighbor when he lives in a sense of security with you.",
-                                                   "The wise will inherit honor, but the stupid ones glorify "
-                                                   "dishonor.",
-                                                   "Do not enter the path of the wicked, and do not walk in "
-                                                   "the way of evil men.\nShun it, do not take it; "
-                                                   "Turn away from it, and pass it by.",
-                                                   "The way of the wicked is like "
-                                                   "the darkness;\nThey do not know what makes them stumble.",
-                                                   "Above all the things that you guard, safeguard your heart, "
-                                                   "For out of it are the sources of life.",
-                                                   "Drink water from your own "
-                                                   "cistern\nAnd flowing water from your own well."]
-                            rndm_wisdom = random.choice(rndm_ancient_wisdom)
-                            print(f"The literal translation is, '{rndm_wisdom}...'")
-                            pause()
-                            return self.increase_random_ability()
-                        else:
-                            return king_returns()
-                    else:
-                        return
-                else:
-                    return king_returns()
-            else:
+                print(f"They are worth {gem_value} GP!")
+                self.gold += gem_value
+                pause()
                 return
+            else:
+                return king_returns()
+        elif throne_action == 'r':
+            difficulty_class = 15
+            read_roll = dice_roll(1, 20)
+            if read_roll + self.wisdom_modifier > difficulty_class:  # wisdom to recognize language
+                print(f"You recognize the ancient language!")
+                sleep(1)
+                translate = input(f"Do you want to attempt to translate it into the common tongue? (y/n): ").lower()
+                if translate == 'y':
+                    difficulty_class = 8
+                    translate_roll = dice_roll(1, 20)
+                    if translate_roll + self.intelligence_modifier > difficulty_class:  # intelligence to translate
+                        rndm_ancient_wisdom = ["Do not withhold good from those to whom you should give it\n"
+                                               "If it is within your power to help.",
+                                               "Do not plot harm against your "
+                                               "neighbor when he lives in a sense of security with you.",
+                                               "The wise will inherit honor, but the stupid ones glorify "
+                                               "dishonor.",
+                                               "Do not enter the path of the wicked, and do not walk in "
+                                               "the way of evil men.\nShun it, do not take it; "
+                                               "Turn away from it, and pass it by.",
+                                               "The way of the wicked is like "
+                                               "the darkness;\nThey do not know what makes them stumble.",
+                                               "Above all the things that you guard, safeguard your heart, "
+                                               "For out of it are the sources of life.",
+                                               "Drink water from your own "
+                                               "cistern\nAnd flowing water from your own well."]
+                        rndm_wisdom = random.choice(rndm_ancient_wisdom)
+                        print(f"The literal translation is, '{rndm_wisdom}...'")
+                        pause()
+                        return self.increase_random_ability()
+                    else:
+                        return king_returns()  # unable to translate
+                else:
+                    return  # players chooses not to translate
+            else:
+                return king_returns()  # player unable to recognize runes
         else:
-            return
+            return  # ignore the throne
 
     def heal_event(self):
         # healing event called from fountain
@@ -2921,7 +2949,7 @@ class Player:
         else:
             previous_place = f"the town of Fieldenberg"
         print(f"The stairs lead up to {previous_place}. However, there is no returning;\n"
-              f"The door is locked and barricaded. You must continue onward!")
+              f"The door has been locked and barricaded. You must continue onward!")
 
     def elevator_event(self):
         if self.dungeon.level > 1:
@@ -3027,6 +3055,8 @@ class Player:
         # > exits to the north, south and east WEST WALL
         # < exits to the north, south and west EAST WALL
         # ^ <> v dungeon exit in the indicated direction!
+        # T throne room
+        # L Pit landing
         description_dict = {
             ".": f"You are in a rather wide open area of {self.dungeon.name}. There are exits in each direction...",
             "1": f"You are at a dead end. The only exit is to the North...",
@@ -3122,19 +3152,23 @@ class Player:
         (self.x, self.y) = self.dungeon.staircase  # simplified with tuple instead of self.x = and self.y =
         # self.coordinates will be set after first move..otherwise the intro will be printed, followed by the
         # staircase description, which is awkward
+        # self.x = self.dungeon.starting_x
+        # self.y = self.dungeon.starting_y
         self.previous_x = self.x
         self.previous_y = self.y
         self.position = 0
         pause()
         return
 
-    def exit_boss_setup(self, monster):
-        # temporary function
-        # make a list of random intros...or, use boss intro in future.
-        print(f"In the archway to the {self.dungeon.name} exit "
-              f"stands the {monster.name} guardian. Without fear, without thought,\n"
-              f"it looks upon you and readies itself for battle...")
+    # def exit_boss_setup(self, monster):
+    # temporary function
+    # make a list of random intros...or, use boss intro in future.
+    #    print(f"In the archway to the {self.dungeon.name} exit "
+    #          f"stands the {monster.name} guardian. Without fear, without thought,\n"
+    #          f"it looks upon you and readies itself for battle...")
 
+
+#
 
 '''
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.

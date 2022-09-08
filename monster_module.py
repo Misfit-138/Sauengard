@@ -127,7 +127,6 @@ average treasure per encounter per level:
 import os
 import random
 import time
-
 from dice_roll_module import dice_roll
 
 '''Choose a challenge rating (CR) for your custom trap, object, effect, or creature
@@ -314,7 +313,8 @@ class Monster:
         print(
             f"Your roll: {human_player_roll_d20} + wisdom modifier ({human_player_wisdom_modifier}) + ring of protection "
             f"({human_player_ring_of_prot}) = {human_player_roll_d20 + human_player_wisdom_modifier}")
-        if roll_d20 + self.wisdom_modifier >= (human_player_roll_d20 + human_player_wisdom_modifier + human_player_ring_of_prot):
+        if roll_d20 + self.wisdom_modifier >= (
+                human_player_roll_d20 + human_player_wisdom_modifier + human_player_ring_of_prot):
             damage_roll = dice_roll(self.number_of_hd * critical_bonus, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
@@ -409,7 +409,7 @@ class Quasit(Monster):
                             f"as it lets out a high pitched, fiendish and wretched cry. The air around it becomes hazy.."
         self.is_discovered = False
 
-    #name = "Quasit"
+    # name = "Quasit"
 
 
 class Kobold(Monster):
@@ -461,7 +461,7 @@ class Kobold(Monster):
         self.introduction = f"You have encountered a {self.name}."
         self.is_discovered = False
 
-    #name = "Kobold"
+    # name = "Kobold"
 
 
 class Cultist(Monster):
@@ -516,7 +516,7 @@ class Cultist(Monster):
                             f" allegiance to some dark Quantum Manipulator..."
         self.is_discovered = False
 
-    #name = "Cultist"
+    # name = "Cultist"
 
 
 class Goblin(Monster):
@@ -568,7 +568,7 @@ class Goblin(Monster):
         self.introduction = f"You have encountered a {self.name}."
         self.is_discovered = False
 
-    #name = "Goblin"
+    # name = "Goblin"
 
 
 class WingedKobold(Monster):
@@ -620,7 +620,7 @@ class WingedKobold(Monster):
         self.introduction = f"You have encountered a {self.name}."
         self.is_discovered = False
 
-    #"Winged Kobold"
+    # "Winged Kobold"
 
 
 class Shadow(Monster):
@@ -696,7 +696,7 @@ class Shadow(Monster):
                                "feel your motor skills quivering.."
         self.is_discovered = False
 
-    #name = "Shadow"
+    # name = "Shadow"
 
 
 class Skeleton(Monster):
@@ -753,7 +753,7 @@ class Skeleton(Monster):
                             f"The air bristles with Quantum Energy.."
         self.is_discovered = False
 
-    #name = "Skeleton"
+    # name = "Skeleton"
 
 
 class Drow(Monster):
@@ -806,7 +806,7 @@ class Drow(Monster):
         self.quantum_attack_1_phrase = "It releases weird quantum flames from its outstretched hand!!"
         self.quantum_attack_2 = 2
         self.quantum_attack_2_phrase = "Weird electrical energies dance over its form as it unleashes a volley\n" \
-                                       "of flames and lightning from both of its outstreched hands!"
+                                       "of flames and lightning from both of its outstretched hands!"
         self.quantum_attack_3 = 2
         self.quantum_attack_3_phrase = "It cries out in its own foul tongue, harnessing the quantum energies and\n" \
                                        "hurling a wall of crackling lightning toward you!"
@@ -819,7 +819,7 @@ class Drow(Monster):
         self.introduction = f"You have encountered a {self.name}."
         self.is_discovered = False
 
-    #name = "Drow"
+    # name = "Drow"
 
 
 class Troglodyte(Monster):
@@ -865,13 +865,13 @@ class Troglodyte(Monster):
         self.attack_3 = 2
         self.attack_3_phrase = "It swings its mace!"
         self.attack_4 = 2
-        self.attack_4_phrase = "It thrusts mightily forward with its javelin!"
+        self.attack_4_phrase = "It thrusts mightily forward with its spear!"
         self.attack_5 = 3
         self.attack_5_phrase = "It raises its greataxe overhead with both hands for a mighty blow.."
         self.introduction = f"You have encountered a Troglodyte. "
         self.is_discovered = False
 
-    #"Troglodyte"
+    # "Troglodyte"
 
 
 class Orc(Monster):
@@ -911,7 +911,7 @@ class Orc(Monster):
         self.wisdom_modifier = round((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
         self.attack_1 = 1  # attack bonus
-        self.attack_1_phrase = "It thrusts mightily forward with its javelin!.."
+        self.attack_1_phrase = "It thrusts mightily forward with its spear!.."
         self.attack_2 = 2
         self.attack_2_phrase = "It swings its greataxe with blinding speed!"
         self.attack_3 = 2
@@ -925,7 +925,7 @@ class Orc(Monster):
                             f"humanoids that stand against it.."
         self.is_discovered = False
 
-    #name = "Orc"
+    # name = "Orc"
 
 
 class Ghoul(Monster):
@@ -983,13 +983,92 @@ class Ghoul(Monster):
         self.is_discovered = False
         self.paralyze_phrase = "It lurches forward, grabbing your arm in its cold, sinewy and awful claws!"
 
-    #name = "Ghoul"
+    # name = "Ghoul"
 
 
-# monster dictionary. keys correspond to difficulty
+class Specter(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 2
+        self.name = "Specter"
+        self.experience_award = 200
+        self.gold = random.randint(6, 16)  # self.level * 103 * round(random.uniform(1, 2))
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = random.randint(11, 12)
+        self.dexterity = random.randint(12, 16)
+        self.constitution = random.randint(10, 12)
+        self.intelligence = random.randint(9, 11)
+        self.wisdom = random.randint(9, 11)
+        self.charisma = random.randint(10, 12)
+        self.can_paralyze = False
+        self.can_poison = False
+        self.necrotic = True
+        self.dot_multiplier = 1
+        self.undead = True
+        self.quantum_energy = True
+        self.human_player_level = 0
+        self.difficulty_class = 2
+        self.proficiency_bonus = 1  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 2
+        self.hit_dice = 6  # mm
+        self.number_of_hd = 3  # mm
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.hit_points = random.randint(20, 24) + self.constitution_modifier
+        # self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier) + 1
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.armor_class = random.randint(11, 12)
+        self.attack_1 = 0  # attack bonus
+        self.attack_1_phrase = "It places a cold, yet immaterial hand upon you for just a moment.."
+        self.attack_2 = 1
+        self.attack_2_phrase = "It extends a hand, which elongates into a horrible mist that thrusts toward you.. "
+        self.attack_3 = 2
+        self.attack_3_phrase = f"A cold, dreadful feeling overcomes you as the {self.name} looms over you, reaching\n" \
+                               f"out to embrace you within its deadly touch!"
+        self.attack_4 = 2
+        self.attack_4_phrase = "It rushes straight at you and phase-shifts. It re-appears behind you, ready to strike!!"
+        self.attack_5 = 3
+        self.attack_5_phrase = "It silently raises its hands, releasing dreadfully wicked energies!!"
+        self.quantum_attack_1 = 2
+        self.quantum_attack_1_phrase = "It releases weird draining energies from its outstretched hand!!"
+        self.quantum_attack_2 = 2
+        self.quantum_attack_2_phrase = "Dreadful black droplets dance over its form as it unleashes\n" \
+                                       "impossibly cold, white flames from both of its outstretched hands!!"
+        self.quantum_attack_3 = 2
+        self.quantum_attack_3_phrase = "Its empty eyes widen, as it rises up, harnessing the quantum energies and\n" \
+                                       "hurling a wall of black energy toward you!"
+        self.quantum_attack_4 = 3
+        self.quantum_attack_4_phrase = "Swirling around you in a confusing arc, it releases a mist\n" \
+                                       "of dark energy which envelopes you!"
+        self.quantum_attack_5 = 3
+        self.quantum_attack_5_phrase = "With muted malice, its arms elongate unnaturally, wildly entangling you in \n" \
+                                       "a storm of wicked forces!"
+        self.introduction = f"From out of nothingness, materializes a Spectre....A vile, undead form created\n " \
+                            f"through a combination of wickedness, quantum manipulations, and a violent death.\n " \
+                            f"Its ghostly form resembles what it was in life, but its now dispossessed\n " \
+                            f"identity has been completely erased and replaced with a simple motive and \n" \
+                            f"purpose; A revulsion for the living and a hunger for their life-energy.."
+        self.is_discovered = False
+        self.is_discovered = False
+        self.paralyze_phrase = "None"
+
+
+# monster dictionaries. keys correspond to difficulty
 monster_dict = {
     1: [Quasit, Kobold, Cultist, Goblin, Skeleton, WingedKobold],
-    2: [Shadow, Drow, Troglodyte, Orc, Ghoul]
+    2: [Shadow, Drow, Troglodyte, Orc, Ghoul],
+    3: [Specter]
+}
+undead_monster_dict = {
+    1: [Skeleton],
+    2: [Shadow, Drow, Ghoul],
+    3: [Specter]
 }
 # For monster hit points..take hit dice and add (constitution modifier x number of hit dice).
 # For example, if a monster has a Constitution of 12 (+1 modifier) and 2d8 Hit Dice, it has 2d8 + 2 Hit Points

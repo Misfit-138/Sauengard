@@ -46,6 +46,7 @@ class Dungeon1(Dungeon):
         #self.boss = Shadow()
         #self.king = Orc()
         self.barrier_name = "wall of smooth, precisely quarried stone"
+        self.altar = (1, 2)
         self.throne = (2, 3)
         self.throne2 = (2, 4)
         self.fountain = (3, 3)
@@ -53,7 +54,7 @@ class Dungeon1(Dungeon):
         self.teleporter = (4, 3)
         self.teleporter2 = (4, 4)
         self.teleporter_landing = (1, 3)  # NA for level one
-        self.staircase = (1, 3)  # same as start...get rid of start?
+        self.staircase = (18, 3)  # same as start...get rid of start?
         self.elevator = (5, 4)  # NA for level one
         self.elevator_landing = (5, 4)  # NA for level one
         self.pit = (1, 4)
@@ -126,6 +127,7 @@ class Dungeon2(Dungeon):
         #self.boss = Shadow()
         #self.king = Orc()
         self.barrier_name = "wall comprised of smooth stone"
+        self.altar = (1, 2)
         self.throne = (2, 3)
         self.throne2 = (2, 4)
         self.fountain = (3, 3)
@@ -202,6 +204,7 @@ class Dungeon3(Dungeon):
         #self.boss = Shadow()
         #self.king = Orc()
         self.barrier_name = "wall comprised of smooth stone"
+        self.altar = (1, 2)
         self.throne = (2, 3)
         self.throne2 = (2, 4)
         self.fountain = (3, 3)

@@ -37,7 +37,7 @@ import pickle
 from player_module_testing import *
 from monster_module import *
 from typing_module import *
-import random
+#import random
 import os
 import winsound
 from dungeons import *
@@ -236,6 +236,7 @@ while True:
             else:
                 print("You enter the dungeon..")
             time.sleep(1)
+            player_1.hud()
             dungeon_theme()
 
             # DUNGEON NAVIGATION LOOP:
@@ -282,8 +283,9 @@ while True:
                 # player_1.loot()  # for testing
                 # encounter = dice_roll(1, 20)
 
-                if player_1.position == 0:
+                if player_1.position == 0:  # initialization position
                     print(player_1.dungeon.intro)
+                    player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # testing
                 # 'continue' means you do not waste a turn. just add dungeon_description()
 
                 dungeon_command = input(
@@ -355,7 +357,7 @@ while True:
                         player_1.coordinates = (player_1.x, player_1.y)
                         player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]
                         # player_1.event_logic()
-                        pause()
+                        #pause()
                         # continue
                     if dungeon_command == 'map':
                         player_1.display_map(player_1.dungeon.player_grid)  #
@@ -369,10 +371,15 @@ while True:
                 # **********************************************************************************************>>>>
                 player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
                 player_1.coordinates = (player_1.x, player_1.y)  #
+                #encounter = player_1.event_logic()
                 encounter = encounter_logic()
                 # possible_encounter = player_1.event_logic()
-                if player_1.event_logic() == "King Boss":
+                event = player_1.event_logic()
+                if event == "King Boss":
                     encounter = 98
+                elif event == "Undead Prophet":
+                    encounter = 97
+                #print(encounter)
                 player_1.regenerate()  # put this first-
                 player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
                 player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
@@ -383,13 +390,13 @@ while True:
                 player_1.dungeon_description()  # this seems to work best when put last
 
                 if player_1.position == "E":
-                    monster = player_1.dungeon.boss
+                    #monster = player_1.dungeon.boss
                     encounter = 99  # dungeon level boss conditional
                     player_1.next_dungeon()
                 # ***********************************************************************************************>>>>
                 # eventually, make encounter a returned boolean from navigation function?
                 if encounter < 10 or encounter > 20:
-                    monster = ""
+                    monster = ""  # just to prevent monster from being undefined
                     # monster dictionary imported from monster module. keys correspond to difficulty
                     # in proximity to monster loop contains battle loop within it
                     in_proximity_to_monster = True
@@ -406,18 +413,26 @@ while True:
                             # monster = Specter()
                             monster = player_1.regular_monster_generator()
                         # monster = Drow()  # testing
-                        elif encounter == 99:  # level exit boss fight. make these uniques with names and epitaphs
+                        elif encounter == 99:  # level exit boss fight. make these uniques with names and epithets
                             monster = player_1.exit_boss_generator()
                             gong()
                             sleep(4)
                             boss_battle_theme()
                             pause()
                             player_1.hud()
-                        elif encounter == 98:
+                        elif encounter == 98:  # undead king
                             monster = player_1.king_monster_generator()
                             gong()
                             sleep(4)
                             mountain_king_theme()
+                            pause()
+                            player_1.hud()
+                        elif encounter == 97:  # undead prophet
+                            print(f"This should call prophet")
+                            monster = player_1.undead_prophet_generator()
+                            gong()
+                            sleep(4)
+                            dungeon_theme()
                             pause()
                             player_1.hud()
                         print(discovered_monsters)  # remove after testing

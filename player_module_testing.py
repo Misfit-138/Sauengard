@@ -10,8 +10,7 @@ from dungeons import *
 # from main_testing import dungeon_theme
 
 # from typing_module import typing
-from monster_module import monster_dict, undead_monster_dict
-
+from monster_module import monster_dict, undead_monster_dict, king_boss_dict
 
 '''Target
 Identify your target to the table. 
@@ -622,6 +621,10 @@ class TownPortalImplements:
 scroll_of_town_portal = TownPortalImplements()
 
 
+def undead_prophet_returns():
+    return "Undead Prophet"
+
+
 def king_returns():
     return "King Boss"
 
@@ -629,6 +632,7 @@ def king_returns():
 def nothing_happens():
     print(f"Nothing happens....")
     pause()
+    # encounter = dice_roll(1, 20)
     return
 
 
@@ -715,7 +719,7 @@ class Player:
                 self.hit_points = self.maximum_hit_points
             print(f"You regenerate + {regeneration}")  # remove after testing
             sleep(1)
-            return
+        return
 
     def hud(self):
         os.system('cls')
@@ -1064,6 +1068,30 @@ class Player:
         regular_monster = regular_monster_cls()
         return regular_monster
 
+    def undead_prophet_generator(self):
+        rndm_prophet_names = ['Tacium', 'Amarrik', 'Arynd', 'Beldonnor', 'Farrendal',
+                              'Dinenlell', 'Jornav', 'Tyrne', 'Fenlor', 'Jagod', 'Borell',
+                              'Ehrnador', 'Thaymorro', 'Gorrel', 'Aureus', 'Silson',
+                              'Hahrus', 'Astorem', 'Cordast', 'Brendorin', 'Meradorn',
+                              'Gorrikor', 'Nannukis', 'Borrodred', 'Metalbeard', 'Geffenmor',
+                              'Jorrbrialus', 'Koffengen', 'Tyrus', 'Tybrius', 'Tyrrendor',
+                              'Forendilus']
+        rndm_epithets = ['of the Evil Wisdom', 'the Lesser', 'the Greater', 'the Fierce', 'of the Eleven Elders',
+                         'of the Twelve', 'of the Fell Elders', 'the Mad',
+                         'of the Elders', 'the Fallen', 'the Insane', 'the Mad Magistrate',
+                         'the Grand King-Priest', 'of the Seven Mages', 'the Bloodsoaked',
+                         'the Accursed', 'the Abandoned', 'the Absolutist', 'the Avenger', 'of the Seven Horns',
+                         'the Blackhearted', 'the Blind', 'the Bloodthirsty', 'the Conqueror', 'the Cruel',
+                         'the Damned', 'the Foul', 'the Foulest'
+                         ]
+        monster_key = (self.level + 1)
+        monster_cls = random.choice(undead_monster_dict[monster_key])
+        undead_prophet = monster_cls()
+        name = random.choice(rndm_prophet_names)
+        epithet = random.choice(rndm_epithets)
+        print(f"The undead prophet, {name} {epithet} returns!")
+        return undead_prophet
+
     def exit_boss_generator(self):
         monster_key = (self.level + 1)
         monster_cls = random.choice(monster_dict[monster_key])
@@ -1074,10 +1102,26 @@ class Player:
         return exit_boss
 
     def king_monster_generator(self):
-        monster_key = (self.level + 1)
-        monster_cls = random.choice(undead_monster_dict[monster_key])
+        rndm_king_names = ['Tactum', 'Amarrik', 'Aryn', 'Baldrick', 'Farrendal',
+                           'Dinenlell', 'Jorn', 'Tyrne', 'Fen', 'Jagod', 'Bevel',
+                           'Elrik', 'Thayadore', 'Grummthel', 'Aureus', 'Silson',
+                           'Hahr', 'Astor', 'Cordast', 'Breckenborn', 'Megarrd',
+                           'Gorrik', 'Nannuk', 'Borrodred', 'Metalbeard', 'Geffen',
+                           'Jortindale', 'Koffgen', 'Tyrus', 'Tybrius', 'Tyr',
+                           'Hammersthorn']
+        rndm_epithets = ['the Wise', 'the Lesser', 'the Greater', 'the Fierce', 'of the Eleven', 'of the Twelve',
+                         'of the Elders', 'the Brave', 'the Insane', 'the Great', 'the Grand Magistrate',
+                         'the Grand King-Priest', 'of the Seven Riddles', 'the Strong', 'the Able', 'the Bloodsoaked',
+                         'the Accursed', 'the Abandoned', 'the Absolutist', 'the Avenger', 'the Battle-weary',
+                         'the Blackhearted', 'the Blind', 'the Bloodthirsty', 'the Conqueror', 'the Cruel',
+                         'the Crusader', 'the Damned'
+                         ]
+        monster_key = self.level
+        monster_cls = random.choice(king_boss_dict[monster_key])
         king_monster = monster_cls()
-        print(f"The {king_monster.name} king returns!")
+        name = random.choice(rndm_king_names)
+        epithet = random.choice(rndm_epithets)
+        print(f"The undead King {name} {epithet} returns!")
         return king_monster
 
     def monster_likes_you(self, monster_name, monster_intel):
@@ -1108,7 +1152,6 @@ class Player:
                 print(f"He enhances your weapon damage bonus to + {self.wielded_weapon.damage_bonus}!")
                 pause()
                 return True
-
         else:
             return False
 
@@ -1141,7 +1184,7 @@ class Player:
             elif self.potions_of_strength > 0 or self.potions_of_healing > 0 or self.town_portals > 0 or self.elixirs > 0:
                 item_string = ""
                 # Define list of attributes you are allowed to change
-                self_dict = self.__dict__  # create variable as actual copy of player dict attribute
+                self_dict = self.__dict__  # create self_dict variable as actual copy of player dict attribute
                 stealing_lst = []
                 # the working dict and 'for' loop just takes the place of many 'if:' statements
                 working_dict = {'potions_of_strength': self.potions_of_strength,
@@ -1318,7 +1361,6 @@ class Player:
                 return False
 
     def swing(self, monster_name, monster_armor_class):
-        # add evade logic
         strength_bonus = 1
         if self.potion_of_strength_effect:
             strength_bonus = 1.5  # round(self.strength * .5)
@@ -1394,6 +1436,7 @@ class Player:
         if evade_success + self.dexterity_modifier + self.stealth >= monster_dexterity or evade_success == 20:
             print(f"You successfully evade the {monster_name}!")
             pause()
+            self.hud()
             return True
         else:
             print(f"The {monster_name} swiftly blocks your escape!")
@@ -1921,7 +1964,7 @@ class Player:
 
                 try:
                     print(f"Your gold: {self.gold} GP")
-                    sell_or_exit = input("(S)ell, (L)iquidate entire armory, or go (B)ack: ").lower()
+                    sell_or_exit = input("(S)ell items, (L)iquidate entire contents of pack, or go (B)ack: ").lower()
                     if sell_or_exit not in ('s', 'l', 'b'):
                         cls()
                         # self.hud()
@@ -2041,7 +2084,7 @@ class Player:
             # (self.pack[each_category]).clear()
         total = sum(liquidate_lst)
         print(f"Total: {total}")
-        confirm_liquidate = input(f"Sell everything for {total} GP? ")
+        confirm_liquidate = input(f"Sell everything in your dungeoneer's pack for {total} GP? ")
         if confirm_liquidate == 'y':
             for each_category in item_type_lst:
                 (self.pack[each_category]).clear()
@@ -2247,7 +2290,7 @@ class Player:
         if self.ring_of_prot.name != 'No Ring':
             print(f"A Ring of Protection + {self.ring_of_prot.protect} ")
         print(f"On your belt, you are carrying:")
-        print(f"A coil of rope")
+        print(f"A coil of rope")  # like indiana jones and his whip.
         if self.town_portals > 0 or self.potions_of_healing > 0 or self.potions_of_strength > 0 or self.elixirs > 0:
             print(f"{self.potions_of_strength} Potions of Strength")
             print(f"{self.potions_of_healing} Potions of Healing")
@@ -2652,7 +2695,7 @@ class Player:
                     print(f"You grab it..")
                     self.potions_of_healing += 1
                     pause()
-                    #continue
+                    # continue
                 return self.dungeon_description()
 
     def increase_random_ability(self):
@@ -2695,8 +2738,87 @@ class Player:
         self.calculate_modifiers()
         pause()
 
+
+
+    def altar_event(self):
+        altar_discovery = f"level {self.dungeon.level} altar"
+        if altar_discovery not in self.discovered_interactives:
+            rndm_occurrence_lst = [undead_prophet_returns, self.increase_random_ability,
+                                   undead_prophet_returns, self.increase_lowest_ability,
+                                   self.lose_items, undead_prophet_returns, self.heal_event, undead_prophet_returns]
+            rndm_occurrence = random.choice(rndm_occurrence_lst)
+
+            rndm_altar_descriptions = ['There is a worn and crumbling altar of stone here. Carved into its\n'
+                                       'cold surface are faded symbols from ancient religions.',
+                                       'Here stands an altar of stone which has been abandoned long ago.\n'
+                                       'Ancient religious symbols, now illegible, cover its cold surface.',
+                                       'There is a mysterious, ancient, crumbling stone altar here.\n'
+                                       'Inscribed upon its surface are countless half-worn\n'
+                                       'religious symbols left behind by civilizations past.']
+            rndm_altar_description = random.choice(rndm_altar_descriptions)
+            print(f"{rndm_altar_description}")
+            print(f"Along its sides are embedded ornate golden sculptures.")
+            print(f"You shudder to think of the innocent lives lost to its many\n"
+                  f"disgusting false prophets and priests, now long dead.")
+            # pause()
+            # if throne_discovery not in self.discovered_interactives:
+            throne_action = input(
+                f"(R)emove gold, attempt to (D)emolish the altar, (V)andalize,  or (I)gnore: ").lower()
+            if throne_action == 'v':
+                print(
+                    f"With the hilt of your {self.wielded_weapon.name} you violate the ancient site\n"
+                    f"with a bold warning message to any who would dare to revisit such evils upon the world...")
+                sleep(1.5)
+                print(f"As you finish, you stand to admire your work..")
+                sleep(1.5)
+                return rndm_occurrence()
+            elif throne_action == 'r':
+                difficulty_class = 12
+                remove_gold_roll = dice_roll(1, 20)
+                if remove_gold_roll > difficulty_class:
+                    gold_value = (random.randint(1, 5) * self.dungeon.level)
+                    print(f"The sculpture comes out, though not without difficulty or damage.")
+                    sleep(1)
+                    print(f"It is worth {gold_value} GP!")
+                    self.gold += gold_value
+                    pause()
+                    return
+                else:
+                    return undead_prophet_returns()
+            elif throne_action == 'd':
+                print(f"Removing the hammer from your pack, you begin hacking at the crumbling stone..")
+                primary_difficulty_class = 15
+                demolish_roll = dice_roll(1, 20)
+                if demolish_roll + self.strength_modifier > primary_difficulty_class:  # strength to topple
+                    print(f"You succeed in toppling the upper portion!")
+                    sleep(1)
+                    finish = input(f"Do you want to continue your work, completely destroying it? (y/n): ").lower()
+                    if finish == 'y':
+                        secondary_difficulty_class = 10
+                        finish_roll = dice_roll(1, 20)
+                        if finish_roll + self.intelligence_modifier > secondary_difficulty_class:  # intel to complete
+                            print(f"You successfully demolish the altar!")
+                            sleep(1.5)
+                            self.discovered_interactives.append(altar_discovery)
+                            pause()
+                            self.hud()
+                            return self.increase_random_ability()
+                        else:
+                            return undead_prophet_returns()  # unable to finish
+                    else:
+                        return  # player chooses not to finish
+                else:
+                    #print("calling undead prophet returns..")
+                    return undead_prophet_returns()  # player unable to partially demolish
+            else:
+                return  # ignore the altar
+        else:
+            print(f"The remains of a demolished ancient altar are here..Who would dare?")
+            pause()
+            return
+
     def throne_event(self):
-        throne_discovery = f"level {self.dungeon.level} throne"
+        # throne_discovery = f"level {self.dungeon.level} throne"
         rndm_occurrence_lst = [nothing_happens, king_returns, self.increase_random_ability, self.teleporter_event,
                                nothing_happens, king_returns, self.increase_lowest_ability, self.lose_items,
                                king_returns, nothing_happens, self.heal_event, king_returns]
@@ -2710,10 +2832,10 @@ class Player:
                                     'runes stands here.']
         rndm_throne_description = random.choice(rndm_throne_descriptions)
         print(f"{rndm_throne_description}")
-        print(f"The runes are of many unique origins...")
-        print(f"It was undoubtedly stolen and re-claimed multiple times from several different ancient kings.")
-        pause()
-        #if throne_discovery not in self.discovered_interactives:
+        print(f"Judging by the sheer number of unique origins of the runes, this throne was undoubtedly")
+        print(f"stolen and reclaimed multiple times from many different ancient kings, now long dead.")
+        # pause()
+        # if throne_discovery not in self.discovered_interactives:
         throne_action = input(f"(P)ry gems, attempt to (R)ead the Runes, (S)it on the throne or (I)gnore: ").lower()
         if throne_action == 's':
             print(f"You sit on the throne...")
@@ -2844,10 +2966,11 @@ class Player:
             pause()
             return
         else:
-            print("Nothing happens...")
-            pause()
+            return nothing_happens()
+            # print("Nothing happens...")
+            # pause()
             # sleep(2)
-            return
+            # return
 
     def fountain_event(self):
         # WHITE GREEN CLEAR RED BLACK
@@ -3007,7 +3130,8 @@ class Player:
         # function values are returned to the main program
         # using 'return event_function()'
         self.coordinates = (self.x, self.y)
-        event_dict = {self.dungeon.throne: self.throne_event,
+        event_dict = {self.dungeon.altar: self.altar_event,
+                      self.dungeon.throne: self.throne_event,
                       self.dungeon.throne2: self.throne_event,
                       self.dungeon.fountain: self.fountain_event,
                       self.dungeon.fountain2: self.fountain_event,
@@ -3019,7 +3143,9 @@ class Player:
         if self.coordinates in event_dict.keys():
             event_function = (event_dict[self.coordinates])  # (event_dict[self.coordinates])
             return event_function()
-
+        # else:
+        #    encounter = dice_roll(1, 20)
+        #    return encounter
         # NAVIGATION
 
     def dungeon_description(self):

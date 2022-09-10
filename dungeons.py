@@ -54,7 +54,7 @@ class Dungeon1(Dungeon):
         self.teleporter = (4, 3)
         self.teleporter2 = (4, 4)
         self.teleporter_landing = (1, 3)  # NA for level one
-        self.staircase = (18, 3)  # same as start...get rid of start?
+        self.staircase = (1, 3)  # same as start...get rid of start?
         self.elevator = (5, 4)  # NA for level one
         self.elevator_landing = (5, 4)  # NA for level one
         self.pit = (1, 4)

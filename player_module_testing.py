@@ -10,7 +10,8 @@ from dungeons import *
 # from main_testing import dungeon_theme
 
 # from typing_module import typing
-from monster_module import monster_dict, undead_monster_dict, king_boss_dict
+from monster_module import monster_dict, undead_monster_dict, SkeletonKing, \
+    ZombieProphet, king_boss_list, undead_prophet_list
 
 '''Target
 Identify your target to the table. 
@@ -666,7 +667,7 @@ class Player:
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
         self.proficiency_bonus = 2  # 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.maximum_hit_points = 1000 + self.constitution_modifier
+        self.maximum_hit_points = 10 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.is_paralyzed = False
         self.cloak = canvas_cloak
@@ -1033,9 +1034,10 @@ class Player:
             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\dungeon_theme_2.wav',
                                winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
             self.calculate_proficiency_bonus()  # according to DnD 5e
-            gain_hit_points = dice_roll(1, self.hit_dice) + self.constitution_modifier
-            if gain_hit_points < 1:
-                gain_hit_points = 1
+            gain_hit_points1 = dice_roll(1, self.hit_dice) + self.constitution_modifier  # hp increase method 1
+            gain_hit_points2 = 6 + self.constitution_modifier  # hp increase method 2
+            hit_point_list = [gain_hit_points1, gain_hit_points2]
+            gain_hit_points = max(hit_point_list)  # the higher of method 1 and 2
             self.hit_points += gain_hit_points  # you heal and gain max hp (previous HP + Hit Die roll + CON modifier)
             self.maximum_hit_points += gain_hit_points
             print(f"You heal, and gain {gain_hit_points} maximum hit points")
@@ -1081,14 +1083,21 @@ class Player:
                          'of the Elders', 'the Fallen', 'the Insane', 'the Mad Magistrate',
                          'the Grand King-Priest', 'of the Seven Mages', 'the Bloodsoaked',
                          'the Accursed', 'the Abandoned', 'the Absolutist', 'the Avenger', 'of the Seven Horns',
-                         'the Blackhearted', 'the Blind', 'the Bloodthirsty', 'the Conqueror', 'the Cruel',
+                         'the Blackhearted', 'the Blind', 'the Bloodthirsty', 'the Cruel',
                          'the Damned', 'the Foul', 'the Foulest'
                          ]
-        monster_key = (self.level + 1)
-        monster_cls = random.choice(undead_monster_dict[monster_key])
-        undead_prophet = monster_cls()
+        #monster_key = self.level
+        #monster_cls = random.choice(undead_prophet_dict[monster_key])
+        #undead_prophet = monster_cls()
+        #return undead_prophet
+        undead_prophet = random.choice(undead_prophet_list)
         name = random.choice(rndm_prophet_names)
         epithet = random.choice(rndm_epithets)
+        undead_prophet.proper_name = f"{name} {epithet}"
+        undead_prophet.hit_points = math.ceil(self.hit_points * 1.5)
+        undead_prophet.number_of_hd = self.level
+        undead_prophet.weapon_bonus = self.wielded_weapon.damage_bonus
+        undead_prophet.experience_award = 300 * self.level
         print(f"The undead prophet, {name} {epithet} returns!")
         return undead_prophet
 
@@ -1102,7 +1111,7 @@ class Player:
         return exit_boss
 
     def king_monster_generator(self):
-        rndm_king_names = ['Tactum', 'Amarrik', 'Aryn', 'Baldrick', 'Farrendal',
+        rndm_king_names = ['Tactum', 'Amarrik', 'Aaryn', 'Baldrick', 'Farrendal',
                            'Dinenlell', 'Jorn', 'Tyrne', 'Fen', 'Jagod', 'Bevel',
                            'Elrik', 'Thayadore', 'Grummthel', 'Aureus', 'Silson',
                            'Hahr', 'Astor', 'Cordast', 'Breckenborn', 'Megarrd',
@@ -1116,12 +1125,19 @@ class Player:
                          'the Blackhearted', 'the Blind', 'the Bloodthirsty', 'the Conqueror', 'the Cruel',
                          'the Crusader', 'the Damned'
                          ]
-        monster_key = self.level
-        monster_cls = random.choice(king_boss_dict[monster_key])
-        king_monster = monster_cls()
+        # monster_key = self.level
+        # monster_cls = random.choice(king_boss_dict[monster_key])
+        # king_monster = monster_cls
+        # king_monster = SkeletonKing()
+        king_monster = random.choice(king_boss_list)
         name = random.choice(rndm_king_names)
         epithet = random.choice(rndm_epithets)
-        print(f"The undead King {name} {epithet} returns!")
+        king_monster.proper_name = f"{name} {epithet}"
+        king_monster.hit_points = math.ceil(self.hit_points * 1.5)
+        king_monster.number_of_hd = self.level
+        king_monster.weapon_bonus = self.wielded_weapon.damage_bonus
+        king_monster.experience_award = 300 * self.level
+        print(f"The undead King {king_monster.proper_name} returns!")
         return king_monster
 
     def monster_likes_you(self, monster_name, monster_intel):
@@ -1241,7 +1257,7 @@ class Player:
                 poisoned = "poisoned,"
             else:
                 poisoned = ""
-            print(f"You are {necrotic} {poisoned} unconscious and moribund!")
+            print(f"You are unconscious and moribund!")
             sleep(1)
             print(f"Death saving throw!")
             sleep(1)
@@ -1434,6 +1450,8 @@ class Player:
         sleep(1)
         evade_success = dice_roll(1, 20)
         if evade_success + self.dexterity_modifier + self.stealth >= monster_dexterity or evade_success == 20:
+            print(f"Your stealth abilities have served you well!")
+            sleep(1)
             print(f"You successfully evade the {monster_name}!")
             pause()
             self.hud()
@@ -2722,6 +2740,30 @@ class Player:
         self.calculate_modifiers()
         pause()
 
+    def decrease_random_ability(self):
+        # I was unable to come up with this code on my own.
+        # Thanks to Angus Nicolson from Stack Overflow!
+        # By editing player.__dict__ directly,
+        # or a variable which you derived from it (ability_dict in the code below),
+        # you can edit your object's attributes.
+        # create a dictionary from self.__dict__
+        # Note: Editing ability_dict_subset will not change the object's attributes,
+        # because it was made from a dict comprehension.
+        # You need to edit self.__dict__ or ability_dict.
+        ability_dict = self.__dict__
+        # Define list of attributes you are allowed to change
+        attributes = ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"]
+        # ability_dict_subset = {k: v for k, v in ability_dict.items() if k in attributes}
+        ability_dict_subset = {key: value for key, value in ability_dict.items() if key in attributes}
+        # Choose random attribute name
+        random_attribute = random.choice(list(ability_dict_subset.keys()))
+        print(f"You feel as though something has been taken from you at the most visceral level..")
+        sleep(1.5)
+        print(f"Your {random_attribute} has dropped!")
+        ability_dict[random_attribute] -= 1
+        self.calculate_modifiers()
+        pause()
+
     def increase_lowest_ability(self):
         ability_dict = self.__dict__
         # Define list of attributes you are allowed to change
@@ -2738,12 +2780,26 @@ class Player:
         self.calculate_modifiers()
         pause()
 
-
+    def decrease_lowest_ability(self):
+        ability_dict = self.__dict__
+        # Define list of attributes you are allowed to change
+        attributes = ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"]
+        ability_dict_subset = {key: value for key, value in ability_dict.items() if key in attributes}
+        # Find the minimum attribute name
+        min_attribute = min(ability_dict_subset, key=ability_dict_subset.get)
+        #print()  # remove after testing
+        print(f"Weird discomfort surges through your body..")
+        sleep(1.5)
+        print(f"You have lost {min_attribute}!")
+        # subtract one from min attribute
+        ability_dict[min_attribute] -= 1
+        self.calculate_modifiers()
+        pause()
 
     def altar_event(self):
         altar_discovery = f"level {self.dungeon.level} altar"
         if altar_discovery not in self.discovered_interactives:
-            rndm_occurrence_lst = [undead_prophet_returns, self.increase_random_ability,
+            rndm_occurrence_lst = [undead_prophet_returns, self.increase_random_ability, self.decrease_random_ability,
                                    undead_prophet_returns, self.increase_lowest_ability,
                                    self.lose_items, undead_prophet_returns, self.heal_event, undead_prophet_returns]
             rndm_occurrence = random.choice(rndm_occurrence_lst)
@@ -2821,7 +2877,8 @@ class Player:
         # throne_discovery = f"level {self.dungeon.level} throne"
         rndm_occurrence_lst = [nothing_happens, king_returns, self.increase_random_ability, self.teleporter_event,
                                nothing_happens, king_returns, self.increase_lowest_ability, self.lose_items,
-                               king_returns, nothing_happens, self.heal_event, king_returns]
+                               king_returns, nothing_happens, self.heal_event, king_returns, self.decrease_random_ability,
+                               self.decrease_lowest_ability]
         rndm_occurrence = random.choice(rndm_occurrence_lst)
 
         rndm_throne_descriptions = ['There is a magnificent, gem-encrusted throne of gold here. Throughout its\n'
@@ -2990,8 +3047,8 @@ class Player:
         drink = input(f"Do you wish to drink? ").lower()
         if drink == 'y':
             rndm_occurrence_lst = [nothing_happens, self.poison, self.increase_random_ability,
-                                   self.lose_items,
-                                   self.heal_event, nothing_happens]
+                                   self.lose_items, self.decrease_random_ability, self.increase_lowest_ability,
+                                   self.heal_event, nothing_happens, self.decrease_lowest_ability]
             rndm_occurrence = random.choice(rndm_occurrence_lst)
             rndm_occurrence()
         else:

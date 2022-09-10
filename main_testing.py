@@ -307,7 +307,9 @@ while True:
                     else:
                         continue
                 elif dungeon_command == 'g':
-                    player_1.drink_potion_of_strength()
+                    if not player_1.drink_potion_of_strength():
+                        continue  # if you have no potions, don't waste a turn!
+                    # player_1.drink_potion_of_strength()
                     # player_1.potion_of_strength_uses = 0
                     # continue
                 elif dungeon_command == 'q':
@@ -489,8 +491,12 @@ while True:
                             if not in_proximity_to_monster:
                                 break
                             player_1.hud()
-                            print(f"Lvl {monster.level} {monster.name} {monster.hit_points} hp {monster.number_of_hd}"
-                                  f"d{monster.hit_dice}")
+                            if monster.proper_name == "None":
+                                print(f"Lvl {monster.level} {monster.name} {monster.hit_points} hp "
+                                      f"{monster.number_of_hd}d{monster.hit_dice}")
+                            else:
+                                print(f"Lvl {monster.level} {monster.proper_name} {monster.hit_points} hp "
+                                      f"{monster.number_of_hd}d{monster.hit_dice}")
                             battle_choice = input("(F)ight, (H)ealing potion, (G)iant Strength potion, (C)ast or "
                                                   "(E)vade\nF/H/G/C/E --> ").lower()
                             if battle_choice == "e":
@@ -509,8 +515,9 @@ while True:
                                     player_1.drink_healing_potion()
                                     # time.sleep(1)
                                 elif battle_choice == 'g':
-                                    player_1.drink_potion_of_strength()
-                                    player_1.potion_of_strength_uses = 0
+                                    if not player_1.drink_potion_of_strength():
+                                        continue  # if you have no potions, don't waste a turn!
+
                                 # ********MONSTER TURN AFTER YOU SWIG POTION***********************
                                 # if not monster.check_dead():
                                 player_1.hud()

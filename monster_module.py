@@ -147,6 +147,7 @@ class Monster:
     def __init__(self):
         self.monster = "Super class"
         self.name = ""
+        self.proper_name = ""
         self.level = 0
         self.experience_award = 0
         self.gold = 0
@@ -363,6 +364,7 @@ class Quasit(Monster):
         super().__init__()
         self.level = 1
         self.name = "Quasit"
+        self.proper_name = "None"
         self.experience_award = 25  # MM says it should be 200 exp?!
         self.gold = random.randint(2, 10)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -418,6 +420,7 @@ class Kobold(Monster):
         super().__init__()
         self.level = 1
         self.name = "Kobold"
+        self.proper_name = "None"
         self.experience_award = 25
         self.gold = random.randint(2, 15)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -470,6 +473,7 @@ class Cultist(Monster):
         super().__init__()
         self.level = 1
         self.name = "Cultist"
+        self.proper_name = "None"
         self.experience_award = 50
         self.gold = random.randint(2, 20)  # self.level * 373 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -525,6 +529,7 @@ class Goblin(Monster):
         super().__init__()
         self.level = 1
         self.name = "Goblin"
+        self.proper_name = "None"
         self.experience_award = self.level * 50
         self.gold = random.randint(2, 25)  # self.level * 200 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -577,6 +582,7 @@ class WingedKobold(Monster):
         super().__init__()
         self.level = 1
         self.name = "Winged Kobold"
+        self.proper_name = "None"
         self.experience_award = 50
         self.gold = random.randint(2, 15)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -629,6 +635,7 @@ class Shadow(Monster):
         super().__init__()
         self.level = 2
         self.name = "Shadow"
+        self.proper_name = "None"
         self.experience_award = 100
         self.gold = random.randint(5, 10)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -671,7 +678,7 @@ class Shadow(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "It thrusts forward and attacks, attempting to envelope you in its dark form!!"
         self.quantum_attack_1 = 1
-        self.quantum_attack_1_phrase = "Its form slithers and strikes at you with its terrible outstretched claws\n" \
+        self.quantum_attack_1_phrase = "Its form slithers and strikes at you with terrible outstretched claws\n" \
                                        "in perfect silence. The quantum necrotic aura of its form sends\n" \
                                        "a shockwave through you! "
         self.quantum_attack_2 = 1
@@ -705,6 +712,7 @@ class ShadowKing(Monster):
         super().__init__()
         self.level = 2
         self.name = "Shadow King"
+        self.proper_name = "None"
         self.experience_award = 100
         self.gold = random.randint(5, 10)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -747,7 +755,7 @@ class ShadowKing(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "It thrusts forward and attacks, attempting to envelope you in its dark form!!"
         self.quantum_attack_1 = 1
-        self.quantum_attack_1_phrase = "Its form slithers and strikes at you with its terrible outstretched claws\n" \
+        self.quantum_attack_1_phrase = "Its form slithers and strikes at you with terrible outstretched claws\n" \
                                        "in perfect silence. The quantum necrotic aura of its form sends\n" \
                                        "a shockwave through you! "
         self.quantum_attack_2 = 1
@@ -774,7 +782,6 @@ class ShadowKing(Monster):
                                "feel your motor skills quivering.."
         self.is_discovered = False
 
-    # name = "Shadow"
 
 class Skeleton(Monster):
 
@@ -782,6 +789,7 @@ class Skeleton(Monster):
         super().__init__()
         self.level = 1  # I think level 1 is more appropriate.
         self.name = "Skeleton"
+        self.proper_name = "None"
         self.experience_award = 100
         self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -833,15 +841,70 @@ class Skeleton(Monster):
     # name = "Skeleton"
 
 
+class ZombieProphet(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 2
+        self.name = "Zombie Prophet"
+        self.proper_name = "None"
+        self.experience_award = 200
+        self.gold = random.randint(6, 22)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = random.randint(12, 15)
+        self.dexterity = random.randint(11, 15)
+        self.constitution = random.randint(14, 16)
+        self.intelligence = random.randint(5, 7)
+        self.wisdom = random.randint(7, 9)
+        self.charisma = random.randint(5, 6)
+        self.can_paralyze = False
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 1
+        self.undead = True
+        self.quantum_energy = False
+        # self.human_player_level = human_player_level
+        self.difficulty_class = 2
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 2
+        self.hit_dice = 10  #
+        self.number_of_hd = 1  #
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.hit_points = random.randint(15, 19) + self.constitution_modifier
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.armor_class = random.randint(12, 12)
+        self.attack_1 = 0  # attack bonus
+        self.attack_1_phrase = "It strikes at you with unnerving strength and speed..."
+        self.attack_2 = 1
+        self.attack_2_phrase = "It strikes at you with arms flailing..."
+        self.attack_3 = 2
+        self.attack_3_phrase = "It darts forward with reckless abandon.."
+        self.attack_4 = 2
+        self.attack_4_phrase = "It thrusts forward with its heavy, iron sceptre!"
+        self.attack_5 = 3
+        self.attack_5_phrase = "It strikes wildly with its iron sceptre!!"
+        self.introduction = f"The ancient prophet rises from the ground. The once beautiful and exquisite\n" \
+                            f"garb now hangs off of rotten flesh in tatters and rags.\n" \
+                            f"The air bristles with Quantum Energy.."
+        self.is_discovered = False
+
+
 class SkeletonKing(Monster):
 
     def __init__(self):
         super().__init__()
-        self.level = 1  # I think level 1 is more appropriate.
+        self.level = 2
         self.name = "Skeleton King"
-        self.experience_award = 100
+        self.proper_name = "None"
+        self.experience_award = 200
         self.gold = random.randint(6, 22)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
-        self.weapon_bonus = 0
+        self.weapon_bonus = 2
         self.armor = 0
         self.shield = 0
         self.strength = random.randint(11, 13)
@@ -866,26 +929,24 @@ class SkeletonKing(Monster):
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)
-        self.hit_points = random.randint(15, 18) + self.constitution_modifier
+        self.hit_points = random.randint(17, 22) + self.constitution_modifier
         self.dexterity_modifier = round((self.dexterity - 10) / 2)
         self.wisdom_modifier = round((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
         self.attack_1 = 0  # attack bonus
-        self.attack_1_phrase = "It strikes at you with its shortsword..."
+        self.attack_1_phrase = f"He strikes at you with his longsword..."
         self.attack_2 = 1
-        self.attack_2_phrase = "It raises its shortsword and swings mightily.."
+        self.attack_2_phrase = f"He raises his longsword and swings mightily.."
         self.attack_3 = 2
-        self.attack_3_phrase = "It darts forward with unnerving speed, sword in bony hand.."
+        self.attack_3_phrase = f"He darts forward with unnerving speed, longsword in bony hand.."
         self.attack_4 = 2
-        self.attack_4_phrase = "It thrusts forward with its heavy, iron spear!"
+        self.attack_4_phrase = f"He thrusts forward with his heavy, iron spear!"
         self.attack_5 = 3
-        self.attack_5_phrase = "Reaching over its back, it produces a battle axe and strikes wildly!!"
+        self.attack_5_phrase = f"Reaching over its back, it produces a battle axe and strikes wildly!!"
         self.introduction = f"The ancient king rises in skeletal form. The once gleaming armor and weaponry now\n" \
                             f"clings wearily to his bony form as he raises sword and shield, taunting you to attack!\n" \
                             f"The air bristles with Quantum Energy.."
         self.is_discovered = False
-
-    # name = "Skeleton King"
 
 
 class Drow(Monster):
@@ -894,6 +955,7 @@ class Drow(Monster):
         super().__init__()
         self.level = 2
         self.name = "Drow"
+        self.proper_name = "None"
         self.experience_award = 100
         self.gold = random.randint(5, 12)  # self.level * 300 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -960,6 +1022,7 @@ class Troglodyte(Monster):
         super().__init__()
         self.level = 2
         self.name = "Troglodyte"
+        self.proper_name = "None"
         self.experience_award = 50
         self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 2
@@ -1012,6 +1075,7 @@ class Orc(Monster):
         super().__init__()
         self.level = 2
         self.name = "Orc"
+        self.proper_name = "None"
         self.experience_award = 100
         self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -1066,6 +1130,7 @@ class Ghoul(Monster):
         super().__init__()
         self.level = 2
         self.name = "Ghoul"
+        self.proper_name = "None"
         self.experience_award = 200
         self.gold = random.randint(6, 16)  # self.level * 103 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -1094,7 +1159,6 @@ class Ghoul(Monster):
         self.strength_modifier = round((self.strength - 10) / 2)
         self.constitution_modifier = round((self.constitution - 10) / 2)
         self.hit_points = random.randint(20, 24) + self.constitution_modifier
-        # self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier) + 1
         self.dexterity_modifier = round((self.dexterity - 10) / 2)
         self.wisdom_modifier = round((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 12)
@@ -1124,7 +1188,8 @@ class Specter(Monster):
         super().__init__()
         self.level = 2
         self.name = "Specter"
-        self.experience_award = 200
+        self.proper_name = "None"
+        self.experience_award = 250
         self.gold = random.randint(6, 16)  # self.level * 103 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
@@ -1191,6 +1256,79 @@ class Specter(Monster):
         self.paralyze_phrase = "None"
 
 
+class SpecterKing(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 2
+        self.name = "Specter King"
+        self.proper_name = "None"
+        self.experience_award = 500
+        self.gold = random.randint(6, 16)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = random.randint(13, 16)
+        self.dexterity = random.randint(12, 16)
+        self.constitution = random.randint(11, 13)
+        self.intelligence = random.randint(9, 11)
+        self.wisdom = random.randint(9, 11)
+        self.charisma = random.randint(10, 12)
+        self.can_paralyze = False
+        self.can_poison = False
+        self.necrotic = True
+        self.dot_multiplier = 2
+        self.undead = True
+        self.quantum_energy = True
+        self.human_player_level = 0
+        self.difficulty_class = 2
+        self.proficiency_bonus = 1  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 2
+        self.hit_dice = 8  #
+        self.number_of_hd = 3  #
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.hit_points = random.randint(25, 34) + self.constitution_modifier
+        # self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier) + 1
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.armor_class = random.randint(11, 12)
+        self.attack_1 = 0  # attack bonus
+        self.attack_1_phrase = "It places a cold, yet immaterial hand upon you for just a moment.."
+        self.attack_2 = 1
+        self.attack_2_phrase = "It extends a hand, which elongates into a horrible mist that thrusts toward you.. "
+        self.attack_3 = 2
+        self.attack_3_phrase = f"A cold, dreadful feeling overcomes you as the {self.name} looms over you, reaching\n" \
+                               f"out to embrace you within its deadly touch!"
+        self.attack_4 = 2
+        self.attack_4_phrase = "It rushes straight at you and phase-shifts. It re-appears behind you, ready to strike!!"
+        self.attack_5 = 3
+        self.attack_5_phrase = "It silently raises its hands, releasing dreadfully wicked energies!!"
+        self.quantum_attack_1 = 2
+        self.quantum_attack_1_phrase = "It releases weird draining energies from its outstretched hand!!"
+        self.quantum_attack_2 = 2
+        self.quantum_attack_2_phrase = "Dreadful black droplets dance over its form as it unleashes\n" \
+                                       "impossibly cold, white flames from both of its outstretched hands!!"
+        self.quantum_attack_3 = 2
+        self.quantum_attack_3_phrase = "Its empty eyes widen, as it rises up, harnessing the quantum energies and\n" \
+                                       "hurling a wall of black energy toward you!"
+        self.quantum_attack_4 = 3
+        self.quantum_attack_4_phrase = "Swirling around you in a confusing arc, it releases a mist\n" \
+                                       "of dark energy which envelopes you!"
+        self.quantum_attack_5 = 3
+        self.quantum_attack_5_phrase = "With muted malice, its arms elongate unnaturally, wildly entangling\n" \
+                                       "you in a storm of wicked forces!"
+        self.introduction = f"From out of nothingness, the Specter King materializes..A vile, undead form\n " \
+                            f"of fear-inspiring and unnatural horrors. Its ghostly form resembles its former\n" \
+                            f"royal greatness, but now its entire existence is a mere quantum-driven and\n" \
+                            f"endless nightmare of madness, devoid of any humanity. Upon seeing you, it silently\n" \
+                            f"approaches, its countenance twisted in insane thirst for your life-energy.."
+        self.is_discovered = False
+        self.paralyze_phrase = "None"
+
+
 # monster dictionaries. keys correspond to difficulty
 # create undead prophet classes and dictionary!****************************************
 monster_dict = {
@@ -1204,12 +1342,9 @@ undead_monster_dict = {
     2: [Shadow, Drow, Ghoul],
     3: [Specter]
 }
+undead_prophet_list = [ZombieProphet()]
+king_boss_list = [SkeletonKing(), ShadowKing(), SpecterKing()]
 
-king_boss_dict = {
-    1: [SkeletonKing],
-    2: [ShadowKing],
-    3: [Specter]
-}
 # For monster hit points..take hit dice and add (constitution modifier x number of hit dice).
 # For example, if a monster has a Constitution of 12 (+1 modifier) and 2d8 Hit Dice, it has 2d8 + 2 Hit Points
 # self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier)

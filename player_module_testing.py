@@ -1249,15 +1249,11 @@ class Player:
             # return True
             self.hud()
             if self.necrotic:
-                necrotic = "necrotic,"
+                print(f"You are necrotic, unconscious and moribund!")
+            elif self.poisoned:
+                print(f"You are poisoned, unconscious and moribund!")
             else:
-                necrotic = ""
-                # print(f"NECROTIC")
-            if self.poisoned:
-                poisoned = "poisoned,"
-            else:
-                poisoned = ""
-            print(f"You are unconscious and moribund!")
+                print(f"You are unconscious and moribund!")
             sleep(1)
             print(f"Death saving throw!")
             sleep(1)

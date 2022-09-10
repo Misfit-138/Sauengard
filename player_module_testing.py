@@ -1248,7 +1248,9 @@ class Player:
         else:
             # return True
             self.hud()
-            if self.necrotic:
+            if self.necrotic and self.poisoned:
+                print(f"You are necrotic, poisoned, unconscious and moribund!")
+            elif self.necrotic:
                 print(f"You are necrotic, unconscious and moribund!")
             elif self.poisoned:
                 print(f"You are poisoned, unconscious and moribund!")

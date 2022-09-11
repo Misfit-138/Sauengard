@@ -2180,6 +2180,9 @@ class Player:
             self.potion_of_strength_effect = True
             self.potions_of_strength -= 1
             self.potion_of_strength_uses = 0
+            if self.hit_points < self.maximum_hit_points:
+                heal_points = (self.maximum_hit_points * .66)
+                self.hit_points += heal_points
             pause()
             return self.potion_of_strength_effect
         else:

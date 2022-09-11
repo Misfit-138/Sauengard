@@ -857,9 +857,25 @@ class Player:
         return self.potion_of_strength_effect
 
     def calculate_modifiers(self):
+
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        # When your Constitution modifier increases by 1,
+        # your hit point maximum increases by 1 for each level you have attained.
+        before_con_mod = self.constitution_modifier
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        after_con_mod = self.constitution_modifier
+        if after_con_mod > before_con_mod:
+            print(f"Weird powers are stirred up within you...")
+            sleep(1)
+            self.maximum_hit_points += self.level
+            self.hit_points = self.maximum_hit_points
+            print(f"Your Constitution Modifier has increased from {before_con_mod} to {after_con_mod}!")
+            sleep(1)
+            print(f"You gain {self.level} maximum hit points!")
+            sleep(1)
+            print(f"You feel your vitality surge.")
+            sleep(1)
         self.intelligence_modifier = math.floor((self.intelligence - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
@@ -1448,7 +1464,7 @@ class Player:
         sleep(1)
         evade_success = dice_roll(1, 20)
         if evade_success + self.dexterity_modifier + self.stealth >= monster_dexterity or evade_success == 20:
-            print(f"Your stealth abilities have served you well!")
+            print(f"Your stealth and dexterity have served you well!")
             sleep(1)
             print(f"You successfully evade the {monster_name}!")
             pause()
@@ -1480,10 +1496,11 @@ class Player:
                 self.hud()
             print(f"Your gold: {self.gold} GP")
             chemist_choice = input(
-                "(P)urchase items, (S)ell quantum items, Display your (I)nventory, or (E)xit the chemist: ").lower()
-            if chemist_choice not in ('p', 's', 'i', 'e'):
-                continue
-            elif chemist_choice == 'p':
+                "(P)urchase quantum items, (S)ell quantum items, Display your (I)nventory, or "
+                "(E)xit the chemist: ").lower()
+            #if chemist_choice not in ('p', 's', 'i', 'e'):
+            #    continue
+            if chemist_choice == 'p':
                 self.buy_chemist_items()
                 continue
             elif chemist_choice == 's':
@@ -1719,7 +1736,7 @@ class Player:
         while True:
             self.hud()
             item_to_manage = input(
-                f"Manage (W)eapons, (A)rmor, (S)hields, (B)oots, (C)loaks, View your (I)nventory, or (E)xit: ")
+                f"Manage (W)eapons, (A)rmor, (S)hields, (B)oots, (C)loaks, View your (I)nventory, or (E)xit: ").lower()
             if item_to_manage == 'w':
                 self.item_management('Weapons', self.wielded_weapon)
                 # self.weapon_management()
@@ -1847,7 +1864,7 @@ class Player:
                             print("Invalid entry..")
                             sleep(1)
                             continue
-                        confirm_purchase = input(f"Purchase {sale_item.name} for {sale_item.buy_price} GP (y/n)? ")
+                        confirm_purchase = input(f"Purchase {sale_item.name} for {sale_item.buy_price} GP (y/n)? ").lower()
                         if confirm_purchase == 'y':
                             if self.gold >= sale_item.buy_price:
                                 if self.level >= sale_item.minimum_level:
@@ -2055,7 +2072,7 @@ class Player:
                         sleep(1)
                         continue
                     # sold_item = (self.pack[item_type_to_sell])[item_index_to_sell]
-                    confirm_sale = input(f"Sell the {sold_item.name} for {sold_item.sell_price} GP (y/n)? ")
+                    confirm_sale = input(f"Sell the {sold_item.name} for {sold_item.sell_price} GP (y/n)? ").lower()
                     if confirm_sale == 'y':
                         # print(f"You sell the {(self.pack[item_type_to_sell])[item_index_to_sell]} for {sold_item.sell_price} GP")
                         print(f"You sell the {sold_item.name} for {sold_item.sell_price} GP")
@@ -2069,7 +2086,7 @@ class Player:
                             self.item_type_inventory(item_type_to_sell)
                             print(f"Your gold: {self.gold} GP")
                             sell_again = input(
-                                f"(S)ell more {persistent_item_type} (B)ack to main market menu or (E)xit to town: ")
+                                f"(S)ell more {persistent_item_type} (B)ack to main market menu or (E)xit to town: ").lower()
                             if sell_again == 's':
                                 continue
                             elif sell_again == 'b':
@@ -2100,7 +2117,7 @@ class Player:
             # (self.pack[each_category]).clear()
         total = sum(liquidate_lst)
         print(f"Total: {total}")
-        confirm_liquidate = input(f"Sell everything in your dungeoneer's pack for {total} GP? ")
+        confirm_liquidate = input(f"Sell everything in your dungeoneer's pack for {total} GP? ").lower()
         if confirm_liquidate == 'y':
             for each_category in item_type_lst:
                 (self.pack[each_category]).clear()
@@ -2851,6 +2868,9 @@ class Player:
                         secondary_difficulty_class = 10
                         finish_roll = dice_roll(1, 20)
                         if finish_roll + self.intelligence_modifier > secondary_difficulty_class:  # intel to complete
+                            print(f"With your rope and timbers from the refuse, you set up rigging.\n"
+                                  f"Then, with minimal effort, you are able to pull the foundation stones out.")
+                            sleep(1.5)
                             print(f"You successfully demolish the altar!")
                             sleep(1.5)
                             self.discovered_interactives.append(altar_discovery)
@@ -2900,18 +2920,24 @@ class Player:
             return rndm_occurrence()
             # return "King Boss"
         elif throne_action == 'p':
-            difficulty_class = 12
-            pry_roll = dice_roll(1, 20)
-            if pry_roll > difficulty_class:
-                gem_value = (random.randint(1, 5) * self.dungeon.level)
-                print(f"They pop out into your greedy hands!")
-                sleep(1.5)
-                print(f"They are worth {gem_value} GP!")
-                self.gold += gem_value
-                pause()
-                return
+            gems_pried = f"level {self.dungeon.level} gems pried from throne"
+            if gems_pried not in self.discovered_interactives:
+                difficulty_class = 12
+                pry_roll = dice_roll(1, 20)
+                if pry_roll > difficulty_class:
+                    gem_value = (random.randint(1, 15) * self.dungeon.level)
+                    print(f"They pop out into your greedy hands!")
+                    sleep(1.5)
+                    print(f"They are worth {gem_value} GP!")
+                    self.gold += gem_value
+                    self.discovered_interactives.append(gems_pried)
+                    pause()
+                    return
+                else:
+                    return king_returns()
             else:
-                return king_returns()
+                print(f"There are no gems left to pry...")
+                pause()
         elif throne_action == 'r':
             difficulty_class = 15
             read_roll = dice_roll(1, 20)

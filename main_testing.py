@@ -282,7 +282,7 @@ while True:
                 player_1.previous_y = player_1.y
                 # player_1.loot()  # for testing
                 # encounter = dice_roll(1, 20)
-
+                # player_1.asi()
                 if player_1.position == 0:  # initialization position
                     print(player_1.dungeon.intro)
                     player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # testing

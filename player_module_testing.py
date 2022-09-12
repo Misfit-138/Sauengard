@@ -646,7 +646,7 @@ class Player:
         self.name = name
         self.level = 1
         self.experience = 0
-        self.gold = 500000
+        self.gold = 0  # 500000
         self.wielded_weapon = short_sword
         # self.weapon_bonus = self.wielded_weapon.damage_bonus  # self.weapon_bonus no longer used
         self.armor = padded_armor
@@ -679,9 +679,9 @@ class Player:
                             self.shield.ac + self.boots.ac + self.dexterity_modifier)
         self.stealth = self.cloak.stealth
         self.town_portals = 1
-        self.elixirs = 2
+        self.elixirs = 0
         self.potions_of_healing = 1
-        self.potions_of_strength = 1
+        self.potions_of_strength = 0
         self.potion_of_strength_effect = False
         self.potion_of_strength_uses = 0
         self.poisoned = False
@@ -1110,9 +1110,11 @@ class Player:
         name = random.choice(rndm_prophet_names)
         epithet = random.choice(rndm_epithets)
         undead_prophet.proper_name = f"{name} {epithet}"
-        undead_prophet.hit_points = math.ceil(self.hit_points * 1.5)
+        undead_prophet.hit_points = math.ceil(self.hit_points * 1.25)
+        undead_prophet.level = self.level
         undead_prophet.number_of_hd = self.level
         undead_prophet.weapon_bonus = self.wielded_weapon.damage_bonus
+        undead_prophet.dot_multiplier = self.dungeon.level
         undead_prophet.experience_award = 300 * self.level
         print(f"The undead prophet, {name} {epithet} returns!")
         return undead_prophet
@@ -1149,9 +1151,11 @@ class Player:
         name = random.choice(rndm_king_names)
         epithet = random.choice(rndm_epithets)
         king_monster.proper_name = f"{name} {epithet}"
-        king_monster.hit_points = math.ceil(self.hit_points * 1.5)
+        king_monster.hit_points = math.ceil(self.hit_points * 1.25)
+        king_monster.level = self.level
         king_monster.number_of_hd = self.level
         king_monster.weapon_bonus = self.wielded_weapon.damage_bonus
+        king_monster.dot_multiplier = self.dungeon.level
         king_monster.experience_award = 300 * self.level
         print(f"The undead King {king_monster.proper_name} returns!")
         return king_monster
@@ -2167,12 +2171,11 @@ class Player:
     def drink_potion_of_strength(self):
         self.hud()
         rndm_drinking_phrases = [
-            "Tilting it to your lips, you empty the vial and the strength of giants surges through you!",
+            "Tilting it to your lips, you drain the tiny blue vial and the strength of giants surges through you!",
             "Retrieving the vial from your belt, you pop the cork and down the sweet liquid...\n"
-            "Great power courses through your body!",
+            "Great power and vitality  courses through your body!",
             "No sooner is the tincture running down your throat, than does the great\n "
-            "and overwhelming strength fill your body! You feel invincible!"
-
+            "and overwhelming strength and vitality fill your body! You feel invincible!"
         ]
         drink_phrase = random.choice(rndm_drinking_phrases)
         if self.potions_of_strength > 0:
@@ -2180,9 +2183,8 @@ class Player:
             self.potion_of_strength_effect = True
             self.potions_of_strength -= 1
             self.potion_of_strength_uses = 0
-            if self.hit_points < self.maximum_hit_points:
-                heal_points = (self.maximum_hit_points * .66)
-                self.hit_points += heal_points
+            if self.hit_points < self.maximum_hit_points:  # in the rare case player has hit point overage,
+                self.hit_points = self.maximum_hit_points  # this will not disrupt that advantage
             pause()
             return self.potion_of_strength_effect
         else:

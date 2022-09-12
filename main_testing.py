@@ -492,7 +492,7 @@ while True:
                                 break
                             player_1.hud()
                             if monster.proper_name == "None":
-                                print(f"Lvl {monster.level} {monster.name} {monster.hit_points} hp "
+                                print(f"Lvl {monster.level} {monster.name} AC {monster.armor_class} {monster.hit_points} hp "
                                       f"{monster.number_of_hd}d{monster.hit_dice}")
                             else:
                                 print(f"Lvl {monster.level} {monster.proper_name} {monster.hit_points} hp "

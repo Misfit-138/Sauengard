@@ -945,15 +945,15 @@ class Player:
         # Define list of attributes you are allowed to change
         # ability_dict_subset_too = {1: "strength", 2: "dexterity", 3: "constitution", 4: "intelligence", 5: "wisdom",
         #                           6: "charisma"}
-        if self.strength < 20 or self.dexterity < 20 or self.constitution < 20 or self.intelligence < 20 or self.wisdom < 20 or self.charisma < 20:
+        if self.strength < 20 or self.dexterity < 20 or self.constitution < 20 or self.intelligence < 20 \
+                              or self.wisdom < 20 or self.charisma < 20:
             os.system('cls')
-            print(f"         *Ability Score Improvement*")
+            print(f"                *Ability Score Improvement*")
             print()
             print(
-                f"You may choose to improve a single ability score, such as strength, \n"
-                f"and increase it by 2 points.\n"
+                f"You may choose to improve a single ability score, such as strength, and increase it by 2 points.\n"
                 f"\n"
-                f"                     *OR*\n"
+                f"                           *OR*\n"
                 f"\n"
                 f"You may choose to improve two ability scores, such as charisma and constitution, by 1 point each.\n"
                 f"\n"
@@ -962,7 +962,7 @@ class Player:
                 f"it is generally recommended to apply 1 point to odd-numbered ability scores and apply \n"
                 f"2 points to even-numbered scores.\n"
                 f"\n"
-                f"    *The maximum score for any ability is 20*"
+                f"           *The maximum score for any ability is 20*"
                 f"\n")
             pause()
 

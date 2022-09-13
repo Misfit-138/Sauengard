@@ -1110,12 +1110,12 @@ class Player:
         name = random.choice(rndm_prophet_names)
         epithet = random.choice(rndm_epithets)
         undead_prophet.proper_name = f"{name} {epithet}"
-        undead_prophet.hit_points = math.ceil(self.hit_points * 1.25)
+        undead_prophet.hit_points = math.ceil(self.maximum_hit_points * 1.25)
         undead_prophet.level = self.level
         undead_prophet.number_of_hd = self.level
         undead_prophet.weapon_bonus = self.wielded_weapon.damage_bonus
         undead_prophet.dot_multiplier = self.dungeon.level
-        undead_prophet.experience_award = 300 * self.level
+        undead_prophet.experience_award = 350 * self.level
         print(f"The undead prophet, {name} {epithet} returns!")
         return undead_prophet
 
@@ -1151,12 +1151,12 @@ class Player:
         name = random.choice(rndm_king_names)
         epithet = random.choice(rndm_epithets)
         king_monster.proper_name = f"{name} {epithet}"
-        king_monster.hit_points = math.ceil(self.hit_points * 1.25)
+        king_monster.hit_points = math.ceil(self.maximum_hit_points * 1.25)
         king_monster.level = self.level
         king_monster.number_of_hd = self.level
         king_monster.weapon_bonus = self.wielded_weapon.damage_bonus
         king_monster.dot_multiplier = self.dungeon.level
-        king_monster.experience_award = 300 * self.level
+        king_monster.experience_award = 350 * self.level
         print(f"The undead King {king_monster.proper_name} returns!")
         return king_monster
 
@@ -1358,7 +1358,7 @@ class Player:
                 return False
 
     def necrotic_attack(self, monster_name, monster_dot_multiplier):
-        difficulty_class = self.constitution + self.constitution_modifier
+        # difficulty_class = (dice_roll(1, 20) + self.constitution_modifier)
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"The {monster_name} attempts to harness its innate understanding of quantum necrosis..")
         print(f"Attack roll---> {roll_d20}")
@@ -1370,10 +1370,11 @@ class Player:
             self.hud()
             return False
         else:
-            print(f"Your Constitution: {self.constitution}\nYour Constitution Modifier: {self.constitution_modifier}\n")
-            if roll_d20 == 20 or roll_d20 >= difficulty_class:  # self.constitution + self.constitution_modifier:
+            player_roll = (dice_roll(1, 20) + self.constitution_modifier)
+            print(f"Your roll: {player_roll}\nYour Constitution Modifier: {self.constitution_modifier}\n")
+            if roll_d20 == 20 or roll_d20 >= player_roll:
                 self.dot_multiplier = monster_dot_multiplier
-                # self.hud()
+
                 rndm_necrotic_phrases = ["You feel morbid dread and withering overcoming you..",
                                          "An unnerving pain, planted like a seed, germinates within you...",
                                          "Agony creeps into your very veins..."
@@ -1404,8 +1405,9 @@ class Player:
         print(f"Attack roll---> {roll_d20}")
         sleep(1)
         if roll_d20 == 1:
-            print("You missed.")
-            print(f"You rolled a 1. 1 means failure..")
+            print("You awkwardly strike.")
+            sleep(1)
+            print(f"You miss..")
             pause()
             self.hud()
             return 0

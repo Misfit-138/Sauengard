@@ -262,14 +262,17 @@ class Monster:
                 print(
                     f"{name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} ---> {damage_roll}")  # hit dice
                 time.sleep(1.5)
-                print(f"Strength modifier---> {self.strength_modifier}\nAttack bonus---> {attack_bonus}")
+                print(f"Strength modifier---> {self.strength_modifier}\nAttack bonus---> {attack_bonus} "
+                      f"Weapon bonus---> {self.weapon_bonus}")
                 time.sleep(1.5)
                 print(f"It does {damage_to_opponent} points of damage!")
                 os.system('pause')
                 # time.sleep(5)
                 return damage_to_opponent
             else:
-                print(f"The {name} strikes, but you block the attack!")  # zero damage to player result
+                print(f"The {name} strikes..")
+                time.sleep(1)
+                print(f"You block the attack!")  # zero damage to player result
                 os.system('pause')
                 return 0  # 0 points damage to player
         else:
@@ -514,10 +517,10 @@ class Cultist(Monster):
         self.attack_4_phrase = "With blinding speed, he swings his scimitar.."
         self.attack_5 = 3
         self.attack_5_phrase = "Crying out with insane hatred, he raises his scimitar with both hands in a mighty blow!"
-        self.introduction = f"You have encountered a Cultist. Adorned with a foul robe speckled with disgusting \n" \
-                            f" symbols, and face hidden in the deep shadow of his cowl, you see his insane eyes\n " \
+        self.introduction = f"You have encountered a Cultist. Adorned with a foul robe speckled with disgusting\n" \
+                            f"symbols, and face hidden in the deep shadow of his cowl, you see his insane eyes\n" \
                             f"smoulder in the darkness. His loyalties long since revealed, he cries out in sworn\n" \
-                            f" allegiance to some dark Quantum Manipulator..."
+                            f"allegiance to some dark Quantum Manipulator..."
         self.is_discovered = False
 
     # name = "Cultist"
@@ -1404,9 +1407,9 @@ class Specter(Monster):
         self.quantum_attack_5 = 3
         self.quantum_attack_5_phrase = "With muted malice, its arms elongate unnaturally, wildly entangling you in \n" \
                                        "a storm of wicked forces!"
-        self.introduction = f"From out of nothingness, materializes a Spectre....A vile, undead form created\n " \
-                            f"through a combination of wickedness, quantum manipulations, and a violent death.\n " \
-                            f"Its ghostly form resembles what it was in life, but its now dispossessed\n " \
+        self.introduction = f"From out of nothingness, materializes a Spectre....A vile, undead form created\n" \
+                            f"through a combination of wickedness, quantum manipulations, and a violent death.\n" \
+                            f"Its ghostly form resembles what it was in life, but its now dispossessed\n" \
                             f"identity has been completely erased and replaced with a simple motive and \n" \
                             f"purpose; A revulsion for the living and a hunger for their life-energy.."
         self.is_discovered = False
@@ -1478,7 +1481,7 @@ class SpecterKing(Monster):
         self.quantum_attack_5 = 3
         self.quantum_attack_5_phrase = "With muted malice, its arms elongate unnaturally, wildly entangling\n" \
                                        "you in a storm of wicked forces!"
-        self.introduction = f"From out of nothingness, the Specter King materializes..A vile, undead form\n " \
+        self.introduction = f"From out of nothingness, the Specter King materializes..A vile, undead form\n" \
                             f"of fear-inspiring and unnatural horrors. Its ghostly form resembles its former\n" \
                             f"royal greatness, but now its entire existence is a mere quantum-driven and\n" \
                             f"endless nightmare of madness, devoid of any humanity. Upon seeing you, it silently\n" \
@@ -1534,8 +1537,8 @@ class WhiteDragonWyrmling(Monster):
         self.attack_4_phrase = "Rearing up with elegant, murderous intent, it exhales an icy blast of hail!"
         self.attack_5 = 18
         self.attack_5_phrase = "Rearing up with elegant, murderous intent, it exhales a terrible, icy blast of hail!"
-        self.introduction = f"You have encountered a White Dragon Wyrmling; a slow witted, evil, efficient hunter." \
-                            f"Confidently stepping forth,\nit roars viciously, undoubtedly preparing to have you" \
+        self.introduction = f"You have encountered a White Dragon Wyrmling; a slow witted, evil, efficient hunter. " \
+                            f"Confidently stepping forth,\nit roars viciously, undoubtedly preparing to have you " \
                             f"as a meal!"
         self.is_discovered = False
 

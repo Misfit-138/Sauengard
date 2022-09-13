@@ -412,10 +412,10 @@ while True:
                         # monster_cls = random.choice(monster_dict[monster_key])
                         # monster = monster_cls()  # create a monster object from the random class
                         if encounter < 10:  # regular monster
-                            # monster = Specter()
-                            monster = player_1.regular_monster_generator()
+                            monster = Specter()
+                            # monster = player_1.regular_monster_generator()
                         # monster = Drow()  # testing
-                        elif encounter == 99:  # level exit boss fight. make these uniques with names and epithets
+                        elif encounter == 99:  # level exit boss fight
                             monster = player_1.exit_boss_generator()
                             gong()
                             sleep(4)
@@ -430,7 +430,6 @@ while True:
                             pause()
                             player_1.hud()
                         elif encounter == 97:  # undead prophet
-                            print(f"This should call prophet")
                             monster = player_1.undead_prophet_generator()
                             gong()
                             sleep(4)
@@ -492,11 +491,11 @@ while True:
                                 break
                             player_1.hud()
                             if monster.proper_name == "None":
-                                print(f"Lvl {monster.level} {monster.name} AC {monster.armor_class} {monster.hit_points} hp "
-                                      f"{monster.number_of_hd}d{monster.hit_dice}")
+                                print(f"Lvl {monster.level} {monster.name} AC: {monster.armor_class} "
+                                      f"HP: {monster.hit_points} ({monster.number_of_hd}d{monster.hit_dice})")
                             else:
-                                print(f"Lvl {monster.level} {monster.proper_name} {monster.hit_points} hp "
-                                      f"{monster.number_of_hd}d{monster.hit_dice}")
+                                print(f"{monster.proper_name} AC: {monster.armor_class} "
+                                      f"HP: {monster.hit_points} ({monster.number_of_hd}d{monster.hit_dice})")
                             battle_choice = input("(F)ight, (H)ealing potion, (G)iant Strength potion, (C)ast or "
                                                   "(E)vade\nF/H/G/C/E --> ").lower()
                             if battle_choice == "e":
@@ -518,7 +517,7 @@ while True:
                                     if not player_1.drink_potion_of_strength():
                                         continue  # if you have no potions, don't waste a turn!
 
-                                # ********MONSTER TURN AFTER YOU SWIG POTION***********************
+                                # ****MONSTER TURN AFTER YOU SWIG POTION (or cast, eventually)******
                                 # if not monster.check_dead():
                                 player_1.hud()
                                 melee_or_quantum = dice_roll(1, 20)
@@ -621,8 +620,16 @@ while True:
                                             player_1.necrotic_attack(monster.name, monster.dot_multiplier)
                                     elif monster.can_poison:  # otherwise, if it can only poison, then attempt poison
                                         player_1.poison_attack(monster.name, monster.dot_multiplier)
+                                        player_1.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
+                                        player_1.regenerate()
+                                        player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                                        player_1.calculate_necrotic_dot()
                                     elif monster.necrotic:  # otherwise if it only has necrotic, then attempt necrotic
                                         player_1.necrotic_attack(monster.name, monster.dot_multiplier)
+                                        player_1.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
+                                        player_1.regenerate()
+                                        player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                                        player_1.calculate_necrotic_dot()
                                 else:
                                     # if it has neither, then melee attack
                                     damage_to_player = monster.swing(monster.name, player_1.armor_class)

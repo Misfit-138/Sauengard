@@ -534,7 +534,7 @@ class Goblin(Monster):
         self.name = "Goblin"
         self.proper_name = "None"
         self.experience_award = self.level * 50
-        self.gold = random.randint(2, 25)  # self.level * 200 * round(random.uniform(1, 2))
+        self.gold = random.randint(2, 20)  # self.level * 200 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0

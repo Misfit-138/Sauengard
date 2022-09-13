@@ -946,7 +946,7 @@ class Player:
         # ability_dict_subset_too = {1: "strength", 2: "dexterity", 3: "constitution", 4: "intelligence", 5: "wisdom",
         #                           6: "charisma"}
         if self.strength < 20 or self.dexterity < 20 or self.constitution < 20 or self.intelligence < 20 \
-                              or self.wisdom < 20 or self.charisma < 20:
+                or self.wisdom < 20 or self.charisma < 20:
             os.system('cls')
             print(f"                *Ability Score Improvement*")
             print()
@@ -1080,12 +1080,19 @@ class Player:
             self.hud()
 
     # BATTLE AND PROXIMITY TO MONSTER OCCURRENCES
-    def meta_battle_function(self, monster):
+    def rndm_death_statement(self):
+        rndm_statements = ["You have succumbed to your injuries and fallen in battle!",
+                           "Bravely you have fought. Bravely you have died. Rest in Peace."
+                           ]
+        print(f"{self.name} Level {self.level}")
+        print(random.choice(rndm_statements))
+        return
+
+    def meta_monster_function(self, monster):
         melee_or_quantum = dice_roll(1, 20)
         if monster.quantum_energy and melee_or_quantum > 10 and not self.poisoned \
                 and not self.necrotic:
             if not monster.can_poison and not monster.necrotic:
-                #
                 damage_to_player = monster.quantum_energy_attack(monster.name,
                                                                  self.wisdom_modifier,
                                                                  self.ring_of_prot.protect)
@@ -1143,10 +1150,10 @@ class Player:
                          'the Blackhearted', 'the Blind', 'the Bloodthirsty', 'the Cruel',
                          'the Damned', 'the Foul', 'the Foulest'
                          ]
-        #monster_key = self.level
-        #monster_cls = random.choice(undead_prophet_dict[monster_key])
-        #undead_prophet = monster_cls()
-        #return undead_prophet
+        # monster_key = self.level
+        # monster_cls = random.choice(undead_prophet_dict[monster_key])
+        # undead_prophet = monster_cls()
+        # return undead_prophet
         undead_prophet = random.choice(undead_prophet_list)
         name = random.choice(rndm_prophet_names)
         epithet = random.choice(rndm_epithets)
@@ -1545,7 +1552,7 @@ class Player:
             chemist_choice = input(
                 "(P)urchase quantum items, (S)ell quantum items, Display your (I)nventory, or "
                 "(E)xit the chemist: ").lower()
-            #if chemist_choice not in ('p', 's', 'i', 'e'):
+            # if chemist_choice not in ('p', 's', 'i', 'e'):
             #    continue
             if chemist_choice == 'p':
                 self.buy_chemist_items()
@@ -1911,7 +1918,8 @@ class Player:
                             print("Invalid entry..")
                             sleep(1)
                             continue
-                        confirm_purchase = input(f"Purchase {sale_item.name} for {sale_item.buy_price} GP (y/n)? ").lower()
+                        confirm_purchase = input(
+                            f"Purchase {sale_item.name} for {sale_item.buy_price} GP (y/n)? ").lower()
                         if confirm_purchase == 'y':
                             if self.gold >= sale_item.buy_price:
                                 if self.level >= sale_item.minimum_level:
@@ -2685,7 +2693,11 @@ class Player:
             pause()
             return
 
-    def loot(self):
+    def loot(self, encounter):
+        if encounter < 21:  # regular monster
+            loot_difficulty_class = 10
+        else:  # boss
+            loot_difficulty_class = 8
         # place armor first here; otherwise it will mess up the order of operations below
         loot_dict = {
             'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
@@ -2707,7 +2719,7 @@ class Player:
             self.hud()
             print(f"Loot roll ---> {loot_roll}")
             pause()
-            if loot_roll > 9:
+            if loot_roll >= loot_difficulty_class:
                 key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
                 rndm_item_index = random.randrange(len(loot_dict[key]))
                 found_item = loot_dict[key][rndm_item_index]
@@ -2770,7 +2782,7 @@ class Player:
             else:
                 # extra chance for potion
                 extra_chance = dice_roll(1, 20)
-                if extra_chance > 9:
+                if extra_chance >= loot_difficulty_class:
                     print(f"You see a potion of healing!")
                     sleep(.5)
                     print(f"You grab it..")
@@ -2850,7 +2862,7 @@ class Player:
         ability_dict_subset = {key: value for key, value in ability_dict.items() if key in attributes}
         # Find the minimum attribute name
         min_attribute = min(ability_dict_subset, key=ability_dict_subset.get)
-        #print()  # remove after testing
+        # print()  # remove after testing
         print(f"Weird discomfort surges through your body..")
         sleep(1.5)
         print(f"You have lost {min_attribute}!")
@@ -2930,7 +2942,7 @@ class Player:
                     else:
                         return  # player chooses not to finish
                 else:
-                    #print("calling undead prophet returns..")
+                    # print("calling undead prophet returns..")
                     return undead_prophet_returns()  # player unable to partially demolish
             else:
                 return  # ignore the altar
@@ -2943,7 +2955,8 @@ class Player:
         # throne_discovery = f"level {self.dungeon.level} throne"
         rndm_occurrence_lst = [nothing_happens, king_returns, self.increase_random_ability, self.teleporter_event,
                                nothing_happens, king_returns, self.increase_lowest_ability, self.lose_items,
-                               king_returns, nothing_happens, self.heal_event, king_returns, self.decrease_random_ability,
+                               king_returns, nothing_happens, self.heal_event, king_returns,
+                               self.decrease_random_ability,
                                self.decrease_lowest_ability]
         rndm_occurrence = random.choice(rndm_occurrence_lst)
 

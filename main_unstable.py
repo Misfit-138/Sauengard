@@ -503,14 +503,14 @@ while True:
                                         dungeon_theme()  # go back to dungeon theme song
                                     in_proximity_to_monster = False  # get out of battle loop
                                     break
-                            elif battle_choice == 'h' or 'g' or 'c':
+                            elif battle_choice == 'h' or battle_choice == 'g' or battle_choice == 'c':
                                 if battle_choice == 'h':
                                     player_1.drink_healing_potion()
                                     # time.sleep(1)
-                                elif battle_choice == 'g':
+                                if battle_choice == 'g':
                                     if not player_1.drink_potion_of_strength():
                                         continue  # if you have no potions, don't waste a turn!
-                                elif battle_choice == "c":
+                                if battle_choice == "c":
                                     player_1.hud()
                                     if player_1.quantum_units > 0:
                                         damage_to_monster = player_1.cast(monster)
@@ -544,29 +544,30 @@ while True:
                                             player_1.loot(encounter)  # 8 difficulty class
                                         break
                                     # ****MONSTER TURN AFTER YOU SWIG POTION (or cast, eventually)******
-                                    player_1.hud()
-                                    player_1.meta_monster_function(monster)
-                                    if not player_1.check_dead():  # if player not dead
-                                        if dice_roll(1, 20) > 17 and monster.can_paralyze:
-                                            sleep(1)
-                                            player_1.is_paralyzed = monster.paralyze(player_1.wisdom,
-                                                                                     player_1.ring_of_prot.protect)
-                                            if player_1.is_paralyzed:
-                                                player_1.damage_while_paralyzed(monster.number_of_hd,
-                                                                                monster.hit_dice)
-                                            if not player_1.check_dead():  # if player not dead
-                                                print(f"You regain your faculties.")
-                                                pause()
-                                                continue
-                                            else:
-                                                print("You are dead and paralyzed!")
-                                                player_is_dead = True
-                                                break
-                                    else:
-                                        print(f"You died!")
-                                        time.sleep(3)
-                                        player_is_dead = True
-                                        break
+                                    elif not monster.check_dead():
+                                        player_1.hud()
+                                        player_1.meta_monster_function(monster)
+                                        if not player_1.check_dead():  # if player not dead
+                                            if dice_roll(1, 20) > 17 and monster.can_paralyze:
+                                                sleep(1)
+                                                player_1.is_paralyzed = monster.paralyze(player_1.wisdom,
+                                                                                         player_1.ring_of_prot.protect)
+                                                if player_1.is_paralyzed:
+                                                    player_1.damage_while_paralyzed(monster.number_of_hd,
+                                                                                    monster.hit_dice)
+                                                if not player_1.check_dead():  # if player not dead
+                                                    print(f"You regain your faculties.")
+                                                    pause()
+                                                    continue
+                                                else:
+                                                    print("You are dead and paralyzed!")
+                                                    player_is_dead = True
+                                                    break
+                                        else:
+                                            print(f"You died!")
+                                            time.sleep(3)
+                                            player_is_dead = True
+                                            break
                                     player_1.hud()
                                     continue
                             # FIGHT:

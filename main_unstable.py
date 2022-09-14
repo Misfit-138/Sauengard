@@ -37,7 +37,7 @@ import pickle
 from player_module_unstable import *
 from monster_module import *
 from typing_module import *
-#import random
+# import random
 import os
 import winsound
 from dungeons import *
@@ -102,7 +102,8 @@ print("")
 pause()
 winsound.PlaySound(None, winsound.SND_ASYNC)
 cls()
-
+player_1 = ""  # to get rid of undefined warning
+player_name = ""  # to get rid of undefined warning
 while True:
     town_portal = False
     loaded_game = False
@@ -121,11 +122,8 @@ while True:
                 time.sleep(1)
                 dungeon_key = player_1.dungeon_key
                 dungeon = dungeon_dict[player_1.dungeon_key]
-                # x = player_1.x
-                # y = player_1.y
                 print(dungeon.name)
-                print(player_1.x)  # remove after testing
-                print(player_1.y)  # remove after testing
+                print(player_1.coordinates)  # remove after testing
                 loaded_game = True
                 time.sleep(1)
         else:
@@ -297,7 +295,6 @@ while True:
                     time.sleep(.25)
                     player_1.dungeon_description()
                     continue
-
                 if dungeon_command == 'p':
                     if player_1.use_scroll_of_town_portal():
                         in_town = True
@@ -359,7 +356,7 @@ while True:
                         player_1.coordinates = (player_1.x, player_1.y)
                         player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]
                         # player_1.event_logic()
-                        #pause()
+                        # pause()
                         # continue
                     if dungeon_command == 'map':
                         player_1.display_map(player_1.dungeon.player_grid)  #
@@ -373,7 +370,7 @@ while True:
                 # **********************************************************************************************>>>>
                 player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
                 player_1.coordinates = (player_1.x, player_1.y)  #
-                #encounter = player_1.event_logic()
+                # encounter = player_1.event_logic()
                 encounter = encounter_logic()
                 # possible_encounter = player_1.event_logic()
                 event = player_1.event_logic()
@@ -381,7 +378,7 @@ while True:
                     encounter = 98
                 elif event == "Undead Prophet":
                     encounter = 97
-                #print(encounter)
+                # print(encounter)
                 player_1.regenerate()  # put this first-
                 player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
                 player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
@@ -392,7 +389,7 @@ while True:
                 player_1.dungeon_description()  # this seems to work best when put last
 
                 if player_1.position == "E":
-                    #monster = player_1.dungeon.boss
+                    # monster = player_1.dungeon.boss
                     encounter = 99  # dungeon level boss conditional
                     player_1.next_dungeon()
                 # ***********************************************************************************************>>>>
@@ -413,7 +410,7 @@ while True:
                         # monster = monster_cls()  # create a monster object from the random class
                         if encounter < 10:  # regular monster
 
-                            #monster = Specter()
+                            # monster = Specter()
                             monster = player_1.regular_monster_generator()
                         # monster = Drow()  # testing
                         elif encounter == 99:  # level exit boss fight
@@ -506,44 +503,72 @@ while True:
                                         dungeon_theme()  # go back to dungeon theme song
                                     in_proximity_to_monster = False  # get out of battle loop
                                     break
-                            elif battle_choice == "c":
-                                player_1.hud()
-                                print(f"Cast not done..")
-                                continue
-                            elif battle_choice == 'h' or battle_choice == 'g':
+                            elif battle_choice == 'h' or 'g' or 'c':
                                 if battle_choice == 'h':
                                     player_1.drink_healing_potion()
                                     # time.sleep(1)
                                 elif battle_choice == 'g':
                                     if not player_1.drink_potion_of_strength():
                                         continue  # if you have no potions, don't waste a turn!
-
-                                # ****MONSTER TURN AFTER YOU SWIG POTION (or cast, eventually)******
-                                player_1.hud()
-                                player_1.meta_monster_function(monster)
-                                if not player_1.check_dead():  # if player not dead
-                                    if dice_roll(1, 20) > 17 and monster.can_paralyze:
-                                        sleep(1)
-                                        player_1.is_paralyzed = monster.paralyze(player_1.wisdom,
-                                                                                 player_1.ring_of_prot.protect)
-                                        if player_1.is_paralyzed:
-                                            player_1.damage_while_paralyzed(monster.number_of_hd,
-                                                                            monster.hit_dice)
-                                        if not player_1.check_dead():  # if player not dead
-                                            print(f"You regain your faculties.")
-                                            pause()
-                                            continue
+                                elif battle_choice == "c":
+                                    player_1.hud()
+                                    if player_1.quantum_units > 0:
+                                        damage_to_monster = player_1.cast(monster)
+                                        monster.reduce_health(damage_to_monster)
+                                    else:
+                                        print(f"You have no Quantum unit energy!")
+                                        pause()
+                                        continue
+                                    if monster.check_dead():
+                                        player_1.hud()
+                                        if encounter > 20:  # if fighting boss
+                                            gong()
+                                            print(f"You have vanquished {monster.proper_name}! You are victorious!")
+                                            sleep(4)
+                                            dungeon_theme()
                                         else:
-                                            print("You are dead and paralyzed!")
-                                            player_is_dead = True
+                                            print(f"It died..")
+                                        pause()
+                                        player_1.regenerate()
+                                        player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+                                        player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                                        player_1.calculate_necrotic_dot()
+                                        if player_1.check_dead():  # you can die from poison or necrosis,
+                                            player_is_dead = True  # right after victory, following calculations
+                                            in_proximity_to_monster = False
                                             break
-                                else:
-                                    print(f"You died!")
-                                    time.sleep(3)
-                                    player_is_dead = True
-                                    break
-                                player_1.hud()
-                                continue
+                                        player_1.level_up(monster.experience_award, monster.gold)
+                                        in_proximity_to_monster = False
+                                        player_1.loot(encounter)
+                                        if encounter > 20:  # if you kill the boss, you get extra chance for loot
+                                            player_1.loot(encounter)  # 8 difficulty class
+                                        break
+                                    # ****MONSTER TURN AFTER YOU SWIG POTION (or cast, eventually)******
+                                    player_1.hud()
+                                    player_1.meta_monster_function(monster)
+                                    if not player_1.check_dead():  # if player not dead
+                                        if dice_roll(1, 20) > 17 and monster.can_paralyze:
+                                            sleep(1)
+                                            player_1.is_paralyzed = monster.paralyze(player_1.wisdom,
+                                                                                     player_1.ring_of_prot.protect)
+                                            if player_1.is_paralyzed:
+                                                player_1.damage_while_paralyzed(monster.number_of_hd,
+                                                                                monster.hit_dice)
+                                            if not player_1.check_dead():  # if player not dead
+                                                print(f"You regain your faculties.")
+                                                pause()
+                                                continue
+                                            else:
+                                                print("You are dead and paralyzed!")
+                                                player_is_dead = True
+                                                break
+                                    else:
+                                        print(f"You died!")
+                                        time.sleep(3)
+                                        player_is_dead = True
+                                        break
+                                    player_1.hud()
+                                    continue
                             # FIGHT:
                             elif battle_choice == "f":
                                 print(f"Fight.")
@@ -677,3 +702,10 @@ while True:
                                     player_1.regenerate()
                                     player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
                                     player_1.calculate_necrotic_dot()"""
+
+"""                if dungeon_command not in ('w', 'a', 's', 'd', 'l', 'e', 'map', 'p', 'g', 'h', 'm', 'i', 'q'):
+                    print("Unknown command")
+                    time.sleep(.25)
+                    player_1.dungeon_description()
+                    continue
+"""

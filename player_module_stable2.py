@@ -645,9 +645,6 @@ class Player:
         #  cloak, weapon_name):
         self.name = name
         self.level = 1
-        self.quantum_level = 1
-        self.maximum_quantum_units = 2
-        self.quantum_units = 2
         self.experience = 0
         self.gold = 0  # 500000
         self.wielded_weapon = short_sword
@@ -896,116 +893,47 @@ class Player:
             self.proficiency_bonus = 6
         return
 
-    # Quantum LEVEL   EXPERIENCE LEVEL
-    #                    NEEDED TO USE
-    # 1                       1
-    # 2                       3
-    # 3                       6
-    # 4                       9
-    # 5                       12
-    # 6                       15
-
     def calculate_current_level(self):
         if self.experience < 300:
             self.level = 1
-            self.quantum_level = 1
-            self.maximum_quantum_units = 2
-
         if self.experience >= 300 < 900:
             self.level = 2
-            self.quantum_level = 1
-            self.maximum_quantum_units = 2
-
         if self.experience >= 900 < 2700:
             self.level = 3
-            self.quantum_level = 2
-            self.maximum_quantum_units = 4
-
         if self.experience >= 2700 < 6500:
             self.level = 4
-            self.quantum_level = 2
-            self.maximum_quantum_units = 4
-
         if self.experience >= 6500 < 14000:
             self.level = 5
-            self.quantum_level = 2
-            self.maximum_quantum_units = 4
-
         if self.experience >= 14000 < 23000:
             self.level = 6
-            self.quantum_level = 3
-            self.maximum_quantum_units = 6
-
         if self.experience >= 23000 < 34000:
             self.level = 7
-            self.quantum_level = 3
-            self.maximum_quantum_units = 6
-
         if self.experience >= 34000 < 48000:
             self.level = 8
-            self.quantum_level = 3
-            self.maximum_quantum_units = 6
-
         if self.experience >= 48000 < 64000:
             self.level = 9
-            self.quantum_level = 4
-            self.maximum_quantum_units = 8
-
         if self.experience >= 64000 < 85000:
             self.level = 10
-            self.quantum_level = 4
-            self.maximum_quantum_units = 8
-
         if self.experience >= 85000 < 100000:
             self.level = 11
-            self.quantum_level = 4
-            self.maximum_quantum_units = 8
-
         if self.experience >= 100000 < 120000:
             self.level = 12
-            self.quantum_level = 5
-            self.maximum_quantum_units = 10
-
         if self.experience >= 120000 < 140000:
             self.level = 13
-            self.quantum_level = 5
-            self.maximum_quantum_units = 10
-
         if self.experience >= 140000 < 165000:
             self.level = 14
-            self.quantum_level = 5
-            self.maximum_quantum_units = 10
-
         if self.experience >= 165000 < 195000:
             self.level = 15
-            self.quantum_level = 5
-            self.maximum_quantum_units = 10
-
         if self.experience >= 195000 < 225000:
             self.level = 16
-            self.quantum_level = 6
-            self.maximum_quantum_units = 12
-
         if self.experience >= 225000 < 265000:
             self.level = 17
-            self.quantum_level = 6
-            self.maximum_quantum_units = 12
-
         if self.experience >= 265000 < 305000:
             self.level = 18
-            self.quantum_level = 6
-            self.maximum_quantum_units = 12
-
         if self.experience >= 305000 < 355000:
             self.level = 19
-            self.quantum_level = 6
-            self.maximum_quantum_units = 12
-
         if self.experience >= 355000:
             self.level = 20
-            self.quantum_level = 6
-            self.maximum_quantum_units = 12
-
         return
 
     # LEVEL AND EXPERIENCE
@@ -1018,7 +946,7 @@ class Player:
         # ability_dict_subset_too = {1: "strength", 2: "dexterity", 3: "constitution", 4: "intelligence", 5: "wisdom",
         #                           6: "charisma"}
         if self.strength < 20 or self.dexterity < 20 or self.constitution < 20 or self.intelligence < 20 \
-                or self.wisdom < 20 or self.charisma < 20:
+                              or self.wisdom < 20 or self.charisma < 20:
             os.system('cls')
             print(f"                *Ability Score Improvement*")
             print()
@@ -1105,14 +1033,12 @@ class Player:
         # *****************
         self.gold += monster_gold
         before_level = self.level
-        before_quantum_level = self.quantum_level
         before_proficiency_bonus = self.proficiency_bonus
         self.experience += exp_award
         self.calculate_current_level()
         self.calculate_proficiency_bonus()
         after_proficiency_bonus = self.proficiency_bonus
         after_level = self.level
-        after_quantum_level = self.quantum_level
         if after_level > before_level:
             print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points.")
             sleep(2)
@@ -1135,7 +1061,6 @@ class Player:
             # Ability Score Improvement at levels 4, 8, 12, 16, and 19.
             # Fighters gain additional ASIs at the 6th and 14th levels
             # so, 4, 6, 8, 12, 14, 16, 19
-
             if self.level == 4 or self.level == 6 or self.level == 8 or self.level == 12 \
                     or self.level == 14 or self.level == 16 or self.level == 19:
                 self.asi()  # Ability Score Improvement calls calculate modifiers, so
@@ -1148,11 +1073,6 @@ class Player:
                 print(f"Your proficiency bonus increases from {before_proficiency_bonus} to {after_proficiency_bonus}!")
                 sleep(2)
             # self.ring_of_reg  ADD RING LOGIC...UP WITH EACH LEVEL ?
-
-            if after_quantum_level > before_quantum_level:
-                print(f"Your Quantum knowledge level increases from {before_quantum_level} to {after_quantum_level}!")
-                self.quantum_units = self.maximum_quantum_units
-                sleep(2)
             self.hud()
         else:
             print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points")
@@ -1160,19 +1080,12 @@ class Player:
             self.hud()
 
     # BATTLE AND PROXIMITY TO MONSTER OCCURRENCES
-    def rndm_death_statement(self):
-        rndm_statements = ["You have succumbed to your injuries and fallen in battle!",
-                           "Bravely you have fought. Bravely you have died. Rest in Peace."
-                           ]
-        print(f"{self.name} Level {self.level}")
-        print(random.choice(rndm_statements))
-        return
-
-    def meta_monster_function(self, monster):
+    def meta_battle_function(self, monster):
         melee_or_quantum = dice_roll(1, 20)
         if monster.quantum_energy and melee_or_quantum > 10 and not self.poisoned \
                 and not self.necrotic:
             if not monster.can_poison and not monster.necrotic:
+                #
                 damage_to_player = monster.quantum_energy_attack(monster.name,
                                                                  self.wisdom_modifier,
                                                                  self.ring_of_prot.protect)
@@ -1230,10 +1143,10 @@ class Player:
                          'the Blackhearted', 'the Blind', 'the Bloodthirsty', 'the Cruel',
                          'the Damned', 'the Foul', 'the Foulest'
                          ]
-        # monster_key = self.level
-        # monster_cls = random.choice(undead_prophet_dict[monster_key])
-        # undead_prophet = monster_cls()
-        # return undead_prophet
+        #monster_key = self.level
+        #monster_cls = random.choice(undead_prophet_dict[monster_key])
+        #undead_prophet = monster_cls()
+        #return undead_prophet
         undead_prophet = random.choice(undead_prophet_list)
         name = random.choice(rndm_prophet_names)
         epithet = random.choice(rndm_epithets)
@@ -1593,84 +1506,6 @@ class Player:
             self.hud()
             return 0
 
-    def quantum_test(self, monster):
-        self.quantum_units -= 1
-        print(f"{self.name} is fighting a {monster.name}")
-        print("Test")
-        pause()
-        return 0
-
-    def cast(self, monster):
-        quantum_book = {1: {1: self.quantum_missile, 2: self.quantum_test}
-                        }
-        while True:
-            try:
-                q_level = int(input(f"Quantum level to cast: "))
-                if self.quantum_level >= q_level:
-                    q_to_cast = int(input(f"Number of Quantum to cast (L)ist: "))
-                    # noinspection PyArgumentList
-                    quantum_function = (quantum_book[q_level][q_to_cast](monster))
-                    return quantum_function
-                else:
-                    print(f"You do not have that level Quantum knowledge!")
-                    sleep(1)
-                    continue
-            except (ValueError, KeyError):
-                print(f"Invalid input")
-                continue
-
-    def quantum_missile(self, monster):
-        self.quantum_units -= 1
-        print(f"Quantum Missile.")
-        sleep(1)
-        self.hud()
-        roll_d20 = dice_roll(1, 20)  # attack roll
-        print(f"Focusing your innate understanding, you attempt to aim the Quantum Missile at the {monster.name}..")
-        print(f"Attack roll---> {roll_d20}")
-        sleep(1)
-        if roll_d20 == 1:
-            print("Your focus has failed..")
-            sleep(1)
-            print(f"You miss.")
-            pause()
-            self.hud()
-            return 0
-        if roll_d20 == 20:
-            critical_bonus = 2
-            hit_statement = "CRITICAL HIT!!"
-        else:
-            critical_bonus = 1
-            hit_statement = "The missile hits!"
-        print(f"Wisdom modifier: {self.wisdom_modifier}")
-        print(f"Proficiency bonus: {self.proficiency_bonus}")
-        print(f"Monster armor class: {monster.armor_class}")
-        if roll_d20 == 20 or (roll_d20 + self.wisdom_modifier + self.proficiency_bonus) >= monster.armor_class:
-            # this is dnd 5e math for m.missile damage:
-            #
-            number_of_dice = (3 + self.level - 1) * critical_bonus
-            damage_to_opponent = dice_roll(number_of_dice, 4) + (1 * number_of_dice)
-            if damage_to_opponent > 0:
-                print(hit_statement)
-                sleep(1)
-                print(f"Quantum Missile = 3d4(dice) + 1 die for every level above 1")
-                print(f"{number_of_dice}d{4} roll + 1 force damage per missile---> {damage_to_opponent}")
-                print(f"You do {damage_to_opponent} points of damage!")
-                pause()
-                self.hud()
-                return damage_to_opponent
-            else:
-                print(f"It blocks!")  # zero damage result
-                sleep(1)
-                return 0
-        else:
-            print("Your focus has failed..")
-            sleep(1)
-            print(f"You miss.")
-            print(f"You missed...")
-            pause()
-            self.hud()
-            return 0
-
     def evade(self, monster_name, monster_dexterity):
         print(f"You attempt an evasive maneuver..")
         sleep(1)
@@ -1710,7 +1545,7 @@ class Player:
             chemist_choice = input(
                 "(P)urchase quantum items, (S)ell quantum items, Display your (I)nventory, or "
                 "(E)xit the chemist: ").lower()
-            # if chemist_choice not in ('p', 's', 'i', 'e'):
+            #if chemist_choice not in ('p', 's', 'i', 'e'):
             #    continue
             if chemist_choice == 'p':
                 self.buy_chemist_items()
@@ -2076,8 +1911,7 @@ class Player:
                             print("Invalid entry..")
                             sleep(1)
                             continue
-                        confirm_purchase = input(
-                            f"Purchase {sale_item.name} for {sale_item.buy_price} GP (y/n)? ").lower()
+                        confirm_purchase = input(f"Purchase {sale_item.name} for {sale_item.buy_price} GP (y/n)? ").lower()
                         if confirm_purchase == 'y':
                             if self.gold >= sale_item.buy_price:
                                 if self.level >= sale_item.minimum_level:
@@ -2561,35 +2395,27 @@ class Player:
             return
 
     def found_weapon_substitution(self, found_item):
-        if self.wielded_weapon.damage_bonus < (self.level * 2) or self.wielded_weapon.to_hit_bonus < 3:
+        if self.wielded_weapon.damage_bonus < (self.level * 2):
             # found_item.damage_bonus = self.level
             if found_item.name == self.wielded_weapon.name:
-                if self.wielded_weapon.damage_bonus < (self.level * 2):
-                    self.wielded_weapon.damage_bonus += 1  # = found_item.damage_bonus + 1
-                    print(f"Quantum wierdness fills the air...\nYour {self.wielded_weapon.name} "
-                          f"damage bonus is enhanced to + {self.wielded_weapon.damage_bonus}!")
-                    pause()
-                    return
-                elif self.wielded_weapon.to_hit_bonus < 3:
-                    self.wielded_weapon.to_hit_bonus += 1  # = found_item.damage_bonus + 1
-                    print(f"Quantum wierdness fills the air...\nYour {self.wielded_weapon.name} "
-                          f"to-hit bonus is enhanced to + {self.wielded_weapon.to_hit_bonus}!")
-                    pause()
-                    return
+                print(
+                    f"Quantum wierdness fills the air...\nYour {self.wielded_weapon.name} is enhanced to + {found_item.damage_bonus + 1}!")
+                self.wielded_weapon.damage_bonus = found_item.damage_bonus + 1
+                pause()
+                return
             else:
-                print(f"You have found a {found_item.name}. Damage bonus: {found_item.damage_bonus}. "
-                      f"To-hit bonus: {found_item.to_hit_bonus}.")
-                print(f"You are currently wielding a {self.wielded_weapon.name}. "
-                      f"Damage bonus: {self.wielded_weapon.damage_bonus}. "
-                      f"To-hit bonus: {self.wielded_weapon.to_hit_bonus}.")
+                print(
+                    f"You have found a {found_item.name}. Damage bonus: {found_item.damage_bonus}. To hit bonus: {found_item.to_hit_bonus}.")
+                print(
+                    f"You are currently wielding a {self.wielded_weapon.name}. Damage bonus: {self.wielded_weapon.damage_bonus}. To hit bonus: {self.wielded_weapon.to_hit_bonus}.")
             while True:
                 replace_weapon = input(f"Do you wish to wield the {found_item.name} instead? y/n: ").lower()
                 if replace_weapon == 'y':
                     old_weapon = self.wielded_weapon
                     self.wielded_weapon = found_item
                     print(f"You are now wielding the {found_item.name}")
-                    print(f"Damage bonus: {self.wielded_weapon.damage_bonus}. "
-                          f"To-hit bonus: {self.wielded_weapon.to_hit_bonus}")
+                    print(
+                        f"Damage bonus: {self.wielded_weapon.damage_bonus}. To hit: {self.wielded_weapon.to_hit_bonus}")
                     if not self.duplicate_item(old_weapon.item_type,
                                                old_weapon):  # old_weapon not in self.pack['Weapons']:
                         (self.pack[found_item.item_type]).append(old_weapon)
@@ -2600,28 +2426,38 @@ class Player:
                     pause()
                     return
                 elif replace_weapon == 'n':
+                    print(f"You don't wield the {found_item.name}.")
                     if not self.duplicate_item(found_item.item_type,
                                                found_item):  # found_item not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(found_item)
                         print(f"You place the {found_item.name} on your back.")
+
                     else:
-                        print(f"You choose not to wield the {found_item.name}, but you cannot carry any more weapons "
-                              f"of this type. You leave it.")
+                        print(f"You can't carry any more weapons of this type. You leave the {found_item.name}")
                     pause()
                     return False
                 elif replace_weapon not in ("y", "n"):
                     continue
         else:
-            print(f"Wielded_weapon.damage_bonus already >= self.level * 2 and/or, to-hit == 3!!!")  # rm after testing
+            print(f"Wielded_weapon.damage_bonus already >= self.level * 2!!!")  # remove after testing
             pause()
             return
 
     def found_armor_substitution(self, found_item):
         # ADD armor_bonus FOR FOUND PLATE ARMOR AFTER PLAYER REACHES CERTAIN LEVEL?
         if self.armor.ac < found_item.ac:
-            print(f"You have found {found_item.name}!! Armor Class: {found_item.ac}")
-            print(f"Your current {self.armor.name} Armor Class: {self.armor.ac}")
-
+            if found_item.name == 'Full Plate Armor' and found_item.name == self.armor.name:
+                found_item.ac += 1
+                print(
+                    f"Quantum wierdness fills the air...\nYour {self.armor.name} is enhanced to armor class {found_item.ac}!")
+                self.armor.ac = found_item.ac
+                self.calculate_armor_class()
+                pause()
+                return
+            else:
+                print(f"You have found {found_item.name}!! Armor Class: {found_item.ac}")
+                print(f"Your current {self.armor.name} Armor Class: {self.armor.ac}")
+                # USE THIS NEXT BLOCK OF CODE FOR WEARING ARMOR AT THE BLACKSMITH:
             while True:
                 replace_armor = input(f"Do you wish to wear the {found_item.name} instead? y/n: ").lower()
                 if replace_armor == 'y':
@@ -2637,14 +2473,14 @@ class Player:
                     pause()
                     return
                 elif replace_armor == 'n':
-                    print(f"You choose not to wear the {found_item.name}.")  # remove after testing
+                    print(f"You don't wear the {found_item.name}.")  # remove after testing
                     if not self.duplicate_item(found_item.item_type, found_item):
                         # if found_item not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(found_item)
                         print(f"You place the {found_item.name} on your back.")
 
                     else:
-                        print(f"However, you cannot carry any more armor of this type. You leave it.")
+                        print(f"You can't carry any more {found_item.name}. You leave it.")  # can't carry any more
                     pause()
                     return
                 elif replace_armor not in ("y", "n"):
@@ -2656,11 +2492,21 @@ class Player:
 
     def found_shield_substitution(self, sub_item):
         if self.shield.ac < sub_item.ac:
-            print(f"You have found a {sub_item.name}!! Armor Class: {sub_item.ac}")
-            if self.shield.name == 'No Shield':
-                print(f"You currently hold no shield in your off hand.")
+            if sub_item.name == 'Quantum Tower Shield' and sub_item.name == self.shield.name:
+                sub_item.ac += 1
+                print(
+                    f"Quantum wierdness fills the air...\nYour {self.shield.name} is enhanced to armor class {sub_item.ac}!")
+                self.shield.ac = sub_item.ac
+                self.calculate_armor_class()
+                # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
+                pause()
+                return
             else:
-                print(f"Your current {self.shield.name} Armor Class: {self.shield.ac}")
+                print(f"You have found a {sub_item.name}!! Armor Class: {sub_item.ac}")
+                if self.shield.name == 'No Shield':
+                    print(f"You currently hold no shield in your off hand.")
+                else:
+                    print(f"Your current {self.shield.name} Armor Class: {self.shield.ac}")
             while True:
                 replace_shield = input(f"Do you wish to wield the {sub_item.name} instead? y/n: ").lower()
                 if replace_shield == 'y':
@@ -2676,18 +2522,18 @@ class Player:
                         (self.pack[sub_item.item_type]).append(old_shield)
                         print(f"You place the {old_shield.name} on your back..")
                     else:
-                        print(f"You drop the old {old_shield.name}.")
+                        print(f"You drop your {old_shield.name}.")
                     pause()
                     return
                 elif replace_shield == 'n':
-                    print(f"You choose not to wield the {sub_item.name}.")
+                    print(f"You don't wield the {sub_item.name}.")
                     if not self.duplicate_item(sub_item.item_type,
                                                sub_item):  # found_item not in self.pack[found_item.item_type]:
                         (self.pack[sub_item.item_type]).append(sub_item)
                         print(f"You place the {sub_item.name} on your back.")
 
                     else:
-                        print(f"However, you cannot carry any more shields of this type. You leave it.")
+                        print(f"You can't carry any more {sub_item.name}s. You leave it.")  # can't carry any more
                     pause()
                     return
                 elif replace_shield not in ("y", "n"):
@@ -2700,8 +2546,18 @@ class Player:
     def found_boots_substitution(self, found_item):
         # ADD armor_bonus FOR FOUND PLATE ARMOR AFTER PLAYER REACHES CERTAIN LEVEL?
         if self.boots.ac < found_item.ac:
-            print(f"You have found a pair of {found_item.name}!! Armor Class: {found_item.ac}")
-            print(f"Your current {self.boots.name} Armor Class: {self.boots.ac}")
+            if found_item.name == 'Elven Boots' and found_item.name == self.boots.name:  # make this the most elite item
+                found_item.ac += 1
+                print(
+                    f"Quantum wierdness fills the air...\nYour {self.boots.name} are enhanced to armor class {found_item.ac}!")
+                self.boots.ac = found_item.ac
+                self.calculate_armor_class()
+                pause()
+                return
+            else:
+                print(f"You have found a pair of {found_item.name}!! Armor Class: {found_item.ac}")
+                print(f"Your current {self.boots.name} Armor Class: {self.boots.ac}")
+
             while True:
                 replace_boots = input(f"Do you wish to wear the {found_item.name} instead? y/n: ").lower()
                 if replace_boots == 'y':
@@ -2719,14 +2575,14 @@ class Player:
                     pause()
                     return
                 elif replace_boots == 'n':
-                    print(f"You choose not to wear the {found_item.name}.")  # remove after testing
+                    print(f"You don't wear the {found_item.name}.")  # remove after testing
                     if not self.duplicate_item(found_item.item_type,
                                                found_item):  # found_item not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(found_item)
-                        print(f"You place them in your dungeoneer's pack.")
+                        print(f"You place the {found_item.name} in your dungeoneer's pack.")
 
                     else:
-                        print(f"However, you cannot carry any more boots like this. You leave them.")
+                        print(f"You can't carry any more {found_item.name}. You leave them.")  # can't carry any more
                     pause()
                     return
                 elif replace_boots not in ("y", "n"):
@@ -2766,13 +2622,13 @@ class Player:
                     pause()
                     return
                 elif replace_cloak == 'n':
-                    print(f"You choose not to wear the {found_item.name}.")  # remove after testing
+                    print(f"You don't wear the {found_item.name}.")  # remove after testing
                     if not self.duplicate_item(found_item.item_type,
                                                found_item):  # found_item not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(found_item)
-                        print(f"You place the {found_item.name} in your dungeoneer's pack.")
+                        print(f"You place the {found_item.name} into your dungeoneer's pack.")
                     else:
-                        print(f"You cannot carry any more cloaks like this. You leave it.")  # can't carry any more
+                        print(f"You can't carry any more {found_item.name}s. You leave it.")  # can't carry any more
                     pause()
                     return
                 elif replace_cloak not in ("y", "n"):
@@ -2829,11 +2685,7 @@ class Player:
             pause()
             return
 
-    def loot(self, encounter):
-        if encounter < 21:  # regular monster
-            loot_difficulty_class = 10
-        else:  # boss
-            loot_difficulty_class = 8
+    def loot(self):
         # place armor first here; otherwise it will mess up the order of operations below
         loot_dict = {
             'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
@@ -2855,7 +2707,7 @@ class Player:
             self.hud()
             print(f"Loot roll ---> {loot_roll}")
             pause()
-            if loot_roll >= loot_difficulty_class:
+            if loot_roll > 9:
                 key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
                 rndm_item_index = random.randrange(len(loot_dict[key]))
                 found_item = loot_dict[key][rndm_item_index]
@@ -2918,7 +2770,7 @@ class Player:
             else:
                 # extra chance for potion
                 extra_chance = dice_roll(1, 20)
-                if extra_chance >= loot_difficulty_class:
+                if extra_chance > 9:
                     print(f"You see a potion of healing!")
                     sleep(.5)
                     print(f"You grab it..")
@@ -2998,7 +2850,7 @@ class Player:
         ability_dict_subset = {key: value for key, value in ability_dict.items() if key in attributes}
         # Find the minimum attribute name
         min_attribute = min(ability_dict_subset, key=ability_dict_subset.get)
-        # print()  # remove after testing
+        #print()  # remove after testing
         print(f"Weird discomfort surges through your body..")
         sleep(1.5)
         print(f"You have lost {min_attribute}!")
@@ -3078,7 +2930,7 @@ class Player:
                     else:
                         return  # player chooses not to finish
                 else:
-                    # print("calling undead prophet returns..")
+                    #print("calling undead prophet returns..")
                     return undead_prophet_returns()  # player unable to partially demolish
             else:
                 return  # ignore the altar
@@ -3091,8 +2943,7 @@ class Player:
         # throne_discovery = f"level {self.dungeon.level} throne"
         rndm_occurrence_lst = [nothing_happens, king_returns, self.increase_random_ability, self.teleporter_event,
                                nothing_happens, king_returns, self.increase_lowest_ability, self.lose_items,
-                               king_returns, nothing_happens, self.heal_event, king_returns,
-                               self.decrease_random_ability,
+                               king_returns, nothing_happens, self.heal_event, king_returns, self.decrease_random_ability,
                                self.decrease_lowest_ability]
         rndm_occurrence = random.choice(rndm_occurrence_lst)
 
@@ -4261,33 +4112,3 @@ sale_item = (sale_items_dict[sale_item_key])
                 pause()
                 return True
 '''
-"""            if found_item.name == 'Elven Boots' and found_item.name == self.boots.name:  # make this the most elite item
-                found_item.ac += 1
-                print(
-                    f"Quantum wierdness fills the air...\nYour {self.boots.name} are enhanced to armor class {found_item.ac}!")
-                self.boots.ac = found_item.ac
-                self.calculate_armor_class()
-                pause()
-                return
-            else:"""
-"""           
-                if sub_item.name == 'Quantum Tower Shield' and sub_item.name == self.shield.name:
-                sub_item.ac += 1
-                print(
-                    f"Quantum wierdness fills the air...\nYour {self.shield.name} is enhanced to armor class {sub_item.ac}!")
-                self.shield.ac = sub_item.ac
-                self.calculate_armor_class()
-                # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
-                pause()
-                return
-            else:"""
-
-"""            if found_item.name == 'Full Plate Armor' and found_item.name == self.armor.name:
-                found_item.ac += 1
-                print(
-                    f"Quantum wierdness fills the air...\nYour {self.armor.name} is enhanced to armor class {found_item.ac}!")
-                self.armor.ac = found_item.ac
-                self.calculate_armor_class()
-                pause()
-                return
-            else:"""

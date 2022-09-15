@@ -893,7 +893,7 @@ class ZombieProphet(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "It strikes wildly with its iron sceptre!!"
         self.introduction = f"The ancient prophet rises from the ground. The once beautiful and exquisite\n" \
-                            f"garb now hangs off of rotten flesh in tatters and rags.\n" \
+                            f"garb now hangs off his rotten, worm-infested flesh in tatters and rags.\n" \
                             f"The air bristles with Quantum Energy.."
         self.is_discovered = False
 

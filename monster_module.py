@@ -167,6 +167,9 @@ class Monster:
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = False
         self.hit_dice = 0  # tiny d4, small d6, medium d8, large d10, huge d12, gargantuan d20
         self.number_of_hd = self.level
@@ -384,6 +387,9 @@ class Quasit(Monster):
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = False
+        self.immunities = ["Turn Undead"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = False
         self.difficulty_class = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -440,6 +446,9 @@ class Kobold(Monster):
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = False
+        self.immunities = ["Turn Undead"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = False
         self.difficulty_class = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -493,6 +502,9 @@ class Cultist(Monster):
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = False
+        self.immunities = ["Turn Undead"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = False
         self.difficulty_class = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -549,6 +561,9 @@ class Goblin(Monster):
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = False
+        self.immunities = ["Turn Undead"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = False
         self.difficulty_class = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -602,6 +617,9 @@ class WingedKobold(Monster):
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = False
+        self.immunities = ["Turn Undead"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = False
         self.difficulty_class = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -655,6 +673,9 @@ class Shadow(Monster):
         self.necrotic = True
         self.dot_multiplier = 1
         self.undead = True
+        self.immunities = ["Sleep", "Charm"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = True
         self.difficulty_class = 2
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -725,13 +746,16 @@ class ShadowKing(Monster):
         self.dexterity = random.randint(13, 15)
         self.constitution = random.randint(12, 14)
         self.intelligence = random.randint(5, 7)
-        self.wisdom = random.randint(9, 11)
+        self.wisdom = random.randint(12, 13)
         self.charisma = random.randint(7, 8)
         self.can_paralyze = True
         self.can_poison = False
         self.necrotic = True
         self.dot_multiplier = 2
         self.undead = True
+        self.immunities = ["Sleep", "Charm"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = True
         self.difficulty_class = 2
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -809,6 +833,9 @@ class Skeleton(Monster):
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = True
+        self.immunities = ["Sleep", "Charm"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = False
         # self.human_player_level = human_player_level
         self.difficulty_class = 2
@@ -860,13 +887,16 @@ class ZombieProphet(Monster):
         self.dexterity = random.randint(11, 15)
         self.constitution = random.randint(14, 16)
         self.intelligence = random.randint(5, 7)
-        self.wisdom = random.randint(7, 9)
+        self.wisdom = random.randint(12, 13)
         self.charisma = random.randint(5, 6)
         self.can_paralyze = False
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = True
+        self.immunities = ["Sleep", "Charm"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = False
         # self.human_player_level = human_player_level
         self.difficulty_class = 2
@@ -914,13 +944,16 @@ class SkeletonKing(Monster):
         self.dexterity = random.randint(11, 15)
         self.constitution = random.randint(14, 16)
         self.intelligence = random.randint(5, 7)
-        self.wisdom = random.randint(7, 9)
+        self.wisdom = random.randint(11, 13)
         self.charisma = random.randint(5, 6)
         self.can_paralyze = False
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = True
+        self.immunities = ["Sleep", "Charm"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = False
         # self.human_player_level = human_player_level
         self.difficulty_class = 2
@@ -975,6 +1008,9 @@ class Drow(Monster):
         self.necrotic = True
         self.dot_multiplier = 1
         self.undead = False
+        self.immunities = ["Turn Undead"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = True
         self.difficulty_class = 2
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -1040,6 +1076,9 @@ class Zombie(Monster):
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = True
+        self.immunities = ["Sleep", "Charm"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = False
         # self.human_player_level = human_player_level
         self.difficulty_class = 2
@@ -1094,6 +1133,9 @@ class Troglodyte(Monster):
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = False
+        self.immunities = ["Turn Undead"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = False
         self.difficulty_class = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -1147,6 +1189,9 @@ class Orc(Monster):
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = False
+        self.immunities = ["Turn Undead"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = False
         self.difficulty_class = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -1195,13 +1240,16 @@ class Ghoul(Monster):
         self.dexterity = random.randint(12, 16)
         self.constitution = random.randint(12, 13)
         self.intelligence = random.randint(5, 10)
-        self.wisdom = random.randint(7, 10)
+        self.wisdom = random.randint(7, 9)
         self.charisma = random.randint(1, 5)
         self.can_paralyze = True
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = True
+        self.immunities = ["Sleep", "Charm"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = False
         self.human_player_level = 0
         self.difficulty_class = 2
@@ -1260,6 +1308,9 @@ class Bugbear(Monster):
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = False
+        self.immunities = ["Turn Undead"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = False
         self.difficulty_class = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -1313,6 +1364,9 @@ class HalfOgre(Monster):
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = False
+        self.immunities = ["Turn Undead"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = False
         self.difficulty_class = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -1366,6 +1420,9 @@ class Specter(Monster):
         self.necrotic = True
         self.dot_multiplier = 2
         self.undead = True
+        self.immunities = ["Sleep", "Charm"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = True
         self.human_player_level = 0
         self.difficulty_class = 2
@@ -1433,13 +1490,16 @@ class SpecterKing(Monster):
         self.dexterity = random.randint(12, 16)
         self.constitution = random.randint(11, 13)
         self.intelligence = random.randint(9, 11)
-        self.wisdom = random.randint(9, 11)
+        self.wisdom = random.randint(12, 13)
         self.charisma = random.randint(10, 12)
         self.can_paralyze = False
         self.can_poison = False
         self.necrotic = True
         self.dot_multiplier = 2
         self.undead = True
+        self.immunities = ["Sleep", "Charm"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = True
         self.human_player_level = 0
         self.difficulty_class = 2
@@ -1513,6 +1573,9 @@ class WhiteDragonWyrmling(Monster):
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = False
+        self.immunities = ["Turn Undead"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = False
         self.difficulty_class = 1
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -1555,7 +1618,7 @@ monster_dict = {
 # undead monsters:
 undead_monster_dict = {
     1: [Skeleton],
-    2: [Shadow, Drow, Ghoul],
+    2: [Shadow, Zombie, Ghoul],
     3: [Specter]
 }
 # boss lists

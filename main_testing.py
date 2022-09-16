@@ -248,7 +248,7 @@ while True:
                     gong()
                     print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
                     time.sleep(4)
-                    in_proximity_to_monster = False
+                    player_1.in_proximity_to_monster = False
                     in_dungeon = False
                     in_town = False
                     # player_is_dead = False
@@ -258,7 +258,7 @@ while True:
                         if try_again == "y":
                             time.sleep(1)
                             cls()
-                            in_proximity_to_monster = False
+                            player_1.in_proximity_to_monster = False
                             in_dungeon = False
                             in_town = False
                             player_is_dead = False
@@ -396,13 +396,13 @@ while True:
                 if encounter < 10 or encounter > 20:
                     monster = ""  # just to prevent monster from being undefined
                     # monster dictionary imported from monster module. keys correspond to difficulty
-                    # in proximity to monster loop contains battle loop within it
-                    in_proximity_to_monster = True
+                    # IN PROXIMITY TO MONSTER LOOP *contains battle loop within it*
+                    player_1.in_proximity_to_monster = True
                     player_is_dead = False
-                    while in_proximity_to_monster:
+                    while player_1.in_proximity_to_monster:
                         if player_is_dead:
                             break
-                        if not in_proximity_to_monster:
+                        if not player_1.in_proximity_to_monster:
                             break
                         # monster_key = random.randint(1, player_1.level)  # (player_1.level + 1)
                         # monster_cls = random.choice(monster_dict[monster_key])
@@ -438,15 +438,16 @@ while True:
                             pause()
                         else:
                             print(f"{monster.introduction}")
-                            discovered_monsters.append(monster.name)
+                            if encounter < 21:  # if not a boss
+                                discovered_monsters.append(monster.name)
                             pause()
                         if encounter < 21:  # if not a boss, monster may like you or steal from you
                             if player_1.monster_likes_you(monster.name, monster.intelligence):
-                                in_proximity_to_monster = False
+                                player_1.in_proximity_to_monster = False
                                 player_1.dungeon_description()
                                 break
                             if player_1.quick_move(monster.name):
-                                in_proximity_to_monster = False
+                                player_1.in_proximity_to_monster = False
                                 player_1.dungeon_description()
                                 break  # if monster steals something he gets away clean, if not, battle
 
@@ -482,7 +483,7 @@ while True:
                                 continue
                         # ********************************* BATTLE LOOP ***********************************************
                         while True:
-                            if not in_proximity_to_monster:
+                            if not player_1.in_proximity_to_monster:
                                 break
                             player_1.hud()
                             if monster.proper_name == "None":
@@ -492,8 +493,8 @@ while True:
                                 print(f"{monster.proper_name} AC: {monster.armor_class} "
                                       f"HP: {monster.hit_points} ({monster.number_of_hd}d{monster.hit_dice})")
                             battle_choice = input("(F)ight, (H)ealing potion, (C)larifying elixir, "
-                                                  "(G)iant Strength potion, (Q)uantum attack or "
-                                                  "(E)vade\nF/H/C/G/Q/S --> ").lower()
+                                                  "(G)iant Strength potion, (Q)uantum Effects or "
+                                                  "(E)vade\nF/H/C/G/Q/E --> ").lower()
 
                             # these choices count as turns, and are therefore followed by monster's turn:
                             if battle_choice == 'e' or battle_choice == 'h' or battle_choice == 'g' or \
@@ -502,7 +503,7 @@ while True:
                                     if player_1.evade(monster.name, monster.dexterity):
                                         if encounter > 20:  # if evading a boss at this point,
                                             dungeon_theme()  # go back to dungeon theme song
-                                        in_proximity_to_monster = False  # get out of battle loop, regardless of monster
+                                        player_1.in_proximity_to_monster = False  # get out of battle loop, regardless of monster
                                         break
                                 elif battle_choice == 'h':
                                     if not player_1.drink_healing_potion():
@@ -516,7 +517,27 @@ while True:
                                 elif battle_choice == "q":
                                     player_1.hud()
                                     if player_1.quantum_units > 0:
-                                        damage_to_monster = player_1.cast(monster)
+                                        damage_to_monster = player_1.quantum_battle_effects(monster)
+                                        # If monster is successfully turned, experience is gained,
+                                        # but player gets no gold or loot and monster does not 'die':
+                                        if not player_1.in_proximity_to_monster:  # turn undead
+                                            player_1.regenerate()
+                                            player_1.calculate_potion_of_strength()
+                                            player_1.calculate_poison()
+                                            player_1.calculate_necrotic_dot()
+                                            if encounter > 20:  # if fighting a boss, go back to regular music
+                                                gong()
+                                                sleep(4)
+                                                dungeon_theme()
+
+                                            player_1.level_up(monster.experience_award, monster.gold)
+                                            player_1.dungeon_description()
+                                            # pause()
+                                            break
+                                        # otherwise, calculate damage:
+                                        # *if total monster hit points is returned from cast(),
+                                        # then monster will die instantly*,
+                                        # and player gets loot
                                         monster.reduce_health(damage_to_monster)
                                         if monster.check_dead():
                                             player_1.hud()
@@ -527,18 +548,18 @@ while True:
                                                 dungeon_theme()
                                             else:
                                                 print(f"It died..")
-
+                                            # calculations at end of turn:
                                             player_1.regenerate()
-                                            player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
-                                            player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                                            player_1.calculate_potion_of_strength()  # potions of strength have 5 uses
+                                            player_1.calculate_poison()  # poison wears off after 5 turns
                                             player_1.calculate_necrotic_dot()
                                             pause()
                                             if player_1.check_dead():  # you can die from poison or necrosis,
                                                 player_is_dead = True  # right after victory, following calculations
-                                                in_proximity_to_monster = False
+                                                player_1.in_proximity_to_monster = False
                                                 break
                                             player_1.level_up(monster.experience_award, monster.gold)
-                                            in_proximity_to_monster = False
+                                            player_1.in_proximity_to_monster = False
                                             player_1.loot(encounter)
                                             if encounter > 20:  # if you kill the boss, you get extra chance for loot
                                                 player_1.loot(encounter)  # 8 difficulty class
@@ -547,7 +568,7 @@ while True:
                                         print(f"You have no Quantum unit energy!")
                                         pause()
                                         continue  # if you have no QU, don't waste a turn!
-                                # ****MONSTER TURN AFTER YOU SWIG POTION, fail evade or cast******
+                                # ****MONSTER TURN AFTER YOU SWIG POTION, fail to evade, or cast******
                                 # elif not monster.check_dead():
                                 player_1.hud()
                                 player_1.meta_monster_function(monster)
@@ -578,7 +599,7 @@ while True:
                             elif battle_choice == "f":
                                 print(f"Fight.")
 
-                                # player's turn:
+                                # player melee turn:
                                 damage_to_monster = player_1.swing(monster.name, monster.armor_class)
                                 monster.reduce_health(damage_to_monster)
                                 if monster.check_dead():
@@ -597,16 +618,16 @@ while True:
                                     player_1.calculate_necrotic_dot()
                                     if player_1.check_dead():
                                         player_is_dead = True
-                                        in_proximity_to_monster = False
+                                        player_1.in_proximity_to_monster = False
                                         break
                                     player_1.level_up(monster.experience_award, monster.gold)
-                                    in_proximity_to_monster = False
+                                    player_1.in_proximity_to_monster = False
                                     player_1.loot(encounter)
                                     if encounter > 20:  # if you kill the boss, you get extra chance for loot
                                         player_1.loot(encounter)  # 8 difficulty class
                                     break
 
-                                # monster turn if still alive:
+                                # monster turn if still alive after player melee attack:
                                 else:
                                     player_1.meta_monster_function(monster)
                                     if not player_1.check_dead():  # if player not dead

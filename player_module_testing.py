@@ -7,8 +7,6 @@ import winsound
 from dice_roll_module import dice_roll
 from dungeons import *
 
-
-
 # from typing_module import typing
 from monster_module import monster_dict, king_boss_list, undead_prophet_list
 
@@ -671,6 +669,7 @@ class Player:
         self.proficiency_bonus = 2  # 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.maximum_hit_points = 10 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.in_proximity_to_monster = False
         self.is_paralyzed = False
         self.cloak = canvas_cloak
         self.ring_of_prot = default_ring_of_protection
@@ -1049,11 +1048,11 @@ class Player:
                     if tries > 1:
                         print(f"You savor the empowering abilities you have gained..\n"
                               f"And yet, the dungeon horde grows more powerful with you!")
+
                         return
 
                     ability_dict = self.__dict__  # create variable as actual copy of player dict attribute
-
-                    ability_lst = []
+                    ability_lst = []  # list to be populated with all abilities < 20
                     # the working dict and 'for' loop just takes the place of many 'if:' statements
                     working_dict = {'strength': self.strength, 'dexterity': self.dexterity,
                                     'constitution': self.constitution, 'intelligence': self.intelligence,
@@ -1114,7 +1113,10 @@ class Player:
         after_level = self.level
         after_quantum_level = self.quantum_level
         if after_level > before_level:
-            print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points.")
+            if monster_gold > 0:
+                print(f"You snarf {monster_gold} gold pieces.")
+                sleep(1)
+            print(f"You gain {exp_award} experience points.")
             sleep(2)
             winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\gong.wav', winsound.SND_ASYNC)
             print(f"You went up a level!!")
@@ -1147,15 +1149,17 @@ class Player:
             if after_proficiency_bonus > before_proficiency_bonus:
                 print(f"Your proficiency bonus increases from {before_proficiency_bonus} to {after_proficiency_bonus}!")
                 sleep(2)
-            # self.ring_of_reg  ADD RING LOGIC...UP WITH EACH LEVEL ?
-
             if after_quantum_level > before_quantum_level:
                 print(f"Your Quantum knowledge level increases from {before_quantum_level} to {after_quantum_level}!")
                 self.quantum_units = self.maximum_quantum_units
                 sleep(2)
             self.hud()
         else:
-            print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points")
+            if monster_gold > 0:
+                print(f"You snarf {monster_gold} gold pieces.")
+                sleep(1)
+            print(f"You gain {exp_award} experience points.")
+            # print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points")
             sleep(2)
             self.hud()
 
@@ -1593,21 +1597,136 @@ class Player:
             self.hud()
             return 0
 
-    def quantum_test(self, monster):
-        self.quantum_units -= 1
-        print(f"{self.name} is fighting a {monster.name}")
-        print("Test")
+    def turn_undead(self, monster):
+        print(f"Turn Undead")
+        sleep(1)
+        self.hud()
+        if "Turn Undead" not in monster.immunities:
+            turn_roll = dice_roll(1, 20)
+            total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus)
+            print(f"Quantum effect roll: {turn_roll} + Wisdom Modifier: {self.wisdom_modifier} "
+                  f"+ Proficiency Bonus: {self.proficiency_bonus} ")
+            sleep(1)
+            print(f"Total: {total}")
+            sleep(1)
+            print(f"{monster.name} Wisdom: {monster.wisdom}")
+            sleep(1)
+            if total >= monster.wisdom:
+                self.quantum_units -= 1
+                self.in_proximity_to_monster = False
+                print(f"The {monster.name} runs in fear!!")
+                monster.gold = 0
+                sleep(2)
+                return 0
+            else:
+                self.quantum_units -= 1
+                print(f"The {monster.name} listens with deaf ears..")
+                sleep(1)
+                pause()
+                return 0
+        else:
+            self.quantum_units -= 1
+            print(f"The {monster.name} is immune to this Quantum Effect!!")
+            sleep(1)
+            print(f"You have wasted a Quantum Unit!")
+            sleep(1)
+            pause()
+            return 0
+
+    def quantum_sleep(self, monster):
+        print(f"Sleep")
+        sleep(1)
+        self.hud()
+        if "Sleep" not in monster.immunities:
+            weakness_modifier = 0
+            if "Sleep" in monster.vulnerabilities:
+                weakness_modifier = 5
+            turn_roll = dice_roll(1, 20)
+            total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + weakness_modifier)
+            print(f"Quantum effect roll: {turn_roll} + Wisdom Modifier: {self.wisdom_modifier} "
+                  f"+ Proficiency Bonus: {self.proficiency_bonus} + Monster Weakness Modifier: {weakness_modifier}")
+            sleep(1)
+            print(f"Total: {total}")
+            sleep(1)
+            print(f"{monster.name} Wisdom: {monster.wisdom}")
+            sleep(1)
+            if total >= monster.wisdom:
+                self.quantum_units -= 1
+                print(f"The {monster.name} is sleeping..")
+                sleep(1)
+                input(f"Press (ENTER) to vanquish: ")
+                finishing_move_roll = dice_roll(1, 20)
+                sleeping_difficulty_class = (5 - weakness_modifier)
+                print(f"1d20 roll: {finishing_move_roll}")  # remove after testing ?
+                print(f"Difficulty Class: {sleeping_difficulty_class}")  # remove after testing ?
+                if finishing_move_roll > sleeping_difficulty_class:
+                    print(f"You raise your {self.wielded_weapon.name} and swing mightily..")
+                    sleep(1)
+                    pause()
+                    return monster.hit_points  # return the total amount of monster hit points, effectively killing it
+                else:
+                    print(f"It woke up!!")
+                    sleep(1.5)
+                    return 0
+            else:
+                self.quantum_units -= 1
+                print(f"The {monster.name} isn't sleepy!")
+                sleep(1)
+                pause()
+                return 0
+        else:
+            self.quantum_units -= 1
+            print(f"The {monster.name} is immune to the Quantum Sleep Effect!!")
+            sleep(1)
+            print(f"You have wasted a Quantum Unit!")
+            sleep(1)
+            pause()
+            return 0
+
+    def quantum_treat_battle_wounds(self, monster):
+        # perhaps use this math for higher healing effect:
+        # number_of_dice = (3 + self.level - 1)  # 3 dice for lvl 1, 4 for lvl 2, 5 for lvl 3....
+        # heal = dice_roll(number_of_dice, 4)  + (1 * number_of_dice)
+        number_of_dice = (1 + self.level)
+        heal = dice_roll(number_of_dice, 4) + number_of_dice
+        if self.hit_points < self.maximum_hit_points:
+            print(f"You feel restorative powers welling up within you..")
+            sleep(1)
+            print(f"You heal {heal} points..")
+            self.hit_points += heal
+            if self.hit_points > self.maximum_hit_points:
+                self.hit_points = self.maximum_hit_points
+            #self.hit_points += math.floor(self.maximum_hit_points * .5)  # round down for cure light wounds..
+            self.quantum_units -= 1
+        else:
+
+            print(f"You are at maximum health!")
+            sleep(1)
         pause()
         return 0
 
-    def cast(self, monster):
-        quantum_book = {1: {1: self.quantum_missile, 2: self.quantum_test}
+    def quantum_battle_effects(self, monster):
+        printable_quantum_book = {1: {1: "Quantum Missile",
+                                      2: "Sleep",
+                                      3: "Treat Battle Wounds",
+                                      5: "Turn Undead"}
+                                  }
+        quantum_book = {1: {1: self.quantum_missile,
+                            2: self.quantum_sleep,
+                            3: self.quantum_treat_battle_wounds,
+                            5: self.turn_undead}
                         }
         while True:
+            self.hud()
             try:
                 q_level = int(input(f"Quantum level to cast: "))
                 if self.quantum_level >= q_level:
-                    q_to_cast = int(input(f"Number of Quantum to cast (L)ist: "))
+                    key_lst = list(printable_quantum_book[q_level].keys())
+                    value_list = list(printable_quantum_book[q_level].values())
+                    working_dict = {key_lst[i]: value_list[i] for i in range(len(key_lst))}
+                    for key, value in working_dict.items():
+                        print(f"{key}: {value}")
+                    q_to_cast = int(input(f"Number of Quantum effect to cast: "))
                     # noinspection PyArgumentList
                     quantum_function = (quantum_book[q_level][q_to_cast](monster))
                     return quantum_function
@@ -1617,6 +1736,8 @@ class Player:
                     continue
             except (ValueError, KeyError):
                 print(f"Invalid input")
+                sleep(.25)
+
                 continue
 
     def quantum_missile(self, monster):
@@ -2424,7 +2545,8 @@ class Player:
                         print(f"You find your way to your room, which is upstairs. "
                               f"The accommodations are clean, tidy and welcoming.")
                         sleep(1)
-                        print(f"Removing your armor and accoutrements, you wash up and fall into a deep, restful sleep.")
+                        print(
+                            f"Removing your armor and accoutrements, you wash up and fall into a deep, restful sleep.")
                         sleep(1)
                         print(f"You feel better.")
                         sleep(1)
@@ -3116,9 +3238,9 @@ class Player:
                 sleep(1.5)
                 return rndm_occurrence()
             elif throne_action == 'r':
-                difficulty_class = 12
+                difficulty_class = 14
                 remove_gold_roll = dice_roll(1, 20)
-                if remove_gold_roll > difficulty_class:
+                if remove_gold_roll + self.intelligence_modifier > difficulty_class:
                     gold_value = (random.randint(1, 5) * self.dungeon.level)
                     print(f"The sculpture comes out, though not without difficulty or damage.")
                     sleep(1)
@@ -3135,27 +3257,26 @@ class Player:
                 if demolish_roll + self.strength_modifier > primary_difficulty_class:  # strength to topple
                     print(f"You succeed in toppling the upper portion!")
                     sleep(1)
-                    finish = input(f"Do you want to continue your work, completely destroying it? (y/n): ").lower()
-                    if finish == 'y':
-                        secondary_difficulty_class = 10
-                        finish_roll = dice_roll(1, 20)
-                        if finish_roll + self.intelligence_modifier > secondary_difficulty_class:  # intel to complete
-                            print(f"With your rope and timbers from the refuse, you set up rigging.\n"
-                                  f"Then, with minimal effort, you are able to pull the foundation stones out.")
-                            sleep(1.5)
-                            print(f"You successfully demolish the altar!")
-                            sleep(1.5)
-                            self.discovered_interactives.append(altar_discovery)
-                            pause()
-                            self.hud()
-                            return self.increase_random_ability()
-                        else:
-                            return undead_prophet_returns()  # unable to finish
-                    else:
-                        return  # player chooses not to finish
+                    # finish = input(f"Do you want to continue your work, completely destroying it? (y/n): ").lower()
+                    # if finish == 'y':
+                    #    secondary_difficulty_class = 10
+                    #    finish_roll = dice_roll(1, 20)
+                    #    if finish_roll + self.intelligence_modifier > secondary_difficulty_class:  # intel to complete
+                    print(f"With your rope and timbers from the refuse, you set up rigging.\n"
+                          f"Then, with minimal effort, you are able to pull the foundation stones out.")
+                    sleep(1.5)
+                    print(f"You successfully demolish the altar!")
+                    sleep(1.5)
+                    self.discovered_interactives.append(altar_discovery)
+                    pause()
+                    self.hud()
+                    return self.increase_random_ability()
                 else:
-                    # print("calling undead prophet returns..")
-                    return undead_prophet_returns()  # player unable to partially demolish
+                    return undead_prophet_returns()  # unable to finish
+
+
+
+
             else:
                 return  # ignore the altar
         else:

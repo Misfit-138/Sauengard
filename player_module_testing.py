@@ -1699,7 +1699,6 @@ class Player:
             #self.hit_points += math.floor(self.maximum_hit_points * .5)  # round down for cure light wounds..
             self.quantum_units -= 1
         else:
-
             print(f"You are at maximum health!")
             sleep(1)
         pause()

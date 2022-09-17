@@ -283,7 +283,9 @@ class Monster:
             os.system('pause')
             return 0
 
-    def quantum_energy_attack(self, name, human_player_wisdom_modifier, human_player_ring_of_prot):
+    def quantum_energy_attack(self, name, human_player_wisdom_modifier, human_player_ring_of_prot,
+                              human_player_temp_protection_effect):
+
         attack_bonus = 0
         attack_phrase = ""
         attack_bonus_roll = random.randint(1, 100)
@@ -318,10 +320,15 @@ class Monster:
             hit_statement = ""
         # print(f"{self.name} Wisdom modifier {self.wisdom_modifier}")  # MONSTER WISDOM MODIFIER
         print(
-            f"Your roll: {human_player_roll_d20} + wisdom modifier ({human_player_wisdom_modifier}) + ring of protection "
-            f"({human_player_ring_of_prot}) = {human_player_roll_d20 + human_player_wisdom_modifier}")
+            f"Your roll: {human_player_roll_d20} + wisdom modifier: ({human_player_wisdom_modifier}) "
+            f"+ ring of protection: ({human_player_ring_of_prot}) "
+            f"+ Quantum Protection effect: {human_player_temp_protection_effect} "
+            f"= {human_player_roll_d20 + human_player_wisdom_modifier + human_player_ring_of_prot + human_player_temp_protection_effect}")
+
         if roll_d20 + self.wisdom_modifier >= (
-                human_player_roll_d20 + human_player_wisdom_modifier + human_player_ring_of_prot):
+                human_player_roll_d20 + human_player_wisdom_modifier +
+                human_player_ring_of_prot + human_player_temp_protection_effect):
+
             damage_roll = dice_roll(self.number_of_hd * critical_bonus, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
@@ -346,7 +353,7 @@ class Monster:
 
     def paralyze(self, human_player_wisdom, human_player_ring_of_prot):
         print(self.paralyze_phrase)
-        # print(f"It lurches forward, grabbing your arm!")
+
         paralyze_chance = dice_roll(1, 20)
         print(
             f"Paralyze roll: {paralyze_chance} + monster wisdom modifier: {self.wisdom_modifier}")  # remove after testing

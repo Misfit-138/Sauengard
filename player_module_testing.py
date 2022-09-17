@@ -682,9 +682,12 @@ class Player:
         self.town_portals = 1
         self.elixirs = 0
         self.potions_of_healing = 1
-        self.potions_of_strength = 0
+        self.potions_of_strength = 2
         self.potion_of_strength_effect = False
         self.potion_of_strength_uses = 0
+        self.protection_effect = False
+        self.protection_effect_uses = 0
+        self.temp_protection_effect = 0
         self.poisoned = False
         self.poisoned_turns = 0
         self.necrotic = False
@@ -769,9 +772,12 @@ class Player:
                 f"                                                                            Strength Potions: {number_of_potions_of_strength}")
         if self.potion_of_strength_effect:
             print(
-                f"                                                                            (GIANT STRENGTH EFFECT)")
+                f"                                                                            (GIANT STRENGTH EFFECT) ({self.potion_of_strength_uses}/5)")
+
+        if self.protection_effect:
             print(
-                f"                                                                            Strength Potion uses: ({self.potion_of_strength_uses}/5)")
+                f"                                                                            (PROT/EVIL: {self.temp_protection_effect}) ({self.protection_effect_uses}/5)")
+
         if self.poisoned:
             print(
                 f"                                                                            (POISONED)")
@@ -804,6 +810,12 @@ class Player:
         return
 
     # CALCULATION
+    def end_of_turn_calculation(self):
+        self.regenerate()
+        self.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
+        self.calculate_protection_effect()
+        self.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+        self.calculate_necrotic_dot()
 
     def calculate_stealth(self):
         self.stealth += self.cloak.stealth
@@ -857,6 +869,22 @@ class Player:
                 self.potion_of_strength_effect = True
                 self.potion_of_strength_uses += 1
         return self.potion_of_strength_effect
+
+    def calculate_protection_effect(self):
+        if self.protection_effect:
+            if self.protection_effect_uses > 4:
+                self.protection_effect = False
+                self.protection_effect_uses = 0
+                self.temp_protection_effect = 0
+                print(f"The Quantum Protection effect wears off...")
+                pause()
+            else:
+                self.protection_effect = True
+                self.protection_effect_uses += 1
+                # self.temp_protection_effect = (2 + self.level)
+                if self.temp_protection_effect > 10:
+                    self.temp_protection_effect = 10
+        return self.protection_effect
 
     def calculate_modifiers(self):
 
@@ -1165,7 +1193,7 @@ class Player:
 
     # BATTLE AND PROXIMITY TO MONSTER OCCURRENCES
     def rndm_death_statement(self):
-        rndm_statements = ["You have succumbed to your injuries and fallen in battle!",
+        rndm_statements = ["You have succumbed to your injuries!",
                            "Bravely you have fought. Bravely you have died. Rest in Peace."
                            ]
         print(f"{self.name} Level {self.level}")
@@ -1179,9 +1207,10 @@ class Player:
             if not monster.can_poison and not monster.necrotic:
                 damage_to_player = monster.quantum_energy_attack(monster.name,
                                                                  self.wisdom_modifier,
-                                                                 self.ring_of_prot.protect)
+                                                                 self.ring_of_prot.protect, self.temp_protection_effect)
                 self.reduce_health(damage_to_player)
                 self.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
+                self.calculate_protection_effect()
                 self.regenerate()
                 self.calculate_poison()  # poison wears off after 5 turns of battle/nav
                 self.calculate_necrotic_dot()
@@ -1194,12 +1223,14 @@ class Player:
             elif monster.can_poison:  # otherwise, if it can only poison, then attempt poison
                 self.poison_attack(monster.name, monster.dot_multiplier)
                 self.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
+                self.calculate_protection_effect()
                 self.regenerate()
                 self.calculate_poison()  # poison wears off after 5 turns of battle/navigation
                 self.calculate_necrotic_dot()
             elif monster.necrotic:  # otherwise if it only has necrotic, then attempt necrotic
                 self.necrotic_attack(monster.name, monster.dot_multiplier)
                 self.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
+                self.calculate_protection_effect()
                 self.regenerate()
                 self.calculate_poison()  # poison wears off after 5 turns of battle/navigation
                 self.calculate_necrotic_dot()
@@ -1208,6 +1239,7 @@ class Player:
             damage_to_player = monster.swing(monster.name, self.armor_class)
             self.reduce_health(damage_to_player)
             self.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
+            self.calculate_protection_effect()
             self.regenerate()
             self.calculate_poison()  # poison wears off after 5 turns of battle/navigation
             self.calculate_necrotic_dot()
@@ -1638,13 +1670,13 @@ class Player:
         sleep(1)
         self.hud()
         if "Sleep" not in monster.immunities:
-            weakness_modifier = 0
+            vulnerability_modifier = 0
             if "Sleep" in monster.vulnerabilities:
-                weakness_modifier = 5
+                vulnerability_modifier = 5
             turn_roll = dice_roll(1, 20)
-            total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + weakness_modifier)
+            total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
             print(f"Quantum effect roll: {turn_roll} + Wisdom Modifier: {self.wisdom_modifier} "
-                  f"+ Proficiency Bonus: {self.proficiency_bonus} + Monster Weakness Modifier: {weakness_modifier}")
+                  f"+ Proficiency Bonus: {self.proficiency_bonus} + Monster Vulnerability Modifier: {vulnerability_modifier}")
             sleep(1)
             print(f"Total: {total}")
             sleep(1)
@@ -1656,7 +1688,7 @@ class Player:
                 sleep(1)
                 input(f"Press (ENTER) to vanquish: ")
                 finishing_move_roll = dice_roll(1, 20)
-                sleeping_difficulty_class = (5 - weakness_modifier)
+                sleeping_difficulty_class = (5 - vulnerability_modifier)
                 print(f"1d20 roll: {finishing_move_roll}")  # remove after testing ?
                 print(f"Difficulty Class: {sleeping_difficulty_class}")  # remove after testing ?
                 if finishing_move_roll > sleeping_difficulty_class:
@@ -1696,7 +1728,7 @@ class Player:
             self.hit_points += heal
             if self.hit_points > self.maximum_hit_points:
                 self.hit_points = self.maximum_hit_points
-            #self.hit_points += math.floor(self.maximum_hit_points * .5)  # round down for cure light wounds..
+            # self.hit_points += math.floor(self.maximum_hit_points * .5)  # round down for cure light wounds..
             self.quantum_units -= 1
         else:
             print(f"You are at maximum health!")
@@ -1704,15 +1736,42 @@ class Player:
         pause()
         return 0
 
+    def protection_from_evil(self, monster):
+        self.hud()
+        rndm_phrases = [
+            "Concentrating and calming yourself, you attempt to harness your innate Quantum Knowledge..",
+            "Quieting your mind, you focus inward to harness the Quantum Energies..",
+            "The world around you becomes muted and still as you introspectively draw on your innate Quantum Skill.."
+        ]
+        effect_phrase = random.choice(rndm_phrases)
+        prot_roll = dice_roll(1, 20)
+        print(f"{effect_phrase}")
+        sleep(1.5)
+        if prot_roll + self.wisdom_modifier > 1:
+            print(f"Success!")
+            self.protection_effect = True
+            self.protection_effect_uses = 0
+            self.temp_protection_effect = (2 + self.level)
+            self.quantum_units -= 1
+            pause()
+            return 0
+        else:
+            print(f"You are unable to glean the Quantum Effects..")
+            self.quantum_units -= 1
+            pause()
+            return 0
+
     def quantum_battle_effects(self, monster):
         printable_quantum_book = {1: {1: "Quantum Missile",
                                       2: "Sleep",
                                       3: "Treat Battle Wounds",
+                                      4: "Protection from Evil",
                                       5: "Turn Undead"}
                                   }
         quantum_book = {1: {1: self.quantum_missile,
                             2: self.quantum_sleep,
                             3: self.quantum_treat_battle_wounds,
+                            4: self.protection_from_evil,
                             5: self.turn_undead}
                         }
         while True:
@@ -1730,7 +1789,7 @@ class Player:
                     quantum_function = (quantum_book[q_level][q_to_cast](monster))
                     return quantum_function
                 else:
-                    print(f"You do not have that level Quantum knowledge!")
+                    print(f"You do not have that level of Quantum knowledge!")
                     sleep(1)
                     continue
             except (ValueError, KeyError):
@@ -2503,7 +2562,7 @@ class Player:
             "Tilting it to your lips, you drain the tiny blue vial and the strength of giants surges through you!",
             "Retrieving the vial from your belt, you pop the cork and down the sweet liquid...\n"
             "Great power and vitality  courses through your body!",
-            "No sooner is the tincture running down your throat, than does the great\n "
+            "No sooner is the tincture running down your throat, than does the great\n"
             "and overwhelming strength and vitality fill your body! You feel invincible!"
         ]
         drink_phrase = random.choice(rndm_drinking_phrases)

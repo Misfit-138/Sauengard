@@ -283,9 +283,7 @@ class Monster:
             os.system('pause')
             return 0
 
-    def quantum_energy_attack(self, name, human_player_wisdom_modifier, human_player_ring_of_prot,
-                              human_player_temp_protection_effect):
-
+    def quantum_energy_attack(self, player_1):
         attack_bonus = 0
         attack_phrase = ""
         attack_bonus_roll = random.randint(1, 100)
@@ -306,7 +304,7 @@ class Monster:
             attack_phrase = self.quantum_attack_5_phrase
         human_player_roll_d20 = dice_roll(1, 20)
         roll_d20 = dice_roll(1, 20)
-        print(f"The {name} attacks with Quantum Energy!\n"
+        print(f"The {self.name} attacks with Quantum Energy!\n"
               f"(It rolls {roll_d20}) + Wisdom modifier: {self.wisdom_modifier} = {roll_d20 + self.wisdom_modifier}")
         if roll_d20 == 1:
             print(f"..its attempts to procure the universal forces fail miserably.")
@@ -319,15 +317,15 @@ class Monster:
             critical_bonus = 1
             hit_statement = ""
         # print(f"{self.name} Wisdom modifier {self.wisdom_modifier}")  # MONSTER WISDOM MODIFIER
-        print(
-            f"Your roll: {human_player_roll_d20} + wisdom modifier: ({human_player_wisdom_modifier}) "
-            f"+ ring of protection: ({human_player_ring_of_prot}) "
-            f"+ Quantum Protection effect: {human_player_temp_protection_effect} "
-            f"= {human_player_roll_d20 + human_player_wisdom_modifier + human_player_ring_of_prot + human_player_temp_protection_effect}")
+        print(f"Your roll: {human_player_roll_d20} + wisdom modifier: ({player_1.wisdom_modifier}) "
+              f"+ ring of protection: ({player_1.ring_of_prot.protect}) ")
+        if player_1.temp_protection_effect:
+            print(f"+ Quantum Protection effect: {player_1.temp_protection_effect} ")
+        print(f"Total = {human_player_roll_d20 + player_1.wisdom_modifier + player_1.ring_of_prot.protect + player_1.temp_protection_effect}")
 
         if roll_d20 + self.wisdom_modifier >= (
-                human_player_roll_d20 + human_player_wisdom_modifier +
-                human_player_ring_of_prot + human_player_temp_protection_effect):
+                human_player_roll_d20 + player_1.wisdom_modifier +
+                player_1.ring_of_prot.protect + player_1.temp_protection_effect):
 
             damage_roll = dice_roll(self.number_of_hd * critical_bonus, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)
@@ -335,7 +333,7 @@ class Monster:
                 print(f"{attack_phrase}")
                 time.sleep(1.5)
                 print(hit_statement)
-                print(f"{name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} hit dice---> {damage_roll}")
+                print(f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} hit dice---> {damage_roll}")
                 print(f"Wisdom modifier---> {self.wisdom_modifier}\nAttack bonus---> {attack_bonus}")
                 print(f"It does {damage_to_opponent} points of damage!")
                 os.system('pause')
@@ -343,7 +341,7 @@ class Monster:
                 return damage_to_opponent
             else:
                 print(
-                    f"The {name} strikes with Quantum Powers, but you dodge the attack!")  # zero damage to player result
+                    f"The {self.name} strikes with Quantum Powers, but you dodge the attack!")  # zero damage to player result
                 time.sleep(2)
                 return 0  # 0 points damage to player
         else:
@@ -360,7 +358,8 @@ class Monster:
             f"Your wisdom: {player_1.wisdom} Your ring of prot: {player_1.ring_of_prot.protect}")  # remove after testing
         if player_1.protection_effect:
             print(f"Protection from Evil effect: {player_1.temp_protection_effect}")
-        if (paralyze_chance + self.wisdom_modifier) >= (player_1.wisdom + player_1.ring_of_prot.protect + player_1.temp_protection_effect):
+        if (paralyze_chance + self.wisdom_modifier) >= (
+                player_1.wisdom + player_1.ring_of_prot.protect + player_1.temp_protection_effect):
             print("You're paralyzed!!")
             time.sleep(1)
             print("As you stand, frozen and defenseless, it savagely gores you!")

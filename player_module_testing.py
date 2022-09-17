@@ -1205,9 +1205,7 @@ class Player:
         if monster.quantum_energy and melee_or_quantum > 10 and not self.poisoned \
                 and not self.necrotic:
             if not monster.can_poison and not monster.necrotic:
-                damage_to_player = monster.quantum_energy_attack(monster.name,
-                                                                 self.wisdom_modifier,
-                                                                 self.ring_of_prot.protect, self.temp_protection_effect)
+                damage_to_player = monster.quantum_energy_attack(self)
                 self.reduce_health(damage_to_player)
                 self.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
                 self.calculate_protection_effect()
@@ -1219,7 +1217,7 @@ class Player:
                 if poison_or_necrotic > 10:  # greater than 10 for poison
                     self.poison_attack(monster.name, monster.dot_multiplier)
                 else:
-                    self.necrotic_attack(monster.name, monster.dot_multiplier)
+                    self.necrotic_attack(monster)
             elif monster.can_poison:  # otherwise, if it can only poison, then attempt poison
                 self.poison_attack(monster.name, monster.dot_multiplier)
                 self.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
@@ -1228,7 +1226,7 @@ class Player:
                 self.calculate_poison()  # poison wears off after 5 turns of battle/navigation
                 self.calculate_necrotic_dot()
             elif monster.necrotic:  # otherwise if it only has necrotic, then attempt necrotic
-                self.necrotic_attack(monster.name, monster.dot_multiplier)
+                self.necrotic_attack(monster)
                 self.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
                 self.calculate_protection_effect()
                 self.regenerate()
@@ -1515,10 +1513,9 @@ class Player:
                 self.hud()
                 return False
 
-    def necrotic_attack(self, monster_name, monster_dot_multiplier):
-        # difficulty_class = (dice_roll(1, 20) + self.constitution_modifier)
+    def necrotic_attack(self, monster):
         roll_d20 = dice_roll(1, 20)  # attack roll
-        print(f"The {monster_name} attempts to harness its innate understanding of quantum necrosis..")
+        print(f"The {monster.name} attempts to harness its innate understanding of quantum necrosis..")
         print(f"Attack roll---> {roll_d20}")
         sleep(1)
         if roll_d20 == 1:
@@ -1528,11 +1525,10 @@ class Player:
             self.hud()
             return False
         else:
-            player_roll = (dice_roll(1, 20) + self.constitution_modifier)
+            player_roll = (dice_roll(1, 20))
             print(f"Your roll: {player_roll}\nYour Constitution Modifier: {self.constitution_modifier}\n")
-            if roll_d20 == 20 or roll_d20 >= player_roll:
-                self.dot_multiplier = monster_dot_multiplier
-
+            if roll_d20 == 20 or roll_d20 >= player_roll + self.constitution_modifier:
+                self.dot_multiplier = monster.dot_multiplier
                 rndm_necrotic_phrases = ["You feel morbid dread and withering overcoming you..",
                                          "An unnerving pain, planted like a seed, germinates within you...",
                                          "Agony creeps into your very veins..."

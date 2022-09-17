@@ -364,32 +364,31 @@ while True:
                     sleep(.25)
                     player_1.dungeon_description()
                     continue  # continue means you do not use a turn
-                # ***** END OF NAVIGATION TURN *************************************************************
+                # ***** END OF NAVIGATION choice *************************************************************
                 # !!!!!!!!!!!!!!!! V NOTE the INDENT below V !!!!!!!!!!!!!!!!
                 # ******************************************************************************************
-
+                # NAVIGATION CALCULATIONS:
                 player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
                 player_1.coordinates = (player_1.x, player_1.y)  #
+                # META CALCULATION FUNCTION FOR REGENERATION/POTION OF STR/HEALING/POISON/NECROSIS/PROTECTION EFFECT:
+                player_1.end_of_turn_calculation()
+                if player_1.check_dead():  # player can die of necrosis/poison after end of turn calculations
+                    player_is_dead = True
+                    continue
                 encounter = encounter_logic()
                 event = player_1.event_logic()
                 if event == "King Boss":
                     encounter = 98
                 elif event == "Undead Prophet":
                     encounter = 97
-                # meta calculation for end of turn: regenerate, pot/str, poison, necrosis, prot effect
-                player_1.end_of_turn_calculation()
-                if player_1.check_dead():
-                    player_is_dead = True
-                    continue
                 player_1.dungeon_description()  # this seems to work best when put last
-
                 if player_1.position == "E":
                     # monster = player_1.dungeon.boss
                     encounter = 99  # dungeon level boss conditional
                     player_1.next_dungeon()
                 # ***********************************************************************************************>>>>
 
-                if encounter < 10 or encounter > 20:  # < 10 = normal monster. > 20 = boss
+                if encounter < 11 or encounter > 20:  # < 11 = normal monster. > 20 = boss
                     monster = ""  # just to prevent monster from being undefined
                     # monster dictionary imported from monster module. keys correspond to difficulty
                     # IN PROXIMITY TO MONSTER LOOP *contains battle loop within it*
@@ -400,10 +399,9 @@ while True:
                             break
                         if not player_1.in_proximity_to_monster:
                             break
-
-                        if encounter < 10:  # regular monster
-                            #monster = player_1.regular_monster_generator()
-                            monster = Specter()  # testing
+                        if encounter < 11:  # regular monster
+                            monster = player_1.regular_monster_generator()
+                            # monster = Specter()  # testing
                         elif encounter == 99:  # level exit boss fight
                             monster = player_1.exit_boss_generator()
                             gong()
@@ -450,9 +448,27 @@ while True:
                         monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier
                         print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
                         pause()
+                        # IF MONSTER GOES FIRST:
                         if monster_initiative > player_initiative:
                             player_1.hud()
                             player_1.meta_monster_function(monster)
+                            # I tried to offload this code, but the breaks and continues are pretty tangled
+                            if not player_1.check_dead():  # if player not dead
+                                if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
+                                    monster.paralyze(player_1)
+                                    if not player_1.check_dead():  # if player not dead
+                                        print(f"You regain your faculties.")
+                                        pause()
+                                        # continue
+                                    else:
+                                        print("You are dead and paralyzed!")
+                                        player_is_dead = True
+                                        break
+                            else:  # you died
+                                player_1.rndm_death_statement()
+                                time.sleep(3)
+                                player_is_dead = True
+                                break
                         # ********************************* BATTLE LOOP ***********************************************
                         while True:
                             if not player_1.in_proximity_to_monster:

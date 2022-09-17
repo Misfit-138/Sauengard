@@ -163,6 +163,7 @@ class Monster:
         self.charisma = 0
         self.hit_points = 0
         self.can_paralyze = False
+        self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -321,7 +322,8 @@ class Monster:
               f"+ ring of protection: ({player_1.ring_of_prot.protect}) ")
         if player_1.temp_protection_effect:
             print(f"+ Quantum Protection effect: {player_1.temp_protection_effect} ")
-        print(f"Total = {human_player_roll_d20 + player_1.wisdom_modifier + player_1.ring_of_prot.protect + player_1.temp_protection_effect}")
+        print(
+            f"Total = {human_player_roll_d20 + player_1.wisdom_modifier + player_1.ring_of_prot.protect + player_1.temp_protection_effect}")
 
         if roll_d20 + self.wisdom_modifier >= (
                 human_player_roll_d20 + player_1.wisdom_modifier +
@@ -333,7 +335,8 @@ class Monster:
                 print(f"{attack_phrase}")
                 time.sleep(1.5)
                 print(hit_statement)
-                print(f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} hit dice---> {damage_roll}")
+                print(
+                    f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} hit dice---> {damage_roll}")
                 print(f"Wisdom modifier---> {self.wisdom_modifier}\nAttack bonus---> {attack_bonus}")
                 print(f"It does {damage_to_opponent} points of damage!")
                 os.system('pause')
@@ -352,21 +355,30 @@ class Monster:
     def paralyze(self, player_1):
         print(self.paralyze_phrase)
         paralyze_chance = dice_roll(1, 20)
+        human_player_roll_d20 = dice_roll(1, 20)
+        player_total = (human_player_roll_d20 + player_1.ring_of_prot.protect + player_1.temp_protection_effect)
         print(
             f"Paralyze roll: {paralyze_chance} + monster wisdom modifier: {self.wisdom_modifier}")  # remove after testing
         print(
-            f"Your wisdom: {player_1.wisdom} Your ring of prot: {player_1.ring_of_prot.protect}")  # remove after testing
+            f"Your roll: {human_player_roll_d20} Your ring of prot: {player_1.ring_of_prot.protect}")  # remove after testing
         if player_1.protection_effect:
             print(f"Protection from Evil effect: {player_1.temp_protection_effect}")
-        if (paralyze_chance + self.wisdom_modifier) >= (
-                player_1.wisdom + player_1.ring_of_prot.protect + player_1.temp_protection_effect):
+        print(f"Total: {player_total}")
+        if (paralyze_chance + self.wisdom_modifier) >= player_total:
             print("You're paralyzed!!")
             time.sleep(1)
             print("As you stand, frozen and defenseless, it savagely gores you!")
             time.sleep(1)
-            paralyze_damage = dice_roll(self.number_of_hd, self.hit_dice)
-            player_1.reduce_health(paralyze_damage)
-            print(f"You suffer {paralyze_damage} hit points!!")
+            for i in range(self.paralyze_turns):  # this seems too brutal if paralyze turns is anything but 1!!!
+                paralyze_damage = (dice_roll(self.number_of_hd, self.hit_dice) -
+                                   (player_1.ring_of_prot.protect + player_1.temp_protection_effect))
+                if paralyze_damage < 1:
+                    paralyze_damage = self.level
+                player_1.reduce_health(paralyze_damage)
+                print(f"It strikes at you for {paralyze_damage} points of damage!!")
+                time.sleep(1.5)
+                player_1.hud()
+            # time.sleep(1)
             return True
         else:
             print("You ignore its wiles and break free from its grip!")
@@ -392,6 +404,7 @@ class Quasit(Monster):
         self.wisdom = random.randint(9, 10)
         self.charisma = random.randint(9, 11)
         self.can_paralyze = False
+        self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -451,6 +464,7 @@ class Kobold(Monster):
         self.wisdom = random.randint(7, 8)
         self.charisma = random.randint(7, 8)
         self.can_paralyze = False
+        self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -507,6 +521,7 @@ class Cultist(Monster):
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(9, 11)
         self.can_paralyze = False
+        self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -566,6 +581,7 @@ class Goblin(Monster):
         self.wisdom = random.randint(7, 9)
         self.charisma = random.randint(7, 9)
         self.can_paralyze = False
+        self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -622,6 +638,7 @@ class WingedKobold(Monster):
         self.wisdom = random.randint(6, 8)
         self.charisma = random.randint(6, 8)
         self.can_paralyze = False
+        self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -678,6 +695,7 @@ class Shadow(Monster):
         self.wisdom = random.randint(9, 11)
         self.charisma = random.randint(7, 8)
         self.can_paralyze = True
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = True
         self.dot_multiplier = 1
@@ -758,6 +776,7 @@ class ShadowKing(Monster):
         self.wisdom = random.randint(12, 13)
         self.charisma = random.randint(7, 8)
         self.can_paralyze = True
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = True
         self.dot_multiplier = 2
@@ -838,6 +857,7 @@ class Skeleton(Monster):
         self.wisdom = random.randint(7, 9)
         self.charisma = random.randint(5, 6)
         self.can_paralyze = False
+        self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -899,6 +919,7 @@ class ZombieProphet(Monster):
         self.wisdom = random.randint(12, 13)
         self.charisma = random.randint(5, 6)
         self.can_paralyze = False
+        self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -956,6 +977,7 @@ class SkeletonKing(Monster):
         self.wisdom = random.randint(11, 13)
         self.charisma = random.randint(5, 6)
         self.can_paralyze = False
+        self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1013,6 +1035,7 @@ class Drow(Monster):
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(12, 13)
         self.can_paralyze = False
+        self.paralyze_turns = 0
         self.can_poison = True
         self.necrotic = True
         self.dot_multiplier = 1
@@ -1081,6 +1104,7 @@ class Zombie(Monster):
         self.wisdom = random.randint(6, 7)
         self.charisma = random.randint(5, 6)
         self.can_paralyze = False
+        self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1138,6 +1162,7 @@ class Troglodyte(Monster):
         self.wisdom = random.randint(9, 11)
         self.charisma = random.randint(5, 7)
         self.can_paralyze = False
+        self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1194,6 +1219,7 @@ class Orc(Monster):
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(9, 11)
         self.can_paralyze = False
+        self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1252,6 +1278,7 @@ class Ghoul(Monster):
         self.wisdom = random.randint(7, 9)
         self.charisma = random.randint(1, 5)
         self.can_paralyze = True
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1313,6 +1340,7 @@ class Bugbear(Monster):
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(8, 10)
         self.can_paralyze = False
+        self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1369,6 +1397,7 @@ class HalfOgre(Monster):
         self.wisdom = random.randint(8, 10)
         self.charisma = random.randint(9, 11)
         self.can_paralyze = False
+        self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1425,6 +1454,7 @@ class Specter(Monster):
         self.wisdom = random.randint(9, 11)
         self.charisma = random.randint(10, 12)
         self.can_paralyze = True
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = True
         self.dot_multiplier = 2
@@ -1502,6 +1532,7 @@ class SpecterKing(Monster):
         self.wisdom = random.randint(12, 13)
         self.charisma = random.randint(10, 12)
         self.can_paralyze = False
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = True
         self.dot_multiplier = 2
@@ -1578,6 +1609,7 @@ class WhiteDragonWyrmling(Monster):
         self.wisdom = random.randint(10, 11)
         self.charisma = random.randint(10, 11)
         self.can_paralyze = False
+        self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1

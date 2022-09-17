@@ -1415,12 +1415,6 @@ class Player:
         else:
             return False  # False here means monster failed check, and he sticks around to fight; invisible to player
 
-    def damage_while_paralyzed(self, monster_number_of_hd, monster_hit_dice):
-        paralyze_damage = dice_roll(monster_number_of_hd, monster_hit_dice)
-        self.reduce_health(paralyze_damage)
-        print(f"You suffer {paralyze_damage} hit points!!")
-        pause()
-
     def reduce_health(self, damage):
         self.hit_points -= damage
         return  # damage
@@ -4546,3 +4540,9 @@ sale_item = (sale_items_dict[sale_item_key])
                 pause()
                 return
             else:"""
+
+"""    def damage_while_paralyzed(self, monster_number_of_hd, monster_hit_dice):
+        paralyze_damage = dice_roll(monster_number_of_hd, monster_hit_dice)
+        self.reduce_health(paralyze_damage)
+        print(f"You suffer {paralyze_damage} hit points!!")
+        pause()"""

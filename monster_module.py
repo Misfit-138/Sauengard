@@ -351,20 +351,23 @@ class Monster:
             os.system('pause')
             return 0
 
-    def paralyze(self, human_player_wisdom, human_player_ring_of_prot):
+    def paralyze(self, player_1):
         print(self.paralyze_phrase)
-
         paralyze_chance = dice_roll(1, 20)
         print(
             f"Paralyze roll: {paralyze_chance} + monster wisdom modifier: {self.wisdom_modifier}")  # remove after testing
         print(
-            f"Your wisdom: {human_player_wisdom} Your ring of prot: {human_player_ring_of_prot}")  # remove after testing
-        if (paralyze_chance + self.wisdom_modifier) >= (human_player_wisdom + human_player_ring_of_prot):
-
+            f"Your wisdom: {player_1.wisdom} Your ring of prot: {player_1.ring_of_prot.protect}")  # remove after testing
+        if player_1.protection_effect:
+            print(f"Protection from Evil effect: {player_1.temp_protection_effect}")
+        if (paralyze_chance + self.wisdom_modifier) >= (player_1.wisdom + player_1.ring_of_prot.protect + player_1.temp_protection_effect):
             print("You're paralyzed!!")
             time.sleep(1)
             print("As you stand, frozen and defenseless, it savagely gores you!")
             time.sleep(1)
+            paralyze_damage = dice_roll(self.number_of_hd, self.hit_dice)
+            player_1.reduce_health(paralyze_damage)
+            print(f"You suffer {paralyze_damage} hit points!!")
             return True
         else:
             print("You ignore its wiles and break free from its grip!")
@@ -1422,7 +1425,7 @@ class Specter(Monster):
         self.intelligence = random.randint(9, 11)
         self.wisdom = random.randint(9, 11)
         self.charisma = random.randint(10, 12)
-        self.can_paralyze = False
+        self.can_paralyze = True
         self.can_poison = False
         self.necrotic = True
         self.dot_multiplier = 2
@@ -1478,7 +1481,7 @@ class Specter(Monster):
                             f"purpose; A revulsion for the living and a hunger for their life-energy.."
         self.is_discovered = False
         self.is_discovered = False
-        self.paralyze_phrase = "None"
+        self.paralyze_phrase = "It places a cold, yet immaterial hand upon you and will not let go!!"
 
 
 class SpecterKing(Monster):

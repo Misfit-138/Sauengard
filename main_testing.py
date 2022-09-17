@@ -402,8 +402,8 @@ while True:
                             break
 
                         if encounter < 10:  # regular monster
-                            monster = player_1.regular_monster_generator()
-                            # monster = Specter()  # testing
+                            #monster = player_1.regular_monster_generator()
+                            monster = Specter()  # testing
                         elif encounter == 99:  # level exit boss fight
                             monster = player_1.exit_boss_generator()
                             gong()
@@ -475,7 +475,7 @@ while True:
                                     if player_1.evade(monster.name, monster.dexterity):
                                         if encounter > 20:  # if evading a boss at this point,
                                             dungeon_theme()  # go back to dungeon theme song
-                                        player_1.in_proximity_to_monster = False  # get out of battle loop, regardless of monster
+                                        player_1.in_proximity_to_monster = False  # get out of battle loop
                                         break
                                 elif battle_choice == 'h':
                                     if not player_1.drink_healing_potion():
@@ -518,7 +518,6 @@ while True:
                                                 print(f"It died..")
                                             # calculations at end of turn:
                                             player_1.end_of_turn_calculation()
-
                                             pause()
                                             if player_1.check_dead():  # you can die from poison or necrosis,
                                                 player_is_dead = True  # right after victory, following calculations
@@ -540,16 +539,10 @@ while True:
                                 player_1.meta_monster_function(monster)
                                 if not player_1.check_dead():  # if player not dead
                                     # I tried to offload this code, but the breaks and continues are pretty tangled
-                                    if dice_roll(1, 20) > 17 and monster.can_paralyze:
+                                    if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
                                         sleep(1)
-                                        # pretty sure this code can be offloaded to monster.paralyze:
-                                        # also, send player_1 as parameter and get rid of player_1.damage_while_para..
-                                        player_1.is_paralyzed = monster.paralyze(player_1.wisdom,
-                                                                                 player_1.ring_of_prot.protect)
-                                        if player_1.is_paralyzed:
-                                            player_1.damage_while_paralyzed(monster.number_of_hd,
-                                                                            monster.hit_dice)
-                                        #
+                                        monster.paralyze(player_1)
+                                        #pause()
                                         if not player_1.check_dead():  # if player not dead
                                             print(f"You regain your faculties.")
                                             pause()
@@ -601,11 +594,9 @@ while True:
                                     # I tried to offload this code, but the breaks and continues are pretty tangled
                                     if not player_1.check_dead():  # if player not dead
                                         if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
-                                            time.sleep(1)
-                                            player_1.is_paralyzed = monster.paralyze(player_1.wisdom,
-                                                                                     player_1.ring_of_prot.protect)
-                                            if player_1.is_paralyzed:
-                                                player_1.damage_while_paralyzed(monster.number_of_hd, monster.hit_dice)
+                                            monster.paralyze(player_1)
+                                            #pause()
+                                            #
                                             if not player_1.check_dead():  # if player not dead
                                                 print(f"You regain your faculties.")
                                                 pause()
@@ -736,3 +727,9 @@ while True:
                                 print(f"You died!")
                                 player_is_dead = True
                                 continue"""
+
+"""player_1.is_paralyzed = monster.paralyze(player_1.wisdom,
+                                                                                 player_1.ring_of_prot.protect)
+                                        if player_1.is_paralyzed:
+                                            player_1.damage_while_paralyzed(monster.number_of_hd,
+                                                                            monster.hit_dice)"""

@@ -470,7 +470,7 @@ class Monster:
                 player_1.end_of_turn_calculation()
             elif self.can_poison and self.necrotic:  # if monster has both poison
                 poison_or_necrotic = dice_roll(1, 20)  # and necrotic damage,
-                if poison_or_necrotic > 9:  # greater than 9 for poison
+                if poison_or_necrotic > 10:  # greater than 10 for poison
                     self.poison_attack(player_1)  # player_1.poison_attack(self.name, self.dot_multiplier)
                 else:
                     self.necrotic_attack(player_1)  # player_1.necrotic_attack(self)
@@ -1475,9 +1475,9 @@ class Bugbear(Monster):
         self.attack_4_phrase = "It roars and swings its morningstar with murderous rage!"
         self.attack_5 = 3
         self.attack_5_phrase = "It raises its morningstar overhead with both hands for a mighty blow.."
-        self.introduction = f"You have encountered a Bugbear; a hairy goblinoid born for battle and mayhem." \
+        self.introduction = f"You have encountered a Bugbear; a hairy goblinoid born for battle and mayhem. " \
                             f"Equally deadly at hunting,\nraiding and melee, it stands before you, fearlessly " \
-                            f"brandishing its weapons and sizing you up.."
+                            f"brandishing its weapons with a deep, slow snarl..."
         self.is_discovered = False
 
 

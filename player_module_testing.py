@@ -682,7 +682,7 @@ class Player:
         self.town_portals = 1
         self.elixirs = 0
         self.potions_of_healing = 1
-        self.potions_of_strength = 2
+        self.potions_of_strength = 0
         self.potion_of_strength_effect = False
         self.potion_of_strength_uses = 0
         self.protection_effect = False
@@ -1200,48 +1200,6 @@ class Player:
         print(random.choice(rndm_statements))
         return
 
-    def meta_monster_function(self, monster):
-        melee_or_quantum = dice_roll(1, 20)
-        if monster.quantum_energy and melee_or_quantum > 10 and not self.poisoned \
-                and not self.necrotic:
-            if not monster.can_poison and not monster.necrotic:
-                damage_to_player = monster.quantum_energy_attack(self)
-                self.reduce_health(damage_to_player)
-                self.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
-                self.calculate_protection_effect()
-                self.regenerate()
-                self.calculate_poison()  # poison wears off after 5 turns of battle/nav
-                self.calculate_necrotic_dot()
-            elif monster.can_poison and monster.necrotic:  # if monster has both poison
-                poison_or_necrotic = dice_roll(1, 20)  # and necrotic damage,
-                if poison_or_necrotic > 10:  # greater than 10 for poison
-                    self.poison_attack(monster.name, monster.dot_multiplier)
-                else:
-                    self.necrotic_attack(monster)
-            elif monster.can_poison:  # otherwise, if it can only poison, then attempt poison
-                self.poison_attack(monster.name, monster.dot_multiplier)
-                self.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
-                self.calculate_protection_effect()
-                self.regenerate()
-                self.calculate_poison()  # poison wears off after 5 turns of battle/navigation
-                self.calculate_necrotic_dot()
-            elif monster.necrotic:  # otherwise if it only has necrotic, then attempt necrotic
-                self.necrotic_attack(monster)
-                self.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
-                self.calculate_protection_effect()
-                self.regenerate()
-                self.calculate_poison()  # poison wears off after 5 turns of battle/navigation
-                self.calculate_necrotic_dot()
-        else:
-            # if it has neither, then melee attack
-            damage_to_player = monster.swing(monster.name, self.armor_class)
-            self.reduce_health(damage_to_player)
-            self.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
-            self.calculate_protection_effect()
-            self.regenerate()
-            self.calculate_poison()  # poison wears off after 5 turns of battle/navigation
-            self.calculate_necrotic_dot()
-
     def regular_monster_generator(self):
         regular_monster_key = random.randint(1, self.level)  # (player_1.level + 1)
         regular_monster_cls = random.choice(monster_dict[regular_monster_key])
@@ -1473,83 +1431,6 @@ class Player:
                     print(f"{fails} Failed saves..")
                     sleep(1)
             return True  # player IS dead
-
-    def poison_attack(self, monster_name, monster_dot_multiplier):
-        difficulty_class = (self.constitution + self.constitution_modifier)
-        roll_d20 = dice_roll(1, 20)  # attack roll
-        print(f"The {monster_name} hisses in evil glee..")
-        print(f"Attack roll---> {roll_d20}")
-        sleep(1)
-        if roll_d20 == 1:
-            print("You dodge!")
-            sleep(1)
-            print(f"And you perceive it was attempting to poison you!")
-            pause()
-            self.hud()
-            return False
-        else:
-            print(f"Your Constitution: {self.constitution}\nYour Constitution Modifier: {self.constitution_modifier}\n")
-            if roll_d20 == 20 or roll_d20 >= difficulty_class:  # self.constitution + self.constitution_modifier:
-                # return True
-                # self.hud()
-                self.dot_multiplier = monster_dot_multiplier
-                rndm_poisoned_phrases = ["You feel a disturbing weakness overcoming you..",
-                                         "An unnerving frailty spreads throughout your body...",
-                                         "Pain and tenderness courses through your body.."
-                                         ]
-                poisoned_phrase = random.choice(rndm_poisoned_phrases)
-                print(f"{poisoned_phrase}")
-                sleep(1.5)
-                print(f"You have been poisoned!")
-                self.poisoned = True
-                self.poisoned_turns = 0
-                # self.calculate_poison()
-                pause()
-                # self.dungeon_description()
-                # self.hud()
-                return self.poisoned
-            else:
-                print(f"You swiftly dodge its poison attack!")
-                sleep(1)
-                pause()
-                self.hud()
-                return False
-
-    def necrotic_attack(self, monster):
-        roll_d20 = dice_roll(1, 20)  # attack roll
-        print(f"The {monster.name} attempts to harness its innate understanding of quantum necrosis..")
-        print(f"Attack roll---> {roll_d20}")
-        sleep(1)
-        if roll_d20 == 1:
-            print("You dodge the deadly necrotic attack!")
-            sleep(1)
-            pause()
-            self.hud()
-            return False
-        else:
-            player_roll = (dice_roll(1, 20))
-            print(f"Your roll: {player_roll}\nYour Constitution Modifier: {self.constitution_modifier}\n")
-            if roll_d20 == 20 or roll_d20 >= player_roll + self.constitution_modifier:
-                self.dot_multiplier = monster.dot_multiplier
-                rndm_necrotic_phrases = ["You feel morbid dread and withering overcoming you..",
-                                         "An unnerving pain, planted like a seed, germinates within you...",
-                                         "Agony creeps into your very veins..."
-                                         ]
-                necrotic_phrase = random.choice(rndm_necrotic_phrases)
-                print(f"{necrotic_phrase}")
-                sleep(1.5)
-                print(f"Necrotic forces ravage through your body!")
-                self.necrotic = True
-                self.necrotic_turns = 0
-                pause()
-                self.hud()
-                return self.necrotic
-            else:
-                print(f"You swiftly dodge its death-dealing necrotic attack!")
-                sleep(1)
-                pause()
-                self.hud()
-                return False
 
     def swing(self, monster_name, monster_armor_class):
         strength_bonus = 1
@@ -2615,7 +2496,7 @@ class Player:
                         print(
                             f"Removing your armor and accoutrements, you wash up and fall into a deep, restful sleep.")
                         sleep(1)
-                        print(f"You feel better.")
+                        print(f"Your body and mind feel better.")
                         sleep(1)
                         if self.hit_points < self.maximum_hit_points:
                             self.hit_points = self.maximum_hit_points
@@ -2654,7 +2535,7 @@ class Player:
 
     def recover_quantum_energy(self):
         if self.quantum_units == self.maximum_quantum_units:
-            print(f"Your innate Quantum Energy is at maximum.")
+            print(f"You are refreshed.")
         else:
             self.quantum_units = self.maximum_quantum_units
             print(f"Your Quantum Energy is restored!")
@@ -3532,9 +3413,10 @@ class Player:
         sleep(1)
         drink = input(f"Do you wish to drink? ").lower()
         if drink == 'y':
-            rndm_occurrence_lst = [nothing_happens, self.poison, self.increase_random_ability,
-                                   self.lose_items, self.decrease_random_ability, self.increase_lowest_ability,
-                                   self.heal_event, nothing_happens, self.decrease_lowest_ability]
+            rndm_occurrence_lst = [nothing_happens, self.recover_quantum_energy, self.poison,
+                                   self.increase_random_ability, self.lose_items, self.decrease_random_ability,
+                                   self.increase_lowest_ability, self.heal_event, nothing_happens,
+                                   self.decrease_lowest_ability]
             rndm_occurrence = random.choice(rndm_occurrence_lst)
             rndm_occurrence()
         else:
@@ -3626,7 +3508,7 @@ class Player:
             difficulty_class = 8
             if dice_roll(1, 20) + self.intelligence_modifier >= difficulty_class:
                 stay_or_jump = input(f"You realize it is an elevation mechanism, drawing you up to the "
-                                     f"previous dungeon level.\nDo you wish to (S)tay on it or (J)ump? ").lower()
+                                     f"previous dungeon level.\nDo you wish to (S)tay on it or (J)ump off? ").lower()
                 if stay_or_jump == 's':
                     print(f"A cage closes on your position.")
                     sleep(1)
@@ -4562,3 +4444,122 @@ sale_item = (sale_items_dict[sale_item_key])
         self.reduce_health(paralyze_damage)
         print(f"You suffer {paralyze_damage} hit points!!")
         pause()"""
+
+"""    def meta_monster_function(self, monster):
+        melee_or_quantum = dice_roll(1, 20)
+        if monster.quantum_energy and melee_or_quantum > 10 and not self.poisoned \
+                and not self.necrotic:
+            if not monster.can_poison and not monster.necrotic:
+                damage_to_player = monster.quantum_energy_attack(self)
+                self.reduce_health(damage_to_player)
+                self.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
+                self.calculate_protection_effect()
+                self.regenerate()
+                self.calculate_poison()  # poison wears off after 5 turns of battle/nav
+                self.calculate_necrotic_dot()
+            elif monster.can_poison and monster.necrotic:  # if monster has both poison
+                poison_or_necrotic = dice_roll(1, 20)  # and necrotic damage,
+                if poison_or_necrotic > 10:  # greater than 10 for poison
+                    self.poison_attack(monster.name, monster.dot_multiplier)
+                else:
+                    self.necrotic_attack(monster)
+            elif monster.can_poison:  # otherwise, if it can only poison, then attempt poison
+                self.poison_attack(monster.name, monster.dot_multiplier)
+                self.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
+                self.calculate_protection_effect()
+                self.regenerate()
+                self.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                self.calculate_necrotic_dot()
+            elif monster.necrotic:  # otherwise if it only has necrotic, then attempt necrotic
+                self.necrotic_attack(monster)
+                self.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
+                self.calculate_protection_effect()
+                self.regenerate()
+                self.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                self.calculate_necrotic_dot()
+        else:
+            # if it has neither, then melee attack
+            damage_to_player = monster.swing(monster.name, self.armor_class)
+            self.reduce_health(damage_to_player)
+            self.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
+            self.calculate_protection_effect()
+            self.regenerate()
+            self.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+            self.calculate_necrotic_dot()"""
+
+"""    def poison_attack(self, monster_name, monster_dot_multiplier):
+        difficulty_class = (self.constitution + self.constitution_modifier)
+        roll_d20 = dice_roll(1, 20)  # attack roll
+        print(f"The {monster_name} hisses in evil glee..")
+        print(f"Attack roll---> {roll_d20}")
+        sleep(1)
+        if roll_d20 == 1:
+            print("You dodge!")
+            sleep(1)
+            print(f"And you perceive it was attempting to poison you!")
+            pause()
+            self.hud()
+            return False
+        else:
+            print(f"Your Constitution: {self.constitution}\nYour Constitution Modifier: {self.constitution_modifier}\n")
+            if roll_d20 == 20 or roll_d20 >= difficulty_class:  # self.constitution + self.constitution_modifier:
+                # return True
+                # self.hud()
+                self.dot_multiplier = monster_dot_multiplier
+                rndm_poisoned_phrases = ["You feel a disturbing weakness overcoming you..",
+                                         "An unnerving frailty spreads throughout your body...",
+                                         "Pain and tenderness courses through your body.."
+                                         ]
+                poisoned_phrase = random.choice(rndm_poisoned_phrases)
+                print(f"{poisoned_phrase}")
+                sleep(1.5)
+                print(f"You have been poisoned!")
+                self.poisoned = True
+                self.poisoned_turns = 0
+                # self.calculate_poison()
+                pause()
+                # self.dungeon_description()
+                # self.hud()
+                return self.poisoned
+            else:
+                print(f"You swiftly dodge its poison attack!")
+                sleep(1)
+                pause()
+                self.hud()
+                return False
+
+    def necrotic_attack(self, monster):
+        roll_d20 = dice_roll(1, 20)  # attack roll
+        print(f"The {monster.name} attempts to harness its innate understanding of quantum necrosis..")
+        print(f"Attack roll---> {roll_d20}")
+        sleep(1)
+        if roll_d20 == 1:
+            print("You dodge the deadly necrotic attack!")
+            sleep(1)
+            pause()
+            self.hud()
+            return False
+        else:
+            player_roll = (dice_roll(1, 20))
+            print(f"Your roll: {player_roll}\nYour Constitution Modifier: {self.constitution_modifier}\n")
+            if roll_d20 == 20 or roll_d20 >= player_roll + self.constitution_modifier:
+                self.dot_multiplier = monster.dot_multiplier
+                rndm_necrotic_phrases = ["You feel morbid dread and withering overcoming you..",
+                                         "An unnerving pain, planted like a seed, germinates within you...",
+                                         "Agony creeps into your very veins..."
+                                         ]
+                necrotic_phrase = random.choice(rndm_necrotic_phrases)
+                print(f"{necrotic_phrase}")
+                sleep(1.5)
+                print(f"Necrotic forces ravage through your body!")
+                self.necrotic = True
+                self.necrotic_turns = 0
+                pause()
+                self.hud()
+                return self.necrotic
+            else:
+                print(f"You swiftly dodge its death-dealing necrotic attack!")
+                sleep(1)
+                pause()
+                self.hud()
+                return False"""

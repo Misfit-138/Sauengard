@@ -287,7 +287,7 @@ while True:
                 dungeon_command = input(
                     "(L)ook at surroundings, use (MAP), (C)larifying elixir,\n"
                     "(Quit), Town (P)ortal, (H)ealing potion, (M)anage inventory,\n"
-                    "(G)iant strength potion, (I)nventory or WASD to navigate. --> ").lower()
+                    "(G)iant strength potion, (I)nventory, (Q)uantum effects or WASD to navigate. --> ").lower()
 
                 if dungeon_command == 'p':
                     if player_1.use_scroll_of_town_portal():
@@ -298,7 +298,6 @@ while True:
                         break
                     else:
                         continue  # if you have no scrolls, don't waste a turn
-
                 elif dungeon_command == 'quit':
                     print("Quit game..")
                     while True:
@@ -309,7 +308,11 @@ while True:
                             exit()
                         elif confirm_quit == 'n':
                             break
-
+                elif dungeon_command == "q":
+                    player_1.hud()
+                    monster = ""  # quantum_effects needs monster parameter, but player is not in battle at this point
+                    if player_1.quantum_units > 0:
+                        player_1.quantum_effects(monster)
                 elif dungeon_command == 'g':
                     if not player_1.drink_potion_of_strength():
                         continue  # if you have no potions, don't waste a turn!
@@ -381,13 +384,12 @@ while True:
                     encounter = 98
                 elif event == "Undead Prophet":
                     encounter = 97
-                player_1.dungeon_description()  # this seems to work best when put last
+                player_1.dungeon_description()  # this seems to work best when put here
                 if player_1.position == "E":
                     # monster = player_1.dungeon.boss
                     encounter = 99  # dungeon level boss conditional
                     player_1.next_dungeon()
                 # ***********************************************************************************************>>>>
-
                 if encounter < 11 or encounter > 20:  # < 11 = normal monster. > 20 = boss
                     monster = ""  # just to prevent monster from being undefined
                     # monster dictionary imported from monster module. keys correspond to difficulty
@@ -451,7 +453,8 @@ while True:
                         # IF MONSTER GOES FIRST:
                         if monster_initiative > player_initiative:
                             player_1.hud()
-                            player_1.meta_monster_function(monster)
+                            # player_1.meta_monster_function(monster)
+                            monster.meta_monster_function(player_1)
                             # I tried to offload this code, but the breaks and continues are pretty tangled
                             if not player_1.check_dead():  # if player not dead
                                 if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
@@ -505,10 +508,11 @@ while True:
                                 elif battle_choice == "q":
                                     player_1.hud()
                                     if player_1.quantum_units > 0:
-                                        damage_to_monster = player_1.quantum_battle_effects(monster)
+                                        damage_to_monster = player_1.quantum_effects(monster)
                                         # If monster is successfully turned, experience is gained,
                                         # but player gets no gold or loot and monster does not 'die':
                                         if not player_1.in_proximity_to_monster:  # turn undead
+                                            # CALCULATE REGENERATION/POTION OF STR/HEALING/POISON/NECROSIS/PROT EFFECT:
                                             player_1.end_of_turn_calculation()
                                             if encounter > 20:  # if fighting a boss, go back to regular music
                                                 gong()
@@ -519,7 +523,7 @@ while True:
                                             # pause()
                                             break
                                         # otherwise, calculate damage:
-                                        # *if total monster hit points is returned from quantum_battle_effects(),
+                                        # *if total monster hit points is returned from quantum_effects(),
                                         # then monster will die instantly*,
                                         # and player gets loot
                                         monster.reduce_health(damage_to_monster)
@@ -532,7 +536,7 @@ while True:
                                                 dungeon_theme()
                                             else:
                                                 print(f"It died..")
-                                            # calculations at end of turn:
+                                            # CALCULATE REGENERATION/POTION OF STR/HEALING/POISON/NECROSIS/PROT EFFECT:
                                             player_1.end_of_turn_calculation()
                                             pause()
                                             if player_1.check_dead():  # you can die from poison or necrosis,
@@ -552,7 +556,8 @@ while True:
                                 # ****MONSTER TURN AFTER YOU SWIG POTION, fail to evade, or cast******
                                 # elif not monster.check_dead():
                                 player_1.hud()
-                                player_1.meta_monster_function(monster)
+                                # player_1.meta_monster_function(monster)
+                                monster.meta_monster_function(player_1)
                                 if not player_1.check_dead():  # if player not dead
                                     # I tried to offload this code, but the breaks and continues are pretty tangled
                                     if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
@@ -591,6 +596,7 @@ while True:
                                     else:
                                         print(f"It died..")
                                     pause()
+                                    # CALCULATE REGENERATION/POTION OF STR/HEALING/POISON/NECROSIS/PROT EFFECT:
                                     player_1.end_of_turn_calculation()
 
                                     if player_1.check_dead():
@@ -606,7 +612,8 @@ while True:
 
                                 # monster turn if still alive after player melee attack:
                                 else:
-                                    player_1.meta_monster_function(monster)
+                                    # player_1.meta_monster_function(monster)
+                                    monster.meta_monster_function(player_1)
                                     # I tried to offload this code, but the breaks and continues are pretty tangled
                                     if not player_1.check_dead():  # if player not dead
                                         if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:

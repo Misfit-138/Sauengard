@@ -239,7 +239,7 @@ class Monster:
             attack_phrase = self.attack_5_phrase
         print(f"Monster attack bonus: {attack_bonus}")
         roll_d20 = dice_roll(1, 20)
-        print(f"The {name} attacks! (It rolls {roll_d20})")
+        print(f"The {self.name} attacks! (It rolls {roll_d20})")
         if roll_d20 == 1:
             print(f"..it awkwardly strikes and you easily block.")
             # time.sleep(2)
@@ -264,7 +264,7 @@ class Monster:
                 time.sleep(1.5)
                 print(hit_statement)
                 print(
-                    f"{name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} ---> {damage_roll}")  # hit dice
+                    f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} ---> {damage_roll}")  # hit dice
                 time.sleep(1.5)
                 print(f"Strength modifier---> {self.strength_modifier}\nAttack bonus---> {attack_bonus} "
                       f"Weapon bonus---> {self.weapon_bonus}")
@@ -274,7 +274,7 @@ class Monster:
                 # time.sleep(5)
                 return damage_to_opponent
             else:
-                print(f"The {name} strikes..")
+                print(f"The {self.name} strikes..")
                 time.sleep(1)
                 print(f"You block the attack!")  # zero damage to player result
                 os.system('pause')
@@ -383,6 +383,90 @@ class Monster:
         else:
             print("You ignore its wiles and break free from its grip!")
             return False
+
+    def poison_attack(self, player_1):
+        difficulty_class = (player_1.constitution + player_1.constitution_modifier)
+        roll_d20 = dice_roll(1, 20)  # attack roll
+        print(f"The {self.name} hisses in evil glee..")
+        print(f"Attack roll---> {roll_d20}")
+        time.sleep(1)
+        if roll_d20 == 1:
+            print("You dodge!")
+            time.sleep(1)
+            print(f"And you perceive it was attempting to poison you!")
+            os.system('pause')
+            player_1.hud()
+            return False
+        else:
+            print(f"Your Constitution: {player_1.constitution}\nYour Constitution Modifier: {player_1.constitution_modifier}\n")
+            if roll_d20 == 20 or roll_d20 >= difficulty_class:  # self.constitution + self.constitution_modifier:
+                # return True
+                # self.hud()
+                player_1.dot_multiplier = self.dot_multiplier
+                rndm_poisoned_phrases = ["You feel a disturbing weakness overcoming you..",
+                                         "An unnerving frailty spreads throughout your body...",
+                                         "Pain and tenderness courses through your body.."
+                                         ]
+                poisoned_phrase = random.choice(rndm_poisoned_phrases)
+                print(f"{poisoned_phrase}")
+                time.sleep(1.5)
+                print(f"You have been poisoned!")
+                player_1.poisoned = True
+                player_1.poisoned_turns = 0
+                # self.calculate_poison()
+                os.system('pause')
+                # self.dungeon_description()
+                # self.hud()
+                return player_1.poisoned
+            else:
+                print(f"You swiftly dodge its poison attack!")
+                time.sleep(1)
+                os.system('pause')
+                player_1.hud()
+                return False
+
+    def meta_monster_function(self, player_1):
+        melee_or_quantum = dice_roll(1, 20)
+        # if monster has quantum energy and player is not poisoned or necrotic
+        if self.quantum_energy and melee_or_quantum > 10 and not player_1.poisoned \
+                and not player_1.necrotic:
+            if not self.can_poison and not self.necrotic:  # quantum attack if no necrotic or poison abilities
+                damage_to_player = self.quantum_energy_attack(player_1)
+                player_1.reduce_health(damage_to_player)
+                player_1.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
+                player_1.calculate_protection_effect()
+                player_1.regenerate()
+                player_1.calculate_poison()  # poison wears off after 5 turns of battle/nav
+                player_1.calculate_necrotic_dot()
+            elif self.can_poison and self.necrotic:  # if monster has both poison
+                poison_or_necrotic = dice_roll(1, 20)  # and necrotic damage,
+                if poison_or_necrotic > 9:  # greater than 9 for poison
+                    self.poison_attack(player_1)  # player_1.poison_attack(self.name, self.dot_multiplier)
+                else:
+                    player_1.necrotic_attack(self)  # migrate necrotic attack!!!!!!!!!!!!!!!!!
+            elif self.can_poison:  # otherwise, if it can only poison, then attempt poison
+                self.poison_attack(player_1)  # player_1.poison_attack(self.name, self.dot_multiplier)
+                player_1.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
+                player_1.calculate_protection_effect()
+                player_1.regenerate()
+                player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                player_1.calculate_necrotic_dot()
+            elif self.necrotic:  # otherwise if it only has necrotic, then attempt necrotic
+                player_1.necrotic_attack(self)
+                player_1.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
+                player_1.calculate_protection_effect()
+                player_1.regenerate()
+                player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+                player_1.calculate_necrotic_dot()
+        else:
+            # if it has neither, then melee attack
+            damage_to_player = self.swing(self.name, player_1.armor_class)
+            player_1.reduce_health(damage_to_player)
+            player_1.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
+            player_1.calculate_protection_effect()
+            player_1.regenerate()
+            player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
+            player_1.calculate_necrotic_dot()
 
 
 class Quasit(Monster):
@@ -1455,7 +1539,7 @@ class Specter(Monster):
         self.charisma = random.randint(10, 12)
         self.can_paralyze = True
         self.paralyze_turns = 1
-        self.can_poison = False
+        self.can_poison = True
         self.necrotic = True
         self.dot_multiplier = 2
         self.undead = True

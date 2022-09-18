@@ -160,7 +160,7 @@ class GreatAxe(Weapon):
         self.to_hit_bonus = 0
         self.sell_price = 15
         self.buy_price = 30
-        self.minimum_level = 2
+        self.minimum_level = 4
 
 
 great_axe = GreatAxe()
@@ -1576,6 +1576,8 @@ class Player:
             hit_statement = "You hit!"
         print(f"Dexterity modifier {self.dexterity_modifier}\nProficiency bonus {self.proficiency_bonus}\n"
               f"Weapon to hit bonus {self.wielded_weapon.to_hit_bonus}")
+        roll_total = roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus
+        print(f"Total: {roll_total}")
         print(f"Monster armor class {monster_armor_class}")
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
             damage_roll = dice_roll((self.level * critical_bonus), self.hit_dice)
@@ -2620,6 +2622,7 @@ class Player:
                         self.recover_quantum_energy()
                         self.poisoned = False
                         self.necrotic = False
+                        self.end_of_turn_calculation()
                         continue
                     else:
                         print(f"You do not have enough gold!")
@@ -3179,15 +3182,15 @@ class Player:
                     continue
             else:
                 # extra chance for potion
-                extra_chance = dice_roll(1, 20)
-                if extra_chance >= loot_difficulty_class:
+                """extra_chance = dice_roll(1, 20)
+                if extra_chance >= 11  # loot_difficulty_class:
                     print(f"You see a potion of healing!")
                     sleep(.5)
                     print(f"You grab it..")
                     self.potions_of_healing += 1
                     pause()
                     # continue
-                self.hud()
+                self.hud()"""
                 return  # self.dungeon_description()
 
     def increase_random_ability(self):

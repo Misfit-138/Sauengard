@@ -373,7 +373,7 @@ while True:
                 # NAVIGATION CALCULATIONS:
                 player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
                 player_1.coordinates = (player_1.x, player_1.y)  #
-                # META CALCULATION FUNCTION FOR REGENERATION/POTION OF STR/HEALING/POISON/NECROSIS/PROTECTION EFFECT:
+                # META CALCULATION FUNCTION FOR REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
                 player_1.end_of_turn_calculation()
                 if player_1.check_dead():  # player can die of necrosis/poison after end of turn calculations
                     player_is_dead = True

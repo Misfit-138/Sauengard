@@ -217,7 +217,7 @@ class Monster:
         else:
             return True
 
-    def swing(self, name, human_player_armor_class):
+    def swing(self, player_1):
         attack_bonus = 0
         attack_bonus_roll = random.randint(1, 100)
         print(f"Monster attack bonus roll: {attack_bonus_roll}")  # remove after testing
@@ -251,10 +251,9 @@ class Monster:
         else:
             critical_bonus = 1
             hit_statement = ""
-
         print(f"{self.name} dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
-        print(f"Your armor class ---> {human_player_armor_class}")
-        if roll_d20 + self.dexterity_modifier >= human_player_armor_class:
+        print(f"Your armor class ---> {player_1.armor_class}")
+        if roll_d20 + self.dexterity_modifier >= player_1.armor_class:
             damage_roll = dice_roll((self.number_of_hd * critical_bonus), self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus + self.weapon_bonus)
             if roll_d20 == 20 and damage_to_opponent < 1:
@@ -324,10 +323,8 @@ class Monster:
             print(f"+ Quantum Protection effect: {player_1.temp_protection_effect} ")
         print(
             f"Total = {human_player_roll_d20 + player_1.wisdom_modifier + player_1.ring_of_prot.protect + player_1.temp_protection_effect}")
-
-        if roll_d20 + self.wisdom_modifier >= (
-                human_player_roll_d20 + player_1.wisdom_modifier +
-                player_1.ring_of_prot.protect + player_1.temp_protection_effect):
+        if roll_d20 + self.wisdom_modifier >= (human_player_roll_d20 + player_1.wisdom_modifier +
+                                               player_1.ring_of_prot.protect + player_1.temp_protection_effect):
 
             damage_roll = dice_roll(self.number_of_hd * critical_bonus, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)
@@ -398,7 +395,8 @@ class Monster:
             player_1.hud()
             return False
         else:
-            print(f"Your Constitution: {player_1.constitution}\nYour Constitution Modifier: {player_1.constitution_modifier}\n")
+            print(
+                f"Your Constitution: {player_1.constitution}\nYour Constitution Modifier: {player_1.constitution_modifier}\n")
             if roll_d20 == 20 or roll_d20 >= difficulty_class:  # self.constitution + self.constitution_modifier:
                 # return True
                 # self.hud()
@@ -425,6 +423,42 @@ class Monster:
                 player_1.hud()
                 return False
 
+    def necrotic_attack(self, player_1):
+        roll_d20 = dice_roll(1, 20)  # attack roll
+        print(f"The {self.name} attempts to harness its innate understanding of quantum necrosis..")
+        print(f"Attack roll---> {roll_d20}")
+        time.sleep(1)
+        if roll_d20 == 1:
+            print("You dodge the deadly necrotic attack!")
+            time.sleep(1)
+            os.system('pause')
+            player_1.hud()
+            return False
+        else:
+            player_roll = (dice_roll(1, 20))
+            print(f"Your roll: {player_roll}\nYour Constitution Modifier: {player_1.constitution_modifier}\n")
+            if roll_d20 == 20 or roll_d20 >= player_roll + player_1.constitution_modifier:
+                player_1.dot_multiplier = self.dot_multiplier
+                rndm_necrotic_phrases = ["You feel morbid dread and withering overcoming you..",
+                                         "An unnerving pain, planted like a seed, germinates within you...",
+                                         "Agony creeps into your very veins..."
+                                         ]
+                necrotic_phrase = random.choice(rndm_necrotic_phrases)
+                print(f"{necrotic_phrase}")
+                time.sleep(1.5)
+                print(f"Necrotic forces ravage through your body!")
+                player_1.necrotic = True
+                player_1.necrotic_turns = 0
+                os.system('pause')
+                player_1.hud()
+                return player_1.necrotic
+            else:
+                print(f"You swiftly dodge its death-dealing necrotic attack!")
+                time.sleep(1)
+                os.system('pause')
+                player_1.hud()
+                return False
+
     def meta_monster_function(self, player_1):
         melee_or_quantum = dice_roll(1, 20)
         # if monster has quantum energy and player is not poisoned or necrotic
@@ -433,40 +467,25 @@ class Monster:
             if not self.can_poison and not self.necrotic:  # quantum attack if no necrotic or poison abilities
                 damage_to_player = self.quantum_energy_attack(player_1)
                 player_1.reduce_health(damage_to_player)
-                player_1.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
-                player_1.calculate_protection_effect()
-                player_1.regenerate()
-                player_1.calculate_poison()  # poison wears off after 5 turns of battle/nav
-                player_1.calculate_necrotic_dot()
+                player_1.end_of_turn_calculation()
             elif self.can_poison and self.necrotic:  # if monster has both poison
                 poison_or_necrotic = dice_roll(1, 20)  # and necrotic damage,
                 if poison_or_necrotic > 9:  # greater than 9 for poison
                     self.poison_attack(player_1)  # player_1.poison_attack(self.name, self.dot_multiplier)
                 else:
-                    player_1.necrotic_attack(self)  # migrate necrotic attack!!!!!!!!!!!!!!!!!
+                    self.necrotic_attack(player_1)  # player_1.necrotic_attack(self)
             elif self.can_poison:  # otherwise, if it can only poison, then attempt poison
                 self.poison_attack(player_1)  # player_1.poison_attack(self.name, self.dot_multiplier)
-                player_1.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
-                player_1.calculate_protection_effect()
-                player_1.regenerate()
-                player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
-                player_1.calculate_necrotic_dot()
+                player_1.end_of_turn_calculation()
             elif self.necrotic:  # otherwise if it only has necrotic, then attempt necrotic
-                player_1.necrotic_attack(self)
-                player_1.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
-                player_1.calculate_protection_effect()
-                player_1.regenerate()
-                player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
-                player_1.calculate_necrotic_dot()
+                self.necrotic_attack(player_1)
+                player_1.end_of_turn_calculation()
         else:
             # if it has neither, then melee attack
-            damage_to_player = self.swing(self.name, player_1.armor_class)
+            damage_to_player = self.swing(player_1)
             player_1.reduce_health(damage_to_player)
-            player_1.calculate_potion_of_strength()  # pots of str have 5 uses; battle & nav
-            player_1.calculate_protection_effect()
-            player_1.regenerate()
-            player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
-            player_1.calculate_necrotic_dot()
+            player_1.end_of_turn_calculation()
+        return
 
 
 class Quasit(Monster):
@@ -477,7 +496,7 @@ class Quasit(Monster):
         self.name = "Quasit"
         self.proper_name = "None"
         self.experience_award = 25  # MM says it should be 200 exp?!
-        self.gold = random.randint(2, 10)  # self.level * 273 * round(random.uniform(1, 2))
+        self.gold = random.randint(0, 1)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -537,7 +556,7 @@ class Kobold(Monster):
         self.name = "Kobold"
         self.proper_name = "None"
         self.experience_award = 25
-        self.gold = random.randint(2, 15)  # self.level * 273 * round(random.uniform(1, 2))
+        self.gold = random.randint(1, 3)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -594,7 +613,7 @@ class Cultist(Monster):
         self.name = "Cultist"
         self.proper_name = "None"
         self.experience_award = 50
-        self.gold = random.randint(2, 20)  # self.level * 373 * round(random.uniform(1, 2))
+        self.gold = random.randint(2, 8)  # self.level * 373 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -654,7 +673,7 @@ class Goblin(Monster):
         self.name = "Goblin"
         self.proper_name = "None"
         self.experience_award = self.level * 50
-        self.gold = random.randint(2, 20)  # self.level * 200 * round(random.uniform(1, 2))
+        self.gold = random.randint(2, 10)  # self.level * 200 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -711,7 +730,7 @@ class WingedKobold(Monster):
         self.name = "Winged Kobold"
         self.proper_name = "None"
         self.experience_award = 50
-        self.gold = random.randint(2, 15)  # self.level * 273 * round(random.uniform(1, 2))
+        self.gold = random.randint(1, 5)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -768,7 +787,7 @@ class Shadow(Monster):
         self.name = "Shadow"
         self.proper_name = "None"
         self.experience_award = 100
-        self.gold = random.randint(5, 10)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.gold = random.randint(0, 1)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -930,7 +949,7 @@ class Skeleton(Monster):
         self.name = "Skeleton"
         self.proper_name = "None"
         self.experience_award = 100
-        self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.gold = random.randint(0, 5)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -992,7 +1011,7 @@ class ZombieProphet(Monster):
         self.name = "Zombie Prophet"
         self.proper_name = "None"
         self.experience_award = 200
-        self.gold = random.randint(6, 22)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.gold = random.randint(6, 15)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -1235,7 +1254,7 @@ class Troglodyte(Monster):
         self.name = "Troglodyte"
         self.proper_name = "None"
         self.experience_award = 50
-        self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.gold = random.randint(2, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 2
         self.armor = 0
         self.shield = 0
@@ -1351,7 +1370,7 @@ class Ghoul(Monster):
         self.name = "Ghoul"
         self.proper_name = "None"
         self.experience_award = 200
-        self.gold = random.randint(6, 16)  # self.level * 103 * round(random.uniform(1, 2))
+        self.gold = random.randint(0, 5)  # self.level * 103 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -1527,7 +1546,7 @@ class Specter(Monster):
         self.name = "Specter"
         self.proper_name = "None"
         self.experience_award = 250
-        self.gold = random.randint(6, 16)  # self.level * 103 * round(random.uniform(1, 2))
+        self.gold = random.randint(0, 1)  # self.level * 103 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
@@ -1682,7 +1701,7 @@ class WhiteDragonWyrmling(Monster):
         self.name = "White Dragon Wyrmling"
         self.proper_name = "None"
         self.experience_award = 450
-        self.gold = random.randint(10, 22)
+        self.gold = random.randint(15, 25)
         self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0

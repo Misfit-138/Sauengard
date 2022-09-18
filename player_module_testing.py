@@ -92,6 +92,9 @@ class ShortSword(Weapon):
         self.minimum_level = 1
 
 
+short_sword = ShortSword()
+
+
 class BroadSword(Weapon):
     def __init__(self):
         super().__init__()
@@ -102,6 +105,24 @@ class BroadSword(Weapon):
         self.sell_price = 5
         self.buy_price = 15
         self.minimum_level = 1
+
+
+broad_sword = BroadSword()
+
+
+class GreatSword(Weapon):
+    def __init__(self):
+        super().__init__()
+        self.name = "Great Sword"
+        self.item_type = "Weapons"
+        self.damage_bonus = 3
+        self.to_hit_bonus = 1
+        self.sell_price = 15
+        self.buy_price = 500
+        self.minimum_level = 4
+
+
+great_sword = GreatSword()
 
 
 class QuantumSword(Weapon):
@@ -116,8 +137,6 @@ class QuantumSword(Weapon):
         self.minimum_level = 5  # 3
 
 
-short_sword = ShortSword()
-broad_sword = BroadSword()
 quantum_sword = QuantumSword()
 
 
@@ -159,7 +178,7 @@ class GreatAxe(Weapon):
         self.damage_bonus = 4
         self.to_hit_bonus = 0
         self.sell_price = 15
-        self.buy_price = 30
+        self.buy_price = 500
         self.minimum_level = 4
 
 
@@ -207,7 +226,7 @@ class LeatherArmor(Armor):
         self.ac = 11
         self.armor_bonus = 0
         self.sell_price = 5
-        self.buy_price = 10
+        self.buy_price = 15
         self.minimum_level = 1
 
 
@@ -704,7 +723,6 @@ class Player:
         self.previous_x = 0
         self.previous_y = 0
         self.pack = {
-
             'Armor': [],
             'Shields': [],
             'Boots': [],
@@ -1214,13 +1232,13 @@ class Player:
                               'Gorrikor', 'Nannukis', 'Borrodred', 'Metalbeard', 'Geffenmor',
                               'Jorrbrialus', 'Koffengen', 'Tyrus', 'Tybrius', 'Tyrrendor',
                               'Forendilus']
-        rndm_epithets = ['of the Evil Wisdom', 'the Lesser', 'the Greater', 'the Fierce', 'of the Eleven Elders',
+        rndm_epithets = ['of the Evil Wisdom', 'the Lesser', 'the Elder', 'the Fierce', 'of the Eleven Elders',
                          'of the Twelve', 'of the Fell Elders', 'the Mad',
                          'of the Elders', 'the Fallen', 'the Insane', 'the Mad Magistrate',
                          'the Grand King-Priest', 'of the Seven Mages', 'the Bloodsoaked',
                          'the Accursed', 'the Abandoned', 'the Absolutist', 'the Avenger', 'of the Seven Horns',
                          'the Blackhearted', 'the Blind', 'the Bloodthirsty', 'the Cruel',
-                         'the Damned', 'the Foul', 'the Foulest'
+                         'the Damned', 'the Foul', 'the Foulest', 'the Feared', 'the Fear-Inspiring'
                          ]
         # monster_key = self.level
         # monster_cls = random.choice(undead_prophet_dict[monster_key])
@@ -1249,14 +1267,14 @@ class Player:
         return exit_boss
 
     def king_monster_generator(self):
-        rndm_king_names = ['Tactum', 'Amarrik', 'Aaryn', 'Baldrick', 'Farrendal',
+        rndm_king_names = ['Tartyrtum', 'Amarrok', 'Aaryn', 'Baldrick', 'Farrendal',
                            'Dinenlell', 'Jorn', 'Tyrne', 'Fen', 'Jagod', 'Bevel',
-                           'Elrik', 'Thayadore', 'Grummthel', 'Aureus', 'Silson',
+                           'Elrik', 'Thayadore', 'Grummthel', 'Aureus', 'Sylgor',
                            'Hahr', 'Astor', 'Cordast', 'Breckenborn', 'Megarrd',
                            'Gorrik', 'Nannuk', 'Borrodred', 'Metalbeard', 'Geffen',
                            'Jortindale', 'Koffgen', 'Tyrus', 'Tybrius', 'Tyr',
                            'Hammersthorn']
-        rndm_epithets = ['the Wise', 'the Lesser', 'the Greater', 'the Fierce', 'of the Eleven', 'of the Twelve',
+        rndm_epithets = ['the Wise', 'the Lesser', 'the Elder', 'the Fierce', 'of the Eleven', 'of the Twelve',
                          'of the Elders', 'the Brave', 'the Insane', 'the Great', 'the Grand Magistrate',
                          'the Grand King-Priest', 'of the Seven Riddles', 'the Strong', 'the Able', 'the Bloodsoaked',
                          'the Accursed', 'the Abandoned', 'the Absolutist', 'the Avenger', 'the Battle-weary',
@@ -1604,7 +1622,7 @@ class Player:
         # perhaps use this math for higher healing effect:
         # number_of_dice = (3 + self.level - 1)  # 3 dice for lvl 1, 4 for lvl 2, 5 for lvl 3....
         # heal = dice_roll(number_of_dice, 4)  + (1 * number_of_dice)
-        number_of_dice = (1 + self.level)
+        number_of_dice = (1 + self.level)  # consider chainging to self.quantum_level
         heal = dice_roll(number_of_dice, 4) + number_of_dice
         if self.hit_points < self.maximum_hit_points:
             print(f"You feel restorative powers welling up within you..")
@@ -1638,6 +1656,8 @@ class Player:
             self.temp_protection_effect = (2 + self.level)
             self.quantum_units -= 1
             print(f"You have succeeded!")
+            sleep(1)
+            print(f"You gain a Quantum Protection advantage + {self.temp_protection_effect}!")
             pause()
             return 0
         else:
@@ -1712,7 +1732,7 @@ class Player:
             if roll_d20 == 20 or (roll_d20 + self.wisdom_modifier + self.proficiency_bonus) >= monster.armor_class:
                 # this is dnd 5e math for m.missile damage:
                 #
-                number_of_dice = (3 + self.level - 1) * critical_bonus
+                number_of_dice = (3 + self.level - 1) * critical_bonus  # consider changing to self.quantum_level
                 damage_to_opponent = dice_roll(number_of_dice, 4) + (1 * number_of_dice)
                 if damage_to_opponent > 0:
                     print(hit_statement)
@@ -2078,7 +2098,7 @@ class Player:
     def buy_blacksmith_items(self):
 
         blacksmith_dict = {
-            'Weapons': [short_axe, broad_sword, quantum_sword, battle_axe, great_axe],
+            'Weapons': [short_axe, broad_sword, great_sword, quantum_sword, battle_axe, great_axe],
             'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
             'Shields': [buckler, kite_shield, quantum_tower_shield],
             'Boots': [elven_boots, ancestral_footsteps],
@@ -2980,13 +3000,14 @@ class Player:
             loot_difficulty_class = 10
         else:  # boss
             loot_difficulty_class = 8
-        # place armor first here; otherwise it will mess up the order of operations below
+        # place armor first here; it is first in pack.
+        # otherwise it seems to give unexpected argument warning
         loot_dict = {
             'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
             'Shields': [buckler, kite_shield, quantum_tower_shield],
             'Boots': [elven_boots, ancestral_footsteps],
             'Cloaks': [elven_cloak],
-            'Weapons': [short_axe, broad_sword, quantum_sword, battle_axe, great_axe],
+            'Weapons': [short_axe, broad_sword, great_sword, quantum_sword, battle_axe, great_axe],
             'Elixirs': [elixir],
             'Healing': [healing_potion],
             'Rings of Regeneration': [ring_of_regeneration],
@@ -3062,7 +3083,7 @@ class Player:
                     pause()  # remove after testing
                     continue
             else:
-                # extra chance for potion
+                # extra chance for potion this makes it a little too easy. consider restoring it with lower chances
                 """extra_chance = dice_roll(1, 20)
                 if extra_chance >= 11  # loot_difficulty_class:
                     print(f"You see a potion of healing!")
@@ -3163,17 +3184,17 @@ class Player:
             rndm_occurrence = random.choice(rndm_occurrence_lst)
 
             rndm_altar_descriptions = ['There is a worn and crumbling altar of stone here. Carved into its\n'
-                                       'cold surface are faded symbols from ancient religions.',
+                                       'cold surface are faded symbols from disgusting ancient religions.',
                                        'Here stands an altar of stone which has been abandoned long ago.\n'
-                                       'Ancient religious symbols, now illegible, cover its cold surface.',
+                                       'Ancient and horrible religious symbols, now illegible, cover its cold surface.',
                                        'There is a mysterious, ancient, crumbling stone altar here.\n'
                                        'Inscribed upon its surface are countless half-worn\n'
-                                       'religious symbols left behind by civilizations past.']
+                                       'disgusting symbols left behind by civilizations past.']
             rndm_altar_description = random.choice(rndm_altar_descriptions)
             print(f"{rndm_altar_description}")
             print(f"Along its sides are embedded ornate golden sculptures.")
             print(f"You shudder to think of the innocent lives lost to its many\n"
-                  f"disgusting false prophets and priests, now long dead.")
+                  f"horrible false prophets and priests, now long dead.")
             # pause()
             # if throne_discovery not in self.discovered_interactives:
             throne_action = input(
@@ -3223,9 +3244,6 @@ class Player:
                 else:
                     return undead_prophet_returns()  # unable to finish
 
-
-
-
             else:
                 return  # ignore the altar
         else:
@@ -3251,7 +3269,7 @@ class Player:
         rndm_throne_description = random.choice(rndm_throne_descriptions)
         print(f"{rndm_throne_description}")
         print(f"Judging by the sheer number of unique origins of the runes, this throne was undoubtedly")
-        print(f"stolen and reclaimed multiple times from many different ancient kings, now long dead.")
+        print(f"stolen from, and reclaimed by many different ancient kings, now long dead.")
         # pause()
         # if throne_discovery not in self.discovered_interactives:
         throne_action = input(f"(P)ry gems, attempt to (R)ead the Runes, (S)it on the throne or (I)gnore: ").lower()

@@ -472,6 +472,7 @@ while True:
                                 time.sleep(3)
                                 player_is_dead = True
                                 break
+                        # OTHERWISE, PLAYER PROMPT and enter BATTLE LOOP
                         # ********************************* BATTLE LOOP ***********************************************
                         while True:
                             if not player_1.in_proximity_to_monster:
@@ -494,7 +495,7 @@ while True:
                                     if player_1.evade(monster.name, monster.dexterity):
                                         if encounter > 20:  # if evading a boss at this point,
                                             dungeon_theme()  # go back to dungeon theme song
-                                        player_1.in_proximity_to_monster = False  # get out of battle loop
+                                        player_1.in_proximity_to_monster = False  # get out of battle loop and prox loop
                                         break
                                 elif battle_choice == 'h':
                                     if not player_1.drink_healing_potion():
@@ -512,7 +513,7 @@ while True:
                                         # If monster is successfully turned, experience is gained,
                                         # but player gets no gold or loot and monster does not 'die':
                                         if not player_1.in_proximity_to_monster:  # turn undead
-                                            # CALCULATE REGENERATION/POTION OF STR/HEALING/POISON/NECROSIS/PROT EFFECT:
+                                            # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
                                             player_1.end_of_turn_calculation()
                                             if encounter > 20:  # if fighting a boss, go back to regular music
                                                 gong()
@@ -536,7 +537,7 @@ while True:
                                                 dungeon_theme()
                                             else:
                                                 print(f"It died..")
-                                            # CALCULATE REGENERATION/POTION OF STR/HEALING/POISON/NECROSIS/PROT EFFECT:
+                                            # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
                                             player_1.end_of_turn_calculation()
                                             pause()
                                             if player_1.check_dead():  # you can die from poison or necrosis,
@@ -553,8 +554,8 @@ while True:
                                         print(f"You have no Quantum unit energy!")
                                         pause()
                                         continue  # if you have no QU, don't waste a turn!
-                                # ****MONSTER TURN AFTER YOU SWIG POTION, fail to evade, or cast******
-                                # elif not monster.check_dead():
+                                # ****MONSTER TURN AFTER YOU SWIG POTION, fail to evade, or cast quantum attack******
+                                #
                                 player_1.hud()
                                 # player_1.meta_monster_function(monster)
                                 monster.meta_monster_function(player_1)
@@ -579,10 +580,9 @@ while True:
                                     break
                                 player_1.hud()
                                 continue
-                            # FIGHT:
+                            # FIGHT: player chooses melee:
                             elif battle_choice == "f":
                                 print(f"Fight.")
-
                                 # player chooses melee:
                                 damage_to_monster = player_1.swing(monster.name, monster.armor_class)
                                 monster.reduce_health(damage_to_monster)
@@ -596,7 +596,7 @@ while True:
                                     else:
                                         print(f"It died..")
                                     pause()
-                                    # CALCULATE REGENERATION/POTION OF STR/HEALING/POISON/NECROSIS/PROT EFFECT:
+                                    # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
                                     player_1.end_of_turn_calculation()
 
                                     if player_1.check_dead():
@@ -634,8 +634,7 @@ while True:
                                         player_is_dead = True
                                         break
                                     player_1.hud()
-                                #else:  # pretty sure this code is unreachable
-                                    #break
+
                             else:  # invalid inputs
                                 print(f"The {monster.name} is not amused.")
                                 time.sleep(1)

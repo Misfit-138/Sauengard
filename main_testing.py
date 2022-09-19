@@ -402,8 +402,8 @@ while True:
                         if not player_1.in_proximity_to_monster:
                             break
                         if encounter < 11:  # regular monster
-                            monster = player_1.regular_monster_generator()
-                            # monster = Specter()  # testing
+                            # monster = player_1.regular_monster_generator()
+                            monster = Specter()  # testing
                         elif encounter == 99:  # level exit boss fight
                             monster = player_1.exit_boss_generator()
                             gong()
@@ -446,8 +446,8 @@ while True:
                                 break  # if monster steals something he gets away clean, if not, battle
 
                         # PLAYER INITIATIVE, MONSTER INITIATIVE
-                        player_initiative = dice_roll(1, 20) + player_1.dexterity_modifier
-                        monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier
+                        player_initiative = player_1.initiative()
+                        monster_initiative = monster.initiative()
                         print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
                         pause()
                         # IF MONSTER GOES FIRST:
@@ -478,12 +478,7 @@ while True:
                             if not player_1.in_proximity_to_monster:
                                 break
                             player_1.hud()
-                            if monster.proper_name == "None":
-                                print(f"Lvl {monster.level} {monster.name} AC: {monster.armor_class} "
-                                      f"HP: {monster.hit_points} ({monster.number_of_hd}d{monster.hit_dice})")
-                            else:
-                                print(f"{monster.proper_name} AC: {monster.armor_class} "
-                                      f"HP: {monster.hit_points} ({monster.number_of_hd}d{monster.hit_dice})")
+                            monster.monster_data()
                             battle_choice = input("(F)ight, (H)ealing potion, (C)larifying elixir, "
                                                   "(G)iant Strength potion, (Q)uantum Effects or "
                                                   "(E)vade\nF/H/C/G/Q/E --> ").lower()
@@ -550,6 +545,7 @@ while True:
                                             if encounter > 20:  # if you kill the boss, you get extra chance for loot
                                                 player_1.loot(encounter)  # 8 difficulty class
                                             break
+                                        # player_1.end_of_turn_calculation()  # beta testing
                                     else:
                                         print(f"You have no Quantum unit energy!")
                                         pause()
@@ -564,7 +560,7 @@ while True:
                                     if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
                                         sleep(1)
                                         monster.paralyze(player_1)
-                                        #pause()
+                                        # pause()
                                         if not player_1.check_dead():  # if player not dead
                                             print(f"You regain your faculties.")
                                             pause()
@@ -573,13 +569,14 @@ while True:
                                             print("You are dead and paralyzed!")
                                             player_is_dead = True
                                             break
+
                                 else:
                                     print(f"You died!")
                                     time.sleep(3)
                                     player_is_dead = True
                                     break
-                                player_1.hud()
-                                continue
+                                #player_1.hud()  # commented out and seemed like it worked fine beta
+                                #continue  # commented out and it seemed to work fine beta
                             # FIGHT: player chooses melee:
                             elif battle_choice == "f":
                                 print(f"Fight.")
@@ -612,13 +609,14 @@ while True:
 
                                 # monster turn if still alive after player melee attack:
                                 else:
+                                    # player_1.end_of_turn_calculation()  # beta testing
                                     # player_1.meta_monster_function(monster)
                                     monster.meta_monster_function(player_1)
                                     # I tried to offload this code, but the breaks and continues are pretty tangled
                                     if not player_1.check_dead():  # if player not dead
                                         if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
                                             monster.paralyze(player_1)
-                                            #pause()
+                                            # pause()
                                             #
                                             if not player_1.check_dead():  # if player not dead
                                                 print(f"You regain your faculties.")

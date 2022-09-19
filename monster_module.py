@@ -167,6 +167,7 @@ class Monster:
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
@@ -217,6 +218,28 @@ class Monster:
         else:
             return True
 
+    def initiative(self):
+        # if self.level > 6:
+        #    monster_initiative = dice_roll(1, 20) + self.dexterity_modifier + self.proficiency_bonus
+        # else:
+        monster_initiative = dice_roll(1, 20) + self.dexterity_modifier
+        return monster_initiative
+
+    def monster_data(self):
+        if self.proper_name == "None":
+            print(f"Lvl {self.level} {self.name} AC: {self.armor_class} "
+                  f"HP: {self.hit_points} ({self.number_of_hd}d{self.hit_dice})")
+
+        else:
+            print(f"{self.proper_name} AC: {self.armor_class} "
+                  f"HP: {self.hit_points} ({self.number_of_hd}d{self.hit_dice})")
+        if self.undead:
+            print(f"UNDEAD")
+        if len(self.immunities):
+            print("Immunities:", *self.immunities)
+        if len(self.vulnerabilities):
+            print("Vulnerabilities:", *self.vulnerabilities)
+
     def swing(self, player_1):
         attack_bonus = 0
         attack_bonus_roll = random.randint(1, 100)
@@ -252,7 +275,7 @@ class Monster:
             critical_bonus = 1
             hit_statement = ""
         print(f"{self.name} dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
-        print(f"Your armor class ---> {player_1.armor_class}")
+        print(f"Your armor class: {player_1.armor_class}")
         if roll_d20 + self.dexterity_modifier >= player_1.armor_class:
             damage_roll = dice_roll((self.number_of_hd * critical_bonus), self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus + self.weapon_bonus)
@@ -263,10 +286,10 @@ class Monster:
                 time.sleep(1.5)
                 print(hit_statement)
                 print(
-                    f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} ---> {damage_roll}")  # hit dice
+                    f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice}: {damage_roll}")  # hit dice
                 time.sleep(1.5)
-                print(f"Strength modifier---> {self.strength_modifier}\nAttack bonus---> {attack_bonus} "
-                      f"Weapon bonus---> {self.weapon_bonus}")
+                print(f"Strength modifier: {self.strength_modifier}\nAttack bonus: {attack_bonus} "
+                      f"Weapon bonus: {self.weapon_bonus}")
                 time.sleep(1.5)
                 print(f"It does {damage_to_opponent} points of damage!")
                 os.system('pause')
@@ -317,8 +340,9 @@ class Monster:
             critical_bonus = 1
             hit_statement = ""
         # print(f"{self.name} Wisdom modifier {self.wisdom_modifier}")  # MONSTER WISDOM MODIFIER
-        print(f"Your roll: {human_player_roll_d20} + wisdom modifier: ({player_1.wisdom_modifier}) "
-              f"+ ring of protection: ({player_1.ring_of_prot.protect}) ")
+        print(f"Your Saving Throw: {human_player_roll_d20} + wisdom modifier: ({player_1.wisdom_modifier})")
+        if player_1.ring_of_prot.protect > 0:
+            print(f"Your Ring of Protection Modifier: {player_1.ring_of_prot.protect}")
         if player_1.temp_protection_effect:
             print(f"+ Quantum Protection effect: {player_1.temp_protection_effect} ")
         print(
@@ -333,8 +357,8 @@ class Monster:
                 time.sleep(1.5)
                 print(hit_statement)
                 print(
-                    f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} hit dice---> {damage_roll}")
-                print(f"Wisdom modifier---> {self.wisdom_modifier}\nAttack bonus---> {attack_bonus}")
+                    f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} hit dice: {damage_roll}")
+                print(f"Wisdom modifier: {self.wisdom_modifier}\nAttack bonus: {attack_bonus}")
                 print(f"It does {damage_to_opponent} points of damage!")
                 os.system('pause')
                 # time.sleep(5)
@@ -356,13 +380,17 @@ class Monster:
         player_total = (human_player_roll_d20 + player_1.ring_of_prot.protect + player_1.temp_protection_effect)
         print(
             f"Paralyze roll: {paralyze_chance} + monster wisdom modifier: {self.wisdom_modifier}")  # remove after testing
+        paralyze_total = paralyze_chance + self.wisdom_modifier
+        print(f"Monster Total: {paralyze_total}")
         print(
-            f"Your roll: {human_player_roll_d20} Your ring of prot: {player_1.ring_of_prot.protect}")  # remove after testing
+            f"Your Saving Throw: {human_player_roll_d20} ")  # remove after testing
+        if player_1.ring_of_prot.protect > 0:
+            print(f"Your Ring of Protection Modifier: {player_1.ring_of_prot.protect}")
         if player_1.protection_effect:
-            print(f"Protection from Evil effect: {player_1.temp_protection_effect}")
+            print(f"Protection from Evil Effect: {player_1.temp_protection_effect}")
         print(f"Total: {player_total}")
         if (paralyze_chance + self.wisdom_modifier) >= player_total:
-            print("You're paralyzed!!")
+            print("You are paralyzed!!")
             time.sleep(1)
             print("As you stand, frozen and defenseless, it savagely gores you!")
             time.sleep(1)
@@ -382,10 +410,12 @@ class Monster:
             return False
 
     def poison_attack(self, player_1):
-        difficulty_class = (player_1.constitution + player_1.constitution_modifier)
+        player_saving_throw = dice_roll(1, 20)
+        difficulty_class = (player_saving_throw + player_1.constitution_modifier)
+        # (player_1.constitution + player_1.constitution_modifier)
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"The {self.name} hisses in evil glee..")
-        print(f"Attack roll---> {roll_d20}")
+        print(f"Attack roll: {roll_d20}")
         time.sleep(1)
         if roll_d20 == 1:
             print("You dodge!")
@@ -395,12 +425,13 @@ class Monster:
             player_1.hud()
             return False
         else:
-            print(
-                f"Your Constitution: {player_1.constitution}\nYour Constitution Modifier: {player_1.constitution_modifier}\n")
+            print(f"Your Saving Throw: {player_saving_throw}\n"
+                  f"Your Constitution Modifier: {player_1.constitution_modifier}\n")
             if roll_d20 == 20 or roll_d20 >= difficulty_class:  # self.constitution + self.constitution_modifier:
                 # return True
                 # self.hud()
                 player_1.dot_multiplier = self.dot_multiplier
+                player_1.dot_turns = self.dot_turns
                 rndm_poisoned_phrases = ["You feel a disturbing weakness overcoming you..",
                                          "An unnerving frailty spreads throughout your body...",
                                          "Pain and tenderness courses through your body.."
@@ -436,9 +467,10 @@ class Monster:
             return False
         else:
             player_roll = (dice_roll(1, 20))
-            print(f"Your roll: {player_roll}\nYour Constitution Modifier: {player_1.constitution_modifier}\n")
+            print(f"Your Saving Throw: {player_roll}\nYour Constitution Modifier: {player_1.constitution_modifier}\n")
             if roll_d20 == 20 or roll_d20 >= player_roll + player_1.constitution_modifier:
                 player_1.dot_multiplier = self.dot_multiplier
+                player_1.dot_turns = self.dot_turns
                 rndm_necrotic_phrases = ["You feel morbid dread and withering overcoming you..",
                                          "An unnerving pain, planted like a seed, germinates within you...",
                                          "Agony creeps into your very veins..."
@@ -511,8 +543,9 @@ class Quasit(Monster):
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
-        self.immunities = ["Turn Undead"]
+        self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
@@ -571,8 +604,9 @@ class Kobold(Monster):
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
-        self.immunities = ["Turn Undead"]
+        self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
@@ -628,8 +662,9 @@ class Cultist(Monster):
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
-        self.immunities = ["Turn Undead"]
+        self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
@@ -689,7 +724,7 @@ class Goblin(Monster):
         self.necrotic = False
         self.dot_multiplier = 1
         self.undead = False
-        self.immunities = ["Turn Undead"]
+        self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
@@ -745,8 +780,9 @@ class WingedKobold(Monster):
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
-        self.immunities = ["Turn Undead"]
+        self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
@@ -802,6 +838,7 @@ class Shadow(Monster):
         self.can_poison = False
         self.necrotic = True
         self.dot_multiplier = 1
+        self.dot_turns = dice_roll(1, 8)
         self.undead = True
         self.immunities = ["Sleep", "Charm"]
         self.vulnerabilities = []
@@ -883,6 +920,7 @@ class ShadowKing(Monster):
         self.can_poison = False
         self.necrotic = True
         self.dot_multiplier = 2
+        self.dot_turns = dice_roll(1, 8)
         self.undead = True
         self.immunities = ["Sleep", "Charm"]
         self.vulnerabilities = []
@@ -964,6 +1002,7 @@ class Skeleton(Monster):
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = True
         self.immunities = ["Sleep", "Charm"]
         self.vulnerabilities = []
@@ -1026,6 +1065,7 @@ class ZombieProphet(Monster):
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = True
         self.immunities = ["Sleep", "Charm"]
         self.vulnerabilities = []
@@ -1084,6 +1124,7 @@ class SkeletonKing(Monster):
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = True
         self.immunities = ["Sleep", "Charm"]
         self.vulnerabilities = []
@@ -1142,8 +1183,9 @@ class Drow(Monster):
         self.can_poison = True
         self.necrotic = True
         self.dot_multiplier = 1
+        self.dot_turns = dice_roll(1, 6)
         self.undead = False
-        self.immunities = ["Turn Undead"]
+        self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = True
@@ -1211,6 +1253,7 @@ class Zombie(Monster):
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = True
         self.immunities = ["Sleep", "Charm"]
         self.vulnerabilities = []
@@ -1269,8 +1312,9 @@ class Troglodyte(Monster):
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
-        self.immunities = ["Turn Undead"]
+        self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
@@ -1326,8 +1370,9 @@ class Orc(Monster):
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
-        self.immunities = ["Turn Undead"]
+        self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
@@ -1385,6 +1430,7 @@ class Ghoul(Monster):
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
+        self.dot_turns = dice_roll(1, 6)
         self.undead = True
         self.immunities = ["Sleep", "Charm"]
         self.vulnerabilities = []
@@ -1447,8 +1493,9 @@ class Bugbear(Monster):
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
-        self.immunities = ["Turn Undead"]
+        self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
@@ -1504,8 +1551,9 @@ class HalfOgre(Monster):
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
-        self.immunities = ["Turn Undead"]
+        self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
@@ -1561,6 +1609,7 @@ class Specter(Monster):
         self.can_poison = True
         self.necrotic = True
         self.dot_multiplier = 2
+        self.dot_turns = dice_roll(1, 8)
         self.undead = True
         self.immunities = ["Sleep", "Charm"]
         self.vulnerabilities = []
@@ -1639,6 +1688,7 @@ class SpecterKing(Monster):
         self.can_poison = False
         self.necrotic = True
         self.dot_multiplier = 2
+        self.dot_turns = dice_roll(1, 10)
         self.undead = True
         self.immunities = ["Sleep", "Charm"]
         self.vulnerabilities = []
@@ -1716,8 +1766,9 @@ class WhiteDragonWyrmling(Monster):
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
-        self.immunities = ["Turn Undead"]
+        self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False

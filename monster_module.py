@@ -240,7 +240,7 @@ class Monster:
         if len(self.vulnerabilities):
             print("Vulnerabilities:", *self.vulnerabilities)
 
-    def swing(self, player_1):
+    def melee(self, player_1):
         attack_bonus = 0
         attack_bonus_roll = random.randint(1, 100)
         print(f"Monster attack bonus roll: {attack_bonus_roll}")  # remove after testing
@@ -291,7 +291,7 @@ class Monster:
                 print(f"Strength modifier: {self.strength_modifier}\nAttack bonus: {attack_bonus} "
                       f"Weapon bonus: {self.weapon_bonus}")
                 time.sleep(1.5)
-                print(f"It does {damage_to_opponent} points of damage!")
+                print(f"You suffer {damage_to_opponent} points of damage!")
                 os.system('pause')
                 # time.sleep(5)
                 return damage_to_opponent
@@ -359,7 +359,7 @@ class Monster:
                 print(
                     f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} hit dice: {damage_roll}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}\nAttack bonus: {attack_bonus}")
-                print(f"It does {damage_to_opponent} points of damage!")
+                print(f"You suffer {damage_to_opponent} points of damage!")
                 os.system('pause')
                 # time.sleep(5)
                 return damage_to_opponent
@@ -514,7 +514,7 @@ class Monster:
                 player_1.end_of_turn_calculation()
         else:
             # if it has neither, then melee attack
-            damage_to_player = self.swing(player_1)
+            damage_to_player = self.melee(player_1)
             player_1.reduce_health(damage_to_player)
             player_1.end_of_turn_calculation()
         return

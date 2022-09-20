@@ -287,7 +287,8 @@ while True:
                 dungeon_command = input(
                     "(L)ook at surroundings, use (MAP), (C)larifying elixir,\n"
                     "(Quit), Town (P)ortal, (H)ealing potion, (M)anage inventory,\n"
-                    "(G)iant strength potion, (I)nventory, (Q)uantum effects or WASD to navigate. --> ").lower()
+                    "(G)iant strength potion, (V)ial of Antidote, (I)nventory,\n"
+                    "(Q)uantum effects, or W-A-S-D to navigate. --> ").lower()
 
                 if dungeon_command == 'p':
                     if player_1.use_scroll_of_town_portal():
@@ -315,6 +316,9 @@ while True:
                         player_1.quantum_effects(monster)
                 elif dungeon_command == 'g':
                     if not player_1.drink_potion_of_strength():
+                        continue  # if you have no potions, don't waste a turn!
+                elif dungeon_command == 'v':
+                    if not player_1.drink_antidote():
                         continue  # if you have no potions, don't waste a turn!
                 elif dungeon_command == 'h':
                     if not player_1.drink_healing_potion():
@@ -374,6 +378,8 @@ while True:
                 player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
                 player_1.coordinates = (player_1.x, player_1.y)  #
                 # META CALCULATION FUNCTION FOR REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
+                # this is also called after monster melee, necro, poison and quantum attack
+                # as well as after turning undead, and victory
                 player_1.end_of_turn_calculation()
                 if player_1.check_dead():  # player can die of necrosis/poison after end of turn calculations
                     player_is_dead = True
@@ -392,7 +398,7 @@ while True:
                 # ***********************************************************************************************>>>>
                 if encounter < 11 or encounter > 20:  # < 11 = normal monster. > 20 = boss
                     monster = ""  # just to prevent monster from being undefined
-                    # monster dictionary imported from monster module. keys correspond to difficulty
+                    # monster dictionary imported from monster module. keys correspond to difficulty levels
                     # IN PROXIMITY TO MONSTER LOOP *contains battle loop within it*
                     player_1.in_proximity_to_monster = True
                     player_is_dead = False
@@ -480,12 +486,12 @@ while True:
                             player_1.hud()
                             monster.monster_data()
                             battle_choice = input("(F)ight, (H)ealing potion, (C)larifying elixir, "
-                                                  "(G)iant Strength potion, (Q)uantum Effects or "
-                                                  "(E)vade\nF/H/C/G/Q/E --> ").lower()
+                                                  "(G)iant Strength potion, (V)ial of Antidote, (Q)uantum Effects or "
+                                                  "(E)vade\nF/H/C/G/V/Q/E --> ").lower()
 
                             # these choices count as turns, and are therefore followed by monster's turn:
                             if battle_choice == 'e' or battle_choice == 'h' or battle_choice == 'g' or \
-                                    battle_choice == 'c' or battle_choice == 'q':
+                                    battle_choice == 'v' or battle_choice == 'c' or battle_choice == 'q':
                                 if battle_choice == "e":
                                     if player_1.evade(monster.name, monster.dexterity):
                                         if encounter > 20:  # if evading a boss at this point,
@@ -498,18 +504,25 @@ while True:
                                 elif battle_choice == 'g':
                                     if not player_1.drink_potion_of_strength():
                                         continue  # if you have no potions, don't waste a turn!
+                                elif battle_choice == 'v':
+                                    if not player_1.drink_antidote():
+                                        continue  # if you have no potions, don't waste a turn!
                                 elif battle_choice == 'c':
                                     if not player_1.drink_elixir():
                                         continue  # if you have no potions, don't waste a turn!
+                                # PLAYER QUANTUM ATTACK
                                 elif battle_choice == "q":
                                     player_1.hud()
                                     if player_1.quantum_units > 0:
                                         damage_to_monster = player_1.quantum_effects(monster)
-                                        # If monster is successfully turned, experience is gained,
+                                        # If monster is successfully turned or banished, experience is gained,
                                         # but player gets no gold or loot and monster does not 'die':
-                                        if not player_1.in_proximity_to_monster:  # turn undead
+                                        if not player_1.in_proximity_to_monster:  # Turn Undead or Banish
                                             # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
                                             player_1.end_of_turn_calculation()
+                                            if player_1.check_dead():  # you can die from poison or necrosis,
+                                                player_is_dead = True  # right after victory, following calculations
+                                                break
                                             if encounter > 20:  # if fighting a boss, go back to regular music
                                                 gong()
                                                 sleep(4)
@@ -519,9 +532,8 @@ while True:
                                             # pause()
                                             break
                                         # otherwise, calculate damage:
-                                        # *if total monster hit points is returned from quantum_effects(),
-                                        # then monster will die instantly*,
-                                        # and player gets loot
+                                        # if total monster hit points is returned from quantum_effects(),
+                                        # then monster will die instantly and player gets loot
                                         monster.reduce_health(damage_to_monster)
                                         if monster.check_dead():
                                             player_1.hud()
@@ -545,7 +557,9 @@ while True:
                                             if encounter > 20:  # if you kill the boss, you get extra chance for loot
                                                 player_1.loot(encounter)  # 8 difficulty class
                                             break
-                                        # player_1.end_of_turn_calculation()  # beta testing
+                                        # player_1.end_of_turn_calculation()  # beta testing no good...this is
+                                        # overused if put here- it is already executed at end of every type of
+                                        # monster turn except paralyze
                                     else:
                                         print(f"You have no Quantum unit energy!")
                                         pause()
@@ -575,13 +589,13 @@ while True:
                                     time.sleep(3)
                                     player_is_dead = True
                                     break
-                                #player_1.hud()  # commented out and seemed like it worked fine beta
-                                #continue  # commented out and it seemed to work fine beta
+                                # player_1.hud()  # commented out and seemed like it worked fine beta
+                                # continue  # commented out and it seemed to work fine beta
                             # FIGHT: player chooses melee:
                             elif battle_choice == "f":
                                 print(f"Fight.")
                                 # player chooses melee:
-                                damage_to_monster = player_1.swing(monster.name, monster.armor_class)
+                                damage_to_monster = player_1.melee(monster.name, monster.armor_class)
                                 monster.reduce_health(damage_to_monster)
                                 if monster.check_dead():
                                     player_1.hud()
@@ -609,7 +623,7 @@ while True:
 
                                 # monster turn if still alive after player melee attack:
                                 else:
-                                    # player_1.end_of_turn_calculation()  # beta testing
+
                                     # player_1.meta_monster_function(monster)
                                     monster.meta_monster_function(player_1)
                                     # I tried to offload this code, but the breaks and continues are pretty tangled
@@ -617,7 +631,6 @@ while True:
                                         if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
                                             monster.paralyze(player_1)
                                             # pause()
-                                            #
                                             if not player_1.check_dead():  # if player not dead
                                                 print(f"You regain your faculties.")
                                                 pause()
@@ -726,7 +739,8 @@ while True:
                             if monster.quantum_energy and melee_or_quantum > 10:
                                 damage_to_player = monster.quantum_energy_attack(monster.name,
                                                                                  player_1.wisdom_modifier,
-                                                                                 player_1.ring_of_prot.protect, player_1.temp_protection_effect)
+                                                                                 player_1.ring_of_prot.protect, 
+                                                                                 player_1.temp_protection_effect)
                                 player_1.reduce_health(damage_to_player)
                                 player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
                                 player_1.calculate_protection_effect()

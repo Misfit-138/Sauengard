@@ -502,6 +502,22 @@ class Elixir:
 elixir = Elixir()
 
 
+class Antidote:
+    def __init__(self):
+        self.name = "Vial of Antidote"
+        self.item_type = "Antidotes"
+        self.uses = 0
+        self.buy_price = 50
+        self.sell_price = 20
+        self.minimum_level = 1
+
+    def __repr__(self):
+        return f'{self.name} - Purchase Price: {self.buy_price} GP'
+
+
+antidote = Antidote()
+
+
 class HealingPotion(Healing):
     def __init__(self):
         super().__init__()
@@ -665,7 +681,7 @@ class Player:
         self.maximum_quantum_units = 6
         self.quantum_units = 6
         self.experience = 0
-        self.gold = 0  # 500000
+        self.gold = 500000
         self.wielded_weapon = short_sword
         # self.weapon_bonus = self.wielded_weapon.damage_bonus  # self.weapon_bonus no longer used
         self.armor = padded_armor
@@ -701,16 +717,17 @@ class Player:
         self.town_portals = 1
         self.elixirs = 0
         self.potions_of_healing = 1
+        self.antidotes = 1
         self.potions_of_strength = 0
         self.potion_of_strength_effect = False
         self.potion_of_strength_uses = 0
         self.max_quantum_strength_uses = self.quantum_level + self.strength_modifier
+        self.quantum_strength_uses = 0
+        self.quantum_strength_effect = False
         self.protection_effect = False
         self.protection_effect_uses = 0
         self.max_protection_effect_uses = self.quantum_level + self.constitution_modifier
         self.temp_protection_effect = 0
-        self.quantum_strength_effect = False
-        self.quantum_strength_uses = 0
         self.poisoned = False
         self.poisoned_turns = 0
         self.max_poisoned_turns = 0
@@ -819,6 +836,10 @@ class Player:
             number_of_potions_of_healing = self.potions_of_healing  # len(self.pack['Healing'])
             print(
                 f"                                                                            Healing Potions: {number_of_potions_of_healing}")
+        if self.antidotes > 0:
+            number_of_antidotes = self.antidotes  # len(self.pack['Healing'])
+            print(
+                f"                                                                            Vials of Antidote: {number_of_antidotes}")
         if self.elixirs > 0:
             number_of_elixirs = self.elixirs  # len(self.pack['Healing'])
             print(
@@ -839,11 +860,11 @@ class Player:
     # CALCULATION
     def end_of_turn_calculation(self):
         self.regenerate()
-        self.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
-        self.calculate_quantum_strength()
-        self.calculate_protection_effect()
-        self.calculate_poison()  # poison wears off after 5 turns of battle/navigation
-        self.calculate_necrotic_dot()
+        self.calculate_potion_of_strength()  # potions of strength have max uses = self.strength_modifier
+        self.calculate_quantum_strength()  # self.max_quantum_strength_uses= self.quantum_level + self.strength_modifier
+        self.calculate_protection_effect()  # max_protection_effect_uses= self.quantum_level+ self.constitution_modifier
+        self.calculate_poison()  # poison wears off after self.dot_turns which = monster.dot_turns during battle
+        self.calculate_necrotic_dot()  # necrosis wears off after self.dot_turns which = monster.dot_turns during battle
 
     def calculate_stealth(self):
         self.stealth += self.cloak.stealth
@@ -888,7 +909,7 @@ class Player:
 
     def calculate_quantum_strength(self):
         if self.quantum_strength_effect:
-            if self.quantum_strength_uses >= self.max_quantum_strength_uses:  # self.quantum_level + self.strength_modifier:
+            if self.quantum_strength_uses >= self.max_quantum_strength_uses:  # self.quantum_lvl+self.strength_modifier
                 self.quantum_strength_effect = False
                 self.quantum_strength_uses = 0
                 print(f"The Quantum Effects wear off....the giant strength leaves your body..")
@@ -1204,7 +1225,7 @@ class Player:
             self.hit_points += gain_hit_points  # you heal and gain max hp (previous HP + Hit Die roll + CON modifier)
             self.maximum_hit_points += gain_hit_points
             print(f"You heal, and gain {gain_hit_points} maximum hit points")
-            sleep(2)
+            sleep(2.5)
             # Ability Score Improvement at levels 4, 8, 12, 16, and 19.
             # Fighters gain additional ASIs at the 6th and 14th levels
             # so, 4, 6, 8, 12, 14, 16, 19
@@ -1482,7 +1503,7 @@ class Player:
             player_initiative = dice_roll(1, 20) + self.dexterity_modifier
         return player_initiative
 
-    def swing(self, monster_name, monster_armor_class):
+    def melee(self, monster_name, monster_armor_class):
         strength_bonus = 1
         if self.potion_of_strength_effect:
             strength_bonus = 1.5  # round(self.strength * .5)
@@ -1523,7 +1544,8 @@ class Player:
                 print(
                     f"{self.level * critical_bonus}d{self.hit_dice} roll ---> {damage_roll} + weapon bonus "
                     f"({self.wielded_weapon.damage_bonus}) + "
-                    f"Strength modifier ({self.strength_modifier}) * Strength Bonus ({strength_bonus}) = {damage_to_opponent} (rounded)")
+                    f"Strength modifier ({self.strength_modifier}) * Strength Bonus ({strength_bonus}) "
+                    f"= {damage_to_opponent} (rounded)")
                 print(f"You do {damage_to_opponent} points of damage!")
                 pause()
                 self.hud()
@@ -1563,10 +1585,15 @@ class Player:
             sleep(1)
             self.hud()
             if "Turn Undead" not in monster.immunities and "All" not in monster.immunities and monster.undead:
+                vulnerability_modifier = 0
+                if "Turn Undead" in monster.vulnerabilities:
+                    vulnerability_modifier = 5
                 turn_roll = dice_roll(1, 20)
-                total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus)
-                print(f"Quantum Ability Check: {turn_roll} + Wisdom Modifier: {self.wisdom_modifier} "
-                      f"+ Proficiency Bonus: {self.proficiency_bonus} ")
+                total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
+                print(f"Quantum Ability Check: {turn_roll}\nWisdom Modifier: {self.wisdom_modifier}\n"
+                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                if vulnerability_modifier > 0:
+                    print(f"Monster Vulnerability modifier: {vulnerability_modifier}")
                 sleep(1)
                 print(f"Total: {total}")
                 sleep(1)
@@ -1575,9 +1602,15 @@ class Player:
                 if total >= monster.wisdom:
                     self.quantum_units -= quantum_unit_cost
                     self.in_proximity_to_monster = False
-                    print(f"The {monster.name} runs in fear!!")
+                    # print(f"The {monster.name} runs in fear!!")
+                    if monster.proper_name != "None":
+                        print(f"{monster.proper_name} runs in fear!!")
+
+                    else:
+                        print(f"The {monster.name} runs in fear!!")
+                    sleep(1.5)
                     monster.gold = 0
-                    sleep(2)
+                    # pause()
                     return 0
                 else:
                     self.quantum_units -= quantum_unit_cost
@@ -1606,7 +1639,71 @@ class Player:
             sleep(1)
             return
 
-    def quantum_clarify(self, monster):
+    def banish(self, monster):
+        quantum_unit_cost = 2
+        if self.in_proximity_to_monster:
+            print(f"Banish")
+            sleep(1)
+            self.hud()
+            if "Banish" not in monster.immunities and "All" not in monster.immunities:
+                vulnerability_modifier = 0
+                if "Banish" in monster.vulnerabilities:
+                    vulnerability_modifier = 5
+                turn_roll = dice_roll(1, 20)
+                total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
+                print(f"Quantum Ability Check: {turn_roll}\nWisdom Modifier: {self.wisdom_modifier}\n"
+                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                if vulnerability_modifier > 0:
+                    print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
+                sleep(1)
+                print(f"Total: {total}")
+                sleep(1)
+                print(f"{monster.name} Charisma: {monster.charisma}")
+                sleep(1)
+                if total >= monster.charisma:
+                    self.quantum_units -= quantum_unit_cost
+                    self.in_proximity_to_monster = False
+                    # print(f"The {monster.name} runs in fear!!")
+                    if monster.proper_name != "None":
+                        print(f"{monster.proper_name} phases out of existence on this plane!!")
+                    else:
+                        print(f"The {monster.name} phases out of existence on this plane!!!!")
+                    sleep(1)
+                    print(f"You perceive a slight breeze as the air "
+                          f"around you collapses into the brief void left behind..")
+                    sleep(2)
+                    monster.gold = 0
+                    # pause()
+                    return 0
+                else:
+                    self.quantum_units -= quantum_unit_cost
+                    if monster.proper_name != "None":
+                        print(f"{monster.proper_name} is unfazed by your attempts!!")
+                    else:
+                        print(f"The {monster.name} is unfazed by your attempts!")
+                    sleep(1)
+                    pause()
+                    return 0
+            else:
+                self.quantum_units -= quantum_unit_cost
+                if monster.proper_name != "None":
+                    print(f"{monster.proper_name} is immune to Banish!!")
+                else:
+                    print(f"The {monster.name} is immune to Banish!!")
+                sleep(1)
+                print(f"You have wasted Quantum Energy!")
+                sleep(1)
+                pause()
+                return 0
+        else:
+            print(f"Banish is a Battle Effect only!")
+            sleep(1)
+            return
+
+    def quantum_purify(self, monster):
+        # monster parameter not used or needed here
+        print(f"Purify")
+        sleep(1)
         quantum_unit_cost = 2
         # works only when poisoned or necrotic, but once engaged, has powerful hit point healing!
         self.hud()
@@ -1635,7 +1732,7 @@ class Player:
                 if self.hit_points > self.maximum_hit_points:
                     self.hit_points = self.maximum_hit_points
                 # self.hud()
-                print(f"Your wounds feel better..")
+                print(f"Your wounds feel better!")
                 sleep(1)
             pause()
             return 0
@@ -1654,8 +1751,10 @@ class Player:
                     vulnerability_modifier = 5
                 turn_roll = dice_roll(1, 20)
                 player_total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
-                print(f"Quantum Ability Check: {turn_roll} + Wisdom Modifier: {self.wisdom_modifier} "
-                      f"+ Proficiency Bonus: {self.proficiency_bonus} + Monster Vulnerability Modifier: {vulnerability_modifier}")
+                print(f"Quantum Ability Check: {turn_roll} + Wisdom Modifier: {self.wisdom_modifier}\n"
+                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                if vulnerability_modifier > 0:
+                    print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 sleep(1)
                 print(f"Total: {player_total}")
                 sleep(1)
@@ -1720,8 +1819,10 @@ class Player:
                     vulnerability_modifier = 5
                 turn_roll = dice_roll(1, 20)
                 total = (turn_roll + self.charisma_modifier + self.proficiency_bonus + vulnerability_modifier)
-                print(f"Quantum Ability Check: {turn_roll} + Charisma Modifier: {self.charisma_modifier} "
-                      f"+ Proficiency Bonus: {self.proficiency_bonus} + Monster Vulnerability Modifier: {vulnerability_modifier}")
+                print(f"Quantum Ability Check: {turn_roll}\nCharisma Modifier: {self.charisma_modifier}\n"
+                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                if vulnerability_modifier > 0:
+                    print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 sleep(1)
                 print(f"Total: {total}")
                 sleep(1)
@@ -1792,8 +1893,10 @@ class Player:
                     vulnerability_modifier = 5
                 turn_roll = dice_roll(1, 20)
                 total = (turn_roll + self.intelligence_modifier + self.proficiency_bonus + vulnerability_modifier)
-                print(f"Quantum Ability Check: {turn_roll} + Intelligence Modifier: {self.intelligence_modifier} "
-                      f"+ Proficiency Bonus: {self.proficiency_bonus} + Monster Vulnerability Modifier: {vulnerability_modifier}")
+                print(f"Quantum Ability Check: {turn_roll}\nIntelligence Modifier: {self.intelligence_modifier}\n"
+                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                if vulnerability_modifier > 0:
+                    print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 sleep(1)
                 print(f"Total: {total}")
                 sleep(1)
@@ -1864,7 +1967,7 @@ class Player:
         sleep(1)
         self.quantum_strength_effect = True
         self.quantum_units -= quantum_unit_cost
-        self.quantum_strength_uses = 0
+        self.quantum_strength_uses = -1  # to compensate for end of turn calculation
         # if self.hit_points < self.maximum_hit_points:  # in the rare case player has hit point overage,
         #    self.hit_points = self.maximum_hit_points  # this will not disrupt that advantage
         pause()
@@ -1911,7 +2014,7 @@ class Player:
         sleep(1.5)
         if prot_roll + self.wisdom_modifier > 1:
             self.protection_effect = True
-            self.protection_effect_uses = 0
+            self.protection_effect_uses = -1  # to compensate for end of turn calculation
             self.temp_protection_effect = (2 + self.level)
             self.quantum_units -= quantum_unit_cost
             print(f"You have succeeded!")
@@ -1932,8 +2035,10 @@ class Player:
                                       4: "Protection from Evil",
                                       5: "Turn Undead"},
                                   2: {1: "Web",
-                                      2: "Clarify",
-                                      3: "Strength"}
+                                      2: "Purify",
+                                      3: "Strength",
+                                      4: "Scorch",
+                                      5: "Banish"}
                                   }
         quantum_book = {1: {1: self.quantum_missile,
                             2: self.quantum_sleep,
@@ -1941,8 +2046,10 @@ class Player:
                             4: self.protection_from_evil,
                             5: self.turn_undead},
                         2: {1: self.quantum_web,
-                            2: self.quantum_clarify,
-                            3: self.quantum_strength}
+                            2: self.quantum_purify,
+                            3: self.quantum_strength,
+                            4: self.quantum_scorch,
+                            5: self.banish}
                         }
         while True:
             self.hud()
@@ -1977,59 +2084,159 @@ class Player:
     def quantum_missile(self, monster):
         quantum_unit_cost = 1
         if self.in_proximity_to_monster:
-            self.quantum_units -= quantum_unit_cost
-            print(f"Quantum Missile.")
-            sleep(1)
-            self.hud()
-            roll_d20 = dice_roll(1, 20)  # attack roll
-            player_total = (roll_d20 + self.wisdom_modifier + self.proficiency_bonus)
-            print(f"Focusing your innate understanding, you attempt to aim the Quantum Missile at the {monster.name}..")
-            print(f"Quantum Ability Check: {roll_d20}")
-            sleep(1)
-            if roll_d20 == 1:
-                print("Your focus has failed..")
+            if "Quantum Missile" not in monster.immunities and "All" not in monster.immunities:
+                vulnerability_modifier = 0
+                if "Quantum Missile" in monster.vulnerabilities:
+                    vulnerability_modifier = 5
+                self.quantum_units -= quantum_unit_cost
+                print(f"Quantum Missile.")
                 sleep(1)
-                print(f"The missile goes awry..")
-                pause()
                 self.hud()
-                return 0
-            if roll_d20 == 20:
-                critical_bonus = 2
-                hit_statement = "CRITICAL HIT!!"
-            else:
-                critical_bonus = 1
-                hit_statement = "The missile hits!"
-            print(f"Wisdom modifier: {self.wisdom_modifier}")
-            print(f"Proficiency bonus: {self.proficiency_bonus}")
-            print(f"Total: {player_total}")
-            sleep(1)
-            print(f"Monster armor class: {monster.armor_class}")
-            if roll_d20 == 20 or (roll_d20 + self.wisdom_modifier + self.proficiency_bonus) >= monster.armor_class:
-                # this is dnd 5e math for m.missile damage:
-                number_of_dice = (3 + self.level - 1) * critical_bonus  # consider changing to self.quantum_level
-                damage_to_opponent = dice_roll(number_of_dice, 4) + (1 * number_of_dice)
-                if damage_to_opponent > 0:
-                    print(hit_statement)
+                roll_d20 = dice_roll(1, 20)  # attack roll
+                player_total = (roll_d20 + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
+                print(
+                    f"Focusing your innate understanding, you attempt to aim the Quantum Missile at the {monster.name}..")
+                print(f"Quantum Ability Check: {roll_d20}")
+                sleep(1)
+                if roll_d20 == 1:
+                    print("Your focus has failed..")
                     sleep(1)
-                    print(f"Quantum Missile = 3d4(dice) + 1 die for every level above 1")
-                    print(f"{number_of_dice}d{4} roll + 1 force damage per missile---> {damage_to_opponent}")
-                    print(f"It does {damage_to_opponent} points of damage!")
+                    print(f"The missile goes awry..")
                     pause()
                     self.hud()
-                    return damage_to_opponent
+                    return 0
+                if roll_d20 == 20:
+                    critical_bonus = 2
+                    hit_statement = "CRITICAL HIT!!"
+
                 else:
-                    print(f"It blocks the glowing projectiles!")  # zero damage result
+                    critical_bonus = 1
+
+                    hit_statement = f"Success!"
+                print(f"Wisdom modifier: {self.wisdom_modifier}")
+                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                if vulnerability_modifier > 0:
+                    print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
+                print(f"Total: {player_total}")
+                sleep(1)
+                print(f"Monster armor class: {monster.armor_class}")
+                if roll_d20 == 20 or (roll_d20 + self.wisdom_modifier + self.proficiency_bonus) >= monster.armor_class:
+                    # this is dnd 5e math for m.missile damage:
+                    number_of_dice = (3 + (self.level - 1)) * critical_bonus  # consider changing to self.quantum_level
+                    damage_to_opponent = dice_roll(number_of_dice, 4) + (1 * number_of_dice)
+                    if damage_to_opponent > 0:
+                        print(hit_statement)
+                        sleep(1)
+                        number_of_projectiles = (3 + (self.level - 1)) * critical_bonus
+                        print(f"{number_of_projectiles} glowing projectiles materialize from nothingness and "
+                              f"hit their target!")
+                        print(f"Quantum Missile = 3d4(dice) + 1 die for every level above 1")
+                        print(f"{number_of_dice}d{4} roll + 1 force damage per missile: {damage_to_opponent}")
+                        print(f"They do {damage_to_opponent} points of damage!")
+                        pause()
+                        self.hud()
+                        return damage_to_opponent
+                    else:
+                        print(f"It blocks the glowing projectiles!")  # zero damage result
+                        sleep(1)
+                        return 0
+                else:
+                    print("Your focus has failed..")
                     sleep(1)
+                    print(f"The glowing projectiles chaotically fly off on a random trajectory...")
+                    pause()
+                    self.hud()
                     return 0
             else:
-                print("Your focus has failed..")
+                if monster.proper_name != "None":
+                    print(f"{monster.proper_name} is immune to the Quantum Missile attack!!")
+                    sleep(1)
+                else:
+                    print(f"The {monster.name} is immune to the Quantum Missile attack!!")
+                    sleep(1)
+                print(f"You have wasted Quantum Energy!")
                 sleep(1)
-                print(f"The glowing projectiles chaotically fly off on a random trajectory...")
                 pause()
-                self.hud()
                 return 0
         else:
             print(f"Quantum Missile is a Battle Effect only..")
+            sleep(1)
+            return
+
+    def quantum_scorch(self, monster):
+        quantum_unit_cost = 2
+        if self.in_proximity_to_monster:
+            if "Scorch" not in monster.immunities and "All" not in monster.immunities:
+                vulnerability_modifier = 0
+                if "Scorch" in monster.vulnerabilities:
+                    vulnerability_modifier = 5
+                self.quantum_units -= quantum_unit_cost
+                print(f"Scorch.")
+                sleep(1)
+                self.hud()
+                roll_d20 = dice_roll(1, 20)  # attack roll
+                player_total = (roll_d20 + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
+                print(f"Focusing your innate understanding, you attempt Scorch the {monster.name}..")
+                print(f"Quantum Ability Check: {roll_d20}")
+                sleep(1)
+                if roll_d20 == 1:
+                    print("Your focus has failed..")
+                    sleep(1)
+                    print(f"The rays of flame fly off chaotically..")
+                    pause()
+                    self.hud()
+                    return 0
+                if roll_d20 == 20:
+                    critical_bonus = 2
+                    hit_statement = "CRITICAL HIT!!"
+                else:
+                    critical_bonus = 1
+                    hit_statement = "Rays of scorching flame are summoned by Quantum Weirdness and hit your enemy!"
+                print(f"Wisdom modifier: {self.wisdom_modifier}")
+                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                if vulnerability_modifier > 0:
+                    print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
+                print(f"Total: {player_total}")
+                sleep(1)
+                print(f"Monster armor class: {monster.armor_class}")
+                if roll_d20 == 20 or (roll_d20 + self.wisdom_modifier + self.proficiency_bonus) >= monster.armor_class:
+                    # this is dnd 5e math for m.missile damage:
+                    number_of_dice = (3 + (self.level - 1)) * critical_bonus  # consider changing to self.quantum_level
+                    damage_to_opponent = dice_roll(number_of_dice, 6) + (1 * number_of_dice)
+                    if damage_to_opponent > 0:
+                        print(hit_statement)
+                        sleep(1)
+                        print(f"Scorch = 3d6(dice) + 1 die for every level above 1")
+                        print(f"{number_of_dice}d{6} roll "
+                              f"({number_of_dice} rays + 1 force damage per ray): {damage_to_opponent}")
+                        print(f"They do {damage_to_opponent} points of damage!")
+                        pause()
+                        self.hud()
+                        return damage_to_opponent
+                    else:
+                        print(f"It dodges the scorching rays!")  # zero damage result
+                        sleep(1)
+                        return 0
+                else:
+                    print("Your focus has failed..")
+                    sleep(1)
+                    print(f"The scorching rays fly off on a random trajectory...")
+                    pause()
+                    self.hud()
+                    return 0
+            else:
+                if monster.proper_name != "None":
+                    print(f"{monster.proper_name} is immune to Scorch!!")
+                    sleep(1)
+                else:
+                    print(f"The {monster.name} is immune to Scorch!!")
+                    sleep(1)
+                print(f"You have wasted Quantum Energy!")
+                sleep(1)
+                pause()
+                return 0
+        else:
+            print(f"Scorch is a Battle Effect only..")
             sleep(1)
             return
 
@@ -2089,11 +2296,11 @@ class Player:
                 continue
 
     def sell_chemist_items(self):
-
+        # in the future, clean this up by making a list of nonzero items into a dictionary
         while True:
             self.hud()
             if self.potions_of_healing == 0 and self.town_portals == 0 and \
-                    self.potions_of_strength == 0 and self.elixirs == 0:
+                    self.potions_of_strength == 0 and self.elixirs == 0 and self.antidotes == 0:
                 print(f"You have no quantum items to sell..")
                 pause()
                 return
@@ -2102,6 +2309,7 @@ class Player:
             print(f"2: Scrolls of Town Portal - Quantity: {self.town_portals}")
             print(f"3: Potions of Strength - Quantity: {self.potions_of_strength}")
             print(f"4: Clarifying Elixirs - Quantity: {self.elixirs}")
+            print(f"5: Poison Antidote Vials - Quantity: {self.antidotes}")
             print(f"Your gold: {self.gold} GP")
             type_to_sell = input(f"Pick item to sell by number, or go (B)ack: ").lower()
             if type_to_sell == 'b':
@@ -2131,6 +2339,12 @@ class Player:
             elif type_to_sell == '4':
                 your_item = "clarifying elixirs"
                 if self.elixirs < 1:
+                    print(f"You do not have any {your_item}..")
+                    sleep(1)
+                    continue
+            elif type_to_sell == '5':
+                your_item = "vials of antidote"
+                if self.antidotes < 1:
                     print(f"You do not have any {your_item}..")
                     sleep(1)
                     continue
@@ -2188,6 +2402,18 @@ class Player:
                         print(f"Invalid.")
                         sleep(1)
                         continue
+                elif type_to_sell == '5' and number_of_items_to_sell > 0:
+                    if self.antidotes >= number_of_items_to_sell:
+                        self.antidotes -= number_of_items_to_sell
+                        gold_recieved = (antidote.sell_price * number_of_items_to_sell)
+                        self.gold += gold_recieved
+                        print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
+                        pause()
+                        continue
+                    else:
+                        print(f"Invalid.")
+                        sleep(1)
+                        continue
                 else:
                     print(f"Invalid entry..")
             except ValueError:
@@ -2200,7 +2426,8 @@ class Player:
             'Healing': [healing_potion],
             'Potions of Strength': [strength_potion],
             'Town Portal Implements': [scroll_of_town_portal],
-            'Elixirs': [elixir]
+            'Elixirs': [elixir],
+            'Antidotes': [antidote]
         }
         while True:
             self.hud()
@@ -2287,6 +2514,8 @@ class Player:
                                         self.potions_of_healing += number_of_items
                                     elif sale_item.name == 'Clarifying Elixir':
                                         self.elixirs += number_of_items
+                                    elif sale_item.name == 'Vial of Antidote':
+                                        self.antidotes += number_of_items
                                     self.hud()
                                     print(f"You buy {number_of_items} {sale_item.name}s")
                                     # (self.pack[sale_item.item_type]).append(sale_item)
@@ -2755,7 +2984,7 @@ class Player:
             print(f"{drink_phrase}")
             self.potion_of_strength_effect = True
             self.potions_of_strength -= 1
-            self.potion_of_strength_uses = 0
+            self.potion_of_strength_uses = -1  # to compensate for end of turn calculation
             if self.hit_points < self.maximum_hit_points:  # in the rare case player has hit point overage,
                 self.hit_points = self.maximum_hit_points  # this will not disrupt that advantage
             pause()
@@ -2837,10 +3066,37 @@ class Player:
         pause()
         return
 
+    def drink_antidote(self):
+        if self.antidotes > 0:
+            self.hud()
+            if not self.poisoned:
+                print(f"You are not poisoned!")
+                sleep(1)
+                return False  # false means you do NOT use a turn
+            else:
+                print(f"You retrieve the amber vial from your belt and eagerly drain its contents into your mouth...")
+                sleep(2)
+                self.antidotes -= 1
+                self.hud()
+                print(f"You feel a vibrant sensation..")
+                sleep(1)
+                self.poisoned = False
+                self.poisoned_turns = 0
+                print(f"The poison has left your body..")
+                sleep(1)
+
+                pause()
+                return True  # True means you DO use a turn
+        else:
+            print(f"You have no vials of antidote!")
+            sleep(1)
+            # pause()
+            return False  # False means you do NOT use a turn
+
     def drink_elixir(self):
         if self.elixirs > 0:
             self.hud()
-            if not self.poisoned and not self.necrotic:
+            if not self.necrotic:
                 print(f"Your flesh is not corrupted!")
                 sleep(1)
                 return False  # false means you do NOT use a turn
@@ -2851,25 +3107,16 @@ class Player:
                 self.hud()
                 print(f"You feel a cleansing of the flesh..")
                 sleep(1)
-                self.poisoned = False
-                self.poisoned_turns = 0
                 self.necrotic = False
                 self.necrotic_turns = 0
                 print(f"The foul corruption leaves your body..")
                 sleep(1)
-                if self.hit_points < self.maximum_hit_points:
-                    self.hit_points = self.hit_points + math.ceil(self.maximum_hit_points * .25)
-                    if self.hit_points > self.maximum_hit_points:
-                        self.hit_points = self.maximum_hit_points
-                    # self.hud()
-                    print(f"Your wounds feel slightly better..")
-                    sleep(1)
                 pause()
                 return True  # True means you DO use a turn
         else:
             print(f"You have no elixirs!")
             sleep(1)
-            pause()
+            # pause()
             return False  # False means you do NOT use a turn
 
     def drink_healing_potion(self):
@@ -2918,7 +3165,8 @@ class Player:
     def item_type_inventory(self, item_type):  # list items in inventory by type
 
         if item_type != 'Town Portal Implements' and item_type != 'Elixirs' \
-                and item_type != 'Potions of Strength' and item_type != 'Healing':  # if item not in belt inventory
+                and item_type != 'Potions of Strength' and item_type != 'Healing' \
+                and item_type != 'Antidotes':  # if item not in belt inventory
             print(f"Your {item_type}:")
             self.pack[item_type].sort(key=lambda x: x.name)
             stuff_dict = Counter(item.name for item in self.pack[item_type])
@@ -2968,12 +3216,12 @@ class Player:
     def inventory(self):
         self.hud()
         print(
-            f"You are wielding: \nA {self.wielded_weapon.name}. Damage bonus: {self.wielded_weapon.damage_bonus}. "
-            f"To hit: {self.wielded_weapon.to_hit_bonus}.")
+            f"You are wielding: \nA {self.wielded_weapon.name}. Damage bonus: {self.wielded_weapon.damage_bonus}, "
+            f"To-hit bonus: {self.wielded_weapon.to_hit_bonus}")
         if self.shield.name != 'No Shield':
             print(f"A {self.shield.name}. Armor class: {self.shield.ac}")
         print(
-            f"You are wearing:\n{self.armor.name}. Armor class: {self.armor.ac}. Armor bonus: {self.armor.armor_bonus}")
+            f"You are wearing:\n{self.armor.name}. Armor class: {self.armor.ac}, Armor bonus: {self.armor.armor_bonus}")
         print(f"{self.cloak.name}. Stealth: {self.cloak.stealth}")
         if self.ring_of_reg.name != 'No Ring':
             print(f"A Ring of Regeneration + {self.ring_of_reg.regenerate}")
@@ -2981,14 +3229,22 @@ class Player:
             print(f"A Ring of Protection + {self.ring_of_prot.protect} ")
         print(f"On your belt, you are carrying:")
         print(f"A coil of rope")  # like indiana jones and his whip.
-        if self.town_portals > 0 or self.potions_of_healing > 0 or self.potions_of_strength > 0 or self.elixirs > 0:
-            print(f"{self.potions_of_strength} Potions of Strength")
-            print(f"{self.potions_of_healing} Potions of Healing")
-            print(f"{self.town_portals} Town Portal Scrolls")
-            print(f"{self.elixirs} Clarifying Elixirs")
+        if self.town_portals > 0 or self.potions_of_healing > 0 or \
+                self.potions_of_strength > 0 or self.elixirs > 0 or self.antidotes > 0:
+            if self.potions_of_strength > 0:
+                print(f"{self.potions_of_strength} Potions of Strength")
+            if self.potions_of_healing > 0:
+                print(f"{self.potions_of_healing} Potions of Healing")
+            if self.town_portals > 0:
+                print(f"{self.town_portals} Town Portal Scrolls")
+            if self.elixirs > 0:
+                print(f"{self.elixirs} Clarifying Elixirs")
+            if self.antidotes > 0:
+                print(f"{self.antidotes} Vials of Antidote")
 
         item_type_lst = ['Weapons', 'Armor', 'Shields', 'Boots', 'Cloaks']
         print(f"Your dungeoneer's pack contains:")
+
         current_items = []
         for each_item in item_type_lst:
             if len(self.pack[each_item]) > 0:
@@ -3290,7 +3546,8 @@ class Player:
             'Rings of Regeneration': [ring_of_regeneration],
             'Rings of Protection': [ring_of_protection],
             'Town Portal Implements': [scroll_of_town_portal],
-            'Potions of Strength': [strength_potion]
+            'Potions of Strength': [strength_potion],
+            'Antidotes': [antidote]
         }
 
         while True:
@@ -3352,6 +3609,13 @@ class Player:
                         sleep(.5)
                         print(f"You snarf it..")
                         self.elixirs += 1
+                        pause()
+                        continue
+                    elif found_item.item_type == 'Antidotes':
+                        print(f"You see a {found_item.name}!")
+                        sleep(.5)
+                        print(f"You snarf it..")
+                        self.antidotes += 1
                         pause()
                         continue
 

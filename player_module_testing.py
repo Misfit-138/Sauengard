@@ -3212,6 +3212,13 @@ class Player:
             else:
                 print(f"You have no Elixirs.")
                 return False
+        elif item_type == 'Antidotes':
+            if self.antidotes > 0:
+                print(f"You have {self.antidotes} Vials of Antidote")
+                return True
+            else:
+                print(f"You have no Vials of Antidote.")
+                return False
 
     def inventory(self):
         self.hud()

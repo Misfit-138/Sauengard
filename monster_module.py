@@ -142,6 +142,10 @@ between 1 and 30. Write down its statistics from the following formulas:
 # # monsters have Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma
 
 
+def convert_list_to_string_with_commas_only(list1):
+    return str(list1).replace('[', '').replace(']', '').replace("'", "")
+
+
 class Monster:
 
     def __init__(self):
@@ -227,18 +231,21 @@ class Monster:
 
     def monster_data(self):
         if self.proper_name == "None":
-            print(f"Lvl {self.level} {self.name} AC: {self.armor_class} "
-                  f"HP: {self.hit_points} ({self.number_of_hd}d{self.hit_dice})")
-
+            mon_data = f"Lvl {self.level} {self.name} AC: {self.armor_class} HP: {self.hit_points} ({self.number_of_hd}d{self.hit_dice})"
         else:
-            print(f"{self.proper_name} AC: {self.armor_class} "
-                  f"HP: {self.hit_points} ({self.number_of_hd}d{self.hit_dice})")
+            mon_data = f"{self.proper_name} AC: {self.armor_class} HP: {self.hit_points} ({self.number_of_hd}d{self.hit_dice})"
         if self.undead:
-            print(f"UNDEAD")
+            print(f"{mon_data} (UNDEAD)")
+        else:
+            print(f"{mon_data}")
         if len(self.immunities):
-            print("Immunities:", *self.immunities)
+            # immunities = str(self.immunities).replace('[', '').replace(']', '').replace("'", "")
+            immunities = convert_list_to_string_with_commas_only(self.immunities)
+            print("Immunities:", immunities)
         if len(self.vulnerabilities):
-            print("Vulnerabilities:", *self.vulnerabilities)
+            # vulnerabilities = str(self.vulnerabilities).replace('[', '').replace(']', '').replace("'", "")
+            vulnerabilities = convert_list_to_string_with_commas_only(self.vulnerabilities)
+            print("Vulnerabilities:", vulnerabilities)
 
     def melee(self, player_1):
         attack_bonus = 0

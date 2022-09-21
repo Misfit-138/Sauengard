@@ -515,6 +515,8 @@ while True:
                                     player_1.hud()
                                     if player_1.quantum_units > 0:
                                         damage_to_monster = player_1.quantum_effects(monster)
+                                        if damage_to_monster == -999:
+                                            continue
                                         # If monster is successfully turned or banished, experience is gained,
                                         # but player gets no gold or loot and monster does not 'die':
                                         if not player_1.in_proximity_to_monster:  # Turn Undead or Banish

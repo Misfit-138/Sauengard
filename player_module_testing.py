@@ -677,10 +677,11 @@ class Player:
         #  cloak, weapon_name):
         self.name = name
         self.level = 1
-        self.quantum_level = 10
+        self.quantum_level = 4
         self.maximum_quantum_units = 600
         self.quantum_units = 600
         self.experience = 0
+        self.base_dc = 8
         self.gold = 500000
         self.wielded_weapon = short_sword
         # self.weapon_bonus = self.wielded_weapon.damage_bonus  # self.weapon_bonus no longer used
@@ -1588,24 +1589,32 @@ class Player:
                 vulnerability_modifier = 0
                 if "Turn Undead" in monster.vulnerabilities:
                     vulnerability_modifier = 5
-                turn_roll = dice_roll(1, 20)
-                total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
-                print(f"Quantum Ability Check: {turn_roll}\nWisdom Modifier: {self.wisdom_modifier}\n"
-                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                # turn_roll = dice_roll(1, 20)
+                # total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
+                # print(f"Quantum Ability Check: {turn_roll}\nWisdom Modifier: {self.wisdom_modifier}\n"
+                #      f"Proficiency Bonus: {self.proficiency_bonus}")
+                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + vulnerability_modifier
+                print(f"Player saving throw DC = {self.base_dc}\n"
+                      f"+ your Wisdom Modifier: {self.wisdom_modifier}\n"
+                      f"+ your Proficiency Bonus: {self.proficiency_bonus}")
                 if vulnerability_modifier > 0:
                     print(f"Monster Vulnerability modifier: {vulnerability_modifier}")
                 sleep(1)
-                print(f"Total: {total}")
+                print(f"Total: {player_dc}")
                 sleep(1)
-                print(f"{monster.name} Wisdom: {monster.wisdom}")
+                monster_roll = dice_roll(1, 20)
+                print(f"Monster Saving Throw: {monster_roll}")
+                # monster_mod = math.floor((monster.wisdom - 10) / 2)
+                print(f"{monster.name} Wisdom Modifier: {monster.wisdom_modifier}")
+                monster_total = monster_roll + monster.wisdom_modifier
+                print(f"Monster Total: {monster_total}")
                 sleep(1)
-                if total >= monster.wisdom:
+                if player_dc > monster_total:  # with >= tie goes to player... with > tie goes to monster
                     self.quantum_units -= quantum_unit_cost
                     self.in_proximity_to_monster = False
                     # print(f"The {monster.name} runs in fear!!")
                     if monster.proper_name != "None":
                         print(f"{monster.proper_name} runs in fear!!")
-
                     else:
                         print(f"The {monster.name} runs in fear!!")
                     sleep(1.5)
@@ -1619,7 +1628,6 @@ class Player:
                     pause()
                     return 0
             else:
-                self.quantum_units -= quantum_unit_cost
                 if monster.undead:
                     if monster.proper_name != "None":
                         print(f"{monster.proper_name} is immune to Turn Undead!!")
@@ -1630,6 +1638,7 @@ class Player:
                 else:
                     print(f"Turn Undead is only affective against undead!")
                     sleep(1)
+                self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
                 sleep(1)
                 pause()
@@ -1649,18 +1658,29 @@ class Player:
                 vulnerability_modifier = 0
                 if "Banish" in monster.vulnerabilities:
                     vulnerability_modifier = 5
-                turn_roll = dice_roll(1, 20)
-                total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
-                print(f"Quantum Ability Check: {turn_roll}\nWisdom Modifier: {self.wisdom_modifier}\n"
-                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                # turn_roll = dice_roll(1, 20)
+                # total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
+                # print(f"Quantum Ability Check: {turn_roll}\nWisdom Modifier: {self.wisdom_modifier}\n"
+                #      f"Proficiency Bonus: {self.proficiency_bonus}")
+                if vulnerability_modifier > 0:
+                    print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
+                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + vulnerability_modifier
+                print(f"Player saving throw DC = {self.base_dc}\n"
+                      f"+ your Wisdom Modifier: {self.wisdom_modifier}\n"
+                      f"+ your Proficiency Bonus: {self.proficiency_bonus}")
                 if vulnerability_modifier > 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 sleep(1)
-                print(f"Total: {total}")
+                print(f"Total: {player_dc}")
                 sleep(1)
-                print(f"{monster.name} Charisma: {monster.charisma}")
+                monster_roll = dice_roll(1, 20)
+                print(f"Monster Saving Throw: {monster_roll}")
+                monster_charisma_modifier = math.floor((monster.charisma - 10) / 2)
+                print(f"{monster.name} Charisma Modifier: {monster_charisma_modifier}")
+                monster_total = monster_roll + monster_charisma_modifier
+                print(f"Monster Total: {monster_total}")
                 sleep(1)
-                if total >= monster.charisma:
+                if player_dc >= monster_total:
                     self.hud()
                     self.quantum_units -= quantum_unit_cost
                     self.in_proximity_to_monster = False
@@ -1687,12 +1707,12 @@ class Player:
                     pause()
                     return 0
             else:
-                self.quantum_units -= quantum_unit_cost
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to Banish!!")
                 else:
                     print(f"The {monster.name} is immune to Banish!!")
                 sleep(1)
+                self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
                 sleep(1)
                 pause()
@@ -1739,6 +1759,90 @@ class Player:
             pause()
             return 0
 
+    def flesh_to_stone(self, monster):
+        # like sleep and charm, but always successful.
+        # player has 1 free crit, thereafter monster must pass Constitution saving throw
+        # 2 failed saves after initial attack = permanent petrification for monster.
+        # player gets exp reward, but no gold or loot
+        quantum_unit_cost = 4
+        if self.in_proximity_to_monster:
+            print(f"Flesh to Stone")
+            sleep(1)
+            self.hud()
+            if "Flesh to Stone" not in monster.immunities and "All" not in monster.immunities:
+                self.quantum_units -= quantum_unit_cost
+                print(f"Before the {monster.name} even realizes what is happening, its flesh ripples into a stone "
+                      f"replica of its normal state!")
+                sleep(1)
+                input(f"Press (ENTER) to attack: ")
+                self.hud()
+                print(f"You raise your {self.wielded_weapon.name} and swing mightily..")
+                sleep(1.5)
+                damage_modifier = 2
+                if "Flesh to Stone" in monster.vulnerabilities:
+                    damage_modifier = 3
+                total_fails = 0
+                while True:
+                    self.hud()
+                    damage_to_monster = dice_roll((self.level * damage_modifier), self.hit_dice)
+                    total_fails += 1
+                    print(f"You inflict {damage_to_monster} hit points!")
+                    sleep(1.5)
+                    self.hud()
+                    monster.reduce_health(damage_to_monster)
+                    if not monster.check_dead():
+                        monster_saving_throw = dice_roll(1, 20)
+                        monster_total = monster_saving_throw + monster.constitution_modifier
+                        print(f"Monster saving throw: {monster_saving_throw}")
+                        sleep(1)
+                        print(f"Monster Constitution Modifier: {monster.constitution_modifier}")
+                        sleep(1)
+                        print(f"Total: {monster_total}")
+                        sleep(1)
+                        print(f"DC: 13")
+                        sleep(1)
+                        if monster_total >= 13:
+                            print(f"The {monster.name} is restored!")
+                            sleep(1)
+                            return 0  # no damage sent back because already sent to monster.reduce_health()
+                        else:
+                            if total_fails == 3:
+                                print(f"The {monster.name} forever succumbs to the petrification of stone!")
+                                sleep(1)
+                                print(f"You are victorious!")
+                                sleep(1)
+                                self.in_proximity_to_monster = False  # monster is gone. no loot.
+                                monster.gold = 0  # gold has been turned to stone
+                                return 0
+                            else:
+                                print(f"It remains stone-petrified!")
+                                sleep(1)
+                                print(f"You attack again!")
+                                sleep(1.5)
+                                continue
+                    else:
+                        print(f"You have vanquished the {monster.name}!")
+                        sleep(1)
+                        monster.gold = 0  # gold has been turned to stone
+                        self.in_proximity_to_monster = False  # monster is stone, no loot.
+                        return 0  # no damage sent to main
+            else:
+                if monster.proper_name != "None":
+                    print(f"{monster.proper_name} is immune to the Flesh to Stone Effect!")
+                    sleep(1)
+                else:
+                    print(f"The {monster.name} is immune to the Flesh to Stone Effect!!")
+                    sleep(1)
+                self.quantum_units -= quantum_unit_cost
+                print(f"You have wasted Quantum Energy!")
+                sleep(1)
+                pause()
+                return 0
+        else:
+            print(f"Flesh to Stone is a Battle Effect only!")
+            sleep(1)
+            return
+
     def hold_monster(self, monster):
         # like sleep and charm, but pits your wisdom against monster strength
         quantum_unit_cost = 3
@@ -1750,14 +1854,20 @@ class Player:
                 vulnerability_modifier = 0
                 if "Hold Monster" in monster.vulnerabilities:
                     vulnerability_modifier = 5
-                turn_roll = dice_roll(1, 20)
-                player_total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
-                print(f"Quantum Ability Check: {turn_roll} + Wisdom Modifier: {self.wisdom_modifier}\n"
-                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                # turn_roll = dice_roll(1, 20)
+                # player_total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
+                # The difficulty class ("DC") of the saving throw should be based on the caster:
+                # 8 + proficiency bonus + casting ability modifier.
+                # The GM rolls a d20 on behalf of the monster, adds the appropriate saving modifier based on
+                # the monster's stats, and compares to the spellcaster's save DC.
+                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + vulnerability_modifier
+                print(f"Player saving throw DC = {self.base_dc}\n"
+                      f"+ your Wisdom Modifier: {self.wisdom_modifier}\n"
+                      f"+ your Proficiency Bonus: {self.proficiency_bonus}")
                 if vulnerability_modifier > 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 sleep(1)
-                print(f"Total: {player_total}")
+                print(f"Total: {player_dc}")
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
                 print(f"Monster Saving Throw: {monster_roll}")
@@ -1765,7 +1875,7 @@ class Player:
                 monster_total = monster_roll + monster.strength_modifier
                 print(f"Monster Total: {monster_total}")
                 sleep(1)
-                if player_total >= monster_total:
+                if player_dc >= monster_total:
                     self.quantum_units -= quantum_unit_cost  # level 3 effect. uses 3 units
                     print(f"The {monster.name} is held fast by Quantum Forces!")
                     sleep(1)
@@ -1790,13 +1900,13 @@ class Player:
                     pause()
                     return 0
             else:
-                self.quantum_units -= quantum_unit_cost
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to the Hold Effect!")
                     sleep(1)
                 else:
                     print(f"The {monster.name} is immune to the Hold Effect!!")
                     sleep(1)
+                self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
                 sleep(1)
                 pause()
@@ -1858,13 +1968,13 @@ class Player:
                     pause()
                     return 0
             else:
-                self.quantum_units -= quantum_unit_cost
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to the Quantum Web Effect!")
                     sleep(1)
                 else:
                     print(f"The {monster.name} is immune to the Quantum Web Effect!!")
                     sleep(1)
+                self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
                 sleep(1)
                 pause()
@@ -1886,18 +1996,28 @@ class Player:
                 vulnerability_modifier = 0
                 if "Charm" in monster.vulnerabilities:
                     vulnerability_modifier = 5
-                turn_roll = dice_roll(1, 20)
-                total = (turn_roll + self.charisma_modifier + self.proficiency_bonus + vulnerability_modifier)
-                print(f"Quantum Ability Check: {turn_roll}\nCharisma Modifier: {self.charisma_modifier}\n"
-                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                # turn_roll = dice_roll(1, 20)
+                # total = (turn_roll + self.charisma_modifier + self.proficiency_bonus + vulnerability_modifier)
+                # print(f"Quantum Ability Check: {turn_roll}\nCharisma Modifier: {self.charisma_modifier}\n"
+                #      f"Proficiency Bonus: {self.proficiency_bonus}")
+                if vulnerability_modifier > 0:
+                    print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
+                player_dc = self.base_dc + self.proficiency_bonus + self.charisma_modifier + vulnerability_modifier
+                print(f"Player saving throw DC = {self.base_dc}\n"
+                      f"+ your Charisma Modifier: {self.charisma_modifier}\n"
+                      f"+ your Proficiency Bonus: {self.proficiency_bonus}")
                 if vulnerability_modifier > 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 sleep(1)
-                print(f"Total: {total}")
+                print(f"Total: {player_dc}")
                 sleep(1)
-                print(f"{monster.name} Wisdom: {monster.wisdom}")
+                monster_roll = dice_roll(1, 20)
+                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"{monster.name} Wisdom Modifier: {monster.wisdom_modifier}")
+                monster_total = monster_roll + monster.wisdom_modifier
+                print(f"Monster Total: {monster_total}")
                 sleep(1)
-                if total >= monster.wisdom:
+                if player_dc >= monster_total:
                     self.quantum_units -= quantum_unit_cost
                     if monster.proper_name != "None":
                         print(f"{monster.proper_name} is charmed..")
@@ -1928,7 +2048,6 @@ class Player:
                     pause()
                     return 0
             else:
-                self.quantum_units -= quantum_unit_cost
                 if monster.undead:
                     print(f"The undead ignore your wiles!!")
                     sleep(1)
@@ -1939,6 +2058,7 @@ class Player:
                     else:
                         print(f"The {monster.name} is immune to being charmed!")
                         sleep(1)
+                self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
                 sleep(1)
                 pause()
@@ -1960,18 +2080,26 @@ class Player:
                 vulnerability_modifier = 0
                 if "Sleep" in monster.vulnerabilities:
                     vulnerability_modifier = 5
-                turn_roll = dice_roll(1, 20)
-                total = (turn_roll + self.intelligence_modifier + self.proficiency_bonus + vulnerability_modifier)
-                print(f"Quantum Ability Check: {turn_roll}\nIntelligence Modifier: {self.intelligence_modifier}\n"
-                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                # turn_roll = dice_roll(1, 20)
+                # total = (turn_roll + self.intelligence_modifier + self.proficiency_bonus + vulnerability_modifier)
+                # print(f"Quantum Ability Check: {turn_roll}\nIntelligence Modifier: {self.intelligence_modifier}\n"
+                #      f"Proficiency Bonus: {self.proficiency_bonus}")
+                player_dc = self.base_dc + self.proficiency_bonus + self.intelligence_modifier + vulnerability_modifier
+                print(f"Player saving throw DC = {self.base_dc}\n"
+                      f"+ your Intelligence Modifier: {self.intelligence_modifier}\n"
+                      f"+ your Proficiency Bonus: {self.proficiency_bonus}")
                 if vulnerability_modifier > 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 sleep(1)
-                print(f"Total: {total}")
+                print(f"Total: {player_dc}")
                 sleep(1)
-                print(f"{monster.name} Wisdom: {monster.wisdom}")
+                monster_roll = dice_roll(1, 20)
+                print(f"Monster Roll: {monster_roll}")
+                monster_total = monster_roll + monster.wisdom_modifier
+                print(f"{monster.name} Wisdom modifier: {monster.wisdom_modifier}")
+                print(f"Monster Total: {monster_total}")
                 sleep(1)
-                if total >= monster.wisdom:
+                if player_dc >= monster_total:
                     self.quantum_units -= quantum_unit_cost
                     if monster.proper_name != "None":
                         print(f"{monster.proper_name} is sleeping..")
@@ -1999,7 +2127,6 @@ class Player:
                     pause()
                     return 0
             else:
-                self.quantum_units -= quantum_unit_cost
                 if monster.undead:
                     print(f"Undead do not sleep!!")
                     sleep(1)
@@ -2010,6 +2137,7 @@ class Player:
                     else:
                         print(f"The {monster.name} is immune to Quantum Sleep!")
                         sleep(1)
+                self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
                 sleep(1)
                 pause()
@@ -2068,6 +2196,7 @@ class Player:
         return 0
 
     def protection_from_evil(self, monster):
+        # everything but a natural 1 will succeed; if ring of protection is available, will always succeed
         print(f"Protection from Evil")
         sleep(1)
         quantum_unit_cost = 1
@@ -2107,11 +2236,14 @@ class Player:
                                       2: "Purify",
                                       3: "Strength",
                                       4: "Scorch",
-                                      5: "Banish"},
+                                      5: "Charm",
+                                      6: "Banish"},
                                   3: {1: "Lightning",
                                       2: "Hold Monster",
                                       3: "Phantasm"},
-                                  4: {1: "Fireball"}
+                                  4: {1: "Fireball",
+                                      2: "Flesh to Stone"}
+
                                   }
         quantum_book = {1: {1: self.quantum_missile,
                             2: self.quantum_sleep,
@@ -2122,11 +2254,13 @@ class Player:
                             2: self.quantum_purify,
                             3: self.quantum_strength,
                             4: self.quantum_scorch,
-                            5: self.banish},
+                            5: self.quantum_charm,
+                            6: self.banish},
                         3: {1: self.quantum_lightning,
                             2: self.hold_monster,
                             3: self.phantasm},
-                        4: {1: self.fireball}
+                        4: {1: self.fireball,
+                            2: self.flesh_to_stone}
                         }
         while True:
             self.hud()
@@ -2191,6 +2325,7 @@ class Player:
                 else:
                     critical_bonus = 1
                     hit_statement = f"Success!"
+
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
                 print(f"Proficiency bonus: {self.proficiency_bonus}")
                 print(f"Total: {player_total}")
@@ -2203,13 +2338,13 @@ class Player:
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or (roll_d20 + self.wisdom_modifier + self.proficiency_bonus) >= monster_total:
                     #
-                    number_of_dice = (3 + self.quantum_level) * critical_bonus  # consider changing to self.quantum_level
+                    number_of_dice = (3 + self.quantum_level) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 10) + (1 * number_of_dice)
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
                         print(f"A red-hot monstrosity of dreadful flames forms overhead and speeds toward your enemy!")
-                        print(f"{number_of_dice}d8 roll + 1 per die: {damage_to_opponent}")
+                        print(f"{number_of_dice}d10 roll + 1 per die: {damage_to_opponent}")
                         print(f"The great ball of fire explodes on target in ground-shaking glory and does "
                               f"{damage_to_opponent} points of damage!")
                         pause()
@@ -2220,14 +2355,17 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    print("Your focus has failed..")
+                    number_of_dice = (3 + self.quantum_level) * critical_bonus
+                    damage_to_opponent = math.ceil((dice_roll(number_of_dice, 10) + (1 * number_of_dice)) / 2)
+                    print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
-                    print(f"The Fireball is forced into existence through Quantum Weirdness..")
+                    print(f"The Fireball takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
-                    print(f"..and is extinguished in a puff of smoke!")
+                    print(f"{number_of_dice}d10 roll + 1 per die rolled / 2 = {damage_to_opponent} (ROUNDED)")
+                    print(f"It inflicts {damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return 0
+                    return damage_to_opponent
             else:
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to Fireball!!")
@@ -2235,6 +2373,7 @@ class Player:
                 else:
                     print(f"The {monster.name} is immune to Fireball!")
                     sleep(1)
+                self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
                 sleep(1)
                 pause()
@@ -2247,20 +2386,21 @@ class Player:
     def phantasm(self, monster):
         # phantasm matches your wisdom vs monster intelligence
         quantum_unit_cost = 3
+        vulnerability_modifier = 0
         if self.in_proximity_to_monster:
-            if "Phantasm" not in monster.immunities and "All" not in monster.immunities:
+            if "Phantasm" not in monster.immunities and "All" not in monster.immunities and not monster.undead:
                 vulnerable = False
                 if "Phantasm" in monster.vulnerabilities:
                     vulnerable = True
+                    vulnerability_modifier = 5
                 self.quantum_units -= quantum_unit_cost
                 print(f"Phantasm.")
                 sleep(1)
                 self.hud()
                 roll_d20 = dice_roll(1, 20)  # attack roll
-                player_total = (roll_d20 + self.wisdom_modifier + self.proficiency_bonus)
-                print(
-                    f"Focusing your innate understanding, you attempt to harness the weird energies "
-                    f"to create the illusion..")
+                # player_total = (roll_d20 + self.wisdom_modifier + self.proficiency_bonus)
+                print(f"Focusing your innate understanding, you attempt to harness the weird energies "
+                      f"to create the illusion..")
                 sleep(1)
                 print(f"Quantum Ability Check: {roll_d20}")
                 sleep(1)
@@ -2277,27 +2417,33 @@ class Player:
                 else:
                     critical_bonus = 1
                     hit_statement = f"Success!"
-                print(f"Wisdom modifier: {self.wisdom_modifier}")
-                print(f"Proficiency bonus: {self.proficiency_bonus}")
-                print(f"Total: {player_total}")
+
+                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + vulnerability_modifier
+                print(f"Player saving throw DC = {self.base_dc}\n"
+                      f"+ your Wisdom Modifier: {self.wisdom_modifier}\n"
+                      f"+ your Proficiency Bonus: {self.proficiency_bonus}")
+                if vulnerable:
+                    print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
+                sleep(1)
+                print(f"Total: {player_dc}")
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
-                monster_mod = round((monster.intelligence - 10) / 2)
+                monster_mod = math.floor((monster.intelligence - 10) / 2)
                 monster_total = monster_roll + monster_mod
                 print(f"Monster Saving Throw: {monster_roll}")
                 print(f"Monster Intelligence Modifier: {monster_mod}")
                 print(f"Monster Total: {monster_total}")
-                if roll_d20 == 20 or (roll_d20 + self.wisdom_modifier + self.proficiency_bonus) >= monster_total:
-                    #
-                    number_of_dice = (3 + self.quantum_level) * critical_bonus  # consider changing to self.quantum_level
+                sleep(1)
+                if player_dc > monster_total:  # tie goes to defender
+                    number_of_dice = (3 + self.quantum_level) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice)
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
                         print(f"The Phantasmal illusion takes form through weird Quantum "
-                              f"tunneling and grips the mind of your enemy!")
+                              f"tunneling and completely seizes the mind of your enemy!")
                         print(f"{number_of_dice}d8 roll + 1 per die: {damage_to_opponent}")
-                        print(f"The terrible vision does {damage_to_opponent} points of damage!")
+                        print(f"The terrible vision inflicts {damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
                         return damage_to_opponent
@@ -2306,21 +2452,28 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    print("Your focus has failed..")
+                    number_of_dice = (3 + self.quantum_level) * critical_bonus
+                    damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
+                    print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
-                    print(f"The Phantasm pops into existence..")
+                    print(f"The Phantasmal illusion takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
-                    print(f"And yet, for all of its fear-inspiring appearance, it fails to land any damage!")
+                    print(f"{number_of_dice}d8 roll + 1 per die rolled / 2 = {damage_to_opponent} (ROUNDED)")
+                    print(f"It does {damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return 0
+                    return damage_to_opponent
             else:
+                if monster.undead:
+                    print(f"Undead do not believe!!")
+                    sleep(1)
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to Phantasm!!")
                     sleep(1)
                 else:
                     print(f"The {monster.name} is immune to Phantasmal Forces!!")
                     sleep(1)
+                self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
                 sleep(1)
                 pause()
@@ -2362,6 +2515,7 @@ class Player:
                 else:
                     critical_bonus = 1
                     hit_statement = f"Success!"
+
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
                 print(f"Proficiency bonus: {self.proficiency_bonus}")
                 print(f"Total: {player_total}")
@@ -2386,14 +2540,17 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    print("Your focus has failed..")
+                    number_of_dice = (3 + self.quantum_level) * critical_bonus
+                    damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
+                    print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
-                    print(f"The Lightning crackles into existence and shoots toward your target..")
+                    print(f"The lightning takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
-                    print(f"For all of its awe-inspiring energy, it fails to land any damage!")
+                    print(f"{number_of_dice}d8 roll + 1 per die rolled / 2 = {damage_to_opponent} (ROUNDED)")
+                    print(f"It inflicts {damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return 0
+                    return damage_to_opponent
             else:
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to Lightning!!")
@@ -2401,6 +2558,7 @@ class Player:
                 else:
                     print(f"The {monster.name} is immune to Lightning attacks!!")
                     sleep(1)
+                self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
                 sleep(1)
                 pause()
@@ -2424,8 +2582,8 @@ class Player:
                 self.hud()
                 roll_d20 = dice_roll(1, 20)  # attack roll
                 player_total = (roll_d20 + self.wisdom_modifier + self.proficiency_bonus)
-                print(
-                    f"Focusing your innate understanding, you attempt to aim the Quantum Missile at the {monster.name}..")
+                print(f"Focusing your innate understanding, you attempt to aim the "
+                      f"Quantum Missile at the {monster.name}..")
                 print(f"Quantum Ability Check: {roll_d20}")
                 sleep(1)
                 if roll_d20 == 1:
@@ -2441,6 +2599,7 @@ class Player:
                 else:
                     critical_bonus = 1
                     hit_statement = f"Success!"
+
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
                 print(f"Proficiency bonus: {self.proficiency_bonus}")
 
@@ -2448,17 +2607,16 @@ class Player:
                 sleep(1)
                 print(f"Monster armor class: {monster.armor_class}")
                 if roll_d20 == 20 or (roll_d20 + self.wisdom_modifier + self.proficiency_bonus) >= monster.armor_class:
-                    # number_of_dice = (3 + (self.level - 1)) * critical_bonus  # consider changing to self.quantum_level
-                    number_of_dice = (3 + self.quantum_level) * critical_bonus  # consider changing to self.quantum_level
+                    # number_of_dice = (3 + (self.level - 1)) * critical_bonus  #consider changing to self.quantum_level
+                    number_of_dice = (3 + self.quantum_level) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 4) + (1 * number_of_dice)
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
-                        # number_of_projectiles = (3 + (self.level - 1)) * critical_bonus
                         print(f"{number_of_dice} glowing projectiles materialize from nothingness and "
                               f"hit their target!")
-                        print(f"Quantum Missile = 3d4(dice) + 1 die for every level above 1")
-                        print(f"{number_of_dice}d{4} roll + 1 force damage per missile: {damage_to_opponent}")
+                        print(f"Quantum Missile = 3d4(dice) + 1 die for every level")
+                        print(f"{number_of_dice}d4 roll + 1 force damage per missile: {damage_to_opponent}")
                         print(f"They do {damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
@@ -2468,12 +2626,18 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    print("Your focus has failed..")
+                    number_of_dice = (3 + self.quantum_level) * critical_bonus
+                    damage_to_opponent = math.ceil((dice_roll(number_of_dice, 4) + (1 * number_of_dice)) / 2)
+                    print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
-                    print(f"The glowing projectiles chaotically fly off on a random trajectory...")
+                    print(f"The glowing projectiles take form but do not inflict damage to their fullest potential..")
+                    sleep(1)
+                    print(f"{number_of_dice}d4 roll + 1 per die rolled / 2 = {damage_to_opponent} (ROUNDED)")
+                    print(f"They do {damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return 0
+                    return damage_to_opponent
+
             else:
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to the Quantum Missile attack!!")
@@ -2481,6 +2645,7 @@ class Player:
                 else:
                     print(f"The {monster.name} is immune to the Quantum Missile attack!!")
                     sleep(1)
+                self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
                 sleep(1)
                 pause()
@@ -2528,13 +2693,13 @@ class Player:
                 if roll_d20 == 20 or (roll_d20 + self.wisdom_modifier + self.proficiency_bonus) >= monster.armor_class:
                     # this is dnd 5e math for m.missile damage:
                     # number_of_dice = (3 + (self.level - 1)) * critical_bonus
-                    number_of_dice = (3 + self.quantum_level) * critical_bonus  # consider changing to self.quantum_level
+                    number_of_dice = (3 + self.quantum_level) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 6) + (1 * number_of_dice)
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
-                        print(f"Scorch = 3d6(dice) + 1 die for every level above 1")
-                        print(f"{number_of_dice}d{6} roll "
+                        print(f"Scorch = 3d6(dice) + 1 die for every level")
+                        print(f"{number_of_dice}d6 roll "
                               f"({number_of_dice} rays + 1 force damage per ray): {damage_to_opponent}")
                         print(f"They do {damage_to_opponent} points of damage!")
                         pause()
@@ -2545,12 +2710,18 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    print("Your focus has failed..")
+                    number_of_dice = (3 + self.quantum_level) * critical_bonus
+                    damage_to_opponent = math.ceil((dice_roll(number_of_dice, 6) + (1 * number_of_dice)) / 2)
+                    print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
-                    print(f"The scorching rays fly off on a random trajectory...")
+                    print(f"The scorching rays take form but do not inflict damage to their fullest potential..")
+                    sleep(1)
+                    print(f"{number_of_dice}d6 roll + 1 per die rolled / 2 = {damage_to_opponent} (ROUNDED)")
+                    print(f"They do {damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return 0
+                    return damage_to_opponent
+
             else:
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to Scorch!!")
@@ -2558,6 +2729,7 @@ class Player:
                 else:
                     print(f"The {monster.name} is immune to Scorch!!")
                     sleep(1)
+                self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
                 sleep(1)
                 pause()
@@ -5456,3 +5628,45 @@ sale_item = (sale_items_dict[sale_item_key])
                 pause()
                 self.hud()
                 return False"""
+
+"""turn_roll = dice_roll(1, 20)
+player_total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
+print(f"Quantum Ability Check: {turn_roll} + Wisdom Modifier: {self.wisdom_modifier}\n"
+      f"Proficiency Bonus: {self.proficiency_bonus}")
+if vulnerability_modifier > 0:
+    print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
+sleep(1)
+print(f"Total: {player_total}")
+sleep(1)
+monster_roll = dice_roll(1, 20)
+print(f"Monster Saving Throw: {monster_roll}")
+print(f"{monster.name} Constitution Modifier: {monster.constitution_modifier}")
+monster_total = monster_roll + monster.constitution_modifier
+print(f"Monster Total: {monster_total}")
+sleep(1)
+if player_total >= monster_total:"""
+
+"""            else:
+self.quantum_units -= quantum_unit_cost  # level 2 effect. uses 2 units
+print(f"The {monster.name} resists!")
+sleep(1)
+pause()
+return 0"""
+
+"""print("Your focus has failed..")
+                    sleep(1)
+                    print(f"The Lightning crackles into existence and shoots toward your target..")
+                    sleep(1)
+                    print(f"For all of its awe-inspiring energy, it fails to land any damage!")
+                    pause()
+                    self.hud()
+                    return 0"""
+
+"""print("Your focus has failed..")
+                    sleep(1)
+                    print(f"The Fireball is forced into existence through Quantum Weirdness..")
+                    sleep(1)
+                    print(f"..and is extinguished in a puff of smoke!")
+                    pause()
+                    self.hud()
+                    return 0"""

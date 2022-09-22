@@ -408,8 +408,8 @@ while True:
                         if not player_1.in_proximity_to_monster:
                             break
                         if encounter < 11:  # regular monster
-                            # monster = player_1.regular_monster_generator()
-                            monster = Specter()  # testing
+                            monster = player_1.regular_monster_generator()
+                            # monster = Specter()  # testing
                         elif encounter == 99:  # level exit boss fight
                             monster = player_1.exit_boss_generator()
                             gong()
@@ -515,10 +515,10 @@ while True:
                                     player_1.hud()
                                     if player_1.quantum_units > 0:
                                         damage_to_monster = player_1.quantum_effects(monster)
-                                        if damage_to_monster == -999:
+                                        if damage_to_monster == -999:  # invalid input should not waste a turn
                                             continue
-                                        # If monster is successfully turned or banished, experience is gained,
-                                        # but player gets no gold or loot and monster does not 'die':
+                                        # If monster is successfully turned, stone-petrified or banished,
+                                        # experience is gained,but player gets no gold or loot:
                                         if not player_1.in_proximity_to_monster:  # Turn Undead or Banish
                                             # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
                                             player_1.end_of_turn_calculation()

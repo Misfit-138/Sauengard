@@ -517,7 +517,8 @@ while True:
                                         damage_to_monster = player_1.quantum_effects(monster)
                                         if damage_to_monster == -999:  # invalid input should not waste a turn
                                             continue
-                                        # If monster is successfully turned, stone-petrified or banished,
+                                        # If monster is successfully turned, stone-petrified, fearful,
+                                        # disintegrated or banished,
                                         # experience is gained,but player gets no gold or loot:
                                         if not player_1.in_proximity_to_monster:  # Turn Undead or Banish
                                             # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:

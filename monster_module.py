@@ -1613,7 +1613,7 @@ class Specter(Monster):
         self.charisma = random.randint(10, 12)
         self.can_paralyze = True
         self.paralyze_turns = 1
-        self.can_poison = True
+        self.can_poison = False
         self.necrotic = True
         self.dot_multiplier = 2
         self.dot_turns = dice_roll(1, 8)

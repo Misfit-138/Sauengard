@@ -1951,7 +1951,8 @@ class Player:
 
     def ravenous_void(self, monster):
         # like sleep and charm, but always successful.
-        # initial damage is rolled and then player has 1 free crit, thereafter monster must pass strength saving throw
+        # initial damage is rolled and then player has 1 free crit,
+        # thereafter monster must pass strength saving throw
         # player gets exp reward, but no gold or loot
         quantum_unit_cost = 5
         vulnerability_modifier = 0
@@ -2927,13 +2928,12 @@ class Player:
                     #
                     number_of_dice = (20 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice) + \
-                                         dice_roll(number_of_dice, 8) + (
-                                                 1 * number_of_dice)  # second attack is force damage
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
-                        print(f"With a world-shaking eruption, a swarm of burning meteors appears above and "
-                              f"falls upon your enemy!")
+                        print(f"With a world-shaking and awe-inspiring eruption, "
+                              f"a swarm of burning meteors appears above and falls upon your enemy!")
                         print(
                             f"{number_of_dice}d8 + {number_of_dice}d8 force damage + 1 per die rolled: {damage_to_opponent}")
                         print(f"The great storm of fire explodes directly on target in surreal glory and does "
@@ -3320,7 +3320,8 @@ class Player:
                 print(f"Monster armor class: {monster.armor_class}")
                 if roll_d20 == 20 or (roll_d20 + self.wisdom_modifier + self.proficiency_bonus) >= monster.armor_class:
                     #
-                    number_of_dice = (6 + self.quantum_level - 3) * critical_bonus  # consider changing to self.quantum_level
+                    number_of_dice = (
+                                             6 + self.quantum_level - 3) * critical_bonus  # consider changing to self.quantum_level
                     damage_to_opponent = dice_roll(number_of_dice, 6) + (1 * number_of_dice)
                     if damage_to_opponent > 0:
                         print(hit_statement)

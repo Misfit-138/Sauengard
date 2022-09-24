@@ -493,9 +493,9 @@ while True:
                             if battle_choice == 'e' or battle_choice == 'h' or battle_choice == 'g' or \
                                     battle_choice == 'v' or battle_choice == 'c' or battle_choice == 'q':
                                 if battle_choice == "e":
-                                    if player_1.evade(monster.name, monster.dexterity):
-                                        if encounter > 20:  # if evading a boss at this point,
-                                            dungeon_theme()  # go back to dungeon theme song
+                                    if player_1.evade(monster, encounter):
+                                        # if encounter > 20:  # if evading a boss at this point,
+                                        #    dungeon_theme()  # go back to dungeon theme song
                                         player_1.in_proximity_to_monster = False  # get out of battle loop and prox loop
                                         break
                                 elif battle_choice == 'h':
@@ -515,12 +515,14 @@ while True:
                                     player_1.hud()
                                     if player_1.quantum_units > 0:
                                         damage_to_monster = player_1.quantum_effects(monster)
+                                        # invalid input should not waste a turn
+                                        # if invalid input during quantum effect, -999 is returned:
                                         if damage_to_monster == -999:  # invalid input should not waste a turn
                                             continue
                                         # If monster is successfully turned, stone-petrified, fearful,
-                                        # disintegrated or banished,
-                                        # experience is gained,but player gets no gold or loot:
-                                        if not player_1.in_proximity_to_monster:  # Turn Undead or Banish
+                                        # disintegrated or banished, experience is gained,
+                                        # but player gets no gold or loot:
+                                        if not player_1.in_proximity_to_monster:
                                             # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
                                             player_1.end_of_turn_calculation()
                                             if player_1.check_dead():  # you can die from poison or necrosis,

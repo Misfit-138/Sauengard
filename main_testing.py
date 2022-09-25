@@ -602,6 +602,8 @@ while True:
                                 # player chooses melee:
                                 damage_to_monster = player_1.melee(monster.name, monster.armor_class)
                                 monster.reduce_health(damage_to_monster)
+                                # in the future, check_dead function can encompass the following if--else statements.
+                                # just pass encounter parameter
                                 if monster.check_dead():
                                     player_1.hud()
                                     if encounter > 20:  # if fighting boss
@@ -628,8 +630,6 @@ while True:
 
                                 # monster turn if still alive after player melee attack:
                                 else:
-
-                                    # player_1.meta_monster_function(monster)
                                     monster.meta_monster_function(player_1)
                                     # I tried to offload this code, but the breaks and continues are pretty tangled
                                     if not player_1.check_dead():  # if player not dead

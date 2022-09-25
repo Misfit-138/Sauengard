@@ -1659,7 +1659,7 @@ class Player:
 
     def banish(self, monster):
         # monster must make a successful charisma saving throw or be banished from existence on this plane
-        quantum_unit_cost = 2
+        quantum_unit_cost = 4
         if self.in_proximity_to_monster:
             print(f"Banish")
             sleep(1)
@@ -2471,22 +2471,25 @@ class Player:
                                       2: "Purify",
                                       3: "Strength",
                                       4: "Scorch",
-                                      5: "Charm",
-                                      6: "Banish"},
+                                      5: "Charm"},
                                   3: {1: "Lightning",
                                       2: "Hold Monster",
                                       3: "Phantasm",
-                                      4: "Immolation"},
+                                      4: "Immolation",
+                                      5: "Vortex"},
                                   4: {1: "Fireball",
                                       2: "Flesh to Stone",
                                       3: "Fear",
-                                      4: "Finger of Death"},
+                                      4: "Finger of Death",
+                                      5: "Banish"},
                                   5: {1: "Disentegrate",
                                       2: "Ice Storm",
                                       3: "Fire Storm",
                                       4: "Gravity Well"},
                                   6: {1: "Quantum Word Kill",
-                                      2: "Meteor Swarm"}
+                                      2: "Meteor Swarm",
+                                      3: "Skeletal Remains",
+                                      4: "Negative Energy Plague"}
 
                                   }
         quantum_book = {1: {1: self.quantum_missile,
@@ -2498,22 +2501,25 @@ class Player:
                             2: self.quantum_purify,
                             3: self.quantum_strength,
                             4: self.quantum_scorch,
-                            5: self.quantum_charm,
-                            6: self.banish},
+                            5: self.quantum_charm},
                         3: {1: self.quantum_lightning,
                             2: self.hold_monster,
                             3: self.phantasm,
-                            4: self.immolation},
+                            4: self.immolation,
+                            5: self.vortex},
                         4: {1: self.fireball,
                             2: self.flesh_to_stone,
                             3: self.fear,
-                            4: self.finger_of_death},
+                            4: self.finger_of_death,
+                            5: self.banish},
                         5: {1: self.disintegrate,
                             2: self.ice_storm,
                             3: self.fire_storm,
                             4: self.gravity_well},
                         6: {1: self.quantum_word_kill,
-                            2: self.meteor_swarm}
+                            2: self.meteor_swarm,
+                            3: self.skeletal_remains,
+                            4: self.negative_energy_plague}
                         }
         while True:
             self.hud()
@@ -2543,7 +2549,8 @@ class Player:
             except (ValueError, KeyError):
                 print(f"Invalid input")
                 sleep(.25)
-                return -999  # continue  # return 0
+                return -999  # -999 creates condition for a continue statement in main loop so a turn is not wasted
+                # return 0
 
     def quantum_word_kill(self, monster):
         # everything but a natural 1 hits.
@@ -3005,7 +3012,7 @@ class Player:
                 print(f"Quantum Ability Check: {roll_d20}")
                 sleep(1)
                 if roll_d20 == 1:
-                    print(f"A tiny bone pops into existence and is hurled upon your enemy..")
+                    print(f"A tiny jawbone pops into existence and is hurled upon your enemy..")
                     sleep(1)
                     print("Your focus has failed..")
                     pause()
@@ -3032,18 +3039,20 @@ class Player:
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
-                    number_of_dice = (20 + self.quantum_level - 6) * critical_bonus
-                    damage_to_opponent = dice_roll(number_of_dice, 10) + (1 * number_of_dice) + \
+                    number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
+                    damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
                         dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
-                        print(f"Before you or your enemy can see it, you both feel the ground swell with the feet"
+                        print(f"Before you or your enemy can see it, you both sense the ground swell with the feet "
                               f"of countless skeletal warriors arising from a black chasm!!")
                         sleep(1)
-                        print(f"With one mind and purpose, they swarm upon your enemy, thrusting ever forward in a"
-                              f"crashing of bone, steel and shield!!")
-                        print(f"{number_of_dice}d10 + {number_of_dice}d8 force damage + 1 per die rolled: {damage_to_opponent}")
+                        print(f"With one mind and purpose, they swarm upon your enemy, thrusting ever forward in a "
+                              f"voracious clashing of bone, steel and shield!!")
+                        sleep(1)
+                        print(f"{number_of_dice}d12 + {number_of_dice}d8 force damage + 1 per skeleton bludgeoning "
+                              f"damage: {damage_to_opponent}")
                         print(f"The great swarm of armor, axe, sword and spear inflicts "
                               f"{damage_to_opponent} points of damage!")
                         pause()
@@ -3055,14 +3064,14 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    number_of_dice = (20 + self.quantum_level - 6) * critical_bonus
-                    damage_to_opponent = dice_roll(number_of_dice, 10) + (1 * number_of_dice)  # no force damage
+                    number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
+                    damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice)  # no force damage
                     # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
                     print(f"The skeletal horde takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
-                    print(f"{number_of_dice}d10 roll + 1 per die rolled = {damage_to_opponent}")
+                    print(f"{number_of_dice}d12 roll + 1 per skeleton bludgeoning damage = {damage_to_opponent}")
                     print(f"It hits for {damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
@@ -3081,6 +3090,110 @@ class Player:
                 return 0
         else:
             print(f"Skeletal Remains is a Battle Effect only..")
+            sleep(1)
+            return
+
+    def negative_energy_plague(self, monster):
+        # everything but a natural 1 hits.
+        # on a successful intelligence saving throw, monster takes 50% damage.
+        quantum_unit_cost = 6
+        if self.in_proximity_to_monster:
+            if "Negative Energy Plague" not in monster.immunities and "All" not in monster.immunities:
+                vulnerable = False
+                if "Negative Energy Plague" in monster.vulnerabilities:
+                    vulnerable = True
+                self.quantum_units -= quantum_unit_cost
+                print(f"Negative Energy Plague.")
+                sleep(1)
+                self.hud()
+                level_advantage = 0
+                if self.level > monster.level:
+                    level_advantage = self.level - monster.level
+                roll_d20 = dice_roll(1, 20)  # attack roll
+                player_total = (self.base_dc + self.wisdom_modifier + self.proficiency_bonus + level_advantage)
+                print(f"Clearing your mind, you attempt to harness the weird energies "
+                      f"to create the Negative Energy Plague..")
+                sleep(1)
+                print(f"Quantum Ability Check: {roll_d20}")
+                sleep(1)
+                if roll_d20 == 1:
+                    # print(f"A tiny jawbone pops into existence and is hurled upon your enemy..")
+                    # sleep(1)
+                    print("Your focus has failed..")
+                    pause()
+                    self.hud()
+                    return 0
+                if roll_d20 == 20 or vulnerable:
+                    critical_bonus = 2
+                    hit_statement = "CRITICAL!!"
+                else:
+                    critical_bonus = 1
+                    hit_statement = f"Success!"
+                print(f"Player Base DC: {self.base_dc}")
+                print(f"Wisdom modifier: {self.wisdom_modifier}")
+                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                if level_advantage > 0:
+                    print(f"Level Advantage: {level_advantage}")
+                print(f"Total: {player_total}")
+                sleep(1)
+                monster_roll = dice_roll(1, 20)
+                monster_mod = round((monster.intelligence - 10) / 2)
+                monster_total = monster_roll + monster_mod
+                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Intelligence Modifier: {monster_mod}")
+                print(f"Monster Total: {monster_total}")
+                if roll_d20 == 20 or player_total >= monster_total:
+                    #
+                    number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
+                    damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = crushing damage
+                    if damage_to_opponent > 0:
+                        print(hit_statement)
+                        sleep(1)
+                        print(f"A harrowing and visceral vacuum of shear, black emptiness shoots forth "
+                              f"from your hands toward your enemy!!")
+                        sleep(1)
+                        print(f"With universal abhorrence, the negative energy plague entangles the {monster.name}!!")
+                        sleep(1)
+                        print(f"{number_of_dice}d12 necrotic damage + {number_of_dice}d8 crushing damage + 1 per die "
+                              f"rolled mental anguish: {damage_to_opponent}")
+                        print(f"The great, empty darkness inflicts "
+                              f"{damage_to_opponent} points of damage!")
+                        pause()
+                        self.hud()
+                        return damage_to_opponent
+                    else:
+                        print(f"For all of its fear-inspiring appearance, the plague"
+                              f" fails to land any damage!")  # 0 damage
+                        sleep(1)
+                        return 0
+                else:
+                    number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
+                    damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice)  # no crushing damage
+                    # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
+                    print("Your attempt to harness the Quantum weirdness lacks focus..")
+                    sleep(1)
+                    print(f"The plague takes form but does not inflict damage to its fullest potential..")
+                    sleep(1)
+                    print(f"{number_of_dice}d12 necrotic damage + 1 per die rolled mental damage = {damage_to_opponent}")
+                    print(f"It hits for {damage_to_opponent} points of damage..")
+                    pause()
+                    self.hud()
+                    return damage_to_opponent
+            else:
+                if monster.proper_name != "None":
+                    print(f"{monster.proper_name} is immune to the Plague!!")
+                    sleep(1)
+                else:
+                    print(f"The {monster.name} is immune to the Plague!!")
+                    sleep(1)
+                self.quantum_units -= quantum_unit_cost
+                print(f"You have wasted Quantum Energy!")
+                sleep(1)
+                pause()
+                return 0
+        else:
+            print(f"Negative Energy Plague is a Battle Effect only..")
             sleep(1)
             return
 
@@ -3441,7 +3554,8 @@ class Player:
                         self.hud()
                         return damage_to_opponent
                     else:
-                        print(f"Through its own weirdness, it manages to avoid damage from the weird energy!")  # 0 dmg
+                        print(f"Through its own weirdness, the {monster.name} manages to "
+                              f"avoid damage from the weird energy!")  # 0 dmg
                         sleep(1)
                         return 0
                 else:
@@ -3540,7 +3654,8 @@ class Player:
                         self.hud()
                         return damage_to_opponent
                     else:
-                        print(f"Through its own weirdness, it manages to avoid damage from the weird energy!")  # 0 dmg
+                        print(f"Through its own weirdness, the {monster.name} manages to "
+                              f"avoid damage from the weird energy!")  # 0 dmg
                         sleep(1)
                         return 0
                 else:
@@ -3569,6 +3684,106 @@ class Player:
                 return 0
         else:
             print(f"Immolation is a Battle Effect only..")
+            sleep(1)
+            return
+
+    def vortex(self, monster):
+        # vortex matches player wisdom against monster strength
+        quantum_unit_cost = 3
+        if self.in_proximity_to_monster:
+            if "Vortex" not in monster.immunities and "All" not in monster.immunities:
+                vulnerable = False
+                if "Vortex" in monster.vulnerabilities:
+                    vulnerable = True
+                self.quantum_units -= quantum_unit_cost
+                print(f"Vortex.")
+                sleep(1)
+                self.hud()
+                roll_d20 = dice_roll(1, 20)  # attack roll
+                # player_total = (roll_d20 + self.wisdom_modifier + self.proficiency_bonus)
+                print(f"Focusing your innate understanding, you attempt to harness the weird energies..")
+                print(f"Quantum Ability Check: {roll_d20}")
+                sleep(1)
+                if roll_d20 == 1:
+                    print("Your focus has failed..")
+                    sleep(1)
+                    print(f"The watery twister materializes and spreads wildly, completely missing your target..")
+                    pause()
+                    self.hud()
+                    return 0
+                if roll_d20 == 20 or vulnerable:
+                    critical_bonus = 2
+                    hit_statement = "CRITICAL HIT!!"
+                else:
+                    critical_bonus = 1
+                    hit_statement = f"Success!"
+                vulnerability_modifier = 0
+                if vulnerable:
+                    vulnerability_modifier = 5
+                level_advantage = 0
+                if self.level > monster.level:
+                    level_advantage = self.level - monster.level
+                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + vulnerability_modifier + level_advantage
+                print(f"Player Base DC: {self.base_dc}")
+                print(f"Wisdom modifier: {self.wisdom_modifier}")
+                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                if vulnerability_modifier > 0:
+                    print(f"Vulnerability Modifier: {vulnerability_modifier}")
+                if level_advantage > 0:
+                    print(f"Level Advantage: {level_advantage}")
+                print(f"Total: {player_dc}")
+                sleep(1)
+                monster_roll = dice_roll(1, 20)
+                monster_total = monster_roll + monster.strength_modifier
+                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Strength Modifier: {monster.strength_modifier}")
+                print(f"Monster Total: {monster_total}")
+                sleep(1)
+                if roll_d20 == 20 or player_dc >= monster_total:
+                    number_of_dice = (7 + self.quantum_level - 3) * critical_bonus
+                    damage_to_opponent = dice_roll(number_of_dice, 6)
+                    if damage_to_opponent > 0:
+                        print(hit_statement)
+                        sleep(1)
+                        print(f"A twisting vortex of roaring water materializes from nothingness and "
+                              f"wraps your target with impossible crushing force!")
+                        sleep(1)
+                        print(f"{number_of_dice}d6 roll: {damage_to_opponent}")
+                        print(f"It inflicts {damage_to_opponent} points of damage!")
+                        pause()
+                        self.hud()
+                        return damage_to_opponent
+                    else:
+                        print(f"Through its own weirdness, the {monster.name} manages to "
+                              f"avoid damage from the weird energy!")  # 0 dmg
+                        sleep(1)
+                        return 0
+                else:
+                    number_of_dice = (7 + self.quantum_level - 3) * critical_bonus
+                    damage_to_opponent = math.ceil(dice_roll(number_of_dice, 6) / 2)
+                    print("Your attempt to harness the Quantum weirdness lacks focus..")
+                    sleep(1)
+                    print(f"The twister takes form but does not inflict damage to its fullest potential..")
+                    sleep(1)
+                    print(f"{number_of_dice}d6 roll / 2 = {damage_to_opponent} (ROUNDED)")
+                    print(f"It does {damage_to_opponent} points of damage..")
+                    pause()
+                    self.hud()
+                    return damage_to_opponent
+            else:
+                if monster.proper_name != "None":
+                    print(f"{monster.proper_name} is immune to Vortex Effects!!")
+                    sleep(1)
+                else:
+                    print(f"The {monster.name} is immune to Vortex attacks!!")
+                    sleep(1)
+                self.quantum_units -= quantum_unit_cost
+                print(f"You have wasted Quantum Energy!")
+                sleep(1)
+                pause()
+                return 0
+        else:
+            print(f"Vortex is a Battle Effect only..")
             sleep(1)
             return
 

@@ -520,7 +520,7 @@ while True:
                                         if damage_to_monster == -999:  # invalid input should not waste a turn
                                             continue
                                         # If monster is successfully turned, stone-petrified, fearful,
-                                        # disintegrated or banished, experience is gained,
+                                        # disintegrated, lost to gravity well or banished, experience is gained,
                                         # but player gets no gold or loot:
                                         if not player_1.in_proximity_to_monster:
                                             # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:

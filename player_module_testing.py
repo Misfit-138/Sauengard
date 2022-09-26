@@ -1122,10 +1122,11 @@ class Player:
                 f"You may choose to improve two ability scores, such as charisma and constitution, by 1 point each.\n"
                 f"\n"
                 f"NOTES: \n"
-                f"Ability *modifiers* improve with each ascending even-numbered score, therefore, if unsure,\n"
-                f"it is generally recommended to apply 1 point to odd-numbered ability scores and apply \n"
+                f"* Ability *modifiers* improve with each ascending even-numbered score, therefore, if unsure,\n"
+                f"  it is generally recommended to apply 1 point to odd-numbered ability scores and apply \n"
                 f"2 points to even-numbered scores.\n"
-                f"\n"
+                f"* When your Constitution modifier increases by 1, your hit point maximum increases by 1 for each\n"
+                f"  level you have attained.\n"
                 f"           *The maximum score for any ability is 20*"
                 f"\n")
             pause()
@@ -1137,13 +1138,10 @@ class Player:
                 while True:
                     self.hud()
                     # print(f"Ability Score Improvement for level {self.level}")
-
                     if tries > 1:
                         print(f"You savor the empowering abilities you have gained..\n"
                               f"And yet, the dungeon horde grows more powerful with you!")
-
                         return
-
                     ability_dict = self.__dict__  # create variable as actual copy of player dict attribute
                     ability_lst = []  # list to be populated with all abilities < 20
                     # the working dict and 'for' loop just takes the place of many 'if:' statements
@@ -1154,7 +1152,6 @@ class Player:
                     for key, value in working_dict.items():
                         if value < 20:
                             ability_lst.append(key)
-
                     # this code should be reachable if stats are maxed out, and player level_up calls it
                     if not len(ability_lst):  # if ability list is empty, all stats at 20; no more improvements allowed
                         print(f"All of your abilities are at the maximum level!")
@@ -1172,7 +1169,6 @@ class Player:
                     try:
                         ability_index = int(input(f"Enter the ability to improve.\n"
                                                   f"(THIS IS PERMANENT!) : "))
-                        #
                         ability_index -= 1  # indexing begins at zero...
                         ability_to_improve = (ability_dict_subset_too[ability_index])
                         old_score = ability_dict[ability_to_improve]
@@ -1266,18 +1262,18 @@ class Player:
         return
 
     def regular_monster_generator(self):
-        regular_monster_key = random.randint(1, self.level)  # (player_1.level + 1)
+        regular_monster_key = random.randint(1, self.level)  # (self.level + 1)
         regular_monster_cls = random.choice(monster_dict[regular_monster_key])
         regular_monster = regular_monster_cls()
         return regular_monster
 
     def undead_prophet_generator(self):
-        rndm_prophet_names = ['Tacium', 'Amarrik', 'Arynd', 'Beldonnor', 'Farrendal',
-                              'Dinenlell', 'Jornav', 'Tyrne', 'Fenlor', 'Jagod', 'Borell',
-                              'Ehrnador', 'Thaymorro', 'Gorrel', 'Aureus', 'Silson',
-                              'Hahrus', 'Astorem', 'Cordast', 'Brendorin', 'Meradorn',
-                              'Gorrikor', 'Nannukis', 'Borrodred', 'Ornelius', 'Geffenmor',
-                              'Jorrbrialus', 'Koffengen', 'Tyrus', 'Tybrius', 'Tyrrendor',
+        rndm_prophet_names = ['Tacium', 'Amarrik', 'Arynd', 'Beldonnor', 'Forrg',
+                              'Sambressorr', 'Jornav', 'Tyrnenn', 'Fenlor', 'Yagoddish', 'Borell',
+                              'Ehrnador', 'Thaymorro', 'Gorrel', 'Aureor', 'Linus', 'Mattheus',
+                              'Hahrus', 'Astorem', 'Chardast', 'Brendorin', 'Meradorn',
+                              'Gorrikor', 'Nannukis', 'Torrolom', 'Ornelius', 'Geffenmor',
+                              'Jorrbrialus', 'Koffengen', 'Jyrus', 'Jybrius', 'Tyrrendor',
                               'Forendilus']
         rndm_epithets = ['of the Evil Wisdom', 'the Lesser', 'the Elder', 'the Fierce', 'of the Eleven Elders',
                          'of the Twelve', 'of the Fell Elders', 'the Mad', 'the Blasphemous',
@@ -1593,9 +1589,12 @@ class Player:
                 vulnerability_modifier = 0
                 if "Turn Undead" in monster.vulnerabilities:
                     vulnerability_modifier = 5
+                resistance_modifier = 0
+                if "Turn Undead" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 # turn_roll = dice_roll(1, 20)
                 # total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
-                # print(f"Quantum Ability Check: {turn_roll}\nWisdom Modifier: {self.wisdom_modifier}\n"
+                # print(f"Quantum Ability Check: {turn_roll}")
                 #      f"Proficiency Bonus: {self.proficiency_bonus}")
                 level_advantage = 0
                 if self.level > monster.level:
@@ -1604,7 +1603,7 @@ class Player:
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
-                if vulnerability_modifier > 0:
+                if vulnerability_modifier != 0:
                     print(f"Monster Vulnerability modifier: {vulnerability_modifier}")
                 if level_advantage > 0:
                     print(f"Level Advantage: {level_advantage}")
@@ -1615,7 +1614,9 @@ class Player:
                 print(f"Monster Saving Throw: {monster_roll}")
                 # monster_mod = math.floor((monster.wisdom - 10) / 2)
                 print(f"{monster.name} Wisdom Modifier: {monster.wisdom_modifier}")
-                monster_total = monster_roll + monster.wisdom_modifier
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
+                monster_total = monster_roll + monster.wisdom_modifier + resistance_modifier
                 print(f"Monster Total: {monster_total}")
                 sleep(1)
                 if player_dc > monster_total:  # with >= tie goes to player... with > tie goes to monster
@@ -1645,7 +1646,7 @@ class Player:
                         print(f"The {monster.name} is immune to Turn Undead!!")
                         sleep(1)
                 else:
-                    print(f"Turn Undead is only effective against undead!")
+                    print(f"Turn Undead is only effective against undead creatures!")
                     sleep(1)
                 self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
@@ -1668,11 +1669,14 @@ class Player:
                 vulnerability_modifier = 0
                 if "Banish" in monster.vulnerabilities:
                     vulnerability_modifier = 5
+                resistance_modifier = 0
+                if "Banish" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 # turn_roll = dice_roll(1, 20)
                 # total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
                 # print(f"Quantum Ability Check: {turn_roll}\nWisdom Modifier: {self.wisdom_modifier}\n"
                 #      f"Proficiency Bonus: {self.proficiency_bonus}")
-                if vulnerability_modifier > 0:
+                if vulnerability_modifier != 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 level_advantage = 0
                 if self.level > monster.level:
@@ -1681,7 +1685,7 @@ class Player:
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
-                if vulnerability_modifier > 0:
+                if vulnerability_modifier != 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 if level_advantage > 0:
                     print(f"Level Advantage: {level_advantage}")
@@ -1692,7 +1696,9 @@ class Player:
                 print(f"Monster Saving Throw: {monster_roll}")
                 monster_charisma_modifier = math.floor((monster.charisma - 10) / 2)
                 print(f"{monster.name} Charisma Modifier: {monster_charisma_modifier}")
-                monster_total = monster_roll + monster_charisma_modifier
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
+                monster_total = monster_roll + monster_charisma_modifier + resistance_modifier
                 print(f"Monster Total: {monster_total}")
                 sleep(1)
                 if player_dc >= monster_total:
@@ -1748,6 +1754,9 @@ class Player:
                 vulnerability_modifier = 0
                 if "Fear" in monster.vulnerabilities:
                     vulnerability_modifier = 5
+                resistance_modifier = 0
+                if "Fear" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 # turn_roll = dice_roll(1, 20)
                 # total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
                 # print(f"Quantum Ability Check: {turn_roll}\nWisdom Modifier: {self.wisdom_modifier}\n"
@@ -1759,7 +1768,7 @@ class Player:
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
-                if vulnerability_modifier > 0:
+                if vulnerability_modifier != 0:
                     print(f"Monster Vulnerability modifier: {vulnerability_modifier}")
                 if level_advantage > 0:
                     print(f"Level Advantage: {level_advantage}")
@@ -1770,7 +1779,9 @@ class Player:
                 print(f"Monster Saving Throw: {monster_roll}")
                 # monster_mod = math.floor((monster.wisdom - 10) / 2)
                 print(f"{monster.name} Wisdom Modifier: {monster.wisdom_modifier}")
-                monster_total = monster_roll + monster.wisdom_modifier
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
+                monster_total = monster_roll + monster.wisdom_modifier + resistance_modifier
                 print(f"Monster Total: {monster_total}")
                 sleep(1)
                 if player_dc >= monster_total:  # with >= tie goes to player... with > tie goes to monster
@@ -1864,6 +1875,9 @@ class Player:
                 self.quantum_units -= quantum_unit_cost
                 if "Flesh to Stone" in monster.vulnerabilities:
                     vulnerability_modifier = 5
+                resistance_modifier = 0
+                if "Flesh to Stone" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 print(f"Before the {monster.name} even realizes what is happening, its flesh ripples into a stone "
                       f"replica of its normal state!")
                 sleep(1)
@@ -1874,6 +1888,8 @@ class Player:
                 damage_modifier = 2
                 if "Flesh to Stone" in monster.vulnerabilities:
                     damage_modifier = 3
+                # if "Flesh to Stone" in monster.resistances or "All" in monster.resistances:
+                #    damage_modifier = 1
                 total_fails = 0
                 while True:
                     self.hud()
@@ -1891,7 +1907,7 @@ class Player:
                         print(f"Player base DC = {self.base_dc}\n"
                               f"Wisdom Modifier: {self.wisdom_modifier}\n"
                               f"Proficiency Bonus: {self.proficiency_bonus}")
-                        if vulnerability_modifier > 0:
+                        if vulnerability_modifier != 0:
                             print(f"+ Monster Vulnerability Modifier: {vulnerability_modifier}")
                         if level_advantage > 0:
                             print(f"+ Level Advantage: {level_advantage}")
@@ -1899,10 +1915,12 @@ class Player:
                         print(f"DC Total: {player_dc}")
                         sleep(1)
                         monster_saving_throw = dice_roll(1, 20)
-                        monster_total = monster_saving_throw + monster.constitution_modifier
+                        monster_total = monster_saving_throw + monster.constitution_modifier + resistance_modifier
                         print(f"Monster saving throw: {monster_saving_throw}")
                         sleep(1)
                         print(f"Monster Constitution Modifier: {monster.constitution_modifier}")
+                        if resistance_modifier != 0:
+                            print(f"Monster Resistance Modifier: {resistance_modifier}")
                         sleep(1)
                         print(f"Total: {monster_total}")
                         sleep(1)
@@ -1964,24 +1982,28 @@ class Player:
                 self.quantum_units -= quantum_unit_cost
                 if "Gravity Well" in monster.vulnerabilities:
                     vulnerability_modifier = 5
+
                 print(f"Focusing the Quantum Weirdness on the ground beneath the {monster.name}, "
                       f"a growing void of crushing gravity opens between worlds!!")
                 sleep(1)
                 print(f"It is pulled in by the insatiable force!")
                 sleep(1)
                 initial_damage = dice_roll(10, 10)
-                print(f"The void inflicts {initial_damage} hit points and the {monster.name} remains trapped!")
+                print(f"The aberrant void inflicts {initial_damage} hit points!")
                 sleep(1.5)
                 pause()
                 monster.reduce_health(initial_damage)
-
                 if not monster.check_dead():
-                    damage_modifier = 2
+                    damage_modifier = 3
                     if "Gravity Well" in monster.vulnerabilities:
-                        damage_modifier = 3
+                        damage_modifier = 4
+                    if "Gravity Well" in monster.resistances or "All" in monster.resistances:
+                        damage_modifier = 1
                     # total_fails = 0
                     while True:
                         self.hud()
+                        print(f"The {monster.name} remains trapped in the gravity well!")
+                        sleep(1)
                         input(f"Press (ENTER) to attack: ")
                         self.hud()
                         print(f"You raise your {self.wielded_weapon.name} and swing mightily..")
@@ -2000,7 +2022,7 @@ class Player:
                             print(f"Player base DC = {self.base_dc}\n"
                                   f"Wisdom Modifier: {self.wisdom_modifier}\n"
                                   f"Proficiency Bonus: {self.proficiency_bonus}")
-                            if vulnerability_modifier > 0:
+                            if vulnerability_modifier != 0:
                                 print(f"+ Monster Vulnerability Modifier: {vulnerability_modifier}")
                             if level_advantage > 0:
                                 print(f"+ Level Advantage: {level_advantage}")
@@ -2068,6 +2090,9 @@ class Player:
                 vulnerability_modifier = 0
                 if "Hold Monster" in monster.vulnerabilities:
                     vulnerability_modifier = 5
+                resistance_modifier = 0
+                if "Hold Monster" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 # turn_roll = dice_roll(1, 20)
                 # player_total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
                 # The difficulty class ("DC") of the saving throw should be based on the caster:
@@ -2081,7 +2106,7 @@ class Player:
                 print(f"Player DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
-                if vulnerability_modifier > 0:
+                if vulnerability_modifier != 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 if level_advantage > 0:
                     print(f"Level Advantage: {level_advantage}")
@@ -2091,7 +2116,9 @@ class Player:
                 monster_roll = dice_roll(1, 20)
                 print(f"Monster Saving Throw: {monster_roll}")
                 print(f"{monster.name} Strength Modifier: {monster.strength_modifier}")
-                monster_total = monster_roll + monster.strength_modifier
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
+                monster_total = monster_roll + monster.strength_modifier + resistance_modifier
                 print(f"Monster Total: {monster_total}")
                 sleep(1)
                 if player_dc > monster_total:
@@ -2148,13 +2175,16 @@ class Player:
                 vulnerability_modifier = 0
                 if "Web" in monster.vulnerabilities:
                     vulnerability_modifier = 5
+                resistance_modifier = 0
+                if "Web" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 # turn_roll = dice_roll(1, 20)
                 player_total = (self.base_dc + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
                 # print(f"Quantum Ability Check: {turn_roll}")
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
-                if vulnerability_modifier > 0:
+                if vulnerability_modifier != 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 sleep(1)
                 print(f"Total: {player_total}")
@@ -2162,7 +2192,9 @@ class Player:
                 monster_roll = dice_roll(1, 20)
                 print(f"Monster Dexterity Saving Throw: {monster_roll}")
                 print(f"{monster.name} Dexterity Modifier: {monster.dexterity_modifier}")
-                monster_total = monster_roll + monster.dexterity_modifier
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
+                monster_total = monster_roll + monster.dexterity_modifier + resistance_modifier
                 print(f"Monster Total: {monster_total}")
                 sleep(1)
                 if player_total >= monster_total:
@@ -2219,6 +2251,9 @@ class Player:
                 vulnerability_modifier = 0
                 if "Charm" in monster.vulnerabilities:
                     vulnerability_modifier = 5
+                resistance_modifier = 0
+                if "Charm" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 # turn_roll = dice_roll(1, 20)
                 # total = (turn_roll + self.charisma_modifier + self.proficiency_bonus + vulnerability_modifier)
                 # print(f"Quantum Ability Check: {turn_roll}\nCharisma Modifier: {self.charisma_modifier}\n"
@@ -2232,7 +2267,7 @@ class Player:
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Charisma Modifier: {self.charisma_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
-                if vulnerability_modifier > 0:
+                if vulnerability_modifier != 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 if level_advantage > 0:
                     print(f"Level Advantage: {level_advantage}")
@@ -2242,7 +2277,9 @@ class Player:
                 monster_roll = dice_roll(1, 20)
                 print(f"Monster Saving Throw: {monster_roll}")
                 print(f"{monster.name} Wisdom Modifier: {monster.wisdom_modifier}")
-                monster_total = monster_roll + monster.wisdom_modifier
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
+                monster_total = monster_roll + monster.wisdom_modifier + resistance_modifier
                 print(f"Monster Total: {monster_total}")
                 sleep(1)
                 if player_dc >= monster_total:
@@ -2309,6 +2346,9 @@ class Player:
                 vulnerability_modifier = 0
                 if "Sleep" in monster.vulnerabilities:
                     vulnerability_modifier = 5
+                resistance_modifier = 0
+                if "Sleep" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 # turn_roll = dice_roll(1, 20)
                 # total = (turn_roll + self.intelligence_modifier + self.proficiency_bonus + vulnerability_modifier)
                 # print(f"Quantum Ability Check: {turn_roll}\nIntelligence Modifier: {self.intelligence_modifier}\n"
@@ -2329,8 +2369,10 @@ class Player:
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
                 print(f"Monster Roll: {monster_roll}")
-                monster_total = monster_roll + monster.wisdom_modifier
+                monster_total = monster_roll + monster.wisdom_modifier + resistance_modifier
                 print(f"{monster.name} Wisdom modifier: {monster.wisdom_modifier}")
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
                 print(f"Monster Total: {monster_total}")
                 sleep(1)
                 if player_dc >= monster_total:
@@ -2413,8 +2455,8 @@ class Player:
         # number_of_dice = (3 + self.level - 1)  # 3 dice for lvl 1, 4 for lvl 2, 5 for lvl 3....
         # heal = dice_roll(number_of_dice, 4)  + (1 * number_of_dice)
         quantum_unit_cost = 1
-        number_of_dice = (3 + self.level)  # consider changing to self.quantum_level
-        heal = dice_roll(number_of_dice, 4) + number_of_dice + self.quantum_level
+        number_of_dice = (3 + self.level + self.quantum_level)  # consider changing to self.quantum_level
+        heal = dice_roll(number_of_dice, 6) + number_of_dice + self.quantum_level
         if self.hit_points < self.maximum_hit_points:
             print(f"You feel restorative powers welling up within you..")
             sleep(1)
@@ -2482,7 +2524,7 @@ class Player:
                                       3: "Fear",
                                       4: "Finger of Death",
                                       5: "Banish"},
-                                  5: {1: "Disentegrate",
+                                  5: {1: "Disintegrate",
                                       2: "Ice Storm",
                                       3: "Fire Storm",
                                       4: "Gravity Well"},
@@ -2606,6 +2648,9 @@ class Player:
                 vulnerable = False
                 if "Disintegrate" in monster.vulnerabilities:
                     vulnerable = True
+                resistance_modifier = 0
+                if "Disintegrate" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 self.quantum_units -= quantum_unit_cost
                 print(f"Disintegrate.")
                 sleep(1)
@@ -2641,9 +2686,11 @@ class Player:
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
                 monster_mod = monster.dexterity_modifier
-                monster_total = monster_roll + monster_mod
+                monster_total = monster_roll + monster_mod + resistance_modifier
                 print(f"Monster Saving Throw: {monster_roll}")
                 print(f"Monster Dexterity Modifier: {monster_mod}")
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
@@ -2710,6 +2757,9 @@ class Player:
                 vulnerable = False
                 if "Fireball" in monster.vulnerabilities:
                     vulnerable = True
+                resistance_modifier = 0
+                if "Fireball" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 self.quantum_units -= quantum_unit_cost
                 print(f"Fireball.")
                 sleep(1)
@@ -2742,9 +2792,11 @@ class Player:
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
                 monster_mod = monster.dexterity_modifier
-                monster_total = monster_roll + monster_mod
+                monster_total = monster_roll + monster_mod + resistance_modifier
                 print(f"Monster Saving Throw: {monster_roll}")
                 print(f"Monster Dexterity Modifier: {monster_mod}")
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
@@ -2802,6 +2854,9 @@ class Player:
                 vulnerable = False
                 if "Finger of Death" in monster.vulnerabilities:
                     vulnerable = True
+                resistance_modifier = 0
+                if "Finger of Death" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 self.quantum_units -= quantum_unit_cost
                 print(f"Finger of Death.")
                 sleep(1)
@@ -2831,9 +2886,11 @@ class Player:
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
                 monster_mod = monster.constitution_modifier
-                monster_total = monster_roll + monster_mod
+                monster_total = monster_roll + monster_mod + resistance_modifier
                 print(f"Monster Saving Throw: {monster_roll}")
                 print(f"Monster Constitution Modifier: {monster_mod}")
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
@@ -2895,6 +2952,9 @@ class Player:
                 vulnerable = False
                 if "Meteor Swarm" in monster.vulnerabilities:
                     vulnerable = True
+                resistance_modifier = 0
+                if "Meteor Swarm" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 self.quantum_units -= quantum_unit_cost
                 print(f"Meteor Swarm.")
                 sleep(1)
@@ -2933,9 +2993,12 @@ class Player:
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
                 monster_mod = monster.dexterity_modifier
-                monster_total = monster_roll + monster_mod
+                monster_total = monster_roll + monster_mod + resistance_modifier
+
                 print(f"Monster Saving Throw: {monster_roll}")
                 print(f"Monster Dexterity Modifier: {monster_mod}")
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
@@ -2997,6 +3060,9 @@ class Player:
                 vulnerable = False
                 if "Skeletal Remains" in monster.vulnerabilities:
                     vulnerable = True
+                resistance_modifier = 0
+                if "Skeletal Remains" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 self.quantum_units -= quantum_unit_cost
                 print(f"Skeletal Remains.")
                 sleep(1)
@@ -3033,9 +3099,11 @@ class Player:
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
                 monster_mod = monster.constitution_modifier
-                monster_total = monster_roll + monster_mod
+                monster_total = monster_roll + monster_mod + resistance_modifier
                 print(f"Monster Saving Throw: {monster_roll}")
                 print(f"Monster Constitution Modifier: {monster_mod}")
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
@@ -3102,6 +3170,9 @@ class Player:
                 vulnerable = False
                 if "Negative Energy Plague" in monster.vulnerabilities:
                     vulnerable = True
+                resistance_modifier = 0
+                if "Negative Energy Plague" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 self.quantum_units -= quantum_unit_cost
                 print(f"Negative Energy Plague.")
                 sleep(1)
@@ -3138,9 +3209,11 @@ class Player:
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
                 monster_mod = round((monster.intelligence - 10) / 2)
-                monster_total = monster_roll + monster_mod
+                monster_total = monster_roll + monster_mod + resistance_modifier
                 print(f"Monster Saving Throw: {monster_roll}")
                 print(f"Monster Intelligence Modifier: {monster_mod}")
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
@@ -3206,6 +3279,9 @@ class Player:
                 vulnerable = False
                 if "Ice Storm" in monster.vulnerabilities:
                     vulnerable = True
+                resistance_modifier = 0
+                if "Ice Storm" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 self.quantum_units -= quantum_unit_cost
                 print(f"Ice Storm.")
                 sleep(1)
@@ -3243,9 +3319,11 @@ class Player:
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
                 monster_mod = monster.constitution_modifier
-                monster_total = monster_roll + monster_mod
+                monster_total = monster_roll + monster_mod + resistance_modifier
                 print(f"Monster Saving Throw: {monster_roll}")
                 print(f"Monster Constitution Modifier: {monster_mod}")
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
@@ -3306,6 +3384,9 @@ class Player:
                 vulnerable = False
                 if "Fire Storm" in monster.vulnerabilities:
                     vulnerable = True
+                resistance_modifier = 0
+                if "Fire Storm" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 self.quantum_units -= quantum_unit_cost
                 print(f"Fire Storm.")
                 sleep(1)
@@ -3343,9 +3424,11 @@ class Player:
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
                 monster_mod = monster.dexterity_modifier
-                monster_total = monster_roll + monster_mod
+                monster_total = monster_roll + monster_mod + resistance_modifier
                 print(f"Monster Saving Throw: {monster_roll}")
                 print(f"Monster Dexterity Modifier: {monster_mod}")
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
                 print(f"Monster Total: {monster_total}")
                 sleep(1)
                 if roll_d20 == 20 or player_total >= monster_total:
@@ -3408,6 +3491,9 @@ class Player:
                 if "Phantasm" in monster.vulnerabilities:
                     vulnerable = True
                     vulnerability_modifier = 5
+                resistance_modifier = 0
+                if "Phantasm" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 self.quantum_units -= quantum_unit_cost
                 print(f"Phantasm.")
                 sleep(1)
@@ -3448,9 +3534,11 @@ class Player:
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
                 monster_mod = math.floor((monster.intelligence - 10) / 2)
-                monster_total = monster_roll + monster_mod
+                monster_total = monster_roll + monster_mod + resistance_modifier
                 print(f"Monster Saving Throw: {monster_roll}")
                 print(f"Monster Intelligence Modifier: {monster_mod}")
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
                 print(f"Monster Total: {monster_total}")
                 sleep(1)
                 if player_dc >= monster_total:  # > tie goes to defender >= tie goes to player
@@ -3510,6 +3598,9 @@ class Player:
                 vulnerable = False
                 if "Lightning" in monster.vulnerabilities:
                     vulnerable = True
+                resistance_modifier = 0
+                if "Lightning" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 self.quantum_units -= quantum_unit_cost
                 print(f"Lightning.")
                 sleep(1)
@@ -3539,7 +3630,11 @@ class Player:
                 print(f"Total: {player_total}")
                 sleep(1)
                 print(f"Monster armor class: {monster.armor_class}")
-                if roll_d20 == 20 or player_total >= monster.armor_class:
+                monster_total = monster.armor_class + resistance_modifier
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
+                print(f"Monster Total: {monster_total}")
+                if roll_d20 == 20 or player_total >= monster_total:
                     #
                     number_of_dice = (6 + self.quantum_level - 3) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 6) + (1 * number_of_dice)
@@ -3595,6 +3690,9 @@ class Player:
                 vulnerable = False
                 if "Immolation" in monster.vulnerabilities:
                     vulnerable = True
+                resistance_modifier = 0
+                if "Immolation" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 self.quantum_units -= quantum_unit_cost
                 print(f"Immolation.")
                 sleep(1)
@@ -3635,9 +3733,11 @@ class Player:
                 print(f"Total: {player_dc}")
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
-                monster_total = monster_roll + monster.dexterity_modifier
+                monster_total = monster_roll + monster.dexterity_modifier + resistance_modifier
                 print(f"Monster Saving Throw: {monster_roll}")
                 print(f"Monster Dexterity Modifier: {monster.dexterity_modifier}")
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
                 print(f"Monster Total: {monster_total}")
                 sleep(1)
                 if roll_d20 == 20 or player_dc >= monster_total:
@@ -3695,6 +3795,9 @@ class Player:
                 vulnerable = False
                 if "Vortex" in monster.vulnerabilities:
                     vulnerable = True
+                resistance_modifier = 0
+                if "Vortex" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 self.quantum_units -= quantum_unit_cost
                 print(f"Vortex.")
                 sleep(1)
@@ -3734,9 +3837,11 @@ class Player:
                 print(f"Total: {player_dc}")
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
-                monster_total = monster_roll + monster.strength_modifier
+                monster_total = monster_roll + monster.strength_modifier + resistance_modifier
                 print(f"Monster Saving Throw: {monster_roll}")
                 print(f"Monster Strength Modifier: {monster.strength_modifier}")
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
                 print(f"Monster Total: {monster_total}")
                 sleep(1)
                 if roll_d20 == 20 or player_dc >= monster_total:
@@ -3795,6 +3900,9 @@ class Player:
                 vulnerable = False
                 if "Quantum Missile" in monster.vulnerabilities:
                     vulnerable = True
+                resistance_modifier = 0
+                if "Quantum Missile" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 self.quantum_units -= quantum_unit_cost
                 print(f"Quantum Missile.")
                 sleep(1)
@@ -3825,7 +3933,11 @@ class Player:
                 print(f"Total: {player_total}")
                 sleep(1)
                 print(f"Monster armor class: {monster.armor_class}")
-                if roll_d20 == 20 or player_total >= monster.armor_class:
+                monster_total = monster.armor_class + resistance_modifier
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
+                print(f"Monster Total: {monster_total}")
+                if roll_d20 == 20 or player_total >= monster_total:
                     # number_of_dice = (3 + (self.level - 1)) * critical_bonus  #consider changing to self.quantum_level
                     number_of_dice = (3 + self.quantum_level - 1) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 4) + (1 * number_of_dice)
@@ -3882,6 +3994,9 @@ class Player:
                 vulnerable = False
                 if "Scorch" in monster.vulnerabilities:
                     vulnerable = True
+                resistance_modifier = 0
+                if "Scorch" in monster.resistances or "All" in monster.resistances:
+                    resistance_modifier = 3
                 self.quantum_units -= quantum_unit_cost
                 print(f"Scorch.")
                 sleep(1)
@@ -3911,7 +4026,11 @@ class Player:
                 print(f"Total: {player_total}")
                 sleep(1)
                 print(f"Monster armor class: {monster.armor_class}")
-                if roll_d20 == 20 or player_total >= monster.armor_class:
+                monster_total = monster.armor_class + resistance_modifier
+                if resistance_modifier != 0:
+                    print(f"Monster Resistance Modifier: {resistance_modifier}")
+                print(f"Monster Total: {monster_total}")
+                if roll_d20 == 20 or player_total >= monster_total:
                     #
                     # number_of_dice = (3 + (self.level - 1)) * critical_bonus
                     number_of_dice = (2 + self.quantum_level - 2) * critical_bonus

@@ -242,6 +242,10 @@ class Monster:
             # immunities = str(self.immunities).replace('[', '').replace(']', '').replace("'", "")
             immunities = convert_list_to_string_with_commas_only(self.immunities)
             print("Immunities:", immunities)
+        if len(self.resistances):
+            # immunities = str(self.immunities).replace('[', '').replace(']', '').replace("'", "")
+            resistances = convert_list_to_string_with_commas_only(self.resistances)
+            print("Resistances:", resistances)
         if len(self.vulnerabilities):
             # vulnerabilities = str(self.vulnerabilities).replace('[', '').replace(']', '').replace("'", "")
             vulnerabilities = convert_list_to_string_with_commas_only(self.vulnerabilities)
@@ -250,7 +254,7 @@ class Monster:
     def melee(self, player_1):
         attack_bonus = 0
         attack_bonus_roll = random.randint(1, 100)
-        print(f"Monster attack bonus roll: {attack_bonus_roll}")  # remove after testing
+        # print(f"Monster attack bonus roll: {attack_bonus_roll}")  # remove after testing
         attack_phrase = ""
         if attack_bonus_roll <= 50:
             attack_bonus = self.attack_1
@@ -267,7 +271,7 @@ class Monster:
         if attack_bonus_roll > 95:
             attack_bonus = self.attack_5
             attack_phrase = self.attack_5_phrase
-        print(f"Monster attack bonus: {attack_bonus}")
+
         roll_d20 = dice_roll(1, 20)
         print(f"The {self.name} attacks! (It rolls {roll_d20})")
         if roll_d20 == 1:
@@ -281,9 +285,12 @@ class Monster:
         else:
             critical_bonus = 1
             hit_statement = ""
+        monster_total = roll_d20 + self.dexterity_modifier
+        print(f"Monster attack bonus: {attack_bonus}")
         print(f"{self.name} dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
+        print(f"Monster Total: {monster_total}")
         print(f"Your armor class: {player_1.armor_class}")
-        if roll_d20 + self.dexterity_modifier >= player_1.armor_class:
+        if monster_total >= player_1.armor_class:
             damage_roll = dice_roll((self.number_of_hd * critical_bonus), self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus + self.weapon_bonus)
             if roll_d20 == 20 and damage_to_opponent < 1:
@@ -1167,6 +1174,65 @@ class SkeletonKing(Monster):
         self.is_discovered = False
 
 
+class SkeletalProphet(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 2
+        self.name = "Skeletal Prophet"
+        self.proper_name = "None"
+        self.experience_award = 200
+        self.gold = random.randint(6, 22)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.weapon_bonus = 2
+        self.armor = 0
+        self.shield = 0
+        self.strength = random.randint(11, 13)
+        self.dexterity = random.randint(11, 15)
+        self.constitution = random.randint(14, 16)
+        self.intelligence = random.randint(5, 7)
+        self.wisdom = random.randint(11, 13)
+        self.charisma = random.randint(5, 6)
+        self.can_paralyze = False
+        self.paralyze_turns = 0
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 1
+        self.dot_turns = 1
+        self.undead = True
+        self.immunities = ["Sleep", "Charm"]
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = False
+        # self.human_player_level = human_player_level
+        self.difficulty_class = 2
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 2
+        self.hit_dice = 10  #
+        self.number_of_hd = 1  #
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.hit_points = random.randint(17, 22) + self.constitution_modifier
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.armor_class = random.randint(12, 12)
+        self.attack_1 = 0  # attack bonus
+        self.attack_1_phrase = f"He strikes at you with his sceptre..."
+        self.attack_2 = 1
+        self.attack_2_phrase = f"He raises his sceptre and swings with abandon.."
+        self.attack_3 = 2
+        self.attack_3_phrase = f"He darts forward in a mad frenzy.."
+        self.attack_4 = 2
+        self.attack_4_phrase = f"Raising the sceptre overhead, he swings with both bony hands..!"
+        self.attack_5 = 3
+        self.attack_5_phrase = f"Taunting and glaring through its rottenness, he strikes wildly!!"
+        self.introduction = f"The ancient prophet rises in skeletal form. The once spectacular raiment now\n" \
+                            f"clings wearily to his bony form as he raises his sceptre, taunting you to attack!\n" \
+                            f"The air bristles with Quantum Energy.."
+        self.is_discovered = False
+
+
 class Drow(Monster):
 
     def __init__(self):
@@ -1775,8 +1841,8 @@ class WhiteDragonWyrmling(Monster):
         self.dot_multiplier = 1
         self.dot_turns = 1
         self.undead = False
-        self.immunities = []
-        self.vulnerabilities = []
+        self.immunities = ["Ice Storm"]
+        self.vulnerabilities = ["Immolation", "Fireball", "Fire Storm"]
         self.resistances = []
         self.quantum_energy = False
         self.difficulty_class = 1
@@ -1824,7 +1890,7 @@ undead_monster_dict = {
     3: [Specter]
 }
 # boss lists
-undead_prophet_list = [ZombieProphet()]
+undead_prophet_list = [ZombieProphet(), SkeletalProphet()]
 king_boss_list = [SkeletonKing(), ShadowKing(), SpecterKing()]
 
 # For monster hit points..take hit dice and add (constitution modifier x number of hit dice).

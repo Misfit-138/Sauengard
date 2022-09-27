@@ -6130,15 +6130,6 @@ class Player:
         pause()
         return
 
-    # def exit_boss_setup(self, monster):
-    # temporary function
-    # make a list of random intros...or, use boss intro in future.
-    #    print(f"In the archway to the {self.dungeon.name} exit "
-    #          f"stands the {monster.name} guardian. Without fear, without thought,\n"
-    #          f"it looks upon you and readies itself for battle...")
-
-
-#
 
 '''
 In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.

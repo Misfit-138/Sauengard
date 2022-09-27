@@ -397,8 +397,9 @@ while True:
                     player_1.next_dungeon()
                 # ***********************************************************************************************>>>>
                 if encounter < 11 or encounter > 20:  # < 11 = normal monster. > 20 = boss
-                    monster = ""  # just to prevent monster from being undefined
+                    monster = ""  # to prevent monster from being undefined
                     # monster dictionary imported from monster module. keys correspond to difficulty levels
+
                     # IN PROXIMITY TO MONSTER LOOP *contains battle loop within it*
                     player_1.in_proximity_to_monster = True
                     player_is_dead = False
@@ -409,7 +410,7 @@ while True:
                             break
                         if encounter < 11:  # regular monster
                             # monster = player_1.regular_monster_generator()
-                            monster = CultFanatic()  # testing
+                            monster = GreenDragonWyrmling()  # testing
                         elif encounter == 99:  # level exit boss fight
                             monster = player_1.exit_boss_generator()
                             gong()

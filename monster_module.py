@@ -211,6 +211,7 @@ class Monster:
         self.introduction = ""
         self.paralyze_phrase = ""
         self.paralyze_free_attack_phrase = ""
+        self.poison_phrase = ""
         self.is_discovered = False
 
     def reduce_health(self, damage):
@@ -430,13 +431,14 @@ class Monster:
         difficulty_class = (player_saving_throw + player_1.constitution_modifier)
         # (player_1.constitution + player_1.constitution_modifier)
         roll_d20 = dice_roll(1, 20)  # attack roll
-        print(f"The {self.name} hisses in evil glee..")
+        # print(f"The {self.name} hisses in evil glee..")
+        print(self.poison_phrase)
         print(f"Attack roll: {roll_d20}")
         time.sleep(1)
         if roll_d20 == 1:
             print("You dodge!")
             time.sleep(1)
-            print(f"And you perceive it was attempting to poison you!")
+            # print(f"And you perceive it was attempting to poison you!")
             os.system('pause')
             player_1.hud()
             return False
@@ -1305,6 +1307,7 @@ class Drow(Monster):
         self.quantum_attack_5_phrase = "Crying out wildly, and thrusting its arms forward, it shoots \n" \
                                        "the weirdness of entangled quantum flames and energies at you!"
         self.introduction = f"You have encountered a {self.name}."
+        self.poison_phrase = "It slashes at you with its poison dagger!!"
         self.is_discovered = False
 
 
@@ -1574,7 +1577,7 @@ class Ghoul(Monster):
         self.armor = 0
         self.shield = 0
         self.strength = random.randint(11, 12)
-        self.dexterity = random.randint(12, 16)
+        self.dexterity = random.randint(14, 16)
         self.constitution = random.randint(12, 13)
         self.intelligence = random.randint(5, 10)
         self.wisdom = random.randint(7, 9)
@@ -1900,6 +1903,67 @@ class SpecterKing(Monster):
         self.paralyze_free_attack_phrase = "You feel agony crawling deep within you as you stand helpless and still!!"
 
 
+class GreenDragonWyrmling(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 3
+        self.name = "Green Dragon Wyrmling"
+        self.proper_name = "None"
+        self.experience_award = 450
+        self.gold = random.randint(15, 25)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = random.randint(14, 16)
+        self.dexterity = 12
+        self.constitution = random.randint(13, 15)
+        self.intelligence = 14
+        self.wisdom = 11
+        self.charisma = 13
+        self.can_paralyze = False
+        self.paralyze_turns = 0
+        self.can_poison = True
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(1, 6)
+        self.dot_turns = dice_roll(1, 6)
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = ["Fear", "Charm"]
+        self.quantum_energy = False
+        self.difficulty_class = 1
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 1
+        self.hit_dice = 10
+        self.number_of_hd = 1
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(30, 32)) + self.constitution_modifier
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.armor_class = random.randint(15, 16)
+        self.attack_1 = 2  # attack bonus
+        self.attack_1_phrase = "It thrusts forward with gaping jaws.."
+        self.attack_2 = 2
+        self.attack_2_phrase = "With a languid growl, it strikes with its jaws.. "
+        self.attack_3 = 2
+        self.attack_3_phrase = "Proud and poised, it prepares to strike with its murderous jaws.."
+        self.attack_4 = 14
+        self.attack_4_phrase = "\'I am sorry. This will hurt you, my little friend.\', it says dryly, as it draws back " \
+                               "and bites with venomous guile!"
+        self.attack_5 = 18
+        self.attack_5_phrase = "The beast leaps upon you, attacking fiercely!"
+        self.introduction = f"You have encountered a Green Dragon Wyrmling; a young, cunning and evil beast. " \
+                            f"As it approaches, it chuckles\nand addresses you in the common tongue! " \
+                            f"\"Greetings, little one! It is most fortuitous to meet you..\"\n" \
+                            f"You have very little time to ponder its greeting..."
+        self.poison_phrase = "Wide-eyed and evil, it exhales a blast of putrid poison from its deepest evil innards!!"
+        self.is_discovered = False
+
+
 class WhiteDragonWyrmling(Monster):
 
     def __init__(self):
@@ -1965,7 +2029,7 @@ monster_dict = {
     1: [Quasit, Kobold, Cultist, Goblin, Skeleton, WingedKobold],
     2: [Shadow, Drow, Troglodyte, Orc, Zombie, Ghoul],
     3: [Specter, Bugbear, CultFanatic, HalfOgre],
-    4: [WhiteDragonWyrmling]
+    4: [WhiteDragonWyrmling, GreenDragonWyrmling]
 }
 # undead monsters:
 undead_monster_dict = {

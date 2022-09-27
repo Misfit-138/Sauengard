@@ -408,8 +408,8 @@ while True:
                         if not player_1.in_proximity_to_monster:
                             break
                         if encounter < 11:  # regular monster
-                            monster = player_1.regular_monster_generator()
-                            # monster = Specter()  # testing
+                            # monster = player_1.regular_monster_generator()
+                            monster = CultFanatic()  # testing
                         elif encounter == 99:  # level exit boss fight
                             monster = player_1.exit_boss_generator()
                             gong()

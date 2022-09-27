@@ -210,6 +210,7 @@ class Monster:
         self.quantum_attack_5_phrase = ""
         self.introduction = ""
         self.paralyze_phrase = ""
+        self.paralyze_free_attack_phrase = ""
         self.is_discovered = False
 
     def reduce_health(self, damage):
@@ -406,7 +407,8 @@ class Monster:
         if (paralyze_chance + self.wisdom_modifier) >= player_total:
             print("You are paralyzed!!")
             time.sleep(1)
-            print("As you stand, frozen and defenseless, it savagely gores you!")
+            print(self.paralyze_free_attack_phrase)
+            # print("As you stand, frozen and defenseless, it savagely gores you!")
             time.sleep(1)
             for i in range(self.paralyze_turns):  # this seems too brutal if paralyze turns is anything but 1!!!
                 paralyze_damage = (dice_roll(self.number_of_hd, self.hit_dice) -
@@ -906,6 +908,8 @@ class Shadow(Monster):
                             f"own existence..\nYou feel the air crackle with quantum energy.."
         self.paralyze_phrase = "Rising menacingly and with both clawed, shadowy hands, it reaches out, and you\n" \
                                "feel your motor skills quivering.."
+        self.paralyze_free_attack_phrase = "As you stand frozen and defenseless, the Shadow silently places\n" \
+                                           "its hands upon you..a sickening visceral emptiness fills you!"
         self.is_discovered = False
 
     # name = "Shadow"
@@ -990,6 +994,7 @@ class ShadowKing(Monster):
                             f"You feel the air crackle with quantum energy.."
         self.paralyze_phrase = "Rising menacingly and with both clawed, shadowy hands, it reaches out, and you\n" \
                                "feel your motor skills quivering.."
+        self.paralyze_free_attack_phrase = "You feel your life force weakening as it drains you mercilessly!"
         self.is_discovered = False
 
 
@@ -1480,6 +1485,82 @@ class Orc(Monster):
     # name = "Orc"
 
 
+class CultFanatic(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 2
+        self.name = "Cult Fanatic"
+        self.proper_name = "None"
+        self.experience_award = 450
+        self.gold = random.randint(2, 8)  # self.level * 373 * round(random.uniform(1, 2))
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = random.randint(10, 12)
+        self.dexterity = random.randint(13, 15)
+        self.constitution = random.randint(11, 13)
+        self.intelligence = random.randint(9, 11)
+        self.wisdom = random.randint(12, 13)
+        self.charisma = 14
+        self.can_paralyze = True
+        self.paralyze_turns = 0
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 1
+        self.dot_turns = 1
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = ["Charm", "Banish", "Fear"]
+        self.quantum_energy = True
+        self.difficulty_class = 1
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 1
+        self.hit_dice = 6  #
+        self.number_of_hd = 1
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.hit_points = random.randint(25, 32) + self.constitution_modifier
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.armor_class = random.randint(12, 14)
+        self.attack_1 = 0  # attack bonus
+        self.attack_1_phrase = "With unexpected speed, he strikes with his dagger.."
+        self.attack_2 = 1
+        self.attack_2_phrase = "He swings his gleaming scimitar!"
+        self.attack_3 = 2
+        self.attack_3_phrase = "He throws an acrid powder at you!"
+        self.attack_4 = 2
+        self.attack_4_phrase = "With blinding speed, he swings his scimitar.."
+        self.attack_5 = 3
+        self.attack_5_phrase = "Crying out with insane hatred, he swings his scimitar!"
+        self.quantum_attack_1 = 2
+        self.quantum_attack_1_phrase = "He releases weird smouldering energies from his outstretched hand!!"
+        self.quantum_attack_2 = 2
+        self.quantum_attack_2_phrase = "Dark weaponry is released from his palms in the form of weird Quantum " \
+                                       "flames!!"
+        self.quantum_attack_3 = 2
+        self.quantum_attack_3_phrase = "He raises both hands, harnessing the quantum energies and\n" \
+                                       "firing a cone of dark smouldering flames!"
+        self.quantum_attack_4 = 3
+        self.quantum_attack_4_phrase = "He steps forward, thrusting his hands toward you, as disturbing\n" \
+                                       "images and fearsome nightmarish creatures materialize in your mind!"
+        self.quantum_attack_5 = 3
+        self.quantum_attack_5_phrase = "With a horrible cry, he releases a green mist from his hands\n" \
+                                       "that envelopes you!"
+        self.introduction = f"You have encountered a Cult Fanatic. Decked in a grand robe of black and gold\n" \
+                            f"symbology and face hidden in shadow, he cries aloud in dark allegiance\n" \
+                            f"to his fell religious creed. His hands glow dimly with Quantum Weirdness..."
+        self.paralyze_phrase = "He points at you with one hand and slowly raises the other. Suddenly, he  clenches " \
+                               "the raised hand into a fist..."
+        self.paralyze_free_attack_phrase = "Patiently and sadistically, he slices at you with his crooked dagger " \
+                                           "as you helplessly watch!"
+        self.is_discovered = False
+
+
 class Ghoul(Monster):
 
     def __init__(self):
@@ -1539,7 +1620,7 @@ class Ghoul(Monster):
                             "its bulbous black eyes grow impossibly wide as it draws in its serpentine tongue. "
         self.is_discovered = False
         self.paralyze_phrase = "It lurches forward, grabbing your arm in its cold, sinewy and awful claws!"
-
+        self.paralyze_free_attack_phrase = "As you stand helplessly frozen, it savagely gores you!"
     # name = "Ghoul"
 
 
@@ -1728,14 +1809,16 @@ class Specter(Monster):
         self.quantum_attack_5 = 3
         self.quantum_attack_5_phrase = "With muted malice, its arms elongate unnaturally, wildly entangling you in \n" \
                                        "a storm of wicked forces!"
-        self.introduction = f"From out of nothingness, materializes a Spectre....A vile, undead form created\n" \
+        self.introduction = f"From out of nothingness, materializes a Specter....A vile, undead form created\n" \
                             f"through a combination of wickedness, quantum manipulations, and a violent death.\n" \
                             f"Its ghostly form resembles what it was in life, but its now dispossessed\n" \
                             f"identity has been completely erased and replaced with a simple motive and \n" \
                             f"purpose; A revulsion for the living and a hunger for their life-energy.."
         self.is_discovered = False
         self.is_discovered = False
-        self.paralyze_phrase = "It places a cold, yet immaterial hand upon you and will not let go!!"
+        self.paralyze_phrase = "It places a cold, yet immaterial hand upon you!!"
+        self.paralyze_free_attack_phrase = "Completely helpless, you feel your strength failing as it unnaturally" \
+                                           "drains you!!"
 
 
 class SpecterKing(Monster):
@@ -1756,7 +1839,7 @@ class SpecterKing(Monster):
         self.intelligence = random.randint(9, 11)
         self.wisdom = random.randint(12, 13)
         self.charisma = random.randint(10, 12)
-        self.can_paralyze = False
+        self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = True
@@ -1813,7 +1896,8 @@ class SpecterKing(Monster):
                             f"endless nightmare of madness, devoid of any humanity. Upon seeing you, it silently\n" \
                             f"approaches, its countenance twisted in insane thirst for your life-energy.."
         self.is_discovered = False
-        self.paralyze_phrase = "None"
+        self.paralyze_phrase = "With unnatural speed and silent swiftness, it places a cold, immaterial hand upon you.."
+        self.paralyze_free_attack_phrase = "You feel agony crawling deep within you as you stand helpless and still!!"
 
 
 class WhiteDragonWyrmling(Monster):
@@ -1880,7 +1964,7 @@ class WhiteDragonWyrmling(Monster):
 monster_dict = {
     1: [Quasit, Kobold, Cultist, Goblin, Skeleton, WingedKobold],
     2: [Shadow, Drow, Troglodyte, Orc, Zombie, Ghoul],
-    3: [Specter, Bugbear, HalfOgre],
+    3: [Specter, Bugbear, CultFanatic, HalfOgre],
     4: [WhiteDragonWyrmling]
 }
 # undead monsters:

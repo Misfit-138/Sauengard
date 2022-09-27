@@ -812,14 +812,14 @@ class Player:
             number_of_potions_of_strength = self.potions_of_strength
             print(
                 f"                                                                            Strength Potions: {number_of_potions_of_strength}")
-        if self.potion_of_strength_effect:
+        if self.potion_of_strength_effect and self.potion_of_strength_uses > -1:
             print(
                 f"                                                                            (STRENGTH POTION EFFECT) ({self.potion_of_strength_uses}/{self.strength_modifier})")
-        if self.quantum_strength_effect:
+        if self.quantum_strength_effect and self.quantum_strength_uses > -1:
             print(
                 f"                                                                            (QUANTUM STRENGTH EFFECT) ({self.quantum_strength_uses}/{self.max_quantum_strength_uses})")
 
-        if self.protection_effect:
+        if self.protection_effect and self.protection_effect_uses > -1:
             print(
                 f"                                                                            (PROT/EVIL: {self.temp_protection_effect}) ({self.protection_effect_uses}/{self.max_quantum_strength_uses})")
 

@@ -1907,7 +1907,7 @@ class GreenDragonWyrmling(Monster):
 
     def __init__(self):
         super().__init__()
-        self.level = 3
+        self.level = 4
         self.name = "Green Dragon Wyrmling"
         self.proper_name = "None"
         self.experience_award = 450
@@ -1932,7 +1932,7 @@ class GreenDragonWyrmling(Monster):
         self.vulnerabilities = []
         self.resistances = ["Fear", "Charm"]
         self.quantum_energy = False
-        self.difficulty_class = 1
+        self.difficulty_class = 4
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -1968,7 +1968,7 @@ class WhiteDragonWyrmling(Monster):
 
     def __init__(self):
         super().__init__()
-        self.level = 3
+        self.level = 4
         self.name = "White Dragon Wyrmling"
         self.proper_name = "None"
         self.experience_award = 450
@@ -1993,7 +1993,7 @@ class WhiteDragonWyrmling(Monster):
         self.vulnerabilities = ["Immolation", "Fireball", "Fire Storm"]
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 1
+        self.difficulty_class = 4
         self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1

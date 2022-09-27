@@ -2596,7 +2596,7 @@ class Player:
 
     def quantum_word_kill(self, monster):
         # everything but a natural 1 hits.
-        # if monster < 100 hp, it dies.
+        # if monster < 100 hp, it dies
         quantum_unit_cost = 6
         if self.in_proximity_to_monster:
             if "Quantum Word Kill" not in monster.immunities and "All" not in monster.immunities:

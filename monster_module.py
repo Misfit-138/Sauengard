@@ -304,7 +304,7 @@ class Monster:
                 print(
                     f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice}: {damage_roll}")  # hit dice
                 time.sleep(1.5)
-                print(f"Strength modifier: {self.strength_modifier}\nAttack bonus: {attack_bonus} "
+                print(f"Strength modifier: {self.strength_modifier}\nAttack bonus: {attack_bonus}\n"
                       f"Weapon bonus: {self.weapon_bonus}")
                 time.sleep(1.5)
                 print(f"You suffer {damage_to_opponent} points of damage!")
@@ -1915,7 +1915,7 @@ class HobgoblinCaptain(Monster):
         self.weapon_bonus = 2
         self.armor = 0
         self.shield = 0
-        self.strength = 15
+        self.strength = random.randint(15, 15)
         self.dexterity = 14
         self.constitution = 14
         self.intelligence = 12
@@ -1944,7 +1944,7 @@ class HobgoblinCaptain(Monster):
         self.hit_points = (random.randint(36, 49)) + self.constitution_modifier
         self.dexterity_modifier = round((self.dexterity - 10) / 2)
         self.wisdom_modifier = round((self.wisdom - 10) / 2)
-        self.armor_class = random.randint(12, 12)
+        self.armor_class = random.randint(17, 17)
         self.attack_1 = 1  # attack bonus
         self.attack_1_phrase = "It thrusts mightily forward with its javelin!.."
         self.attack_2 = 2
@@ -1955,9 +1955,10 @@ class HobgoblinCaptain(Monster):
         self.attack_4_phrase = "It roars and swings its greatsword with murderous rage!"
         self.attack_5 = 3
         self.attack_5_phrase = "It raises its greatsword overhead with both hands for a mighty blow.."
-        self.introduction = f"You have encountered a Hobgoblin Captain. Stooping forward with its piggish face " \
-                            f"and prominent teeth,\nit prepares to satisfy its bloodlust by slaying any " \
-                            f"humanoids that stand against it.."
+        self.introduction = f"You have encountered a Hobgoblin Captain. Fierce, intelligent and disciplined, " \
+                            f"its heavy armor and\nweaponry are polished and well-maintained. Its yellow " \
+                            f"teeth stretch into a surly grin behind its great helm.\nNarrowing its eyes, " \
+                            f"it approaches and stands before you unaffected and unafraid; ready for battle."
         self.is_discovered = False
 
 
@@ -2005,9 +2006,9 @@ class GreenDragonWyrmling(Monster):
         self.armor_class = random.randint(15, 16)
         self.attack_1 = 2  # attack bonus
         self.attack_1_phrase = "It thrusts forward with gaping jaws.."
-        self.attack_2 = 2
+        self.attack_2 = 3
         self.attack_2_phrase = "With a languid growl, it strikes with its jaws.. "
-        self.attack_3 = 2
+        self.attack_3 = 4
         self.attack_3_phrase = "Proud and poised, it prepares to strike with its murderous jaws.."
         self.attack_4 = 14
         self.attack_4_phrase = "\'I am sorry. This will hurt you, my little friend.\', it says dryly, as it draws back " \
@@ -2066,9 +2067,9 @@ class WhiteDragonWyrmling(Monster):
         self.armor_class = random.randint(15, 16)
         self.attack_1 = 2  # attack bonus
         self.attack_1_phrase = "It thrusts forward with gaping jaws.."
-        self.attack_2 = 2
+        self.attack_2 = 3
         self.attack_2_phrase = "With a serpentine swaying, it strikes with its jaws.. "
-        self.attack_3 = 2
+        self.attack_3 = 4
         self.attack_3_phrase = "Perfectly focused, it prepares to strike.."
         self.attack_4 = 14
         self.attack_4_phrase = "Rearing up with elegant, murderous intent, it exhales an icy blast of hail!"

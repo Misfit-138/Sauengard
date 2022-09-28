@@ -9,6 +9,7 @@ from dungeons import *
 
 # from typing_module import typing
 from monster_module import monster_dict, king_boss_list, undead_prophet_list
+from typing_module import typing
 
 '''Target
 Identify your target to the table. 
@@ -654,6 +655,10 @@ class TownPortalImplements:
 scroll_of_town_portal = TownPortalImplements()
 
 
+def convert_list_to_string_with_commas_only(list1):
+    return str(list1).replace('[', '').replace(']', '').replace("'", "")
+
+
 def undead_prophet_returns():
     return "Undead Prophet"
 
@@ -746,6 +751,19 @@ class Player:
         self.coordinates = (self.x, self.y)
         self.previous_x = 0
         self.previous_y = 0
+        self.vanquished_foes = []
+        self.boss_hint_1 = False
+        self.boss_hint_1_event = False
+        self.boss_hint_2 = False
+        self.boss_hint_2_event = False
+        self.boss_hint_3 = False
+        self.boss_hint_3_event = False
+        self.boss_hint_4 = False
+        self.boss_hint_4_event = False
+        self.boss_hint_5 = False
+        self.boss_hint_5_event = False
+        self.boss_hint_6 = False
+        self.boss_hint_6_event = False
         self.pack = {
             'Armor': [],
             'Shields': [],
@@ -3005,7 +3023,8 @@ class Player:
                     #
                     number_of_dice = (20 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice) + \
-                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
+                                         dice_roll(number_of_dice, 8) + (
+                                                 1 * number_of_dice)  # 2nd attack = force damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
@@ -3013,8 +3032,9 @@ class Player:
                               f"a swarm of burning meteors materializes above and falls upon your enemy!!")
                         print(
                             f"{number_of_dice}d8 + {number_of_dice}d8 force damage + 1 per die rolled: {damage_to_opponent}")
-                        print(f"The great storm of fire and stone explodes directly on target in surreal glory and does "
-                              f"{damage_to_opponent} points of damage!")
+                        print(
+                            f"The great storm of fire and stone explodes directly on target in surreal glory and does "
+                            f"{damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
                         return damage_to_opponent
@@ -3110,7 +3130,8 @@ class Player:
                     #
                     number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
+                                         dice_roll(number_of_dice, 8) + (
+                                                 1 * number_of_dice)  # 2nd attack = force damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
@@ -3220,7 +3241,8 @@ class Player:
                     #
                     number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = crushing damage
+                                         dice_roll(number_of_dice, 8) + (
+                                                 1 * number_of_dice)  # 2nd attack = crushing damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
@@ -3249,7 +3271,8 @@ class Player:
                     sleep(1)
                     print(f"The plague takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
-                    print(f"{number_of_dice}d12 necrotic damage + 1 per die rolled mental damage = {damage_to_opponent}")
+                    print(
+                        f"{number_of_dice}d12 necrotic damage + 1 per die rolled mental damage = {damage_to_opponent}")
                     print(f"It hits for {damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
@@ -4848,18 +4871,70 @@ class Player:
             pause()
             return False
 
+    def hint_event_1(self):
+        cls()
+        typing(f"Jenna catches up to you at end of the hallway. \'Ye are {self.name}, are ye not?\'")
+        typing(f"Nodding and instinctively looking about for eavesdroppers, you re-focus on her concerned look.")
+        if len(self.vanquished_foes):
+            vanquished_foes = convert_list_to_string_with_commas_only(self.vanquished_foes)
+            typing(f"\'I know of ye.\' Your puzzled look speaks for you, as she continues,\n"
+                   f"\'We 'ave 'eard of it.. how ye' 'ave defeated {vanquished_foes}...and others!\'")
+        typing("\'There is somethin' ye should know!\' Her level of anxiety gives you pause; it seems out of\n"
+               "character for her.\n\'Ye should seek out Vozzbozz!\' Pausing with a far away look, she nods.\n"
+               "\'I'm headin' back to the bar, and we'll make like we never spoke o' this!\n"
+               "Vozzbozz is in the barroom! He's the one with the raven on 'is shoulder!\'\n"
+               "The meeting ends as abruptly as it began. Jenna disappears toward the bar as you slowly\n"
+               "start to follow a good distance behind, impatient and confused.\n")
+        pause()
+        cls()
+        # meet vozzbozz, get hints about boss....
+        typing(f"Coming to the bar, you quickly scan the room for the man with the raven, who is not hard to spot.\n"
+               f"")
+        self.boss_hint_1_event = True
+        pause()
+        return
+
+    def hint_event_logic(self):
+        print(f"As soon as she sees you, Jenna motions discreetly toward the hallway leading away from the bar.")
+        sleep(1)
+        print(f"You direct your eyes that way and casually make your way down the hall...")
+        sleep(2)
+        pause()
+        if self.boss_hint_1 and not self.boss_hint_1_event:
+            return self.hint_event_1()
+        if self.boss_hint_2 and not self.boss_hint_2_event:
+            # return self.hint_event_2()
+            print("hint 2 event")
+        if self.boss_hint_3 and not self.boss_hint_3_event:
+            # return self.hint_event_3()
+            print("hint 3 event")
+        if self.boss_hint_4 and not self.boss_hint_4_event:
+            # return self.hint_event_4()
+            print("hint 4 event")
+        if self.boss_hint_5 and not self.boss_hint_5_event:
+            # return self.hint_event_5()
+            print("hint 5 event")
+        if self.boss_hint_6 and not self.boss_hint_6_event:
+            # return self.hint_event_6()
+            print("hint 6 event")
+
     def inn(self):
         print(f"You make your way to the tavern..")
         sleep(1.25)
         self.hud()
         print(f"You have come upon the Slumbering Bear Inn- a handsome building with all the trimmings and character\n"
               f"one would expect of a tavern in a town such as this. Above the door hangs an angled sign\n"
-              f"with *THE SLUMBERING BEAR* printed above an angry, roaring bear that appears to be anything but sleepy...")
+              f"with *THE SLUMBERING BEAR* printed above an angry, roaring bear that appears to be "
+              f"anything but sleepy...")
         pause()
+        self.hint_event_logic()
         while True:
             self.hud()
-            print(f"The tavern is bustling as always, but Jenna, the barkeep, notices you and calls over,\n"
-                  f"very matter-of-factly, \"What do ye be needin' love?\"")
+            if self.boss_hint_1:
+                print(f"The barroom is bustling as always. Jenna notices you and nods discreetly. ")
+            else:
+                print(f"The barroom is bustling as always, but Jenna, the barkeep, notices you and calls over,\n"
+                      f"very matter-of-factly, \"What do ye be needin' love?\"")
             inn_choice = input(f"(R)oom for the evening - 10 GP\n(T)alk to Jenna\n(E)xit the inn\n"
                                f"---> ").lower()
             if inn_choice == 'r':
@@ -5992,6 +6067,69 @@ class Player:
         #    encounter = dice_roll(1, 20)
         #    return encounter
         # NAVIGATION
+
+    def boss_clue_1(self):
+        self.hud()
+        rndm_hint_list = ["a piece of parchment", "a torn piece of fabric", "a broken necklace", "a broken ring"]
+        clue_item = random.choice(rndm_hint_list)
+        print(f"On the ground before you lays {clue_item}. You see a symbol on it; A woman with a crown surrounded "
+              f"by many skulls.")
+        sleep(1)
+        print(f"Suddenly, it begins to deteriorate in your hands until it is nothing but ashes!")
+        sleep(1)
+        print(f"You ponder this, and commit the image to memory.")
+        pause()
+        self.boss_hint_1 = True
+        return
+
+    def boss_clue_2(self):
+        self.hud()
+        print("You find a clue about the boss2")
+        pause()
+        self.boss_hint_2 = True
+        return
+
+    def boss_clue_3(self):
+        self.hud()
+        print("You find a clue about the boss3")
+        pause()
+        self.boss_hint_3 = True
+        return
+
+    def boss_clue_4(self):
+        self.hud()
+        print("You find a clue about the boss4")
+        pause()
+        self.boss_hint_4 = True
+        return
+
+    def boss_clue_5(self):
+        self.hud()
+        print("You find a clue about the boss5")
+        pause()
+        self.boss_hint_5 = True
+        return
+
+    def boss_clue_6(self):
+        self.hud()
+        print("You find a clue about the boss6")
+        pause()
+        self.boss_hint_6 = True
+        return
+
+    def boss_hint_logic(self):
+        if not self.boss_hint_1:
+            return self.boss_clue_1()
+        if not self.boss_hint_2:
+            return self.boss_clue_2()
+        if not self.boss_hint_3:
+            return self.boss_clue_3()
+        if not self.boss_hint_4:
+            return self.boss_clue_4()
+        if not self.boss_hint_5:
+            return self.boss_clue_5()
+        if not self.boss_hint_6:
+            return self.boss_clue_6()
 
     def dungeon_description(self):
         self.hud()

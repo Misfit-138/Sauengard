@@ -409,8 +409,8 @@ while True:
                         if not player_1.in_proximity_to_monster:
                             break
                         if encounter < 11:  # regular monster
-                            # monster = player_1.regular_monster_generator()
-                            monster = GreenDragonWyrmling()  # testing
+                            monster = player_1.regular_monster_generator()
+                            # monster = HobgoblinCaptain()  # testing
                         elif encounter == 99:  # level exit boss fight
                             monster = player_1.exit_boss_generator()
                             gong()
@@ -533,7 +533,10 @@ while True:
                                                 gong()
                                                 sleep(4)
                                                 dungeon_theme()
+                                                if encounter == 99:
+                                                    player_1.boss_hint_logic()
                                             player_1.level_up(monster.experience_award, monster.gold)
+
                                             player_1.dungeon_description()
                                             # pause()
                                             break
@@ -545,11 +548,15 @@ while True:
                                             player_1.hud()
                                             if encounter > 20:  # if fighting boss
                                                 gong()
-                                                print(f"You have vanquished {monster.proper_name}! You are victorious!")
+                                                if monster.proper_name != "None":
+                                                    print(f"You have vanquished {monster.proper_name}! You are victorious!")
+                                                    player_1.vanquished_foes.append(monster.proper_name)
+                                                else:
+                                                    print(f"You have vanquished the {monster.name}!")
                                                 sleep(4)
                                                 dungeon_theme()
                                             else:
-                                                print(f"It died..")
+                                                print(f"You have defeated the {monster.name}..")
                                             # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
                                             player_1.end_of_turn_calculation()
                                             pause()
@@ -561,6 +568,8 @@ while True:
                                             player_1.in_proximity_to_monster = False
                                             player_1.loot(encounter)
                                             if encounter > 20:  # if you kill the boss, you get extra chance for loot
+                                                if encounter == 99:  # level exit boss
+                                                    player_1.boss_hint_logic()
                                                 player_1.loot(encounter)  # 8 difficulty class
                                             break
                                         # player_1.end_of_turn_calculation()  # beta testing no good...this is
@@ -609,11 +618,15 @@ while True:
                                     player_1.hud()
                                     if encounter > 20:  # if fighting boss
                                         gong()
-                                        print(f"You have vanquished {monster.proper_name}! You are victorious!")
+                                        if monster.proper_name != "None":
+                                            print(f"You have vanquished {monster.proper_name}! You are victorious!")
+                                            player_1.vanquished_foes.append(monster.proper_name)
+                                        else:
+                                            print(f"You have vanquished the {monster.name}!")
                                         sleep(4)
                                         dungeon_theme()
                                     else:
-                                        print(f"It died..")
+                                        print(f"You are victorious..")
                                     pause()
                                     # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
                                     player_1.end_of_turn_calculation()
@@ -626,7 +639,9 @@ while True:
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot(encounter)
                                     if encounter > 20:  # if you kill the boss, you get extra chance for loot
-                                        player_1.loot(encounter)  # 8 difficulty class
+                                        if encounter == 99:  # if exit boss has been defeated,
+                                            player_1.boss_hint_logic()  # give main boss hints
+                                        player_1.loot(encounter)  # 8 difficulty class: better chance at loot
                                     break
 
                                 # monster turn if still alive after player melee attack:

@@ -1911,7 +1911,7 @@ class HobgoblinCaptain(Monster):
         self.name = "Hobgoblin Captain"
         self.proper_name = "None"
         self.experience_award = 700
-        self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.gold = random.randint(7, 15)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 2
         self.armor = 0
         self.shield = 0

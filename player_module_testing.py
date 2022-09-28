@@ -871,7 +871,8 @@ class Player:
         self.stealth += self.cloak.stealth
 
     def calculate_armor_class(self):
-        self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
+        self.armor_class = self.armor.ac + self.armor.armor_bonus + \
+                           self.shield.ac + self.boots.ac + self.dexterity_modifier
         return
 
     def calculate_poison(self):

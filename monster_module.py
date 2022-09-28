@@ -1903,6 +1903,64 @@ class SpecterKing(Monster):
         self.paralyze_free_attack_phrase = "You feel agony crawling deep within you as you stand helpless and still!!"
 
 
+class HobgoblinCaptain(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 4
+        self.name = "Hobgoblin Captain"
+        self.proper_name = "None"
+        self.experience_award = 700
+        self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.weapon_bonus = 2
+        self.armor = 0
+        self.shield = 0
+        self.strength = 15
+        self.dexterity = 14
+        self.constitution = 14
+        self.intelligence = 12
+        self.wisdom = 10
+        self.charisma = 13
+        self.can_paralyze = False
+        self.paralyze_turns = 0
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 1
+        self.dot_turns = 1
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = False
+        self.difficulty_class = 1
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 1
+        self.hit_dice = 6  # MM
+        self.number_of_hd = 2  # mm
+        self.proficiency_bonus = 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.strength_modifier = round((self.strength - 10) / 2)
+        self.constitution_modifier = round((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(36, 49)) + self.constitution_modifier
+        self.dexterity_modifier = round((self.dexterity - 10) / 2)
+        self.wisdom_modifier = round((self.wisdom - 10) / 2)
+        self.armor_class = random.randint(12, 12)
+        self.attack_1 = 1  # attack bonus
+        self.attack_1_phrase = "It thrusts mightily forward with its javelin!.."
+        self.attack_2 = 2
+        self.attack_2_phrase = "It swings its greatsword with blinding speed!"
+        self.attack_3 = 2
+        self.attack_3_phrase = "It swings its greatsword with blinding speed!"
+        self.attack_4 = 3
+        self.attack_4_phrase = "It roars and swings its greatsword with murderous rage!"
+        self.attack_5 = 3
+        self.attack_5_phrase = "It raises its greatsword overhead with both hands for a mighty blow.."
+        self.introduction = f"You have encountered a Hobgoblin Captain. Stooping forward with its piggish face " \
+                            f"and prominent teeth,\nit prepares to satisfy its bloodlust by slaying any " \
+                            f"humanoids that stand against it.."
+        self.is_discovered = False
+
+
 class GreenDragonWyrmling(Monster):
 
     def __init__(self):
@@ -2029,7 +2087,7 @@ monster_dict = {
     1: [Quasit, Kobold, Cultist, Goblin, Skeleton, WingedKobold],
     2: [Shadow, Drow, Troglodyte, Orc, Zombie, Ghoul],
     3: [Specter, Bugbear, CultFanatic, HalfOgre],
-    4: [WhiteDragonWyrmling, GreenDragonWyrmling]
+    4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain]
 }
 # undead monsters:
 undead_monster_dict = {

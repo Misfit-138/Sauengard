@@ -4881,13 +4881,13 @@ class Player:
                    f"\'We 'ave 'eard of it.. how ye' 'ave defeated {vanquished_foes}...and others!\'")
         typing("\'There is somethin' ye should know!\' Her level of anxiety gives you pause; it seems out of\n"
                "character for her.\n\'Ye should seek out Vozzbozz!\' Pausing with a far away look, she nods.\n"
-               "\'I'm headin' back to the bar, and we'll make like we never spoke o' this!\n"
-               "Vozzbozz is in the barroom! He's the one with the raven on 'is shoulder!\'\n"
+               "\'I'm headin' back to the bar, and we'll make like we never spoke o' this..\n"
+               "Vozzbozz is in the barroom. He's the one with the raven on 'is shoulder!\'\n"
                "The meeting ends as abruptly as it began. Jenna disappears toward the bar as you slowly\n"
                "start to follow a good distance behind, impatient and confused.\n")
         pause()
         cls()
-        # meet vozzbozz, get hints about boss....
+        # meet vozzbozz, get hints about boss....finish this
         typing(f"Coming to the bar, you quickly scan the room for the man with the raven, who is not hard to spot.\n"
                f"")
         self.boss_hint_1_event = True

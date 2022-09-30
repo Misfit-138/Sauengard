@@ -379,22 +379,23 @@ while True:
                 player_1.coordinates = (player_1.x, player_1.y)  #
                 # META CALCULATION FUNCTION FOR REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
                 # this is also called after monster melee, necro, poison and quantum attack
-                # as well as after turning undead, and victory
+                # as well as after turning/banishing, etc, and victory
                 player_1.end_of_turn_calculation()
                 if player_1.check_dead():  # player can die of necrosis/poison after end of turn calculations
                     player_is_dead = True
                     continue
                 encounter = encounter_logic()
                 event = player_1.event_logic()
-                if event == "King Boss":
-                    encounter = 98
-                elif event == "Undead Prophet":
+                if event == "Undead Prophet":
                     encounter = 97
+                elif event == "King Boss":
+                    encounter = 98
+                elif event == "Exit Boss":
+                    encounter = 99
                 player_1.dungeon_description()  # this seems to work best when put here
-                if player_1.position == "E":
-                    # monster = player_1.dungeon.boss
-                    encounter = 99  # dungeon level boss conditional
-                    player_1.next_dungeon()
+                #if player_1.position == "E":
+                #    encounter = 99  # dungeon level boss conditional
+                #    player_1.next_dungeon()
                 # ***********************************************************************************************>>>>
                 if encounter < 11 or encounter > 20:  # < 11 = normal monster. > 20 = boss
                     monster = ""  # to prevent monster from being undefined
@@ -630,7 +631,6 @@ while True:
                                     pause()
                                     # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
                                     player_1.end_of_turn_calculation()
-
                                     if player_1.check_dead():
                                         player_is_dead = True
                                         player_1.in_proximity_to_monster = False

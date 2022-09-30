@@ -1320,6 +1320,14 @@ class Player:
         return undead_prophet
 
     def exit_boss_generator(self):
+        rndm_boss_names = ['Gwarlek', 'Srentor', 'Borrnol', 'Sentollor', 'Morluk',
+                           'Twinbelor', 'Sornog', 'Grenyor', 'Fallraur', 'Timboth', 'Surj',
+                           'Morozzor', 'Tharbor', 'Tenbrok', 'Lorrius', 'Filwor',
+                           'Hahrmon', 'Kardon', 'Corbrin', 'Billentor', 'Weggard',
+                           'Norrus', 'Fellbrion', 'Sajanus', 'Qorag', 'Sorenmor',
+                           'Kraw', 'Kullador', 'Qendor', 'Willenbor', 'Valwar',
+                           'Moonror']
+
         # just in case I forget to make level 21 monsters.
         if self.level < 20:
             monster_key = (self.level + 1)
@@ -1327,9 +1335,12 @@ class Player:
             monster_key = self.level
         monster_cls = random.choice(monster_dict[monster_key])
         exit_boss = monster_cls()
+        first_name = random.choice(rndm_boss_names)
+        # epithet = random.choice(rndm_epithets)
+        exit_boss.proper_name = f"{first_name} the {exit_boss.name} guardian"
         print(f"In the archway to the {self.dungeon.name} exit "
-              f"stands the {exit_boss.name} guardian. Without fear, without thought,\n"
-              f"it looks upon you and readies itself for battle...")
+              f"stands {exit_boss.proper_name}!\n"
+              f"Without fear, without thought, the guardian looks upon you and readies itself for battle...")
         return exit_boss
 
     def king_monster_generator(self):
@@ -4872,6 +4883,11 @@ class Player:
             return False
 
     def hint_event_1(self):
+        print(f"As soon as she sees you, Jenna motions discreetly toward the hallway leading away from the bar.")
+        sleep(1)
+        print(f"You direct your eyes that way and casually make your way down the hall...")
+        sleep(1)
+        pause()
         cls()
         typing(f"Jenna catches up to you at end of the hallway. \'Ye are {self.name}, are ye not?\'")
         typing(f"Nodding and instinctively looking about for eavesdroppers, you re-focus on her concerned look.")
@@ -4881,25 +4897,28 @@ class Player:
                    f"\'We 'ave 'eard of it.. how ye' 'ave defeated {vanquished_foes}...and others!\'")
         typing("\'There is somethin' ye should know!\' Her level of anxiety gives you pause; it seems out of\n"
                "character for her.\n\'Ye should seek out Vozzbozz!\' Pausing with a far away look, she nods.\n"
-               "\'I'm headin' back to the bar, and we'll make like we never spoke o' this..\n"
-               "Vozzbozz is in the barroom. He's the one with the raven on 'is shoulder!\'\n"
+               "\'I'm headin' back to the bar, and we'll make like we never spoke o' this..\'\n"
+               "\'Vozzbozz is in the barroom. He's the one with the raven on 'is shoulder!\'\n"
                "The meeting ends as abruptly as it began. Jenna disappears toward the bar as you slowly\n"
                "start to follow a good distance behind, impatient and confused.\n")
         pause()
         cls()
-        # meet vozzbozz, get hints about boss....finish this
-        typing(f"Coming to the bar, you quickly scan the room for the man with the raven, who is not hard to spot.\n"
-               f"")
+        # meet vozzbozz, get hints about boss.
+        hint_file = open("hint_event_1.txt", "r")
+        if hint_file.readable():
+            typing(hint_file.read())
+            hint_file.close()
+            pause()
+        cls()
+        typing(f"{self.name},\nThe guardian of {self.dungeon.name} has in its possession an ornate dagger of very fine "
+               f"craftsmanship.\nIt is imperative you retrieve it. Return here with it so that matters may progress.\n"
+               f"\n                                                     -V\n")
         self.boss_hint_1_event = True
         pause()
         return
 
     def hint_event_logic(self):
-        print(f"As soon as she sees you, Jenna motions discreetly toward the hallway leading away from the bar.")
-        sleep(1)
-        print(f"You direct your eyes that way and casually make your way down the hall...")
-        sleep(2)
-        pause()
+
         if self.boss_hint_1 and not self.boss_hint_1_event:
             return self.hint_event_1()
         if self.boss_hint_2 and not self.boss_hint_2_event:
@@ -5959,7 +5978,7 @@ class Player:
         else:
             print(f"The ground beneath your feet collapses!")
             sleep(1)
-            print(f"Desperately, you grab for a crag!")
+            print(f"Desperately, you grope for a crag!")
             sleep(1)
             if dice_roll(1, 20) >= 15:
                 print(f"You succeed!")
@@ -6041,7 +6060,7 @@ class Player:
 
     def event_logic(self):
         # interactive events, items etc.
-        # the event dictionary *key* is the dungeon tuple corresponding to
+        # the event dictionary *key* is a tuple corresponding to
         # dungeon x y coordinates of an event or item e.g. (2, 3)
         # the event dictionary *value* is the corresponding player function.
         # if the player's coordinates exist as a key in event_dict,
@@ -6058,7 +6077,8 @@ class Player:
                       self.dungeon.teleporter: self.teleporter_event,
                       self.dungeon.elevator: self.elevator_event,
                       self.dungeon.pit: self.pit_event,
-                      self.dungeon.pit2: self.pit_event
+                      self.dungeon.pit2: self.pit_event,
+                      self.dungeon.exit: self.dungeon_exit
                       }
         if self.coordinates in event_dict.keys():
             event_function = (event_dict[self.coordinates])  # (event_dict[self.coordinates])
@@ -6251,15 +6271,15 @@ class Player:
         # place the following line in the main file to leave a trail of x's throughout the map to see where you've been.
         # player_1.dungeon.player_grid[player_1.y][player_1.x] = "x"
 
-    def next_dungeon(self):
-        # dungeon dictionary in dungeons.py
+    def dungeon_exit(self):
+        # dungeon dictionary in dungeons.py file
         print(f"You approach the exit. With quiet resolve you turn to briefly look\n"
               f"behind you, and then continue onward, toward your goal.")
         sleep(2)
         self.dungeon_key += 1
         self.dungeon = dungeon_dict[self.dungeon_key]
         (self.x, self.y) = self.dungeon.staircase  # simplified with tuple instead of self.x = and self.y =
-        # self.coordinates will be set after first move..otherwise the intro will be printed, followed by the
+        # self.coordinates will be set after first move..otherwise the intro will be printed 1st, followed by the
         # staircase description, which is awkward
         # self.x = self.dungeon.starting_x
         # self.y = self.dungeon.starting_y
@@ -6267,7 +6287,7 @@ class Player:
         self.previous_y = self.y
         self.position = 0
         pause()
-        return
+        return "Exit Boss"
 
 
 '''

@@ -4917,6 +4917,51 @@ class Player:
         pause()
         return
 
+    def hint_event_2(self):
+        print(f"As soon as she sees you, Jenna directs your attention to the opposite side of the room by raising "
+              f"her chin in that general direction.\nAt the very same booth as you saw him at last time, sits "
+              f"the hulking barbarian, Tor'bron. ")
+        sleep(1)
+        print(f"You cautiously approach...")
+        sleep(1)
+        pause()
+        cls()
+        typing(f"\'Well! {self.name}!\', he bellows in his booming voice. \'Sit!\' Something in his dour demeanor\n"
+               f"tells you it is not an invitation, but an order.")
+        typing(f"You marvel at the size and strength of the man. His jet black hair covers much of his body in a\n"
+               f"wiry patchwork. Long sideburns flank a strong jawbone and his deep-set amber eyes burn with\n"
+               f"gripping intensity. \'And where is it? Do you have it?\', he asks, his tone tense and distrustful.\n"
+               f"You carefully retrieve the dagger and pass it to him across the table. Roughly and without regard,\n"
+               f"he swipes it from you, yanks it from its sheath and launches it across the room, over the heads\n"
+               f"of all the patrons on this side of the bar, until it abruptly lodges in the wall with a bang.\n")
+        if len(self.vanquished_foes):
+            vanquished_foes = convert_list_to_string_with_commas_only(self.vanquished_foes)
+            typing(f"\'The slayer of {vanquished_foes}...and others besides!\'\n")
+        typing("When first I saw you, I was...he searches for the word.\'..skeptical! But now, things are different!\n"
+               "Now I know you are able-bodied and strong! Good! Very good, this!\' He nods.\n"
+               "A sting of disrespect hits you. After the toil and struggle to retrieve the prized dagger, you are\n"
+               "now realizing it was nothing more than a test to prove your mettle to the man!\n"
+               "\'You  must be Tor'bron!\', you say as you slide into the booth. His eyes\n"
+               f"narrow slightly and he takes a sip of ale. Continuing, you say, \'I heard Vozzbozz address you\n"
+               "the last time we saw each other. And may I add, I never doubted *your* abilities!\'\n"
+               "Still alert, he thinks about your words. His glowering slowly turns to what must be a smile.\n "
+               "Then, he laughs, a deep and hearty laugh. Instantly, he fiercely slams the table with his fist,\n"
+               "so that the entire room shakes and becomes silent. He raises his huge hand, pointing\n"
+               "straight at you. \'Good! Don't ever doubt them!\' And again he smiles and laughs.")
+        pause()
+        cls()
+        #
+        hint_file = open("hint_event_2.txt", "r")
+        if hint_file.readable():
+            typing(hint_file.read())
+            hint_file.close()
+            pause()
+        cls()
+        typing(f"")
+        self.boss_hint_2_event = True
+        pause()
+        return
+
     def hint_event_logic(self):
 
         if self.boss_hint_1 and not self.boss_hint_1_event:

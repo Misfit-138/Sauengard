@@ -754,7 +754,7 @@ class Player:
         self.vanquished_foes = []
         self.boss_hint_1 = False
         self.boss_hint_1_event = False
-        self.boss_hint_2 = False
+        self.boss_hint_2 = True
         self.boss_hint_2_event = False
         self.boss_hint_3 = False
         self.boss_hint_3_event = False
@@ -788,92 +788,56 @@ class Player:
 
     def hud(self):
         os.system('cls')
-        print(f"                                                                            Name: {self.name}")
-        print(f"                                                                            Level: {self.level}")
-        print(
-            f"                                                                            Experience: {self.experience}")
-        print(f"                                                                            Gold: {self.gold}")
-        print(
-            f"                                                                            Weapon: {self.wielded_weapon.name} + {self.wielded_weapon.damage_bonus}")
-        print(
-            f"                                                                            To hit bonus: + {self.wielded_weapon.to_hit_bonus}")
-        print(
-            f"                                                                            Armor: {self.armor.name} (AC: {self.armor.ac})")
-
-        print(
-            f"                                                                            Shield: {self.shield.name} (AC: {self.shield.ac})")
-        print(
-            f"                                                                            Boots: {self.boots.name} (AC: {self.boots.ac})")
-        print(
-            f"                                                                            Your Armor Class: {self.armor_class}")
-        print(
-            f"                                                                            Strength: {self.strength} (Modifier: {self.strength_modifier})")
-        print(
-            f"                                                                            Dexterity: {self.dexterity} (Modifier: {self.dexterity_modifier})")
-        print(
-            f"                                                                            Constitution: {self.constitution} (Modifier: {self.constitution_modifier})")
-        print(
-            f"                                                                            Intelligence: {self.intelligence} (Modifier: {self.intelligence_modifier})")
-        print(
-            f"                                                                            Wisdom: {self.wisdom} (Modifier: {self.wisdom_modifier})")
-
-        print(
-            f"                                                                            Charisma: {self.charisma} (Modifier: {self.charisma_modifier})")
-        print(
-            f"                                                                            Hit points: {self.hit_points}/"
-            f"{self.maximum_hit_points}")
-        print(
-            f"                                                                            Quantum units: {self.quantum_units}/{self.maximum_quantum_units}")
-        print(
-            f"                                                                            Cloak: {self.cloak.name} (Stealth: {self.stealth})")
+        print(f"Name: {self.name}")
+        print(f"Level: {self.level}")
+        print(f"Experience: {self.experience}")
+        print(f"Gold: {self.gold}")
+        print(f"Weapon: {self.wielded_weapon.name} + {self.wielded_weapon.damage_bonus}")
+        print(f"To hit bonus: + {self.wielded_weapon.to_hit_bonus}")
+        print(f"Armor: {self.armor.name} (AC: {self.armor.ac})")
+        print(f"Shield: {self.shield.name} (AC: {self.shield.ac})")
+        print(f"Boots: {self.boots.name} (AC: {self.boots.ac})")
+        print(f"Your Armor Class: {self.armor_class}")
+        print(f"Strength: {self.strength} (Modifier: {self.strength_modifier})")
+        print(f"Dexterity: {self.dexterity} (Modifier: {self.dexterity_modifier})")
+        print(f"Constitution: {self.constitution} (Modifier: {self.constitution_modifier})")
+        print(f"Intelligence: {self.intelligence} (Modifier: {self.intelligence_modifier})")
+        print(f"Wisdom: {self.wisdom} (Modifier: {self.wisdom_modifier})")
+        print(f"Charisma: {self.charisma} (Modifier: {self.charisma_modifier})")
+        print(f"Hit points: {self.hit_points}/{self.maximum_hit_points}")
+        print(f"Quantum units: {self.quantum_units}/{self.maximum_quantum_units}")
+        print(f"Cloak: {self.cloak.name} (Stealth: {self.stealth})")
         if self.potions_of_strength > 0:
             number_of_potions_of_strength = self.potions_of_strength
-            print(
-                f"                                                                            Strength Potions: {number_of_potions_of_strength}")
+            print(f"Strength Potions: {number_of_potions_of_strength}")
         if self.potion_of_strength_effect and self.potion_of_strength_uses > -1:
-            print(
-                f"                                                                            (STRENGTH POTION EFFECT) ({self.potion_of_strength_uses}/{self.strength_modifier})")
+            print(f"(STRENGTH POTION EFFECT) ({self.potion_of_strength_uses}/{self.strength_modifier})")
         if self.quantum_strength_effect and self.quantum_strength_uses > -1:
-            print(
-                f"                                                                            (QUANTUM STRENGTH EFFECT) ({self.quantum_strength_uses}/{self.max_quantum_strength_uses})")
-
+            print(f"QUANTUM STRENGTH EFFECT) ({self.quantum_strength_uses}/{self.max_quantum_strength_uses})")
         if self.protection_effect and self.protection_effect_uses > -1:
-            print(
-                f"                                                                            (PROT/EVIL: {self.temp_protection_effect}) ({self.protection_effect_uses}/{self.max_quantum_strength_uses})")
-
+            print(f"(PROT/EVIL: {self.temp_protection_effect}) ({self.protection_effect_uses}/{self.max_quantum_strength_uses})")
         if self.poisoned:
-            print(
-                f"                                                                            (POISONED)")
-            print(
-                f"                                                                            Poison clarifying: ({self.poisoned_turns}/{self.dot_turns})")
+            print(f"(POISONED)")
+            print(f"Poison clarifying: ({self.poisoned_turns}/{self.dot_turns})")
         if self.necrotic:
-            print(
-                f"                                                                            (NECROTIC)")
-            print(
-                f"                                                                            Necrotic clarifying: ({self.necrotic_turns}/{self.dot_turns})")
+            print(f"(NECROTIC)")
+            print(f"Necrotic clarifying: ({self.necrotic_turns}/{self.dot_turns})")
         if self.potions_of_healing > 0:
             number_of_potions_of_healing = self.potions_of_healing  # len(self.pack['Healing'])
-            print(
-                f"                                                                            Healing Potions: {number_of_potions_of_healing}")
+            print(f"Healing Potions: {number_of_potions_of_healing}")
         if self.antidotes > 0:
             number_of_antidotes = self.antidotes  # len(self.pack['Healing'])
-            print(
-                f"                                                                            Vials of Antidote: {number_of_antidotes}")
+            print(f"Vials of Antidote: {number_of_antidotes}")
         if self.elixirs > 0:
             number_of_elixirs = self.elixirs  # len(self.pack['Healing'])
-            print(
-                f"                                                                            Elixirs: {number_of_elixirs}")
+            print(f"Elixirs: {number_of_elixirs}")
         if self.town_portals > 0:
             number_of_portal_scrolls = self.town_portals  # len(self.pack['Town Portal Implements'])
-            print(
-                f"                                                                            Town Portal Scrolls: {number_of_portal_scrolls}")
+            print(f"Town Portal Scrolls: {number_of_portal_scrolls}")
         if self.ring_of_reg.name != default_ring_of_regeneration.name:
-            print(
-                f"                                                                            Ring of Reg: +{self.ring_of_reg.regenerate}")
+            print(f"Ring of Reg: +{self.ring_of_reg.regenerate}")
         if self.ring_of_prot.name != default_ring_of_protection.name:
-            print(
-                f"                                                                            Ring of Prot: +{self.ring_of_prot.protect}")
-
+            print(f"Ring of Prot: +{self.ring_of_prot.protect}")
         return
 
     # CALCULATION
@@ -4903,7 +4867,7 @@ class Player:
                "start to follow a good distance behind, impatient and confused.\n")
         pause()
         cls()
-        # meet vozzbozz, get hints about boss.
+        # meet vozzbozz, get hints
         hint_file = open("hint_event_1.txt", "r")
         if hint_file.readable():
             typing(hint_file.read())
@@ -4927,39 +4891,47 @@ class Player:
         pause()
         cls()
         typing(f"\'Well! {self.name}!\', he bellows in his booming voice. \'Sit!\' Something in his dour demeanor\n"
-               f"tells you it is not an invitation, but an order.")
-        typing(f"You marvel at the size and strength of the man. His jet black hair covers much of his body in a\n"
-               f"wiry patchwork. Long sideburns flank a strong jawbone and his deep-set amber eyes burn with\n"
-               f"gripping intensity. \'And where is it? Do you have it?\', he asks, his tone tense and distrustful.\n"
+               f"tells you it is not an invitation, but an order. You marvel at the size and strength of the man.\n"
+               f"His jet black hair lays long on his head, and covers his body in a wiry patchwork.\n"
+               f"Long sideburns flank a strong jawbone and his deep-set amber eyes burn with gripping intensity.\n"
+               f"\'And where is it? Do you have it?\', he asks, his tone tense and distrustful.\n"
                f"You carefully retrieve the dagger and pass it to him across the table. Roughly and without regard,\n"
                f"he swipes it from you, yanks it from its sheath and launches it across the room, over the heads\n"
-               f"of all the patrons on this side of the bar, until it abruptly lodges in the wall with a bang.\n")
+               f"of all the patrons on this side of the bar, until it abruptly lodges in the wall with a bang.")
         if len(self.vanquished_foes):
             vanquished_foes = convert_list_to_string_with_commas_only(self.vanquished_foes)
             typing(f"\'The slayer of {vanquished_foes}...and others besides!\'\n")
-        typing("When first I saw you, I was...he searches for the word.\'..skeptical! But now, things are different!\n"
-               "Now I know you are able-bodied and strong! Good! Very good, this!\' He nods.\n"
+        typing("\'When first I saw you, I was...\', he searches for the word. \'..skeptical!\'\n"
+               "But now, things are different! Now I know you are able-bodied and strong! Good! Very good, this!\' He nods.\n"
                "A sting of disrespect hits you. After the toil and struggle to retrieve the prized dagger, you are\n"
-               "now realizing it was nothing more than a test to prove your mettle to the man!\n"
+               "now realizing it was nothing more than a test to prove your mettle to this stranger!\n"
                "\'You  must be Tor'bron!\', you say as you slide into the booth. His eyes\n"
                f"narrow slightly and he takes a sip of ale. Continuing, you say, \'I heard Vozzbozz address you\n"
                "the last time we saw each other. And may I add, I never doubted *your* abilities!\'\n"
-               "Still alert, he thinks about your words. His glowering slowly turns to what must be a smile.\n "
+               "Still alert, he thinks about your words. His glowering slowly turns to what must be a smile.\n"
                "Then, he laughs, a deep and hearty laugh. Instantly, he fiercely slams the table with his fist,\n"
                "so that the entire room shakes and becomes silent. He raises his huge hand, pointing\n"
-               "straight at you. \'Good! Don't ever doubt them!\' And again he smiles and laughs.")
+               "straight at you. \'Good! Don't ever doubt them!\' And again he smiles and laughs. Reaching his tree-\n"
+               "trunk arm toward you, he slams you on the shoulder with a heavy hand. You are thankful for the\n"
+               f"{self.armor.name.lower()} you wear; without it, the blow would undoubtedly have been an injury!\n"
+               f"Instinctively reaching for the aching shoulder, you reply plainly, \'I certainly will not..\'\n")
         pause()
         cls()
-        #
-        hint_file = open("hint_event_2.txt", "r")
-        if hint_file.readable():
-            typing(hint_file.read())
-            hint_file.close()
+        # meet Tor'bron, get hints
+
+        try:
+            hint_file = open("hint_event_2.txt", "r")
+            if hint_file.readable():
+                typing(hint_file.read())
+                hint_file.close()
+                pause()
+        except FileNotFoundError:
+            print(f"Missing file or bad file path.")
             pause()
         cls()
-        typing(f"")
+        #typing(f"")
         self.boss_hint_2_event = True
-        pause()
+        #pause()
         return
 
     def hint_event_logic(self):
@@ -4967,8 +4939,8 @@ class Player:
         if self.boss_hint_1 and not self.boss_hint_1_event:
             return self.hint_event_1()
         if self.boss_hint_2 and not self.boss_hint_2_event:
-            # return self.hint_event_2()
-            print("hint 2 event")
+            return self.hint_event_2()
+            # print("hint 2 event")
         if self.boss_hint_3 and not self.boss_hint_3_event:
             # return self.hint_event_3()
             print("hint 3 event")
@@ -4995,12 +4967,12 @@ class Player:
         while True:
             self.hud()
             if self.boss_hint_1:
-                print(f"The barroom is bustling as always. Jenna notices you and nods discreetly. ")
+                print(f"Jenna catches your gaze and nods discreetly. \'Let me know if ye be needin' anything, love.\'")
             else:
                 print(f"The barroom is bustling as always, but Jenna, the barkeep, notices you and calls over,\n"
                       f"very matter-of-factly, \"What do ye be needin' love?\"")
             inn_choice = input(f"(R)oom for the evening - 10 GP\n(T)alk to Jenna\n(E)xit the inn\n"
-                               f"---> ").lower()
+                               f">: ").lower()
             if inn_choice == 'r':
                 if self.hit_points < self.maximum_hit_points or self.quantum_units < self.maximum_quantum_units \
                         or self.necrotic or self.poisoned:

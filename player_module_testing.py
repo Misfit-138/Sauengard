@@ -6162,7 +6162,9 @@ class Player:
 
     def boss_clue_3(self):
         self.hud()
-        print("You find a clue about the boss3")
+        print("You hear the flapping of the wings of a flying creature nearby...")
+        sleep(1)
+        print(f"You catch a glimpse of its dark form overhead, just before it disappears into the darkness far above.")
         pause()
         self.boss_hint_3 = True
         return

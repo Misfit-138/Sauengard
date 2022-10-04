@@ -752,11 +752,11 @@ class Player:
         self.previous_x = 0
         self.previous_y = 0
         self.vanquished_foes = []
-        self.boss_hint_1 = False
-        self.boss_hint_1_event = False
+        self.boss_hint_1 = True
+        self.boss_hint_1_event = True
         self.boss_hint_2 = True
-        self.boss_hint_2_event = False
-        self.boss_hint_3 = False
+        self.boss_hint_2_event = True
+        self.boss_hint_3 = True
         self.boss_hint_3_event = False
         self.boss_hint_4 = False
         self.boss_hint_4_event = False
@@ -4883,7 +4883,7 @@ class Player:
 
     def hint_event_2(self):
         print(f"As soon as she sees you, Jenna directs your attention to the opposite side of the room by raising "
-              f"her chin in that general direction.\nAt the very same booth as you saw him at last time, sits "
+              f"her chin in that general direction.\nAt the very same booth as last time, sits "
               f"the hulking barbarian, Tor'bron. ")
         sleep(1)
         print(f"You cautiously approach...")
@@ -4900,7 +4900,7 @@ class Player:
                f"of all the patrons on this side of the bar, until it abruptly lodges in the wall with a bang.")
         if len(self.vanquished_foes):
             vanquished_foes = convert_list_to_string_with_commas_only(self.vanquished_foes)
-            typing(f"\'The slayer of {vanquished_foes}...and others besides!\'\n")
+            typing(f"\'The slayer of {vanquished_foes}...\n...and others besides!\'\n")
         typing("\'When first I saw you, I was...\', he searches for the word. \'..skeptical!\'\n"
                "But now, things are different! Now I know you are able-bodied and strong! Good! Very good, this!\' He nods.\n"
                "A sting of disrespect hits you. After the toil and struggle to retrieve the prized dagger, you are\n"
@@ -4918,7 +4918,6 @@ class Player:
         pause()
         cls()
         # meet Tor'bron, get hints
-
         try:
             hint_file = open("hint_event_2.txt", "r")
             if hint_file.readable():
@@ -4929,9 +4928,41 @@ class Player:
             print(f"Missing file or bad file path.")
             pause()
         cls()
-        #typing(f"")
         self.boss_hint_2_event = True
-        #pause()
+        return
+
+    def hint_event_3(self):
+        print(f"Upon entering, you are met with the familiar sites, sounds and smells of the inn. Scanning the bar\n"
+              f"area, you immediately notice the nasty-looking knife, still lodged in the wall. Before you even have\n"
+              f"time to react, Lazarus swiftly lands on your shoulder. \'The master awaits you!\', he says plainly,\n"
+              f"in his smooth tone. Off to your left, Vozzbozz sits in his regular booth, across from a proud-looking\n"
+              f"and rather stout dwarf.")
+        sleep(1)
+        print(f"You approach the booth, and as you arrive, Lazarus deftly glides to Vozzbozz' shoulder.")
+        pause()
+        cls()
+        if self.armor.ac > 11:
+            print(f"The heavily-armored dwarf looks at you with seeming disinterest and simply says, "
+                  f"\'That be some decent {self.armor.name.lower()} ye got there, lad.\nHe takes a sip of his ale.")
+        print(f"The dwarf slides out of the booth and motions that you should take his place. "
+              f"He then slides in next to Vozzbozz and across from you. ")
+        print(f"\'{self.name}, meet my friend, Magnus Stormbringer.\', says Vozzbozz curtly. The dwarf promptly "
+              f"reaches his\n"
+              f"hand across the table and takes yours with a firm, brief grip and a nod.")
+        pause()
+        cls()
+        # another meeting, get hints
+        try:
+            hint_file = open("hint_event_3.txt", "r")
+            if hint_file.readable():
+                typing(hint_file.read())
+                hint_file.close()
+                pause()
+        except FileNotFoundError:
+            print(f"Missing file or bad file path.")
+            pause()
+        cls()
+        self.boss_hint_3_event = True
         return
 
     def hint_event_logic(self):
@@ -4940,10 +4971,8 @@ class Player:
             return self.hint_event_1()
         if self.boss_hint_2 and not self.boss_hint_2_event:
             return self.hint_event_2()
-            # print("hint 2 event")
         if self.boss_hint_3 and not self.boss_hint_3_event:
-            # return self.hint_event_3()
-            print("hint 3 event")
+            return self.hint_event_3()
         if self.boss_hint_4 and not self.boss_hint_4_event:
             # return self.hint_event_4()
             print("hint 4 event")
@@ -6114,14 +6143,19 @@ class Player:
         sleep(1)
         print(f"Suddenly, it begins to deteriorate in your hands until it is nothing but ashes!")
         sleep(1)
-        print(f"You ponder this, and commit the image to memory.")
+        print(f"You ponder this, and commit the image to memory. \'The tavern\', you say silently. A good place to"
+              f"start..")
         pause()
         self.boss_hint_1 = True
         return
 
     def boss_clue_2(self):
         self.hud()
-        print("You find a clue about the boss2")
+        print("You see a nasty-looking knife in a hand-etched sheath of gold!")
+        sleep(1)
+        print("Turning it over in your hands reveals runes that are foreign to you, which cover its entire surface.")
+        sleep(1)
+        print(f"You carefully place the dagger on your belt.")
         pause()
         self.boss_hint_2 = True
         return

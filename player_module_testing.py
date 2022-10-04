@@ -752,11 +752,11 @@ class Player:
         self.previous_x = 0
         self.previous_y = 0
         self.vanquished_foes = []
-        self.boss_hint_1 = True
-        self.boss_hint_1_event = True
-        self.boss_hint_2 = True
-        self.boss_hint_2_event = True
-        self.boss_hint_3 = True
+        self.boss_hint_1 = False
+        self.boss_hint_1_event = False
+        self.boss_hint_2 = False
+        self.boss_hint_2_event = False
+        self.boss_hint_3 = False
         self.boss_hint_3_event = False
         self.boss_hint_4 = False
         self.boss_hint_4_event = False

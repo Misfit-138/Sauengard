@@ -6,8 +6,6 @@ from collections import Counter
 import winsound
 from dice_roll_module import dice_roll
 from dungeons import *
-
-# from typing_module import typing
 from monster_module import monster_dict, king_boss_list, undead_prophet_list
 from typing_module import typing
 
@@ -52,16 +50,66 @@ rndm_aroma_lst = ['agarwood', 'angelica root', 'anise', 'basil', 'bergamot', 'ca
                   'vanilla sweet grass', 'warionia', 'vetiver', 'wintergreen', 'yarrow oil']
 
 
-def cls():
-    os.system('cls')
-
-
 def pause():
     os.system('pause')
 
 
 def sleep(seconds):
     time.sleep(seconds)
+
+
+def encounter_logic():
+    monster_encounter = dice_roll(1, 20)
+    return monster_encounter
+
+
+def gong():
+    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\gong.wav',
+                       winsound.SND_ASYNC)
+
+
+def blacksmith_theme():
+    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\blacksmith_theme_2.wav',
+                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+
+
+def chemist_theme():
+    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\chemist_theme.wav',
+                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+
+
+def mountain_king_theme():
+    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\mountain_king.wav',
+                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+
+
+def dungeon_theme():
+    winsound.PlaySound(
+        'C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\dungeon_theme_2.wav',
+        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+
+
+def boss_battle_theme():
+    winsound.PlaySound(
+        'C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\boss_battle_2.wav',
+        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+
+
+def town_theme():
+    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_theme_2.wav',
+                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+
+
+def cls():
+    os.system('cls')
+
+
+# def pause():
+#   os.system('pause')
+
+
+# def sleep(seconds):
+#    time.sleep(seconds)
 
 
 class Weapon:
@@ -751,6 +799,7 @@ class Player:
         self.coordinates = (self.x, self.y)
         self.previous_x = 0
         self.previous_y = 0
+        self.in_a_pit = False
         self.vanquished_foes = []
         self.boss_hint_1 = False
         self.boss_hint_1_event = False
@@ -792,7 +841,7 @@ class Player:
         print(f"Level: {self.level}")
         print(f"Experience: {self.experience}")
         print(f"Gold: {self.gold}")
-        print(f"Weapon: {self.wielded_weapon.name} + {self.wielded_weapon.damage_bonus}")
+        print(f"Weapon: {self.wielded_weapon.name} Damage Bonus: {self.wielded_weapon.damage_bonus}")
         print(f"To hit bonus: + {self.wielded_weapon.to_hit_bonus}")
         print(f"Armor: {self.armor.name} (AC: {self.armor.ac})")
         print(f"Shield: {self.shield.name} (AC: {self.shield.ac})")
@@ -815,7 +864,8 @@ class Player:
         if self.quantum_strength_effect and self.quantum_strength_uses > -1:
             print(f"QUANTUM STRENGTH EFFECT) ({self.quantum_strength_uses}/{self.max_quantum_strength_uses})")
         if self.protection_effect and self.protection_effect_uses > -1:
-            print(f"(PROT/EVIL: {self.temp_protection_effect}) ({self.protection_effect_uses}/{self.max_quantum_strength_uses})")
+            print(
+                f"(PROT/EVIL: {self.temp_protection_effect}) ({self.protection_effect_uses}/{self.max_quantum_strength_uses})")
         if self.poisoned:
             print(f"(POISONED)")
             print(f"Poison clarifying: ({self.poisoned_turns}/{self.dot_turns})")
@@ -838,6 +888,7 @@ class Player:
             print(f"Ring of Reg: +{self.ring_of_reg.regenerate}")
         if self.ring_of_prot.name != default_ring_of_protection.name:
             print(f"Ring of Prot: +{self.ring_of_prot.protect}")
+        print()
         return
 
     # CALCULATION
@@ -851,6 +902,7 @@ class Player:
 
     def calculate_stealth(self):
         self.stealth += self.cloak.stealth
+        return
 
     def calculate_armor_class(self):
         self.armor_class = self.armor.ac + self.armor.armor_bonus + \
@@ -932,7 +984,6 @@ class Player:
         return self.protection_effect
 
     def calculate_modifiers(self):
-
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         # When your Constitution modifier increases by 1,
@@ -951,12 +1002,12 @@ class Player:
             sleep(1)
             print(f"You feel your vitality surge.")
             sleep(1)
-
         self.intelligence_modifier = math.floor((self.intelligence - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.max_protection_effect_uses = self.quantum_level + self.constitution_modifier
         self.max_quantum_strength_uses = self.quantum_level + self.strength_modifier
+        return
 
     def calculate_proficiency_bonus(self):
         if self.level <= 4:
@@ -989,97 +1040,97 @@ class Player:
         if self.experience >= 300 < 900:
             self.level = 2
             self.quantum_level = 1
-            self.maximum_quantum_units = 2
+            self.maximum_quantum_units = 4
 
         if self.experience >= 900 < 2700:
             self.level = 3
             self.quantum_level = 2
-            self.maximum_quantum_units = 4
+            self.maximum_quantum_units = 6
 
         if self.experience >= 2700 < 6500:
             self.level = 4
             self.quantum_level = 2
-            self.maximum_quantum_units = 4
+            self.maximum_quantum_units = 6
 
         if self.experience >= 6500 < 14000:
             self.level = 5
             self.quantum_level = 2
-            self.maximum_quantum_units = 4
+            self.maximum_quantum_units = 6
 
         if self.experience >= 14000 < 23000:
             self.level = 6
             self.quantum_level = 3
-            self.maximum_quantum_units = 6
+            self.maximum_quantum_units = 8
 
         if self.experience >= 23000 < 34000:
             self.level = 7
             self.quantum_level = 3
-            self.maximum_quantum_units = 6
+            self.maximum_quantum_units = 8
 
         if self.experience >= 34000 < 48000:
             self.level = 8
             self.quantum_level = 3
-            self.maximum_quantum_units = 6
+            self.maximum_quantum_units = 10
 
         if self.experience >= 48000 < 64000:
             self.level = 9
             self.quantum_level = 4
-            self.maximum_quantum_units = 8
+            self.maximum_quantum_units = 10
 
         if self.experience >= 64000 < 85000:
             self.level = 10
             self.quantum_level = 4
-            self.maximum_quantum_units = 8
+            self.maximum_quantum_units = 12
 
         if self.experience >= 85000 < 100000:
             self.level = 11
             self.quantum_level = 4
-            self.maximum_quantum_units = 8
+            self.maximum_quantum_units = 12
 
         if self.experience >= 100000 < 120000:
             self.level = 12
             self.quantum_level = 5
-            self.maximum_quantum_units = 10
+            self.maximum_quantum_units = 14
 
         if self.experience >= 120000 < 140000:
             self.level = 13
             self.quantum_level = 5
-            self.maximum_quantum_units = 10
+            self.maximum_quantum_units = 16
 
         if self.experience >= 140000 < 165000:
             self.level = 14
             self.quantum_level = 5
-            self.maximum_quantum_units = 10
+            self.maximum_quantum_units = 18
 
         if self.experience >= 165000 < 195000:
             self.level = 15
-            self.quantum_level = 5
-            self.maximum_quantum_units = 10
+            self.quantum_level = 6
+            self.maximum_quantum_units = 18
 
         if self.experience >= 195000 < 225000:
             self.level = 16
             self.quantum_level = 6
-            self.maximum_quantum_units = 12
+            self.maximum_quantum_units = 20
 
         if self.experience >= 225000 < 265000:
             self.level = 17
             self.quantum_level = 6
-            self.maximum_quantum_units = 12
+            self.maximum_quantum_units = 24
 
         if self.experience >= 265000 < 305000:
             self.level = 18
             self.quantum_level = 6
-            self.maximum_quantum_units = 12
+            self.maximum_quantum_units = 30
 
         if self.experience >= 305000 < 355000:
             self.level = 19
             self.quantum_level = 6
-            self.maximum_quantum_units = 12
+            self.maximum_quantum_units = 36
 
         if self.experience >= 355000:
             self.level = 20
             self.quantum_level = 6
-            self.maximum_quantum_units = 12
+            self.maximum_quantum_units = 1000
 
         return
 
@@ -1251,6 +1302,7 @@ class Player:
         return regular_monster
 
     def undead_prophet_generator(self):
+        # called from main, if encounter == 97
         rndm_prophet_names = ['Tacium', 'Amarrik', 'Arynd', 'Beldonnor', 'Forrg',
                               'Sambressorr', 'Jornav', 'Tyrnenn', 'Fenlor', 'Yagoddish', 'Borell',
                               'Ehrnador', 'Thaymorro', 'Gorrel', 'Aureor', 'Linus', 'Mattheus',
@@ -1284,6 +1336,7 @@ class Player:
         return undead_prophet
 
     def exit_boss_generator(self):
+        # called from main, if encounter == 99
         rndm_boss_names = ['Gwarlek', 'Srentor', 'Borrnol', 'Sentollor', 'Morluk',
                            'Twinbelor', 'Sornog', 'Grenyor', 'Fallraur', 'Timboth', 'Surj',
                            'Morozzor', 'Tharbor', 'Tenbrok', 'Lorrius', 'Filwor',
@@ -1308,6 +1361,7 @@ class Player:
         return exit_boss
 
     def king_monster_generator(self):
+        # called from main, if encounter == 98
         rndm_king_names = ['Tartyrtum', 'Amarrok', 'Aaryn', 'Baldrick', 'Farrendal',
                            'Dinenlell', 'Jorn', 'Tyrne', 'Fen', 'Jagod', 'Bevel',
                            'Elrik', 'Thayadore', 'Grummthel', 'Aureus', 'Sylgor',
@@ -1340,7 +1394,7 @@ class Player:
         return king_monster
 
     def monster_likes_you(self, monster_name, monster_intel):
-        if dice_roll(1, 20) > 17 and monster_intel > 9 and self.charisma > 10:
+        if dice_roll(1, 20) > 19 and monster_intel > 9 and self.charisma > 10:
             print(f"The {monster_name} likes you!")
             sleep(1)
             gift_item = dice_roll(1, 3)
@@ -2585,7 +2639,7 @@ class Player:
             except (ValueError, KeyError):
                 print(f"Invalid input")
                 sleep(.25)
-                return -999  # -999 creates condition for a continue statement in main loop so a turn is not wasted
+                return None  # -999  # -999 creates condition for a continue statement in main loop so a turn is not wasted
                 # return 0
 
     def quantum_word_kill(self, monster):
@@ -4120,6 +4174,7 @@ class Player:
         while True:
             self.hud()
             rndm_aroma = random.choice(rndm_aroma_lst)
+            print(f"(In Town, Quantum Chemist Shop)")
             print(f"Jahns, the Fieldenberg quantum chemist is here, busying himself at the crucible.\n"
                   f"Mortars and pestles litter the counter and the smell of {rndm_aroma} fills the air...")
             if self.hit_points < self.maximum_hit_points:
@@ -4429,6 +4484,7 @@ class Player:
             # elif blacksmith_choice == 'e':
             #   return
             self.hud()
+            print(f"(In Town, Blacksmith Shop)")
             print(f"Lucino, the Fieldenberg blacksmith is here, hammering at his anvil.\n"
                   f"He notices you, grumbles, and continues hammering...")
             print(f"Your gold: {self.gold} GP")
@@ -4966,7 +5022,6 @@ class Player:
         return
 
     def hint_event_logic(self):
-
         if self.boss_hint_1 and not self.boss_hint_1_event:
             return self.hint_event_1()
         if self.boss_hint_2 and not self.boss_hint_2_event:
@@ -4996,6 +5051,7 @@ class Player:
         while True:
             self.hud()
             if self.boss_hint_1:
+                print(f"(In Town, The Slumbering Bear Inn)")
                 print(f"Jenna catches your gaze and nods discreetly. \'Let me know if ye be needin' anything, love.\'")
             else:
                 print(f"The barroom is bustling as always, but Jenna, the barkeep, notices you and calls over,\n"
@@ -5635,6 +5691,7 @@ class Player:
                     pause()
                     # continue
                 self.hud()"""
+                self.hud()
                 return  # self.dungeon_description()
 
     def increase_random_ability(self):
@@ -5874,7 +5931,7 @@ class Player:
                     else:
                         return king_returns()  # unable to translate
                 else:
-                    return  # players chooses not to translate
+                    return  # player chooses not to translate
             else:
                 return king_returns()  # player unable to recognize runes
         else:
@@ -5951,10 +6008,6 @@ class Player:
             return
         else:
             return nothing_happens()
-            # print("Nothing happens...")
-            # pause()
-            # sleep(2)
-            # return
 
     def fountain_event(self):
         # WHITE GREEN CLEAR RED BLACK
@@ -6009,15 +6062,21 @@ class Player:
         if (pit_outcome + self.dexterity_modifier + self.intelligence_modifier) > pit_difficulty_class:
             descend_or_not = input(f"Do you wish to descend (y/n)?: ").lower()
             if descend_or_not == 'y':
+                self.in_a_pit = True
                 print(f"Retrieving the rope from your belt, you carefully and craftily repel down the slick, "
                       f"treacherous pit walls.")
-                self.dungeon_key += 1
-                self.dungeon = dungeon_dict[self.dungeon_key]
+                # self.dungeon_key += 1
+                # self.dungeon = dungeon_dict[self.dungeon_key]
                 (self.x, self.y) = self.dungeon.pit_landing
                 self.previous_x = self.x
                 self.previous_y = self.y
                 self.position = self.dungeon.grid[self.y][self.x]
                 pause()
+                self.hud()
+                print(f"You have landed at the bottom of a pit. The foul, humid air hangs in a mist around you.")
+                # print(self.dungeon.pit_intro)
+                pause()
+
                 return
             else:
                 return
@@ -6031,6 +6090,7 @@ class Player:
                 pause()
                 return
             else:
+                self.in_a_pit = True
                 print(f"You fall in!")
                 damage = dice_roll(1, (3 * self.dungeon.level))  # dice_roll(1, self.dungeon.level)
                 self.hit_points -= damage
@@ -6038,13 +6098,18 @@ class Player:
                 print(f"You suffer {damage} hit points..")
                 sleep(1)
                 pause()
-                # falling into pits lands you on the next dungeon level at the dungeon.pit_landing coordinates
-                self.dungeon_key += 1
-                self.dungeon = dungeon_dict[self.dungeon_key]
+                # falling into pits lands you on the same dungeon level at the dungeon.pit_landing coordinates
+                # self.dungeon_key += 1
+                # self.dungeon = dungeon_dict[self.dungeon_key]
                 (self.x, self.y) = self.dungeon.pit_landing
                 self.previous_x = self.x
                 self.previous_y = self.y
                 self.position = self.dungeon.grid[self.y][self.x]
+                self.hud()
+                print(f"You have landed at the bottom of a pit. The foul, humid air hangs in a mist around you.")
+                # print(self.dungeon.pit_intro)
+                pause()
+
                 return
 
     def staircase_description(self):
@@ -6060,49 +6125,56 @@ class Player:
               f"The door has been locked and barricaded. You must continue onward!")
 
     def elevator_event(self):
-        if self.dungeon.level > 1:
-            print(f"You have stepped onto a platform...")
-            sleep(1)
-            print(f"You feel a slight rumbling..")
-            sleep(1)
-            difficulty_class = 8
-            if dice_roll(1, 20) + self.intelligence_modifier >= difficulty_class:
-                stay_or_jump = input(f"You realize it is an elevation mechanism, drawing you up to the "
-                                     f"previous dungeon level.\nDo you wish to (S)tay on it or (J)ump off? ").lower()
-                if stay_or_jump == 's':
-                    print(f"A cage closes on your position.")
-                    sleep(1)
-                    print(f"You feel heavy for a moment..")
-                    sleep(2)
-                    self.dungeon_key -= 1
-                    self.dungeon = dungeon_dict[self.dungeon_key]
-                    (self.x, self.y) = self.dungeon.elevator_landing
-                    self.coordinates = (self.x, self.y)
-                    self.previous_x = self.x
-                    self.previous_y = self.y
-                    self.position = self.dungeon.grid[self.y][self.x]
-                    print(f"You have arrived at {self.dungeon.name}, dungeon level {self.dungeon.level}.")
-                    sleep(2)
-                    print(f"Watch your step.")
-                    sleep(1)
-                    pause()
-                    return
-                else:
-                    return
-            else:
-                print(f"A cage closes upon you!")  # intelligence not enough to realize what is happening.
+        print(f"You have stepped onto a platform...")
+        sleep(1)
+        print(f"You feel a slight rumbling..")
+        sleep(1)
+        difficulty_class = 8
+        if dice_roll(1, 20) + self.intelligence_modifier >= difficulty_class:
+            stay_or_jump = input(f"You realize it is an elevation mechanism, drawing you up to the "
+                                 f"main dungeon level.\nDo you wish to (S)tay on it or (J)ump off? ").lower()
+            if stay_or_jump == 's':
+                print(f"A cage closes on your position.")
                 sleep(1)
-                print(f"You are being drawn upward!")
-                self.dungeon_key -= 1
-                self.dungeon = dungeon_dict[self.dungeon_key]
-                (self.x,
-                 self.y) = self.dungeon.elevator_landing  # simplified with tuple instead of self.x = and self.y =
+                print(f"You feel heavy for a moment..")
+                sleep(2)
+                self.hud()
+                self.in_a_pit = False
+                # self.dungeon_key -= 1
+                # self.dungeon = dungeon_dict[self.dungeon_key]
+                (self.x, self.y) = self.dungeon.elevator_landing
                 self.coordinates = (self.x, self.y)
                 self.previous_x = self.x
                 self.previous_y = self.y
                 self.position = self.dungeon.grid[self.y][self.x]
+                print(f"You have arrived back at {self.dungeon.name}, dungeon level {self.dungeon.level}.")
+                sleep(2)
+                print(f"Watch your step.")
+                sleep(1)
                 pause()
                 return
+            else:
+                return
+        else:
+            print(f"A cage closes upon you!")  # intelligence not enough to realize what is happening.
+            sleep(1)
+            print(f"You are being drawn upward!")
+            sleep(2)
+            self.hud()
+            # self.dungeon_key -= 1
+            # self.dungeon = dungeon_dict[self.dungeon_key]
+            print(f"You have arrived back at {self.dungeon.name}, dungeon level {self.dungeon.level}.")
+            sleep(2)
+            print(f"Watch your step.")
+            self.in_a_pit = False
+            (self.x,
+             self.y) = self.dungeon.elevator_landing  # simplified with tuple instead of self.x = and self.y =
+            self.coordinates = (self.x, self.y)
+            self.previous_x = self.x
+            self.previous_y = self.y
+            self.position = self.dungeon.grid[self.y][self.x]
+            pause()
+            return
 
     def event_logic(self):
         # interactive events, items etc.
@@ -6138,13 +6210,13 @@ class Player:
         self.hud()
         rndm_hint_list = ["a piece of parchment", "a torn piece of fabric", "a broken necklace", "a broken ring"]
         clue_item = random.choice(rndm_hint_list)
-        print(f"On the ground before you lays {clue_item}. You see a symbol on it; A woman with a crown surrounded "
+        print(f"On the ground before you lays {clue_item}. You see a symbol on it; A woman with a crown, surrounded "
               f"by many skulls.")
         sleep(1)
         print(f"Suddenly, it begins to deteriorate in your hands until it is nothing but ashes!")
         sleep(1)
-        print(f"You ponder this, and commit the image to memory. \'The tavern\', you say silently. A good place to"
-              f"start..")
+        print(f"You ponder this, and commit the image to memory. You wonder if there is someone in town who can shed\n"
+              f"light on the strange symbol.")
         pause()
         self.boss_hint_1 = True
         return
@@ -6258,7 +6330,8 @@ class Player:
             "T": f"You are in a chamber of {self.dungeon.name} that seems to have been "
                  f"re-purposed as a sort of throne room.",
             "L": f"You are on a slick patch of ground. High above you is a wide, gaping hole leading up to "
-                 f"dungeon level {self.dungeon.level - 1}."
+                 f"dungeon level {self.dungeon.level - 1}.",
+            "P": f"You are in a pit. Slime covers the ground beneath, and a putrid mist fills the air.."
         }
         # if self.position == 0:  # integer representing starting position
         #    print(self.dungeon.intro)
@@ -6298,8 +6371,11 @@ class Player:
                 print("You see the dungeon exit to the South!")
                 # return
         self.coordinates = (self.x, self.y)
-        print(
-            f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}, {north_south}{east_west} region) Coordinates: {self.coordinates}")
+        if not self.in_a_pit:
+            print(
+                f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}, {north_south}{east_west} region) Coordinates: {self.coordinates}")
+        else:
+            print(f"(In a pit below {self.dungeon.name}, Coordinates: {self.coordinates}")
         return
 
     def display_map(self, maps):

@@ -35,63 +35,12 @@ and its documentation and return value (usually None) support this, the behavior
 
 import pickle
 from player_module_testing import *
-from monster_module import *
-from typing_module import *
+# from monster_module import *
+# from typing_module import typing
 # import random
 import os
 import winsound
 from dungeons import *
-
-
-def pause():
-    os.system('pause')
-
-
-def sleep(seconds):
-    time.sleep(seconds)
-
-
-def encounter_logic():
-    monster_encounter = dice_roll(1, 20)
-    return monster_encounter
-
-
-def gong():
-    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\gong.wav',
-                       winsound.SND_ASYNC)
-
-
-def blacksmith_theme():
-    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\blacksmith_theme_2.wav',
-                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-
-
-def chemist_theme():
-    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\chemist_theme.wav',
-                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-
-
-def mountain_king_theme():
-    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\mountain_king.wav',
-                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-
-
-def dungeon_theme():
-    winsound.PlaySound(
-        'C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\dungeon_theme_2.wav',
-        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-
-
-def boss_battle_theme():
-    winsound.PlaySound(
-        'C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\boss_battle_2.wav',
-        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-
-
-def town_theme():
-    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_theme_2.wav',
-                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-
 
 winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\originalsound.wav',
                    winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
@@ -168,7 +117,7 @@ while True:
     while in_town:
         player_1.hud()
         town_functions = input(
-            "You are in town.\n(S)ave, (Q)uit game, (I)nventory, (B)lacksmith, (C)hemist , (T)avern, or ("
+            "(The Town of Fieldenberg)\n(S)ave, (Q)uit game, (I)nventory, (B)lacksmith, (C)hemist , (T)avern, or ("
             "E)nter dungeon "
             "--> ").lower()
         '''        if town_functions == 'r':
@@ -385,6 +334,7 @@ while True:
                     player_is_dead = True
                     continue
                 encounter = encounter_logic()
+                # encounter = 15  # testing- this will make no monsters except bosses
                 event = player_1.event_logic()
                 if event == "Undead Prophet":
                     encounter = 97
@@ -393,7 +343,7 @@ while True:
                 elif event == "Exit Boss":
                     encounter = 99
                 player_1.dungeon_description()  # this seems to work best when put here
-                #if player_1.position == "E":
+                # if player_1.position == "E":
                 #    encounter = 99  # dungeon level boss conditional
                 #    player_1.next_dungeon()
                 # ***********************************************************************************************>>>>
@@ -519,10 +469,10 @@ while True:
                                         damage_to_monster = player_1.quantum_effects(monster)
                                         # invalid input should not waste a turn
                                         # if invalid input during quantum effect, -999 is returned:
-                                        if damage_to_monster == -999:  # invalid input should not waste a turn
-                                            continue
+                                        if damage_to_monster is None:  # invalid input
+                                            continue  # should not waste a turn
                                         # If monster is successfully turned, stone-petrified, fearful,
-                                        # disintegrated, lost to gravity well or banished, experience is gained,
+                                        # disintegrated, lost to gravity well or banished, etc., experience is gained,
                                         # but player gets no gold or loot:
                                         if not player_1.in_proximity_to_monster:
                                             # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
@@ -550,7 +500,8 @@ while True:
                                             if encounter > 20:  # if fighting boss
                                                 gong()
                                                 if monster.proper_name != "None":
-                                                    print(f"You have vanquished {monster.proper_name}! You are victorious!")
+                                                    print(f"You have vanquished {monster.proper_name}! "
+                                                          f"You are victorious!")
                                                     player_1.vanquished_foes.append(monster.proper_name)
                                                 else:
                                                     print(f"You have vanquished the {monster.name}!")

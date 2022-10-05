@@ -436,7 +436,7 @@ class Monster:
         print(f"Attack roll: {roll_d20}")
         time.sleep(1)
         if roll_d20 == 1:
-            print("You dodge!")
+            print("You easily dodge the poison attack!")
             time.sleep(1)
             # print(f"And you perceive it was attempting to poison you!")
             os.system('pause')
@@ -445,6 +445,7 @@ class Monster:
         else:
             print(f"Your Saving Throw: {player_saving_throw}\n"
                   f"Your Constitution Modifier: {player_1.constitution_modifier}\n")
+            print(f"Total: {difficulty_class}")
             if roll_d20 == 20 or roll_d20 >= difficulty_class:  # self.constitution + self.constitution_modifier:
                 # return True
                 # self.hud()
@@ -484,9 +485,12 @@ class Monster:
             player_1.hud()
             return False
         else:
-            player_roll = (dice_roll(1, 20))
-            print(f"Your Saving Throw: {player_roll}\nYour Constitution Modifier: {player_1.constitution_modifier}\n")
-            if roll_d20 == 20 or roll_d20 >= player_roll + player_1.constitution_modifier:
+            player_saving_throw = (dice_roll(1, 20))
+            difficulty_class = (player_saving_throw + player_1.constitution_modifier)
+            print(f"Your Saving Throw: {player_saving_throw}\n"
+                  f"Your Constitution Modifier: {player_1.constitution_modifier}\n")
+            print(f"Total: {difficulty_class}")
+            if roll_d20 == 20 or roll_d20 >= difficulty_class:
                 player_1.dot_multiplier = self.dot_multiplier
                 player_1.dot_turns = self.dot_turns
                 rndm_necrotic_phrases = ["You feel morbid dread and withering overcoming you..",
@@ -902,11 +906,11 @@ class Shadow(Monster):
         self.quantum_attack_5 = 3
         self.quantum_attack_5_phrase = "Its looming form towers over you..\n" \
                                        "it clutches you with necrotic malice!"
-        self.introduction = f"You have encountered a {self.name}..an unnatural abomination with form,\n " \
-                            f"and yet without form.. Its body rises up, absorbing all ambient light into an\n" \
-                            f"endless darkness. And yet, somehow, you intuitively catch glimpses of its actual form\n" \
+        self.introduction = f"You have encountered a {self.name}..an unnatural abomination with form,\n" \
+                            f"but also, without form.. Its body rises up, absorbing all ambient light into an\n" \
+                            f"endless darkness. You intuitively catch glimpses of its actual appearance\n" \
                             f"beneath- impossibly long, bony, outstretched arms extending from wispy black rags,\n" \
-                            f"and the hints of a humanoid, skull face, forever grimacing in confusion over its\n" \
+                            f"and the hints of a humanoid, skullish face, forever grimacing in confusion over its\n" \
                             f"own existence..\nYou feel the air crackle with quantum energy.."
         self.paralyze_phrase = "Rising menacingly and with both clawed, shadowy hands, it reaches out, and you\n" \
                                "feel your motor skills quivering.."

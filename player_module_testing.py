@@ -2,6 +2,7 @@ import math
 import random
 import time
 import os
+# import pyinputplus as pyip
 from collections import Counter
 import winsound
 from dice_roll_module import dice_roll
@@ -756,7 +757,7 @@ class Player:
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
         self.proficiency_bonus = 2  # 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.maximum_hit_points = 100 + self.constitution_modifier
+        self.maximum_hit_points = 10 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
         self.is_paralyzed = False
@@ -5694,6 +5695,275 @@ class Player:
                 self.hud()
                 return  # self.dungeon_description()
 
+    def treasure_chest_event(self):
+        successful_tries = 0
+        treasure_chest_discovery = f"level {self.dungeon.level} treasure chest"
+        if treasure_chest_discovery not in self.discovered_interactives:
+            print(f"You see a treasure chest!")
+            sleep(1.5)
+            # gold_difficulty_class = 8
+            # if dice_roll(1, 20) >= gold_difficulty_class:
+            #    successful_tries += 1
+            gold_roll = dice_roll(1, 20) * self.dungeon.level + 1
+            print(f"Inside is {gold_roll} gold pieces!")
+            self.gold += gold_roll
+            sleep(1.5)
+            pause()
+            loot_difficulty_class = 6
+            # place armor first here; it is first in pack.
+            # otherwise it seems to give unexpected argument warning
+            loot_dict = {
+                'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
+                'Shields': [buckler, kite_shield, quantum_tower_shield],
+                'Boots': [elven_boots, ancestral_footsteps],
+                'Cloaks': [elven_cloak],
+                'Weapons': [short_axe, broad_sword, great_sword, quantum_sword, battle_axe, great_axe],
+                'Elixirs': [elixir],
+                'Healing': [healing_potion],
+                'Rings of Regeneration': [ring_of_regeneration],
+                'Rings of Protection': [ring_of_protection],
+                'Town Portal Implements': [scroll_of_town_portal],
+                'Potions of Strength': [strength_potion],
+                'Antidotes': [antidote]
+            }
+
+            while True:
+                # ****** NOTICE THE DIFFERENCE BETWEEN found_item and found_item.item_type !! ************************
+                loot_roll = dice_roll(1, 20)
+                self.hud()
+                # print(f"Loot roll ---> {loot_roll}")  # remove after testing ?
+                # pause()
+                if loot_roll >= loot_difficulty_class:
+                    successful_tries += 1
+                    key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
+                    rndm_item_index = random.randrange(len(loot_dict[key]))
+                    found_item = loot_dict[key][rndm_item_index]
+                    print(found_item)  # REMOVE AFTER TESTING *****************************************************
+                    if self.level >= found_item.minimum_level:
+                        if found_item.item_type == 'Armor':
+                            self.found_armor_substitution(found_item)
+                            continue
+                        elif found_item.item_type == 'Shields':
+                            self.found_shield_substitution(found_item)
+                            continue
+                        elif found_item.item_type == 'Cloaks':
+                            self.found_cloak_substitution(found_item)
+                            continue
+                        elif found_item.item_type == 'Weapons':
+                            self.found_weapon_substitution(found_item)
+                            continue
+                        elif found_item.item_type == 'Rings of Regeneration':
+                            self.found_ring_of_reg_substitution(found_item)
+                            continue
+                        elif found_item.item_type == 'Rings of Protection':
+                            self.found_ring_of_prot_substitution(found_item)
+                            continue
+                        elif found_item.item_type == 'Boots':
+                            self.found_boots_substitution(found_item)
+                            continue
+                        elif found_item.item_type == 'Town Portal Implements':
+                            print(f"You see a {found_item.name} !")
+                            sleep(.5)
+                            print(f"You snarf it..")
+                            self.town_portals += 1
+                            pause()
+                            continue
+                        elif found_item.item_type == 'Healing':
+                            print(f"You see a {found_item.name} !")
+                            sleep(.5)
+                            print(f"You snarf it..")
+                            self.potions_of_healing += 1
+                            pause()
+                            continue
+                        elif found_item.item_type == 'Potions of Strength':
+                            print(f"You see a {found_item.name} !")
+                            sleep(.5)
+                            print(f"You snarf it..")
+                            self.potions_of_strength += 1
+                            pause()
+                            continue
+                        elif found_item.item_type == 'Elixirs':
+                            print(f"You see a {found_item.name}!")
+                            sleep(.5)
+                            print(f"You snarf it..")
+                            self.elixirs += 1
+                            pause()
+                            continue
+                        elif found_item.item_type == 'Antidotes':
+                            print(f"You see a {found_item.name}!")
+                            sleep(.5)
+                            print(f"You snarf it..")
+                            self.antidotes += 1
+                            pause()
+                            continue
+                    else:
+                        print(f"Minimum requirements not met for {found_item.name}.")  # remove after testing
+                        pause()  # remove after testing
+                        continue
+                else:
+                    if successful_tries == 0:
+                        print(f"Inside is nothing else but cobwebs...")
+                        sleep(1)
+                        pause()
+                    self.discovered_interactives.append(treasure_chest_discovery)
+                    self.hud()
+                    return  # self.dungeon_description()
+        print(f"There is an empty treasure chest here.")
+        pause()
+        return
+
+    def quantum_treasure_chest_event(self):
+        successful_tries = 0
+        treasure_chest_discovery = f"level {self.dungeon.level} quantum treasure chest"
+        if treasure_chest_discovery not in self.discovered_interactives:
+            print(f"You see a treasure chest with a Quantum lock!")
+            sleep(1)
+            print(f"You feel dangerous levels of energy surging from it..")
+            sleep(1)
+            lock_dc = 10
+            while True:
+                prompt = input("Do you wish to attempt to (U)nlock it with your Quantum knowledge or (I)gnore (U/I): ")
+                if prompt == 'i':
+                    return
+                if prompt == 'u':
+                    break
+                self.hud()
+            quantum_roll = dice_roll(1, 20)
+            total = quantum_roll + self.wisdom_modifier
+            print(f"Quantum Ability Check Roll: {quantum_roll}")
+            sleep(.5)
+            print(f"Wisdom Modifier: {self.wisdom_modifier}")
+            sleep(.5)
+            print(f"Total: {total}")
+            sleep(.5)
+            print(f"Difficulty Class: {lock_dc}")
+            sleep(.5)
+            if total >= lock_dc:
+                print(f"Success!")
+                sleep(1.5)
+                gold_roll = (dice_roll(1, 20) * self.dungeon.level) + 1
+                print(f"Inside is {gold_roll} gold pieces!")
+                self.gold += gold_roll
+                sleep(1.5)
+                pause()
+                loot_difficulty_class = 7
+                # place armor first here; it is first in pack.
+                # otherwise it seems to give unexpected argument warning
+                loot_dict = {
+                    'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
+                    'Shields': [buckler, kite_shield, quantum_tower_shield],
+                    'Boots': [elven_boots, ancestral_footsteps],
+                    'Cloaks': [elven_cloak],
+                    'Weapons': [short_axe, broad_sword, great_sword, quantum_sword, battle_axe, great_axe],
+                    'Elixirs': [elixir],
+                    'Healing': [healing_potion],
+                    'Rings of Regeneration': [ring_of_regeneration],
+                    'Rings of Protection': [ring_of_protection],
+                    'Town Portal Implements': [scroll_of_town_portal],
+                    'Potions of Strength': [strength_potion],
+                    'Antidotes': [antidote]
+                }
+
+                while True:
+                    # ****** NOTICE THE DIFFERENCE BETWEEN found_item and found_item.item_type !! ***********
+                    loot_roll = dice_roll(1, 20)
+                    self.hud()
+                    print(f"Loot roll ---> {loot_roll}")  # remove after testing ?
+                    pause()
+                    if loot_roll >= loot_difficulty_class:
+                        successful_tries += 1
+                        key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
+                        rndm_item_index = random.randrange(len(loot_dict[key]))
+                        found_item = loot_dict[key][rndm_item_index]
+                        print(found_item)  # REMOVE AFTER TESTING *****************************************************
+                        if found_item.minimum_level - self.level <= 2:
+                            if found_item.item_type == 'Armor':
+                                self.found_armor_substitution(found_item)
+                                continue
+                            elif found_item.item_type == 'Shields':
+                                self.found_shield_substitution(found_item)
+                                continue
+                            elif found_item.item_type == 'Cloaks':
+                                self.found_cloak_substitution(found_item)
+                                continue
+                            elif found_item.item_type == 'Weapons':
+                                self.found_weapon_substitution(found_item)
+                                continue
+                            elif found_item.item_type == 'Rings of Regeneration':
+                                self.found_ring_of_reg_substitution(found_item)
+                                continue
+                            elif found_item.item_type == 'Rings of Protection':
+                                self.found_ring_of_prot_substitution(found_item)
+                                continue
+                            elif found_item.item_type == 'Boots':
+                                self.found_boots_substitution(found_item)
+                                continue
+                            elif found_item.item_type == 'Town Portal Implements':
+                                print(f"You see a {found_item.name} !")
+                                sleep(.5)
+                                print(f"You snarf it..")
+                                self.town_portals += 1
+                                pause()
+                                continue
+                            elif found_item.item_type == 'Healing':
+                                print(f"You see a {found_item.name} !")
+                                sleep(.5)
+                                print(f"You snarf it..")
+                                self.potions_of_healing += 1
+                                pause()
+                                continue
+                            elif found_item.item_type == 'Potions of Strength':
+                                print(f"You see a {found_item.name} !")
+                                sleep(.5)
+                                print(f"You snarf it..")
+                                self.potions_of_strength += 1
+                                pause()
+                                continue
+                            elif found_item.item_type == 'Elixirs':
+                                print(f"You see a {found_item.name}!")
+                                sleep(.5)
+                                print(f"You snarf it..")
+                                self.elixirs += 1
+                                pause()
+                                continue
+                            elif found_item.item_type == 'Antidotes':
+                                print(f"You see a {found_item.name}!")
+                                sleep(.5)
+                                print(f"You snarf it..")
+                                self.antidotes += 1
+                                pause()
+                                continue
+                        else:
+                            print(f"You see a {found_item.name}.")
+                            sleep(1)
+                            print(f"Even with the Quantum Weirdness of the chest, you are unable to use it.")
+                            sleep(1)
+                            pause()
+                            continue
+                    else:
+                        if successful_tries == 0:
+                            print(f"Besides the gold, there remains nothing but cobwebs...")
+                            sleep(1)
+                            pause()
+                        self.discovered_interactives.append(treasure_chest_discovery)
+                        self.hud()
+                        return  # self.dungeon_description()
+            else:
+                print(f"Your innate Quantum understanding has failed you.")
+                sleep(1)
+                print(f"You are unable to open the Quantum lock...")
+                sleep(1)
+                print(f"A wave of Quantum energy shoots toward you!")
+                damage = dice_roll(self.level, self.hit_dice)
+                self.reduce_health(damage)
+                print(f"You suffer {damage} hit points!")
+                pause()
+                return
+        else:
+            print(f"There is an empty Quantum treasure chest here.")
+            pause()
+            return
+
     def increase_random_ability(self):
         # I was unable to come up with this code on my own.
         # Thanks to Angus Nicolson from Stack Overflow!
@@ -5858,7 +6128,6 @@ class Player:
                                self.decrease_random_ability,
                                self.decrease_lowest_ability]
         rndm_occurrence = random.choice(rndm_occurrence_lst)
-
         rndm_throne_descriptions = ['There is a magnificent, gem-encrusted throne of gold here. Throughout its\n'
                                     'shimmering surface are countless runes and symbols.',
                                     'In the center of the room stands a majestic throne encrusted with many\n'
@@ -6038,7 +6307,8 @@ class Player:
 
     def teleporter_event(self):
         print(f"Zzzzzzap....You've been teleported.....")
-        self.dungeon_key += 1  # this will become random.randint(1, deepest dungeon level) in future
+        sleep(2)
+        # self.dungeon_key += 1  # this will become random.randint(1, deepest dungeon level) in future
         self.dungeon = dungeon_dict[self.dungeon_key]
         # self.x = random.randint(1, 18)
         # self.y = random.randint(1, 18)
@@ -6187,7 +6457,9 @@ class Player:
         # function values are returned to the main program
         # using 'return event_function()'
         self.coordinates = (self.x, self.y)
-        event_dict = {self.dungeon.altar: self.altar_event,
+        event_dict = {self.dungeon.quantum_treasure_chest: self.quantum_treasure_chest_event,
+                      self.dungeon.treasure_chest: self.treasure_chest_event,
+                      self.dungeon.altar: self.altar_event,
                       self.dungeon.throne: self.throne_event,
                       self.dungeon.throne2: self.throne_event,
                       self.dungeon.fountain: self.fountain_event,
@@ -6375,7 +6647,8 @@ class Player:
             print(
                 f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}, {north_south}{east_west} region) Coordinates: {self.coordinates}")
         else:
-            print(f"(In a pit below {self.dungeon.name}, Coordinates: {self.coordinates}")
+            # assuming pit landing coordinates are at 1, 14:
+            print(f"(In a pit below {self.dungeon.name}, Coordinates: {self.x, (self.y - 13)}")
         return
 
     def display_map(self, maps):

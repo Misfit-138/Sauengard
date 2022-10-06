@@ -275,12 +275,12 @@ while True:
                         player_1.x += 1
                         sleep(.5)
                     if dungeon_command == 'l':
+                        # this will call dungeon_description().
+                        # after returning, event_logic() will be called at end of navigation turn
+                        # which will trigger any events corresponding to player self.coordinates
                         player_1.dungeon_description()
                         player_1.coordinates = (player_1.x, player_1.y)
                         player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]
-                        # player_1.event_logic()
-                        # pause()
-                        # continue
                     if dungeon_command == 'map':
                         player_1.display_map(player_1.dungeon.player_grid)  #
                         pause()
@@ -291,22 +291,19 @@ while True:
                     print("Unknown command..")
                     sleep(.25)
                     player_1.dungeon_description()
-                    continue  # continue means you do not use a turn
+                    continue  # continue means you do not waste a turn
                 # ***** END OF NAVIGATION choice *************************************************************
                 # !!!!!!!!!!!!!!!! V NOTE the INDENT below V !!!!!!!!!!!!!!!!
                 # ******************************************************************************************
                 # NAVIGATION CALCULATIONS:
                 player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
                 player_1.coordinates = (player_1.x, player_1.y)  #
-                # META CALCULATION FUNCTION FOR REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
-                # this is also called after monster melee, necro, poison and quantum attack
-                # as well as after turning/banishing, etc, and victory
-                player_1.end_of_turn_calculation()
-                if player_1.check_dead():  # player can die of necrosis/poison after end of turn calculations
-                    player_is_dead = True
-                    continue
+                # ENCOUNTER LOGIC IS DETERMINED *BEFORE* event_logic(), BUT CAN BE RE-ASSIGNED BASED ON
+                # RETURNED VALUES FROM event_logic()
                 encounter = encounter_logic()
-                # encounter = 15  # testing- this will make no monsters except bosses
+                # encounter = 15  # testing: this will make no monsters except bosses
+                # EVENT LOGIC IS DETERMINED BEFORE end_of_turn_calculation() AND player_1.check_dead(),
+                # IN CASE PLAYER SUFFERS DAMAGE, ETC
                 event = player_1.event_logic()
                 if event == "Undead Prophet":
                     encounter = 97
@@ -314,7 +311,15 @@ while True:
                     encounter = 98
                 elif event == "Exit Boss":
                     encounter = 99
-                player_1.dungeon_description()  # this seems to work best when put here
+                # META CALCULATION FUNCTION FOR REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
+                # this is also called after monster melee, necro, poison and quantum attack
+                # as well as after turning/banishing, etc, and player victory
+                player_1.end_of_turn_calculation()
+                if player_1.check_dead():  # player can die of necrosis/poison/event damage after calculations
+                    player_is_dead = True
+                    continue
+                # LASTLY, dungeon_description()
+                player_1.dungeon_description()  # this seems to work best when put LAST
                 # if player_1.position == "E":
                 #    encounter = 99  # dungeon level boss conditional
                 #    player_1.next_dungeon()
@@ -322,7 +327,6 @@ while True:
                 if encounter < 11 or encounter > 20:  # < 11 = normal monster. > 20 = boss
                     monster = ""  # to prevent monster from being undefined
                     # monster dictionary imported from monster module. keys correspond to difficulty levels
-
                     # IN PROXIMITY TO MONSTER LOOP *contains battle loop within it*
                     player_1.in_proximity_to_monster = True
                     player_is_dead = False
@@ -368,10 +372,12 @@ while True:
                         if encounter < 21:  # if not a boss, monster may like you or steal from you
                             if player_1.monster_likes_you(monster.name, monster.intelligence):
                                 player_1.in_proximity_to_monster = False
+                                # player_1.event_logic()  # this will trigger an event without using (L)ook
                                 player_1.dungeon_description()
                                 break
                             if player_1.quick_move(monster.name):
                                 player_1.in_proximity_to_monster = False
+                                # player_1.event_logic()  # this will trigger an event without using (L)ook
                                 player_1.dungeon_description()
                                 break  # if monster steals something he gets away clean, if not, battle
 
@@ -459,7 +465,7 @@ while True:
                                                 if encounter == 99:
                                                     player_1.boss_hint_logic()
                                             player_1.level_up(monster.experience_award, monster.gold)
-
+                                            # player_1.event_logic()  # this will trigger an event without using (L)ook
                                             player_1.dungeon_description()
                                             # pause()
                                             break

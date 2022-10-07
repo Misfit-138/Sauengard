@@ -155,7 +155,7 @@ while True:
             time.sleep(1)
             player_1.hud()
             dungeon_theme()
-
+            navigation_list = ['w', 'a', 's', 'd', 'ne', 'nw', 'se', 'sw', 'l', 'map', 'm', 'i']
             # DUNGEON NAVIGATION LOOP:
             player_is_dead = False
             while in_dungeon:
@@ -232,7 +232,7 @@ while True:
                             break
                 elif dungeon_command == "q":
                     player_1.hud()
-                    monster = ""  # quantum_effects needs monster parameter, but player is not in battle at this point
+                    monster = None  # quantum_effects needs monster parameter, but player is not in battle at this point
                     if player_1.quantum_units > 0:
                         player_1.quantum_effects(monster)
                 elif dungeon_command == 'g':
@@ -247,46 +247,8 @@ while True:
                 elif dungeon_command == 'c':
                     if not player_1.drink_elixir():
                         continue  # if you have no potions, don't waste a turn!
-                elif dungeon_command == 'm':
-                    player_1.item_management_sub_menu()
-                    # continue
-                elif dungeon_command == 'i':
-                    player_1.inventory()
-                elif dungeon_command == 'w' or dungeon_command == 'a' or dungeon_command == 's' \
-                        or dungeon_command == 'd' or dungeon_command == 'l' or dungeon_command == 'map':
-                    if dungeon_command == 'w':
-                        player_1.hud()
-                        print("North")
-                        player_1.y -= 1
-                        sleep(.5)
-                    if dungeon_command == 'a':
-                        player_1.hud()
-                        print("West")
-                        player_1.x -= 1
-                        sleep(.5)
-                    if dungeon_command == 's':
-                        player_1.hud()
-                        print("South")
-                        player_1.y += 1
-                        sleep(.5)
-                    if dungeon_command == 'd':
-                        player_1.hud()
-                        print("East")
-                        player_1.x += 1
-                        sleep(.5)
-                    if dungeon_command == 'l':
-                        # this will call dungeon_description().
-                        # after returning, event_logic() will be called at end of navigation turn
-                        # which will trigger any events corresponding to player self.coordinates
-                        player_1.dungeon_description()
-                        player_1.coordinates = (player_1.x, player_1.y)
-                        player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]
-                    if dungeon_command == 'map':
-                        player_1.display_map(player_1.dungeon.player_grid)  #
-                        pause()
-                        player_1.dungeon_description()
-                        # player_1.event_logic()
-                        # continue
+                elif dungeon_command in navigation_list:
+                    player_1.navigation(dungeon_command)
                 else:
                     print("Unknown command..")
                     sleep(.25)
@@ -304,7 +266,7 @@ while True:
                 # encounter = 15  # testing: this will make no monsters except bosses
                 # EVENT LOGIC IS DETERMINED BEFORE end_of_turn_calculation() AND player_1.check_dead(),
                 # IN CASE PLAYER SUFFERS DAMAGE, ETC
-                event = player_1.event_logic()
+                event = player_1.event_logic()  # trigger any events corresponding to self.coordinates
                 if event == "Undead Prophet":
                     encounter = 97
                 elif event == "King Boss":
@@ -313,7 +275,7 @@ while True:
                     encounter = 99
                 # META CALCULATION FUNCTION FOR REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
                 # this is also called after monster melee, necro, poison and quantum attack
-                # as well as after turning/banishing, etc, and player victory
+                # as well as after turning/banishing, etc., and player victory
                 player_1.end_of_turn_calculation()
                 if player_1.check_dead():  # player can die of necrosis/poison/event damage after calculations
                     player_is_dead = True
@@ -445,8 +407,7 @@ while True:
                                     player_1.hud()
                                     if player_1.quantum_units > 0:
                                         damage_to_monster = player_1.quantum_effects(monster)
-                                        # invalid input should not waste a turn
-                                        # if invalid input during quantum effect, -999 is returned:
+                                        # if invalid input during quantum effect, None is returned:
                                         if damage_to_monster is None:  # invalid input
                                             continue  # should not waste a turn
                                         # If monster is successfully turned, stone-petrified, fearful,
@@ -512,7 +473,6 @@ while True:
                                 # ****MONSTER TURN AFTER YOU SWIG POTION, fail to evade, or cast quantum attack******
                                 #
                                 player_1.hud()
-                                # player_1.meta_monster_function(monster)
                                 monster.meta_monster_function(player_1)
                                 if not player_1.check_dead():  # if player not dead
                                     # I tried to offload this code, but the breaks and continues are pretty tangled
@@ -717,3 +677,45 @@ while True:
                                         if player_1.is_paralyzed:
                                             player_1.damage_while_paralyzed(monster.number_of_hd,
                                                                             monster.hit_dice)"""
+"""                    if dungeon_command == 'w':
+                        player_1.hud()
+                        print("North")
+                        player_1.y -= 1
+                        sleep(.5)
+                    if dungeon_command == 'a':
+                        player_1.hud()
+                        print("West")
+                        player_1.x -= 1
+                        sleep(.5)
+                    if dungeon_command == 's':
+                        player_1.hud()
+                        print("South")
+                        player_1.y += 1
+                        sleep(.5)
+                    if dungeon_command == 'd':
+                        player_1.hud()
+                        print("East")
+                        player_1.x += 1
+                        sleep(.5)
+                    if dungeon_command == 'l':
+                        # this will call dungeon_description().
+                        # after returning, event_logic() will be called at end of navigation turn
+                        # which will trigger any events corresponding to player self.coordinates
+                        player_1.dungeon_description()
+                        player_1.coordinates = (player_1.x, player_1.y)
+                        player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]
+                    if dungeon_command == 'map':
+                        player_1.display_map(player_1.dungeon.player_grid)  #
+                        pause()
+                        player_1.dungeon_description()
+                        # player_1.event_logic()
+                        # continue"""
+"""elif dungeon_command == 'w' or dungeon_command == 'a' or dungeon_command == 's' \
+                        or dungeon_command == 'd' or dungeon_command == 'l' or dungeon_command == 'map' or \
+                        dungeon_command == 'ne' or dungeon_command == 'nw' or dungeon_command == 'se' or \
+                        dungeon_command == 'sw':"""
+"""                elif dungeon_command == 'm':
+                    player_1.item_management_sub_menu()
+                    # continue
+                elif dungeon_command == 'i':
+                    player_1.inventory()"""

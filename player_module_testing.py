@@ -1268,7 +1268,7 @@ class Player:
             self.calculate_modifiers()  # you may want to remove this call to calculate modifiers
             if self.level == 5:
                 print(
-                    "You gain the Extra Attack skill!!")  # this works automatically in battle loop if level > 4, but change this to be a boolean attribute
+                    "You gain the Extra Attack skill!!")  # this works in melee loop if level > 4, change to a boolean
                 sleep(2)
             if after_proficiency_bonus > before_proficiency_bonus:
                 print(f"Your proficiency bonus increases from {before_proficiency_bonus} to {after_proficiency_bonus}!")
@@ -1429,19 +1429,21 @@ class Player:
         self.hud()
         quick_move_roll = dice_roll(1, 20)  # - self.stealth
         # player_initiative_roll = dice_roll(1, 20)
-        if quick_move_roll == 20:
+        if quick_move_roll > 0:  # == 20:
             print(f"The {monster_name} makes a quick move...")
             sleep(1.5)
             # pack inventory logic:
-            available_item_types_to_steal = []
+            pack_item_types_to_steal = []
+            belt_item_types_to_steal = [self.potions_of_strength, self.potions_of_healing,
+                                        self.town_portals, self.elixirs, self.antidotes]
             for i in self.pack.keys():  # gather all available
                 if len(self.pack[i]) > 0:  # item types to steal based on player's current item TYPES and put them
-                    available_item_types_to_steal.append(i)  # in available_item_types_to_steal = []
+                    pack_item_types_to_steal.append(i)  # in available_item_types_to_steal = []
                     # **** REMARKED FOLLOWING LINE AND DROPPED IT DOWN TO if len(available_item_types_to_steal) > 0:
                     # **** TO ADDRESS REFERENCED BEFORE ASSIGNMENT WARNING ****
                     # item_type = random.choice(available_item_types_to_steal)  # Get an item *TYPE* you want to "steal"
-            if len(available_item_types_to_steal) > 0:
-                item_type = random.choice(available_item_types_to_steal)  # Get random item *TYPE* you want to "steal"
+            if len(pack_item_types_to_steal) > 0:
+                item_type = random.choice(pack_item_types_to_steal)  # Get random item *TYPE* you want to "steal"
                 if len(self.pack[item_type]) > 0:  # If the player has an item of type "item_type"
                     # pop random item from that item type. -1 because indexes start at 0
                     stolen_item = (self.pack[item_type].pop(random.randint(0, len(self.pack[item_type]) - 1)))
@@ -1451,7 +1453,10 @@ class Player:
             # if pack is empty, the thief moves to the belt.
             # Belt inventory is handled differently. This is clunky but should work.
             # belt inventory logic:
-            elif self.potions_of_strength > 0 or self.potions_of_healing > 0 or self.town_portals > 0 or self.elixirs > 0:
+
+            # elif self.potions_of_strength > 0 or self.potions_of_healing > 0 or self.town_portals > 0 \
+            #        or self.elixirs > 0 or self.antidotes > 0:
+            elif sum(belt_item_types_to_steal) > 0:  # simplifies all the if statements above
                 item_string = ""
                 # Define list of attributes you are allowed to change
                 self_dict = self.__dict__  # create self_dict variable as actual copy of player dict attribute
@@ -1459,7 +1464,8 @@ class Player:
                 # the working dict and 'for' loop just takes the place of many 'if:' statements
                 working_dict = {'potions_of_strength': self.potions_of_strength,
                                 'potions_of_healing': self.potions_of_healing,
-                                'town_portals': self.town_portals, 'elixirs': self.elixirs}
+                                'town_portals': self.town_portals, 'elixirs': self.elixirs,
+                                'antidotes': self.antidotes}
 
                 # add all items > 0 in working dict to stealing list
                 for key, value in working_dict.items():
@@ -1469,7 +1475,8 @@ class Player:
                 # I am proud of this next bit of code :)
                 grammar_dict = {'potions_of_strength': 'potion of strength',
                                 'potions_of_healing': 'potion of healing',
-                                'town_portals': 'scroll of town portal', 'elixirs': 'clarifying elixir'}
+                                'town_portals': 'scroll of town portal', 'elixirs': 'clarifying elixir',
+                                'antidotes': 'vial of antidote'}
                 for key, value in grammar_dict.items():
                     if random_stolen_item == key:
                         item_string = value
@@ -1478,7 +1485,7 @@ class Player:
                 pause()
                 return True  # True means monster gets away clean
             else:
-                print("You have nothing he wants to steal!")
+                print("You have nothing to steal!")
                 pause()
                 # sleep(2)
                 return True  # Changing this to False means your inventory is empty and monster sticks around to fight
@@ -6234,6 +6241,9 @@ class Player:
         return
 
     def lose_items(self):
+        # pack items get lost first, then if belt_items_to_lose sum > 0, belt items get lost
+        belt_item_types_to_lose = [self.potions_of_strength, self.potions_of_healing,
+                                   self.town_portals, self.elixirs, self.antidotes]
         available_item_types_to_lose = []
         for i in self.pack.keys():  # gather all available
             if len(self.pack[i]) > 0:  # item types to lose based on player's current item TYPES and put them
@@ -6248,7 +6258,9 @@ class Player:
                 print(f"The {lost_item.name} from your dungeoneer's pack is gone!")  # from your {item_type}")
                 pause()
                 return
-        elif self.potions_of_strength > 0 or self.potions_of_healing > 0 or self.town_portals > 0 or self.elixirs > 0:
+        elif sum(belt_item_types_to_lose) > 0:
+            # elif self.potions_of_strength > 0 or self.potions_of_healing > 0
+            # or self.town_portals > 0 or self.elixirs > 0:
             item_string = ""
             # Define list of attributes you are allowed to change
             self_dict = self.__dict__  # create variable as actual copy of player dict attribute
@@ -6256,7 +6268,8 @@ class Player:
             # the working dict and 'for' loop just takes the place of many 'if:' statements
             working_dict = {'potions_of_strength': self.potions_of_strength,
                             'potions_of_healing': self.potions_of_healing,
-                            'town_portals': self.town_portals, 'elixirs': self.elixirs}
+                            'town_portals': self.town_portals, 'elixirs': self.elixirs,
+                            'antidotes': self.antidotes}
             # add all items > 0 in working dict to stealing list
             for key, value in working_dict.items():
                 if value > 0:
@@ -6265,7 +6278,8 @@ class Player:
             # I am proud of this next bit of code :)
             grammar_dict = {'potions_of_strength': 'potion of strength',
                             'potions_of_healing': 'potion of healing',
-                            'town_portals': 'scroll of town portal', 'elixirs': 'clarifying elixir'}
+                            'town_portals': 'scroll of town portal', 'elixirs': 'clarifying elixir',
+                            'antidotes': 'vial of antidote'}
             for key, value in grammar_dict.items():
                 if random_stolen_item == key:
                     item_string = value
@@ -6276,7 +6290,7 @@ class Player:
             pause()
             return
         else:
-            return nothing_happens()
+            return nothing_happens()  # pack and belt inventory empty
 
     def fountain_event(self):
         # WHITE GREEN CLEAR RED BLACK
@@ -6285,7 +6299,7 @@ class Player:
         # poison 3 * dungeon level + 1 hit points
         # drunk
         # lose items
-        # increase num of spells Magic power SURGES through your body
+        # increase num of spells: Magic power SURGES through your body
         water_colors = ['white', 'green', 'bright green ', 'crystal clear',
                         'deep red', 'red', 'black', 'pitch black']
         water_color = random.choice(water_colors)
@@ -6309,7 +6323,7 @@ class Player:
         print(f"Zzzzzzap....You've been teleported.....")
         sleep(2)
         # self.dungeon_key += 1  # this will become random.randint(1, deepest dungeon level) in future
-        self.dungeon = dungeon_dict[self.dungeon_key]
+        # self.dungeon = dungeon_dict[self.dungeon_key]
         # self.x = random.randint(1, 18)
         # self.y = random.randint(1, 18)
         (self.x, self.y) = self.dungeon.teleporter_landing
@@ -6323,7 +6337,7 @@ class Player:
         return
 
     def pit_event(self):
-        print(f"The ground here is slippery and quite unsteady..")
+        print(f"The ground here is slippery, and quite unsteady..")
         sleep(1.5)
         print(f"You see a pit..")
         sleep(1.5)
@@ -6333,7 +6347,7 @@ class Player:
             descend_or_not = input(f"Do you wish to descend (y/n)?: ").lower()
             if descend_or_not == 'y':
                 self.in_a_pit = True
-                print(f"Retrieving the rope from your belt, you carefully and craftily repel down the slick, "
+                print(f"Retrieving the rope from your belt, you deftly repel down the slick, "
                       f"treacherous pit walls.")
                 # self.dungeon_key += 1
                 # self.dungeon = dungeon_dict[self.dungeon_key]
@@ -6346,7 +6360,6 @@ class Player:
                 print(f"You have landed at the bottom of a pit. The foul, humid air hangs in a mist around you.")
                 # print(self.dungeon.pit_intro)
                 pause()
-
                 return
             else:
                 return
@@ -6369,17 +6382,16 @@ class Player:
                 sleep(1)
                 pause()
                 # falling into pits lands you on the same dungeon level at the dungeon.pit_landing coordinates
-                # self.dungeon_key += 1
-                # self.dungeon = dungeon_dict[self.dungeon_key]
+                # self.dungeon_key += 1  # this can be used to land you on the next level down
+                # self.dungeon = dungeon_dict[self.dungeon_key]  # this can be used to land you on the next level down
                 (self.x, self.y) = self.dungeon.pit_landing
                 self.previous_x = self.x
                 self.previous_y = self.y
                 self.position = self.dungeon.grid[self.y][self.x]
                 self.hud()
-                print(f"You have landed at the bottom of a pit. The foul, humid air hangs in a mist around you.")
+                print(f"You have landed at the bottom of the pit. The foul, humid air hangs in a mist around you.")
                 # print(self.dungeon.pit_intro)
                 pause()
-
                 return
 
     def staircase_description(self):
@@ -6395,15 +6407,16 @@ class Player:
               f"The door has been locked and barricaded. You must continue onward!")
 
     def elevator_event(self):
-        print(f"You have stepped onto a platform...")
+        # print(f"You have stepped onto a platform...")
+        # sleep(1)
+        print(f"You feel a slight whirring..")
         sleep(1)
-        print(f"You feel a slight rumbling..")
-        sleep(1)
-        difficulty_class = 8
+        difficulty_class = 9
         if dice_roll(1, 20) + self.intelligence_modifier >= difficulty_class:
-            stay_or_jump = input(f"You realize it is an elevation mechanism, drawing you up to the "
-                                 f"main dungeon level.\nDo you wish to (S)tay on it or (J)ump off? ").lower()
-            if stay_or_jump == 's':
+            stay_or_jump = input(f"You see an elevation mechanism which can return you to the "
+                                 f"main dungeon level.\nDo you wish to go back (U)p, or "
+                                 f"(S)tay to explore this level further? ").lower()
+            if stay_or_jump == 'u':
                 print(f"A cage closes on your position.")
                 sleep(1)
                 print(f"You feel heavy for a moment..")
@@ -6468,7 +6481,7 @@ class Player:
                       self.dungeon.elevator: self.elevator_event,
                       self.dungeon.pit: self.pit_event,
                       self.dungeon.pit2: self.pit_event,
-                      self.dungeon.exit: self.dungeon_exit
+                      self.dungeon.exit: self.dungeon_exit_event
                       }
         if self.coordinates in event_dict.keys():
             event_function = (event_dict[self.coordinates])  # (event_dict[self.coordinates])
@@ -6478,14 +6491,89 @@ class Player:
         #    return encounter
         # NAVIGATION
 
+    def navigation(self, dungeon_command):
+        if dungeon_command == 'w':
+            self.hud()
+            print("North")
+            self.y -= 1
+            sleep(.5)
+            return
+        elif dungeon_command == 'a':
+            self.hud()
+            print("West")
+            self.x -= 1
+            sleep(.5)
+            return
+        elif dungeon_command == 's':
+            self.hud()
+            print("South")
+            self.y += 1
+            sleep(.5)
+            return
+        elif dungeon_command == 'd':
+            self.hud()
+            print("East")
+            self.x += 1
+            sleep(.5)
+            return
+        elif dungeon_command == 'nw':
+            self.hud()
+            print("Northwest")
+            self.y -= 1  # north
+            self.x -= 1  # west
+            sleep(.5)
+            return
+        elif dungeon_command == 'ne':
+            self.hud()
+            print("Northeast")
+            self.y -= 1  # north
+            self.x += 1  # east
+            sleep(.5)
+            return
+        elif dungeon_command == 'se':
+            self.hud()
+            print("Southeast")
+            self.y += 1  # south
+            self.x += 1  # east
+            sleep(.5)
+            return
+        elif dungeon_command == 'sw':
+            self.hud()
+            print("Southwest")
+            self.y += 1  # south
+            self.x -= 1  # west
+            sleep(.5)
+            return
+        elif dungeon_command == 'l':
+            # this will call dungeon_description().
+            self.dungeon_description()
+            self.coordinates = (self.x, self.y)
+            self.position = self.dungeon.grid[self.y][self.x]
+            return
+        elif dungeon_command == 'map':
+            self.display_map(self.dungeon.player_grid)  #
+            pause()
+            self.dungeon_description()
+            return
+        elif dungeon_command == 'm':
+            self.item_management_sub_menu()
+            return
+        elif dungeon_command == 'i':
+            self.inventory()
+            return
+        else:  # remove after testing
+            print(f"This should be unreachable.")
+            return
+
     def boss_clue_1(self):
         self.hud()
         rndm_hint_list = ["a piece of parchment", "a torn piece of fabric", "a broken necklace", "a broken ring"]
         clue_item = random.choice(rndm_hint_list)
-        print(f"On the ground before you lays {clue_item}. You see a symbol on it; A woman with a crown, surrounded "
-              f"by many skulls.")
+        print(f"On the ground before you lays {clue_item}. You carefully pick it up.")
         sleep(1)
-        print(f"Suddenly, it begins to deteriorate in your hands until it is nothing but ashes!")
+        print(f"You see a symbol on it; A woman with a crown, surrounded by many skulls.")
+        sleep(1)
+        print(f"Without warning, it begins to deteriorate in your hands until it is nothing but ashes!")
         sleep(1)
         print(f"You ponder this, and commit the image to memory. You wonder if there is someone in town who can shed\n"
               f"light on the strange symbol.")
@@ -6506,9 +6594,10 @@ class Player:
 
     def boss_clue_3(self):
         self.hud()
-        print("You hear the flapping of the wings of a flying creature nearby...")
+        print("You hear the flapping of wings nearby...")
         sleep(1)
-        print(f"You catch a glimpse of its dark form overhead, just before it disappears into the darkness far above.")
+        print(f"You catch a glimpse of a flying creature overhead, just before it disappears into the darkness "
+              f"far above.")
         pause()
         self.boss_hint_3 = True
         return
@@ -6547,6 +6636,7 @@ class Player:
             return self.boss_clue_5()
         if not self.boss_hint_6:
             return self.boss_clue_6()
+        return
 
     def dungeon_description(self):
         self.hud()
@@ -6589,7 +6679,7 @@ class Player:
             "2": f"You are at a dead end. The only exit is to the South...",
             "3": f"You are at a dead end. The only exit is to the East...",
             "4": f"You are at a dead end. The only exit is to the West...",
-            "5": f"This is a tunnel corridor of {self.dungeon.name}. Exits are to the North and South...",
+            "5": f"This is a corridor of {self.dungeon.name}. Exits are to the North and South...",
             "6": f"You are in a corridor of {self.dungeon.name}. Exits are to the East and West...",
             "7": f"You are in a corner. Exits are to the South and East.",
             "8": f"You are in a corner. Exits are to the North and East.",
@@ -6652,28 +6742,32 @@ class Player:
         return
 
     def display_map(self, maps):
-        # self.hud()
-        cls()
-        print("You look at the map..")
-        print(f"Position key: {self.position}")  # remove after testing
-        self.coordinates = (self.x, self.y)
+        if self.in_a_pit:
+            print(f"You are in uncharted territory..")
+            sleep(1)
+            return
+        else:
+            cls()
+            print("You look at the map..")
+            print(f"Position key: {self.position}")  # remove after testing
+            self.coordinates = (self.x, self.y)
+            if self.position == 0:
+                print(self.dungeon.intro)
+            print(f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}) Coordintes: {self.coordinates}")
+            if self.position != 0 and self.coordinates != self.dungeon.staircase:
+                self.dungeon.player_grid[self.y][self.x] = "X"
+            for element in range(0, 20):
+                print(*maps[element])
+            # replace the X with a dot so that it doesn't leave a trail:
+            if self.position != 0 and self.coordinates != self.dungeon.staircase:
+                self.dungeon.player_grid[self.y][self.x] = "."
+            self.position = self.dungeon.grid[self.y][self.x]
+            print(f"S = Staircase X = your position E = Exit")
+            # place the following line in the main file to leave a trail of x's throughout the map to see where you've been.
+            # player_1.dungeon.player_grid[player_1.y][player_1.x] = "x"
+            return
 
-        if self.position == 0:
-            print(self.dungeon.intro)
-        print(f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}) Coordintes: {self.coordinates}")
-        if self.position != 0 and self.coordinates != self.dungeon.staircase:
-            self.dungeon.player_grid[self.y][self.x] = "X"
-        for element in range(0, 20):
-            print(*maps[element])
-        # replace the X with a dot so that it doesn't leave a trail:
-        if self.position != 0 and self.coordinates != self.dungeon.staircase:
-            self.dungeon.player_grid[self.y][self.x] = "."
-        self.position = self.dungeon.grid[self.y][self.x]
-        print(f"S = Staircase X = your position E = Exit")
-        # place the following line in the main file to leave a trail of x's throughout the map to see where you've been.
-        # player_1.dungeon.player_grid[player_1.y][player_1.x] = "x"
-
-    def dungeon_exit(self):
+    def dungeon_exit_event(self):
         # dungeon dictionary in dungeons.py file
         print(f"You approach the exit. With quiet resolve you turn to briefly look\n"
               f"behind you, and then continue onward, toward your goal.")

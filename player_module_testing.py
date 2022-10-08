@@ -76,55 +76,50 @@ def encounter_logic():
 
 
 def gong():
-    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\gong.wav',
-                       winsound.SND_ASYNC)
+    if os.name == 'nt':
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\gong.wav', winsound.SND_ASYNC)
 
 
 def blacksmith_theme():
-    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\blacksmith_theme_2.wav',
-                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    if os.name == 'nt':
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\blacksmith_theme_2.wav',
+                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
 def chemist_theme():
-    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\chemist_theme.wav',
-                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    if os.name == 'nt':
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\chemist_theme.wav',
+                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
 def mountain_king_theme():
-    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\mountain_king.wav',
-                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    if os.name == 'nt':
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\mountain_king.wav',
+                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
 def dungeon_theme():
-    winsound.PlaySound(
-        'C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\dungeon_theme_2.wav',
-        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    if os.name == 'nt':
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\dungeon_theme_2.wav',
+                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
 def boss_battle_theme():
-    winsound.PlaySound(
-        'C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\boss_battle_2.wav',
-        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    if os.name == 'nt':
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\boss_battle_2.wav',
+                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
 def town_theme():
-    # C:\Users\jules\Desktop\sound "C:\Program Files\Telengard\MEDIA\MUSIC\town_(tavern)_loop_by_alexander_nakarav.mp4"
-    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_(tavern)_loop_by_alexander_nakarada.wav',
-                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    if os.name == 'nt':
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_(tavern)_loop_by_alexander_nakarada.wav',
+                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
 def tavern_theme():
-    # C:\Users\jules\Desktop\sound "C:\Program Files\Telengard\MEDIA\MUSIC\town_(tavern)_loop_by_alexander_nakarav.mp4"
-    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\silvermandsound_the medieval_banquet.wav',
-                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-
-
-# def pause():
-#   os.system('pause')
-
-
-# def sleep(seconds):
-#    time.sleep(seconds)
+    if os.name == 'nt':
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\silvermandsound_the medieval_banquet.wav',
+                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
 class Weapon:

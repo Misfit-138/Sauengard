@@ -97,7 +97,14 @@ def boss_battle_theme():
 
 
 def town_theme():
-    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_theme_2.wav',
+    # C:\Users\jules\Desktop\sound "C:\Program Files\Telengard\MEDIA\MUSIC\town_(tavern)_loop_by_alexander_nakarav.mp4"
+    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_(tavern)_loop_by_alexander_nakarada.wav',
+                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+
+
+def tavern_theme():
+    # C:\Users\jules\Desktop\sound "C:\Program Files\Telengard\MEDIA\MUSIC\town_(tavern)_loop_by_alexander_nakarav.mp4"
+    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\silvermandsound_the medieval_banquet.wav',
                        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
@@ -1429,7 +1436,7 @@ class Player:
         self.hud()
         quick_move_roll = dice_roll(1, 20)  # - self.stealth
         # player_initiative_roll = dice_roll(1, 20)
-        if quick_move_roll > 0:  # == 20:
+        if quick_move_roll == 20:
             print(f"The {monster_name} makes a quick move...")
             sleep(1.5)
             # pack inventory logic:
@@ -1453,7 +1460,6 @@ class Player:
             # if pack is empty, the thief moves to the belt.
             # Belt inventory is handled differently. This is clunky but should work.
             # belt inventory logic:
-
             # elif self.potions_of_strength > 0 or self.potions_of_healing > 0 or self.town_portals > 0 \
             #        or self.elixirs > 0 or self.antidotes > 0:
             elif sum(belt_item_types_to_steal) > 0:  # simplifies all the if statements above
@@ -1466,7 +1472,6 @@ class Player:
                                 'potions_of_healing': self.potions_of_healing,
                                 'town_portals': self.town_portals, 'elixirs': self.elixirs,
                                 'antidotes': self.antidotes}
-
                 # add all items > 0 in working dict to stealing list
                 for key, value in working_dict.items():
                     if value > 0:
@@ -1503,7 +1508,6 @@ class Player:
         if self.hit_points > 0:
             return False
         else:
-            # return True
             self.hud()
             if self.necrotic and self.poisoned:
                 print(f"You are necrotic, poisoned, unconscious and moribund!")
@@ -4497,7 +4501,8 @@ class Player:
                   f"He notices you, grumbles, and continues hammering...")
             print(f"Your gold: {self.gold} GP")
             blacksmith_choice = input(
-                "(P)urchase items, (L)iquidate items, (M)anage your inventory items, View (I)nventory, or (E)xit the blacksmith: ").lower()
+                "(P)urchase items, (L)iquidate items, (M)anage your inventory items, "
+                "View (I)nventory, or (E)xit the blacksmith: ").lower()
             if blacksmith_choice == 'p':
                 self.buy_blacksmith_items()
                 continue
@@ -4850,7 +4855,6 @@ class Player:
 
     def use_scroll_of_town_portal(self):
         if self.town_portals < 1:
-            # if not self.duplicate_item(scroll_of_town_portal.item_type, scroll_of_town_portal): # scroll_of_town_portal not in self.pack['Town Portal Implements']:
             print(f"You have no scrolls!")
             time.sleep(2)
             return False
@@ -4860,10 +4864,6 @@ class Player:
             self.town_portals -= 1
             print(f"The quantum portal appears before you; a seemingly impossible tunneling between distant places..")
             time.sleep(2)
-            # winsound.PlaySound(None, winsound.SND_ASYNC)
-            # town_theme()
-            # winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_theme_2.wav',
-            #                   winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
             return True
 
     def poison(self):
@@ -4938,8 +4938,9 @@ class Player:
             hint_file.close()
             pause()
         cls()
-        typing(f"{self.name},\nThe guardian of {self.dungeon.name} has in its possession an ornate dagger of very fine "
-               f"craftsmanship.\nIt is imperative you retrieve it. Return here with it so that matters may progress.\n"
+        typing(f"{self.name},\nThe guardian of {self.dungeon.name} has, in its possession, an ornate dagger "
+               f"of very fine craftsmanship.\nIt is imperative you retrieve it. Return here with it so that "
+               f"matters may progress.\n"
                f"\n                                                     -V\n")
         self.boss_hint_1_event = True
         pause()
@@ -4948,8 +4949,8 @@ class Player:
     def hint_event_2(self):
         print(f"As soon as she sees you, Jenna directs your attention to the opposite side of the room by raising "
               f"her chin in that general direction.\nAt the very same booth as last time, sits "
-              f"the hulking barbarian, Tor'bron. ")
-        sleep(1)
+              f"the hulking barbarian, Tor'bron.")
+        sleep(2)
         print(f"You cautiously approach...")
         sleep(1)
         pause()
@@ -4957,7 +4958,7 @@ class Player:
         typing(f"\'Well! {self.name}!\', he bellows in his booming voice. \'Sit!\' Something in his dour demeanor\n"
                f"tells you it is not an invitation, but an order. You marvel at the size and strength of the man.\n"
                f"His jet black hair lays long on his head, and covers his body in a wiry patchwork.\n"
-               f"Long sideburns flank a strong jawbone and his deep-set amber eyes burn with gripping intensity.\n"
+               f"Long sideburns flank a strong jawbone, and his deep-set amber eyes burn with gripping intensity.\n"
                f"\'And where is it? Do you have it?\', he asks, his tone tense and distrustful.\n"
                f"You carefully retrieve the dagger and pass it to him across the table. Roughly and without regard,\n"
                f"he swipes it from you, yanks it from its sheath and launches it across the room, over the heads\n"
@@ -4966,7 +4967,8 @@ class Player:
             vanquished_foes = convert_list_to_string_with_commas_only(self.vanquished_foes)
             typing(f"\'The slayer of {vanquished_foes}...\n...and others besides!\'\n")
         typing("\'When first I saw you, I was...\', he searches for the word. \'..skeptical!\'\n"
-               "But now, things are different! Now I know you are able-bodied and strong! Good! Very good, this!\' He nods.\n"
+               "But now, things are different! Now I know you are able-bodied and strong! Good! Very good, this!\' "
+               "He nods.\n"
                "A sting of disrespect hits you. After the toil and struggle to retrieve the prized dagger, you are\n"
                "now realizing it was nothing more than a test to prove your mettle to this stranger!\n"
                "\'You  must be Tor'bron!\', you say as you slide into the booth. His eyes\n"
@@ -5047,14 +5049,14 @@ class Player:
             print("hint 6 event")
 
     def inn(self):
-        print(f"You make your way to the tavern..")
-        sleep(1.25)
+
         self.hud()
         print(f"You have come upon the Slumbering Bear Inn- a handsome building with all the trimmings and character\n"
               f"one would expect of a tavern in a town such as this. Above the door hangs an angled sign\n"
               f"with *THE SLUMBERING BEAR* printed above an angry, roaring bear that appears to be "
               f"anything but sleepy...")
         pause()
+        # tavern_theme()
         self.hint_event_logic()
         while True:
             self.hud()
@@ -5111,6 +5113,7 @@ class Player:
                       f"\"Don't be a stranger, now, love! Ye are always welcome!\"")
                 sleep(1.25)
                 pause()
+                # town_theme()
                 return
             else:
                 continue

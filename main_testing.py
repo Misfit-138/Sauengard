@@ -1,4 +1,9 @@
-# blacksmith theme, dungeon theme, Alexander Nakarada
+# Blacksmith theme: Viking Intro loop by Alexander Nakarada complete permission granted in YouTube
+# Dungeon theme: Dragon Quest, Dragon Song, Medieval Metal, Cinematic Celtic Metal, by Alexander Nakarada
+# complete permission granted in YouTube
+# Chemist Theme: Might and Magic by Alexander Nakarada complete permission granted in YouTube
+# Town theme: Tavern Loop 1 by Alexander Nakarada complete permission granted in YouTube
+# boss battle theme: Dragon Castle / Epic Orchestral Battle Music by Makai Symphony Creative commons license reuse ok
 # MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
 # "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
 # introduction_file = open("trett.txt", "r")
@@ -142,8 +147,11 @@ while True:
             player_1.chemist_main()
             town_theme()
         elif town_functions == 't':
+            print(f"You make your way to the tavern..")
+            sleep(1.25)
+            tavern_theme()
             player_1.inn()
-
+            town_theme()
         elif town_functions == 'e':
             in_town = False
             in_dungeon = True

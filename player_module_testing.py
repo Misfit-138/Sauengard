@@ -52,7 +52,18 @@ rndm_aroma_lst = ['agarwood', 'angelica root', 'anise', 'basil', 'bergamot', 'ca
 
 
 def pause():
-    os.system('pause')
+    if os.name == 'nt':
+        # print("You're on Windows. Program should work")
+        os.system('pause')
+    else:
+        input("Strike [ENTER] to continue. . .")
+
+
+def cls():
+    if os.name == 'nt':
+        os.system('cls')
+    else:
+        os.system('clear')
 
 
 def sleep(seconds):
@@ -106,10 +117,6 @@ def tavern_theme():
     # C:\Users\jules\Desktop\sound "C:\Program Files\Telengard\MEDIA\MUSIC\town_(tavern)_loop_by_alexander_nakarav.mp4"
     winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\silvermandsound_the medieval_banquet.wav',
                        winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-
-
-def cls():
-    os.system('cls')
 
 
 # def pause():

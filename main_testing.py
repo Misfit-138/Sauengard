@@ -1,9 +1,13 @@
-# Blacksmith theme: Viking Intro loop by Alexander Nakarada complete permission granted in YouTube
-# Dungeon theme: Dragon Quest, Dragon Song, Medieval Metal, Cinematic Celtic Metal, by Alexander Nakarada
+# Dungeon Crawler by Jules Pitsker
+# (C)opyright 2022
+# Blacksmith theme: 'Viking Intro loop' by Alexander Nakarada complete permission granted in YouTube
+# Dungeon theme: 'Dragon Quest', 'Dragon Song', 'Medieval Metal', 'Cinematic Celtic Metal', by Alexander Nakarada
 # complete permission granted in YouTube
-# Chemist Theme: Might and Magic by Alexander Nakarada complete permission granted in YouTube
-# Town theme: Tavern Loop 1 by Alexander Nakarada complete permission granted in YouTube
-# boss battle theme: Dragon Castle / Epic Orchestral Battle Music by Makai Symphony Creative commons license reuse ok
+# Chemist Theme: 'Might and Magic' by Alexander Nakarada complete permission granted in YouTube
+# Town theme: 'Tavern Loop 1' by Alexander Nakarada complete permission granted in YouTube
+# boss battle theme: 'Dragon Castle' / Epic Orchestral Battle Music by Makai Symphony Creative commons license reuse ok
+# Tavern theme 'The Medieval Banquet / Silvermansound No Copyright. Royalty Free Music
+# Telengard
 # MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
 # "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
 # introduction_file = open("trett.txt", "r")

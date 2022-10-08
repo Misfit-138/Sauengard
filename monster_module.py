@@ -140,7 +140,12 @@ between 1 and 30. Write down its statistics from the following formulas:
 
 
 # # monsters have Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma
-
+def pause():
+    if os.name == 'nt':
+        # print("You're on Windows. Program should work")
+        os.system('pause')
+    else:
+        input("Strike [ENTER] to continue. . .")
 
 def convert_list_to_string_with_commas_only(list1):
     return str(list1).replace('[', '').replace(']', '').replace("'", "")
@@ -279,7 +284,8 @@ class Monster:
         if roll_d20 == 1:
             print(f"..it awkwardly strikes and you easily block.")
             # time.sleep(2)
-            os.system('pause')
+            #os.system('pause')
+            pause()
             return 0
         if roll_d20 == 20:
             critical_bonus = 2
@@ -309,18 +315,18 @@ class Monster:
                       f"Weapon bonus: {self.weapon_bonus}")
                 time.sleep(1.5)
                 print(f"You suffer {damage_to_opponent} points of damage!")
-                os.system('pause')
+                pause()
                 # time.sleep(5)
                 return damage_to_opponent
             else:
                 print(f"The {self.name} strikes..")
                 time.sleep(1)
                 print(f"You block the attack!")  # zero damage to player result
-                os.system('pause')
+                pause()
                 return 0  # 0 points damage to player
         else:
             print(f"It missed..")
-            os.system('pause')
+            pause()
             return 0
 
     def quantum_energy_attack(self, player_1):
@@ -381,7 +387,7 @@ class Monster:
                     f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} hit dice: {damage_roll}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}\nAttack bonus: {attack_bonus}")
                 print(f"You suffer {damage_to_opponent} points of damage!")
-                os.system('pause')
+                pause()
                 # time.sleep(5)
                 return damage_to_opponent
             else:
@@ -391,7 +397,7 @@ class Monster:
                 return 0  # 0 points damage to player
         else:
             print(f"It fails to harness the mysterious powers..")
-            os.system('pause')
+            pause()
             return 0
 
     def paralyze(self, player_1):
@@ -444,7 +450,7 @@ class Monster:
             print("You easily dodge the poison attack!")
             time.sleep(1)
             # print(f"And you perceive it was attempting to poison you!")
-            os.system('pause')
+            pause()
             player_1.hud()
             return False
         else:
@@ -467,14 +473,14 @@ class Monster:
                 player_1.poisoned = True
                 player_1.poisoned_turns = 0
                 # self.calculate_poison()
-                os.system('pause')
+                pause()
                 # self.dungeon_description()
                 # self.hud()
                 return player_1.poisoned
             else:
                 print(f"You swiftly dodge its poison attack!")
                 time.sleep(1)
-                os.system('pause')
+                pause()
                 player_1.hud()
                 return False
 
@@ -486,7 +492,7 @@ class Monster:
         if roll_d20 == 1:
             print("You dodge the deadly necrotic attack!")
             time.sleep(1)
-            os.system('pause')
+            pause()
             player_1.hud()
             return False
         else:
@@ -508,13 +514,13 @@ class Monster:
                 print(f"Necrotic forces ravage through your body!")
                 player_1.necrotic = True
                 player_1.necrotic_turns = 0
-                os.system('pause')
+                pause()
                 player_1.hud()
                 return player_1.necrotic
             else:
                 print(f"You swiftly dodge its death-dealing necrotic attack!")
                 time.sleep(1)
-                os.system('pause')
+                pause()
                 player_1.hud()
                 return False
 

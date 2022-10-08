@@ -147,6 +147,7 @@ def pause():
     else:
         input("Strike [ENTER] to continue. . .")
 
+
 def convert_list_to_string_with_commas_only(list1):
     return str(list1).replace('[', '').replace(']', '').replace("'", "")
 
@@ -284,7 +285,7 @@ class Monster:
         if roll_d20 == 1:
             print(f"..it awkwardly strikes and you easily block.")
             # time.sleep(2)
-            #os.system('pause')
+            # os.system('pause')
             pause()
             return 0
         if roll_d20 == 20:
@@ -375,7 +376,7 @@ class Monster:
             f"Total = {human_player_roll_d20 + player_1.wisdom_modifier + player_1.ring_of_prot.protect + player_1.temp_protection_effect}")
         monster_total = roll_d20 + self.wisdom_modifier + self.proficiency_bonus  # test out pro bonus
         if monster_total >= (human_player_roll_d20 + player_1.wisdom_modifier +
-                                               player_1.ring_of_prot.protect + player_1.temp_protection_effect):
+                             player_1.ring_of_prot.protect + player_1.temp_protection_effect):
 
             damage_roll = dice_roll(self.number_of_hd * critical_bonus, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)

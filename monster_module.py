@@ -320,11 +320,13 @@ class Monster:
                 # time.sleep(5)
                 return damage_to_opponent
             else:
+                # zero damage to player result
                 print(f"The {self.name} strikes..")
                 time.sleep(1)
-                print(f"You block the attack!")  # zero damage to player result
+                print(f"Its awkward attack manages 1 point of damage..")
+                damage_to_opponent = 1
                 pause()
-                return 0  # 0 points damage to player
+                return damage_to_opponent  # 0 points damage to player
         else:
             print(f"It missed..")
             pause()

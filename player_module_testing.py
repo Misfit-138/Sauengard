@@ -18,7 +18,8 @@ Modify
 Add your modifiers.  
 Armor Class 
 If the modified result is ≥ target’s Armor Class (AC) , the attack hits the target. 
-Damage Roll Damage Dice and add modifiers. The target’s HP are reduced, factoring resistances and vulnerabilities. 
+Damage 
+Roll Damage Dice and add modifiers. The target’s HP are reduced, factoring resistances and vulnerabilities. 
 Spell Attack 
 Many spells count as attacks. 
 The caster rolls d20 + Spellcasting Ability Modifier + Proficiency Bonus to hit vs AC. PHB 205'''
@@ -51,6 +52,10 @@ rndm_aroma_lst = ['agarwood', 'angelica root', 'anise', 'basil', 'bergamot', 'ca
                   'vanilla sweet grass', 'warionia', 'vetiver', 'wintergreen', 'yarrow oil']
 
 
+def convert_list_to_string_with_commas_only(list1):
+    return str(list1).replace('[', '').replace(']', '').replace("'", "")
+
+
 def pause():
     if os.name == 'nt':
         # print("You're on Windows. Program should work")
@@ -68,6 +73,14 @@ def cls():
 
 def sleep(seconds):
     time.sleep(seconds)
+
+
+def character_generator():
+    cls()
+    player_name = input(f"Please enter character name: ")
+    player_1 = Player(player_name)
+    pause()
+    return player_1
 
 
 def encounter_logic():
@@ -711,10 +724,6 @@ class TownPortalImplements:
 
 
 scroll_of_town_portal = TownPortalImplements()
-
-
-def convert_list_to_string_with_commas_only(list1):
-    return str(list1).replace('[', '').replace(']', '').replace("'", "")
 
 
 def undead_prophet_returns():
@@ -1661,7 +1670,8 @@ class Player:
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
-                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + vulnerability_modifier + level_advantage
+                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -2670,13 +2680,11 @@ class Player:
                 sleep(1)
                 self.hud()
                 roll_d20 = dice_roll(1, 20)  # attack roll
-                player_total = (roll_d20 + self.wisdom_modifier + self.proficiency_bonus)
-                print(
-                    f"Clearing your mind, you attempt to harness the weird energies...")
+                # player_total = (roll_d20 + self.wisdom_modifier + self.proficiency_bonus)
+                print(f"Clearing your mind, you attempt to harness the weird energies...")
                 sleep(1)
                 print(f"Quantum Ability Check: {roll_d20}")
                 sleep(1)
-
                 if roll_d20 == 1 and not vulnerable:
                     print("Your focus has failed..")
                     pause()
@@ -3066,8 +3074,7 @@ class Player:
                     #
                     number_of_dice = (20 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice) + \
-                                         dice_roll(number_of_dice, 8) + (
-                                                 1 * number_of_dice)  # 2nd attack = force damage
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack=force damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
@@ -3173,8 +3180,7 @@ class Player:
                     #
                     number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                                         dice_roll(number_of_dice, 8) + (
-                                                 1 * number_of_dice)  # 2nd attack = force damage
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
@@ -3284,8 +3290,7 @@ class Player:
                     #
                     number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                                         dice_roll(number_of_dice, 8) + (
-                                                 1 * number_of_dice)  # 2nd attack = crushing damage
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = crushing damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)

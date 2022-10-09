@@ -61,9 +61,10 @@ while True:
             time.sleep(1.5)
             continue
     if new_game_or_load == 's':
-        player_name = input("Thy name, noble sire? ")
+        # player_name = input("Thy name, noble sire? ")
         accept_stats = ""
-        player_1 = Player(player_name)
+        # player_1 = Player(player_name)
+        player_1 = character_generator()
         while accept_stats != "y":
             cls()
             print(f"Strength: {player_1.strength}")

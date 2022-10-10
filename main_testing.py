@@ -61,27 +61,11 @@ while True:
             time.sleep(1.5)
             continue
     if new_game_or_load == 's':
-        # player_name = input("Thy name, noble sire? ")
         accept_stats = ""
-        # player_1 = Player(player_name)
-        player_1 = character_generator()
-        while accept_stats != "y":
-            cls()
-            print(f"Strength: {player_1.strength}")
-            print(f"Dexterity: {player_1.dexterity}")
-            print(f"Constitution {player_1.constitution}")
-            print(f"Intelligence: {player_1.intelligence}")
-            print(f"Wisdom: {player_1.wisdom}")
-            print(f"Charisma: {player_1.charisma}")
-            print(f"Hitpoints: {player_1.hit_points}")
-            print(f"Strength modifier: {player_1.strength_modifier}")
-            print(f"Constitution modifier: {player_1.constitution_modifier}")
-            print(f"Intelligence modifier: {player_1.intelligence_modifier}")
-            print(f"Wisdom modifier: {player_1.wisdom_modifier}")
-            print(f"Charisma modifier: {player_1.charisma_modifier}")
-            print(f"Proficiency bonus: {player_1.proficiency_bonus}")
-            accept_stats = input("Ok to continue? ").lower()
-        # a while loop's 'else' part runs if no break occurs and the condition is false
+        while accept_stats != 'y':
+            player_1 = character_generator()
+            player_1.hud()
+            accept_stats = input(f"Accept character and continue? (y/n): ").lower()
         if accept_stats == "y":
             player_1.dungeon_key = 1
             player_1.dungeon = dungeon_dict[player_1.dungeon_key]
@@ -732,3 +716,27 @@ while True:
                     # continue
                 elif dungeon_command == 'i':
                     player_1.inventory()"""
+# player_name = input("Thy name, noble sire? ")
+"""accept_stats = ""
+# player_1 = Player(player_name)
+
+while accept_stats != "y":
+    player_1 = character_generator()
+    cls()
+    print(f"Name: {player_1.name}")
+    print(f"Strength: {player_1.strength}")
+    print(f"Dexterity: {player_1.dexterity}")
+    print(f"Constitution {player_1.constitution}")
+    print(f"Intelligence: {player_1.intelligence}")
+    print(f"Wisdom: {player_1.wisdom}")
+    print(f"Charisma: {player_1.charisma}")
+    print(f"Hitpoints: {player_1.hit_points}")
+    print(f"Strength modifier: {player_1.strength_modifier}")
+    print(f"Constitution modifier: {player_1.constitution_modifier}")
+    print(f"Intelligence modifier: {player_1.intelligence_modifier}")
+    print(f"Wisdom modifier: {player_1.wisdom_modifier}")
+    print(f"Charisma modifier: {player_1.charisma_modifier}")
+    print(f"Proficiency bonus: {player_1.proficiency_bonus}")
+    accept_stats = input("Ok to continue? ").lower()
+# a while loop's 'else' part runs if no break occurs and the condition is false
+if accept_stats == "y":"""

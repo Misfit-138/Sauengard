@@ -77,10 +77,171 @@ def sleep(seconds):
 
 def character_generator():
     cls()
+    explanation_dict = {"Strength": "Strength is a measures of a character's physical power. A character high\n"
+                                    "in Strength can lift heavier loads, break objects with brute force, and\n"
+                                    "do more damage with melee weapons.",
+                        "Dexterity": "Dexterity is a measure of a character’s nimbleness and agility, muscular "
+                                     "coordination, and balance.\nIt is also an essential component of your armor "
+                                     "class.",
+                        "Constitution": "Constitution encompasses the character's physique, toughness, health and\n"
+                                        "resistance to poison and necrosis. The higher a character's constitution,\n"
+                                        "the more hit points the character will have.",
+                        "Intelligence": "Intelligence determines how well your character learns and reasons. It is\n"
+                                        "important for certain quantum effects, your ability to recall\n"
+                                        "lore, languages, and knowledge of lost civilizations as well as your ability\n"
+                                        "to investigate your surroundings.",
+                        "Wisdom": "Wisdom enables sound judgment based on knowledge and understanding; the ability\n"
+                                  "to use knowledge and understanding successfully to solve problems, avoid or avert\n"
+                                  "dangers, attain certain goals, or counsel others in doing so. It is the opposite\n"
+                                  "of foolishness, stupidity, and madness. Wisdom is critical for harnessing, and\n"
+                                  "avoiding many quantum effects.",
+                        "Charisma": "Charisma measures your ability to interact effectively with others. It includes\n"
+                                    "such factors as confidence, persuasion and eloquence, and it can represent a\n"
+                                    "charming or commanding personality. Players with high charisma will also have a\n"
+                                    "better chance of favorable outcomes when encountering certain monsters."}
+
+    stats = {
+        "strength": 15,
+        "dexterity": 14,
+        "constitution": 13,
+        "intelligence": 10,
+        "wisdom": 12,
+        "charisma": 8,
+    }
+
+    while True:
+        cls()
+        player_name = input(f"Please enter character name: ")
+        if len(player_name) < 3:
+            print(f"Minimum 3 characters!")
+            sleep(.25)
+            continue
+        confirm_player_name = input(f"Player name is {player_name}. Is this ok? (y/n) ").lower()
+        if confirm_player_name == 'y':
+            break
+        else:
+            continue
+
+    cls()
+    # print(f"{player_name}:")
+    for key, value in stats.items():
+        print(key.capitalize(), ":", value)
+    default_choice = input(f"[ENTER] to use the above default ability scores or (C)ustomize? ([ENTER]/C): ").lower()
+    if default_choice != 'c':
+        player_1 = Player(name=player_name, **stats)
+        # pause()
+        return player_1
+    score_list = [15, 14, 13, 12, 10, 8]
+    while len(score_list):
+        for key in stats:
+            cls()
+            human_key = key.capitalize()
+            print(human_key)
+            print(explanation_dict[human_key])
+            scores = convert_list_to_string_with_commas_only(score_list)
+            print(f"Available scores: {scores}")
+            try:
+                score = int(input(f"Enter score to assign to {human_key}: "))
+                if score in score_list:
+                    print(f"{key} = {score}")
+                    sleep(.5)
+                    stats[key] = score
+                    score_list.remove(score)
+
+                else:
+                    score_list = [15, 14, 13, 12, 10, 8]  # re-set list
+                    print(f"Valid scores are listed above.")
+                    sleep(0.5)
+                    print(f"Starting over.")
+                    sleep(0.5)
+                    break
+            except ValueError:
+                print(f"Invalid entry..")
+                score_list = [15, 14, 13, 12, 10, 8]  # re-set list
+                sleep(0.5)
+                print(f"Starting over.")
+                sleep(0.5)
+                break
+    # for key, value in stats.items():
+    # print(key, ":", value)
+    player_1 = Player(name=player_name, **stats)
+    # pause()
+    return player_1
+
+
+"""def character_generator_old():
+    cls()
     player_name = input(f"Please enter character name: ")
+    strength = 0
+    dexterity = 0
+    constitution = 0
+    intelligence = 0
+    wisdom = 0
+    charisma = 0
+    ability_list = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma']
+    display_dict = {'Strength': strength,
+                    'Dexterity': dexterity,
+                    'Constitution': constitution,
+                    'Intelligence': intelligence,
+                    'Wisdom': wisdom,
+                    'Charisma': charisma}
+    stats = {
+        "strength": 0,
+        "dexterity": 0,
+        "constitution": 0,
+        "intelligence": 0,
+        "wisdom": 0,
+        "charisma": 0,
+    }
+    score_list = [15, 14, 13, 12, 10, 8]
+    for key, value in display_dict.items():
+        print(key, ':', value)
+    # print(f"Strength\nStrength is a measure of your character's physical prowess and power. It is important for\n"
+    #      f"melee combat and certain feats involving physical exertion.")
+    while len(score_list):
+
+        for key in display_dict.keys():
+            cls()
+            # abilities = convert_list_to_string_with_commas_only(ability_list)
+            # scores = convert_list_to_string_with_commas_only(score_list)
+            # print(abilities)
+            # print(scores)
+            # print(ability_list)
+            print(score_list)
+            try:
+                score = int(input(f"Enter score to assign to {key}: "))
+                if score in score_list:
+                    print(f"{key} = {score}")
+                    display_dict[key] = score
+                    score_list.remove(score)
+                    # ability_list.remove(key)
+                else:
+                    score_list = [15, 14, 13, 12, 10, 8]  # re-set list
+                    print(f"Valid scores are listed above.")
+                    sleep(.5)
+                    print(f"Starting over.")
+                    sleep(.5)
+                    break
+            except ValueError:
+                print(f"Invalid")
+                score_list = [15, 14, 13, 12, 10, 8]  # re-set list
+                sleep(.5)
+                print(f"Starting over.")
+                sleep(.5)
+                break
+    sleep(.5)
+    cls()
+    for key, value in display_dict.items():
+        print(key, ':', value)
+    print(strength)
+    print(dexterity)
+    print(constitution)
+    print(intelligence)
+    print(wisdom)
+    print(charisma)
     player_1 = Player(player_name)
     pause()
-    return player_1
+    return player_1"""
 
 
 def encounter_logic():
@@ -743,7 +904,8 @@ def nothing_happens():
 
 class Player:
 
-    def __init__(self, name):  # level, experience, gold, weapon_bonus, armor_bonus, shield, armor_class, strength,
+    def __init__(self, name, strength, dexterity, constitution, intelligence, wisdom,
+                 charisma):  # level, experience, gold, weapon_bonus, armor_bonus, shield, armor_class, strength,
         # dexterity,
         #  constitution, intelligence, wisdom, charisma, hit_points, maximum_hit_points, is_paralyzed, boots,
         #  cloak, weapon_name):
@@ -761,17 +923,17 @@ class Player:
         self.shield = no_shield
         self.boots = leather_boots
         self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
-        self.strength = 15  # random.randint(14, 16)
+        self.strength = strength  # 15  # random.randint(14, 16)
         self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.dexterity = 14  # random.randint(13, 15)
+        self.dexterity = dexterity  # 14  # random.randint(13, 15)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.constitution = 13  # random.randint(12, 14)
+        self.constitution = constitution  # 13  # random.randint(12, 14)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.intelligence = 10  # random.randint(11, 13)
+        self.intelligence = intelligence  # 10  # random.randint(11, 13)
         self.intelligence_modifier = math.floor((self.intelligence - 10) / 2)
-        self.wisdom = 12  # random.randint(9, 11)
+        self.wisdom = wisdom  # 12  # random.randint(9, 11)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
-        self.charisma = 8  # random.randint(7, 9)
+        self.charisma = charisma  # 8  # random.randint(7, 9)
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
         self.proficiency_bonus = 2  # 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -1584,7 +1746,7 @@ class Player:
         self.hud()
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"You strike at the {monster_name}..")
-        print(f"Attack roll---> {roll_d20}")
+        print(f"Attack Roll: {roll_d20}")
         sleep(1)
         if roll_d20 == 1:
             print("You awkwardly strike.")
@@ -1600,8 +1762,9 @@ class Player:
         else:
             critical_bonus = 1
             hit_statement = "You hit!"
-        print(f"Dexterity modifier {self.dexterity_modifier}\nProficiency bonus {self.proficiency_bonus}\n"
-              f"Weapon to hit bonus {self.wielded_weapon.to_hit_bonus}")
+        print(f"Dexterity modifier {self.dexterity_modifier}\nProficiency bonus {self.proficiency_bonus}")
+        if self.wielded_weapon.to_hit_bonus > 0:
+            print(f"Weapon to hit bonus {self.wielded_weapon.to_hit_bonus}")
         roll_total = roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus
         print(f"Total: {roll_total}")
         print(f"Monster armor class {monster_armor_class}")
@@ -1613,19 +1776,21 @@ class Player:
             if damage_to_opponent > 0:
                 print(hit_statement)
                 sleep(1)
-                print(
-                    f"{self.level * critical_bonus}d{self.hit_dice} roll ---> {damage_roll} + weapon bonus "
-                    f"({self.wielded_weapon.damage_bonus}) + "
-                    f"Strength modifier ({self.strength_modifier}) * Strength Bonus ({strength_bonus}) "
-                    f"= {damage_to_opponent} (rounded)")
+                print(f"{self.level * critical_bonus}d{self.hit_dice} Damage Roll: {damage_roll}\n"
+                      f"Strength modifier: ({self.strength_modifier})")
+                if self.wielded_weapon.damage_bonus > 0:
+                    print(f"Weapon bonus: ({self.wielded_weapon.damage_bonus})")
+                if strength_bonus > 1:
+                    print(f"* Strength Bonus: ({strength_bonus}))")
+                print(f"Total: {damage_to_opponent}")
                 print(f"You do {damage_to_opponent} points of damage!")
                 pause()
                 self.hud()
                 return damage_to_opponent
             else:
-                print(f"It blocks!")  # zero damage result
+                print(f"Your attack is barely effective. You manage 1 point of damage.")  # zero damage result
                 sleep(1)
-                return 0
+                return 1
         elif self.level > 4:
             print("You missed..")
             sleep(2)
@@ -1634,9 +1799,9 @@ class Player:
             roll_d20 = dice_roll(1, 20)
             if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
                 damage_roll = dice_roll(self.level, self.hit_dice)
-                damage_to_opponent = math.ceil(
-                    damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) + 1
-                print(f"You manage to attack for {damage_to_opponent} points of damage!")
+                damage_to_opponent = \
+                    math.ceil(damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) * strength_bonus
+                print(f"You attack again for {damage_to_opponent} points of damage!")
                 sleep(2)
                 self.hud()
                 return damage_to_opponent
@@ -1671,7 +1836,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
-                    vulnerability_modifier + level_advantage
+                            vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3074,7 +3239,7 @@ class Player:
                     #
                     number_of_dice = (20 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice) + \
-                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack=force damage
+                                         dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack=force damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
@@ -3180,7 +3345,8 @@ class Player:
                     #
                     number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
+                                         dice_roll(number_of_dice, 8) + (
+                                                 1 * number_of_dice)  # 2nd attack = force damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
@@ -3290,7 +3456,8 @@ class Player:
                     #
                     number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = crushing damage
+                                         dice_roll(number_of_dice, 8) + (
+                                                 1 * number_of_dice)  # 2nd attack = crushing damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)

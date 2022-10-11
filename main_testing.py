@@ -453,11 +453,9 @@ while True:
                                                 if encounter == 99:  # level exit boss
                                                     player_1.boss_hint_logic()
                                                 player_1.loot(encounter)  # 8 difficulty class
-                                            player_1.dungeon_description()  # beta
+                                            player_1.dungeon_description()  # beta works so far
                                             break
-                                        # player_1.end_of_turn_calculation()  # beta testing no good...this is
-                                        # overused if put here- it is already executed at end of every type of
-                                        # monster turn except paralyze
+
                                     else:
                                         print(f"You have no Quantum unit energy!")
                                         pause()
@@ -523,7 +521,7 @@ while True:
                                         if encounter == 99:  # if exit boss has been defeated,
                                             player_1.boss_hint_logic()  # give main boss hints
                                         player_1.loot(encounter)  # 8 difficulty class: better chance at loot
-                                    player_1.dungeon_description()  # beta
+                                    player_1.dungeon_description()  # beta works so far
                                     break
 
                                 # monster turn if still alive after player melee attack:

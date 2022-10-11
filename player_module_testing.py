@@ -82,25 +82,25 @@ def sleep(seconds):
 
 def character_generator():
     cls()
-    explanation_dict = {"Strength": "Strength is a measures of a character's physical power. A character high\n"
+    explanation_dict = {"Strength": "Strength is a measure of a character's physical power. A character high\n"
                                     "in Strength can lift heavier loads, break objects with brute force, and\n"
                                     "do more damage with melee weapons.",
-                        "Dexterity": "Dexterity is a measure of a character’s nimbleness and agility, muscular "
-                                     "coordination, and balance.\nIt is also an essential component of your armor "
-                                     "class.",
+                        "Dexterity": "Dexterity is a measure of a character’s nimbleness, agility, muscular "
+                                     "coordination, and balance.\nIt is also an essential component of your Armor "
+                                     "Class; Your Dexterity Modifier is added directly to your AC.",
                         "Constitution": "Constitution encompasses the character's physique, toughness, health and\n"
                                         "resistance to poison and necrosis. The higher a character's constitution,\n"
                                         "the more hit points the character will have.",
                         "Intelligence": "Intelligence determines how well your character learns and reasons. It is\n"
-                                        "important for certain quantum effects, your ability to recall\n"
-                                        "lore, languages, and runes, as well as your ability to investigate your "
+                                        "important for certain quantum effects, your ability to recall lore, \n"
+                                        "languages, and runes, as well as your ability to investigate your \n"
                                         "surroundings.",
                         "Wisdom": "Wisdom enables sound judgment based on knowledge and understanding; the ability\n"
                                   "to use knowledge and understanding successfully to solve problems, avoid or avert\n"
                                   "dangers, attain certain goals, or counsel others in doing so. It is the opposite\n"
                                   "of foolishness, stupidity, and madness. Wisdom is absolutely critical for "
-                                  "harnessing, and\n"
-                                  "avoiding, many quantum effects.",
+                                  "harnessing\n"
+                                  "many Quantum effects, as well as avoiding many Quantum attacks.",
                         "Charisma": "Charisma measures your ability to interact effectively with others. It includes\n"
                                     "such factors as confidence, persuasion and eloquence, and it can represent a\n"
                                     "charming or commanding personality. Players with high charisma will also have a\n"
@@ -163,7 +163,7 @@ def character_generator():
             scores = convert_list_to_string_with_commas_only(score_list)
             print(f"Available scores: {scores}")
             try:
-                score = int(input(f"Enter score to assign to {human_key}: "))
+                score = int(input(f"Enter score to assign to {human_key} (or hit [ENTER] to start over): "))
                 if score in score_list:
                     print(f"{key} = {score}")
                     sleep(.5)
@@ -1812,11 +1812,11 @@ class Player:
                 print(hit_statement)
                 sleep(1)
                 print(f"{self.level * critical_bonus}d{self.hit_dice} Damage Roll: {damage_roll}\n"
-                      f"Strength modifier: ({self.strength_modifier})")
+                      f"Strength modifier: {self.strength_modifier}")
                 if self.wielded_weapon.damage_bonus > 0:
-                    print(f"Weapon bonus: ({self.wielded_weapon.damage_bonus})")
+                    print(f"Weapon bonus: {self.wielded_weapon.damage_bonus}")
                 if strength_bonus > 1:
-                    print(f"* Strength Bonus: ({strength_bonus}))")
+                    print(f"* Strength Bonus: {strength_bonus}")
                 print(f"Total: {damage_to_opponent}")
                 print(f"You do {damage_to_opponent} points of damage!")
                 pause()

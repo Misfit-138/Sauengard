@@ -418,7 +418,7 @@ while True:
                                                     player_1.boss_hint_logic()
                                             player_1.level_up(monster.experience_award, monster.gold)
                                             # player_1.event_logic()  # this will trigger an event without using (L)ook
-                                            player_1.dungeon_description()
+                                            player_1.dungeon_description()  # works so far
                                             # pause()
                                             break
                                         # otherwise, calculate damage:

@@ -1654,12 +1654,10 @@ class Player:
             for i in self.pack.keys():  # gather all available
                 if len(self.pack[i]) > 0:  # item types to steal based on player's current item TYPES and put them
                     pack_item_types_to_steal.append(i)  # in available_item_types_to_steal = []
-                    # **** REMARKED FOLLOWING LINE AND DROPPED IT DOWN TO if len(available_item_types_to_steal) > 0:
-                    # **** TO ADDRESS REFERENCED BEFORE ASSIGNMENT WARNING ****
-                    # item_type = random.choice(available_item_types_to_steal)  # Get an item *TYPE* you want to "steal"
+
             if len(pack_item_types_to_steal) > 0:
                 item_type = random.choice(pack_item_types_to_steal)  # Get random item *TYPE* you want to "steal"
-                if len(self.pack[item_type]) > 0:  # If the player has an item of type "item_type"
+                if len(self.pack[item_type]) > 0:  # If the player has an item of type "item_type" in their pack
                     # pop random item from that item type. -1 because indexes start at 0
                     stolen_item = (self.pack[item_type].pop(random.randint(0, len(self.pack[item_type]) - 1)))
                     print(f"He steals a {stolen_item.name}")  # from your {item_type}")
@@ -1668,8 +1666,7 @@ class Player:
             # if pack is empty, the thief moves to the belt.
             # Belt inventory is handled differently. This is clunky but should work.
             # belt inventory logic:
-            # elif self.potions_of_strength > 0 or self.potions_of_healing > 0 or self.town_portals > 0 \
-            #        or self.elixirs > 0 or self.antidotes > 0:
+
             elif sum(belt_item_types_to_steal) > 0:  # simplifies all the if statements above
                 item_string = ""
                 # Define list of attributes you are allowed to change

@@ -10,9 +10,6 @@
 # Telengard
 # MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
 # "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
-# introduction_file = open("trett.txt", "r")
-# if introduction_file.readable():
-#    print(introduction_file.read())
 
 import pickle
 from player_module_testing import *
@@ -151,7 +148,7 @@ while True:
                 print("You enter the dungeon..")
             time.sleep(1)
             player_1.hud()
-            dungeon_theme()
+            player_1.dungeon_theme()
             navigation_list = ['w', 'a', 's', 'd', 'ne', 'nw', 'se', 'sw', 'l', 'map', 'm', 'i']
             # DUNGEON NAVIGATION LOOP:
             player_is_dead = False
@@ -160,17 +157,16 @@ while True:
                 #    player_is_dead = True
                 # continue
                 if player_is_dead:
-                    # winsound.PlaySound(None, winsound.SND_ASYNC)
+
                     cls()
-                    # player_1.hud()
+
                     gong()
                     print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
                     time.sleep(4)
                     player_1.in_proximity_to_monster = False
                     in_dungeon = False
                     in_town = False
-                    # player_is_dead = False
-                    # break
+
                     while True:
                         try_again = input("Do you wish to play again (y/n)? ").lower()
                         if try_again == "y":
@@ -190,12 +186,10 @@ while True:
                             continue
                 if not in_dungeon:
                     break
-                # player_1.hud()
                 player_1.coordinates = (player_1.x, player_1.y)
                 player_1.previous_x = player_1.x
                 player_1.previous_y = player_1.y
                 # player_1.loot(0)  # for testing
-                # encounter = dice_roll(1, 20)
                 # player_1.asi()
                 if player_1.position == 0:  # 0 is the initialization position
                     print(player_1.dungeon.intro)
@@ -374,8 +368,8 @@ while True:
                                 break
                             player_1.hud()
                             monster.monster_data()
-                            battle_choice = input("(F)ight, (H)ealing potion, (C)larifying elixir, "
-                                                  "(G)iant Strength potion, (V)ial of Antidote, (Q)uantum Effects or "
+                            battle_choice = input("(F)ight, (H)ealing potion, (C)larifying elixir,\n"
+                                                  "(G)iant Strength potion, (V)ial of Antidote,\n(Q)uantum Effects or "
                                                   "(E)vade\nF/H/C/G/V/Q/E --> ").lower()
 
                             # these choices count as turns, and are therefore followed by monster's turn:
@@ -384,7 +378,7 @@ while True:
                                 if battle_choice == "e":
                                     if player_1.evade(monster, encounter):
                                         # if encounter > 20:  # if evading a boss at this point,
-                                        #    dungeon_theme()  # go back to dungeon theme song
+                                        #    player_1.dungeon_theme()  # go back to dungeon theme song
                                         player_1.in_proximity_to_monster = False  # get out of battle loop and prox loop
                                         break
                                 elif battle_choice == 'h':
@@ -419,7 +413,7 @@ while True:
                                             if encounter > 20:  # if fighting a boss, go back to regular music
                                                 gong()
                                                 sleep(4)
-                                                dungeon_theme()
+                                                player_1.dungeon_theme()
                                                 if encounter == 99:
                                                     player_1.boss_hint_logic()
                                             player_1.level_up(monster.experience_award, monster.gold)
@@ -442,7 +436,7 @@ while True:
                                                 else:
                                                     print(f"You have vanquished the {monster.name}!")
                                                 sleep(4)
-                                                dungeon_theme()
+                                                player_1.dungeon_theme()
                                             else:
                                                 print(f"You have defeated the {monster.name}..")
                                             # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
@@ -459,6 +453,7 @@ while True:
                                                 if encounter == 99:  # level exit boss
                                                     player_1.boss_hint_logic()
                                                 player_1.loot(encounter)  # 8 difficulty class
+                                            player_1.dungeon_description()  # beta
                                             break
                                         # player_1.end_of_turn_calculation()  # beta testing no good...this is
                                         # overused if put here- it is already executed at end of every type of
@@ -511,7 +506,7 @@ while True:
                                         else:
                                             print(f"You have vanquished the {monster.name}!")
                                         sleep(4)
-                                        dungeon_theme()
+                                        player_1.dungeon_theme()
                                     else:
                                         print(f"You are victorious..")
                                     pause()
@@ -528,6 +523,7 @@ while True:
                                         if encounter == 99:  # if exit boss has been defeated,
                                             player_1.boss_hint_logic()  # give main boss hints
                                         player_1.loot(encounter)  # 8 difficulty class: better chance at loot
+                                    player_1.dungeon_description()  # beta
                                     break
 
                                 # monster turn if still alive after player melee attack:

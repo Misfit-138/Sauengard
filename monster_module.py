@@ -239,9 +239,9 @@ class Monster:
 
     def monster_data(self):
         if self.proper_name == "None":
-            mon_data = f"Lvl {self.level} {self.name} AC: {self.armor_class} HP: {self.hit_points} ({self.number_of_hd}d{self.hit_dice})"
+            mon_data = f"{self.name}  Challenge Lvl: {self.level}  AC: {self.armor_class}  HP: {self.hit_points}  ({self.number_of_hd}d{self.hit_dice})"
         else:
-            mon_data = f"{self.proper_name} AC: {self.armor_class} HP: {self.hit_points} ({self.number_of_hd}d{self.hit_dice})"
+            mon_data = f"{self.proper_name}  AC: {self.armor_class}  HP: {self.hit_points}  ({self.number_of_hd}d{self.hit_dice})"
         if self.undead:
             print(f"{mon_data} (UNDEAD)")
         else:

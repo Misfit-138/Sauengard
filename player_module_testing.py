@@ -9,6 +9,7 @@ from dice_roll_module import dice_roll
 from dungeons import *
 from monster_module import monster_dict, king_boss_list, undead_prophet_list
 from typing_module import typing
+from pathlib import Path
 
 '''Target
 Identify your target to the table. 
@@ -23,10 +24,6 @@ Roll Damage Dice and add modifiers. The target’s HP are reduced, factoring res
 Spell Attack 
 Many spells count as attacks. 
 The caster rolls d20 + Spellcasting Ability Modifier + Proficiency Bonus to hit vs AC. PHB 205'''
-
-# name0, level1, experience2, gold3, weapon_bonus4, armor5, shield6, constitution7,
-# intelligence8, wisdom9, strength10, dexterity11, charisma12, hit_points13, maximum_hit_points14,
-# 15is_paralyzed
 
 '''Hit Dice: 1d10 per Fighter level
 Hit Points at 1st Level: 10 + your Constitution modifier
@@ -43,6 +40,11 @@ Hard	15
 Very hard	20
 Incredibly hard	25
 Why bother?	30'''
+
+
+def game_splash():
+    print(f"(I)ntroduction  (L)ore  (T)ips  (B)egin ")
+
 
 rndm_aroma_lst = ['agarwood', 'angelica root', 'anise', 'basil', 'bergamot', 'calamodin', 'calamus', 'camphor',
                   'cardamom', 'cedar', 'camomile', 'cinnamon', 'citron', 'clary sage', 'clove', 'davana', 'eucalyptus',
@@ -62,6 +64,7 @@ def pause():
         os.system('pause')
     else:
         input("Strike [ENTER] to continue. . .")
+    return
 
 
 def cls():
@@ -69,10 +72,12 @@ def cls():
         os.system('cls')
     else:
         os.system('clear')
+    return
 
 
 def sleep(seconds):
     time.sleep(seconds)
+    return
 
 
 def character_generator():
@@ -88,13 +93,14 @@ def character_generator():
                                         "the more hit points the character will have.",
                         "Intelligence": "Intelligence determines how well your character learns and reasons. It is\n"
                                         "important for certain quantum effects, your ability to recall\n"
-                                        "lore, languages, and knowledge of lost civilizations as well as your ability\n"
-                                        "to investigate your surroundings.",
+                                        "lore, languages, and runes, as well as your ability to investigate your "
+                                        "surroundings.",
                         "Wisdom": "Wisdom enables sound judgment based on knowledge and understanding; the ability\n"
                                   "to use knowledge and understanding successfully to solve problems, avoid or avert\n"
                                   "dangers, attain certain goals, or counsel others in doing so. It is the opposite\n"
-                                  "of foolishness, stupidity, and madness. Wisdom is critical for harnessing, and\n"
-                                  "avoiding many quantum effects.",
+                                  "of foolishness, stupidity, and madness. Wisdom is absolutely critical for "
+                                  "harnessing, and\n"
+                                  "avoiding, many quantum effects.",
                         "Charisma": "Charisma measures your ability to interact effectively with others. It includes\n"
                                     "such factors as confidence, persuasion and eloquence, and it can represent a\n"
                                     "charming or commanding personality. Players with high charisma will also have a\n"
@@ -124,6 +130,7 @@ def character_generator():
 
     cls()
     # print(f"{player_name}:")
+    print(f"Standard ability scores (Recommended if unsure)")
     for key, value in stats.items():
         print(key.capitalize(), ":", value)
     default_choice = input(f"[ENTER] to use the above default ability scores or (C)ustomize? ([ENTER]/C): ").lower()
@@ -131,6 +138,21 @@ def character_generator():
         player_1 = Player(name=player_name, **stats)
         # pause()
         return player_1
+    cls()
+    print(f"Customization involves assigning scores from The Standard Array.\n"
+          f"The Standard Array is a set pool of six numbers: 15, 14, 13, 12, 10, 8\n"
+          f"Each number will be matched with one of the six character abilities.\n"
+          f"Note that each ability score has a corresponding ability modifier, which\n"
+          f"acts as a bonus, and will become more important as you progress.\n"
+          f"Abilities and ability modifiers increase as you level up.\n")
+    print(f"Standard Array Number	Ability Modifier\n"
+          "15	                            +3\n"
+          "14	                            +2\n"
+          "13	                            +1\n"
+          "12	                            +1\n"
+          "10	                            +0\n"
+          "8	                            -1\n")
+    pause()
     score_list = [15, 14, 13, 12, 10, 8]
     while len(score_list):
         for key in stats:
@@ -272,9 +294,9 @@ def mountain_king_theme():
                            winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
-def dungeon_theme():
+def pit_theme():
     if os.name == 'nt':
-        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\dungeon_theme_2.wav',
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
                            winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
@@ -288,6 +310,9 @@ def town_theme():
     if os.name == 'nt':
         winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_(tavern)_loop_by_alexander_nakarada.wav',
                            winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+        # place these files in same directory..use folowing syntax:
+        # winsound.PlaySound('town_(tavern)_loop_by_alexander_nakarada.wav',
+        # winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
 def tavern_theme():
@@ -982,11 +1007,11 @@ class Player:
         self.previous_y = 0
         self.in_a_pit = False
         self.vanquished_foes = []
-        self.boss_hint_1 = False
+        self.boss_hint_1 = True
         self.boss_hint_1_event = False
-        self.boss_hint_2 = False
+        self.boss_hint_2 = True
         self.boss_hint_2_event = False
-        self.boss_hint_3 = False
+        self.boss_hint_3 = True
         self.boss_hint_3_event = False
         self.boss_hint_4 = False
         self.boss_hint_4_event = False
@@ -1000,11 +1025,21 @@ class Player:
             'Boots': [],
             'Weapons': [],
             'Cloaks': [],
-            'Rings of Regeneration': [],
-            'Rings of Protection': []
+            # 'Rings of Regeneration': [],  # beta
+            # 'Rings of Protection': []    # beta
             # 'Town Portal Implements': []  # [scroll_of_town_portal]
 
         }
+
+    # COMMENTED OUT RINGS FROM PACK 10/11/2022
+
+    def dungeon_theme(self):
+        if os.name == 'nt':
+            if not self.in_a_pit:
+                winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\dungeon_theme_2.wav',
+                                   winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+            else:
+                pit_theme()
 
     def regenerate(self):
         if self.hit_points < self.maximum_hit_points and self.ring_of_reg.regenerate > 0:
@@ -2628,7 +2663,7 @@ class Player:
                     if finishing_move_roll >= sleeping_difficulty_class:
                         print(f"You raise your {self.wielded_weapon.name} and swing mightily..")
                         sleep(1.5)
-                        # pause()
+                        pause()
                         return monster.hit_points  # return the total amount of monster hp, effectively killing it
                     else:
                         print(f"It woke up!!")
@@ -5105,12 +5140,16 @@ class Player:
                "start to follow a good distance behind, impatient and confused.\n")
         pause()
         cls()
-        # meet vozzbozz, get hints
-        hint_file = open("hint_event_1.txt", "r")
-        if hint_file.readable():
-            typing(hint_file.read())
-            hint_file.close()
+        try:
+            p = Path(__file__).with_name('hint_event_1.txt')
+            with p.open('r') as hint_file:
+                if hint_file.readable():
+                    typing(hint_file.read())
+                    pause()
+        except FileNotFoundError:
+            print(f"Missing hint_event_1.txt or bad file path.")
             pause()
+
         cls()
         typing(f"{self.name},\nThe guardian of {self.dungeon.name} has, in its possession, an ornate dagger "
                f"of very fine craftsmanship.\nIt is imperative you retrieve it. Return here with it so that "
@@ -5121,9 +5160,9 @@ class Player:
         return
 
     def hint_event_2(self):
-        print(f"As soon as she sees you, Jenna directs your attention to the opposite side of the room by raising "
-              f"her chin in that general direction.\nAt the very same booth as last time, sits "
-              f"the hulking barbarian, Tor'bron.")
+        print(f"As soon as she sees you, Jenna directs your attention to the opposite side of the room by raising\n"
+              f"her chin in that general direction.\nAt the very same booth as last time, sits the hulking barbarian, "
+              f"Tor'bron.")
         sleep(2)
         print(f"You cautiously approach...")
         sleep(1)
@@ -5140,7 +5179,7 @@ class Player:
         if len(self.vanquished_foes):
             vanquished_foes = convert_list_to_string_with_commas_only(self.vanquished_foes)
             typing(f"\'The slayer of {vanquished_foes}...\n...and others besides!\'\n")
-        typing("\'When first I saw you, I was...\', he searches for the word. \'..skeptical!\'\n"
+        typing(f"\'When first I saw you, I was...\', he searches for the word. \'..skeptical!\'\n"
                "But now, things are different! Now I know you are able-bodied and strong! Good! Very good, this!\' "
                "He nods.\n"
                "A sting of disrespect hits you. After the toil and struggle to retrieve the prized dagger, you are\n"
@@ -5151,21 +5190,23 @@ class Player:
                "Still alert, he thinks about your words. His glowering slowly turns to what must be a smile.\n"
                "Then, he laughs, a deep and hearty laugh. Instantly, he fiercely slams the table with his fist,\n"
                "so that the entire room shakes and becomes silent. He raises his huge hand, pointing\n"
-               "straight at you. \'Good! Don't ever doubt them!\' And again he smiles and laughs. Reaching his tree-\n"
-               "trunk arm toward you, he slams you on the shoulder with a heavy hand. You are thankful for the\n"
-               f"{self.armor.name.lower()} you wear; without it, the blow would undoubtedly have been an injury!\n"
-               f"Instinctively reaching for the aching shoulder, you reply plainly, \'I certainly will not..\'\n")
+               "straight at you. \'Good! Don't ever doubt them!\' And again he smiles and laughs as the tavern ambience"
+               f"\ngradually returns. Reaching his tree-trunk arm toward you, he slams you on the shoulder with a"
+               f" heavy hand.\n"
+               f"You are thankful for the {self.armor.name.lower()} you wear; without it, the blow would undoubtedly "
+               "have been an injury!\nInstinctively reaching for the aching shoulder, you reply plainly, "
+               "\'I certainly will not..\'\n")
         pause()
         cls()
         # meet Tor'bron, get hints
         try:
-            hint_file = open("hint_event_2.txt", "r")
-            if hint_file.readable():
-                typing(hint_file.read())
-                hint_file.close()
-                pause()
+            p = Path(__file__).with_name('hint_event_2.txt')
+            with p.open('r') as hint_file:
+                if hint_file.readable():
+                    typing(hint_file.read())
+                    pause()
         except FileNotFoundError:
-            print(f"Missing file or bad file path.")
+            print(f"Missing hint_event_2.txt or bad file path.")
             pause()
         cls()
         self.boss_hint_2_event = True
@@ -5182,24 +5223,25 @@ class Player:
         pause()
         cls()
         if self.armor.ac > 11:
-            print(f"The heavily-armored dwarf looks at you with seeming disinterest and simply says, "
-                  f"\'That be some decent {self.armor.name.lower()} ye got there, lad.\nHe takes a sip of his ale.")
-        print(f"The dwarf slides out of the booth and motions that you should take his place. "
-              f"He then slides in next to Vozzbozz and across from you. ")
-        print(f"\'{self.name}, meet my friend, Magnus Stormbringer.\', says Vozzbozz curtly. The dwarf promptly "
-              f"reaches his\n"
-              f"hand across the table and takes yours with a firm, brief grip and a nod.")
+            print(f"The heavily-armored dwarf looks at you with seeming disinterest and simply says,\n"
+                  f"\'That be some decent {self.armor.name.lower()} ye got there, lad\'. He takes a sip of his ale.")
+        print(f"The dwarf slides out of the booth and motions that you should take his place. He then slides in next\n"
+              f"to Vozzbozz and across from you.\n")
+        print(f"\'Ah, {self.name}! Meet my good friend, Magnus Stormbringer.\', says Vozzbozz curtly. "
+              f"The dwarf promptly reaches his\n"
+              f"hand across the table and takes yours with a firm, brief grip and a nod.\n"
+              f"\'Well met\', he says, sincerely, in an alarmingly deep voice.")
         pause()
         cls()
         # another meeting, get hints
         try:
-            hint_file = open("hint_event_3.txt", "r")
-            if hint_file.readable():
-                typing(hint_file.read())
-                hint_file.close()
-                pause()
+            p = Path(__file__).with_name('hint_event_3.txt')
+            with p.open('r') as hint_file:
+                if hint_file.readable():
+                    typing(hint_file.read())
+                    pause()
         except FileNotFoundError:
-            print(f"Missing file or bad file path.")
+            print(f"Missing hint_event_3.txt or bad file path.")
             pause()
         cls()
         self.boss_hint_3_event = True
@@ -6536,6 +6578,7 @@ class Player:
                 self.hud()
                 print(f"You have landed at the bottom of a pit. The foul, humid air hangs in a mist around you.")
                 # print(self.dungeon.pit_intro)
+                self.dungeon_theme()
                 pause()
                 return
             else:
@@ -6568,6 +6611,7 @@ class Player:
                 self.hud()
                 print(f"You have landed at the bottom of the pit. The foul, humid air hangs in a mist around you.")
                 # print(self.dungeon.pit_intro)
+                self.dungeon_theme()
                 pause()
                 return
 
@@ -6611,6 +6655,7 @@ class Player:
                 sleep(2)
                 print(f"Watch your step.")
                 sleep(1)
+                self.dungeon_theme()
                 pause()
                 return
             else:
@@ -6625,7 +6670,6 @@ class Player:
             # self.dungeon = dungeon_dict[self.dungeon_key]
             print(f"You have arrived back at {self.dungeon.name}, dungeon level {self.dungeon.level}.")
             sleep(2)
-            print(f"Watch your step.")
             self.in_a_pit = False
             (self.x,
              self.y) = self.dungeon.elevator_landing  # simplified with tuple instead of self.x = and self.y =
@@ -6633,6 +6677,9 @@ class Player:
             self.previous_x = self.x
             self.previous_y = self.y
             self.position = self.dungeon.grid[self.y][self.x]
+            print(f"Watch your step.")
+            sleep(1)
+            self.dungeon_theme()
             pause()
             return
 

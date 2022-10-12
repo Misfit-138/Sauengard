@@ -64,7 +64,7 @@ class Dungeon1(Dungeon):
         super().__init__()
         self.name = "The Fieldenberg Catacombs"
         self.level = 1
-        self.barrier_name = "wall of smooth, precisely quarried stone"
+        self.barrier_name = "wall of smooth, precisely cut stones"
         self.treasure_chest = (2, 14)
         self.quantum_treasure_chest = (1, 2)
         self.altar = (0, 0)
@@ -107,7 +107,7 @@ class Dungeon1(Dungeon):
             ["*", "(", "P", "P", ")", "*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 17
             ["*", "8", "/", "/", "-", "*", "8", "/", "/", "/", "/", "/", "/", "/", "/", "/", "/", "/", "-", "*"],  # 18
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"]]  # 19
-            # 0    1    2    3    4    5    6    7    8    9   10    11   12   13   14   15   16   17   18   19
+#             0    1    2    3    4    5    6    7    8    9   10    11   12   13   14   15   16   17   18   19
         self.player_grid = [
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
@@ -148,7 +148,7 @@ class Dungeon2(Dungeon):
         self.level = 2
         # self.boss = Shadow()
         # self.king = Orc()
-        self.barrier_name = "wall comprised of smooth stone"
+        self.barrier_name = "wall of smooth, precisely quarried stone"
         self.treasure_chest = (2, 14)
         self.quantum_treasure_chest = (1, 2)
         self.altar = (1, 2)

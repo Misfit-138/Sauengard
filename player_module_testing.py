@@ -1,4 +1,5 @@
 import math
+import pickle
 import random
 import time
 import os
@@ -974,11 +975,11 @@ class Player:
         self.armor_class = (self.armor.ac + self.armor.armor_bonus +
                             self.shield.ac + self.boots.ac + self.dexterity_modifier)
         self.stealth = self.cloak.stealth
-        self.town_portals = 1
-        self.elixirs = 0
-        self.potions_of_healing = 1
-        self.antidotes = 1
-        self.potions_of_strength = 0
+        self.town_portals = 10
+        self.elixirs = 10
+        self.potions_of_healing = 10
+        self.antidotes = 10
+        self.potions_of_strength = 10
         self.potion_of_strength_effect = False
         self.potion_of_strength_uses = 0
         self.max_quantum_strength_uses = self.quantum_level + self.strength_modifier
@@ -1019,6 +1020,11 @@ class Player:
         self.boss_hint_5_event = False
         self.boss_hint_6 = False
         self.boss_hint_6_event = False
+        self.loaded_game = False
+        self.forest_explored = False
+        self.town_portal_exists = False
+        self.in_town = False
+        self.in_dungeon = False
         self.pack = {
             'Armor': [],
             'Shields': [],
@@ -1076,12 +1082,12 @@ class Player:
             number_of_potions_of_strength = self.potions_of_strength
             print(f"Strength Potions: {number_of_potions_of_strength}")
         if self.potion_of_strength_effect and self.potion_of_strength_uses > -1:
-            print(f"(STRENGTH POTION EFFECT) ({self.potion_of_strength_uses}/{self.strength_modifier})")
+            print(f"(STRENGTH POTION EFFECT) ({self.potion_of_strength_uses}/{self.max_quantum_strength_uses})")
         if self.quantum_strength_effect and self.quantum_strength_uses > -1:
             print(f"QUANTUM STRENGTH EFFECT) ({self.quantum_strength_uses}/{self.max_quantum_strength_uses})")
         if self.protection_effect and self.protection_effect_uses > -1:
             print(
-                f"(PROT/EVIL: {self.temp_protection_effect}) ({self.protection_effect_uses}/{self.max_quantum_strength_uses})")
+                f"(PROT/EVIL: {self.temp_protection_effect}) ({self.protection_effect_uses}/{self.max_protection_effect_uses})")
         if self.poisoned:
             print(f"(POISONED)")
             print(f"Poison clarifying: ({self.poisoned_turns}/{self.dot_turns})")
@@ -1110,7 +1116,7 @@ class Player:
     # CALCULATION
     def end_of_turn_calculation(self):
         self.regenerate()
-        self.calculate_potion_of_strength()  # potions of strength have max uses = self.strength_modifier
+        self.calculate_potion_of_strength()  # potions of strength have max uses = self.max_quantum_strength_uses
         self.calculate_quantum_strength()  # self.max_quantum_strength_uses= self.quantum_level + self.strength_modifier
         self.calculate_protection_effect()  # max_protection_effect_uses= self.quantum_level+ self.constitution_modifier
         self.calculate_poison()  # poison wears off after self.dot_turns which = monster.dot_turns during battle
@@ -1173,7 +1179,7 @@ class Player:
 
     def calculate_potion_of_strength(self):
         if self.potion_of_strength_effect:
-            if self.potion_of_strength_uses >= self.strength_modifier:
+            if self.potion_of_strength_uses >= self.max_quantum_strength_uses:  # self.strength_modifier + 2:
                 self.potion_of_strength_effect = False
                 self.potion_of_strength_uses = 0
                 print(f"The potion's effects wear off....the giant strength leaves your body..")
@@ -1772,7 +1778,7 @@ class Player:
     def melee(self, monster_name, monster_armor_class):
         strength_bonus = 1
         if self.potion_of_strength_effect:
-            strength_bonus = 1.5  # round(self.strength * .5)
+            strength_bonus = 1.33  # round(self.strength * .5)
         if self.quantum_strength_effect:
             strength_bonus = 2
         self.hud()
@@ -6553,6 +6559,7 @@ class Player:
         return
 
     def pit_event(self):
+        # falling into pits lands you on the same dungeon level at the dungeon.pit_landing coordinates
         print(f"The ground here is slippery, and quite unsteady..")
         sleep(1.5)
         print(f"You see a pit..")
@@ -6625,8 +6632,9 @@ class Player:
               f"The door has been locked and barricaded. You must continue onward!")
 
     def elevator_event(self):
-        # print(f"You have stepped onto a platform...")
-        # sleep(1)
+        # elevators bring you 'up' from pits to main dungeon level: self.dungeon.elevator_landing
+        # self.in_a_pit will be false at end of function
+        # player must pass intelligence saving throw
         print(f"You feel a slight whirring..")
         sleep(1)
         difficulty_class = 9
@@ -6641,8 +6649,8 @@ class Player:
                 sleep(2)
                 self.hud()
                 self.in_a_pit = False
-                # self.dungeon_key -= 1
-                # self.dungeon = dungeon_dict[self.dungeon_key]
+                # self.dungeon_key -= 1  # this can be used for more powerful elevator, perhaps at advanced levels
+                # self.dungeon = dungeon_dict[self.dungeon_key]  # when player has more experience?
                 (self.x, self.y) = self.dungeon.elevator_landing
                 self.coordinates = (self.x, self.y)
                 self.previous_x = self.x
@@ -6707,10 +6715,92 @@ class Player:
         if self.coordinates in event_dict.keys():
             event_function = (event_dict[self.coordinates])  # (event_dict[self.coordinates])
             return event_function()
-        # else:
-        #    encounter = dice_roll(1, 20)
-        #    return encounter
+        else:
+            return
+
         # NAVIGATION
+
+    def town_navigation(self, player_name):
+        town_functions = input(
+            "(The Town of Fieldenberg)\n(S)ave, (Q)uit game, (I)nventory, (B)lacksmith, (C)hemist , (T)avern, or ("
+            "E)nter dungeon "
+            "--> ").lower()
+        '''        if town_functions == 'r':
+            print("Restart")
+            time.sleep(2)
+            cls()
+            in_town = False
+            break'''
+        if town_functions == 'q':
+            while True:
+                cls()
+                confirm_quit = input(f"Quit game? (y/n) ").lower()
+                if confirm_quit not in ('y', 'n'):
+                    continue
+                elif confirm_quit == 'n':
+                    break
+                elif confirm_quit == 'y':
+                    print(f"Exiting...")
+                    exit()
+        elif town_functions == 's':
+            save_a_character = player_name + ".sav"
+            if os.path.isfile(save_a_character):
+                while True:
+                    confirm_save = input(f"{player_name} already saved. Overwrite? (y/n) ").lower()
+                    if confirm_save not in ('y', 'n'):
+                        continue
+                    elif confirm_save == 'n':
+                        break
+                    elif confirm_save == 'y':
+                        print(f"Saving {self.name}...")
+                        character_filename = self.name + ".sav"
+                        with open(character_filename, 'wb') as player_save:
+                            pickle.dump(self, player_save)
+                            print(f"{self.name} saved.")
+                            time.sleep(2)
+                            break
+            else:
+                print(f"Saving {self.name}...")
+                character_filename = self.name + ".sav"
+                with open(character_filename, 'wb') as player_save:
+                    pickle.dump(self, player_save)
+                    print(f"{self.name} saved.")
+                    time.sleep(2)
+
+        elif town_functions == 'i':
+            self.inventory()
+
+        elif town_functions == 'b':
+            print("You visit the blacksmith..")
+            sleep(1.5)
+            blacksmith_theme()
+            self.blacksmith_main()
+            town_theme()
+
+        elif town_functions == 'c':
+            print("You make your way to the chemist manipulator..")
+            time.sleep(1.5)
+            chemist_theme()
+            self.chemist_main()
+            town_theme()
+
+        elif town_functions == 't':
+            print(f"You make your way to the tavern..")
+            sleep(1.25)
+            tavern_theme()
+            self.inn()
+            town_theme()
+
+        elif town_functions == 'e':
+            # self.in_town = False
+            # self.in_dungeon = True
+            if self.town_portal_exists or self.loaded_game:
+                print(f"You re-enter the portal.")
+                # self.town_portal_exists = False  # beta 10/12/2022
+            else:
+                print("You enter the dungeon..")
+            time.sleep(1)
+            return 'e'
 
     def navigation(self, dungeon_command):
         if dungeon_command == 'w':

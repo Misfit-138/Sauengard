@@ -6170,10 +6170,12 @@ class Player:
                             pause()
                             continue
                     else:
+                        # done with loot
                         if successful_tries == 0:
                             print(f"Besides the gold, there remains nothing but cobwebs...")
                             sleep(1)
                             pause()
+                        # add chest to discovered interactives list, so it is no longer interactive
                         self.discovered_interactives.append(treasure_chest_discovery)
                         self.hud()
                         return  # self.dungeon_description()
@@ -6538,7 +6540,8 @@ class Player:
             rndm_occurrence = random.choice(rndm_occurrence_lst)
             rndm_occurrence()
         else:
-            # print("You don't drink...wonder what may have happened.")
+            print("Ignore.")
+            sleep(.25)
             return
 
     def teleporter_event(self):
@@ -6605,7 +6608,7 @@ class Player:
                 print(f"You suffer {damage} hit points..")
                 sleep(1)
                 pause()
-                # falling into pits lands you on the same dungeon level at the dungeon.pit_landing coordinates
+                # falling into pits lands you on the same dungeon level, at the dungeon.pit_landing coordinates
                 # self.dungeon_key += 1  # this can be used to land you on the next level down
                 # self.dungeon = dungeon_dict[self.dungeon_key]  # this can be used to land you on the next level down
                 (self.x, self.y) = self.dungeon.pit_landing

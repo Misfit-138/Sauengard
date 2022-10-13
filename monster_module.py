@@ -667,7 +667,11 @@ class Kobold(Monster):
         self.attack_4_phrase = "With blinding speed, it kicks with its horrid claws.."
         self.attack_5 = 3
         self.attack_5_phrase = "It whips its tail!"
-        self.introduction = f"You have encountered a {self.name}."
+        self.introduction = f"You have encountered a {self.name}. A short, reptilian creature with orange eyes\n" \
+                            f"and skin. Its ragged tunic looks more like a robe on its tiny frame; you have no doubt\n" \
+                            f"it was stolen from an unwary adventurer. Its tail stands up as it retrieves a dagger\n" \
+                            f"from a brass scabbard, twirling it deftly between scaled, sinewy fingers. It looks\n" \
+                            f"you over for items to rid you of!"
         self.is_discovered = False
 
     # name = "Kobold"
@@ -783,7 +787,10 @@ class Goblin(Monster):
         self.attack_4_phrase = "It raises its scimitar overhead with both hands for a mighty blow.."
         self.attack_5 = 3
         self.attack_5_phrase = "Its scimitar flashes with impossible speed!"
-        self.introduction = f"You have encountered a {self.name}."
+        self.introduction = f"You have encountered a {self.name}. Hideously foul and ugly, its grimacing flat face\n" \
+                            f"wrinkles up as it sniffs the air around you. Its pointed ears twitch and then draw \n" \
+                            f"straight up. Smiling wickedly with blackened teeth, it unsheathes a rusty, crooked\n" \
+                            f"scimitar and faces you with ill-intent."
         self.is_discovered = False
 
     # name = "Goblin"
@@ -840,7 +847,9 @@ class WingedKobold(Monster):
         self.attack_4_phrase = "Feinting with its weapon hand, it kicks at you with its horrid claws.."
         self.attack_5 = 3
         self.attack_5_phrase = "It readies its spear and lunges with a growling grunt.."
-        self.introduction = f"You have encountered a {self.name}."
+        self.introduction = f"You have encountered a {self.name}. Standing three feet tall, with short ivory horns\n" \
+                            f"and a frail body covered with mottled brick red scales, it grabs its dagger and\n" \
+                            f"spreads its leathery, batlike wings."
         self.is_discovered = False
 
     # "Winged Kobold"
@@ -1313,7 +1322,9 @@ class Drow(Monster):
         self.quantum_attack_5 = 3
         self.quantum_attack_5_phrase = "Crying out wildly, and thrusting its arms forward, it shoots \n" \
                                        "the weirdness of entangled quantum flames and energies at you!"
-        self.introduction = f"You have encountered a {self.name}."
+        self.introduction = f"You have encountered a {self.name}; A race that, in many ways, resembles other\n" \
+                            f"elves, yet, dark, twisted and evil. Its chiseled, attractive face, and wiry,\n" \
+                            f"athletic frame belie its true nature."
         self.poison_phrase = "It slashes at you with its poison dagger!!"
         self.is_discovered = False
 
@@ -1427,7 +1438,9 @@ class Troglodyte(Monster):
         self.attack_4_phrase = "It thrusts mightily forward with its spear!"
         self.attack_5 = 3
         self.attack_5_phrase = "It raises its greataxe overhead with both hands for a mighty blow.."
-        self.introduction = f"You have encountered a Troglodyte. "
+        self.introduction = f"You have encountered a Troglodyte; a horrid reptilian humanoid. Short, with spindly\n" \
+                            f"but muscular arms and squat legs and a long, slender tail which raises at the site\n" \
+                            f"you, its eyes light up in malicious glee."
         self.is_discovered = False
 
     # "Troglodyte"
@@ -1738,7 +1751,7 @@ class HalfOgre(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "It raises its battleaxe overhead with both hands for a mighty blow.."
         self.introduction = f"You have encountered a Half-Ogre; a brutal, muscled monstrosity of primal rage." \
-                            f"Sired by an Ogre, born of a human mother,\nand equally shunned in both worlds, it lumbers " \
+                            f"Neither human nor ogre,\nand equally shunned in both worlds, it lumbers " \
                             f"toward you, towering above and shaking the ground with great power.."
         self.is_discovered = False
 

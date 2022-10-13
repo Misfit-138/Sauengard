@@ -1874,7 +1874,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + \
-                            self.wisdom_modifier + vulnerability_modifier + level_advantage
+                    self.wisdom_modifier + vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -2178,7 +2178,8 @@ class Player:
                         level_advantage = 0
                         if self.level > monster.level:
                             level_advantage = self.level - monster.level
-                        player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + vulnerability_modifier + level_advantage
+                        player_dc = self.base_dc + self.proficiency_bonus + \
+                            self.wisdom_modifier + vulnerability_modifier + level_advantage
                         print(f"Player base DC = {self.base_dc}\n"
                               f"Wisdom Modifier: {self.wisdom_modifier}\n"
                               f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3277,7 +3278,7 @@ class Player:
                     #
                     number_of_dice = (20 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice) + \
-                                         dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack=force damage
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack=force damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
@@ -3383,8 +3384,7 @@ class Player:
                     #
                     number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                                         dice_roll(number_of_dice, 8) + (
-                                                 1 * number_of_dice)  # 2nd attack = force damage
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
@@ -3494,8 +3494,7 @@ class Player:
                     #
                     number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                                         dice_roll(number_of_dice, 8) + (
-                                                 1 * number_of_dice)  # 2nd attack = crushing damage
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = crushing damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)

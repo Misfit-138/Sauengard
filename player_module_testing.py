@@ -1873,8 +1873,8 @@ class Player:
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
-                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
-                            vulnerability_modifier + level_advantage
+                player_dc = self.base_dc + self.proficiency_bonus + \
+                            self.wisdom_modifier + vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")

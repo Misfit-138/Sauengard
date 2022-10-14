@@ -24,10 +24,11 @@ from dungeons import *
 winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\originalsound.wav',
                    winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 cls()
-typing("Welcome to Sauengard.")
-print("")
-print("")
-pause()
+#typing("Welcome to Sauengard.")
+#print("")
+#print("")
+#pause()
+game_splash()
 winsound.PlaySound(None, winsound.SND_ASYNC)
 cls()
 player_1 = ""  # to get rid of undefined warning

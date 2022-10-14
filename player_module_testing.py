@@ -44,7 +44,23 @@ Why bother?	30'''
 
 
 def game_splash():
-    print(f"(I)ntroduction  (L)ore  (T)ips  (B)egin ")
+    while True:
+        cls()
+        choice = input(f"(I)ntroduction  (L)ore  (T)ips  (B)egin ").lower()
+        if choice not in ('i', 'l', 't', 'b'):
+            continue
+        elif choice == 'i':
+            try:
+                p = Path(__file__).with_name('introduction.txt')
+                with p.open('r') as intro:
+                    if intro.readable():
+                        typing(intro.read())
+                        # pause()
+            except FileNotFoundError:
+                print(f"Missing hint_event_1.txt or bad file path.")
+            pause()
+        elif choice == 'b':
+            return
 
 
 rndm_aroma_lst = ['agarwood', 'angelica root', 'anise', 'basil', 'bergamot', 'calamodin', 'calamus', 'camphor',

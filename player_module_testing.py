@@ -55,7 +55,7 @@ def game_splash():
                 with p.open('r') as intro:
                     if intro.readable():
                         typing(intro.read())
-                        # pause()
+                        pause()
             except FileNotFoundError:
                 print(f"Missing hint_event_1.txt or bad file path.")
             pause()

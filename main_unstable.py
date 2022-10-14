@@ -1,5 +1,6 @@
 # Dungeon Crawler by Jules Pitsker
 # (C)opyright 2022
+# Dark Sorrowful Cello "Soul's Departure" Royalty Free Music by Darren Curtis
 # Blacksmith theme: 'Viking Intro loop' by Alexander Nakarada complete permission granted in YouTube
 # Dungeon theme: 'Dragon Quest', 'Dragon Song', 'Medieval Metal', 'Cinematic Celtic Metal', by Alexander Nakarada
 # complete permission granted in YouTube
@@ -16,20 +17,15 @@
 from player_module_testing import *
 import pickle
 from monster_module import *
-from typing_module import typing
+# from typing_module import typing
 import os
-import winsound
+# import winsound
 from dungeons import *
 
-winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\originalsound.wav',
-                   winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+sad_cello_theme()
 cls()
-#typing("Welcome to Sauengard.")
-#print("")
-#print("")
-#pause()
 game_splash()
-winsound.PlaySound(None, winsound.SND_ASYNC)
+# winsound.PlaySound(None, winsound.SND_ASYNC)
 cls()
 player_1 = ""  # to get rid of undefined warning
 player_name = ""  # to get rid of undefined warning

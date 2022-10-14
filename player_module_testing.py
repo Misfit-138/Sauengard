@@ -46,19 +46,35 @@ Why bother?	30'''
 def game_splash():
     while True:
         cls()
-        choice = input(f"(I)ntroduction  (L)ore  (T)ips  (B)egin ").lower()
-        if choice not in ('i', 'l', 't', 'b'):
+        typing("Welcome to Sauengard.\n")
+        choice = input(f"(I)ntroduction  (A)bout  (T)ips  (B)egin ").lower()
+        if choice not in ('i', 'a', 't', 'b'):
             continue
         elif choice == 'i':
+            cls()
             try:
                 p = Path(__file__).with_name('introduction.txt')
                 with p.open('r') as intro:
                     if intro.readable():
                         typing(intro.read())
-                        # pause()
+
             except FileNotFoundError:
                 print(f"Missing hint_event_1.txt or bad file path.")
             pause()
+        elif choice == 'a':
+            cls()
+            try:
+                p = Path(__file__).with_name('about.txt')
+                with p.open('r') as about:
+                    if about.readable():
+                        typing(about.read())
+
+            except FileNotFoundError:
+                print(f"Missing hint_event_1.txt or bad file path.")
+            pause()
+        elif choice == 't':
+            print(f"Not done yet")
+            continue
         elif choice == 'b':
             return
 
@@ -77,7 +93,6 @@ def convert_list_to_string_with_commas_only(list1):
 
 def pause():
     if os.name == 'nt':
-        # print("You're on Windows. Program should work")
         os.system('pause')
     else:
         input("Strike [ENTER] to continue. . .")
@@ -291,6 +306,12 @@ def encounter_logic():
 def gong():
     if os.name == 'nt':
         winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\gong.wav', winsound.SND_ASYNC)
+
+
+def sad_cello_theme():
+    if os.name == 'nt':
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\sad_cello_darren_curtis.wav',
+                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
 def blacksmith_theme():
@@ -1890,7 +1911,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + \
-                    self.wisdom_modifier + vulnerability_modifier + level_advantage
+                            self.wisdom_modifier + vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -2195,7 +2216,7 @@ class Player:
                         if self.level > monster.level:
                             level_advantage = self.level - monster.level
                         player_dc = self.base_dc + self.proficiency_bonus + \
-                            self.wisdom_modifier + vulnerability_modifier + level_advantage
+                                    self.wisdom_modifier + vulnerability_modifier + level_advantage
                         print(f"Player base DC = {self.base_dc}\n"
                               f"Wisdom Modifier: {self.wisdom_modifier}\n"
                               f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3294,7 +3315,7 @@ class Player:
                     #
                     number_of_dice = (20 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice) + \
-                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack=force damage
+                                         dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack=force damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
@@ -3400,7 +3421,8 @@ class Player:
                     #
                     number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
+                                         dice_roll(number_of_dice, 8) + (
+                                                     1 * number_of_dice)  # 2nd attack = force damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
@@ -3510,7 +3532,8 @@ class Player:
                     #
                     number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = crushing damage
+                                         dice_roll(number_of_dice, 8) + (
+                                                     1 * number_of_dice)  # 2nd attack = crushing damage
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)

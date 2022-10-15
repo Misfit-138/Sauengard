@@ -1,6 +1,5 @@
 # Dungeon Crawler by Jules Pitsker
 # (C)opyright 2022
-# Dark Sorrowful Cello "Soul's Departure" Royalty Free Music by Darren Curtis
 # Blacksmith theme: 'Viking Intro loop' by Alexander Nakarada complete permission granted in YouTube
 # Dungeon theme: 'Dragon Quest', 'Dragon Song', 'Medieval Metal', 'Cinematic Celtic Metal', by Alexander Nakarada
 # complete permission granted in YouTube
@@ -8,28 +7,33 @@
 # Town theme: 'Tavern Loop 1' by Alexander Nakarada complete permission granted in YouTube
 # boss battle theme: 'Dragon Castle' / Epic Orchestral Battle Music by Makai Symphony Creative commons license reuse ok
 # Tavern theme 'The Medieval Banquet / Silvermansound No Copyright. Royalty Free Music
-# Pit theme Jules Pitsker
 # Telengard
 # MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
 # "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
 
-
-from player_module_testing import *
 import pickle
-from monster_module import *
+from player_module_testing import *
+# from monster_module import *
 # from typing_module import typing
+# import random
 import os
-# import winsound
+import winsound
 from dungeons import *
 
-sad_cello_theme()
+winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\originalsound.wav',
+                   winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 cls()
-game_splash()
-# winsound.PlaySound(None, winsound.SND_ASYNC)
+typing("Welcome to Sauengard.")
+print("")
+print("")
+pause()
+winsound.PlaySound(None, winsound.SND_ASYNC)
 cls()
 player_1 = ""  # to get rid of undefined warning
 player_name = ""  # to get rid of undefined warning
 while True:
+    # player_1.town_portal_exists = False
+    loaded_game = False
     new_game_or_load = input("(S)tart a new character or (L)oad a saved one? ").lower()
     if new_game_or_load not in ('s', 'l'):
         continue
@@ -43,17 +47,16 @@ while True:
                 time.sleep(1)
                 print(f"{player_name} read.")
                 time.sleep(1)
-                # dungeon_key = player_1.dungeon_key
+                dungeon_key = player_1.dungeon_key
                 dungeon = dungeon_dict[player_1.dungeon_key]
                 print(dungeon.name)
                 print(player_1.coordinates)  # remove after testing
-                player_1.loaded_game = True
+                loaded_game = True
                 time.sleep(1)
         else:
             print(f"Could not find {player_name} ")
             time.sleep(1.5)
             continue
-
     if new_game_or_load == 's':
         accept_stats = ""
         while accept_stats != 'y':
@@ -63,44 +66,108 @@ while True:
         if accept_stats == "y":
             player_1.dungeon_key = 1
             player_1.dungeon = dungeon_dict[player_1.dungeon_key]
-            # x,y is a numeric tuple corresponding to a classic grid with x and y coordinates
-            # coordinates is set to x,y
             (player_1.x, player_1.y) = player_1.dungeon.staircase
-            # 'position' corresponds to ASCII grids. 0 is the initialization position.
-            # Thereafter, it is a string based on where the player lands in the ASCII grid,
-            # '*' = border, '.' = wide open area, '7' = northwest corner, etc
-            # the ASCII grid 'position' is used for display_map() and for dungeon_description()
             player_1.position = 0
             player_1.hud()
-
     print(f"You enter the town of Fieldenberg.")
     time.sleep(1.5)
+    # player_1.hud()
     player_1.in_town = True
-    # player_1.in_dungeon = False  # should be unneeded. defined as False in Player class and after portal use
+    player_1.in_dungeon = False
+    # player_1.town_portal_exists = False
     discovered_monsters = []
     town_theme()
-
     while player_1.in_town:
         player_1.hud()
-        command = player_1.town_navigation(player_name)
-        if command == 'e':
+        town_functions = input(
+            "(The Town of Fieldenberg)\n(S)ave, (Q)uit game, (I)nventory, (B)lacksmith, (C)hemist , (T)avern, or ("
+            "E)nter dungeon "
+            "--> ").lower()
+        '''        if town_functions == 'r':
+            print("Restart")
+            time.sleep(2)
+            cls()
+            in_town = False
+            break'''
+        if town_functions == 'q':
+            print("Exiting..")
+            exit()
+        elif town_functions == 's':
+            save_a_character = player_name + ".sav"
+            if os.path.isfile(save_a_character):
+                while True:
+                    confirm_save = input(f"{player_name} already saved. Overwrite? (y/n) ").lower()
+                    if confirm_save not in ('y', 'n'):
+                        continue
+                    elif confirm_save == 'n':
+                        break
+                    elif confirm_save == 'y':
+                        print(f"Saving {player_1.name}...")
+                        character_filename = player_1.name + ".sav"
+                        with open(character_filename, 'wb') as player_save:
+                            pickle.dump(player_1, player_save)
+                            print(f"{player_1.name} saved.")
+                            time.sleep(2)
+                            break
+            else:
+                print(f"Saving {player_1.name}...")
+                character_filename = player_1.name + ".sav"
+                with open(character_filename, 'wb') as player_save:
+                    pickle.dump(player_1, player_save)
+                    print(f"{player_1.name} saved.")
+                    time.sleep(2)
+        elif town_functions == 'i':
+            player_1.inventory()
+
+        elif town_functions == 'b':
+            print("You visit the blacksmith..")
+            sleep(1.5)
+            blacksmith_theme()
+            player_1.blacksmith_main()
+            town_theme()
+
+        elif town_functions == 'c':
+            print("You make your way to the chemist manipulator..")
+            time.sleep(1.5)
+            chemist_theme()
+            player_1.chemist_main()
+            town_theme()
+        elif town_functions == 't':
+            print(f"You make your way to the tavern..")
+            sleep(1.25)
+            tavern_theme()
+            player_1.inn()
+            town_theme()
+        elif town_functions == 'e':
             player_1.in_town = False
-            player_1.town_portal_exists = False
             player_1.in_dungeon = True
+            if player_1.town_portal_exists or loaded_game:
+                print(f"You re-enter the portal.")
+                player_1.town_portal_exists = False  # beta 10/12/2022
+
+            else:
+                print("You enter the dungeon..")
+            time.sleep(1)
             player_1.hud()
             player_1.dungeon_theme()
             navigation_list = ['w', 'a', 's', 'd', 'ne', 'nw', 'se', 'sw', 'l', 'map', 'm', 'i']
             # DUNGEON NAVIGATION LOOP:
             player_is_dead = False
             while player_1.in_dungeon:
+                # if player_1.check_dead():
+                #    player_is_dead = True
+                # continue
                 if player_is_dead:
+
                     cls()
+
                     gong()
                     print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
                     time.sleep(4)
                     player_1.in_proximity_to_monster = False
                     player_1.in_dungeon = False
                     player_1.in_town = False
+
                     while True:
                         try_again = input("Do you wish to play again (y/n)? ").lower()
                         if try_again == "y":
@@ -124,7 +191,7 @@ while True:
                 player_1.previous_x = player_1.x
                 player_1.previous_y = player_1.y
                 # player_1.loot(0)  # for testing
-                # player_1.asi()  # for testing
+                # player_1.asi()
                 if player_1.position == 0:  # 0 is the initialization position
                     print(player_1.dungeon.intro)
                     # set player position, which also removes intro condition
@@ -145,7 +212,6 @@ while True:
                         break
                     else:
                         continue  # if you have no scrolls, don't waste a turn
-
                 elif dungeon_command == 'quit':
                     print("Quit game..")
                     while True:
@@ -156,38 +222,30 @@ while True:
                             exit()
                         elif confirm_quit == 'n':
                             break
-
                 elif dungeon_command == "q":
                     player_1.hud()
                     monster = None  # quantum_effects needs monster parameter, but player is not in battle at this point
                     if player_1.quantum_units > 0:
                         player_1.quantum_effects(monster)
-
                 elif dungeon_command == 'g':
                     if not player_1.drink_potion_of_strength():
                         continue  # if you have no potions, don't waste a turn!
-
                 elif dungeon_command == 'v':
                     if not player_1.drink_antidote():
                         continue  # if you have no potions, don't waste a turn!
-
                 elif dungeon_command == 'h':
                     if not player_1.drink_healing_potion():
                         continue  # if you have no potions, don't waste a turn!
-
                 elif dungeon_command == 'c':
                     if not player_1.drink_elixir():
                         continue  # if you have no potions, don't waste a turn!
-
                 elif dungeon_command in navigation_list:
                     player_1.navigation(dungeon_command)
-
                 else:
                     print("Unknown command..")
                     sleep(.25)
                     player_1.dungeon_description()
                     continue  # continue means you do not waste a turn
-
                 # ***** END OF NAVIGATION choice *************************************************************
                 # !!!!!!!!!!!!!!!! V NOTE the INDENT below V !!!!!!!!!!!!!!!!
                 # ******************************************************************************************
@@ -197,7 +255,7 @@ while True:
                 # ENCOUNTER LOGIC IS DETERMINED *BEFORE* event_logic(), BUT CAN BE RE-ASSIGNED BASED ON
                 # RETURNED VALUES FROM event_logic()
                 encounter = encounter_logic()
-                # encounter = 15  # testing: this will make no monsters except bosses
+                encounter = 15  # testing: this will make no monsters except bosses
                 # EVENT LOGIC IS DETERMINED BEFORE end_of_turn_calculation() AND player_1.check_dead(),
                 # IN CASE PLAYER SUFFERS DAMAGE, ETC
                 event = player_1.event_logic()  # trigger any events corresponding to self.coordinates
@@ -231,7 +289,6 @@ while True:
                             break
                         if not player_1.in_proximity_to_monster:
                             break
-                        # eventually offload this into a meta-monster generator function: ****************************
                         if encounter < 11:  # regular monster
                             monster = player_1.regular_monster_generator()
                             # monster = HobgoblinCaptain()  # testing
@@ -256,7 +313,6 @@ while True:
                             boss_battle_theme()
                             pause()
                             player_1.hud()
-                        # ************************************************************************************
                         print(discovered_monsters)  # remove after testing
                         if monster.name in discovered_monsters:
                             print(f"You have encountered a level {monster.level} {monster.name}.")
@@ -431,7 +487,6 @@ while True:
                                     break
                                 # player_1.hud()  # commented out and seemed like it worked fine beta
                                 # continue  # commented out and it seemed to work fine beta
-
                             # FIGHT: player chooses melee:
                             elif battle_choice == "f":
                                 print(f"Fight.")
@@ -501,8 +556,7 @@ while True:
                             #
                 else:  # if encounter condition False
                     continue
-        else:  # if player is in town and does not (E)nter dungeon
-            continue
+
 # removed code:
 
 '''                if player_1.position == ".":

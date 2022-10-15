@@ -137,6 +137,10 @@ def character_generator():
                                     "such factors as confidence, persuasion and eloquence, and it can represent a\n"
                                     "charming or commanding personality. Players with high charisma will also have a\n"
                                     "better chance of favorable outcomes when encountering certain monsters."}
+    standard_array = f"Ability Score    	Ability Modifier\n" \
+                     f"15	                            +3\n14	                            " \
+                     f"+2\n13	                            +1\n12	                            +1\n10" \
+                     f"	                            +0\n8	                            -1\n"
 
     stats = {
         "strength": 15,
@@ -175,20 +179,17 @@ def character_generator():
           f"The Standard Array is a set pool of six numbers: 15, 14, 13, 12, 10, 8\n"
           f"Each number will be matched with one of the six character abilities.\n"
           f"Note that each ability score has a corresponding ability modifier, which\n"
-          f"acts as a bonus, and will become more important as you progress.\n"
+          f"acts as a bonus, (or, as a penalty in the case of a negative modifier),\n"
+          f"and will become more important as you progress.\n"
           f"Abilities and ability modifiers increase as you level up.\n")
-    print(f"Standard Array Number	Ability Modifier\n"
-          "15	                            +3\n"
-          "14	                            +2\n"
-          "13	                            +1\n"
-          "12	                            +1\n"
-          "10	                            +0\n"
-          "8	                            -1\n")
+    print(standard_array)
     pause()
     score_list = [15, 14, 13, 12, 10, 8]
     while len(score_list):
         for key in stats:
             cls()
+
+            print(standard_array)
             human_key = key.capitalize()
             print(human_key)
             print(explanation_dict[human_key])
@@ -221,81 +222,6 @@ def character_generator():
     player_1 = Player(name=player_name, **stats)
     # pause()
     return player_1
-
-
-"""def character_generator_old():
-    cls()
-    player_name = input(f"Please enter character name: ")
-    strength = 0
-    dexterity = 0
-    constitution = 0
-    intelligence = 0
-    wisdom = 0
-    charisma = 0
-    ability_list = ['Strength', 'Dexterity', 'Constitution', 'Intelligence', 'Wisdom', 'Charisma']
-    display_dict = {'Strength': strength,
-                    'Dexterity': dexterity,
-                    'Constitution': constitution,
-                    'Intelligence': intelligence,
-                    'Wisdom': wisdom,
-                    'Charisma': charisma}
-    stats = {
-        "strength": 0,
-        "dexterity": 0,
-        "constitution": 0,
-        "intelligence": 0,
-        "wisdom": 0,
-        "charisma": 0,
-    }
-    score_list = [15, 14, 13, 12, 10, 8]
-    for key, value in display_dict.items():
-        print(key, ':', value)
-    # print(f"Strength\nStrength is a measure of your character's physical prowess and power. It is important for\n"
-    #      f"melee combat and certain feats involving physical exertion.")
-    while len(score_list):
-
-        for key in display_dict.keys():
-            cls()
-            # abilities = convert_list_to_string_with_commas_only(ability_list)
-            # scores = convert_list_to_string_with_commas_only(score_list)
-            # print(abilities)
-            # print(scores)
-            # print(ability_list)
-            print(score_list)
-            try:
-                score = int(input(f"Enter score to assign to {key}: "))
-                if score in score_list:
-                    print(f"{key} = {score}")
-                    display_dict[key] = score
-                    score_list.remove(score)
-                    # ability_list.remove(key)
-                else:
-                    score_list = [15, 14, 13, 12, 10, 8]  # re-set list
-                    print(f"Valid scores are listed above.")
-                    sleep(.5)
-                    print(f"Starting over.")
-                    sleep(.5)
-                    break
-            except ValueError:
-                print(f"Invalid")
-                score_list = [15, 14, 13, 12, 10, 8]  # re-set list
-                sleep(.5)
-                print(f"Starting over.")
-                sleep(.5)
-                break
-    sleep(.5)
-    cls()
-    for key, value in display_dict.items():
-        print(key, ':', value)
-    print(strength)
-    print(dexterity)
-    print(constitution)
-    print(intelligence)
-    print(wisdom)
-    print(charisma)
-    player_1 = Player(player_name)
-    pause()
-    return player_1"""
 
 
 def encounter_logic():

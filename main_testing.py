@@ -6,9 +6,9 @@
 # complete permission granted in YouTube
 # Chemist Theme: 'Might and Magic' by Alexander Nakarada complete permission granted in YouTube
 # Town theme: 'Tavern Loop 1' by Alexander Nakarada complete permission granted in YouTube
-# boss battle theme: 'Dragon Castle' / Epic Orchestral Battle Music by Makai Symphony Creative commons license reuse ok
+# Boss battle theme: 'Dragon Castle' / Epic Orchestral Battle Music by Makai Symphony Creative commons license reuse ok
 # Tavern theme 'The Medieval Banquet / Silvermansound No Copyright. Royalty Free Music
-# Pit theme Jules Pitsker
+# Pit theme 'Epic 39' / Jules Pitsker
 # Telengard
 # MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
 # "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
@@ -16,11 +16,11 @@
 
 from player_module_testing import *
 import pickle
-from monster_module import *
+# from monster_module import *
 # from typing_module import typing
 import os
 # import winsound
-from dungeons import *
+# from dungeons import *
 
 sad_cello_theme()
 cls()

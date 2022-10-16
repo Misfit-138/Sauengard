@@ -127,7 +127,8 @@ import math
 import os
 import random
 import time
-from dice_roll_module import dice_roll
+
+# from dice_roll_module import dice_roll
 
 '''Choose a challenge rating (CR) for your custom trap, object, effect, or creature
 between 1 and 30. Write down its statistics from the following formulas:
@@ -137,6 +138,14 @@ between 1 and 30. Write down its statistics from the following formulas:
 • Attack Bonus = 3 + ½ CR
 • Proficient Saves or Skills = 3 + ½ CR
 • Single-Target Damage = 7 × CR (or 2d6 per CR)'''
+
+
+def dice_roll(no_of_dice, no_of_sides):
+    dice_rolls = []  # create list for multiple die rolls
+    for dice in range(no_of_dice):  # (1 hit die per level according to DnD 5E rules)
+        dice_rolls.append(random.randint(1, no_of_sides))
+    your_roll_sum = sum(dice_rolls)
+    return your_roll_sum
 
 
 # # monsters have Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma
@@ -405,6 +414,7 @@ class Monster:
 
     def paralyze(self, player_1):
         print(self.paralyze_phrase)
+        time.sleep(1.25)
         paralyze_chance = dice_roll(1, 20)
         human_player_roll_d20 = dice_roll(1, 20)
         player_total = (human_player_roll_d20 + player_1.ring_of_prot.protect + player_1.temp_protection_effect)
@@ -1831,7 +1841,7 @@ class Specter(Monster):
         self.is_discovered = False
         self.is_discovered = False
         self.paralyze_phrase = "It places a cold, yet immaterial hand upon you!!"
-        self.paralyze_free_attack_phrase = "Completely helpless, you feel your strength failing as it unnaturally" \
+        self.paralyze_free_attack_phrase = "Completely helpless, you feel your strength failing as it unnaturally " \
                                            "drains you!!"
 
 

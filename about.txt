@@ -15,6 +15,7 @@ inefficiency, redundancy and amateur choices I have made. However, I am quite co
 accomplish something I never thought possible, and to learn a little something along the way.
 This program is the culmination of many thousands of challenging, often grueling, hours, in front of a screen, during
 the 'productive time of my day', when ability, desire and motivation diverge.
+
 Sauengard is inspired by old school games from the 8-bit microcomputer era, specifically, games which I played on the
 Commodore 64, such as Infocom's Zork, Zork II, Zork III, Infidel, and dungeon games like Telengard, Kaiv and others..
 The monsters and combat systems are perhaps most similar to Telengard, (though far more sophisticated) ,but also draw

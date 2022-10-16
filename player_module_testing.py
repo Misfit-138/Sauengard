@@ -3,13 +3,14 @@ import pickle
 import random
 import time
 import os
+import sys
 # import pyinputplus as pyip
 from collections import Counter
 import winsound
-from dice_roll_module import dice_roll
+# from dice_roll_module import dice_roll
 from dungeons import *
 from monster_module import monster_dict, king_boss_list, undead_prophet_list
-from typing_module import typing
+# from typing_module import typing
 from pathlib import Path
 
 '''Target
@@ -43,10 +44,21 @@ Incredibly hard	25
 Why bother?	30'''
 
 
+def typing(message):
+    print("")
+    for word in message:
+        time.sleep(0.001)  # (random.choice([0.1, 0.09, 0.08, 0.07, 0.06]))
+        sys.stdout.write(word)
+        sys.stdout.flush()
+    time.sleep(.1)
+    return ""
+
+
 def game_splash():
     while True:
         cls()
         typing("Welcome to Sauengard.\n")
+        print()
         choice = input(f"(I)ntroduction  (A)bout  (T)ips  (B)egin ").lower()
         if choice not in ('i', 'a', 't', 'b'):
             continue
@@ -74,6 +86,7 @@ def game_splash():
             pause()
         elif choice == 't':
             print(f"Not done yet.")
+            sleep(.25)
             continue
         elif choice == 'b':
             return
@@ -110,6 +123,14 @@ def cls():
 def sleep(seconds):
     time.sleep(seconds)
     return
+
+
+def dice_roll(no_of_dice, no_of_sides):
+    dice_rolls = []  # create list for multiple die rolls
+    for dice in range(no_of_dice):  # (1 hit die per level according to DnD 5E rules)
+        dice_rolls.append(random.randint(1, no_of_sides))
+    your_roll_sum = sum(dice_rolls)
+    return your_roll_sum
 
 
 def character_generator():
@@ -179,7 +200,7 @@ def character_generator():
           f"The Standard Array is a set pool of six numbers: 15, 14, 13, 12, 10, 8\n"
           f"Each number will be matched with one of the six character abilities.\n"
           f"Note that each ability score has a corresponding ability modifier, which\n"
-          f"acts as a bonus, (or, as a penalty in the case of a negative modifier),\n"
+          f"acts as a bonus, (or, as a penalty, in the case of a negative modifier),\n"
           f"and will become more important as you progress.\n"
           f"Abilities and ability modifiers increase as you level up.\n")
     print(standard_array)
@@ -188,10 +209,9 @@ def character_generator():
     while len(score_list):
         for key in stats:
             cls()
-
             print(standard_array)
             human_key = key.capitalize()
-            print(human_key)
+            print(f"{human_key}:")
             print(explanation_dict[human_key])
             scores = convert_list_to_string_with_commas_only(score_list)
             print(f"Available scores: {scores}")
@@ -219,7 +239,7 @@ def character_generator():
                 break
     # for key, value in stats.items():
     # print(key, ":", value)
-    player_1 = Player(name=player_name, **stats)
+    player_1 = Player(name=player_name, **stats)  # **stats sends the 'stats' dictionary as parameters
     # pause()
     return player_1
 
@@ -900,7 +920,7 @@ class Player:
         #  cloak, weapon_name):
         self.name = name
         self.level = 1
-        self.quantum_level = 6
+        self.quantum_level = 2
         self.maximum_quantum_units = 600
         self.quantum_units = 600
         self.experience = 0
@@ -971,11 +991,11 @@ class Player:
         self.previous_y = 0
         self.in_a_pit = False
         self.vanquished_foes = []
-        self.boss_hint_1 = True
+        self.boss_hint_1 = False
         self.boss_hint_1_event = False
-        self.boss_hint_2 = True
+        self.boss_hint_2 = False
         self.boss_hint_2_event = False
-        self.boss_hint_3 = True
+        self.boss_hint_3 = False
         self.boss_hint_3_event = False
         self.boss_hint_4 = False
         self.boss_hint_4_event = False
@@ -1026,7 +1046,7 @@ class Player:
         print(f"Level: {self.level}")
         print(f"Experience: {self.experience}")
         print(f"Gold: {self.gold}")
-        print(f"Weapon: {self.wielded_weapon.name} Damage Bonus: {self.wielded_weapon.damage_bonus}")
+        print(f"Weapon: {self.wielded_weapon.name} (Damage Bonus: {self.wielded_weapon.damage_bonus})")
         print(f"To hit bonus: + {self.wielded_weapon.to_hit_bonus}")
         print(f"Armor: {self.armor.name} (AC: {self.armor.ac})")
         print(f"Shield: {self.shield.name} (AC: {self.shield.ac})")
@@ -2931,7 +2951,7 @@ class Player:
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
-                    number_of_dice = (10 + self.quantum_level - 6) * critical_bonus
+                    number_of_dice = (12 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 10) + 40
                     if damage_to_opponent > 0:
                         print(hit_statement)
@@ -3039,16 +3059,19 @@ class Player:
                     #
                     number_of_dice = (8 + self.quantum_level - 4) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
                         print(f"A red-hot orb of dreadful flames forms from your hand and speeds toward your enemy!")
                         print(f"{number_of_dice}d8 roll + 1 per die: {damage_to_opponent}")
+                        print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
                         print(f"The flaming ball of fire explodes on target and inflicts "
-                              f"{damage_to_opponent} points of damage!")
+                              f"{total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
-                        return damage_to_opponent
+                        return total_damage_to_opponent
                     else:
                         print(f"For all of its fear-inspiring appearance, it fails to land any damage!")  # 0 damage
                         sleep(1)
@@ -3056,15 +3079,18 @@ class Player:
                 else:
                     number_of_dice = (8 + self.quantum_level - 4) * critical_bonus
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
                     print(f"The Fireball takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
                     print(f"{number_of_dice}d8 roll + 1 per die rolled / 2 = {damage_to_opponent} (ROUNDED)")
-                    print(f"It inflicts {damage_to_opponent} points of damage..")
+                    print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
+                    print(f"It inflicts {total_damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return damage_to_opponent
+                    return total_damage_to_opponent
             else:
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to Fireball!!")
@@ -3133,17 +3159,20 @@ class Player:
                     #
                     number_of_dice = (7 + self.quantum_level - 4) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (2 * number_of_dice)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
                         print(f"Your hands throb with blinding Quantum Energy!")
                         sleep(1)
                         print(f"{number_of_dice}d8 roll + 2 * number of dice: {damage_to_opponent}")
+                        print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
                         print(f"You extend a white-hot finger, merely touching your enemy, inflicting "
-                              f"{damage_to_opponent} points of damage!")
+                              f"{total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
-                        return damage_to_opponent
+                        return total_damage_to_opponent
                     else:
                         print(f"For all of its fear-inspiring appearance, your effect fails to land any damage!")  # 0
                         sleep(1)
@@ -3151,18 +3180,21 @@ class Player:
                 else:
                     number_of_dice = (7 + self.quantum_level - 4) * critical_bonus
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (2 * number_of_dice)) / 2)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
                     print(f"Your hands throb with red-hot Quantum Energy..")
                     sleep(1)
                     # print(f"The effect takes form but does not to its fullest potential..")
                     print(f"{number_of_dice}d8 roll + 2 * number of dice rolled / 2 = {damage_to_opponent} (ROUNDED)")
+                    print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
                     sleep(1)
                     print(f"You extend a glowing finger and touch your enemy, inflicting "
-                          f"{damage_to_opponent} points of damage..")
+                          f"{total_damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return damage_to_opponent
+                    return total_damage_to_opponent
             else:
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to Finger of Death!!")
@@ -3242,6 +3274,8 @@ class Player:
                     number_of_dice = (20 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice) + \
                                          dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack=force damage
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
@@ -3249,12 +3283,13 @@ class Player:
                               f"a swarm of burning meteors materializes above and falls upon your enemy!!")
                         print(
                             f"{number_of_dice}d8 + {number_of_dice}d8 force damage + 1 per die rolled: {damage_to_opponent}")
+                        print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
                         print(
                             f"The great storm of fire and stone explodes directly on target in surreal glory and does "
-                            f"{damage_to_opponent} points of damage!")
+                            f"{total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
-                        return damage_to_opponent
+                        return total_damage_to_opponent
                     else:
                         print(f"For all of its fear-inspiring appearance, it fails to land any damage!")  # 0 damage
                         sleep(1)
@@ -3262,16 +3297,19 @@ class Player:
                 else:
                     number_of_dice = (20 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # no force damage
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
                     print(f"The Meteor Swarm takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
                     print(f"{number_of_dice}d8 roll + 1 per die rolled = {damage_to_opponent}")
-                    print(f"It hits for {damage_to_opponent} points of damage..")
+                    print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
+                    print(f"It hits for {total_damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return damage_to_opponent
+                    return total_damage_to_opponent
             else:
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to Meteor Swarm!!")
@@ -3348,7 +3386,9 @@ class Player:
                     number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
                                          dice_roll(number_of_dice, 8) + (
-                                                     1 * number_of_dice)  # 2nd attack = force damage
+                                                 1 * number_of_dice)  # 2nd attack = force damage
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
@@ -3360,11 +3400,13 @@ class Player:
                         sleep(1)
                         print(f"{number_of_dice}d12 + {number_of_dice}d8 force damage + 1 per skeleton bludgeoning "
                               f"damage: {damage_to_opponent}")
+                        print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
+                        print(f"It hits for {total_damage_to_opponent} points of damage..")
                         print(f"The great swarm of armor, axe, sword and spear inflicts "
-                              f"{damage_to_opponent} points of damage!")
+                              f"{total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
-                        return damage_to_opponent
+                        return total_damage_to_opponent
                     else:
                         print(f"For all of its fear-inspiring appearance, the skeletal horde"
                               f" fails to land any damage!")  # 0 damage
@@ -3373,16 +3415,19 @@ class Player:
                 else:
                     number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice)  # no force damage
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
                     print(f"The skeletal horde takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
                     print(f"{number_of_dice}d12 roll + 1 per skeleton bludgeoning damage = {damage_to_opponent}")
-                    print(f"It hits for {damage_to_opponent} points of damage..")
+                    print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
+                    print(f"It hits for {total_damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return damage_to_opponent
+                    return total_damage_to_opponent
             else:
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to Skeletal Remains!!")
@@ -3459,7 +3504,9 @@ class Player:
                     number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
                                          dice_roll(number_of_dice, 8) + (
-                                                     1 * number_of_dice)  # 2nd attack = crushing damage
+                                                 1 * number_of_dice)  # 2nd attack = crushing damage
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
@@ -3470,11 +3517,12 @@ class Player:
                         sleep(1)
                         print(f"{number_of_dice}d12 necrotic damage + {number_of_dice}d8 crushing damage + 1 per die "
                               f"rolled mental anguish: {damage_to_opponent}")
+                        print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
                         print(f"The great, empty darkness inflicts "
-                              f"{damage_to_opponent} points of damage!")
+                              f"{total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
-                        return damage_to_opponent
+                        return total_damage_to_opponent
                     else:
                         print(f"For all of its fear-inspiring appearance, the plague"
                               f" fails to land any damage!")  # 0 damage
@@ -3483,17 +3531,20 @@ class Player:
                 else:
                     number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice)  # no crushing damage
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
                     print(f"The plague takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
                     print(
-                        f"{number_of_dice}d12 necrotic damage + 1 per die rolled mental damage = {damage_to_opponent}")
-                    print(f"It hits for {damage_to_opponent} points of damage..")
+                        f"{number_of_dice}d12 necrotic damage + 1 per die rolled mental damage: {damage_to_opponent}")
+                    print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
+                    print(f"It hits for {total_damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return damage_to_opponent
+                    return total_damage_to_opponent
             else:
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to the Plague!!")
@@ -3570,17 +3621,20 @@ class Player:
                     #
                     number_of_dice = (8 + self.quantum_level - 5) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (4 * number_of_dice)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
                         print(f"With a crackling rumble, a frigid storm of ice and hail thrusts forth from your hand!!")
                         print(
                             f"{number_of_dice}d8 roll + {number_of_dice} + (4 * number of dice rolled): {damage_to_opponent}")
+                        print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
                         print(f"The great freezing storm explodes on target and does "
-                              f"{damage_to_opponent} points of damage!")
+                              f"{total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
-                        return damage_to_opponent
+                        return total_damage_to_opponent
                     else:
                         print(f"For all of its fear-inspiring appearance, it fails to land any damage!")  # 0 damage
                         sleep(1)
@@ -3588,17 +3642,20 @@ class Player:
                 else:
                     number_of_dice = (8 + self.quantum_level - 5) * critical_bonus
                     damage_to_opponent = math.ceil(dice_roll(number_of_dice, 8) + (4 * number_of_dice) / 2)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
                     print(f"The storm does not inflict damage to its fullest potential..")
                     sleep(1)
                     print(
-                        f"{number_of_dice}d8 roll + (4 * number of dice rolled) / 2 = {damage_to_opponent} (ROUNDED) ")
-                    print(f"It inflicts {damage_to_opponent} points of damage..")
+                        f"{number_of_dice}d8 roll + (4 * number of dice rolled) / 2: {damage_to_opponent} (ROUNDED) ")
+                    print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
+                    print(f"It inflicts {total_damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return damage_to_opponent
+                    return total_damage_to_opponent
             else:
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to Ice Storm!!")
@@ -3676,17 +3733,20 @@ class Player:
                     #
                     number_of_dice = (8 + self.quantum_level - 5) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (4 * number_of_dice)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
                         print(f"With a deafening roar, a storm of searing hot flames thrusts forth from your hand!!")
                         print(
                             f"{number_of_dice}d8 roll + {number_of_dice} + (4 * number of dice rolled): {damage_to_opponent}")
+                        print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
                         print(f"The scorching storm explodes on target and does "
-                              f"{damage_to_opponent} points of damage!")
+                              f"{total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
-                        return damage_to_opponent
+                        return total_damage_to_opponent
                     else:
                         print(f"For all of its fear-inspiring appearance, it fails to land any damage!")  # 0 damage
                         sleep(1)
@@ -3694,6 +3754,8 @@ class Player:
                 else:
                     number_of_dice = (8 + self.quantum_level - 5) * critical_bonus
                     damage_to_opponent = math.ceil(dice_roll(number_of_dice, 8) + (4 * number_of_dice) / 2)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
@@ -3701,10 +3763,11 @@ class Player:
                     sleep(1)
                     print(
                         f"{number_of_dice}d8 roll + (4 * number of dice rolled) / 2 = {damage_to_opponent} (ROUNDED) ")
-                    print(f"It inflicts {damage_to_opponent} points of damage..")
+                    print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
+                    print(f"It inflicts {total_damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return damage_to_opponent
+                    return total_damage_to_opponent
             else:
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to Fire Storm!!")
@@ -3785,16 +3848,19 @@ class Player:
                 if player_dc >= monster_total:  # > tie goes to defender >= tie goes to player
                     number_of_dice = (4 + self.quantum_level - 3) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
                         print(f"The Phantasmal illusion takes form through weird Quantum "
                               f"tunneling and completely seizes the mind of your enemy!")
                         print(f"{number_of_dice}d8 roll + 1 per die: {damage_to_opponent}")
-                        print(f"The terrible vision inflicts {damage_to_opponent} points of damage!")
+                        print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
+                        print(f"The terrible vision inflicts {total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
-                        return damage_to_opponent
+                        return total_damage_to_opponent
                     else:
                         print(f"For all of its fear-inspiring appearance, it fails to land any damage!")  # 0 damage
                         sleep(1)
@@ -3802,15 +3868,18 @@ class Player:
                 else:
                     number_of_dice = (4 + self.quantum_level - 3) * critical_bonus
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
                     print(f"The Phantasmal illusion takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
                     print(f"{number_of_dice}d8 roll + 1 per die rolled / 2 = {damage_to_opponent} (ROUNDED)")
-                    print(f"It does {damage_to_opponent} points of damage..")
+                    print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
+                    print(f"It does {total_damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return damage_to_opponent
+                    return total_damage_to_opponent
             else:
                 if monster.undead:
                     print(f"Undead do not believe!!")
@@ -3879,16 +3948,19 @@ class Player:
                     #
                     number_of_dice = (6 + self.quantum_level - 3) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 6) + (1 * number_of_dice)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
                         print(f"{number_of_dice} bolts of Quantum Lightning materialize from nothingness and "
                               f"hit their target!")
                         print(f"{number_of_dice}d6 roll + 1 arc damage per bolt: {damage_to_opponent}")
-                        print(f"They do {damage_to_opponent} points of damage!")
+                        print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
+                        print(f"They do {total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
-                        return damage_to_opponent
+                        return total_damage_to_opponent
                     else:
                         print(f"Through its own weirdness, the {monster.name} manages to "
                               f"avoid damage from the weird energy!")  # 0 dmg
@@ -3897,15 +3969,18 @@ class Player:
                 else:
                     number_of_dice = (6 + self.quantum_level - 3) * critical_bonus
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 6) + (1 * number_of_dice)) / 2)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
                     print(f"The lightning takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
                     print(f"{number_of_dice}d6 roll + 1 per die rolled / 2 = {damage_to_opponent} (ROUNDED)")
-                    print(f"It inflicts {damage_to_opponent} points of damage..")
+                    print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
+                    print(f"It inflicts {total_damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return damage_to_opponent
+                    return total_damage_to_opponent
             else:
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to Lightning!!")
@@ -3984,16 +4059,19 @@ class Player:
                 if roll_d20 == 20 or player_dc >= monster_total:
                     number_of_dice = (7 + self.quantum_level - 3) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 6)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
                         print(f"A serpentine trail of fire materializes from nothingness and "
                               f"wreathes your target in scorching flame!")
                         print(f"{number_of_dice}d6 roll: {damage_to_opponent}")
-                        print(f"It inflicts {damage_to_opponent} points of damage!")
+                        print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
+                        print(f"It inflicts {total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
-                        return damage_to_opponent
+                        return total_damage_to_opponent
                     else:
                         print(f"Through its own weirdness, the {monster.name} manages to "
                               f"avoid damage from the weird energy!")  # 0 dmg
@@ -4002,15 +4080,18 @@ class Player:
                 else:
                     number_of_dice = (7 + self.quantum_level - 3) * critical_bonus
                     damage_to_opponent = math.ceil(dice_roll(number_of_dice, 6) / 2)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
                     print(f"The trail of fire takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
-                    print(f"{number_of_dice}d6 roll / 2 = {damage_to_opponent} (ROUNDED)")
-                    print(f"It does {damage_to_opponent} points of damage..")
+                    print(f"{number_of_dice}d6 roll / 2: {damage_to_opponent} (ROUNDED)")
+                    print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
+                    print(f"It does {total_damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return damage_to_opponent
+                    return total_damage_to_opponent
             else:
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to Immolation Effects!!")
@@ -4088,6 +4169,8 @@ class Player:
                 if roll_d20 == 20 or player_dc >= monster_total:
                     number_of_dice = (7 + self.quantum_level - 3) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 6)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
@@ -4095,10 +4178,11 @@ class Player:
                               f"wraps your target with impossible crushing force!")
                         sleep(1)
                         print(f"{number_of_dice}d6 roll: {damage_to_opponent}")
-                        print(f"It inflicts {damage_to_opponent} points of damage!")
+                        print(f"{self.level}d{self.hit_dice} Damage bonus: {melee_bonus}")
+                        print(f"It inflicts {total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
-                        return damage_to_opponent
+                        return total_damage_to_opponent
                     else:
                         print(f"Through its own weirdness, the {monster.name} manages to "
                               f"avoid damage from the weird energy!")  # 0 dmg
@@ -4107,15 +4191,18 @@ class Player:
                 else:
                     number_of_dice = (7 + self.quantum_level - 3) * critical_bonus
                     damage_to_opponent = math.ceil(dice_roll(number_of_dice, 6) / 2)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
                     print(f"The twister takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
-                    print(f"{number_of_dice}d6 roll / 2 = {damage_to_opponent} (ROUNDED)")
-                    print(f"It does {damage_to_opponent} points of damage..")
+                    print(f"{number_of_dice}d6 roll / 2: {damage_to_opponent} (ROUNDED)")
+                    print(f"{self.level}d{self.hit_dice} Damage bonus: {melee_bonus}")
+                    print(f"It does {total_damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return damage_to_opponent
+                    return total_damage_to_opponent
             else:
                 if monster.proper_name != "None":
                     print(f"{monster.proper_name} is immune to Vortex Effects!!")
@@ -4181,18 +4268,22 @@ class Player:
                 if roll_d20 == 20 or player_total >= monster_total:
                     # number_of_dice = (3 + (self.level - 1)) * critical_bonus  #consider changing to self.quantum_level
                     number_of_dice = (3 + self.quantum_level - 1) * critical_bonus
-                    damage_to_opponent = dice_roll(number_of_dice, 4) + (1 * number_of_dice)
+                    damage_to_opponent = (dice_roll(number_of_dice, 4) + (1 * number_of_dice))
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
                         print(f"{number_of_dice} glowing projectiles materialize from nothingness and "
                               f"hit their target!")
-                        print(f"Quantum Missile = 3d4(dice) + 1 die for every level")
-                        print(f"{number_of_dice}d4 roll + 1 force damage per missile: {damage_to_opponent}")
-                        print(f"They do {damage_to_opponent} points of damage!")
+                        # print(f"(Quantum Missile = 3d4(dice) + 1 die for every level)")
+                        print(f"{number_of_dice}d4 roll + 1 force damage per missile: {damage_to_opponent}\n"
+                              f"{self.level}d{self.hit_dice} damage bonus: {melee_bonus}\n"
+                              f"Total: {total_damage_to_opponent}")
+                        print(f"They do {total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
-                        return damage_to_opponent
+                        return total_damage_to_opponent
                     else:
                         print(f"It blocks the glowing projectiles!")  # zero damage result
                         sleep(1)
@@ -4200,15 +4291,19 @@ class Player:
                 else:
                     number_of_dice = (3 + self.quantum_level - 1) * critical_bonus
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 4) + (1 * number_of_dice)) / 2)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
                     print(f"The glowing projectiles take form but do not inflict damage to their fullest potential..")
                     sleep(1)
-                    print(f"{number_of_dice}d4 roll + 1 per die rolled / 2 = {damage_to_opponent} (ROUNDED)")
-                    print(f"They do {damage_to_opponent} points of damage..")
+                    print(f"{number_of_dice}d4 roll + 1 per die rolled / 2: {damage_to_opponent}\n"
+                          f"{self.level}d{self.hit_dice} damage bonus: {melee_bonus}\n"
+                          f"Total: {total_damage_to_opponent} (ROUNDED)")
+                    print(f"They do {total_damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return damage_to_opponent
+                    return total_damage_to_opponent
 
             else:
                 if monster.proper_name != "None":
@@ -4276,16 +4371,20 @@ class Player:
                     # number_of_dice = (3 + (self.level - 1)) * critical_bonus
                     number_of_dice = (2 + self.quantum_level - 2) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 6) + (1 * number_of_dice)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
                         print(f"Scorch = 3d6(dice) + 1 die for every level")
                         print(f"{number_of_dice}d6 roll "
-                              f"({number_of_dice} rays + 1 force damage per ray): {damage_to_opponent}")
-                        print(f"They do {damage_to_opponent} points of damage!")
+                              f"({number_of_dice} rays + 1 force damage per ray): {damage_to_opponent}\n"
+                              f"{self.level}d{self.hit_dice} bonus: {melee_bonus}\n"
+                              f"Total: {total_damage_to_opponent}")
+                        print(f"They do {total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
-                        return damage_to_opponent
+                        return total_damage_to_opponent
                     else:
                         print(f"It dodges the scorching rays!")  # zero damage result
                         sleep(1)
@@ -4293,15 +4392,19 @@ class Player:
                 else:
                     number_of_dice = (2 + self.quantum_level - 2) * critical_bonus
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 6) + (1 * number_of_dice)) / 2)
+                    melee_bonus = dice_roll(self.level, self.hit_dice)
+                    total_damage_to_opponent = damage_to_opponent + melee_bonus
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
                     print(f"The scorching rays take form but do not inflict damage to their fullest potential..")
                     sleep(1)
-                    print(f"{number_of_dice}d6 roll + 1 per die rolled / 2 = {damage_to_opponent} (ROUNDED)")
-                    print(f"They do {damage_to_opponent} points of damage..")
+                    print(f"{number_of_dice}d6 roll + 1 per die rolled / 2: {damage_to_opponent}\n"
+                          f"{self.level}d{self.hit_dice} bonus: {melee_bonus}\n"
+                          f"Total: {total_damage_to_opponent} (ROUNDED)")
+                    print(f"They do {total_damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
-                    return damage_to_opponent
+                    return total_damage_to_opponent
 
             else:
                 if monster.proper_name != "None":
@@ -6283,7 +6386,7 @@ class Player:
                     pause()
                     return
                 else:
-                    return undead_prophet_returns()
+                    return "Undead Prophet"  # undead_prophet_returns()
             elif throne_action == 'd':
                 print(f"Removing the hammer from your pack, you begin hacking at the crumbling stone..")
                 primary_difficulty_class = 15
@@ -6306,7 +6409,7 @@ class Player:
                     self.hud()
                     return self.increase_random_ability()
                 else:
-                    return undead_prophet_returns()  # unable to finish
+                    return "Undead Prophet"  # undead_prophet_returns()  # unable to finish
 
             else:
                 return  # ignore the altar
@@ -6358,7 +6461,7 @@ class Player:
                     pause()
                     return
                 else:
-                    return king_returns()
+                    return "King Boss"  # king_returns()
             else:
                 print(f"There are no gems left to pry...")
                 pause()
@@ -6393,11 +6496,11 @@ class Player:
                         pause()
                         return self.increase_random_ability()
                     else:
-                        return king_returns()  # unable to translate
+                        return "King Boss"  # king_returns()  # unable to translate
                 else:
                     return  # player chooses not to translate
             else:
-                return king_returns()  # player unable to recognize runes
+                return "King Boss"  # king_returns()  # player unable to recognize runes
         else:
             return  # ignore the throne
 

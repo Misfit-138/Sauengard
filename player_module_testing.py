@@ -73,7 +73,7 @@ def game_splash():
                 print(f"Missing hint_event_1.txt or bad file path.")
             pause()
         elif choice == 't':
-            print(f"Not done yet")
+            print(f"Not done yet.")
             continue
         elif choice == 'b':
             return

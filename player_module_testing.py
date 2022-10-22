@@ -2765,18 +2765,23 @@ class Player:
     def quantum_help1(self, monster):
         cls()
         print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
+        print()
         print(f"Quantum Missile: Multiple glowing projectiles, corresponding to your Quantum knowledge and randomness"
               f"\nare launched at your enemy. Success based on Player Wisdom vs Enemy AC)")
+        print()
         print(f"Quantum Sleep: Your knowledge of Quantum weirdness allows you to attempt to lull your enemy into a\n"
               f"dream-like and utterly vulnerable state. Initial success based on Player Intelligence vs Enemy Wisdom\n"
               f"Final success depends on Enemy AC.")
+        print()
         print(f"Heal Wounds: Quantum actions at a subatomic level repair physical wounds, ignoring necrosis and "
               f"poison.\nEffectiveness based on Quantum Knowledge Level")
+        print()
         print(f"Protection from Evil: Through Quantum probabilities, reduce the chances of successful enemy Quantum\n"
               f"attacks and paralyzing effects. Effectiveness depends on Quantum Knowledge Level. Duration depends on\n"
-              f"Constitution.")
+              f"Constitution Modifier.")
+        print()
         print(f"Turn Undead: Attempt to strike panic into the Undead by turning the very improbable forces responsible"
-              f"\nfor their existence against them. Success based on Player Wisdom vs Enemy Wisdom")
+              f"\nfor their weird existence against them. Success based on Player Wisdom vs Enemy Wisdom")
         print()
         pause()
         return None
@@ -2784,13 +2789,18 @@ class Player:
     def quantum_help2(self, monster):
         cls()
         print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
+        print()
         print(f"Web: Through improbabilities, shoot a giant web at your enemy, incapacitating them. Initial success\n"
               f"based on Player Wisdom vs Enemy Dexterity. Final success depends on Enemy AC.")
-        print(f"Quantum Purify: Works only when poisoned or necrotic, but once engaged, purifies flesh of these\n"
+        print()
+        print(f"Quantum Purify: Works only when poisoned or necrotic, but once engaged, purifies the flesh from these\n"
               f"effects and also increases Hit Points.")
+        print()
         print(f"Quantum Strength: Harnessing Quantum Energies, your Strength and melee damage are increased\n"
               f"for a maximum duration based on your Quantum Knowledge level and Strength Modifier.")
+        print()
         print(f"Quantum Scorch: Rays of intense flame strike your enemy. Success based on Player Wisdom vs Enemy AC.")
+        print()
         print(f"Quantum Charm: Use your powers of persuasion to lull your enemy into a vulnerable sleep. Initial\n"
               f"success based on Player Charisma vs Enemy Wisdom. Final success depends on Enemy AC.")
         print()

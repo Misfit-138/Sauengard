@@ -469,6 +469,7 @@ class Monster:
         else:
             print(f"Your Saving Throw: {player_saving_throw}\n"
                   f"Your Constitution Modifier: {player_1.constitution_modifier}\n")
+
             print(f"Total: {difficulty_class}")
             if roll_d20 == 20 or roll_d20 >= difficulty_class:  # self.constitution + self.constitution_modifier:
                 # return True

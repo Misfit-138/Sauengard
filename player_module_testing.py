@@ -2732,7 +2732,7 @@ class Player:
         return 0
 
     def protection_from_evil(self, monster):
-        # everything but a natural 1 will succeed; if ring of protection is available, will always succeed
+        # everything but a natural 1 will succeed
         print(f"Protection from Evil")
         sleep(1)
         quantum_unit_cost = 1
@@ -2746,10 +2746,10 @@ class Player:
         prot_roll = dice_roll(1, 20)
         print(f"{effect_phrase}")
         sleep(1.5)
-        if prot_roll + self.wisdom_modifier > 1:
+        if prot_roll > 1:
             self.protection_effect = True
             self.protection_effect_uses = -1  # to compensate for end of turn calculation
-            self.temp_protection_effect = (2 + self.level)
+            self.temp_protection_effect = (2 + self.quantum_level)
             self.quantum_units -= quantum_unit_cost
             print(f"You have succeeded!")
             sleep(1)
@@ -2761,6 +2761,41 @@ class Player:
             self.quantum_units -= quantum_unit_cost
             pause()
             return 0
+
+    def quantum_help1(self, monster):
+        cls()
+        print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
+        print(f"Quantum Missile: Multiple glowing projectiles, corresponding to your Quantum knowledge and randomness"
+              f"\nare launched at your enemy. Success based on Player Wisdom vs Enemy AC)")
+        print(f"Quantum Sleep: Your knowledge of Quantum weirdness allows you to attempt to lull your enemy into a\n"
+              f"dream-like and utterly vulnerable state. Initial success based on Player Intelligence vs Enemy Wisdom\n"
+              f"Final success depends on Enemy AC.")
+        print(f"Heal Wounds: Quantum actions at a subatomic level repair physical wounds, ignoring necrosis and "
+              f"poison.\nEffectiveness based on Quantum Knowledge Level")
+        print(f"Protection from Evil: Through Quantum probabilities, reduce the chances of successful enemy Quantum\n"
+              f"attacks and paralyzing effects. Effectiveness depends on Quantum Knowledge Level. Duration depends on\n"
+              f"Constitution.")
+        print(f"Turn Undead: Attempt to strike panic into the Undead by turning the very improbable forces responsible"
+              f"\nfor their existence against them. Success based on Player Wisdom vs Enemy Wisdom")
+        print()
+        pause()
+        return None
+
+    def quantum_help2(self, monster):
+        cls()
+        print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
+        print(f"Web: Through improbabilities, shoot a giant web at your enemy, incapacitating them. Initial success\n"
+              f"based on Player Wisdom vs Enemy Dexterity. Final success depends on Enemy AC.")
+        print(f"Quantum Purify: Works only when poisoned or necrotic, but once engaged, purifies flesh of these\n"
+              f"effects and also increases Hit Points.")
+        print(f"Quantum Strength: Harnessing Quantum Energies, your Strength and melee damage are increased\n"
+              f"for a maximum duration based on your Quantum Knowledge level and Strength Modifier.")
+        print(f"Quantum Scorch: Rays of intense flame strike your enemy. Success based on Player Wisdom vs Enemy AC.")
+        print(f"Quantum Charm: Use your powers of persuasion to lull your enemy into a vulnerable sleep. Initial\n"
+              f"success based on Player Charisma vs Enemy Wisdom. Final success depends on Enemy AC.")
+        print()
+        pause()
+        return None
 
     def quantum_effects(self, monster):
         printable_quantum_book = {1: {1: "Quantum Missile",
@@ -2793,12 +2828,14 @@ class Player:
                                       4: "Negative Energy Plague"}
 
                                   }
-        quantum_book = {1: {1: self.quantum_missile,
+        quantum_book = {1: {0: self.quantum_help1,
+                            1: self.quantum_missile,
                             2: self.quantum_sleep,
                             3: self.quantum_heal_wounds,
                             4: self.protection_from_evil,
                             5: self.turn_undead},
-                        2: {1: self.quantum_web,
+                        2: {0: self.quantum_help2,
+                            1: self.quantum_web,
                             2: self.quantum_purify,
                             3: self.quantum_strength,
                             4: self.quantum_scorch,
@@ -2835,7 +2872,8 @@ class Player:
                     working_dict = {key_lst[i]: value_list[i] for i in range(len(key_lst))}
                     for key, value in working_dict.items():
                         print(f"{key}: {value}")
-                    q_to_cast = int(input(f"Number of Quantum Effect to cast: "))
+                    q_to_cast = int(input(f"Number of Quantum Effect to cast (or 0 for HELP): "))
+
                     # noinspection PyArgumentList
                     quantum_function = (quantum_book[q_level][q_to_cast](monster))
                     return quantum_function
@@ -2850,7 +2888,7 @@ class Player:
             except (ValueError, KeyError):
                 print(f"Invalid input")
                 sleep(.25)
-                return None  # -999  # -999 creates condition for a continue statement in main loop so a turn is not wasted
+                return None  # -999 creates condition for a continue statement in main loop so a turn is not wasted
                 # return 0
 
     def quantum_word_kill(self, monster):

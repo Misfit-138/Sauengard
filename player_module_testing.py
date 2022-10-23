@@ -47,7 +47,7 @@ Why bother?	30'''
 def typing(message):
     print("")
     for word in message:
-        time.sleep(0.001)  # (random.choice([0.1, 0.09, 0.08, 0.07, 0.06]))
+        time.sleep(0.01)  # (random.choice([0.1, 0.09, 0.08, 0.07, 0.06]))
         sys.stdout.write(word)
         sys.stdout.flush()
     time.sleep(.1)
@@ -2782,14 +2782,14 @@ class Player:
         print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
         print()
         print(f"Quantum Missile: Multiple glowing projectiles, corresponding to your Quantum knowledge and randomness"
-              f"\nare launched at your enemy. Success based on Player Wisdom vs Enemy AC)")
+              f"\nare launched at your enemy. Success based on Player Wisdom vs Enemy AC.")
         print()
         print(f"Quantum Sleep: Your knowledge of Quantum weirdness allows you to attempt to lull your enemy into a\n"
               f"dream-like and utterly vulnerable state. Initial success based on Player Intelligence vs Enemy Wisdom\n"
               f"Final success depends on Enemy AC.")
         print()
         print(f"Heal Wounds: Quantum actions at a subatomic level repair physical wounds, ignoring necrosis and "
-              f"poison.\nEffectiveness based on Quantum Knowledge Level")
+              f"poison.\nEffectiveness based on Quantum Knowledge Level.")
         print()
         print(f"Protection from Evil: Through Quantum probabilities, reduce the chances of successful enemy Quantum\n"
               f"attacks and paralyzing effects. Effectiveness depends on Quantum Knowledge Level. Duration depends on\n"

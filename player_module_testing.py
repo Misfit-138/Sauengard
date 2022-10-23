@@ -153,13 +153,15 @@ def character_generator():
                                         "important for certain quantum effects, your ability to recall lore, \n"
                                         "languages, and runes, as well as your ability to investigate your \n"
                                         "surroundings.",
-                        "Wisdom": "Wisdom enables sound judgment based on knowledge and understanding; the ability\n"
-                                  "to use knowledge and understanding successfully to solve problems, avoid or avert\n"
+                        "Wisdom": "Wisdom enables sound judgment and action based on intelligence and understanding; "
+                                  "the ability\n"
+                                  "to practically apply one's knowledge successfully, to solve problems, avoid or "
+                                  "avert\n"
                                   "dangers, attain certain goals, or counsel others in doing so. It is the opposite\n"
                                   "of foolishness, stupidity, and madness. Wisdom is absolutely critical for "
                                   "harnessing\n"
                                   "many Quantum effects, as well as avoiding many Quantum attacks.",
-                        "Charisma": "Charisma measures your ability to interact effectively with others. It includes\n"
+                        "Charisma": "Charisma measures one's ability to interact effectively with others. It includes\n"
                                     "such factors as confidence, persuasion and eloquence, and it can represent a\n"
                                     "charming or commanding personality. Players with high charisma will also have a\n"
                                     "better chance of favorable outcomes when encountering certain monsters."}
@@ -1075,7 +1077,8 @@ class Player:
             print(f"QUANTUM STRENGTH EFFECT) ({self.quantum_strength_uses}/{self.max_quantum_strength_uses})")
         if self.protection_effect and self.protection_effect_uses > -1:
             print(
-                f"(PROT/EVIL: {self.temp_protection_effect}) ({self.protection_effect_uses}/{self.max_protection_effect_uses})")
+                f"(PROT/EVIL: {self.temp_protection_effect}) "
+                f"({self.protection_effect_uses}/{self.max_protection_effect_uses})")
         if self.poisoned:
             print(f"(POISONED)")
             print(f"Poison clarifying: ({self.poisoned_turns}/{self.dot_turns})")
@@ -1794,7 +1797,8 @@ class Player:
         roll_total = roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus
         print(f"Total: {roll_total}")
         print(f"Monster armor class {monster_armor_class}")
-        if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
+        if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + \
+                self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
             damage_roll = dice_roll((self.level * critical_bonus), self.hit_dice)
 
             damage_to_opponent = math.ceil(
@@ -1823,7 +1827,8 @@ class Player:
             print("Extra Attack Skill chance to hit!")
             sleep(2)
             roll_d20 = dice_roll(1, 20)
-            if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
+            if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + \
+                    self.wielded_weapon.to_hit_bonus >= monster_armor_class:
                 damage_roll = dice_roll(self.level, self.hit_dice)
                 damage_to_opponent = \
                     math.ceil(damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) * strength_bonus
@@ -1862,7 +1867,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + \
-                            self.wisdom_modifier + vulnerability_modifier + level_advantage
+                    self.wisdom_modifier + vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -1944,7 +1949,8 @@ class Player:
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
-                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + vulnerability_modifier + level_advantage
+                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -2027,7 +2033,8 @@ class Player:
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
-                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + vulnerability_modifier + level_advantage
+                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -2166,7 +2173,7 @@ class Player:
                         if self.level > monster.level:
                             level_advantage = self.level - monster.level
                         player_dc = self.base_dc + self.proficiency_bonus + \
-                                    self.wisdom_modifier + vulnerability_modifier + level_advantage
+                            self.wisdom_modifier + vulnerability_modifier + level_advantage
                         print(f"Player base DC = {self.base_dc}\n"
                               f"Wisdom Modifier: {self.wisdom_modifier}\n"
                               f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -2281,7 +2288,8 @@ class Player:
                             level_advantage = 0
                             if self.level > monster.level:
                                 level_advantage = self.level - monster.level
-                            player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + vulnerability_modifier + level_advantage
+                            player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
+                                vulnerability_modifier + level_advantage
                             print(f"Player base DC = {self.base_dc}\n"
                                   f"Wisdom Modifier: {self.wisdom_modifier}\n"
                                   f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -2365,7 +2373,8 @@ class Player:
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
-                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + vulnerability_modifier + level_advantage
+                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
+                    vulnerability_modifier + level_advantage
                 print(f"Player DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -2526,7 +2535,8 @@ class Player:
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
-                player_dc = self.base_dc + self.proficiency_bonus + self.charisma_modifier + vulnerability_modifier + level_advantage
+                player_dc = self.base_dc + self.proficiency_bonus + self.charisma_modifier + \
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Charisma Modifier: {self.charisma_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -2619,7 +2629,8 @@ class Player:
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
-                player_dc = self.base_dc + self.proficiency_bonus + self.intelligence_modifier + vulnerability_modifier + level_advantage
+                player_dc = self.base_dc + self.proficiency_bonus + self.intelligence_modifier + \
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Intelligence Modifier: {self.intelligence_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3427,7 +3438,7 @@ class Player:
                     #
                     number_of_dice = (20 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice) + \
-                                         dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack=force damage
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack=force damage
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = damage_to_opponent + melee_bonus
                     if damage_to_opponent > 0:
@@ -3435,12 +3446,11 @@ class Player:
                         sleep(1)
                         print(f"With a world-shaking and awe-inspiring eruption, "
                               f"a swarm of burning meteors materializes above and falls upon your enemy!!")
-                        print(
-                            f"{number_of_dice}d8 + {number_of_dice}d8 force damage + 1 per die rolled: {damage_to_opponent}")
+                        print(f"{number_of_dice}d8 + {number_of_dice}d8 force damage + 1 per die rolled: "
+                              f"{damage_to_opponent}")
                         print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
-                        print(
-                            f"The great storm of fire and stone explodes directly on target in surreal glory and does "
-                            f"{total_damage_to_opponent} points of damage!")
+                        print(f"The great storm of fire and stone explodes directly on target in surreal "
+                              f"glory and inflicts {total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
                         return total_damage_to_opponent
@@ -3539,23 +3549,22 @@ class Player:
                     #
                     number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                                         dice_roll(number_of_dice, 8) + (
-                                                 1 * number_of_dice)  # 2nd attack = force damage
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = damage_to_opponent + melee_bonus
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
-                        print(f"Before you or your enemy can see it, you both sense the ground swell with the feet "
-                              f"of countless skeletal warriors arising from a black chasm!!")
+                        print(f"Before you or your enemy can see it, you both sense the ground swell with the\n"
+                              f"thundering cacophony of countless skeletal warriors arising from a black chasm!!")
                         sleep(1)
-                        print(f"With one mind and purpose, they swarm upon your enemy, thrusting ever forward in a "
-                              f"voracious clashing of bone, steel and shield!!")
+                        print(f"Some on horseback, others on foot, but with one mind and purpose, they swarm upon\n"
+                              f"your enemy, thrusting ever forward in a voracious clashing of bone, steel and shield!!")
                         sleep(1)
                         print(f"{number_of_dice}d12 + {number_of_dice}d8 force damage + 1 per skeleton bludgeoning "
                               f"damage: {damage_to_opponent}")
                         print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
-                        print(f"It hits for {total_damage_to_opponent} points of damage..")
+                        # print(f"It hits for {total_damage_to_opponent} points of damage..")
                         print(f"The great swarm of armor, axe, sword and spear inflicts "
                               f"{total_damage_to_opponent} points of damage!")
                         pause()
@@ -3657,8 +3666,7 @@ class Player:
                     #
                     number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                                         dice_roll(number_of_dice, 8) + (
-                                                 1 * number_of_dice)  # 2nd attack = crushing damage
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = crushing damage
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = damage_to_opponent + melee_bonus
                     if damage_to_opponent > 0:
@@ -3782,7 +3790,8 @@ class Player:
                         sleep(1)
                         print(f"With a crackling rumble, a frigid storm of ice and hail thrusts forth from your hand!!")
                         print(
-                            f"{number_of_dice}d8 roll + {number_of_dice} + (4 * number of dice rolled): {damage_to_opponent}")
+                            f"{number_of_dice}d8 roll + {number_of_dice} + (4 * number of dice rolled): "
+                            f"{damage_to_opponent}")
                         print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
                         print(f"The great freezing storm explodes on target and does "
                               f"{total_damage_to_opponent} points of damage!")
@@ -3894,7 +3903,8 @@ class Player:
                         sleep(1)
                         print(f"With a deafening roar, a storm of searing hot flames thrusts forth from your hand!!")
                         print(
-                            f"{number_of_dice}d8 roll + {number_of_dice} + (4 * number of dice rolled): {damage_to_opponent}")
+                            f"{number_of_dice}d8 roll + {number_of_dice} + (4 * number of dice rolled): "
+                            f"{damage_to_opponent}")
                         print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
                         print(f"The scorching storm explodes on target and does "
                               f"{total_damage_to_opponent} points of damage!")
@@ -3979,7 +3989,8 @@ class Player:
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
-                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + vulnerability_modifier + level_advantage
+                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -4192,7 +4203,8 @@ class Player:
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
-                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + vulnerability_modifier + level_advantage
+                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
                 print(f"Proficiency bonus: {self.proficiency_bonus}")
@@ -4302,7 +4314,8 @@ class Player:
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
-                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + vulnerability_modifier + level_advantage
+                player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
                 print(f"Proficiency bonus: {self.proficiency_bonus}")
@@ -5147,8 +5160,8 @@ class Player:
                 # make a dictionary from the non_empty item type list. index, and print
                 item_type_dict = {}
                 for item_type in self.pack:
-                    if len(self.pack[
-                               item_type]) and item_type != 'Rings of Protection' and item_type != 'Rings of Regeneration':
+                    if len(self.pack[item_type]) and item_type != 'Rings of Protection' and \
+                            item_type != 'Rings of Regeneration':
                         item_type_dict[item_type] = non_empty_item_type_lst.index(item_type)
                 for key, value in item_type_dict.items():
                     print(value + 1, ':', key)
@@ -5232,7 +5245,6 @@ class Player:
                     # sold_item = (self.pack[item_type_to_sell])[item_index_to_sell]
                     confirm_sale = input(f"Sell the {sold_item.name} for {sold_item.sell_price} GP (y/n)? ").lower()
                     if confirm_sale == 'y':
-                        # print(f"You sell the {(self.pack[item_type_to_sell])[item_index_to_sell]} for {sold_item.sell_price} GP")
                         print(f"You sell the {sold_item.name} for {sold_item.sell_price} GP")
                         self.gold += sold_item.sell_price
                         (self.pack[item_type_to_sell]).pop(item_index_to_sell)
@@ -5244,7 +5256,8 @@ class Player:
                             self.item_type_inventory(item_type_to_sell)
                             print(f"Your gold: {self.gold} GP")
                             sell_again = input(
-                                f"(S)ell more {persistent_item_type} (B)ack to main market menu or (E)xit to town: ").lower()
+                                f"(S)ell more {persistent_item_type} (B)ack to main market menu or "
+                                f"(E)xit to town: ").lower()
                             if sell_again == 's':
                                 continue
                             elif sell_again == 'b':
@@ -5948,8 +5961,8 @@ class Player:
         if self.cloak.stealth < math.ceil(self.dexterity * .25):
             if found_item.name == self.cloak.name:
                 found_item.stealth += 1
-                print(
-                    f"Quantum wierdness fills the air...\nYour {self.cloak.name} is enhanced to stealth + {found_item.stealth}!")
+                print(f"Quantum wierdness fills the air...\nYour {self.cloak.name} is enhanced to stealth +"
+                      f" {found_item.stealth}!")
                 self.cloak.stealth = found_item.stealth
                 self.calculate_stealth()
                 pause()
@@ -7270,7 +7283,8 @@ class Player:
         self.coordinates = (self.x, self.y)
         if not self.in_a_pit:
             print(
-                f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}, {north_south}{east_west} region) Coordinates: {self.coordinates}")
+                f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}, "
+                f"{north_south}{east_west} region) Coordinates: {self.coordinates}")
         else:
             # assuming pit landing coordinates are at 1, 14:
             print(f"(In a pit below {self.dungeon.name}, Coordinates: {self.x, (self.y - 13)}")
@@ -7298,7 +7312,7 @@ class Player:
                 self.dungeon.player_grid[self.y][self.x] = "."
             self.position = self.dungeon.grid[self.y][self.x]
             print(f"S = Staircase X = your position E = Exit")
-            # place the following line in the main file to leave a trail of x's throughout the map to see where you've been.
+            # place the next line in the main file to leave a trail of x's throughout the map to see where you've been.
             # player_1.dungeon.player_grid[player_1.y][player_1.x] = "x"
             return
 
@@ -7580,7 +7594,10 @@ if len(self.pack):
            else:
                print("Your pack is empty..see if this statement is ever seen")
                return'''
-'''elif found_item.item_type != 'Armor' and found_item.item_type != 'Shields' and found_item.item_type != 'Cloaks' and found_item.item_type != 'Rings of Protection' and found_item.item_type != 'Rings of Regeneration' and found_item.item_type != 'Weapons' and found_item.item_type != 'Healing' and found_item.item_type != 'Town Portal Implements' and found_item not in \
+'''elif found_item.item_type != 'Armor' and found_item.item_type != 'Shields' and found_item.item_type != 
+'Cloaks' and found_item.item_type != 'Rings of Protection' and found_item.item_type != 
+'Rings of Regeneration' and found_item.item_type != 'Weapons' and found_item.item_type != 
+'Healing' and found_item.item_type != 'Town Portal Implements' and found_item not in \
 
                             self.pack[
                                 found_item.item_type]: '''
@@ -7592,16 +7609,7 @@ if len(self.pack):
         os.system('pause')
         self.hud()
         continue'''
-''' old blacksmith code
-print("The following items are for sale:")
-            print(f"Item             Level Requirement          Price")
-            print(f"1 Shortsword             {short_sword.minimum_level}                    {short_sword.buy_price}   ")
-            print(f"2 Broad Sword            {broad_sword.minimum_level}                    {broad_sword.buy_price}   ")
-            print(
-                f"3 Quantum Sword          {quantum_sword.minimum_level}                    {quantum_sword.buy_price}")
-            print(f"You have {self.gold} gold pieces.")
-            #sale_item_key = input("Enter item number to buy, (M)anage Wielded Weapons or (E)xit the blacksmith: ").lower()
-            #if sale_item_key not in ('1', '2', '3', 'e', 'm'):'''
+
 '''old blacksmith buy items code
 sale_item = (sale_items_dict[sale_item_key])
             if self.gold >= sale_item.sell_price and sale_item not in (
@@ -7963,7 +7971,8 @@ sale_item = (sale_items_dict[sale_item_key])
 
         self.hud()
         return self.necrotic'''
-'''            elif self.potions_of_healing > 0 and self.potions_of_strength > 0 and self.town_portals > 0 and self.elixirs > 0:
+'''            elif self.potions_of_healing > 0 and self.potions_of_strength > 0 and self.town_portals > 0 
+and self.elixirs > 0:
                 potion_or_scroll = dice_roll(1, 4)
                 if potion_or_scroll == 1:
                     print(f"He steals a potion of healing.")
@@ -8008,31 +8017,13 @@ sale_item = (sale_items_dict[sale_item_key])
                 pause()
                 return True
 '''
-"""            if found_item.name == 'Elven Boots' and found_item.name == self.boots.name:  # make this the most elite item
-                found_item.ac += 1
-                print(
-                    f"Quantum wierdness fills the air...\nYour {self.boots.name} are enhanced to armor class {found_item.ac}!")
-                self.boots.ac = found_item.ac
-                self.calculate_armor_class()
-                pause()
-                return
-            else:"""
-"""           
-                if sub_item.name == 'Quantum Tower Shield' and sub_item.name == self.shield.name:
-                sub_item.ac += 1
-                print(
-                    f"Quantum wierdness fills the air...\nYour {self.shield.name} is enhanced to armor class {sub_item.ac}!")
-                self.shield.ac = sub_item.ac
-                self.calculate_armor_class()
-                # self.armor_class = self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier
-                pause()
-                return
-            else:"""
+
 
 """            if found_item.name == 'Full Plate Armor' and found_item.name == self.armor.name:
                 found_item.ac += 1
                 print(
-                    f"Quantum wierdness fills the air...\nYour {self.armor.name} is enhanced to armor class {found_item.ac}!")
+                    f"Quantum wierdness fills the air...\nYour {self.armor.name} is enhanced 
+                    to armor class {found_item.ac}!")
                 self.armor.ac = found_item.ac
                 self.calculate_armor_class()
                 pause()

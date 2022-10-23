@@ -44,8 +44,8 @@ while True:
                 print(f"{player_name} read.")
                 time.sleep(1)
                 # dungeon_key = player_1.dungeon_key
-                dungeon = dungeon_dict[player_1.dungeon_key]
-                print(dungeon.name)
+                dungeon = dungeon_dict[player_1.dungeon_key]  # remove after testing
+                print(dungeon.name)  # remove after testing
                 print(player_1.coordinates)  # remove after testing
                 player_1.loaded_game = True
                 time.sleep(1)

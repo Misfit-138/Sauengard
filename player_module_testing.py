@@ -71,7 +71,7 @@ def game_splash():
                         typing(intro.read())
 
             except FileNotFoundError:
-                print(f"Missing hint_event_1.txt or bad file path.")
+                print(f"Missing introduction.txt or bad file path.")
             pause()
         elif choice == 'a':
             cls()
@@ -80,14 +80,19 @@ def game_splash():
                 with p.open('r') as about:
                     if about.readable():
                         typing(about.read())
-
             except FileNotFoundError:
-                print(f"Missing hint_event_1.txt or bad file path.")
+                print(f"Missing about.txt or bad file path.")
             pause()
         elif choice == 't':
-            print(f"Not done yet.")
-            sleep(.25)
-            continue
+            cls()
+            try:
+                p = Path(__file__).with_name('tips.txt')
+                with p.open('r') as tips:
+                    if tips.readable():
+                        typing(tips.read())
+            except FileNotFoundError:
+                print(f"Missing tips.txt or bad file path.")
+            pause()
         elif choice == 'b':
             return
 
@@ -2045,7 +2050,6 @@ class Player:
                 if player_dc >= monster_total:  # with >= tie goes to player... with > tie goes to monster
                     self.quantum_units -= quantum_unit_cost
                     self.in_proximity_to_monster = False
-                    # print(f"The {monster.name} runs in fear!!")
                     if monster.proper_name != "None":
                         print(f"{monster.proper_name} runs in fear!!")
                     else:
@@ -2807,6 +2811,102 @@ class Player:
         pause()
         return None
 
+    def quantum_help3(self, monster):
+        cls()
+        print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
+        print()
+        print(f"Lightning: Harness an electrical storm to be cast at your enemy, causing burns and arcflash damage.\n"
+              f"Success based on Player Wisdom vs Enemy AC.")
+        print()
+        print(f"Hold Monster: Employ Quantum Forces to hold and incapacitate your enemy. Success based on \n"
+              f"Player Wisdom vs Enemy Strength. Final success depends on Enemy AC.")
+        print()
+        print(f"Phantasm: By Quantum Tunneling, create a terrifyingly debilitating mental illusion, capturing the\n"
+              f"mind of your enemy and causing agonizing mental damage. Success based on Player Wisdom vs Enemy\n"
+              f"Intelligence. (Undead are unbelieving)")
+        print()
+        print(f"Immolation: A winding trail of flame encircles your enemy, closing until forming a complete immersion\n"
+              f"of deadly fire. Success based on Player Wisdom vs Enemy Dexterity.")
+        print()
+        print(f"Vortex: A watery twister forms around your enemy, disorienting, and causing crushing damage.\n"
+              f"Success based on Player Wisdom vs Enemy Strength.")
+        print()
+        pause()
+        return None
+
+    def quantum_help4(self, monster):
+        cls()
+        print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
+        print()
+        print(f"Fireball: Through Spooky Action at a Distance, a Fireball forms, seemingly from out of your hands,\n"
+              f"shooting at your enemy at moderate speed. Success based on Player Wisdom vs Enemy Dexterity.")
+        print()
+        print(f"Flesh to Stone: 95% chance to petrify monster, after which player has 1 free crit, thereafter enemy\n"
+              f"must pass Constitution saving throw. 2 failed saves after initial attack = permanent petrification.\n"
+              f"Player gets exp reward, but no gold or loot.")
+        print()
+        print(f"Fear: Strike terror into the hearts of the living with Quantum Weirdness, sending them retreating.\n"
+              f"Success based on Player Wisdom vs Enemy Wisdom. (Undead are unbelieving)")
+        print()
+        print(f"Finger of Death: Concentrating powerful Quantum Energies into a single finger, great pain and high\n"
+              f"damage befall any enemy touched. Success based on Player Wisdom vs Enemy Constitution.")
+        print()
+        print(f"Banish: At the will of the Manipulator, a Quantum Tunnel between worlds claims the enemy's existence,\n"
+              f"transferring it offworld. Success based on Player Wisdom vs Enemy Charisma.")
+        print()
+        pause()
+        return None
+
+    def quantum_help5(self, monster):
+        cls()
+        print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
+        print()
+        print(f"Disintegrate: A thin green ray springs from your pointing finger to your target.\n"
+              f"On a failed save, the target takes devastating damage.The target is disintegrated if this damage\n"
+              f"leaves it with 0 hit points. A disintegrated enemy and everything it is wearing and carrying, except\n"
+              f"items protected by Quantum Weirdness, are reduced to a pile of fine gray dust. Player receives exp\n"
+              f"reward but no Gold or Loot. Success based on Player Wisdom vs Enemy Dexterity.")
+        print()
+        print(f"Ice Storm: A powerful squall of frozen death hurls toward your enemy causing overwhelming cold and\n"
+              f"force damage. Success based on Player Wisdom vs Enemy Constitution.")
+        print()
+        print(f"Firestorm: Ice Storm counterpart, but encompassed of seething flame, causing high burn damage.\n"
+              f"Success based on Player Wisdom vs Enemy Dexterity.")
+        print()
+        print(f"Gravity Well: 100% chance to successfully incapacitate your enemy in an impossible Quantum Gravity\n"
+              f"Singularity which causes initial crushing damage. Player has 1 free crit. Target must make strength\n"
+              f"saving throw. Upon failed save, enemy remains trapped and player gets additional free crit.\n"
+              f"Enemy and all items are lost to the crushing gravity. Player gets exp reward, but no gold or loot\n"
+              f"unless enemy item is protected by quantum weirdness.")
+        print()
+        pause()
+        return None
+
+    def quantum_help6(self, monster):
+        cls()
+        print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
+        print()
+        print(f"QUANTUM MASTER EFFECTS")
+        print()
+        print(f"Quantum Word Kill: Through impossibly, unimaginably small probabilities, the Master utters a single\n"
+              f"word. If the enemy has less than 100 Hit Points, death results instantly. No saving throw,\n"
+              f"no defense possible.")
+        print()
+        print(f"Meteor Swarm: The Master pulls celestial matter from the heavens into the atmosphere above the enemy,\n"
+              f"with amplified and compensatory gravity, for a devastating attack yielding extremely high force and\n"
+              f"crushing damage. Success based on Player Wisdom vs Enemy Dexterity.")
+        print()
+        print(f"Skeletal Remains: The Master pulls finite Quantum Energies from the ground, impossibly re-animating\n"
+              f"all fallen skeletal warriors lost to time and sending them forth as a stampeding army, resulting in\n"
+              f"extreme force, bludgeoning and melee damage. Success based on Player Wisdom vs Enemy Dexterity.")
+        print()
+        print(f"Negative Energy Plague: The Quantum Master harnesses Dark Energy and re-focuses it to form a\n"
+              f"plague of mental agony causing severe damage to all living and undead creatures. Success based on\n"
+              f"Player Wisdom vs Enemy Intelligence.")
+        print()
+        pause()
+        return None
+
     def quantum_effects(self, monster):
         printable_quantum_book = {1: {1: "Quantum Missile",
                                       2: "Sleep",
@@ -2830,7 +2930,7 @@ class Player:
                                       5: "Banish"},
                                   5: {1: "Disintegrate",
                                       2: "Ice Storm",
-                                      3: "Fire Storm",
+                                      3: "Firestorm",
                                       4: "Gravity Well"},
                                   6: {1: "Quantum Word Kill",
                                       2: "Meteor Swarm",
@@ -2850,17 +2950,20 @@ class Player:
                             3: self.quantum_strength,
                             4: self.quantum_scorch,
                             5: self.quantum_charm},
-                        3: {1: self.quantum_lightning,
+                        3: {0: self.quantum_help3,
+                            1: self.quantum_lightning,
                             2: self.hold_monster,
                             3: self.phantasm,
                             4: self.immolation,
                             5: self.vortex},
-                        4: {1: self.fireball,
+                        4: {0: self.quantum_help4,
+                            1: self.fireball,
                             2: self.flesh_to_stone,
                             3: self.fear,
                             4: self.finger_of_death,
                             5: self.banish},
-                        5: {1: self.disintegrate,
+                        5: {0: self.quantum_help5,
+                            1: self.disintegrate,
                             2: self.ice_storm,
                             3: self.fire_storm,
                             4: self.gravity_well},
@@ -2883,10 +2986,13 @@ class Player:
                     for key, value in working_dict.items():
                         print(f"{key}: {value}")
                     q_to_cast = int(input(f"Number of Quantum Effect to cast (or 0 for HELP): "))
-
                     # noinspection PyArgumentList
                     quantum_function = (quantum_book[q_level][q_to_cast](monster))
-                    return quantum_function
+                    if q_to_cast == 0:  # if HELP, call function and return here
+                        # noinspection PyArgumentList
+                        quantum_function
+                    else:  # if not HELP, return to main loop from function
+                        return quantum_function
                 else:
                     if self.quantum_level < q_level:
                         print(f"You have not yet acquired that level of Quantum knowledge!")

@@ -67,6 +67,7 @@ class Dungeon1(Dungeon):
         self.barrier_name = "wall of smooth, precisely cut stones"
         self.treasure_chest = (2, 14)
         self.quantum_treasure_chest = (1, 2)
+        self.encounter_sikira = (2, 3)
         self.altar = (0, 0)
         self.throne = (0, 0)
         self.throne2 = (0, 0)

@@ -1070,7 +1070,7 @@ class Skeleton(Monster):
         self.number_of_hd = 1  # mm
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.hit_points = random.randint(11, 13) + self.constitution_modifier
+        self.hit_points = 1000  # random.randint(11, 13) + self.constitution_modifier
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)

@@ -128,6 +128,8 @@ import os
 import random
 import time
 
+# from player_module_testing import *  # sikira, torbron, magnus, vozzbozz
+
 # from dice_roll_module import dice_roll
 
 '''Choose a challenge rating (CR) for your custom trap, object, effect, or creature
@@ -159,6 +161,10 @@ def pause():
 
 def convert_list_to_string_with_commas_only(list1):
     return str(list1).replace('[', '').replace(']', '').replace("'", "")
+
+
+def reduce_npc_health(npc, damage):
+    npc.hit_points -= damage
 
 
 class Monster:
@@ -203,6 +209,7 @@ class Monster:
         self.strength_modifier = 0
         self.constitution_modifier = 0
         self.wisdom_modifier = 0
+        self.multi_attack = False
         self.attack_1 = 0
         self.attack_1_phrase = ""
         self.attack_2 = 0
@@ -290,7 +297,7 @@ class Monster:
             attack_phrase = self.attack_5_phrase
 
         roll_d20 = dice_roll(1, 20)
-        print(f"The {self.name} attacks! (It rolls {roll_d20})")
+        print(f"The {self.name} attacks you! (It rolls {roll_d20})")
         if roll_d20 == 1:
             print(f"..it awkwardly strikes and you easily block.")
             # time.sleep(2)
@@ -362,7 +369,7 @@ class Monster:
             attack_phrase = self.quantum_attack_5_phrase
         human_player_roll_d20 = dice_roll(1, 20)
         roll_d20 = dice_roll(1, 20)
-        print(f"The {self.name} attacks with Quantum Energy!\n"
+        print(f"The {self.name} attacks you with Quantum Energy!\n"
               f"(It rolls {roll_d20})\n"
               f"Proficiency Bonus: {self.proficiency_bonus}\n"
               f"Wisdom modifier: {self.wisdom_modifier}\n"
@@ -538,6 +545,25 @@ class Monster:
                 player_1.hud()
                 return False
 
+    def meta_monster_vs_npc_function(self, npc):
+        # print(npc.retreating)
+        if not npc.retreating:
+            melee_or_quantum = dice_roll(1, 20)
+            # if monster has quantum energy
+            if self.quantum_energy and melee_or_quantum > 10:
+                # quantum attack
+                damage_to_player = self.quantum_energy_attack_vs_npc(npc)
+                reduce_npc_health(npc, damage_to_player)
+            else:
+                # if it has no quantum, then melee attack
+                damage_to_player = self.melee_vs_npc(npc)
+                reduce_npc_health(npc, damage_to_player)
+            return
+        else:
+            # print(f"{npc.name} is in retreat...")
+            # time.sleep(1)
+            return
+
     def meta_monster_function(self, player_1):
         melee_or_quantum = dice_roll(1, 20)
         # if monster has quantum energy and player is not poisoned or necrotic
@@ -566,6 +592,144 @@ class Monster:
             player_1.end_of_turn_calculation()
         return
 
+    def melee_vs_npc(self, npc):
+        attack_bonus = 0
+        attack_bonus_roll = random.randint(1, 100)
+        # print(f"Monster attack bonus roll: {attack_bonus_roll}")  # remove after testing
+        attack_phrase = f"The {self.name} hits!"
+        if attack_bonus_roll <= 50:
+            attack_bonus = self.attack_1
+        if attack_bonus_roll > 50 <= 75:
+            attack_bonus = self.attack_2
+        if attack_bonus_roll > 75 <= 85:
+            attack_bonus = self.attack_3
+        if attack_bonus_roll > 85 <= 95:
+            attack_bonus = self.attack_4
+        if attack_bonus_roll > 95:
+            attack_bonus = self.attack_5
+        roll_d20 = dice_roll(1, 20)
+        print(f"The {self.name} attacks {npc.name}! (It rolls {roll_d20})")
+        if roll_d20 == 1:
+            print(f"..it awkwardly strikes and {npc.name} easily blocks.")
+            # time.sleep(2)
+            # os.system('pause')
+            pause()
+
+            return 0
+        if roll_d20 == 20:
+            critical_bonus = 2
+            hit_statement = "CRITICAL HIT!!"
+        else:
+            critical_bonus = 1
+            hit_statement = ""
+        monster_total = roll_d20 + self.dexterity_modifier + self.proficiency_bonus  # test out pro bonus
+        print(f"Monster attack bonus: {attack_bonus}")
+        print(f"{self.name} dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
+        print(f"{self.name} Proficiency Bonus: {self.proficiency_bonus}")  # test out pro bonus
+        print(f"Monster Total: {monster_total}")
+        print(f"{npc.name}'s armor class: {npc.armor_class}")
+        if monster_total >= npc.armor_class:
+            damage_roll = dice_roll((self.number_of_hd * critical_bonus), self.hit_dice)
+            damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus + self.weapon_bonus)
+            if roll_d20 == 20 and damage_to_opponent < 1:
+                damage_to_opponent = 1  # a natural 20 always hits
+            if damage_to_opponent > 0:  # # at this point the player is the opponent!
+                print(f"{attack_phrase}")
+                time.sleep(1.5)
+                print(hit_statement)
+                print(
+                    f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice}: {damage_roll}")  # hd
+                time.sleep(1.5)
+                print(f"Strength modifier: {self.strength_modifier}\nAttack bonus: {attack_bonus}\n"
+                      f"Weapon bonus: {self.weapon_bonus}")
+                time.sleep(1.5)
+                print(f"{npc.name} suffers {damage_to_opponent} points of damage!")
+                pause()
+
+                return damage_to_opponent
+            else:
+                # zero damage to player result
+                print(f"The {self.name} strikes..")
+                time.sleep(1)
+                print(f"Its awkward attack manages 1 point of damage to {npc.name}..")
+                damage_to_opponent = 1
+                pause()
+                return damage_to_opponent  # 0 points damage to player
+        else:
+            print(f"It missed..")
+            pause()
+            return 0
+
+    def quantum_energy_attack_vs_npc(self, npc):
+        attack_bonus = 0
+        attack_phrase = f"With great concentration, it procures the weird universal forces.."
+        attack_bonus_roll = random.randint(1, 100)
+        if attack_bonus_roll <= 50:
+            attack_bonus = self.quantum_attack_1
+
+        if attack_bonus_roll > 50 <= 75:
+            attack_bonus = self.quantum_attack_2
+
+        if attack_bonus_roll > 75 <= 85:
+            attack_bonus = self.quantum_attack_3
+
+        if attack_bonus_roll > 85 <= 95:
+            attack_bonus = self.quantum_attack_4
+
+        if attack_bonus_roll > 95:
+            attack_bonus = self.quantum_attack_5
+
+        human_player_roll_d20 = dice_roll(1, 20)
+        roll_d20 = dice_roll(1, 20)
+        print(f"The {self.name} attacks {npc.name} with Quantum Energy!\n"
+              f"(It rolls {roll_d20})\n"
+              f"Proficiency Bonus: {self.proficiency_bonus}\n"
+              f"Wisdom modifier: {self.wisdom_modifier}\n"
+              f"Total: {roll_d20 + self.wisdom_modifier + self.proficiency_bonus}")
+        if roll_d20 == 1:
+            print(f"..its attempts to procure the universal forces fail miserably.")
+            time.sleep(2)
+            return 0
+        if roll_d20 == 20:
+            critical_bonus = 2
+            hit_statement = "CRITICAL HIT!!"
+        else:
+            critical_bonus = 1
+            hit_statement = f"The weird energies are unleashed upon {npc.name}.."
+        # print(f"{self.name} Wisdom modifier {self.wisdom_modifier}")  # MONSTER WISDOM MODIFIER
+        print(f"{npc.name} Saving Throw: {human_player_roll_d20} + wisdom modifier: ({npc.wisdom_modifier})")
+        if npc.protect > 0:
+            print(f"Protection Modifier: {npc.protect}")
+
+        print(
+            f"Total = {human_player_roll_d20 + npc.wisdom_modifier + npc.protect}")
+        monster_total = roll_d20 + self.wisdom_modifier + self.proficiency_bonus  # test out pro bonus
+        if monster_total >= (human_player_roll_d20 + npc.wisdom_modifier +
+                             npc.protect):
+
+            damage_roll = dice_roll(self.number_of_hd * critical_bonus, self.hit_dice)
+            damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)
+            if damage_to_opponent > 0:  # # at this point the npc is the opponent!
+                print(f"{attack_phrase}")
+                time.sleep(1.5)
+                print(hit_statement)
+                print(
+                    f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} hit dice: {damage_roll}")
+                print(f"Wisdom modifier: {self.wisdom_modifier}\nAttack bonus: {attack_bonus}")
+                print(f"{npc.name} suffers {damage_to_opponent} points of damage!")
+                pause()
+                # time.sleep(5)
+                return damage_to_opponent
+            else:
+                print(
+                    f"The {self.name} strikes with Quantum Powers, but {npc.name} dodges the attack!")  # 0 damage
+                time.sleep(2)
+                return 0  # 0 points damage to player
+        else:
+            print(f"It fails to harness the mysterious powers..")
+            pause()
+            return 0
+
 
 class Quasit(Monster):
 
@@ -574,7 +738,7 @@ class Quasit(Monster):
         self.level = 1
         self.name = "Quasit"
         self.proper_name = "None"
-        self.experience_award = 25  # MM says it should be 200 exp?!
+        self.experience_award = 25
         self.gold = random.randint(0, 1)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor = 0
@@ -608,6 +772,7 @@ class Quasit(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 12)
+        self.multi_attack = False
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "It polymorphs into toad form.."
         self.attack_2 = 0
@@ -668,6 +833,7 @@ class Kobold(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 12)
+        self.multi_attack = False
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "It quickly strikes at you with its dagger.."
         self.attack_2 = 1
@@ -729,6 +895,7 @@ class Cultist(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 12)
+        self.multi_attack = False
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "With unexpected speed, it strikes with its dagger.."
         self.attack_2 = 1
@@ -788,6 +955,7 @@ class Goblin(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
+        self.multi_attack = False
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "It strikes at you with its scimitar.."
         self.attack_2 = 1
@@ -848,6 +1016,7 @@ class WingedKobold(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
+        self.multi_attack = False
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "Deadly quick, it strikes at you with its dagger.."
         self.attack_2 = 1
@@ -907,7 +1076,7 @@ class Shadow(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
-        # melee:
+        self.multi_attack = True
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "It strikes at you with its elongated claws..."
         self.attack_2 = 0
@@ -984,14 +1153,13 @@ class ShadowKing(Monster):
         self.challenge_rating = 2
         self.hit_dice = 10  # mm
         self.number_of_hd = 2
-
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = random.randint(15, 17)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
-        # melee:
+        self.multi_attack = True
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "It strikes at you with its elongated claws..."
         self.attack_2 = 0
@@ -1070,10 +1238,11 @@ class Skeleton(Monster):
         self.number_of_hd = 1  # mm
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.hit_points = 1000  # random.randint(11, 13) + self.constitution_modifier
+        self.hit_points = random.randint(11, 13) + self.constitution_modifier
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
+        self.multi_attack = False
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "It strikes at you with its shortsword..."
         self.attack_2 = 1
@@ -1136,6 +1305,7 @@ class ZombieProphet(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
+        self.multi_attack = True
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "It strikes at you with unnerving strength and speed..."
         self.attack_2 = 1
@@ -1194,6 +1364,7 @@ class SkeletonKing(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
+        self.multi_attack = True
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = f"He strikes at you with his longsword..."
         self.attack_2 = 1
@@ -1252,6 +1423,7 @@ class SkeletalProphet(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
+        self.multi_attack = True
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = f"He strikes at you with his sceptre..."
         self.attack_2 = 1
@@ -1309,6 +1481,7 @@ class Drow(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
+        self.multi_attack = False
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "Grabbing its nasty dagger, it darts forward with smooth quickness.."
         self.attack_2 = 1
@@ -1382,6 +1555,7 @@ class Zombie(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(8, 9)
+        self.multi_attack = False
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "It strikes at you with its gaping hands..."
         self.attack_2 = 1
@@ -1439,6 +1613,7 @@ class Troglodyte(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
+        self.multi_attack = False
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "It strikes at you with its greataxe.."
         self.attack_2 = 1
@@ -1498,6 +1673,7 @@ class Orc(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
+        self.multi_attack = False
         self.attack_1 = 1  # attack bonus
         self.attack_1_phrase = "It thrusts mightily forward with its spear!.."
         self.attack_2 = 2
@@ -1557,6 +1733,7 @@ class CultFanatic(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 14)
+        self.multi_attack = False
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "With unexpected speed, he strikes with his dagger.."
         self.attack_2 = 1
@@ -1633,6 +1810,7 @@ class Ghoul(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 12)
+        self.multi_attack = False
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "It strikes swiftly with one terrible claw.."
         self.attack_2 = 1
@@ -1694,6 +1872,7 @@ class Bugbear(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(14, 16)
+        self.multi_attack = False
         self.attack_1 = 1  # attack bonus
         self.attack_1_phrase = "It thrusts mightily forward with its spear!.."
         self.attack_2 = 2
@@ -1751,6 +1930,7 @@ class HalfOgre(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 13)
+        self.multi_attack = True
         self.attack_1 = 2  # attack bonus
         self.attack_1_phrase = "It thrusts brutally toward you with its javelin!.."
         self.attack_2 = 2
@@ -1809,6 +1989,7 @@ class Specter(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 13)
+        self.multi_attack = True
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "It places a cold, yet immaterial hand upon you for just a moment.."
         self.attack_2 = 1
@@ -1889,6 +2070,7 @@ class SpecterKing(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 12)
+        self.multi_attack = True
         self.attack_1 = 0  # attack bonus
         self.attack_1_phrase = "It places a cold, yet immaterial hand upon you for just a moment.."
         self.attack_2 = 1
@@ -1965,6 +2147,7 @@ class HobgoblinCaptain(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(17, 17)
+        self.multi_attack = True
         self.attack_1 = 1  # attack bonus
         self.attack_1_phrase = "It thrusts mightily forward with its javelin!.."
         self.attack_2 = 2
@@ -2023,6 +2206,7 @@ class GreenDragonWyrmling(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(15, 16)
+        self.multi_attack = True
         self.attack_1 = 2  # attack bonus
         self.attack_1_phrase = "It thrusts forward with gaping jaws.."
         self.attack_2 = 3
@@ -2083,6 +2267,7 @@ class WhiteDragonWyrmling(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(15, 16)
+        self.multi_attack = True
         self.attack_1 = 2  # attack bonus
         self.attack_1_phrase = "It thrusts forward with gaping jaws.."
         self.attack_2 = 3

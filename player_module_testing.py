@@ -383,7 +383,7 @@ class QuantumSword(Weapon):
         self.to_hit_bonus = 5
         self.sell_price = 5000
         self.buy_price = 8000
-        self.minimum_level = 5  # 3
+        self.minimum_level = 8  # 3
 
 
 quantum_sword = QuantumSword()
@@ -398,7 +398,7 @@ class QuantumAxe(Weapon):
         self.to_hit_bonus = 5
         self.sell_price = 5000
         self.buy_price = 8000
-        self.minimum_level = 5  # 3
+        self.minimum_level = 10  # 3
 
 
 quantum_axe = QuantumAxe()
@@ -933,6 +933,28 @@ def nothing_happens():
     return
 
 
+def npc_retreat_logic(npc):
+    # called from monster_attacks_npc_meta(), after monster attack turn
+    if npc.hit_points < 1:
+        npc.retreating = True
+        print(f"{npc.name} is retreating!")
+        pause()
+
+
+def npc_end_of_turn_calculation(npc):
+    # called from npc_calculation()
+    # when monster defeated, turned, or no longer in proximity, npc allies no longer in retreat
+    # they also fully heal
+    if npc.retreating:
+        npc.retreating = False
+        print(f"{npc.name} is no longer retreating")
+        sleep(1)
+    if npc.hit_points < npc.maximum_hit_points:
+        print(f"{npc.name} heals to full strength.")
+        npc.hit_points = npc.maximum_hit_points
+        sleep(1)
+
+
 class VozzBozz:
 
     def __init__(self):
@@ -945,7 +967,6 @@ class VozzBozz:
         self.base_dc = 10
         self.gold = 0
         self.wielded_weapon = great_sword
-        # self.weapon_bonus = self.wielded_weapon.damage_bonus  # self.weapon_bonus no longer used
         self.armor = half_plate
         self.shield = no_shield
         self.boots = elven_boots
@@ -967,8 +988,10 @@ class VozzBozz:
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.maximum_hit_points = 199 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
-        self.armor_class = (self.armor.ac + self.armor.armor_bonus +
-                            self.shield.ac + self.boots.ac + self.dexterity_modifier)
+        self.armor_class = (self.armor.ac + self.armor.armor_bonus + self.shield.ac +
+                            self.boots.ac + self.dexterity_modifier)
+        self.protect = 6
+        self.retreating = False
 
 
 vozzbozz = VozzBozz()
@@ -989,7 +1012,6 @@ class SiKira:
         self.base_dc = 8
         self.gold = 0
         self.wielded_weapon = great_sword
-        # self.weapon_bonus = self.wielded_weapon.damage_bonus  # self.weapon_bonus no longer used
         self.armor = half_plate
         self.shield = kite_shield
         self.boots = elven_boots
@@ -1011,8 +1033,10 @@ class SiKira:
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.maximum_hit_points = 70 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
-        self.armor_class = (self.armor.ac + self.armor.armor_bonus +
-                            self.shield.ac + self.boots.ac + self.dexterity_modifier)
+        self.armor_class = (self.armor.ac + self.armor.armor_bonus + self.shield.ac +
+                            self.boots.ac + self.dexterity_modifier)
+        self.protect = 6
+        self.retreating = False
 
 
 sikira = SiKira()
@@ -1020,10 +1044,7 @@ sikira = SiKira()
 
 class TorBron:
 
-    def __init__(self):  # level, experience, gold, weapon_bonus, armor_bonus, shield, armor_class, strength,
-        # dexterity,
-        #  constitution, intelligence, wisdom, charisma, hit_points, maximum_hit_points, is_paralyzed, boots,
-        #  cloak, weapon_name):
+    def __init__(self):
         self.name = "Tor'Bron"
         self.level = 10
         self.quantum_level = 2
@@ -1033,7 +1054,6 @@ class TorBron:
         self.base_dc = 8
         self.gold = 0
         self.wielded_weapon = quantum_sword
-        # self.weapon_bonus = self.wielded_weapon.damage_bonus  # self.weapon_bonus no longer used
         self.armor = full_plate
         self.shield = kite_shield
         self.boots = ancestral_footsteps
@@ -1055,8 +1075,10 @@ class TorBron:
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.maximum_hit_points = 100 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
-        self.armor_class = (self.armor.ac + self.armor.armor_bonus +
-                            self.shield.ac + self.boots.ac + self.dexterity_modifier)
+        self.armor_class = (self.armor.ac + self.armor.armor_bonus + self.shield.ac +
+                            self.boots.ac + self.dexterity_modifier)
+        self.protect = 6
+        self.retreating = False
 
 
 torbron = TorBron()
@@ -1065,7 +1087,6 @@ torbron = TorBron()
 class Magnus:
 
     def __init__(self):
-
         self.name = "Magnus"
         self.level = 14
         self.quantum_level = 2
@@ -1098,6 +1119,8 @@ class Magnus:
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.armor_class = (self.armor.ac + self.armor.armor_bonus +
                             self.shield.ac + self.boots.ac + self.dexterity_modifier)
+        self.protect = 6
+        self.retreating = False
 
 
 magnus = Magnus()
@@ -1133,7 +1156,7 @@ class Player:
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
         self.proficiency_bonus = 2  # 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.maximum_hit_points = 10 + self.constitution_modifier
+        self.maximum_hit_points = 100 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
         self.is_paralyzed = False
@@ -1232,7 +1255,7 @@ class Player:
         return
 
     def hud(self):
-        os.system('cls')
+        cls()
         print(f"Name: {self.name}")
         print(f"Level: {self.level}")
         print(f"Experience: {self.experience}")
@@ -1289,6 +1312,61 @@ class Player:
         return
 
     # CALCULATION
+    def monster_attacks_npc_meta(self, monster):
+        # monster attacks npc allies
+        allies = []
+        if monster.multi_attack:
+            if self.sikira_ally:
+                if not sikira.retreating:
+                    monster.meta_monster_vs_npc_function(sikira)
+                    npc_retreat_logic(sikira)
+                    self.hud()
+            if self.torbron_ally:
+                if not torbron.retreating:
+                    monster.meta_monster_vs_npc_function(torbron)
+                    npc_retreat_logic(torbron)
+                    self.hud()
+            if self.magnus_ally:
+                if not magnus.retreating:
+                    monster.meta_monster_vs_npc_function(magnus)
+                    npc_retreat_logic(magnus)
+                    self.hud()
+            if self.vozzbozz_ally:
+                if not vozzbozz.retreating:
+                    monster.meta_monster_vs_npc_function(vozzbozz)
+                    npc_retreat_logic(vozzbozz)
+                    self.hud()
+            return
+        # if monster has no multi_attack, they can attempt to attack one random npc ally
+        elif self.sikira_ally:
+            if not sikira.retreating:
+                allies.append(sikira)
+        if self.torbron_ally:
+            if not torbron.retreating:
+                allies.append(torbron)
+        if self.magnus_ally:
+            if not magnus.retreating:
+                allies.append(magnus)
+        if self.vozzbozz_ally:
+            if not vozzbozz.retreating:
+                allies.append(vozzbozz)
+        if len(allies):
+            ally = random.choice(allies)
+            monster.meta_monster_vs_npc_function(ally)
+            npc_retreat_logic(ally)
+
+    def npc_calculation(self):
+        # when monster defeated, turned, or no longer in proximity, npc allies no longer in retreat
+        # they also fully heal
+        if self.sikira_ally:
+            npc_end_of_turn_calculation(sikira)
+        if self.torbron_ally:
+            npc_end_of_turn_calculation(torbron)
+        if self.magnus_ally:
+            npc_end_of_turn_calculation(magnus)
+        if self.vozzbozz_ally:
+            npc_end_of_turn_calculation(vozzbozz)
+
     def end_of_turn_calculation(self):
         self.regenerate()
         self.calculate_potion_of_strength()  # potions of strength have max uses = self.max_quantum_strength_uses
@@ -2017,7 +2095,7 @@ class Player:
                 damage_to_opponent = \
                     math.ceil(damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) * strength_bonus
                 print(f"You attack again for {damage_to_opponent} points of damage!")
-                sleep(2)
+                pause()
                 self.hud()
                 return damage_to_opponent
             else:
@@ -2094,7 +2172,7 @@ class Player:
                     math.ceil(
                         damage_roll + ally.strength_modifier + ally.wielded_weapon.damage_bonus) * ally.strength_bonus
                 print(f"{ally.name} attacks again for {damage_to_opponent} points of damage!")
-                sleep(2)
+                pause()
                 self.hud()
                 return damage_to_opponent
             else:
@@ -5448,7 +5526,7 @@ class Player:
     def buy_blacksmith_items(self):
 
         blacksmith_dict = {
-            'Weapons': [short_axe, broad_sword, great_sword, quantum_sword, battle_axe, great_axe],
+            'Weapons': [short_axe, broad_sword, great_sword, quantum_sword, battle_axe, great_axe, quantum_axe],
             'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
             'Shields': [buckler, kite_shield, quantum_tower_shield],
             'Boots': [elven_boots, ancestral_footsteps],
@@ -6541,7 +6619,7 @@ class Player:
             'Shields': [buckler, kite_shield, quantum_tower_shield],
             'Boots': [elven_boots, ancestral_footsteps],
             'Cloaks': [elven_cloak],
-            'Weapons': [short_axe, broad_sword, great_sword, quantum_sword, battle_axe, great_axe],
+            'Weapons': [short_axe, broad_sword, great_sword, quantum_sword, battle_axe, great_axe, quantum_axe],
             'Elixirs': [elixir],
             'Healing': [healing_potion],
             'Rings of Regeneration': [ring_of_regeneration],
@@ -6660,7 +6738,7 @@ class Player:
                 'Shields': [buckler, kite_shield, quantum_tower_shield],
                 'Boots': [elven_boots, ancestral_footsteps],
                 'Cloaks': [elven_cloak],
-                'Weapons': [short_axe, broad_sword, great_sword, quantum_sword, battle_axe, great_axe],
+                'Weapons': [short_axe, broad_sword, great_sword, quantum_sword, battle_axe, great_axe, quantum_axe],
                 'Elixirs': [elixir],
                 'Healing': [healing_potion],
                 'Rings of Regeneration': [ring_of_regeneration],
@@ -6797,7 +6875,7 @@ class Player:
                     'Shields': [buckler, kite_shield, quantum_tower_shield],
                     'Boots': [elven_boots, ancestral_footsteps],
                     'Cloaks': [elven_cloak],
-                    'Weapons': [short_axe, broad_sword, great_sword, quantum_sword, battle_axe, great_axe],
+                    'Weapons': [short_axe, broad_sword, great_sword, quantum_sword, battle_axe, great_axe, quantum_axe],
                     'Elixirs': [elixir],
                     'Healing': [healing_potion],
                     'Rings of Regeneration': [ring_of_regeneration],
@@ -7426,39 +7504,46 @@ class Player:
         else:
             return False
 
-    def ally_logic(self, monster, encounter):
+    def ally_attack_logic(self, monster, encounter):
 
         if self.sikira_ally or self.vozzbozz_ally or self.torbron_ally or self.magnus_ally:
             victory = False
             if self.sikira_ally:
-                ally_dmg1 = self.ally_melee(sikira, monster.name, monster.armor_class)
-                if self.ally_defeat_logic(monster, ally_dmg1, encounter):
-                    victory = True
-                    return victory
-                else:
-                    victory = False
+                if not sikira.retreating:
+                    ally_dmg1 = self.ally_melee(sikira, monster.name, monster.armor_class)
+                    if self.ally_defeat_logic(monster, ally_dmg1, encounter):
+                        victory = True
+                        return victory
+                    else:
+                        victory = False
 
             if self.torbron_ally:
-                ally_dmg2 = self.ally_melee(torbron, monster.name, monster.armor_class)
-                if self.ally_defeat_logic(monster, ally_dmg2, encounter):
-                    victory = True
-                    return victory
-                else:
-                    victory = False
+                if not torbron.retreating:
+                    ally_dmg2 = self.ally_melee(torbron, monster.name, monster.armor_class)
+                    if self.ally_defeat_logic(monster, ally_dmg2, encounter):
+                        victory = True
+                        return victory
+                    else:
+                        victory = False
+
             if self.magnus_ally:
-                ally_dmg3 = self.ally_melee(magnus, monster.name, monster.armor_class)
-                if self.ally_defeat_logic(monster, ally_dmg3, encounter):
-                    victory = True
-                    return victory
-                else:
-                    victory = False
+                if not magnus.retreating:
+                    ally_dmg3 = self.ally_melee(magnus, monster.name, monster.armor_class)
+                    if self.ally_defeat_logic(monster, ally_dmg3, encounter):
+                        victory = True
+                        return victory
+                    else:
+                        victory = False
+
             if self.vozzbozz_ally:
-                ally_dmg4 = self.vozzbozz_attack(monster)
-                if self.ally_defeat_logic(monster, ally_dmg4, encounter):
-                    victory = True
-                    return victory
-                else:
-                    victory = False
+                if not vozzbozz.retreating:
+                    ally_dmg4 = self.vozzbozz_attack(monster)
+                    if self.ally_defeat_logic(monster, ally_dmg4, encounter):
+                        victory = True
+                        return victory
+                    else:
+                        victory = False
+
             return victory
         else:
             return None
@@ -7492,6 +7577,8 @@ class Player:
                   f"a twisted grimace and her crimson eyes burn with hate. Her blade is at your throat before you\n"
                   f"can even react. \'What did ye call me?\' she queries in a beautifully perfect voice, smoother\n"
                   f"than oil.")
+            pause()
+            self.hud()
             print(f"\'Forgive me, friend!\', you manage to respond. \'It was meant with deep respect! It is how\n"
                   f"elf-kind enjoy being greeted where I am from!..\'")
             print(f"\'I AM NOT ELF!\', she asserts, directly into your face. Your disarmed look speaks to your\n"
@@ -7501,7 +7588,10 @@ class Player:
             self.hud()
             print(f"Again you plead, \'Please forgive my ignorance. I am from a far-off land. My name is {self.name}\n"
                   f"of Tinbar! My people and the Northern Library have all been destroyed by a terrible evil that\n"
-                  f"I have been sent to seek out and destroy...\'")
+                  f"I have been sent to seek out and destroy...she bears the mark of a crowned woman surrounded\n"
+                  f"by skulls!\'")
+            pause()
+            self.hud()
             print(f"Her face and mood again shift, and she removes her blade and begins to smile! It is then that you\n"
                   f"begin to notice the signs you missed earlier; Her teeth, black and smooth as raven's claws,\n"
                   f"tiny fangs, deep red eyes and her unusually petite, yet athletic build. But how could a Drow have\n"
@@ -7509,17 +7599,31 @@ class Player:
             pause()
             self.hud()
             print(f"\'Well. {self.name} of Tinbar, well met!\', she says with an evil chuckle. \'I am Si'Kira,\n"
-                  f"Child of the Moon Forest. My people too, have all been slain. I too seek to destroy the\n"
+                  f"Child of the Moon Forest. My people too, have all been slain. I also seek to destroy the\n"
                   f"wicked Queen Jannbrielle.\'. She sheathes her blade and her long silver hair glistens gorgeously\n"
                   f"in the dim air, as does her wondrous armor.")
-            print(f"\'Queen Jannbrielle..\', you respond thoughtfully. Si'Kira looks at you as you repeat the name.\n"
-                  f"\'I have met allies above who dare not even utter that name, and at last I learn it...\'\n"
+            pause()
+            self.hud()
+            print(f"\'Queen Jannbrielle..\', you repeat thoughtfully. Si'Kira looks at you as you say the name.\n"
+                  f"\'I have met allies above who dare not even utter that word, and at last I learn it...\'\n"
                   f"\'Thank you for finally revealing the name of our common enemy, my good Drow!\' you say with\n"
                   f"a hint of humor.")
             pause()
             self.hud()
             print(f"Si'Kira laughs gleefully again. \'This is most interesting!\', she says, with sincere intrigue\n"
-                  f"in her voice. \'How odd that our paths cross in such a way, in such a place!\'")
+                  f"in her voice. \'How odd that our paths cross in such a way..and in such a place! I shall\n"
+                  f"\'be accompanying you, {self.name} of Tinbar! For good or ill, we are bound in purpose and\n"
+                  f"outcome.\'")
+            pause()
+            self.hud()
+            print(f"\'I suppose..that settles it..?\', you say somewhat ironically.\n"
+                  f"\'Aye. It does.\', says Si'Kira, plainly.")
+            pause()
+            self.hud()
+            print(f"You cannot help but wish that you had a voice in the matter; Drow are notoriously wicked, and\n"
+                  f"very clever, but you trust your instincts and move on, together.")
+            self.sikira_ally = True
+            pause()
         else:
             return
 

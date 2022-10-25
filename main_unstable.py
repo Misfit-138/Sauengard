@@ -234,7 +234,7 @@ while True:
                         # eventually offload this into a meta-monster generator function: ****************************
                         if encounter < 11:  # regular monster
                             monster = player_1.regular_monster_generator()
-                            monster = Skeleton()  # HobgoblinCaptain()  # testing
+                            # monster = Skeleton()  # HobgoblinCaptain()  # testing
                         elif encounter == 99:  # level exit boss fight
                             monster = player_1.exit_boss_generator()
                             gong()
@@ -306,6 +306,8 @@ while True:
                                 time.sleep(3)
                                 player_is_dead = True
                                 break
+                            # if player has allies, monster attacks npc
+                            player_1.monster_attacks_npc_meta(monster)
                         # OTHERWISE, PLAYER PROMPT and enter BATTLE LOOP
                         # ********************************* BATTLE LOOP ***********************************************
                         while True:
@@ -352,6 +354,8 @@ while True:
                                         if not player_1.in_proximity_to_monster:
                                             # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
                                             player_1.end_of_turn_calculation()
+                                            # allies heal and no longer retreat:
+                                            player_1.npc_calculation()
                                             if player_1.check_dead():  # you can die from poison or necrosis,
                                                 player_is_dead = True  # right after victory, following calculations
                                                 break
@@ -371,6 +375,7 @@ while True:
                                         # then monster will die instantly and player gets loot
                                         monster.reduce_health(damage_to_monster)
                                         if monster.check_dead():
+
                                             player_1.hud()
                                             if encounter > 20:  # if fighting boss
                                                 gong()
@@ -386,6 +391,8 @@ while True:
                                                 print(f"You have defeated the {monster.name}..")
                                             # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
                                             player_1.end_of_turn_calculation()
+                                            # allies heal and no longer retreat:
+                                            player_1.npc_calculation()
                                             pause()
                                             if player_1.check_dead():  # you can die from poison or necrosis,
                                                 player_is_dead = True  # right after victory, following calculations
@@ -404,10 +411,12 @@ while True:
                                         print(f"You have no Quantum unit energy!")
                                         pause()
                                         continue  # if you have no QU, don't waste a turn!
-                                # if monster still alive, and player has allies:
-                                # testing ally melee
-                                if player_1.ally_logic(monster, encounter):  # if ally defeats monster
+                                # if monster still alive after quantum attack, and player has allies:
+                                # testing ally attack monster
+                                if player_1.ally_attack_logic(monster, encounter):  # if ally defeats monster
                                     player_1.end_of_turn_calculation()
+                                    # allies heal and no longer retreat:
+                                    player_1.npc_calculation()
                                     pause()
                                     if player_1.check_dead():
                                         player_is_dead = True
@@ -446,6 +455,8 @@ while True:
                                     time.sleep(3)
                                     player_is_dead = True
                                     break
+                                # beta testing if player has allies, monster attacks npc
+                                player_1.monster_attacks_npc_meta(monster)
                                 # player_1.hud()  # commented out and seemed like it worked fine beta
                                 # continue  # commented out and it seemed to work fine beta
 
@@ -473,6 +484,8 @@ while True:
                                     pause()
                                     # CALCULATE REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
                                     player_1.end_of_turn_calculation()
+                                    # allies heal and no longer retreat:
+                                    player_1.npc_calculation()
                                     if player_1.check_dead():
                                         player_is_dead = True
                                         player_1.in_proximity_to_monster = False
@@ -486,10 +499,12 @@ while True:
                                         player_1.loot(encounter)  # 8 difficulty class: better chance at loot
                                     player_1.dungeon_description()  # beta works so far
                                     break
-                                # if monster still alive and player has ally
-                                # testing ally melee
-                                if player_1.ally_logic(monster, encounter):  # if ally defeats monster
+                                # if monster still alive after player melee attack and player has allies
+                                # testing ally attacks monster
+                                if player_1.ally_attack_logic(monster, encounter):  # if ally defeats monster
                                     player_1.end_of_turn_calculation()
+                                    # allies heal and no longer retreat:
+                                    player_1.npc_calculation()
                                     pause()
                                     if player_1.check_dead():
                                         player_is_dead = True
@@ -526,6 +541,8 @@ while True:
                                         player_is_dead = True
                                         break
                                     player_1.hud()
+                                # beta testing if player has allies, monster attacks npc
+                                player_1.monster_attacks_npc_meta(monster)
 
                             else:  # invalid inputs
                                 print(f"The {monster.name} is not amused.")

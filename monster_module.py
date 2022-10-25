@@ -255,9 +255,11 @@ class Monster:
 
     def monster_data(self):
         if self.proper_name == "None":
-            mon_data = f"{self.name}  Challenge Lvl: {self.level}  AC: {self.armor_class}  HP: {self.hit_points}  ({self.number_of_hd}d{self.hit_dice})"
+            mon_data = f"{self.name}  Challenge Lvl: {self.level}  AC: {self.armor_class}  " \
+                       f"HP: {self.hit_points}  ({self.number_of_hd}d{self.hit_dice})"
         else:
-            mon_data = f"{self.proper_name}  AC: {self.armor_class}  HP: {self.hit_points}  ({self.number_of_hd}d{self.hit_dice})"
+            mon_data = f"{self.proper_name}  AC: {self.armor_class}  " \
+                       f"HP: {self.hit_points}  ({self.number_of_hd}d{self.hit_dice})"
         if self.undead:
             print(f"{mon_data} (UNDEAD)")
         else:
@@ -325,8 +327,7 @@ class Monster:
                 print(f"{attack_phrase}")
                 time.sleep(1.5)
                 print(hit_statement)
-                print(
-                    f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice}: {damage_roll}")  # hit dice
+                print(f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice}: {damage_roll}")  # hd
                 time.sleep(1.5)
                 print(f"Strength modifier: {self.strength_modifier}\nAttack bonus: {attack_bonus}\n"
                       f"Weapon bonus: {self.weapon_bonus}")
@@ -384,18 +385,16 @@ class Monster:
         else:
             critical_bonus = 1
             hit_statement = ""
-        # print(f"{self.name} Wisdom modifier {self.wisdom_modifier}")  # MONSTER WISDOM MODIFIER
         print(f"Your Saving Throw: {human_player_roll_d20} + wisdom modifier: ({player_1.wisdom_modifier})")
         if player_1.ring_of_prot.protect > 0:
             print(f"Your Ring of Protection Modifier: {player_1.ring_of_prot.protect}")
         if player_1.temp_protection_effect:
             print(f"+ Quantum Protection effect: {player_1.temp_protection_effect} ")
-        print(
-            f"Total = {human_player_roll_d20 + player_1.wisdom_modifier + player_1.ring_of_prot.protect + player_1.temp_protection_effect}")
+        human_total = human_player_roll_d20 + player_1.wisdom_modifier + player_1.ring_of_prot.protect \
+            + player_1.temp_protection_effect
+        print(f"Your Total = {human_total}")
         monster_total = roll_d20 + self.wisdom_modifier + self.proficiency_bonus  # test out pro bonus
-        if monster_total >= (human_player_roll_d20 + player_1.wisdom_modifier +
-                             player_1.ring_of_prot.protect + player_1.temp_protection_effect):
-
+        if monster_total >= human_total:
             damage_roll = dice_roll(self.number_of_hd * critical_bonus, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
@@ -411,7 +410,7 @@ class Monster:
                 return damage_to_opponent
             else:
                 print(
-                    f"The {self.name} strikes with Quantum Powers, but you dodge the attack!")  # zero damage to player result
+                    f"The {self.name} strikes with Quantum Powers, but you dodge the attack!")  # zero damage
                 time.sleep(2)
                 return 0  # 0 points damage to player
         else:
@@ -426,7 +425,7 @@ class Monster:
         human_player_roll_d20 = dice_roll(1, 20)
         player_total = (human_player_roll_d20 + player_1.ring_of_prot.protect + player_1.temp_protection_effect)
         print(
-            f"Paralyze roll: {paralyze_chance} + monster wisdom modifier: {self.wisdom_modifier}")  # remove after testing
+            f"Paralyze roll: {paralyze_chance} + monster wisdom modifier: {self.wisdom_modifier}")  # rm after testing
         paralyze_total = paralyze_chance + self.wisdom_modifier
         print(f"Monster Total: {paralyze_total}")
         print(
@@ -469,7 +468,6 @@ class Monster:
         if roll_d20 == 1:
             print("You easily dodge the poison attack!")
             time.sleep(1)
-            # print(f"And you perceive it was attempting to poison you!")
             pause()
             player_1.hud()
             return False
@@ -786,7 +784,8 @@ class Quasit(Monster):
         self.introduction = f"You have encountered a {self.name}.\n" \
                             f"Its large, lidless eyes stare blankly at you as it quickly readjusts its pointed ears\n" \
                             f"with a continual twitching. Its long, serpentine tail wags with its sinews and scales\n" \
-                            f"as it lets out a high pitched, fiendish and wretched cry. The air around it becomes hazy.."
+                            f"as it lets out a high pitched, fiendish and wretched cry. The air around it " \
+                            f"becomes hazy.."
         self.is_discovered = False
 
     # name = "Quasit"
@@ -845,7 +844,8 @@ class Kobold(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "It whips its tail!"
         self.introduction = f"You have encountered a {self.name}. A short, reptilian creature with orange eyes\n" \
-                            f"and skin. Its ragged tunic looks more like a robe on its tiny frame; you have no doubt\n" \
+                            f"and skin. Its ragged tunic looks more like a robe on its tiny frame; you have no " \
+                            f"doubt\n" \
                             f"it was stolen from an unwary adventurer. Its tail stands up as it retrieves a dagger\n" \
                             f"from a brass scabbard, twirling it deftly between scaled, sinewy fingers. It looks\n" \
                             f"you over for items to rid you of!"
@@ -1254,7 +1254,8 @@ class Skeleton(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "Reaching over its back, it produces a battle axe and strikes wildly!!"
         self.introduction = f"From the ground rises a skeleton warrior. Its battle-scarred and weary weaponry still\n" \
-                            f"in hand, it fearlessly hammers its shield with sword, taunting an attack. A full-toothed\n" \
+                            f"in hand, it fearlessly hammers its shield with sword, taunting an attack. " \
+                            f"A full-toothed\n" \
                             f"grin forever emblazoned on its bony countenance, it shouts an absent, yet echoing\n" \
                             f"battle-cry at you from behind its slack, gaping jaw!\n" \
                             f"The air bristles with Quantum Energy.."
@@ -1376,7 +1377,8 @@ class SkeletonKing(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = f"Reaching over its back, it produces a battle axe and strikes wildly!!"
         self.introduction = f"The ancient king rises in skeletal form. The once gleaming armor and weaponry now\n" \
-                            f"clings wearily to his bony form as he raises sword and shield, taunting you to attack!\n" \
+                            f"clings wearily to his bony form as he raises sword and shield, taunting you to " \
+                            f"attack!\n" \
                             f"The air bristles with Quantum Energy.."
         self.is_discovered = False
 
@@ -2066,7 +2068,6 @@ class SpecterKing(Monster):
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = random.randint(25, 34) + self.constitution_modifier
-        # self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier) + 1
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 12)
@@ -2214,8 +2215,8 @@ class GreenDragonWyrmling(Monster):
         self.attack_3 = 4
         self.attack_3_phrase = "Proud and poised, it prepares to strike with its murderous jaws.."
         self.attack_4 = 14
-        self.attack_4_phrase = "\'I am sorry. This will hurt you, my little friend.\', it says dryly, as it draws back " \
-                               "and bites with venomous guile!"
+        self.attack_4_phrase = "\'I am sorry. This will hurt you, my little friend.\', it says dryly, as it " \
+                               "draws back and bites with venomous guile!"
         self.attack_5 = 18
         self.attack_5_phrase = "The beast leaps upon you, attacking fiercely!"
         self.introduction = f"You have encountered a Green Dragon Wyrmling; a young, cunning and evil beast. " \

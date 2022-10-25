@@ -12,7 +12,8 @@ from dungeons import *
 from monster_module import monster_dict, king_boss_list, undead_prophet_list
 # from typing_module import typing
 from pathlib import Path
-
+# if you call a function and expect to use a return value, like, by printing it, you must first assign a variable in
+# the call itself!!!
 '''Target
 Identify your target to the table. 
 Attack

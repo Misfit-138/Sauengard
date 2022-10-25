@@ -1201,10 +1201,10 @@ class Player:
         self.previous_y = 0
         self.in_a_pit = False
         self.vanquished_foes = []
-        self.sikira_ally = True
-        self.vozzbozz_ally = True
-        self.torbron_ally = True
-        self.magnus_ally = True
+        self.sikira_ally = False
+        self.torbron_ally = False
+        self.magnus_ally = False
+        self.vozzbozz_ally = False
         self.boss_hint_1 = False
         self.boss_hint_1_event = False
         self.boss_hint_2 = False

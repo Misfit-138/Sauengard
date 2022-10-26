@@ -248,10 +248,10 @@ class Monster:
             return True
 
     def initiative(self):
-        # if self.level > 6:
-        #    monster_initiative = dice_roll(1, 20) + self.dexterity_modifier + self.proficiency_bonus
-        # else:
-        monster_initiative = dice_roll(1, 20) + self.dexterity_modifier
+        if self.level > 6:  # testing
+            monster_initiative = dice_roll(1, 20) + self.dexterity_modifier + self.proficiency_bonus
+        else:
+            monster_initiative = dice_roll(1, 20) + self.dexterity_modifier
         return monster_initiative
 
     def monster_data(self):
@@ -266,15 +266,12 @@ class Monster:
         else:
             print(f"{mon_data}")
         if len(self.immunities):
-            # immunities = str(self.immunities).replace('[', '').replace(']', '').replace("'", "")
             immunities = convert_list_to_string_with_commas_only(self.immunities)
             print("Immunities:", immunities)
         if len(self.resistances):
-            # immunities = str(self.immunities).replace('[', '').replace(']', '').replace("'", "")
             resistances = convert_list_to_string_with_commas_only(self.resistances)
             print("Resistances:", resistances)
         if len(self.vulnerabilities):
-            # vulnerabilities = str(self.vulnerabilities).replace('[', '').replace(']', '').replace("'", "")
             vulnerabilities = convert_list_to_string_with_commas_only(self.vulnerabilities)
             print("Vulnerabilities:", vulnerabilities)
 

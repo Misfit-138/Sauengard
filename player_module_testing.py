@@ -807,8 +807,7 @@ class StrengthPotion:
         self.minimum_level = 1
 
     def __repr__(self):
-        #        return self.name
-        # def __str__(self):
+
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
 
 
@@ -962,12 +961,12 @@ class VozzBozz:
         self.name = "Vozzbozz"
         self.level = 20
         self.quantum_level = 6
-        self.maximum_quantum_units = 600
-        self.quantum_units = 600
+        self.maximum_quantum_units = 6000
+        self.quantum_units = 6000
         self.experience = 0
         self.base_dc = 10
-        self.gold = 0
-        self.wielded_weapon = great_sword
+        self.gold = random.randint(2500, 4000)
+        self.wielded_weapon = quantum_sword
         self.armor = half_plate
         self.shield = no_shield
         self.boots = elven_boots
@@ -975,21 +974,22 @@ class VozzBozz:
         self.strength = 13
         self.strength_bonus = 1
         self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.dexterity = 16  # 14  # random.randint(13, 15)
+        self.dexterity = 16
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.constitution = 14  # 13  # random.randint(12, 14)
+        self.constitution = 14
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.intelligence = 20  # 10  # random.randint(11, 13)
+        self.intelligence = 20
         self.intelligence_modifier = math.floor((self.intelligence - 10) / 2)
-        self.wisdom = 20  # 12  # random.randint(9, 11)
+        self.wisdom = 20
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
-        self.charisma = 18  # 8  # random.randint(7, 9)
+        self.charisma = 18
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
-        self.hit_dice = 8  # Hit Dice: 1d10 per Fighter level
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.hit_dice = 8
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)
         self.maximum_hit_points = 199 + self.constitution_modifier
-        self.hit_points = 1  # self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
-        self.armor_class = 1  #(self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier)
+        self.hit_points = self.maximum_hit_points
+        self.armor_class = (self.armor.ac + self.armor.armor_bonus + self.shield.ac +
+                            self.boots.ac + self.dexterity_modifier)
         self.protect = 6
         self.retreating = False
         self.retreat_counter = 0
@@ -1001,10 +1001,7 @@ vozzbozz = VozzBozz()
 
 class SiKira:
 
-    def __init__(self):  # level, experience, gold, weapon_bonus, armor_bonus, shield, armor_class, strength,
-        # dexterity,
-        #  constitution, intelligence, wisdom, charisma, hit_points, maximum_hit_points, is_paralyzed, boots,
-        #  cloak, weapon_name):
+    def __init__(self):
         self.name = "Si'Kira"
         self.level = 10
         self.quantum_level = 2
@@ -1012,31 +1009,32 @@ class SiKira:
         self.quantum_units = 6
         self.experience = 0
         self.base_dc = 8
-        self.gold = 0
+        self.gold = random.randint(2500, 4000)
         self.wielded_weapon = great_sword
-        self.armor = half_plate
+        self.armor = scale_mail
         self.shield = kite_shield
         self.boots = elven_boots
         self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = 13
         self.strength_bonus = 1
         self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.dexterity = 17  # 14  # random.randint(13, 15)
+        self.dexterity = 17
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.constitution = 14  # 13  # random.randint(12, 14)
+        self.constitution = 14
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.intelligence = 16  # 10  # random.randint(11, 13)
+        self.intelligence = 16
         self.intelligence_modifier = math.floor((self.intelligence - 10) / 2)
-        self.wisdom = 16  # 12  # random.randint(9, 11)
+        self.wisdom = 16
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
-        self.charisma = 18  # 8  # random.randint(7, 9)
+        self.charisma = 18
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
-        self.hit_dice = 8  # Hit Dice: 1d10 per Fighter level
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.hit_dice = 8
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)
         self.maximum_hit_points = 70 + self.constitution_modifier
-        self.hit_points = 1  # self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
-        self.armor_class = 1  # (self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier)
-        self.protect = 6
+        self.hit_points = self.maximum_hit_points
+        self.armor_class = (self.armor.ac + self.armor.armor_bonus +
+                            self.shield.ac + self.boots.ac + self.dexterity_modifier)
+        self.protect = 3
         self.retreating = False
         self.retreat_counter = 0
         self.retreat_counter_threshold = 2  # 2 full rounds of retreat, not including initial round
@@ -1055,31 +1053,32 @@ class TorBron:
         self.quantum_units = 6
         self.experience = 0
         self.base_dc = 8
-        self.gold = 0
+        self.gold = random.randint(2500, 4000)
         self.wielded_weapon = quantum_sword
-        self.armor = full_plate
+        self.armor = half_plate
         self.shield = kite_shield
         self.boots = ancestral_footsteps
         self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = 17
         self.strength_bonus = 1.5
         self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.dexterity = 15  # 14  # random.randint(13, 15)
+        self.dexterity = 15
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.constitution = 18  # 13  # random.randint(12, 14)
+        self.constitution = 18
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.intelligence = 14  # 10  # random.randint(11, 13)
+        self.intelligence = 14
         self.intelligence_modifier = math.floor((self.intelligence - 10) / 2)
-        self.wisdom = 10  # 12  # random.randint(9, 11)
+        self.wisdom = 10
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
-        self.charisma = 10  # 8  # random.randint(7, 9)
+        self.charisma = 10
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.hit_dice = 12
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)
         self.maximum_hit_points = 100 + self.constitution_modifier
-        self.hit_points = 1  # self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
-        self.armor_class = 1  # (self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier)
-        self.protect = 6
+        self.hit_points = self.maximum_hit_points
+        self.armor_class = (self.armor.ac + self.armor.armor_bonus +
+                            self.shield.ac + self.boots.ac + self.dexterity_modifier)
+        self.protect = 4
         self.retreating = False
         self.retreat_counter = 0
         self.retreat_counter_threshold = 1  # 1 full round of retreat, not including initial round
@@ -1093,37 +1092,37 @@ class Magnus:
     def __init__(self):
         self.name = "Magnus"
         self.level = 14
-        self.quantum_level = 2
-        self.maximum_quantum_units = 2
-        self.quantum_units = 6
+        self.quantum_level = 5
+        self.maximum_quantum_units = 15
+        self.quantum_units = 15
         self.experience = 0
         self.base_dc = 8
-        self.gold = 0
+        self.gold = random.randint(2500, 4000)
         self.wielded_weapon = quantum_axe
-        self.armor = full_plate
+        self.armor = half_plate
         self.shield = kite_shield
         self.boots = ancestral_footsteps
         self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = 16
         self.strength_bonus = 1.33
         self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.dexterity = 15  # 14  # random.randint(13, 15)
+        self.dexterity = 15
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.constitution = 16  # 13  # random.randint(12, 14)
+        self.constitution = 16
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.intelligence = 14  # 10  # random.randint(11, 13)
+        self.intelligence = 14
         self.intelligence_modifier = math.floor((self.intelligence - 10) / 2)
-        self.wisdom = 10  # 12  # random.randint(9, 11)
+        self.wisdom = 10
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
-        self.charisma = 10  # 8  # random.randint(7, 9)
+        self.charisma = 10
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.hit_dice = 10
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)
         self.maximum_hit_points = 100 + self.constitution_modifier
-        self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.hit_points = self.maximum_hit_points
         self.armor_class = (self.armor.ac + self.armor.armor_bonus +
                             self.shield.ac + self.boots.ac + self.dexterity_modifier)
-        self.protect = 6
+        self.protect = 4
         self.retreating = False
         self.retreat_counter = 0
         self.retreat_counter_threshold = 1  # 1 full round of retreat, not including initial round
@@ -1148,20 +1147,20 @@ class Player:
         self.shield = no_shield
         self.boots = leather_boots
         self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
-        self.strength = strength  # 15  # random.randint(14, 16)
+        self.strength = strength
         self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.dexterity = dexterity  # 14  # random.randint(13, 15)
+        self.dexterity = dexterity
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.constitution = constitution  # 13  # random.randint(12, 14)
+        self.constitution = constitution
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.intelligence = intelligence  # 10  # random.randint(11, 13)
+        self.intelligence = intelligence
         self.intelligence_modifier = math.floor((self.intelligence - 10) / 2)
-        self.wisdom = wisdom  # 12  # random.randint(9, 11)
+        self.wisdom = wisdom
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
-        self.charisma = charisma  # 8  # random.randint(7, 9)
+        self.charisma = charisma
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
-        self.hit_dice = 10  # Hit Dice: 1d10 per Fighter level
-        self.proficiency_bonus = 2  # 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.hit_dice = 10
+        self.proficiency_bonus = 2
         self.maximum_hit_points = 100 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
@@ -1207,10 +1206,10 @@ class Player:
         self.previous_y = 0
         self.in_a_pit = False
         self.vanquished_foes = []
-        self.sikira_ally = True
-        self.torbron_ally = True
-        self.magnus_ally = True
-        self.vozzbozz_ally = True
+        self.sikira_ally = False
+        self.torbron_ally = False
+        self.magnus_ally = False
+        self.vozzbozz_ally = False
         self.boss_hint_1 = False
         self.boss_hint_1_event = False
         self.boss_hint_2 = False
@@ -7940,6 +7939,7 @@ class Player:
         return
 
     def boss_hint_logic(self):
+        # called from main loop, after exit bosses are defeated
         if not self.boss_hint_1:
             return self.boss_clue_1()
         if not self.boss_hint_2:

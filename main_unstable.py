@@ -68,7 +68,7 @@ while True:
             (player_1.x, player_1.y) = player_1.dungeon.staircase
             # 'position' corresponds to ASCII grids. 0 is the initialization position.
             # Thereafter, it is a string based on where the player lands in the ASCII grid,
-            # '*' = border, '.' = wide open area, '7' = northwest corner, etc
+            # '*' = border, '.' = wide open area, '7' = northwest corner, etc.
             # the ASCII grid 'position' is used for display_map() and for dungeon_description()
             player_1.position = 0
             player_1.hud()
@@ -234,7 +234,7 @@ while True:
                         # eventually offload this into a meta-monster generator function: ****************************
                         if encounter < 11:  # regular monster
                             monster = player_1.regular_monster_generator()
-                            monster = Shadow()  # HobgoblinCaptain()  # testing
+                            # monster = Shadow()  # HobgoblinCaptain()  # testing
                         elif encounter == 99:  # level exit boss fight
                             monster = player_1.exit_boss_generator()
                             gong()
@@ -461,8 +461,6 @@ while True:
                                     break
                                 # beta testing if player has allies, monster attacks npc
                                 player_1.monster_attacks_npc_meta(monster)
-                                # player_1.hud()  # commented out and seemed like it worked fine beta
-                                # continue  # commented out and it seemed to work fine beta
 
                             # FIGHT: player chooses melee:
                             elif battle_choice == "f":

@@ -234,7 +234,7 @@ while True:
                         # eventually offload this into a meta-monster generator function: ****************************
                         if encounter < 11:  # regular monster
                             monster = player_1.regular_monster_generator()
-                            # monster = Skeleton()  # HobgoblinCaptain()  # testing
+                            monster = Shadow()  # HobgoblinCaptain()  # testing
                         elif encounter == 99:  # level exit boss fight
                             monster = player_1.exit_boss_generator()
                             gong()
@@ -296,7 +296,7 @@ while True:
                                     if not player_1.check_dead():  # if player not dead
                                         print(f"You regain your faculties.")
                                         pause()
-                                        # continue
+                                        # continue  # (don't continue here)
                                     else:
                                         print("You are dead and paralyzed!")
                                         player_is_dead = True
@@ -306,7 +306,9 @@ while True:
                                 time.sleep(3)
                                 player_is_dead = True
                                 break
-                            # if player has allies, monster attacks npc
+                            # at this point, monster still has initiative
+                            # if player has allies and monster has multi_attack or lesser_multi_attack,
+                            # monster attacks npc
                             player_1.monster_attacks_npc_meta(monster)
                         # OTHERWISE, PLAYER PROMPT and enter BATTLE LOOP
                         # ********************************* BATTLE LOOP ***********************************************
@@ -412,8 +414,8 @@ while True:
                                         pause()
                                         continue  # if you have no QU, don't waste a turn!
                                 # if monster still alive after quantum attack, and player has allies:
-                                # testing ally attack monster
-                                if player_1.ally_attack_logic(monster, encounter):  # if ally defeats monster
+                                # testing npc ally attack monster
+                                if player_1.npc_attack_logic(monster, encounter):  # if npc ally defeats monster
                                     player_1.end_of_turn_calculation()
                                     # allies heal and no longer retreat:
                                     player_1.npc_calculation()
@@ -444,6 +446,8 @@ while True:
                                         if not player_1.check_dead():  # if player not dead
                                             print(f"You regain your faculties.")
                                             pause()
+                                            # if monster has multi_attack, then attack npc
+                                            player_1.monster_attacks_npc_meta(monster)  # beta testing
                                             continue
                                         else:
                                             print("You are dead and paralyzed!")
@@ -500,8 +504,8 @@ while True:
                                     player_1.dungeon_description()  # beta works so far
                                     break
                                 # if monster still alive after player melee attack and player has allies
-                                # testing ally attacks monster
-                                if player_1.ally_attack_logic(monster, encounter):  # if ally defeats monster
+                                # testing npc ally attacks monster
+                                if player_1.npc_attack_logic(monster, encounter):  # if npc ally defeats monster
                                     player_1.end_of_turn_calculation()
                                     # allies heal and no longer retreat:
                                     player_1.npc_calculation()
@@ -530,6 +534,8 @@ while True:
                                             if not player_1.check_dead():  # if player not dead
                                                 print(f"You regain your faculties.")
                                                 pause()
+                                                # if monster has multi_attack, then attack npc
+                                                player_1.monster_attacks_npc_meta(monster)  # beta testing
                                                 continue
                                             else:
                                                 print("You are dead and paralyzed!")

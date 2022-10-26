@@ -930,24 +930,24 @@ def king_returns():
 def nothing_happens():
     print(f"Nothing happens....")
     pause()
-    # encounter = dice_roll(1, 20)
     return
 
 
-def npc_retreat_logic(npc):
-    # called from monster_attacks_npc_meta(), after monster attack turn
-    if npc.hit_points < 1:
-        npc.retreating = True
-        print(f"{npc.name} is retreating!")
-        pause()
+def npc_retreat_counter_logic(npc):
+    # called from self.monster_attacks_npc_meta(), for each npc, if retreating
+    npc.retreat_counter += 1
+    if npc.retreat_counter >= npc.retreat_counter_threshold:
+        return npc_end_of_turn_calculation(npc)
 
 
 def npc_end_of_turn_calculation(npc):
     # called from npc_calculation()
     # when monster defeated, turned, or no longer in proximity, npc allies no longer in retreat
     # they also fully heal
+    # also called from npc_retreat_counter_logic() when npc.retreat_counter >= npc.retreat_counter_threshold
     if npc.retreating:
         npc.retreating = False
+        npc.retreat_counter = 0
         print(f"{npc.name} is no longer retreating")
         sleep(1)
     if npc.hit_points < npc.maximum_hit_points:
@@ -988,11 +988,12 @@ class VozzBozz:
         self.hit_dice = 8  # Hit Dice: 1d10 per Fighter level
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.maximum_hit_points = 199 + self.constitution_modifier
-        self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
-        self.armor_class = (self.armor.ac + self.armor.armor_bonus + self.shield.ac +
-                            self.boots.ac + self.dexterity_modifier)
+        self.hit_points = 1  # self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.armor_class = 1  #(self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier)
         self.protect = 6
         self.retreating = False
+        self.retreat_counter = 0
+        self.retreat_counter_threshold = 1  # 1 full round of retreat, not including initial round
 
 
 vozzbozz = VozzBozz()
@@ -1033,11 +1034,12 @@ class SiKira:
         self.hit_dice = 8  # Hit Dice: 1d10 per Fighter level
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.maximum_hit_points = 70 + self.constitution_modifier
-        self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
-        self.armor_class = (self.armor.ac + self.armor.armor_bonus + self.shield.ac +
-                            self.boots.ac + self.dexterity_modifier)
+        self.hit_points = 1  # self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.armor_class = 1  # (self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier)
         self.protect = 6
         self.retreating = False
+        self.retreat_counter = 0
+        self.retreat_counter_threshold = 2  # 2 full rounds of retreat, not including initial round
 
 
 sikira = SiKira()
@@ -1075,11 +1077,12 @@ class TorBron:
         self.hit_dice = 12
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.maximum_hit_points = 100 + self.constitution_modifier
-        self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
-        self.armor_class = (self.armor.ac + self.armor.armor_bonus + self.shield.ac +
-                            self.boots.ac + self.dexterity_modifier)
+        self.hit_points = 1  # self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.armor_class = 1  # (self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac + self.dexterity_modifier)
         self.protect = 6
         self.retreating = False
+        self.retreat_counter = 0
+        self.retreat_counter_threshold = 1  # 1 full round of retreat, not including initial round
 
 
 torbron = TorBron()
@@ -1122,6 +1125,8 @@ class Magnus:
                             self.shield.ac + self.boots.ac + self.dexterity_modifier)
         self.protect = 6
         self.retreating = False
+        self.retreat_counter = 0
+        self.retreat_counter_threshold = 1  # 1 full round of retreat, not including initial round
 
 
 magnus = Magnus()
@@ -1202,10 +1207,10 @@ class Player:
         self.previous_y = 0
         self.in_a_pit = False
         self.vanquished_foes = []
-        self.sikira_ally = False
-        self.torbron_ally = False
-        self.magnus_ally = False
-        self.vozzbozz_ally = False
+        self.sikira_ally = True
+        self.torbron_ally = True
+        self.magnus_ally = True
+        self.vozzbozz_ally = True
         self.boss_hint_1 = False
         self.boss_hint_1_event = False
         self.boss_hint_2 = False
@@ -1314,49 +1319,79 @@ class Player:
 
     # CALCULATION
     def monster_attacks_npc_meta(self, monster):
+
         # monster attacks npc allies
-        allies = []
+        self.hud()
         if monster.multi_attack:
             if self.sikira_ally:
                 if not sikira.retreating:
                     monster.meta_monster_vs_npc_function(sikira)
-                    npc_retreat_logic(sikira)
+                    self.npc_retreat_logic(sikira)
                     self.hud()
+                else:
+                    npc_retreat_counter_logic(sikira)
             if self.torbron_ally:
                 if not torbron.retreating:
                     monster.meta_monster_vs_npc_function(torbron)
-                    npc_retreat_logic(torbron)
+                    self.npc_retreat_logic(torbron)
                     self.hud()
+                else:
+                    npc_retreat_counter_logic(torbron)
             if self.magnus_ally:
                 if not magnus.retreating:
                     monster.meta_monster_vs_npc_function(magnus)
-                    npc_retreat_logic(magnus)
+                    self.npc_retreat_logic(magnus)
                     self.hud()
+                else:
+                    npc_retreat_counter_logic(magnus)
             if self.vozzbozz_ally:
                 if not vozzbozz.retreating:
                     monster.meta_monster_vs_npc_function(vozzbozz)
-                    npc_retreat_logic(vozzbozz)
+                    self.npc_retreat_logic(vozzbozz)
                     self.hud()
+                else:
+                    npc_retreat_counter_logic(vozzbozz)
             return
-        # if monster has no multi_attack, they can attempt to attack one random npc ally
-        elif self.sikira_ally:
-            if not sikira.retreating:
-                allies.append(sikira)
-        if self.torbron_ally:
-            if not torbron.retreating:
-                allies.append(torbron)
-        if self.magnus_ally:
-            if not magnus.retreating:
-                allies.append(magnus)
-        if self.vozzbozz_ally:
-            if not vozzbozz.retreating:
-                allies.append(vozzbozz)
-        if len(allies):
-            ally = random.choice(allies)
-            monster.meta_monster_vs_npc_function(ally)
-            npc_retreat_logic(ally)
+
+        elif monster.lesser_multi_attack:
+            # lesser_multi_attack creates a list of non-retreating allies, if any.
+            # one ally is then randomly chosen and attacked by monster
+            allies = []
+            if self.sikira_ally:
+                if not sikira.retreating:
+                    allies.append(sikira)
+                else:
+                    npc_retreat_counter_logic(sikira)
+            if self.torbron_ally:
+                if not torbron.retreating:
+                    allies.append(torbron)
+                else:
+                    npc_retreat_counter_logic(torbron)
+            if self.magnus_ally:
+                if not magnus.retreating:
+                    allies.append(magnus)
+                else:
+                    npc_retreat_counter_logic(magnus)
+            if self.vozzbozz_ally:
+                if not vozzbozz.retreating:
+                    allies.append(vozzbozz)
+                else:
+                    npc_retreat_counter_logic(vozzbozz)
+            if len(allies):
+                ally = random.choice(allies)
+                monster.meta_monster_vs_npc_function(ally)
+                self.npc_retreat_logic(ally)
+
+    def npc_retreat_logic(self, npc):
+        # called from self.monster_attacks_npc_meta(), after monster attack turn
+        if npc.hit_points < 1:
+            npc.retreating = True
+            self.hud()
+            print(f"{npc.name} is retreating!")
+            pause()
 
     def npc_calculation(self):
+        # called from main loop, after player end_of_turn_calculation()
         # when monster defeated, turned, or no longer in proximity, npc allies no longer in retreat
         # they also fully heal
         if self.sikira_ally:
@@ -1386,7 +1421,7 @@ class Player:
         return
 
     def calculate_poison(self):
-        # self.dungeon_description()
+
         if self.poisoned:
             if self.poisoned_turns >= self.dot_turns:
                 self.poisoned = False
@@ -1403,7 +1438,7 @@ class Player:
         return self.poisoned
 
     def calculate_necrotic_dot(self):
-        # self.dungeon_description()
+
         if self.necrotic:
             if self.necrotic_turns >= self.dot_turns:
                 self.necrotic = False
@@ -1436,7 +1471,7 @@ class Player:
             if self.potion_of_strength_uses >= self.max_quantum_strength_uses:  # self.strength_modifier + 2:
                 self.potion_of_strength_effect = False
                 self.potion_of_strength_uses = 0
-                print(f"The potion's effects wear off....the giant strength leaves your body..")
+                print(f"The potion's effect wears off....the giant strength leaves your body..")
                 pause()
             else:
                 self.potion_of_strength_effect = True
@@ -1622,7 +1657,7 @@ class Player:
         if self.strength < 20 or self.dexterity < 20 or self.constitution < 20 or self.intelligence < 20 \
                 or self.wisdom < 20 or self.charisma < 20:
             os.system('cls')
-            print(f"                *Ability Score Improvement*")
+            print(f"                                  *Ability Score Improvement*")
             print()
             print(
                 f"You may choose to improve a single ability score, such as strength, and increase it by 2 points.\n"
@@ -1637,7 +1672,7 @@ class Player:
                 f"2 points to even-numbered scores.\n"
                 f"* When your Constitution modifier increases by 1, your hit point maximum increases by 1 for each\n"
                 f"  level you have attained.\n"
-                f"           *The maximum score for any ability is 20*"
+                f"                         *The maximum score for any ability is 20*"
                 f"\n")
             pause()
 
@@ -1717,13 +1752,12 @@ class Player:
                 sleep(1)
             print(f"You gain {exp_award} experience points.")
             sleep(2)
-            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\gong.wav', winsound.SND_ASYNC)
+            gong()
             print(f"You went up a level!!")
             sleep(2)
             print(f"You are now level {self.level}.")
             sleep(2)
-            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\dungeon_theme_2.wav',
-                               winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+            self.dungeon_theme()
             self.calculate_proficiency_bonus()  # according to DnD 5e
             gain_hit_points1 = dice_roll(1, self.hit_dice) + self.constitution_modifier  # hp increase method 1
             gain_hit_points2 = 6 + self.constitution_modifier  # hp increase method 2
@@ -2058,7 +2092,7 @@ class Player:
         if self.wielded_weapon.to_hit_bonus > 0:
             print(f"Weapon to hit bonus {self.wielded_weapon.to_hit_bonus}")
         roll_total = roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus
-        print(f"Total: {roll_total}")
+        print(f"Your Total Attack Roll: {roll_total}")
         print(f"Monster armor class {monster_armor_class}")
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + \
                 self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
@@ -2075,7 +2109,7 @@ class Player:
                     print(f"Weapon bonus: {self.wielded_weapon.damage_bonus}")
                 if strength_bonus > 1:
                     print(f"* Strength Bonus: {strength_bonus}")
-                print(f"Total: {damage_to_opponent}")
+                print(f"Your Damage Total: {damage_to_opponent}")
                 print(f"You do {damage_to_opponent} points of damage!")
                 pause()
                 self.hud()
@@ -2109,7 +2143,8 @@ class Player:
             self.hud()
             return 0
 
-    def ally_melee(self, ally, monster_name, monster_armor_class):
+    def npc_melee(self, ally, monster_name, monster_armor_class):
+        # called from npc_attack_logic() for npcs who use melee
         pronoun = 'his'
         if ally.name == "Si'Kira":
             pronoun = 'her'
@@ -2126,7 +2161,6 @@ class Player:
         if roll_d20 == 20:
             critical_bonus = 2
             hit_statement = "CRITICAL HIT!!"
-
         else:
             critical_bonus = 1
             hit_statement = f"{ally.name} HITS!"
@@ -2134,24 +2168,23 @@ class Player:
         if ally.wielded_weapon.to_hit_bonus > 0:
             print(f"Weapon to hit bonus {ally.wielded_weapon.to_hit_bonus}")
         roll_total = roll_d20 + ally.proficiency_bonus + ally.dexterity_modifier + ally.wielded_weapon.to_hit_bonus
-        print(f"Total: {roll_total}")
+        print(f"{ally.name} Total Attack Roll: {roll_total}")
         print(f"Monster armor class {monster_armor_class}")
         if roll_d20 == 20 or roll_d20 + ally.proficiency_bonus + \
                 ally.dexterity_modifier + ally.wielded_weapon.to_hit_bonus >= monster_armor_class:
             damage_roll = dice_roll((ally.level * critical_bonus), ally.hit_dice)
-
             damage_to_opponent = math.ceil(
-                (damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) * ally.strength_bonus)
+                (damage_roll + ally.strength_modifier + ally.wielded_weapon.damage_bonus) * ally.strength_bonus)
             if damage_to_opponent > 0:
                 print(hit_statement)
                 sleep(1)
-                print(f"{ally.level * critical_bonus}d{self.hit_dice} Damage Roll: {damage_roll}\n"
+                print(f"{ally.level * critical_bonus}d{ally.hit_dice} Damage Roll: {damage_roll}\n"
                       f"Strength modifier: {ally.strength_modifier}")
-                if self.wielded_weapon.damage_bonus > 0:
-                    print(f"Weapon bonus: {self.wielded_weapon.damage_bonus}")
+                if ally.wielded_weapon.damage_bonus > 0:
+                    print(f"Weapon bonus: {ally.wielded_weapon.damage_bonus}")
                 if ally.strength_bonus > 1:
                     print(f"* Strength Bonus: {ally.strength_bonus}")
-                print(f"Total: {damage_to_opponent}")
+                print(f"{ally.name} Total Damage: {damage_to_opponent}")
                 print(f"{ally.name} does {damage_to_opponent} points of damage!")
                 pause()
                 self.hud()
@@ -2199,10 +2232,6 @@ class Player:
                 resistance_modifier = 0
                 if "Turn Undead" in monster.resistances or "All" in monster.resistances:
                     resistance_modifier = 3
-                # turn_roll = dice_roll(1, 20)
-                # total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
-                # print(f"Quantum Ability Check: {turn_roll}")
-                #      f"Proficiency Bonus: {self.proficiency_bonus}")
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
@@ -2280,10 +2309,6 @@ class Player:
                 resistance_modifier = 0
                 if "Banish" in monster.resistances or "All" in monster.resistances:
                     resistance_modifier = 3
-                # turn_roll = dice_roll(1, 20)
-                # total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
-                # print(f"Quantum Ability Check: {turn_roll}\nWisdom Modifier: {self.wisdom_modifier}\n"
-                #      f"Proficiency Bonus: {self.proficiency_bonus}")
                 if vulnerability_modifier != 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 level_advantage = 0
@@ -2434,7 +2459,10 @@ class Player:
 
     def quantum_purify(self, monster):
         # monster parameter not used or needed here
-        print(f"Purify")
+        if monster is None:
+            print(f"Purify")
+        else:
+            print(f"Battle Purify")
         sleep(1)
         quantum_unit_cost = 2
         # works only when poisoned or necrotic, but once engaged, has powerful hit point healing!
@@ -3039,7 +3067,10 @@ class Player:
             return
 
     def quantum_strength(self, monster):
-        print(f"Quantum Strength")
+        if monster is None:
+            print(f"Quantum Strength")
+        else:
+            print(f"Quantum Strength (BATTLE)")
         sleep(1)
         self.hud()
         quantum_unit_cost = 2
@@ -3062,7 +3093,10 @@ class Player:
         return 0
 
     def quantum_heal_wounds(self, monster):
-        print(f"Quantum Heal")
+        if monster is None:
+            print(f"Quantum Heal")
+        else:
+            print(f"Quantum Heal (BATTLE)")
         sleep(1)
         self.hud()
         # perhaps use this math for higher healing effect:
@@ -3088,7 +3122,10 @@ class Player:
 
     def protection_from_evil(self, monster):
         # everything but a natural 1 will succeed
-        print(f"Protection from Evil")
+        if monster is None:
+            print(f"Protection from Evil")
+        else:
+            print(f"Protection from Evil (BATTLE)")
         sleep(1)
         quantum_unit_cost = 1
         self.hud()
@@ -3119,6 +3156,10 @@ class Player:
 
     def quantum_help1(self, monster):
         cls()
+        if monster is None:
+            print("HELP")
+        else:
+            print("HELP (BATTLE)")
         print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
         print()
         print(f"Quantum Missile: Multiple glowing projectiles, corresponding to your Quantum knowledge and randomness"
@@ -3143,6 +3184,10 @@ class Player:
 
     def quantum_help2(self, monster):
         cls()
+        if monster is None:
+            print("HELP")
+        else:
+            print("HELP (BATTLE)")
         print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
         print()
         print(f"Web: Through improbabilities, shoot a giant web at your enemy, incapacitating them. Initial success\n"
@@ -3164,6 +3209,10 @@ class Player:
 
     def quantum_help3(self, monster):
         cls()
+        if monster is None:
+            print("HELP")
+        else:
+            print("HELP (BATTLE)")
         print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
         print()
         print(f"Lightning: Harness an electrical storm to be cast at your enemy, causing burns and arcflash damage.\n"
@@ -3187,6 +3236,10 @@ class Player:
 
     def quantum_help4(self, monster):
         cls()
+        if monster is None:
+            print("HELP")
+        else:
+            print("HELP (BATTLE)")
         print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
         print()
         print(f"Fireball: Through Spooky Action at a Distance, a Fireball forms, seemingly from out of your hands,\n"
@@ -3210,6 +3263,10 @@ class Player:
 
     def quantum_help5(self, monster):
         cls()
+        if monster is None:
+            print("HELP")
+        else:
+            print("HELP (BATTLE)")
         print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
         print()
         print(f"Disintegrate: A thin green ray springs from your pointing finger to your target.\n"
@@ -3235,6 +3292,10 @@ class Player:
 
     def quantum_help6(self, monster):
         cls()
+        if monster is None:
+            print("HELP")
+        else:
+            print("HELP (BATTLE)")
         print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
         print()
         print(f"QUANTUM MASTER EFFECTS")
@@ -4723,7 +4784,7 @@ class Player:
             return
 
     def immolation(self, monster):
-        # immolation matches player wisdom against monster dex
+        # immolation matches player wisdom against monster dexterity
         quantum_unit_cost = 3
         if self.in_proximity_to_monster:
             if "Immolation" not in monster.immunities and "All" not in monster.immunities:
@@ -7484,7 +7545,8 @@ class Player:
             pause()
             return
 
-    def ally_defeat_logic(self, monster, damage, encounter):
+    def npc_defeat_logic(self, monster, damage, encounter):
+        # called from npc_attack_logic() to discern if monster dies mid-party-turn
         monster.reduce_health(damage)
         if monster.check_dead():
             self.hud()
@@ -7505,14 +7567,14 @@ class Player:
         else:
             return False
 
-    def ally_attack_logic(self, monster, encounter):
-
+    def npc_attack_logic(self, monster, encounter):
+        # called from main loop after player quantum or melee attack (or potion)
         if self.sikira_ally or self.vozzbozz_ally or self.torbron_ally or self.magnus_ally:
             victory = False
             if self.sikira_ally:
                 if not sikira.retreating:
-                    ally_dmg1 = self.ally_melee(sikira, monster.name, monster.armor_class)
-                    if self.ally_defeat_logic(monster, ally_dmg1, encounter):
+                    ally_dmg1 = self.npc_melee(sikira, monster.name, monster.armor_class)
+                    if self.npc_defeat_logic(monster, ally_dmg1, encounter):
                         victory = True
                         return victory
                     else:
@@ -7520,8 +7582,8 @@ class Player:
 
             if self.torbron_ally:
                 if not torbron.retreating:
-                    ally_dmg2 = self.ally_melee(torbron, monster.name, monster.armor_class)
-                    if self.ally_defeat_logic(monster, ally_dmg2, encounter):
+                    ally_dmg2 = self.npc_melee(torbron, monster.name, monster.armor_class)
+                    if self.npc_defeat_logic(monster, ally_dmg2, encounter):
                         victory = True
                         return victory
                     else:
@@ -7529,8 +7591,8 @@ class Player:
 
             if self.magnus_ally:
                 if not magnus.retreating:
-                    ally_dmg3 = self.ally_melee(magnus, monster.name, monster.armor_class)
-                    if self.ally_defeat_logic(monster, ally_dmg3, encounter):
+                    ally_dmg3 = self.npc_melee(magnus, monster.name, monster.armor_class)
+                    if self.npc_defeat_logic(monster, ally_dmg3, encounter):
                         victory = True
                         return victory
                     else:
@@ -7539,15 +7601,16 @@ class Player:
             if self.vozzbozz_ally:
                 if not vozzbozz.retreating:
                     ally_dmg4 = self.vozzbozz_attack(monster)
-                    if self.ally_defeat_logic(monster, ally_dmg4, encounter):
+                    if self.npc_defeat_logic(monster, ally_dmg4, encounter):
                         victory = True
                         return victory
                     else:
                         victory = False
 
             return victory
+
         else:
-            return None
+            return
 
     def encounter_sikira_event(self):
         ally_discovery = f"level {self.dungeon.level} ally"
@@ -7562,10 +7625,11 @@ class Player:
             print(f"Instinctively, you ready your {self.wielded_weapon.name} and rush to help.")
             print(f"The {monster.name} strikes at her wickedly, but she nimbly springs back, just out of reach.\n"
                   f"Noticing you, she motions to the {monster.name}'s {rndm_orientation} with a subtle twitch\n"
-                  f"of her head, as she strikes back with a fiery, glorious, finely crafted sword.")
+                  f"of her head, as she strikes back with her glorious, finely crafted sword.")
             pause()
             self.hud()
-            print(f"Moving to the {rndm_orientation}, as directed, the {monster.name} suddenly senses your presence!\n"
+            print(f"Moving to the {monster.name}'s {rndm_orientation}, as directed, the {monster.name} suddenly"
+                  f" senses your presence!\n"
                   f"{monster.attack_5_phrase}")
             print(f"The distraction serves as a perfect opportunity for attack, as she swings her great blade from\n"
                   f"a blind angle, felling her enemy with a single, precise cut. The {monster.name} falls dead\n"

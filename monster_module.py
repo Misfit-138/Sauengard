@@ -2185,4 +2185,3 @@ undead_monster_dict = {
 # boss lists
 undead_prophet_list = [ZombieProphet(), SkeletalProphet()]
 king_boss_list = [SkeletonKing(), ShadowKing(), SpecterKing()]
-

@@ -1,145 +1,11 @@
-"""
+# Telengard monsters:
+# "Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
+# "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon
 
-Choose a challenge rating (CR) for your trap, object, effect, or creature
-between 1 and 30. Write down its statistics from the following formulas:
-• AC = 12 + ½ CR (or choose between 10 and 20 based on the story)
-• DC = 12 + ½ CR
-• Hit Points = 20 × CR
-• Attack Bonus = 3 + ½ CR
-• Proficient Saves or Skills = 3 + ½ CR
-• Single-Target Damage = 7 × CR (or 2d6 per CR)
-• Multi-Target Damage = 3 x CR (or 1d6 per CR)
-A monster usually dies or is destroyed when it drops to 0 Hit Points.
-A monster’s Hit Points are presented both as a die expression and as an average number.
-For example, a monster with 2d8 Hit Points has 9 Hit Points on average (2 × 4½).
-
-Difficulty Class (DC) is something that’s used a lot. Whether that’s Saving Throws or Ability Checks.
-Even Armor Class is a kind of DC. To put it simply, a DC determines how hard something is to do.
-Whether that’s climbing a rope, evading a breath weapon, or swinging an ax, different actions have different DCs.
-
-To determine whether you beat a DC, you need to roll equal to or higher than said DC.
-But choosing how hard one is, is easier said than done. For example, walking across a treacherous rope bridge without
-falling might take a DC 15 Dexterity (Acrobatics) check, but resisting a Wolf knocking you prone takes
-a DC 11 Strength Saving Throw.
-
-Many spells require Saving Throws and ability checks to negate but don’t even tell you what the DC is.
-That’s because the DC equals 8 + Your Spellcasting Modifier + Your Proficiency Bonus.
-And most other classes or features that require Saving Throws typically tell you how to calculate the DC or even
-tell you what the DC is outright!
-
-But what if it’s something you make that requires a DC to be set, like an ability check? For that,
-you can use the following values as a guide (DMG p. 238):
-
-TASK	            DC
-Very easy	        5
-Easy	            10
-Moderate	        15
-Hard	            20
-Very Hard	        25
-Nearly Impossible	30
-
-A few things to know; however, a natural 20 doesn’t mean you automatically succeed.
-You still have to add your bonuses, but it usually results in the most favorable outcome,
-even though you can’t crit on ability checks. Likewise,
-a natural 1 doesn’t mean automatic failure or a critical failure.
-You could still pass the check if your bonuses are high enough. And on the note of failing a Check, the DM could still
-have it succeed, but just at a cost (e.g., you leap across the chasm, but you break your leg on the ledge as you didn’t
-land properly).
-
-As you can see, it’s not that bad when you think about it. A DC is just a minimum result needed to perform a particular
-task and succeed with minimal loss. And so with that, I hope you roll high and low in the best of moments!
-A monster’s size determines the die used to calculate its Hit Points, as shown in the Hit Dice by Size table.
-
-Table: Size Categories
-Size	Space	Examples
-Tiny	2½ by 2½ ft.	Imp, Sprite
-Small	5 by 5 ft.	    Giant Rat, Goblin
-Medium	5 by 5 ft.	    Orc, Werewolf
-Large	10 by 10 ft.	Hippogriff, Ogre
-Huge	15 by 15 ft.	Fire Giant, Treant
-Gargantuan 20 by 20 ft. or more Kraken, Purple Worm
-
-Table: Hit Dice by Size
-Monster Size	Hit Die	Average HP
-                         per Die
-Tiny	        d4	       2½
-Small	        d6	       3½
-Medium	        d8	       4½
-Large	        d10	       5½
-Huge	        d12	       6½
-Gargantuan	    d20	       10½
-
-A monster’s Constitution modifier also affects the number of Hit Points it has.
-Its Constitution modifier is multiplied by the number of Hit Dice it possesses,
-and the result is added to its Hit Points.
-For example, if a monster has a Constitution of 12 (+1 modifier)
-and 2d8 Hit Dice, it has 2d8 + 2 Hit Points (average 11).
-
-Adult Red Dragon
-Huge dragon, chaotic evil
-Armor Class 19 (Natural Armor)
-Hit Points 256 (19d12+133)
-Speed 40 ft., climb 40 ft., fly 80 ft.
-STR 27 (+8)
-DEX 10 (+0)
-CON 25 (+7)
-INT 16 (+3)
-WIS 13 (+1)
-CHA 21 (+5)
-Hit Points at 1st Level: 10 + your Constitution modifier
-Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighter level after 1st
-# MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
-# "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
-average treasure per encounter per level:
-1-75.15
-2-107.15
-3-151.9
-4-209.6
-5-280
-6-376
-7-536
-8-760
-9-1048
-10-1400
-11-1880
-12-2680
-13-3800
-14-5240
-15-7000
-16-9400
-17-13400
-18-19000
-19-26200
-20-35000
-21-47000
-22-67000
-23-95000
-24-131000
-25-175000
-26-235000
-27-285000
-28-325000
-29-355000
-30-437500
-
-"""
 import math
 import os
 import random
 import time
-
-# from player_module_testing import *  # sikira, torbron, magnus, vozzbozz
-
-# from dice_roll_module import dice_roll
-
-'''Choose a challenge rating (CR) for your custom trap, object, effect, or creature
-between 1 and 30. Write down its statistics from the following formulas:
-• AC = 12 + ½ CR (or choose between 10 and 20 based on the story)
-• DC = 12 + ½ CR
-• Hit Points = 20 × CR
-• Attack Bonus = 3 + ½ CR
-• Proficient Saves or Skills = 3 + ½ CR
-• Single-Target Damage = 7 × CR (or 2d6 per CR)'''
 
 
 def dice_roll(no_of_dice, no_of_sides):
@@ -150,10 +16,8 @@ def dice_roll(no_of_dice, no_of_sides):
     return your_roll_sum
 
 
-# # monsters have Strength, Dexterity, Constitution, Intelligence, Wisdom, and Charisma
 def pause():
     if os.name == 'nt':
-        # print("You're on Windows. Program should work")
         os.system('pause')
     else:
         input("Strike [ENTER] to continue. . .")
@@ -967,7 +831,7 @@ class Goblin(Monster):
         self.introduction = f"You have encountered a {self.name}. Hideously foul and ugly, its grimacing flat face\n" \
                             f"wrinkles up as it sniffs the air around you. Its pointed ears twitch and then draw \n" \
                             f"straight up. Smiling wickedly with blackened teeth, it unsheathes a rusty, crooked\n" \
-                            f"scimitar and faces you with ill-intent."
+                            f"scimitar and faces you."
         self.is_discovered = False
 
     # name = "Goblin"
@@ -2322,17 +2186,3 @@ undead_monster_dict = {
 undead_prophet_list = [ZombieProphet(), SkeletalProphet()]
 king_boss_list = [SkeletonKing(), ShadowKing(), SpecterKing()]
 
-# For monster hit points..take hit dice and add (constitution modifier x number of hit dice).
-# For example, if a monster has a Constitution of 12 (+1 modifier) and 2d8 Hit Dice, it has 2d8 + 2 Hit Points
-# self.hit_points = dice_roll(self.number_of_hd, self.hit_dice) + (self.number_of_hd * self.constitution_modifier)
-'''def drain(self, monster_wisdom, monster_wisdom_modifier, human_player_level, human_player_wisdom,
-              human_player_wisdom_modifier):
-        drain_level = dice_roll(1, 20)  # need player_1 experience logic for proper drain??
-        if drain_level > 17 and (monster_wisdom + monster_wisdom_modifier) > (
-                human_player_wisdom + human_player_wisdom_modifier):
-            # print("It drains a level!")
-            level_drain = True
-            return level_drain
-        else:
-            level_drain = False
-            return level_drain'''

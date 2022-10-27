@@ -4,13 +4,10 @@ import random
 import time
 import os
 import sys
-# import pyinputplus as pyip
 from collections import Counter
 import winsound
-# from dice_roll_module import dice_roll
-from dungeons import *
+from dungeons import dungeon_dict
 from monster_module import monster_dict, king_boss_list, undead_prophet_list
-# from typing_module import typing
 from pathlib import Path
 # if you call a function and expect to use a return value, like, by printing it, you must first assign a variable in
 # the call itself!!!
@@ -327,7 +324,6 @@ class Weapon:
     def __repr__(self):
         return f"{self.name} - Damage Bonus: {self.damage_bonus}  To hit: {self.to_hit_bonus}  " \
                f"Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP"
-    #       return self.name
 
 
 class ShortSword(Weapon):
@@ -375,16 +371,31 @@ class GreatSword(Weapon):
 great_sword = GreatSword()
 
 
+class ElvishGreatSword(Weapon):
+    def __init__(self):
+        super().__init__()
+        self.name = "Elvish Great Sword"
+        self.item_type = "Weapons"
+        self.damage_bonus = 10
+        self.to_hit_bonus = 3
+        self.sell_price = 2500
+        self.buy_price = 5000
+        self.minimum_level = 8
+
+
+elvish_great_sword = ElvishGreatSword()
+
+
 class QuantumSword(Weapon):
     def __init__(self):
         super().__init__()
         self.name = "Quantum Sword"
         self.item_type = "Weapons"
-        self.damage_bonus = 10  # 5
-        self.to_hit_bonus = 5
+        self.damage_bonus = 12  # 5
+        self.to_hit_bonus = 4
         self.sell_price = 5000
         self.buy_price = 8000
-        self.minimum_level = 8  # 3
+        self.minimum_level = 10  # 3
 
 
 quantum_sword = QuantumSword()
@@ -396,7 +407,7 @@ class QuantumAxe(Weapon):
         self.name = "Quantum Axe"
         self.item_type = "Weapons"
         self.damage_bonus = 15  # 5
-        self.to_hit_bonus = 5
+        self.to_hit_bonus = 4
         self.sell_price = 5000
         self.buy_price = 8000
         self.minimum_level = 10  # 3
@@ -1010,7 +1021,7 @@ class SiKira:
         self.experience = 0
         self.base_dc = 8
         self.gold = random.randint(2500, 4000)
-        self.wielded_weapon = great_sword
+        self.wielded_weapon = elvish_great_sword
         self.armor = scale_mail
         self.shield = kite_shield
         self.boots = elven_boots
@@ -1265,8 +1276,8 @@ class Player:
         print(f"Level: {self.level}")
         print(f"Experience: {self.experience}")
         print(f"Gold: {self.gold}")
-        print(f"Weapon: {self.wielded_weapon.name} (Damage Bonus: {self.wielded_weapon.damage_bonus})")
-        print(f"To hit bonus: + {self.wielded_weapon.to_hit_bonus}")
+        print(f"Weapon: {self.wielded_weapon.name} (Damage Bonus: {self.wielded_weapon.damage_bonus}) "
+              f"(To hit bonus: + {self.wielded_weapon.to_hit_bonus})")
         print(f"Armor: {self.armor.name} (AC: {self.armor.ac})")
         print(f"Shield: {self.shield.name} (AC: {self.shield.ac})")
         print(f"Boots: {self.boots.name} (AC: {self.boots.ac})")
@@ -1288,9 +1299,8 @@ class Player:
         if self.quantum_strength_effect and self.quantum_strength_uses > -1:
             print(f"QUANTUM STRENGTH EFFECT) ({self.quantum_strength_uses}/{self.max_quantum_strength_uses})")
         if self.protection_effect and self.protection_effect_uses > -1:
-            print(
-                f"(PROT/EVIL: {self.temp_protection_effect}) "
-                f"({self.protection_effect_uses}/{self.max_protection_effect_uses})")
+            print(f"(PROT/EVIL: {self.temp_protection_effect}) "
+                  f"({self.protection_effect_uses}/{self.max_protection_effect_uses})")
         if self.poisoned:
             print(f"(POISONED)")
             print(f"Poison clarifying: ({self.poisoned_turns}/{self.dot_turns})")
@@ -1318,8 +1328,8 @@ class Player:
 
     # CALCULATION
     def monster_attacks_npc_meta(self, monster):
-
-        # monster attacks npc allies
+        # called from main loop, after monster attacks human player. also called after paralyze attacks.
+        # if monster has multi_attack ability, monster attacks all npc allies
         self.hud()
         if monster.multi_attack:
             if self.sikira_ally:
@@ -1403,6 +1413,7 @@ class Player:
             npc_end_of_turn_calculation(vozzbozz)
 
     def end_of_turn_calculation(self):
+        # called from main loop at end of player navigation, or battle turn
         self.regenerate()
         self.calculate_potion_of_strength()  # potions of strength have max uses = self.max_quantum_strength_uses
         self.calculate_quantum_strength()  # self.max_quantum_strength_uses= self.quantum_level + self.strength_modifier
@@ -1411,16 +1422,18 @@ class Player:
         self.calculate_necrotic_dot()  # necrosis wears off after self.dot_turns which = monster.dot_turns during battle
 
     def calculate_stealth(self):
+        # called from found_cloak_substitution() as well as item_management()
         self.stealth += self.cloak.stealth
         return
 
     def calculate_armor_class(self):
+        # called from monster_likes_you(), item_management(), found_shield_substitution, found_armor_substitution()
         self.armor_class = self.armor.ac + self.armor.armor_bonus + \
                            self.shield.ac + self.boots.ac + self.dexterity_modifier
         return
 
     def calculate_poison(self):
-
+        # called from end_of_turn_calculation() meta function
         if self.poisoned:
             if self.poisoned_turns >= self.dot_turns:
                 self.poisoned = False
@@ -1437,7 +1450,7 @@ class Player:
         return self.poisoned
 
     def calculate_necrotic_dot(self):
-
+        # called from end_of_turn_calculation() meta function
         if self.necrotic:
             if self.necrotic_turns >= self.dot_turns:
                 self.necrotic = False
@@ -1454,6 +1467,7 @@ class Player:
         return self.necrotic
 
     def calculate_quantum_strength(self):
+        # called from end_of_turn_calculation() meta function
         if self.quantum_strength_effect:
             if self.quantum_strength_uses >= self.max_quantum_strength_uses:  # self.quantum_lvl+self.strength_modifier
                 self.quantum_strength_effect = False
@@ -1466,6 +1480,7 @@ class Player:
         return self.quantum_strength_effect
 
     def calculate_potion_of_strength(self):
+        # called from end_of_turn_calculation() meta function
         if self.potion_of_strength_effect:
             if self.potion_of_strength_uses >= self.max_quantum_strength_uses:  # self.strength_modifier + 2:
                 self.potion_of_strength_effect = False
@@ -1478,6 +1493,7 @@ class Player:
         return self.potion_of_strength_effect
 
     def calculate_protection_effect(self):
+        # called from end_of_turn_calculation() meta function
         if self.protection_effect:
             if self.protection_effect_uses >= self.max_protection_effect_uses:
                 self.protection_effect = False
@@ -1494,6 +1510,8 @@ class Player:
         return self.protection_effect
 
     def calculate_modifiers(self):
+        # called from ability score improvement asi(), increase_random_ability(), decrease_random_ability(),
+        # level_up(), increase_lowest_ability() and decrease_lowest_ability()
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         # When your Constitution modifier increases by 1,
@@ -1520,6 +1538,7 @@ class Player:
         return
 
     def calculate_proficiency_bonus(self):
+        # called from level_up()
         if self.level <= 4:
             self.proficiency_bonus = 2
         if self.level > 4 < 9:
@@ -1542,6 +1561,7 @@ class Player:
     # 6                       15
 
     def calculate_current_level(self):
+        # called from level_up()
         if self.experience < 300:
             self.level = 1
             self.quantum_level = 1
@@ -1646,13 +1666,11 @@ class Player:
 
     # LEVEL AND EXPERIENCE
     def asi(self):
+        # called from level_up()
         # Ability Score Improvement at levels 4, 8, 12, 16, and 19.
         # Fighters gain additional ASIs at the 6th and 14th levels
-        # so, 4, 6, 8, 12, 14, 16, 19
-
+        # so, 4, 6, 8, 12, 14, 16, 19 for our purposes, since player is most like a fighter
         # Define list of attributes you are allowed to change
-        # ability_dict_subset_too = {1: "strength", 2: "dexterity", 3: "constitution", 4: "intelligence", 5: "wisdom",
-        #                           6: "charisma"}
         if self.strength < 20 or self.dexterity < 20 or self.constitution < 20 or self.intelligence < 20 \
                 or self.wisdom < 20 or self.charisma < 20:
             os.system('cls')
@@ -1734,7 +1752,7 @@ class Player:
             return
 
     def level_up(self, exp_award, monster_gold):
-        # *****************
+        # called from main loop after victory
         self.gold += monster_gold
         before_level = self.level
         before_quantum_level = self.quantum_level
@@ -1769,7 +1787,6 @@ class Player:
             # Ability Score Improvement at levels 4, 8, 12, 16, and 19.
             # Fighters gain additional ASIs at the 6th and 14th levels
             # so, 4, 6, 8, 12, 14, 16, 19
-
             if self.level == 4 or self.level == 6 or self.level == 8 or self.level == 12 \
                     or self.level == 14 or self.level == 16 or self.level == 19:
                 self.asi()  # Ability Score Improvement calls calculate modifiers, so
@@ -1797,6 +1814,7 @@ class Player:
 
     # BATTLE AND PROXIMITY TO MONSTER OCCURRENCES
     def rndm_death_statement(self):
+        # called from main loop
         rndm_statements = ["You have succumbed to your injuries!",
                            "Bravely you have fought. Bravely you have died. Rest in Peace."
                            ]
@@ -1805,13 +1823,14 @@ class Player:
         return
 
     def regular_monster_generator(self):
+        # called from main loop
         regular_monster_key = random.randint(1, self.level)  # (self.level + 1)
         regular_monster_cls = random.choice(monster_dict[regular_monster_key])
         regular_monster = regular_monster_cls()
         return regular_monster
 
     def undead_prophet_generator(self):
-        # called from main, if encounter == 97
+        # called from main loop, if encounter == 97
         rndm_prophet_names = ['Tacium', 'Amarrik', 'Arynd', 'Beldonnor', 'Forrg',
                               'Sambressorr', 'Jornav', 'Tyrnenn', 'Fenlor', 'Yagoddish', 'Borell',
                               'Ehrnador', 'Thaymorro', 'Gorrel', 'Aureor', 'Linus', 'Mattheus',
@@ -1827,10 +1846,7 @@ class Player:
                          'the Blackhearted', 'the Blind', 'the Bloodthirsty', 'the Cruel',
                          'the Damned', 'the Foul', 'the Foulest', 'the Feared', 'the Fear-Inspiring'
                          ]
-        # monster_key = self.level
-        # monster_cls = random.choice(undead_prophet_dict[monster_key])
-        # undead_prophet = monster_cls()
-        # return undead_prophet
+
         undead_prophet = random.choice(undead_prophet_list)
         name = random.choice(rndm_prophet_names)
         epithet = random.choice(rndm_epithets)
@@ -1845,7 +1861,7 @@ class Player:
         return undead_prophet
 
     def exit_boss_generator(self):
-        # called from main, if encounter == 99
+        # called from main loop, if encounter == 99
         rndm_boss_names = ['Gwarlek', 'Srentor', 'Borrnol', 'Sentollor', 'Morluk',
                            'Twinbelor', 'Sornog', 'Grenyor', 'Fallraur', 'Timboth', 'Surj',
                            'Morozzor', 'Tharbor', 'Tenbrok', 'Lorrius', 'Filwor',
@@ -1870,7 +1886,7 @@ class Player:
         return exit_boss
 
     def king_monster_generator(self):
-        # called from main, if encounter == 98
+        # called from main loop, if encounter == 98
         rndm_king_names = ['Tartyrtum', 'Amarrok', 'Aaryn', 'Baldrick', 'Farrendal',
                            'Dinenlell', 'Jorn', 'Tyrne', 'Fen', 'Jagod', 'Bevel',
                            'Elrik', 'Thayadore', 'Grummthel', 'Aureus', 'Sylgor',
@@ -1885,10 +1901,7 @@ class Player:
                          'the Blackhearted', 'the Blind', 'the Bloodthirsty', 'the Conqueror', 'the Cruel',
                          'the Crusader', 'the Damned'
                          ]
-        # monster_key = self.level
-        # monster_cls = random.choice(king_boss_dict[monster_key])
-        # king_monster = monster_cls
-        # king_monster = SkeletonKing()
+
         king_monster = random.choice(king_boss_list)
         name = random.choice(rndm_king_names)
         epithet = random.choice(rndm_epithets)
@@ -1902,41 +1915,105 @@ class Player:
         print(f"The undead King {king_monster.proper_name} returns!")
         return king_monster
 
-    def monster_likes_you(self, monster_name, monster_intel):
-        if dice_roll(1, 20) > 19 and monster_intel > 9 and self.charisma > 10:
-            print(f"The {monster_name} likes you!")
+    def monster_likes_you(self, monster):
+        # called from main loop after encounter with regular monster
+        if dice_roll(1, 20) > 19 and monster.intelligence > 14 and monster.charisma > 15 and self.charisma > 15:
+            print(f"The {monster.name} likes you!")
             sleep(1)
-            gift_item = dice_roll(1, 3)
-            if gift_item == 1:
-                self.armor.ac += 1
-                self.calculate_armor_class()
-                print(f"He enhances your armor to AC {self.armor.ac}!")
-                pause()
-                return True
-            if gift_item == 2:
-                if self.shield.name != no_shield.name:
-                    self.shield.ac += 1
-                    self.calculate_armor_class()
-                    print(f"He enhances your shield to AC {self.shield.ac}!")
+            upgradeable = True
+            while upgradeable:
+                if self.armor.ac < 18 or self.shield.ac < 3 or self.wielded_weapon.damage_bonus < 15 or \
+                        self.wielded_weapon.to_hit_bonus < 6 or self.boots.ac < 3:
+                    upgradeable = True
                 else:
-                    self.shield = buckler
-                    print(f"He gives you a {self.shield.name}!")
-                    self.calculate_armor_class()
-                pause()
-                return True
-            if gift_item == 3:
-                self.wielded_weapon.damage_bonus += 1
-                # *****ADD LOGIC TO APPEND PREFIX TO WEAPON NAME, LIKE, 'ENHANCED', ETC *******************************
-                print(f"He enhances your weapon damage bonus to + {self.wielded_weapon.damage_bonus}!")
-                pause()
-                return True
+                    upgradeable = False
+                if not upgradeable:
+                    gold_gift = random.randint(100, 5000)
+                    print(f"It gives you {gold_gift} GP!")
+                    self.gold += gold_gift
+                    pause()
+                    return True
+                gift_item = dice_roll(1, 5)
+                if gift_item == 1:
+                    if self.armor.ac < 18:
+                        if self.armor.name != padded_armor.name:
+                            self.armor.ac += 1
+                            self.calculate_armor_class()
+                            print(f"It enhances your {self.armor.name} to AC {self.armor.ac}!")
+                        else:
+                            self.armor = leather_armor
+                            print(f"It gives you {self.armor.name}!")
+                            self.calculate_armor_class()
+                        pause()
+                        return True
+                    else:
+                        continue
+                if gift_item == 2:
+                    if self.shield.ac < 3:
+                        if self.shield.name != no_shield.name:
+                            self.shield.ac += 1
+                            self.calculate_armor_class()
+                            print(f"It enhances your {self.shield.name} to AC {self.shield.ac}!")
+                        else:
+                            self.shield = buckler
+                            print(f"It gives you a {self.shield.name}!")
+                            self.calculate_armor_class()
+                        pause()
+                        return True
+                    else:
+                        continue
+                if gift_item == 3:
+                    if self.wielded_weapon.damage_bonus < 15:
+                        if self.wielded_weapon.name != short_sword.name:
+                            self.wielded_weapon.damage_bonus += 1
+                            print(f"It enhances your {self.wielded_weapon.name} damage bonus to + "
+                                  f"{self.wielded_weapon.damage_bonus}!")
+                            pause()
+                            return True
+                        else:
+                            self.wielded_weapon = broad_sword
+                            print(f"It gives you a {self.wielded_weapon.name}!")
+                            pause()
+                            return True
+                    else:
+                        continue
+                if gift_item == 4:
+                    if self.wielded_weapon.to_hit_bonus < 6:
+                        if self.wielded_weapon.name != short_sword.name:
+                            self.wielded_weapon.to_hit_bonus += 1
+                            print(f"It enhances your {self.wielded_weapon.name} to-hit bonus to + "
+                                  f"{self.wielded_weapon.to_hit_bonus}!")
+                            pause()
+                            return True
+                        else:
+                            self.wielded_weapon = broad_sword
+                            print(f"It gives you a {self.wielded_weapon.name}!")
+                            pause()
+                            return True
+                    else:
+                        continue
+                if gift_item == 5:
+                    if self.boots.ac < 3:
+                        if self.boots.name != leather_boots.name:
+                            self.boots.ac += 1
+                            self.calculate_armor_class()
+                            print(f"It enhances your {self.boots.name} to AC {self.boots.ac}!")
+                        else:
+                            self.boots = elven_boots
+                            print(f"It gives you a pair of {self.boots.name}!")
+                            self.calculate_armor_class()
+                        pause()
+                        return True
+                    else:
+                        continue
+
         else:
             return False
 
     def quick_move(self, monster_name):
+        # called from main loop
         self.hud()
         quick_move_roll = dice_roll(1, 20)  # - self.stealth
-        # player_initiative_roll = dice_roll(1, 20)
         if quick_move_roll == 20:
             print(f"The {monster_name} makes a quick move...")
             sleep(1.5)
@@ -1960,7 +2037,7 @@ class Player:
             # Belt inventory is handled differently. This is clunky but should work.
             # belt inventory logic:
 
-            elif sum(belt_item_types_to_steal) > 0:  # simplifies all the if statements above
+            elif sum(belt_item_types_to_steal) > 0:
                 item_string = ""
                 # Define list of attributes you are allowed to change
                 self_dict = self.__dict__  # create self_dict variable as actual copy of player dict attribute
@@ -1996,12 +2073,14 @@ class Player:
             return False  # False here means monster failed check, and he sticks around to fight; invisible to player
 
     def reduce_health(self, damage):
+        # called from main loop after monster does damage to human player
         self.hit_points -= damage
         # if self.hit_points < 0:  # restore after testing
         #    self.hit_points = 0
         return
 
     def check_dead(self):
+        # called from main loop after damage and calculations
         # I am proud of this code...it was very difficult for me and took many hours
         if self.hit_points > 0:
             return False
@@ -2030,7 +2109,7 @@ class Player:
                 if fails >= 3:
                     print(f"Death saving throw failed!")
                     sleep(1)
-                    return True
+                    return True  # player IS dead
                 death_save = dice_roll(1, 20)
                 attempt += 1
                 print(f"Attempt {attempt}: {death_save}")
@@ -2056,6 +2135,7 @@ class Player:
             return True  # player IS dead
 
     def initiative(self):
+        # called from main loop after encountering monster
         if self.level > 6:
             player_initiative = dice_roll(1, 20) + self.dexterity_modifier + self.proficiency_bonus
         else:
@@ -2219,6 +2299,7 @@ class Player:
             return 0
 
     def turn_undead(self, monster):
+        # monster must make wisdom saving throw or be turned away
         quantum_unit_cost = 1
         if self.in_proximity_to_monster:
             print(f"Turn Undead")
@@ -2390,10 +2471,6 @@ class Player:
                 resistance_modifier = 0
                 if "Fear" in monster.resistances or "All" in monster.resistances:
                     resistance_modifier = 3
-                # turn_roll = dice_roll(1, 20)
-                # total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
-                # print(f"Quantum Ability Check: {turn_roll}\nWisdom Modifier: {self.wisdom_modifier}\n"
-                #      f"Proficiency Bonus: {self.proficiency_bonus}")
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
@@ -2457,14 +2534,14 @@ class Player:
             return
 
     def quantum_purify(self, monster):
-        # monster parameter not used or needed here
+        # cures poisoned and necrotic condition
+        # works only when poisoned or necrotic, but once engaged, also has powerful hit point healing!
         if monster is None:
             print(f"Purify")
         else:
-            print(f"Battle Purify")
+            print(f"Purify (BATTLE)")
         sleep(1)
         quantum_unit_cost = 2
-        # works only when poisoned or necrotic, but once engaged, has powerful hit point healing!
         self.hud()
         if not self.poisoned and not self.necrotic:
             print(f"Your flesh is not corrupted!")
@@ -2718,7 +2795,7 @@ class Player:
             return
 
     def hold_monster(self, monster):
-        # like sleep and charm, but pits your wisdom against monster strength
+        # like sleep and charm, but pits player wisdom against monster strength
         quantum_unit_cost = 3
         if self.in_proximity_to_monster:
             print(f"Hold Monster")
@@ -3066,6 +3143,7 @@ class Player:
             return
 
     def quantum_strength(self, monster):
+        # heal to full strength and get *2 melee damage multiplier (defined in melee())
         if monster is None:
             print(f"Quantum Strength")
         else:
@@ -3086,8 +3164,8 @@ class Player:
         self.quantum_strength_effect = True
         self.quantum_units -= quantum_unit_cost
         self.quantum_strength_uses = -1  # to compensate for end of turn calculation
-        # if self.hit_points < self.maximum_hit_points:  # in the rare case player has hit point overage,
-        #    self.hit_points = self.maximum_hit_points  # this will not disrupt that advantage
+        if self.hit_points < self.maximum_hit_points:  # in the rare case player has hit point overage,
+            self.hit_points = self.maximum_hit_points  # this will not disrupt that advantage
         pause()
         return 0
 
@@ -5210,6 +5288,7 @@ class Player:
             return
 
     def evade(self, monster, encounter):
+        # called from main loop
         if encounter < 21:
             print(f"You attempt an evasive maneuver..")
             sleep(1)
@@ -5587,7 +5666,8 @@ class Player:
     def buy_blacksmith_items(self):
 
         blacksmith_dict = {
-            'Weapons': [short_axe, broad_sword, great_sword, quantum_sword, battle_axe, great_axe, quantum_axe],
+            'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
+                        quantum_sword, battle_axe, great_axe, quantum_axe],
             'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
             'Shields': [buckler, kite_shield, quantum_tower_shield],
             'Boots': [elven_boots, ancestral_footsteps],
@@ -5904,7 +5984,6 @@ class Player:
         for key, value in mgmt_dict.items():
             print(key.name, '- Sell price:', key.sell_price, 'GP')
             liquidate_lst.append(key.sell_price)
-            # (self.pack[each_category]).clear()
         total = sum(liquidate_lst)
         print(f"Total: {total}")
         confirm_liquidate = input(f"Sell everything in your dungeoneer's pack for {total} GP? ").lower()
@@ -5945,9 +6024,7 @@ class Player:
         print(f"You have been poisoned!")
         self.poisoned = True
         self.poisoned_turns = 0
-        # self.calculate_poison()
         pause()
-        # self.dungeon_description()
         self.hud()
         return self.poisoned
 
@@ -6680,7 +6757,8 @@ class Player:
             'Shields': [buckler, kite_shield, quantum_tower_shield],
             'Boots': [elven_boots, ancestral_footsteps],
             'Cloaks': [elven_cloak],
-            'Weapons': [short_axe, broad_sword, great_sword, quantum_sword, battle_axe, great_axe, quantum_axe],
+            'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
+                        quantum_sword, battle_axe, great_axe, quantum_axe],
             'Elixirs': [elixir],
             'Healing': [healing_potion],
             'Rings of Regeneration': [ring_of_regeneration],
@@ -6799,7 +6877,8 @@ class Player:
                 'Shields': [buckler, kite_shield, quantum_tower_shield],
                 'Boots': [elven_boots, ancestral_footsteps],
                 'Cloaks': [elven_cloak],
-                'Weapons': [short_axe, broad_sword, great_sword, quantum_sword, battle_axe, great_axe, quantum_axe],
+                'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
+                            quantum_sword, battle_axe, great_axe, quantum_axe],
                 'Elixirs': [elixir],
                 'Healing': [healing_potion],
                 'Rings of Regeneration': [ring_of_regeneration],
@@ -6936,7 +7015,8 @@ class Player:
                     'Shields': [buckler, kite_shield, quantum_tower_shield],
                     'Boots': [elven_boots, ancestral_footsteps],
                     'Cloaks': [elven_cloak],
-                    'Weapons': [short_axe, broad_sword, great_sword, quantum_sword, battle_axe, great_axe, quantum_axe],
+                    'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
+                                quantum_sword, battle_axe, great_axe, quantum_axe],
                     'Elixirs': [elixir],
                     'Healing': [healing_potion],
                     'Rings of Regeneration': [ring_of_regeneration],

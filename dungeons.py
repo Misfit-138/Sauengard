@@ -20,9 +20,6 @@
 """
 
 
-# from monster_module import Shadow, Specter, Ghoul, Orc
-
-
 # maps
 class Dungeon:
 
@@ -132,9 +129,11 @@ class Dungeon1(Dungeon):
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]]
         # the intro is similar to the staircase description. however, the intro is more of an active description
         self.intro = "You descend the crumbling steps of a deep, spiral staircase, finding yourself in a\n" \
-                     "darkness more dense than any you have ever known. Taking a moment to adjust to the thick gloom,\n" \
+                     "darkness more dense than any you have ever known. Taking a moment to adjust to the thick " \
+                     "gloom,\n" \
                      "you hear a disturbance from above, as the great door is slammed and barred shut!\n" \
-                     "As the echoes throughout the emptiness linger, you hear the muffled scraping of a mighty chain\n" \
+                     "As the echoes throughout the emptiness linger, you hear the muffled scraping of a mighty " \
+                     "chain\n" \
                      "being quickly wrestled into place, and finally, locked and released with a thud.\n" \
                      "This is the entrance of the catacombs. Blackness and the stench of filth surround you."
 

@@ -9,23 +9,16 @@
 # Boss battle theme: 'Dragon Castle' / Epic Orchestral Battle Music by Makai Symphony Creative commons license reuse ok
 # Tavern theme 'The Medieval Banquet / Silvermansound No Copyright. Royalty Free Music
 # Pit theme 'Epic 39' / Jules Pitsker
-# Telengard
-# MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
-# "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
 
-
-from player_module_testing import *
 import pickle
-from monster_module import *
-# from typing_module import typing
+from dungeons import dungeon_dict
 import os
-# import winsound
-# from dungeons import *
+from player_module_testing import sad_cello_theme, cls, game_splash, character_generator, town_theme, gong, sleep, \
+    encounter_logic, boss_battle_theme, mountain_king_theme, pause
 
 sad_cello_theme()
 cls()
 game_splash()
-# winsound.PlaySound(None, winsound.SND_ASYNC)
 cls()
 player_1 = ""  # to get rid of undefined warning
 player_name = ""  # to get rid of undefined warning
@@ -40,18 +33,18 @@ while True:
             print(f"{player_name} found.")
             with open(load_a_character, 'rb') as saved_player:
                 player_1 = pickle.load(saved_player)
-                time.sleep(1)
+                sleep(1)
                 print(f"{player_name} read.")
-                time.sleep(1)
+                sleep(1)
                 # dungeon_key = player_1.dungeon_key
                 dungeon = dungeon_dict[player_1.dungeon_key]  # remove after testing
                 print(dungeon.name)  # remove after testing
                 print(player_1.coordinates)  # remove after testing
                 player_1.loaded_game = True
-                time.sleep(1)
+                sleep(1)
         else:
             print(f"Could not find {player_name} ")
-            time.sleep(1.5)
+            sleep(1.5)
             continue
 
     if new_game_or_load == 's':
@@ -74,7 +67,7 @@ while True:
             player_1.hud()
 
     print(f"You enter the town of Fieldenberg.")
-    time.sleep(1.5)
+    sleep(1.5)
     player_1.in_town = True
     # player_1.in_dungeon = False  # should be unneeded. defined as False in Player class and after portal use
     discovered_monsters = []
@@ -97,14 +90,14 @@ while True:
                     cls()
                     gong()
                     print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
-                    time.sleep(4)
+                    sleep(4)
                     player_1.in_proximity_to_monster = False
                     player_1.in_dungeon = False
                     player_1.in_town = False
                     while True:
                         try_again = input("Do you wish to play again (y/n)? ").lower()
                         if try_again == "y":
-                            time.sleep(1)
+                            sleep(1)
                             cls()
                             player_1.in_proximity_to_monster = False
                             player_1.in_dungeon = False
@@ -116,7 +109,7 @@ while True:
                             exit()
                         if try_again not in ("y", "n"):
                             # print("Please enter y or n ")
-                            time.sleep(.5)
+                            sleep(.5)
                             continue
                 if not player_1.in_dungeon:
                     break
@@ -268,7 +261,7 @@ while True:
                                 discovered_monsters.append(monster.name)
                             pause()
                         if encounter < 21:  # if not a boss, monster may like you or steal from you
-                            if player_1.monster_likes_you(monster.name, monster.intelligence):
+                            if player_1.monster_likes_you(monster):
                                 player_1.in_proximity_to_monster = False
                                 # player_1.event_logic()  # this will trigger an event without using (L)ook
                                 player_1.dungeon_description()
@@ -303,7 +296,7 @@ while True:
                                         break
                             else:  # you died
                                 player_1.rndm_death_statement()
-                                time.sleep(3)
+                                sleep(3)
                                 player_is_dead = True
                                 break
                             # at this point, monster still has initiative
@@ -456,7 +449,7 @@ while True:
 
                                 else:
                                     print(f"You died!")
-                                    time.sleep(3)
+                                    sleep(3)
                                     player_is_dead = True
                                     break
                                 # beta testing if player has allies, monster attacks npc
@@ -541,7 +534,7 @@ while True:
                                                 break
                                     else:  # you died
                                         player_1.rndm_death_statement()
-                                        time.sleep(3)
+                                        sleep(3)
                                         player_is_dead = True
                                         break
                                     player_1.hud()
@@ -550,7 +543,7 @@ while True:
 
                             else:  # invalid inputs
                                 print(f"The {monster.name} is not amused.")
-                                time.sleep(1)
+                                sleep(1)
                                 player_1.hud()
                                 continue
                             #

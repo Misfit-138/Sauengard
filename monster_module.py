@@ -340,8 +340,6 @@ class Monster:
 
             print(f"Your Total: {difficulty_class}")
             if roll_d20 == 20 or roll_d20 >= difficulty_class:  # self.constitution + self.constitution_modifier:
-                # return True
-                # self.hud()
                 player_1.dot_multiplier = self.dot_multiplier
                 player_1.dot_turns = self.dot_turns
                 rndm_poisoned_phrases = ["You feel a disturbing weakness overcoming you..",
@@ -417,8 +415,7 @@ class Monster:
                 reduce_npc_health(npc, damage_to_player)
             return
         else:
-            # print(f"{npc.name} is in retreat...")
-            # time.sleep(1)
+            # npc is in retreat. move on.
             return
 
     def meta_monster_function(self, player_1):
@@ -468,10 +465,7 @@ class Monster:
         print(f"The {self.name} attacks {npc.name}! (It rolls {roll_d20})")
         if roll_d20 == 1:
             print(f"..it awkwardly strikes and {npc.name} easily blocks.")
-            # time.sleep(2)
-            # os.system('pause')
             pause()
-
             return 0
         if roll_d20 == 20:
             critical_bonus = 2
@@ -502,7 +496,6 @@ class Monster:
                 time.sleep(1.5)
                 print(f"{npc.name} suffers {damage_to_opponent} points of damage!")
                 pause()
-
                 return damage_to_opponent
             else:
                 # zero damage to player result

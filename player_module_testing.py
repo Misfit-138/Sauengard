@@ -299,7 +299,7 @@ def town_theme():
     if os.name == 'nt':
         winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_(tavern)_loop_by_alexander_nakarada.wav',
                            winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-        # place these files in same directory..use folowing syntax:
+        # place these files in same directory. use folowing syntax:
         # winsound.PlaySound('town_(tavern)_loop_by_alexander_nakarada.wav',
         # winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
@@ -1779,7 +1779,7 @@ class Player:
             gain_hit_points1 = dice_roll(1, self.hit_dice) + self.constitution_modifier  # hp increase method 1
             gain_hit_points2 = 6 + self.constitution_modifier  # hp increase method 2
             hit_point_list = [gain_hit_points1, gain_hit_points2]
-            gain_hit_points = max(hit_point_list)  # the higher of method 1 and 2
+            gain_hit_points = max(hit_point_list)  # the highest of method 1 and 2
             self.hit_points += gain_hit_points  # you heal and gain max hp (previous HP + Hit Die roll + CON modifier)
             self.maximum_hit_points += gain_hit_points
             print(f"You gain {gain_hit_points} hit points")
@@ -3189,7 +3189,7 @@ class Player:
             self.hit_points += heal
             if self.hit_points > self.maximum_hit_points:
                 self.hit_points = self.maximum_hit_points
-            # self.hit_points += math.floor(self.maximum_hit_points * .5)  # round down for cure light wounds..
+            # self.hit_points += math.floor(self.maximum_hit_points * .5)  # round down for cure light wounds.
             self.quantum_units -= quantum_unit_cost
         else:
             print(f"You are at maximum health!")
@@ -5312,7 +5312,7 @@ class Player:
                 # time.sleep(1.5)
                 return False
         else:
-            # bosses cannot be evaded..
+            # bosses cannot be evaded.
             if monster.proper_name != "None":
                 print(f"{monster.proper_name} foils your stealthy attempt and swiftly blocks your escape!")
             else:
@@ -5377,9 +5377,6 @@ class Player:
             type_to_sell = input(f"Pick item to sell by number, or go (B)ack: ").lower()
             if type_to_sell == 'b':
                 return
-            # elif sell_or_not == 's':
-            #    type_to_sell = input(f"Enter the category of item you wish to sell: ")
-
             elif type_to_sell == '1':
                 your_item = "potions"
                 if self.potions_of_healing < 1:
@@ -6010,8 +6007,9 @@ class Player:
             time.sleep(2)
             return True
 
-    # should be able to get rid of this code: it's been migrated to monster module
-    def poison(self):
+    def poison_ingestion(self):
+        # called from fountain_event(),
+        # from rndm_occurrence_lst
         self.hud()
         self.dot_multiplier = self.dungeon.level
         self.dot_turns = dice_roll(1, 6)
@@ -6472,7 +6470,7 @@ class Player:
         if not len(current_items):
             print(f"Nothing but cobwebs..")
             pause()
-            return  # False  # don't know if this false is needed..
+            return  # False  # don't know if this false is needed.
         else:
             pause()
             return
@@ -7467,11 +7465,11 @@ class Player:
         sleep(1)
         drink = input(f"Do you wish to drink? ").lower()
         if drink == 'y':
-            rndm_occurrence_lst = [nothing_happens, self.recover_quantum_energy, self.poison,
-                                   self.increase_random_ability, self.lose_items, self.decrease_random_ability,
-                                   self.increase_lowest_ability, self.heal_event, nothing_happens,
-                                   self.decrease_lowest_ability]
-            rndm_occurrence = random.choice(rndm_occurrence_lst)
+            rndm_occurrence_list = [nothing_happens, self.recover_quantum_energy, self.poison_ingestion,
+                                    self.increase_random_ability, self.lose_items, self.decrease_random_ability,
+                                    self.increase_lowest_ability, self.heal_event, nothing_happens,
+                                    self.decrease_lowest_ability]
+            rndm_occurrence = random.choice(rndm_occurrence_list)
             rndm_occurrence()
         else:
             print("Ignore.")
@@ -8173,7 +8171,7 @@ class Player:
         self.dungeon_key += 1
         self.dungeon = dungeon_dict[self.dungeon_key]
         (self.x, self.y) = self.dungeon.staircase  # simplified with tuple instead of self.x = and self.y =
-        # self.coordinates will be set after first move..otherwise the intro will be printed 1st, followed by the
+        # self.coordinates will be set after first move. otherwise, the intro will be printed 1st, followed by the
         # staircase description, which is awkward
         # self.x = self.dungeon.starting_x
         # self.y = self.dungeon.starting_y

@@ -354,10 +354,7 @@ class Monster:
                 print(f"You have been poisoned!")
                 player_1.poisoned = True
                 player_1.poisoned_turns = 0
-                # self.calculate_poison()
                 pause()
-                # self.dungeon_description()
-                # self.hud()
                 return player_1.poisoned
             else:
                 print(f"You swiftly dodge its poison attack!")

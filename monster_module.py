@@ -925,7 +925,7 @@ class Shadow(Monster):
         self.number_of_hd = 2
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.hit_points = 1400  # random.randint(15, 17)
+        self.hit_points = random.randint(15, 17)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)

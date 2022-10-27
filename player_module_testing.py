@@ -6010,6 +6010,7 @@ class Player:
             time.sleep(2)
             return True
 
+    # should be able to get rid of this code: it's been migrated to monster module
     def poison(self):
         self.hud()
         self.dot_multiplier = self.dungeon.level

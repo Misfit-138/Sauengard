@@ -192,7 +192,7 @@ while True:
                 encounter = encounter_logic()
                 # encounter = 15  # testing: this will make no monsters except bosses
                 # EVENT LOGIC IS DETERMINED BEFORE end_of_turn_calculation() AND player_1.check_dead(),
-                # IN CASE PLAYER SUFFERS DAMAGE, ETC
+                # IN CASE PLAYER SUFFERS DAMAGE, ETC.
                 event = player_1.event_logic()  # trigger any events corresponding to self.coordinates
                 if event == "Undead Prophet":
                     encounter = 97

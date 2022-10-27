@@ -6001,18 +6001,17 @@ class Player:
             return False
         else:
             self.hud()
-            # (self.pack['Town Portal Implements'].remove(scroll_of_town_portal))
             self.town_portals -= 1
             print(f"The quantum portal appears before you; a seemingly impossible tunneling between distant places..")
-            time.sleep(2)
+            time.sleep(1.5)
             return True
 
     def poison_ingestion(self):
         # called from fountain_event(),
-        # from rndm_occurrence_lst
+        # rndm_occurrence_lst
         self.hud()
         self.dot_multiplier = self.dungeon.level
-        self.dot_turns = dice_roll(1, 6)
+        self.dot_turns = dice_roll(1, 5)
         rndm_poisoned_phrases = ["You feel a disturbing weakness overcoming you..",
                                  "An unnerving frailty spreads throughout your body...",
                                  "Pain and tenderness courses through your body.."
@@ -6267,11 +6266,11 @@ class Player:
                 continue
 
     def recover_quantum_energy(self):
-        if self.quantum_units == self.maximum_quantum_units:
-            print(f"You are refreshed.")
-        else:
+        if self.quantum_units < self.maximum_quantum_units:
             self.quantum_units = self.maximum_quantum_units
             print(f"Your Quantum Energy is restored!")
+        else:
+            print(f"You are refreshed.")
         pause()
         return
 
@@ -7384,7 +7383,7 @@ class Player:
             print(f"The foul corruption leaves your body..")
             sleep(1)
         if self.hit_points < self.maximum_hit_points:
-            print(f"You feel restorative powers welling up within you..")
+            print(f"The restorative powers heal you to full strength..")
             sleep(1)
             self.hit_points = self.maximum_hit_points
         else:
@@ -7631,15 +7630,15 @@ class Player:
             if encounter > 20:  # if fighting boss
                 gong()
                 if monster.proper_name != "None":
-                    print(f"Your party has vanquished {monster.proper_name}! "
+                    print(f"The party has vanquished {monster.proper_name}! "
                           f"You are victorious!")
                     self.vanquished_foes.append(monster.proper_name)
                 else:
-                    print(f"Your party has vanquished the {monster.name}!")
+                    print(f"The party has vanquished the {monster.name}!")
                 sleep(4)
                 self.dungeon_theme()
             else:
-                print(f"Your party has defeated the {monster.name}..")
+                print(f"The party has defeated the {monster.name}..")
 
             return True
         else:

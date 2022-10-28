@@ -2561,7 +2561,7 @@ class Player:
             print(f"The foul corruption leaves your body..")
             sleep(1)
             if self.hit_points < self.maximum_hit_points:
-                number_of_dice = (3 + self.level)  # consider changing to self.quantum_level
+                # number_of_dice = (3 + self.level)  # consider changing to self.quantum_level
                 # heal = dice_roll(number_of_dice, 4) + number_of_dice + self.quantum_level
                 if self.quantum_level < 3:
                     heal = math.ceil(self.maximum_hit_points * .66)

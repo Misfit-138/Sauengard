@@ -479,7 +479,7 @@ while True:
                                     pause()
                                     # CALCULATE REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
                                     player_1.end_of_turn_calculation()
-                                    # allies heal and no longer retreat:
+                                    # npc allies heal and no longer retreat:
                                     player_1.npc_calculation()
                                     if player_1.check_dead():
                                         player_is_dead = True

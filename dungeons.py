@@ -33,6 +33,7 @@ class Dungeon:
         self.barrier_name = ""
         self.treasure_chest = None
         self.quantum_treasure_chest = None
+        self.encounter_sikira = None
         self.altar = None
         self.throne = None
         self.throne2 = None
@@ -72,10 +73,10 @@ class Dungeon1(Dungeon):
         self.fountain2 = (0, 0)
         self.teleporter = (0, 0)
         self.teleporter2 = (0, 0)
-        self.teleporter_landing = (0, 0)  #
+        self.teleporter_landing = (1, 1)  #
         self.staircase = (1, 3)  # same as start...get rid of start?
         self.elevator = (4, 18)  #
-        self.elevator_landing = (1, 3)
+        self.elevator_landing = (2, 1)
         self.pit = (1, 4)
         self.pit2 = (0, 0)
         self.pit_landing = (1, 14)
@@ -237,7 +238,7 @@ class Dungeon3(Dungeon):
         self.fountain2 = (3, 4)
         self.teleporter = (4, 3)
         self.teleporter2 = (4, 4)
-        self.teleporter_landing = (1, 3)  # NA for level one
+        self.teleporter_landing = (1, 3)
         self.staircase = (1, 3)  # same as start...get rid of start?
         self.elevator = (5, 4)
         self.elevator_landing = (5, 5)
@@ -325,4 +326,5 @@ dungeon_dict = {1: dungeon_1,
             ["*", "(", "P", "P", ")", "*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 16
             ["*", "(", "P", "P", ")", "*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 17
             ["*", "8", "/", "/", "-", "*", "8", "/", "/", "/", "/", "/", "/", "/", "/", "/", "/", "/", "-", "*"],  # 18
-            ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"]]  # 19"""
+            ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"]]  # 19
+            """

@@ -2562,9 +2562,13 @@ class Player:
             sleep(1)
             if self.hit_points < self.maximum_hit_points:
                 number_of_dice = (3 + self.level)  # consider changing to self.quantum_level
-                heal = dice_roll(number_of_dice, 4) + number_of_dice + self.quantum_level
+                # heal = dice_roll(number_of_dice, 4) + number_of_dice + self.quantum_level
+                if self.quantum_level < 3:
+                    heal = math.ceil(self.maximum_hit_points * .66)
+                else:
+                    heal = math.ceil(self.maximum_hit_points * .75)
                 print(f"You heal {heal} hit points")  # remove after testing
-                self.hit_points = self.hit_points + heal
+                self.hit_points += heal
                 if self.hit_points > self.maximum_hit_points:
                     self.hit_points = self.maximum_hit_points
                 # self.hud()
@@ -3180,8 +3184,12 @@ class Player:
         # number_of_dice = (3 + self.level - 1)  # 3 dice for lvl 1, 4 for lvl 2, 5 for lvl 3....
         # heal = dice_roll(number_of_dice, 4)  + (1 * number_of_dice)
         quantum_unit_cost = 1
-        number_of_dice = (3 + self.level + self.quantum_level)  # consider changing to self.quantum_level
-        heal = dice_roll(number_of_dice, 6) + number_of_dice + self.quantum_level
+        # number_of_dice = (3 + self.level + self.quantum_level)  # consider changing to self.quantum_level
+        # heal = dice_roll(number_of_dice, 6) + number_of_dice + self.quantum_level
+        if self.quantum_level < 3:
+            heal = math.ceil(self.maximum_hit_points * .75)
+        else:
+            heal = math.ceil(self.maximum_hit_points * .90)
         if self.hit_points < self.maximum_hit_points:
             print(f"You feel restorative powers welling up within you..")
             sleep(1)
@@ -6334,14 +6342,16 @@ class Player:
             if self.hit_points >= self.maximum_hit_points:
                 print(f"You are already at maximum health!")
                 sleep(1)
-                return False  # false means you don't waste a turn
+                return False  # False means you don't waste a turn
             else:
                 print(f"You retrieve the vial from your belt and eagerly drain its contents into your mouth...")
                 sleep(2)
                 self.potions_of_healing -= 1
-                number_of_dice = (1 + self.level)
-                heal = dice_roll(number_of_dice, 4) + number_of_dice
-                self.hit_points += heal  # = self.hit_points + math.ceil(self.maximum_hit_points * .66)
+                # number_of_dice = (1 + self.level)
+                # heal = dice_roll(number_of_dice, 4) + number_of_dice
+                heal = math.ceil(self.maximum_hit_points * .66)
+                print(f"You heal {heal} hit points")  # remove after testing
+                self.hit_points += heal
                 if self.hit_points > self.maximum_hit_points:
                     self.hit_points = self.maximum_hit_points
                 self.hud()
@@ -6352,7 +6362,7 @@ class Player:
         else:
             print("You have no potions!")
             pause()
-            return False  # false means you don't waste a turn
+            return False  # False means you don't waste a turn
 
     def duplicate_item(self, item_type, possible_duplicate):
         duplicate_item_name_lst = []
@@ -7035,7 +7045,7 @@ class Player:
                         key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
                         rndm_item_index = random.randrange(len(loot_dict[key]))
                         found_item = loot_dict[key][rndm_item_index]
-                        print(found_item)  # REMOVE AFTER TESTING *****************************************************
+                        print(found_item)  # REMOVE AFTER TESTING ****************************************************
                         if found_item.minimum_level - self.level <= 2:
                             if found_item.item_type == 'Armor':
                                 self.found_armor_substitution(found_item)
@@ -7263,7 +7273,7 @@ class Player:
                     #    secondary_difficulty_class = 10
                     #    finish_roll = dice_roll(1, 20)
                     #    if finish_roll + self.intelligence_modifier > secondary_difficulty_class:  # intel to complete
-                    print(f"With your rope and timbers from the refuse, you set up rigging.\n"
+                    print(f"Using your rope and timbers from the refuse, you set up rigging.\n"
                           f"Then, with minimal effort, you are able to pull the foundation stones out.")
                     sleep(1.5)
                     print(f"You successfully demolish the altar!")
@@ -7273,7 +7283,7 @@ class Player:
                     self.hud()
                     return self.increase_random_ability()
                 else:
-                    return "Undead Prophet"  # undead_prophet_returns()  # unable to finish
+                    return "Undead Prophet"  # undead_prophet_returns()
 
             else:
                 return  # ignore the altar
@@ -7283,7 +7293,10 @@ class Player:
             return
 
     def throne_event(self):
-        # throne_discovery = f"level {self.dungeon.level} throne"
+        # because the throne has been stolen and repurposed by many kingdoms, it remains infinitely interactive.
+        # however, the gems may only be pried once.
+        # throne_discovery = f"level {self.dungeon.level} throne" # uncomment to only allow 1 interaction
+
         rndm_occurrence_lst = [nothing_happens, king_returns, self.increase_random_ability, self.teleporter_event,
                                nothing_happens, king_returns, self.increase_lowest_ability, self.lose_items,
                                king_returns, nothing_happens, self.heal_event, king_returns,
@@ -7301,11 +7314,11 @@ class Player:
         print(f"Judging by the sheer number of unique origins of the runes, this throne was undoubtedly")
         print(f"stolen from, and reclaimed by many different ancient kings, now long dead.")
         # pause()
-        # if throne_discovery not in self.discovered_interactives:
+        # if throne_discovery not in self.discovered_interactives:  # uncomment to only allow 1 interaction
         throne_action = input(f"(P)ry gems, attempt to (R)ead the Runes, (S)it on the throne or (I)gnore: ").lower()
         if throne_action == 's':
             print(f"You sit on the throne...")
-            # self.discovered_interactives.append(throne_discovery)
+            # self.discovered_interactives.append(throne_discovery)  # uncomment to only allow 1 interaction
             sleep(1.5)
             # self.regenerate()  # testing
             return rndm_occurrence()
@@ -7383,7 +7396,7 @@ class Player:
             print(f"The foul corruption leaves your body..")
             sleep(1)
         if self.hit_points < self.maximum_hit_points:
-            print(f"The restorative powers heal you to full strength..")
+            print(f"The restorative powers heal you to full strength!")
             sleep(1)
             self.hit_points = self.maximum_hit_points
         else:
@@ -7554,9 +7567,10 @@ class Player:
                 return
 
     def staircase_description(self):
-        # this is a description of the spiral staircase, if player navigates to it *after* the map is initialized
-        # it is not an 'event', since it is not really interactive.
-        # this function is called from the description function
+        # called from dungeon_description()
+        # this is a 'description' of the spiral staircase, if player navigates to it *after* the map is initialized
+        # it is not an 'event', since it is not really interactive, so it is called from dungeon_description()
+        # and not from event_logic()
         print(f"This is the spiral staircase entrance to {self.dungeon.name}.")
         if self.dungeon.level > 1:
             previous_place = f"dungeon level {self.dungeon.level - 1}"
@@ -7564,6 +7578,23 @@ class Player:
             previous_place = f"the town of Fieldenberg"
         print(f"The stairs lead up to {previous_place}. However, there is no returning;\n"
               f"The door has been locked and barricaded. You must continue onward!")
+
+    def elevator_landing_description(self):
+        # called from dungeon_description()
+        # this is a 'description' of the elevator landing.
+        # it is not an 'event', since it is not really interactive, so it is called from dungeon_description()
+        # and not from event_logic()
+        print(f"Mechanical Landing, {self.dungeon.name}")
+        print(f"You are standing next to a landing for a mechanical contraption of ropes, pullies and counterweights.")
+        print(f"The base is covered in an iron mesh, allowing the foul air from deep below to escape to this level.")
+
+    def teleporter_landing_description(self):
+        # called from dungeon_description()
+        # this is a 'description' of the teleporter landing.
+        # it is not an 'event', since it is not really interactive, so it is called from dungeon_description()
+        # and not from event_logic()
+        print(f"The floor of {self.dungeon.name} has been scorched here, and there is a subtle, but discernible\n"
+              f"bowl shape, about 3 yards across, which seems to have been perfectly carved from it.")
 
     def elevator_event(self):
         # elevators bring you 'up' from pits to main dungeon level: self.dungeon.elevator_landing
@@ -7610,8 +7641,7 @@ class Player:
             print(f"You have arrived back at {self.dungeon.name}, dungeon level {self.dungeon.level}.")
             sleep(2)
             self.in_a_pit = False
-            (self.x,
-             self.y) = self.dungeon.elevator_landing  # simplified with tuple instead of self.x = and self.y =
+            (self.x, self.y) = self.dungeon.elevator_landing  # simplified with tuple instead of self.x = and self.y =
             self.coordinates = (self.x, self.y)
             self.previous_x = self.x
             self.previous_y = self.y
@@ -7622,8 +7652,9 @@ class Player:
             pause()
             return
 
-    def npc_defeat_logic(self, monster, damage, encounter):
-        # called from npc_attack_logic() to discern if monster dies mid-party-turn
+    def npc_defeats_monster_logic(self, monster, damage, encounter):
+        # called from npc_attack_logic() to discern if npc defeats monster, and
+        # monster dies mid-party-turn
         monster.reduce_health(damage)
         if monster.check_dead():
             self.hud()
@@ -7651,7 +7682,7 @@ class Player:
             if self.sikira_ally:
                 if not sikira.retreating:
                     ally_dmg1 = self.npc_melee(sikira, monster.name, monster.armor_class)
-                    if self.npc_defeat_logic(monster, ally_dmg1, encounter):
+                    if self.npc_defeats_monster_logic(monster, ally_dmg1, encounter):
                         victory = True
                         return victory
                     else:
@@ -7660,7 +7691,7 @@ class Player:
             if self.torbron_ally:
                 if not torbron.retreating:
                     ally_dmg2 = self.npc_melee(torbron, monster.name, monster.armor_class)
-                    if self.npc_defeat_logic(monster, ally_dmg2, encounter):
+                    if self.npc_defeats_monster_logic(monster, ally_dmg2, encounter):
                         victory = True
                         return victory
                     else:
@@ -7669,7 +7700,7 @@ class Player:
             if self.magnus_ally:
                 if not magnus.retreating:
                     ally_dmg3 = self.npc_melee(magnus, monster.name, monster.armor_class)
-                    if self.npc_defeat_logic(monster, ally_dmg3, encounter):
+                    if self.npc_defeats_monster_logic(monster, ally_dmg3, encounter):
                         victory = True
                         return victory
                     else:
@@ -7678,7 +7709,7 @@ class Player:
             if self.vozzbozz_ally:
                 if not vozzbozz.retreating:
                     ally_dmg4 = self.vozzbozz_attack(monster)
-                    if self.npc_defeat_logic(monster, ally_dmg4, encounter):
+                    if self.npc_defeats_monster_logic(monster, ally_dmg4, encounter):
                         victory = True
                         return victory
                     else:
@@ -7694,7 +7725,12 @@ class Player:
         rndm_orientation_lst = ["left", "right", "rear"]
         rndm_orientation = random.choice(rndm_orientation_lst)
         if ally_discovery not in self.discovered_interactives:
-            monster_key = (self.level + 1)
+            # this is really an unnecessary check, but I decided to include it
+            # just in case I forget to make level 21 monsters.
+            if self.level < 20:
+                monster_key = (self.level + 1)
+            else:
+                monster_key = self.level
             monster_cls = random.choice(monster_dict[monster_key])
             monster = monster_cls()
             self.hud()
@@ -8100,10 +8136,14 @@ class Player:
             self.y = self.previous_y
             self.coordinates = (self.x, self.y)
             self.position = self.dungeon.grid[self.y][self.x]
-            # sleep(1.5)
-            # return
+
         if self.coordinates == self.dungeon.staircase:
             self.staircase_description()
+        if self.coordinates == self.dungeon.elevator_landing:
+            self.elevator_landing_description()
+        if self.coordinates == self.dungeon.teleporter_landing:
+            self.teleporter_landing_description()
+
         if self.position in description_dict:
             description = (description_dict[self.position])
             # return description
@@ -8167,6 +8207,12 @@ class Player:
         print(f"You approach the exit. With quiet resolve you turn to briefly look\n"
               f"behind you, and then continue onward, toward your goal.")
         sleep(2)
+        # the deepest dungeon level will have no exit, so there should be no chance of a KeyError by adding 1.
+        # at end of game, transport player back to dungeon level 1 with:
+
+        # self.dungeon_key = 1
+        # self.dungeon = dungeon_dict[self.dungeon_key]
+
         self.dungeon_key += 1
         self.dungeon = dungeon_dict[self.dungeon_key]
         (self.x, self.y) = self.dungeon.staircase  # simplified with tuple instead of self.x = and self.y =
@@ -8289,7 +8335,7 @@ and to four when you reach 20th level in this class.
 
 Indomitable
 Beginning at 9th level, you can Reroll a saving throw that you fail.
- If you do so, you must use the new roll, and you can't use this feature again until you finish a Long Rest.
+If you do so, you must use the new roll, and you can't use this feature again until you finish a Long Rest.
 
 You can use this feature twice between long rests starting at 13th level 
 and three times between long rests starting at 17th level.
@@ -8300,8 +8346,8 @@ The Martial Archetype you choose to emulate reflects your approach.
 
 Champion
 The archetypal Champion focuses on the Development of raw physical power honed to deadly perfection.
- Those who model themselves on this archetype combine rigorous Training with physical excellence 
- to deal devastating blows.
+Those who model themselves on this archetype combine rigorous Training with physical excellence 
+to deal devastating blows.
 
 Improved Critical
 Beginning when you choose this archetype at 3rd Level, your weapon attacks score a critical hit on a roll of 19 or 20.

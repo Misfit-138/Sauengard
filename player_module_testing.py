@@ -1295,34 +1295,32 @@ class Player:
             number_of_potions_of_strength = self.potions_of_strength
             print(f"Strength Potions: {number_of_potions_of_strength}")
         if self.potion_of_strength_effect and self.potion_of_strength_uses > -1:
-            print(f"(STRENGTH POTION EFFECT) ({self.potion_of_strength_uses}/{self.max_quantum_strength_uses})")
+            print(f"(STRENGTH POTION EFFECT)  ({self.potion_of_strength_uses}/{self.max_quantum_strength_uses})")
         if self.quantum_strength_effect and self.quantum_strength_uses > -1:
-            print(f"QUANTUM STRENGTH EFFECT) ({self.quantum_strength_uses}/{self.max_quantum_strength_uses})")
+            print(f"QUANTUM STRENGTH EFFECT)  ({self.quantum_strength_uses}/{self.max_quantum_strength_uses})")
         if self.protection_effect and self.protection_effect_uses > -1:
             print(f"(PROT/EVIL: {self.temp_protection_effect}) "
                   f"({self.protection_effect_uses}/{self.max_protection_effect_uses})")
         if self.poisoned:
-            print(f"(POISONED)")
-            print(f"Poison clarifying: ({self.poisoned_turns}/{self.dot_turns})")
+            print(f"(POISONED)  Poison clarifying: ({self.poisoned_turns}/{self.dot_turns})")
         if self.necrotic:
-            print(f"(NECROTIC)")
-            print(f"Necrotic clarifying: ({self.necrotic_turns}/{self.dot_turns})")
+            print(f"(NECROTIC)  Necrotic clarifying: ({self.necrotic_turns}/{self.dot_turns})")
         if self.potions_of_healing > 0:
-            number_of_potions_of_healing = self.potions_of_healing  # len(self.pack['Healing'])
+            number_of_potions_of_healing = self.potions_of_healing
             print(f"Healing Potions: {number_of_potions_of_healing}")
         if self.antidotes > 0:
-            number_of_antidotes = self.antidotes  # len(self.pack['Healing'])
+            number_of_antidotes = self.antidotes
             print(f"Vials of Antidote: {number_of_antidotes}")
         if self.elixirs > 0:
-            number_of_elixirs = self.elixirs  # len(self.pack['Healing'])
+            number_of_elixirs = self.elixirs
             print(f"Elixirs: {number_of_elixirs}")
         if self.town_portals > 0:
-            number_of_portal_scrolls = self.town_portals  # len(self.pack['Town Portal Implements'])
+            number_of_portal_scrolls = self.town_portals
             print(f"Town Portal Scrolls: {number_of_portal_scrolls}")
         if self.ring_of_reg.name != default_ring_of_regeneration.name:
-            print(f"Ring of Reg: +{self.ring_of_reg.regenerate}")
+            print(f"Ring of Regeneration: +{self.ring_of_reg.regenerate}")
         if self.ring_of_prot.name != default_ring_of_protection.name:
-            print(f"Ring of Prot: +{self.ring_of_prot.protect}")
+            print(f"Ring of Protection: +{self.ring_of_prot.protect}")
         print()
         return
 
@@ -7511,9 +7509,11 @@ class Player:
         sleep(1.5)
         print(f"You see a pit..")
         sleep(1.5)
-        pit_difficulty_class = 8
+        pit_difficulty_class = 9
         pit_outcome = dice_roll(1, 20)
         if (pit_outcome + self.dexterity_modifier + self.intelligence_modifier) > pit_difficulty_class:
+            print(f"It appears to be about 3 fathoms deep.")
+            sleep(1)
             descend_or_not = input(f"Do you wish to descend (y/n)?: ").lower()
             if descend_or_not == 'y':
                 self.in_a_pit = True
@@ -8173,7 +8173,7 @@ class Player:
                 f"{north_south}{east_west} region) Coordinates: {self.coordinates}")
         else:
             # assuming pit landing coordinates are at 1, 14:
-            print(f"(In a pit below {self.dungeon.name}, Coordinates: {self.x, (self.y - 13)}")
+            print(f"In a pit below {self.dungeon.name}, Coordinates: {self.x, (self.y - 13)}")
         return
 
     def display_map(self, maps):

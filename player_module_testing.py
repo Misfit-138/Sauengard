@@ -3531,7 +3531,7 @@ class Player:
             sleep(1)
             print(f"Upon opening them, they burn brighter than the sun!")
             sleep(1)
-            self.hud
+            self.hud()
             print(f"With a world-shaking and awe-inspiring eruption, "
                   f"a swarm of burning meteors materializes above and falls upon your enemy!!")
             print(f"{number_of_dice}d8 + {number_of_dice}d8 force damage + 1 per die rolled: "
@@ -3556,7 +3556,7 @@ class Player:
                 sleep(1)
                 print(f"His focus is momentarily disrupted by the {monster.name}!")
                 sleep(1)
-                self.hud
+                self.hud()
                 print(f"With a world-shaking and awe-inspiring eruption, "
                       f"a swarm of burning meteors materializes above and falls upon your enemy!!")
                 print(f"{number_of_dice}d8 + {number_of_dice}d8 force damage + 1 per die rolled: "

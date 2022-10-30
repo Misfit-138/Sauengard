@@ -11,24 +11,6 @@ from monster_module import monster_dict, king_boss_list, undead_prophet_list
 from pathlib import Path
 # if you call a function and expect to use a return value, like, by printing it, you must first assign a variable in
 # the call itself!!!
-'''Target
-Identify your target to the table. 
-Attack
-Roll a d20. During an Attack roll, 1 always fails, and 20 always succeeds. 
-Modify
-Add your modifiers.  
-Armor Class 
-If the modified result is ≥ target’s Armor Class (AC) , the attack hits the target. 
-Damage 
-Roll Damage Dice and add modifiers. The target’s HP are reduced, factoring resistances and vulnerabilities. 
-Spell Attack 
-Many spells count as attacks. 
-The caster rolls d20 + Spellcasting Ability Modifier + Proficiency Bonus to hit vs AC. PHB 205'''
-
-'''Hit Dice: 1d10 per Fighter level
-Hit Points at 1st Level: 10 + your Constitution modifier
-Hit Points at Higher Levels: 1d10 (or 6) + your Constitution modifier per Fighter level after 1st
-In most cases, your AC will be equal to 10 + your DEX modifier + bonus from armor + bonus from magic items/effects.'''
 
 '''DIFFICULTY CLASSES (HIPSTER’S REMIX)
 Task Difficulty	DC
@@ -130,7 +112,7 @@ def sleep(seconds):
 
 def dice_roll(no_of_dice, no_of_sides):
     dice_rolls = []  # create list for multiple die rolls
-    for dice in range(no_of_dice):  # (1 hit die per level according to DnD 5E rules)
+    for dice in range(no_of_dice):
         dice_rolls.append(random.randint(1, no_of_sides))
     your_roll_sum = sum(dice_rolls)
     return your_roll_sum
@@ -459,6 +441,21 @@ class GreatAxe(Weapon):
 
 
 great_axe = GreatAxe()
+
+
+class ElvishGreatAxe(Weapon):
+    def __init__(self):
+        super().__init__()
+        self.name = "Elvish Great Axe"
+        self.item_type = "Weapons"
+        self.damage_bonus = 12
+        self.to_hit_bonus = 2
+        self.sell_price = 2750
+        self.buy_price = 6000
+        self.minimum_level = 8
+
+
+elvish_great_axe = ElvishGreatAxe()
 
 
 class Armor:
@@ -1777,7 +1774,7 @@ class Player:
             gain_hit_points1 = dice_roll(1, self.hit_dice) + self.constitution_modifier  # hp increase method 1
             gain_hit_points2 = 6 + self.constitution_modifier  # hp increase method 2
             hit_point_list = [gain_hit_points1, gain_hit_points2]
-            gain_hit_points = max(hit_point_list)  # the highest of method 1 and 2
+            gain_hit_points = max(hit_point_list)  # the higher of method 1 and 2
             self.hit_points += gain_hit_points  # you heal and gain max hp (previous HP + Hit Die roll + CON modifier)
             self.maximum_hit_points += gain_hit_points
             print(f"You gain {gain_hit_points} hit points")
@@ -1915,7 +1912,7 @@ class Player:
 
     def monster_likes_you(self, monster):
         # called from main loop after encounter with regular monster
-        if dice_roll(1, 20) > 19 and monster.intelligence > 14 and monster.charisma > 15 and self.charisma > 15:
+        if dice_roll(1, 20) > 19 and monster.intelligence > 12 and monster.charisma > 14 and self.charisma > 14:
             print(f"The {monster.name} likes you!")
             sleep(1)
             upgradeable = True
@@ -5670,7 +5667,7 @@ class Player:
 
         blacksmith_dict = {
             'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
-                        quantum_sword, battle_axe, great_axe, quantum_axe],
+                        quantum_sword, battle_axe, great_axe, elvish_great_axe, quantum_axe],
             'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
             'Shields': [buckler, kite_shield, quantum_tower_shield],
             'Boots': [elven_boots, ancestral_footsteps],
@@ -6764,7 +6761,7 @@ class Player:
             'Boots': [elven_boots, ancestral_footsteps],
             'Cloaks': [elven_cloak],
             'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
-                        quantum_sword, battle_axe, great_axe, quantum_axe],
+                        quantum_sword, battle_axe, great_axe, elvish_great_axe, quantum_axe],
             'Elixirs': [elixir],
             'Healing': [healing_potion],
             'Rings of Regeneration': [ring_of_regeneration],
@@ -6884,7 +6881,7 @@ class Player:
                 'Boots': [elven_boots, ancestral_footsteps],
                 'Cloaks': [elven_cloak],
                 'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
-                            quantum_sword, battle_axe, great_axe, quantum_axe],
+                            quantum_sword, battle_axe, great_axe, elvish_great_axe, quantum_axe],
                 'Elixirs': [elixir],
                 'Healing': [healing_potion],
                 'Rings of Regeneration': [ring_of_regeneration],
@@ -7022,7 +7019,7 @@ class Player:
                     'Boots': [elven_boots, ancestral_footsteps],
                     'Cloaks': [elven_cloak],
                     'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
-                                quantum_sword, battle_axe, great_axe, quantum_axe],
+                                quantum_sword, battle_axe, great_axe, elvish_great_axe, quantum_axe],
                     'Elixirs': [elixir],
                     'Healing': [healing_potion],
                     'Rings of Regeneration': [ring_of_regeneration],

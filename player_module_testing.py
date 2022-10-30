@@ -1873,7 +1873,6 @@ class Player:
         monster_cls = random.choice(monster_dict[monster_key])
         exit_boss = monster_cls()
         first_name = random.choice(rndm_boss_names)
-        # epithet = random.choice(rndm_epithets)
         exit_boss.proper_name = f"{first_name} the {exit_boss.name} guardian"
         print(f"In the archway to the {self.dungeon.name} exit "
               f"stands {exit_boss.proper_name}!\n"

@@ -926,6 +926,23 @@ class TownPortalImplements:
 scroll_of_town_portal = TownPortalImplements()
 
 
+top_level_loot_dict = {
+            'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
+            'Shields': [buckler, kite_shield, quantum_tower_shield],
+            'Boots': [elven_boots, ancestral_footsteps],
+            'Cloaks': [elven_cloak],
+            'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
+                        quantum_sword, battle_axe, great_axe, elvish_great_axe, quantum_axe],
+            'Elixirs': [elixir],
+            'Healing': [healing_potion],
+            'Rings of Regeneration': [ring_of_regeneration],
+            'Rings of Protection': [ring_of_protection],
+            'Town Portal Implements': [scroll_of_town_portal],
+            'Potions of Strength': [strength_potion],
+            'Antidotes': [antidote]
+        }
+
+
 def undead_prophet_returns():
     return "Undead Prophet"
 
@@ -6754,7 +6771,7 @@ class Player:
             loot_difficulty_class = 8
         # place armor first here; it is first in pack.
         # otherwise it seems to give unexpected argument warning
-        loot_dict = {
+        """loot_dict = {
             'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
             'Shields': [buckler, kite_shield, quantum_tower_shield],
             'Boots': [elven_boots, ancestral_footsteps],
@@ -6768,8 +6785,8 @@ class Player:
             'Town Portal Implements': [scroll_of_town_portal],
             'Potions of Strength': [strength_potion],
             'Antidotes': [antidote]
-        }
-
+        }"""
+        loot_dict = top_level_loot_dict
         while True:
             # ****** NOTICE THE DIFFERENCE BETWEEN found_item and found_item.item_type !! ************************
             loot_roll = dice_roll(1, 20)
@@ -6871,10 +6888,10 @@ class Player:
             self.gold += gold_roll
             sleep(1.5)
             pause()
-            loot_difficulty_class = 6
+            loot_difficulty_class = 7
             # place armor first here; it is first in pack.
             # otherwise it seems to give unexpected argument warning
-            loot_dict = {
+            """loot_dict = {
                 'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
                 'Shields': [buckler, kite_shield, quantum_tower_shield],
                 'Boots': [elven_boots, ancestral_footsteps],
@@ -6888,8 +6905,8 @@ class Player:
                 'Town Portal Implements': [scroll_of_town_portal],
                 'Potions of Strength': [strength_potion],
                 'Antidotes': [antidote]
-            }
-
+            }"""
+            loot_dict = top_level_loot_dict
             while True:
                 # ****** NOTICE THE DIFFERENCE BETWEEN found_item and found_item.item_type !! ************************
                 loot_roll = dice_roll(1, 20)
@@ -7012,7 +7029,7 @@ class Player:
                 loot_difficulty_class = 7
                 # place armor first here; it is first in pack.
                 # otherwise it seems to give unexpected argument warning
-                loot_dict = {
+                """loot_dict = {
                     'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
                     'Shields': [buckler, kite_shield, quantum_tower_shield],
                     'Boots': [elven_boots, ancestral_footsteps],
@@ -7026,8 +7043,8 @@ class Player:
                     'Town Portal Implements': [scroll_of_town_portal],
                     'Potions of Strength': [strength_potion],
                     'Antidotes': [antidote]
-                }
-
+                }"""
+                loot_dict = top_level_loot_dict
                 while True:
                     # ****** NOTICE THE DIFFERENCE BETWEEN found_item and found_item.item_type !! ***********
                     loot_roll = dice_roll(1, 20)
@@ -8099,6 +8116,7 @@ class Player:
         # ^ <> v dungeon exit in the indicated direction!
         # T throne room
         # L Pit landing
+        # P in a Pit
         description_dict = {
             ".": f"You are in a rather wide open area of {self.dungeon.name}. There are exits in each direction...",
             "1": f"You are at a dead end. The only exit is to the North...",
@@ -8119,13 +8137,22 @@ class Player:
                  f"re-purposed as a sort of throne room.",
             "L": f"You are on a slick patch of ground. High above you is a wide, gaping hole leading up to "
                  f"dungeon level {self.dungeon.level - 1}.",
-            "P": f"You are in a pit. Slime covers the ground beneath, and a putrid mist fills the air.."
+            "P": f"You are in a pit. Slime covers the ground beneath, and a putrid mist fills the air."
         }
-        # if self.position == 0:  # integer representing starting position
-        #    print(self.dungeon.intro)
-        # self.hud()
-        # return
 
+        north_of_you = self.dungeon.grid[self.y - 1][self.x]
+        west_of_you = self.dungeon.grid[self.y][self.x - 1]
+        south_of_you = self.dungeon.grid[self.y + 1][self.x]
+        east_of_you = self.dungeon.grid[self.y][self.x + 1]
+        exits_list = []
+        if north_of_you != "*":
+            exits_list.append("north")
+        if south_of_you != "*":
+            exits_list.append("south")
+        if east_of_you != "*":
+            exits_list.append("east")
+        if west_of_you != "*":
+            exits_list.append("west")
         if self.position == "*":  # string representing walls
             print("You cannot go that way...")
             self.x = self.previous_x
@@ -8144,7 +8171,13 @@ class Player:
             description = (description_dict[self.position])
             # return description
             print(description)
-            # return
+
+        if self.position == "I":
+            number_of_ways = len(exits_list)
+            exits_list.insert(-1, 'and')
+            exits = str(', '.join(exits_list[:-2]) + ' ' + ' '.join(exits_list[-2:]))
+            print(f"You are at a {number_of_ways}-way intersection. Corridors lead off to the {exits}.")
+
             # ^ <> v dungeon EXIT in the indicated direction!
 
         elif self.position == ">" or self.position == "<" or self.position == "^" or self.position == "v":
@@ -8164,9 +8197,8 @@ class Player:
                 # return
         self.coordinates = (self.x, self.y)
         if not self.in_a_pit:
-            print(
-                f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}, "
-                f"{north_south}{east_west} region) Coordinates: {self.coordinates}")
+            print(f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}, "
+                  f"{north_south}{east_west} region) Coordinates: {self.coordinates}")
         else:
             # assuming pit landing coordinates are at 1, 14:
             print(f"In a pit below {self.dungeon.name}, Coordinates: {self.x, (self.y - 13)}")

@@ -7592,13 +7592,21 @@ class Player:
         print(f"The stairs lead up to {previous_place}. However, there is no returning;\n"
               f"The door has been locked and barricaded. You must continue onward!")
 
+    def pit_landing_description(self):
+        # called from dungeon_description()
+        # this is a 'description' of the pit landing.
+        # it is not an 'event', since it is not really interactive, so it is called from dungeon_description()
+        # and not from event_logic()
+        print(f"High above you is a wide, gaping hole leading up to "
+              f"{self.dungeon.name}.")
+
     def elevator_landing_description(self):
         # called from dungeon_description()
         # this is a 'description' of the elevator landing.
         # it is not an 'event', since it is not really interactive, so it is called from dungeon_description()
         # and not from event_logic()
         print(f"Mechanical Landing, {self.dungeon.name}")
-        print(f"You are standing next to a landing for a mechanical contraption of ropes, pullies and counterweights.")
+        print(f"You are standing next to a landing for a mechanical contraption of ropes, pulleys and counterweights.")
         print(f"The base is covered in an iron mesh, allowing the foul air from deep below to escape to this level.")
 
     def teleporter_landing_description(self):
@@ -8081,7 +8089,87 @@ class Player:
             return self.boss_clue_6()
         return
 
+    def dungeon_room_exit_finder(self, description_phrase):
+        # called from dungeon_description()
+        north_of_you = self.dungeon.grid[self.y - 1][self.x]
+        west_of_you = self.dungeon.grid[self.y][self.x - 1]
+        south_of_you = self.dungeon.grid[self.y + 1][self.x]
+        east_of_you = self.dungeon.grid[self.y][self.x + 1]
+        exits_list = []
+        if north_of_you != "*":
+            exits_list.append("North")
+        if south_of_you != "*":
+            exits_list.append("South")
+        if east_of_you != "*":
+            exits_list.append("East")
+        if west_of_you != "*":
+            exits_list.append("West")
+        number_of_ways = len(exits_list)
+        if number_of_ways > 1:
+            exits_list.insert(-1, 'and')  # add "and" before last element to be more naturally readable
+            exits = str(', '.join(exits_list[:-2]) + ' ' + ' '.join(exits_list[-2:]))
+            print(f"{description_phrase} Exits are to the {exits}.")
+        else:
+            separator = ""
+            exits = (separator.join(exits_list))
+            print(f"{description_phrase} The only exit is to the {exits}.")
+
+    def dungeon_intersection_logic(self):
+        # called from dungeon_description()
+        north_of_you = self.dungeon.grid[self.y - 1][self.x]
+        west_of_you = self.dungeon.grid[self.y][self.x - 1]
+        south_of_you = self.dungeon.grid[self.y + 1][self.x]
+        east_of_you = self.dungeon.grid[self.y][self.x + 1]
+        exits_list = []
+        if north_of_you != "*":
+            exits_list.append("North")
+        if south_of_you != "*":
+            exits_list.append("South")
+        if east_of_you != "*":
+            exits_list.append("East")
+        if west_of_you != "*":
+            exits_list.append("West")
+        number_of_ways = len(exits_list)
+        if number_of_ways > 1:
+            exits_list.insert(-1, 'and')
+            exits = str(', '.join(exits_list[:-2]) + ' ' + ' '.join(exits_list[-2:]))
+            print(f"You are at a {number_of_ways}-way intersection. Corridors lead off to the {exits}.")
+        else:
+            # this code is ostensibly unreachable, unless "I" is added to the self.dungeon.grid in the wrong place:
+            separator = ""
+            exits = (separator.join(exits_list))
+            print(f"There appears to have been an intersection here at one time, but all except one corridor has "
+                  f"collapsed. The only exit is to the {exits}")
+
+    def you_cannot_go_that_way(self):
+        # called from dungeon_description()
+        random_statement_list = [f"The {self.dungeon.barrier_name} blocks your way.", "You cannot go that way...",
+                                 f"The {self.dungeon.barrier_name} prevents movement in that direction."]
+        random_statement = random.choice(random_statement_list)
+        print(random_statement)
+        self.x = self.previous_x
+        self.y = self.previous_y
+        self.coordinates = (self.x, self.y)
+        self.position = self.dungeon.grid[self.y][self.x]
+
+    def chamber_opening_logic(self):
+        north_of_you = self.dungeon.grid[self.y - 1][self.x]
+        west_of_you = self.dungeon.grid[self.y][self.x - 1]
+        south_of_you = self.dungeon.grid[self.y + 1][self.x]
+        east_of_you = self.dungeon.grid[self.y][self.x + 1]
+        direction = ""
+        if north_of_you == "H":
+            direction = "Northern"
+        elif west_of_you == "H":
+            direction = "Western"
+        elif east_of_you == "H":
+            direction = "Eastern"
+        elif south_of_you == "H":
+            direction = "Southern"
+        print(f"The {direction} exit leads to a corridor.")
+
     def dungeon_description(self):
+        # called from navigation() and main loop
         self.hud()
         north_south = ""
         east_west = ""
@@ -8093,93 +8181,54 @@ class Player:
             north_south = "South"
         elif self.y < 10:
             north_south = "North"
-        # print(self.coordinates)  # remove after testing
-        # print(f"(Dungeon level {self.dungeon.level} {self.dungeon.name}) {self.coordinates}")
-        # DEAD END Only 1 exit!
-        # 1 exit to the north
-        # 2 exit to the south
-        # 3 exit to the east
-        # 4 exit to the west
-        # STRAIGHT HALLWAY:
-        # 5 exits north and south
-        # 6 exits east and west
-        # CORNERS:
-        # 7 exits to the south and east UPPER LEFT
-        # 8 exits to the north and east LOWER LEFT
-        # 9 exits to the south and west UPPER RIGHT
-        # - exits to the north and west LOWER RIGHT
-        # WALLS:
-        # \  exits to the south. east and west  NORTH WALL
-        # / exits to the north, east and west SOUTH WALL
-        # > exits to the north, south and east WEST WALL
-        # < exits to the north, south and west EAST WALL
-        # ^ <> v dungeon exit in the indicated direction!
-        # T throne room
-        # L Pit landing
-        # P in a Pit
+
         description_dict = {
-            ".": f"You are in a rather wide open area of {self.dungeon.name}. There are exits in each direction...",
-            "1": f"You are at a dead end. The only exit is to the North...",
-            "2": f"You are at a dead end. The only exit is to the South...",
-            "3": f"You are at a dead end. The only exit is to the East...",
-            "4": f"You are at a dead end. The only exit is to the West...",
-            "5": f"This is a corridor of {self.dungeon.name}. Exits are to the North and South...",
-            "6": f"You are in a corridor of {self.dungeon.name}. Exits are to the East and West...",
-            "7": f"You are in a corner. Exits are to the South and East.",
-            "8": f"You are in a corner. Exits are to the North and East.",
-            "9": f"You are in a corner. Exits are to the South and West.",
-            "-": f"You are in a corner. Exits are to the North and West.",
-            "|": f"You are against a {self.dungeon.barrier_name} to the North. Exits are to the South, East and West.",
-            "/": f"You are against a {self.dungeon.barrier_name} to the South. Exits are to the North, East and West.",
-            "(": f"You are against a {self.dungeon.barrier_name} to the West. Exits are to the North, South and East.",
-            ")": f"You are against a {self.dungeon.barrier_name} to the East. Exits are to the North, South and West.",
+            ".": f"You are in a wide open area of {self.dungeon.name}.",
+            "3": f"You are in a rather wide open area of {self.dungeon.name}.",
+            "D": f"You are at a dead end.",
+            "H": f"This is a tunneled corridor of {self.dungeon.name}.",
+            "C": f"You are in a corner.",
+            "O": f"This is an entryway to a large, open chamber.",
+            "|": f"You are against a {self.dungeon.barrier_name}.",
             "T": f"You are in a chamber of {self.dungeon.name} that seems to have been "
                  f"re-purposed as a sort of throne room.",
-            "L": f"You are on a slick patch of ground. High above you is a wide, gaping hole leading up to "
-                 f"dungeon level {self.dungeon.level - 1}.",
             "P": f"You are in a pit. Slime covers the ground beneath, and a putrid mist fills the air."
         }
 
-        north_of_you = self.dungeon.grid[self.y - 1][self.x]
-        west_of_you = self.dungeon.grid[self.y][self.x - 1]
-        south_of_you = self.dungeon.grid[self.y + 1][self.x]
-        east_of_you = self.dungeon.grid[self.y][self.x + 1]
-        exits_list = []
-        if north_of_you != "*":
-            exits_list.append("north")
-        if south_of_you != "*":
-            exits_list.append("south")
-        if east_of_you != "*":
-            exits_list.append("east")
-        if west_of_you != "*":
-            exits_list.append("west")
+        # You cannot go that way; Player has hit a dungeon wall and is returned to previous position
         if self.position == "*":  # string representing walls
-            print("You cannot go that way...")
-            self.x = self.previous_x
-            self.y = self.previous_y
-            self.coordinates = (self.x, self.y)
-            self.position = self.dungeon.grid[self.y][self.x]
+            self.you_cannot_go_that_way()
 
+        # Dungeon logical descriptions. These are more detailed and immersive due to their
+        # slightly more complex programming. They correspond to dungeon instance coordinates and player_module events
         if self.coordinates == self.dungeon.staircase:
             self.staircase_description()
         if self.coordinates == self.dungeon.elevator_landing:
             self.elevator_landing_description()
         if self.coordinates == self.dungeon.teleporter_landing:
             self.teleporter_landing_description()
+        if self.coordinates == self.dungeon.pit_landing:
+            self.pit_landing_description()
 
+        # Dungeon generic descriptions. These description_dict keys and values
+        # correspond to self.position strings on the grid.
+        # Their description phrases are then passed to dungeon_room_exit_finder()
+        # dungeon_room_exit_finder() calculates exits and prints out the description phrase as well as the exits
         if self.position in description_dict:
             description = (description_dict[self.position])
-            # return description
-            print(description)
+            self.dungeon_room_exit_finder(description)
 
+        # Dungeon intersections. These can have several exits available.
+        # dungeon_intersection_logic() is then called to figure it out
         if self.position == "I":
-            number_of_ways = len(exits_list)
-            exits_list.insert(-1, 'and')
-            exits = str(', '.join(exits_list[:-2]) + ' ' + ' '.join(exits_list[-2:]))
-            print(f"You are at a {number_of_ways}-way intersection. Corridors lead off to the {exits}.")
+            self.dungeon_intersection_logic()
 
-            # ^ <> v dungeon EXIT in the indicated direction!
+        # chamber openings are described above, and then the corridor direction is calculated by
+        # chamber_opening_logic()
+        if self.position == "O":
+            self.chamber_opening_logic()
 
+        # ^ <> v dungeon EXIT in the indicated direction!
         elif self.position == ">" or self.position == "<" or self.position == "^" or self.position == "v":
             print(f"You feel a draft... ")
             sleep(1.25)
@@ -8199,9 +8248,10 @@ class Player:
         if not self.in_a_pit:
             print(f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}, "
                   f"{north_south}{east_west} region) Coordinates: {self.coordinates}")
-        else:
+        elif self.in_a_pit:
             # assuming pit landing coordinates are at 1, 14:
             print(f"In a pit below {self.dungeon.name}, Coordinates: {self.x, (self.y - 13)}")
+
         return
 
     def display_map(self, maps):
@@ -9115,3 +9165,47 @@ return 0"""
                     pause()
                     self.hud()
                     return 0"""
+"""description_dict = {
+            ".": f"You are in a rather wide open area of {self.dungeon.name}. There are exits in each direction...",
+            "1": f"You are at a dead end. The only exit is to the North...",
+            "2": f"You are at a dead end. The only exit is to the South...",
+            "3": f"You are at a dead end. The only exit is to the East...",
+            "4": f"You are at a dead end. The only exit is to the West...",
+            "5": f"This is a corridor of {self.dungeon.name}. Exits are to the North and South...",
+            "6": f"You are in a corridor of {self.dungeon.name}. Exits are to the East and West...",
+            "7": f"You are in a corner. Exits are to the South and East.",
+            "8": f"You are in a corner. Exits are to the North and East.",
+            "9": f"You are in a corner. Exits are to the South and West.",
+            "-": f"You are in a corner. Exits are to the North and West.",
+            "|": f"You are against a {self.dungeon.barrier_name} to the North. Exits are to the South, East and West.",
+            "/": f"You are against a {self.dungeon.barrier_name} to the South. Exits are to the North, East and West.",
+            "(": f"You are against a {self.dungeon.barrier_name} to the West. Exits are to the North, South and East.",
+            ")": f"You are against a {self.dungeon.barrier_name} to the East. Exits are to the North, South and West.",
+            "T": f"You are in a chamber of {self.dungeon.name} that seems to have been "
+                 f"re-purposed as a sort of throne room.",
+            "L": f"You are on a slick patch of ground. High above you is a wide, gaping hole leading up to "
+                 f"dungeon level {self.dungeon.level - 1}.",
+            "P": f"You are in a pit. Slime covers the ground beneath, and a putrid mist fills the air."
+        }"""
+"""# DEAD END Only 1 exit!
+        # 1 exit to the north
+        # 2 exit to the south
+        # 3 exit to the east
+        # 4 exit to the west
+        # STRAIGHT HALLWAY:
+        # 5 exits north and south
+        # 6 exits east and west
+        # CORNERS:
+        # 7 exits to the south and east UPPER LEFT
+        # 8 exits to the north and east LOWER LEFT
+        # 9 exits to the south and west UPPER RIGHT
+        # - exits to the north and west LOWER RIGHT
+        # WALLS:
+        #   exits to the south. east and west  NORTH WALL
+        # / exits to the north, east and west SOUTH WALL
+        # > exits to the north, south and east WEST WALL
+        # < exits to the north, south and west EAST WALL
+        # ^ <> v dungeon exit in the indicated direction!
+        # T throne room
+        # L Pit landing
+        # P in a Pit"""

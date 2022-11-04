@@ -213,7 +213,7 @@ while True:
                 #    encounter = 99  # dungeon level boss conditional
                 #    player_1.next_dungeon()
                 # ***********************************************************************************************>>>>
-                if encounter < 11 or encounter > 20:  # < 11 = normal monster. > 20 = boss
+                if encounter == 0:  # < 11 or encounter > 20:  # < 11 = normal monster. > 20 = boss
                     monster = ""  # to prevent monster from being undefined
                     # monster dictionary imported from monster module. keys correspond to difficulty levels
                     # IN PROXIMITY TO MONSTER LOOP *contains battle loop within it*

@@ -202,8 +202,11 @@ class Monster:
                 # zero damage to player result
                 print(f"The {self.name} strikes..")
                 time.sleep(1)
-                print(f"Its awkward attack manages 1 point of damage..")
-                damage_to_opponent = 1
+                print(f"Your armor absorbs the blow!")
+                time.sleep(1)
+                print(f"It does no damage..")
+                time.sleep(.25)
+                damage_to_opponent = 0
                 pause()
                 return damage_to_opponent  # 0 points damage to player
         else:
@@ -501,8 +504,11 @@ class Monster:
                 # zero damage to player result
                 print(f"The {self.name} strikes..")
                 time.sleep(1)
-                print(f"Its awkward attack manages 1 point of damage to {npc.name}..")
-                damage_to_opponent = 1
+                print(f"{npc.name}'s armor absorbs the blow!")
+                damage_to_opponent = 0
+                time.sleep(1)
+                print(f"No damage is sustained.")
+                time.sleep(.25)
                 pause()
                 return damage_to_opponent  # 0 points damage to player
         else:

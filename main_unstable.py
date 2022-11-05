@@ -113,16 +113,15 @@ while True:
                             continue
                 if not player_1.in_dungeon:
                     break
-                player_1.coordinates = (player_1.x, player_1.y)
-                player_1.previous_x = player_1.x
-                player_1.previous_y = player_1.y
+                player_1.navigation_turn_initialize()
                 # player_1.loot(0)  # for testing
                 # player_1.asi()  # for testing
-                if player_1.position == 0:  # 0 is the initialization position
+                if player_1.position == 0:  # 0 is the game/level start position
                     print(player_1.dungeon.intro)
+                    pause()
                     # set player position, which also removes intro condition
                     player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]
-
+                    player_1.dungeon_description()
                 dungeon_command = input(
                     "(L)ook at surroundings, use (MAP), (C)larifying elixir,\n"
                     "(Quit), Town (P)ortal, (H)ealing potion, (M)anage inventory,\n"
@@ -184,9 +183,8 @@ while True:
                 # ***** END OF NAVIGATION choice *************************************************************
                 # !!!!!!!!!!!!!!!! V NOTE the INDENT below V !!!!!!!!!!!!!!!!
                 # ******************************************************************************************
-                # NAVIGATION CALCULATIONS:
-                player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
-                player_1.coordinates = (player_1.x, player_1.y)  #
+                # NAVIGATION position and coordinate CALCULATIONS:
+                player_1.navigation_position_coordinates()
                 # ENCOUNTER LOGIC IS DETERMINED *BEFORE* event_logic(), BUT CAN BE RE-ASSIGNED BASED ON
                 # RETURNED VALUES FROM event_logic()
                 encounter = encounter_logic()
@@ -213,9 +211,9 @@ while True:
                 #    encounter = 99  # dungeon level boss conditional
                 #    player_1.next_dungeon()
                 # ***********************************************************************************************>>>>
-                if encounter == 0:  # < 11 or encounter > 20:  # < 11 = normal monster. > 20 = boss
+                if encounter < 11 or encounter > 20:  # < 11 = normal monster. > 20 = boss
                     monster = ""  # to prevent monster from being undefined
-                    # monster dictionary imported from monster module. keys correspond to difficulty levels
+                    # monster dictionary imported from monster module. keys correspond to challenge levels
                     # IN PROXIMITY TO MONSTER LOOP *contains battle loop within it*
                     player_1.in_proximity_to_monster = True
                     player_is_dead = False
@@ -370,7 +368,6 @@ while True:
                                         # then monster will die instantly and player gets loot
                                         monster.reduce_health(damage_to_monster)
                                         if monster.check_dead():
-
                                             player_1.hud()
                                             if encounter > 20:  # if fighting boss
                                                 gong()

@@ -1891,7 +1891,7 @@ class Player:
         exit_boss = monster_cls()
         first_name = random.choice(rndm_boss_names)
         exit_boss.proper_name = f"{first_name} the {exit_boss.name} guardian"
-        print(f"In the archway to the {self.dungeon.name} exit "
+        print(f"In the archway to the staircase leading down to {self.dungeon.name} "
               f"stands {exit_boss.proper_name}!\n"
               f"Without fear, without thought, the guardian looks upon you and readies itself for battle...")
         return exit_boss
@@ -7584,7 +7584,7 @@ class Player:
         # this is a 'description' of the spiral staircase, if player navigates to it *after* the map is initialized
         # it is not an 'event', since it is not really interactive, so it is called from dungeon_description()
         # and not from event_logic()
-        print(f"This is the spiral staircase entrance to {self.dungeon.name}.")
+        print(f"You are standing at the spiral staircase entrance to {self.dungeon.name}.")
         if self.dungeon.level > 1:
             previous_place = f"dungeon level {self.dungeon.level - 1}"
         else:
@@ -8143,8 +8143,8 @@ class Player:
 
     def you_cannot_go_that_way(self):
         # called from dungeon_description()
-        random_statement_list = [f"The {self.dungeon.barrier_name} blocks your way.", "You cannot go that way...",
-                                 f"The {self.dungeon.barrier_name} prevents movement in that direction."]
+        random_statement_list = [f"The {self.dungeon.barrier_name} blocks your way...", "You cannot go that way...",
+                                 f"The {self.dungeon.barrier_name} prevents movement in that direction..."]
         random_statement = random.choice(random_statement_list)
         print(random_statement)
         self.x = self.previous_x
@@ -8153,6 +8153,7 @@ class Player:
         self.position = self.dungeon.grid[self.y][self.x]
 
     def chamber_opening_logic(self):
+        # called from dungeon_description()
         north_of_you = self.dungeon.grid[self.y - 1][self.x]
         west_of_you = self.dungeon.grid[self.y][self.x - 1]
         south_of_you = self.dungeon.grid[self.y + 1][self.x]
@@ -8167,6 +8168,31 @@ class Player:
         elif south_of_you == "H":
             direction = "Southern"
         print(f"The {direction} exit leads to a corridor.")
+
+    def dungeon_exit_direction_logic(self):
+        # called from dungeon_description()
+        direction = ""
+        if self.position == ">":
+            direction = "East"
+        elif self.position == "<":
+            direction = "West"
+        elif self.position == "^":
+            direction = "North"
+        elif self.position == "v":
+            direction = "South"
+        print(f"You see the dungeon exit to the {direction}!")
+        return
+
+    def navigation_position_coordinates(self):
+        # called from end of each navigation turn in main loop
+        self.position = self.dungeon.grid[self.y][self.x]
+        self.coordinates = (self.x, self.y)
+
+    def navigation_turn_initialize(self):
+        # called from main loop at beginning of each navigation turn while in dungeon
+        self.coordinates = (self.x, self.y)
+        self.previous_x = self.x
+        self.previous_y = self.y
 
     def dungeon_description(self):
         # called from navigation() and main loop
@@ -8183,12 +8209,12 @@ class Player:
             north_south = "North"
 
         description_dict = {
-            ".": f"You are in a wide open area of {self.dungeon.name}.",
+            ".": f"This is a wide open area of {self.dungeon.name}.",
             "3": f"You are in a rather wide open area of {self.dungeon.name}.",
             "D": f"You are at a dead end.",
             "H": f"This is a tunneled corridor of {self.dungeon.name}.",
             "C": f"You are in a corner.",
-            "O": f"This is an entryway to a large, open chamber.",
+            "O": f"You are standing in the entryway to a large, open chamber.",
             "|": f"You are against a {self.dungeon.barrier_name}.",
             "T": f"You are in a chamber of {self.dungeon.name} that seems to have been "
                  f"re-purposed as a sort of throne room.",
@@ -8218,40 +8244,33 @@ class Player:
             description = (description_dict[self.position])
             self.dungeon_room_exit_finder(description)
 
+        if self.position not in description_dict:
+            self.dungeon_room_exit_finder(f"This is a non-descript area of {self.dungeon.name}.")
         # Dungeon intersections. These can have several exits available.
         # dungeon_intersection_logic() is then called to figure it out
         if self.position == "I":
             self.dungeon_intersection_logic()
 
-        # chamber openings are described above, and then the corridor direction is calculated by
+        # chamber openings are described above, and then the direction in which the corridor lies is calculated by
         # chamber_opening_logic()
         if self.position == "O":
             self.chamber_opening_logic()
 
         # ^ <> v dungeon EXIT in the indicated direction!
         elif self.position == ">" or self.position == "<" or self.position == "^" or self.position == "v":
-            print(f"You feel a draft... ")
-            sleep(1.25)
-            if self.position == ">":
-                print("You see the dungeon exit to the East!")
-                # return
-            elif self.position == "<":
-                print("You see the dungeon exit to the West!")
-                # return
-            elif self.position == "^":
-                print("You see the dungeon exit to the North!")
-                # return
-            elif self.position == "v":
-                print("You see the dungeon exit to the South!")
-                # return
-        self.coordinates = (self.x, self.y)
-        if not self.in_a_pit:
-            print(f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}, "
-                  f"{north_south}{east_west} region) Coordinates: {self.coordinates}")
-        elif self.in_a_pit:
+            self.dungeon_exit_direction_logic()
+
+        # self.coordinates is merely a tuple representing x,y coordinates on self.dungeon.grid
+        # self.coordinates = (self.x, self.y)
+
+        # print out dungeon level and coordinates
+        if self.in_a_pit:
             # assuming pit landing coordinates are at 1, 14:
             print(f"In a pit below {self.dungeon.name}, Coordinates: {self.x, (self.y - 13)}")
-
+        else:
+            if self.coordinates != self.dungeon.exit:
+                print(f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}, "
+                      f"{north_south}{east_west} region) Coordinates: {self.coordinates}")
         return
 
     def display_map(self, maps):
@@ -8266,7 +8285,7 @@ class Player:
             self.coordinates = (self.x, self.y)
             if self.position == 0:
                 print(self.dungeon.intro)
-            print(f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}) Coordintes: {self.coordinates}")
+            print(f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}) Coordinates: {self.coordinates}")
             if self.position != 0 and self.coordinates != self.dungeon.staircase:
                 self.dungeon.player_grid[self.y][self.x] = "X"
             for element in range(0, 20):
@@ -8287,10 +8306,8 @@ class Player:
         sleep(2)
         # the deepest dungeon level will have no exit, so there should be no chance of a KeyError by adding 1.
         # at end of game, transport player back to dungeon level 1 with:
-
         # self.dungeon_key = 1
         # self.dungeon = dungeon_dict[self.dungeon_key]
-
         self.dungeon_key += 1
         self.dungeon = dungeon_dict[self.dungeon_key]
         (self.x, self.y) = self.dungeon.staircase  # simplified with tuple instead of self.x = and self.y =

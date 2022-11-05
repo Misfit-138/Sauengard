@@ -62,7 +62,7 @@ class Dungeon1(Dungeon):
         super().__init__()
         self.name = "The Fieldenberg Catacombs"
         self.level = 1
-        self.staircase = (1, 3)
+        self.staircase = (16, 3)
         self.barrier_name = "wall of smooth, precisely cut stones"
         self.treasure_chest = (2, 14)
         self.quantum_treasure_chest = (0, 0)
@@ -86,7 +86,7 @@ class Dungeon1(Dungeon):
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 0
             ["*", "*", "*", "*", "*", "C", "H", "H", "H", "C", "*", "|", "|", "|", "|", "|", "|", "|", "C", "*"],  # 1
             ["*", "*", "*", "*", "*", "H", "*", "*", "*", "H", "*", ".", ".", ".", ".", ".", ".", ".", "|", "*"],  # 2
-            ["*", "D", "H", "H", "H", "I", "*", ".", ".", "O", ".", ".", ".", ".", ".", ".", ".", ".", ">", "E"],  # 3
+            ["*", "D", "H", "H", "H", "I", "*", ".", ".", "O", ".", ".", ".", ".", ".", ".", "S", ".", ">", "E"],  # 3
             ["*", "*", "*", "*", "*", "H", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "|", "*"],  # 4
             ["*", "C", "|", "C", "*", "H", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "|", "*"],  # 5
             ["*", "|", ".", "|", "*", "H", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "|", "*"],  # 6
@@ -154,8 +154,8 @@ class Dungeon2(Dungeon):
         self.fountain2 = (3, 4)
         self.teleporter = (4, 3)
         self.teleporter2 = (4, 4)
-        self.teleporter_landing = (1, 3)  # NA for level one
-        self.staircase = (1, 3)  # same as start...get rid of start?
+        self.teleporter_landing = (1, 3)
+        self.staircase = (1, 3)
         self.elevator = (5, 4)
         self.elevator_landing = (5, 5)
         self.pit = (1, 4)

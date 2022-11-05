@@ -111,13 +111,6 @@ class Monster:
         else:
             return True
 
-    def initiative(self):
-        if self.level > 6:  # testing
-            monster_initiative = dice_roll(1, 20) + self.dexterity_modifier + self.proficiency_bonus
-        else:
-            monster_initiative = dice_roll(1, 20) + self.dexterity_modifier
-        return monster_initiative
-
     def monster_data(self):
         if self.proper_name == "None":
             mon_data = f"{self.name}  Challenge Lvl: {self.level}  AC: {self.armor_class}  " \
@@ -2181,3 +2174,10 @@ undead_monster_dict = {
 # boss lists
 undead_prophet_list = [ZombieProphet(), SkeletalProphet()]
 king_boss_list = [SkeletonKing(), ShadowKing(), SpecterKing()]
+
+"""    def initiative(self):
+        if self.level > 6:  # testing
+            monster_initiative = dice_roll(1, 20) + self.dexterity_modifier + self.proficiency_bonus
+        else:
+            monster_initiative = dice_roll(1, 20) + self.dexterity_modifier
+        return monster_initiative"""

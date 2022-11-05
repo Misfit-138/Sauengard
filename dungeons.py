@@ -63,7 +63,7 @@ class Dungeon1(Dungeon):
         self.name = "The Fieldenberg Catacombs"
         self.level = 1
         self.staircase = (16, 3)
-        self.barrier_name = "wall of smooth, precisely cut stones"
+        self.barrier_name = "wall of tombs"
         self.treasure_chest = (2, 14)
         self.quantum_treasure_chest = (0, 0)
         self.encounter_sikira = (0, 0)

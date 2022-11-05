@@ -271,12 +271,9 @@ while True:
                                 break  # if monster steals something he gets away clean, if not, battle
 
                         # PLAYER INITIATIVE, MONSTER INITIATIVE
-                        player_initiative = player_1.initiative()
-                        monster_initiative = monster.initiative()
-                        print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
-                        pause()
+                        player_goes_first = player_1.initiative(monster)
                         # IF MONSTER GOES FIRST:
-                        if monster_initiative > player_initiative:
+                        if not player_goes_first:
                             player_1.hud()
                             # player_1.meta_monster_function(monster)
                             monster.meta_monster_function(player_1)
@@ -287,7 +284,6 @@ while True:
                                     if not player_1.check_dead():  # if player not dead
                                         print(f"You regain your faculties.")
                                         pause()
-                                        # continue  # (don't continue here)
                                     else:
                                         print("You are dead and paralyzed!")
                                         player_is_dead = True
@@ -298,7 +294,7 @@ while True:
                                 player_is_dead = True
                                 break
                             # at this point, monster still has initiative
-                            # if player has allies and monster has multi_attack or lesser_multi_attack,
+                            # therefore, if player has npc allies and monster has multi_attack or lesser_multi_attack,
                             # monster attacks npc
                             player_1.monster_attacks_npc_meta(monster)
                         # OTHERWISE, PLAYER PROMPT and enter BATTLE LOOP
@@ -404,7 +400,7 @@ while True:
                                         pause()
                                         continue  # if you have no QU, don't waste a turn!
                                 # if monster still alive after quantum attack, and player has allies:
-                                # testing npc ally attack monster
+                                # npc allies attack monster
                                 if player_1.npc_attack_logic(monster, encounter):  # if npc ally defeats monster
                                     player_1.end_of_turn_calculation()
                                     # allies heal and no longer retreat:
@@ -548,3 +544,7 @@ while True:
                     continue
         else:  # if player is in town and does not (E)nter dungeon
             continue
+"""player_initiative = player_1.initiative()
+                        monster_initiative = monster.initiative()
+                        print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
+                        pause()"""

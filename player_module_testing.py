@@ -281,7 +281,7 @@ def town_theme():
     if os.name == 'nt':
         winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_(tavern)_loop_by_alexander_nakarada.wav',
                            winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-        # place these files in same directory. use folowing syntax:
+        # place these files in same directory. use following syntax:
         # winsound.PlaySound('town_(tavern)_loop_by_alexander_nakarada.wav',
         # winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
@@ -2145,13 +2145,23 @@ class Player:
                     sleep(1)
             return True  # player IS dead
 
-    def initiative(self):
+    def initiative(self, monster):
         # called from main loop after encountering monster
+        self.hud()
         if self.level > 6:
             player_initiative = dice_roll(1, 20) + self.dexterity_modifier + self.proficiency_bonus
         else:
             player_initiative = dice_roll(1, 20) + self.dexterity_modifier
-        return player_initiative
+        if monster.level > 6:  # testing
+            monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier + monster.proficiency_bonus
+        else:
+            monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier
+        print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
+        pause()
+        if player_initiative > monster_initiative:
+            return True
+        else:
+            return False
 
     def melee(self, monster_name, monster_armor_class):
         strength_bonus = 1
@@ -8108,11 +8118,17 @@ class Player:
         if number_of_ways > 1:
             exits_list.insert(-1, 'and')  # add "and" before last element to be more naturally readable
             exits = str(', '.join(exits_list[:-2]) + ' ' + ' '.join(exits_list[-2:]))
-            print(f"{description_phrase} Exits are to the {exits}.")
+            if description_phrase != "":
+                print(f"{description_phrase} Exits are to the {exits}.")
+            else:
+                print(f"Exits are to the {exits}.")
         else:
             separator = ""
             exits = (separator.join(exits_list))
-            print(f"{description_phrase} The only exit is to the {exits}.")
+            if description_phrase != "":
+                print(f"{description_phrase} The only exit is to the {exits}.")
+            else:
+                print(f"The only exit is to the {exits}.")
 
     def dungeon_intersection_logic(self):
         # called from dungeon_description()
@@ -8169,7 +8185,7 @@ class Player:
             direction = "Southern"
         print(f"The {direction} exit leads to a corridor.")
 
-    def dungeon_exit_direction_logic(self):
+    def dungeon_level_exit_direction_logic(self):
         # called from dungeon_description()
         direction = ""
         if self.position == ">":
@@ -8218,7 +8234,8 @@ class Player:
             "|": f"You are against a {self.dungeon.barrier_name}.",
             "T": f"You are in a chamber of {self.dungeon.name} that seems to have been "
                  f"re-purposed as a sort of throne room.",
-            "P": f"You are in a pit. Slime covers the ground beneath, and a putrid mist fills the air."
+            "P": f"You are in a pit. Slime covers the ground beneath, and a putrid mist fills the air.",
+            "S": ""
         }
 
         # You cannot go that way; Player has hit a dungeon wall and is returned to previous position
@@ -8244,8 +8261,6 @@ class Player:
             description = (description_dict[self.position])
             self.dungeon_room_exit_finder(description)
 
-        if self.position not in description_dict:
-            self.dungeon_room_exit_finder(f"This is a non-descript area of {self.dungeon.name}.")
         # Dungeon intersections. These can have several exits available.
         # dungeon_intersection_logic() is then called to figure it out
         if self.position == "I":
@@ -8256,14 +8271,14 @@ class Player:
         if self.position == "O":
             self.chamber_opening_logic()
 
-        # ^ <> v dungeon EXIT in the indicated direction!
+        # ^ <> v dungeon level EXIT in the indicated direction!
         elif self.position == ">" or self.position == "<" or self.position == "^" or self.position == "v":
-            self.dungeon_exit_direction_logic()
+            self.dungeon_level_exit_direction_logic()
 
         # self.coordinates is merely a tuple representing x,y coordinates on self.dungeon.grid
         # self.coordinates = (self.x, self.y)
 
-        # print out dungeon level and coordinates
+        # print out dungeon level and coordinates before return -ing
         if self.in_a_pit:
             # assuming pit landing coordinates are at 1, 14:
             print(f"In a pit below {self.dungeon.name}, Coordinates: {self.x, (self.y - 13)}")

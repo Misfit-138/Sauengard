@@ -1834,15 +1834,44 @@ class Player:
         print(random.choice(rndm_statements))
         return
 
-    def regular_monster_generator(self):
+    def meta_monster_generator(self, encounter):
         # called from main loop
+        monster = None
+        if encounter < 11:  # regular monster
+            monster = self.regular_monster_generator()
+            # monster = Shadow()  # HobgoblinCaptain()  # testing
+        elif encounter == 99:  # level exit boss fight
+            monster = self.exit_boss_generator()
+            gong()
+            sleep(4)
+            boss_battle_theme()
+            pause()
+            self.hud()
+        elif encounter == 98:  # undead king
+            monster = self.king_monster_generator()
+            gong()
+            sleep(4)
+            mountain_king_theme()
+            pause()
+            self.hud()
+        elif encounter == 97:  # undead prophet
+            monster = self.undead_prophet_generator()
+            gong()
+            sleep(4)
+            boss_battle_theme()
+            pause()
+            self.hud()
+        return monster
+
+    def regular_monster_generator(self):
+        # called meta_monster_generator()
         regular_monster_key = random.randint(1, self.level)  # (self.level + 1)
         regular_monster_cls = random.choice(monster_dict[regular_monster_key])
         regular_monster = regular_monster_cls()
         return regular_monster
 
     def undead_prophet_generator(self):
-        # called from main loop, if encounter == 97
+        # called meta_monster_generator(), if encounter == 97
         rndm_prophet_names = ['Tacium', 'Amarrik', 'Arynd', 'Beldonnor', 'Forrg',
                               'Sambressorr', 'Jornav', 'Tyrnenn', 'Fenlor', 'Yagoddish', 'Borell',
                               'Ehrnador', 'Thaymorro', 'Gorrel', 'Aureor', 'Linus', 'Mattheus',
@@ -1873,7 +1902,7 @@ class Player:
         return undead_prophet
 
     def exit_boss_generator(self):
-        # called from main loop, if encounter == 99
+        # called meta_monster_generator(), if encounter == 99
         rndm_boss_names = ['Gwarlek', 'Srentor', 'Borrnol', 'Sentollor', 'Morluk',
                            'Twinbelor', 'Sornog', 'Grenyor', 'Fallraur', 'Timboth', 'Surj',
                            'Morozzor', 'Tharbor', 'Tenbrok', 'Lorrius', 'Filwor',
@@ -1897,7 +1926,7 @@ class Player:
         return exit_boss
 
     def king_monster_generator(self):
-        # called from main loop, if encounter == 98
+        # called meta_monster_generator(), if encounter == 98
         rndm_king_names = ['Tartyrtum', 'Amarrok', 'Aaryn', 'Baldrick', 'Farrendal',
                            'Dinenlell', 'Jorn', 'Tyrne', 'Fen', 'Jagod', 'Bevel',
                            'Elrik', 'Thayadore', 'Grummthel', 'Aureus', 'Sylgor',

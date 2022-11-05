@@ -268,8 +268,7 @@ class Monster:
                 # time.sleep(5)
                 return damage_to_opponent
             else:
-                print(
-                    f"The {self.name} strikes with Quantum Powers, but you dodge the attack!")  # zero damage
+                print(f"The {self.name} strikes with Quantum Powers, but you dodge the attack!")  # zero damage
                 time.sleep(2)
                 return 0  # 0 points damage to player
         else:
@@ -288,8 +287,7 @@ class Monster:
             f"Paralyze roll: {paralyze_chance} + monster wisdom modifier: {self.wisdom_modifier}")  # rm after testing
         paralyze_total = paralyze_chance + self.wisdom_modifier
         print(f"Monster Total: {paralyze_total}")
-        print(
-            f"Your Saving Throw: {human_player_roll_d20} ")  # remove after testing
+        print(f"Your Saving Throw: {human_player_roll_d20} ")  # remove after testing
         if player_1.ring_of_prot.protect > 0:
             print(f"Your Ring of Protection Modifier: {player_1.ring_of_prot.protect}")
         if player_1.protection_effect:
@@ -1689,7 +1687,7 @@ class Ghoul(Monster):
         self.attack_5_phrase = "It leaps upon your shoulders, savagely swiping at you!!"
         self.introduction = "You have encountered a Ghoul, crouching and licking a skull. Noticing your approach,\n" \
                             "it drops the skull and rises to its feet, hissing through razor-sharp teeth and\n" \
-                            "working its jagged claws. Driven by an insatiable hunger for humanoid flesh,\n " \
+                            "working its jagged claws. Driven by an insatiable hunger for humanoid flesh,\n" \
                             "its bulbous black eyes grow impossibly wide as it draws in its serpentine tongue. "
         self.is_discovered = False
         self.paralyze_phrase = "It lurches forward, grabbing your arm in its cold, sinewy and awful claws!"

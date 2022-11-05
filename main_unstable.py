@@ -14,7 +14,7 @@ import pickle
 from dungeons import dungeon_dict
 import os
 from player_module_testing import sad_cello_theme, cls, game_splash, character_generator, town_theme, gong, sleep, \
-    encounter_logic, boss_battle_theme, mountain_king_theme, pause
+    encounter_logic, pause  # boss_battle_theme, mountain_king_theme
 
 sad_cello_theme()
 cls()
@@ -36,7 +36,6 @@ while True:
                 sleep(1)
                 print(f"{player_name} read.")
                 sleep(1)
-                # dungeon_key = player_1.dungeon_key
                 dungeon = dungeon_dict[player_1.dungeon_key]  # remove after testing
                 print(dungeon.name)  # remove after testing
                 print(player_1.coordinates)  # remove after testing
@@ -61,7 +60,7 @@ while True:
             (player_1.x, player_1.y) = player_1.dungeon.staircase
             # 'position' corresponds to ASCII grids. 0 is the initialization position.
             # Thereafter, it is a string based on where the player lands in the ASCII grid,
-            # '*' = border, '.' = wide open area, '7' = northwest corner, etc.
+            # '*' = border, '.' = wide open area, etc.
             # the ASCII grid 'position' is used for display_map() and for dungeon_description()
             player_1.position = 0
             player_1.hud()
@@ -181,8 +180,6 @@ while True:
                     continue  # continue means you do not waste a turn
 
                 # ***** END OF NAVIGATION choice *************************************************************
-                # !!!!!!!!!!!!!!!! V NOTE the INDENT below V !!!!!!!!!!!!!!!!
-                # ******************************************************************************************
                 # NAVIGATION position and coordinate CALCULATIONS:
                 player_1.navigation_position_coordinates()
                 # ENCOUNTER LOGIC IS DETERMINED *BEFORE* event_logic(), BUT CAN BE RE-ASSIGNED BASED ON
@@ -207,13 +204,8 @@ while True:
                     continue
                 # LASTLY, dungeon_description()
                 player_1.dungeon_description()  # this seems to work best when put LAST
-                # if player_1.position == "E":
-                #    encounter = 99  # dungeon level boss conditional
-                #    player_1.next_dungeon()
-                # ***********************************************************************************************>>>>
+                # encounter = 0  # this should make no monsters for testing
                 if encounter < 11 or encounter > 20:  # < 11 = normal monster. > 20 = boss
-                    monster = ""  # to prevent monster from being undefined
-                    # monster dictionary imported from monster module. keys correspond to challenge levels
                     # IN PROXIMITY TO MONSTER LOOP *contains battle loop within it*
                     player_1.in_proximity_to_monster = True
                     player_is_dead = False
@@ -222,35 +214,11 @@ while True:
                             break
                         if not player_1.in_proximity_to_monster:
                             break
-                        # eventually offload this into a meta-monster generator function: ****************************
-                        if encounter < 11:  # regular monster
-                            monster = player_1.regular_monster_generator()
-                            # monster = Shadow()  # HobgoblinCaptain()  # testing
-                        elif encounter == 99:  # level exit boss fight
-                            monster = player_1.exit_boss_generator()
-                            gong()
-                            sleep(4)
-                            boss_battle_theme()
-                            pause()
-                            player_1.hud()
-                        elif encounter == 98:  # undead king
-                            monster = player_1.king_monster_generator()
-                            gong()
-                            sleep(4)
-                            mountain_king_theme()
-                            pause()
-                            player_1.hud()
-                        elif encounter == 97:  # undead prophet
-                            monster = player_1.undead_prophet_generator()
-                            gong()
-                            sleep(4)
-                            boss_battle_theme()
-                            pause()
-                            player_1.hud()
-                        # ************************************************************************************
+                        # create a monster based on encounter variable: < 11 = normal monster. > 20 = boss
+                        monster = player_1.meta_monster_generator(encounter)
                         print(discovered_monsters)  # remove after testing
                         if monster.name in discovered_monsters:
-                            print(f"You have encountered a level {monster.level} {monster.name}.")
+                            print(f"You have encountered a {monster.name}. Challenge level: {monster.level}")
                             # remove lvl after testing
                             pause()
                         else:
@@ -271,11 +239,10 @@ while True:
                                 break  # if monster steals something he gets away clean, if not, battle
 
                         # PLAYER INITIATIVE, MONSTER INITIATIVE
-                        player_goes_first = player_1.initiative(monster)
+                        human_goes_first = player_1.initiative(monster)
                         # IF MONSTER GOES FIRST:
-                        if not player_goes_first:
+                        if not human_goes_first:
                             player_1.hud()
-                            # player_1.meta_monster_function(monster)
                             monster.meta_monster_function(player_1)
                             # I tried to offload this code, but the breaks and continues are pretty tangled
                             if not player_1.check_dead():  # if player not dead
@@ -355,7 +322,6 @@ while True:
                                                 if encounter == 99:
                                                     player_1.boss_hint_logic()
                                             player_1.level_up(monster.experience_award, monster.gold)
-                                            # player_1.event_logic()  # this will trigger an event without using (L)ook
                                             player_1.dungeon_description()  # has worked well for a while
                                             # pause()
                                             break
@@ -445,7 +411,7 @@ while True:
                                     sleep(3)
                                     player_is_dead = True
                                     break
-                                # beta testing if player has allies, monster attacks npc
+                                # if player has allies, monster attacks npc
                                 player_1.monster_attacks_npc_meta(monster)
 
                             # FIGHT: player chooses melee:
@@ -488,7 +454,7 @@ while True:
                                     player_1.dungeon_description()  # beta works so far
                                     break
                                 # if monster still alive after player melee attack and player has allies
-                                # testing npc ally attacks monster
+                                # npc allies attack monster
                                 if player_1.npc_attack_logic(monster, encounter):  # if npc ally defeats monster
                                     player_1.end_of_turn_calculation()
                                     # allies heal and no longer retreat:
@@ -540,11 +506,35 @@ while True:
                                 player_1.hud()
                                 continue
                             #
-                else:  # if encounter condition False
+                else:  # encounter condition False; no monster, continue
                     continue
-        else:  # if player is in town and does not (E)nter dungeon
+        else:  # player is in town and does NOT (E)nter dungeon; continue
             continue
 """player_initiative = player_1.initiative()
                         monster_initiative = monster.initiative()
                         print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
                         pause()"""
+"""                        if encounter < 11:  # regular monster
+                            monster = player_1.regular_monster_generator()
+                            # monster = Shadow()  # HobgoblinCaptain()  # testing
+                        elif encounter == 99:  # level exit boss fight
+                            monster = player_1.exit_boss_generator()
+                            gong()
+                            sleep(4)
+                            boss_battle_theme()
+                            pause()
+                            player_1.hud()
+                        elif encounter == 98:  # undead king
+                            monster = player_1.king_monster_generator()
+                            gong()
+                            sleep(4)
+                            mountain_king_theme()
+                            pause()
+                            player_1.hud()
+                        elif encounter == 97:  # undead prophet
+                            monster = player_1.undead_prophet_generator()
+                            gong()
+                            sleep(4)
+                            boss_battle_theme()
+                            pause()
+                            player_1.hud()"""

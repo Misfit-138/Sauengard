@@ -1,3 +1,4 @@
+import collections
 import math
 import pickle
 import random
@@ -87,6 +88,10 @@ rndm_aroma_lst = ['agarwood', 'angelica root', 'anise', 'basil', 'bergamot', 'ca
 
 def convert_list_to_string_with_commas_only(list1):
     return str(list1).replace('[', '').replace(']', '').replace("'", "")
+
+
+def compare():
+    lambda x, y: collections.Counter(x) == collections.Counter(y)
 
 
 def pause():
@@ -8128,39 +8133,36 @@ class Player:
             return self.boss_clue_6()
         return
 
-    def dungeon_room_exit_finder(self, description_phrase):
-        # called from dungeon_description()
-        north_of_you = self.dungeon.grid[self.y - 1][self.x]
-        west_of_you = self.dungeon.grid[self.y][self.x - 1]
-        south_of_you = self.dungeon.grid[self.y + 1][self.x]
-        east_of_you = self.dungeon.grid[self.y][self.x + 1]
-        exits_list = []
-        if north_of_you != "*":
-            exits_list.append("North")
-        if south_of_you != "*":
-            exits_list.append("South")
-        if east_of_you != "*":
-            exits_list.append("East")
-        if west_of_you != "*":
-            exits_list.append("West")
-        number_of_ways = len(exits_list)
-        if number_of_ways > 1:
-            exits_list.insert(-1, 'and')  # add "and" before last element to be more naturally readable
-            exits = str(', '.join(exits_list[:-2]) + ' ' + ' '.join(exits_list[-2:]))
-            if description_phrase != "":
-                print(f"{description_phrase} Exits are to the {exits}.")
-            else:
-                print(f"Exits are to the {exits}.")
+    def atrium_check(self):
+        # this is called from self.auto_intersection_description() after intersection_check
+        northeast_of_you = self.dungeon.grid[self.y - 1][self.x + 1]
+        northwest_of_you = self.dungeon.grid[self.y - 1][self.x - 1]
+        southeast_of_you = self.dungeon.grid[self.y + 1][self.x + 1]
+        southwest_of_you = self.dungeon.grid[self.y + 1][self.x - 1]
+        if northeast_of_you == "*" and northwest_of_you == "*":
+            return "North"
+        elif southeast_of_you == "*" and southwest_of_you == "*":
+            return "South"
+        elif northeast_of_you == "*" and southeast_of_you == "*":
+            return "East"
+        elif northwest_of_you == "*" and southwest_of_you == "*":
+            return "West"
         else:
-            separator = ""
-            exits = (separator.join(exits_list))
-            if description_phrase != "":
-                print(f"{description_phrase} The only exit is to the {exits}.")
-            else:
-                print(f"The only exit is to the {exits}.")
+            return False
 
-    def dungeon_intersection_logic(self):
-        # called from dungeon_description()
+    def intersection_check(self):
+        # called from self.auto_intersection_description()
+        northeast_of_you = self.dungeon.grid[self.y - 1][self.x + 1]
+        northwest_of_you = self.dungeon.grid[self.y - 1][self.x - 1]
+        southeast_of_you = self.dungeon.grid[self.y + 1][self.x + 1]
+        southwest_of_you = self.dungeon.grid[self.y + 1][self.x - 1]
+        if northeast_of_you == "*" and northwest_of_you == "*" and southeast_of_you == "*" and southwest_of_you == "*":
+            return True
+        else:
+            return False
+
+    def auto_intersection_description(self):
+        # called from automatic_dungeon_description_and_room_exit_finder()
         north_of_you = self.dungeon.grid[self.y - 1][self.x]
         west_of_you = self.dungeon.grid[self.y][self.x - 1]
         south_of_you = self.dungeon.grid[self.y + 1][self.x]
@@ -8176,15 +8178,101 @@ class Player:
             exits_list.append("West")
         number_of_ways = len(exits_list)
         if number_of_ways > 1:
-            exits_list.insert(-1, 'and')
-            exits = str(', '.join(exits_list[:-2]) + ' ' + ' '.join(exits_list[-2:]))
-            print(f"You are at a {number_of_ways}-way intersection. Corridors lead off to the {exits}.")
+            # exits_list.insert(-1, 'and')
+            # exits = str(', '.join(exits_list[:-2]) + ' ' + ' '.join(exits_list[-2:]))
+            description = f"You are at a {number_of_ways}-way intersection."
+            return description
         else:
-            # this code is ostensibly unreachable, unless "I" is added to the self.dungeon.grid in the wrong place:
+            # this code is ostensibly unreachable
             separator = ""
             exits = (separator.join(exits_list))
             print(f"There appears to have been an intersection here at one time, but all except one corridor has "
                   f"collapsed. The only exit is to the {exits}")
+
+    def automatic_dungeon_description_and_room_exit_finder(self, description_phrase):
+        # called from dungeon_description()
+        # if self.intersection_check():
+        #    description_phrase = self.auto_intersection_description()
+        #    self.automatic_dungeon_description_and_room_exit_finder(description)
+        corridor_direction = ""
+        auto_description_phrase = ""
+        north_of_you = self.dungeon.grid[self.y - 1][self.x]
+        west_of_you = self.dungeon.grid[self.y][self.x - 1]
+        south_of_you = self.dungeon.grid[self.y + 1][self.x]
+        east_of_you = self.dungeon.grid[self.y][self.x + 1]
+        exits_list = []
+        walls_list = []
+
+        if north_of_you != "*":
+            exits_list.append("North")
+        else:
+            walls_list.append("North")
+        if south_of_you != "*":
+            exits_list.append("South")
+        else:
+            walls_list.append("South")
+        if east_of_you != "*":
+            exits_list.append("East")
+        else:
+            walls_list.append("East")
+        if west_of_you != "*":
+            exits_list.append("West")
+        else:
+            walls_list.append("West")
+        number_of_exits = len(exits_list)
+        number_of_walls = len(walls_list)
+        if number_of_walls == 0:
+            if not self.intersection_check():  # if you are not at a 4-way intersection
+                if not self.atrium_check():  # and you are not in an atrium
+                    auto_description_phrase = f"This is a wide open area of {self.dungeon.name}."
+                else:  # you must be in an atrium
+                    auto_description_phrase = f"You are standing in an atrium."
+                    corridor_direction = self.atrium_check()
+            else:  # you must be at a 4-way intersection
+                auto_description_phrase = self.auto_intersection_description()
+        if number_of_walls == 1:
+            if not self.intersection_check():  # if you are not at an intersection
+                separator = ""
+                direction = (separator.join(walls_list))  # simplify printing of list
+                auto_description_phrase = f"There is a {self.dungeon.barrier_name} to the {direction}."
+            else:  # you are at an intersection
+                auto_description_phrase = self.auto_intersection_description()
+        if number_of_walls == 2:
+            e_w_walls = ['East', 'West']
+            n_s_walls = ['North', 'South']
+            # if there are walls to your east and west *or* to your north and south:
+            if set(e_w_walls) == set(walls_list) or set(n_s_walls) == set(walls_list):
+                walls_list.insert(-1, 'and')  # add "and" before last element to be more naturally readable
+                directions = str(', '.join(walls_list[:-2]) + ' ' + ' '.join(walls_list[-2:]))
+                auto_description_phrase = f"This is a tunneled corridor of {self.dungeon.name}. " \
+                                          f"There are {self.dungeon.barrier_name_plural} to the {directions}."
+            # otherwise, you are in a corner:
+            else:
+                walls_list.insert(-1, 'and')  # add "and" before last element to be more naturally readable
+                directions = str(', '.join(walls_list[:-2]) + ' ' + ' '.join(walls_list[-2:]))
+                auto_description_phrase = f"You are in a corner. " \
+                                          f"There are {self.dungeon.barrier_name_plural} to the {directions}."
+        if number_of_walls == 3:
+            walls_list.insert(-1, 'and')  # add "and" before last element to be more naturally readable
+            directions = str(', '.join(walls_list[:-2]) + ' ' + ' '.join(walls_list[-2:]))
+            auto_description_phrase = f"This is a dead end. " \
+                                      f"There are {self.dungeon.barrier_name_plural} to the {directions}."
+        if number_of_exits > 1:
+            exits_list.insert(-1, 'and')  # add "and" before last element to be more naturally readable
+            exits = str(', '.join(exits_list[:-2]) + ' ' + ' '.join(exits_list[-2:]))
+            if description_phrase != "":
+                print(f"{description_phrase} auto{auto_description_phrase} Exits are to the {exits}.")
+                if corridor_direction != "":
+                    print(f"The exit to the {corridor_direction} leads to a corridor.")
+            else:
+                print(f"auto{auto_description_phrase} Exits are to the {exits}.")
+        else:
+            separator = ""
+            exits = (separator.join(exits_list))
+            if description_phrase != "":
+                print(f"{description_phrase} auto{auto_description_phrase} The only exit is to the {exits}.")
+            else:
+                print(f"auto{auto_description_phrase} The only exit is to the {exits}.")
 
     def you_cannot_go_that_way(self):
         # called from dungeon_description()
@@ -8225,7 +8313,9 @@ class Player:
             direction = "North"
         elif self.position == "v":
             direction = "South"
-        print(f"You see the dungeon exit to the {direction}!")
+        description = ""
+        self.automatic_dungeon_description_and_room_exit_finder(description)
+        print(f"You see the dungeon exit to the {direction}!!")
         return
 
     def navigation_position_coordinates(self):
@@ -8242,6 +8332,7 @@ class Player:
     def dungeon_description(self):
         # called from navigation() and main loop
         self.hud()
+        description = ""
         north_south = ""
         east_west = ""
         if self.x > 9:
@@ -8254,13 +8345,13 @@ class Player:
             north_south = "North"
 
         description_dict = {
-            ".": f"This is a wide open area of {self.dungeon.name}.",
-            "3": f"You are in a rather wide open area of {self.dungeon.name}.",
-            "D": f"You are at a dead end.",
-            "H": f"This is a tunneled corridor of {self.dungeon.name}.",
-            "C": f"You are in a corner.",
+            ".": f"This is a dimly lit area of {self.dungeon.name}.",
+
+
+            # "H": f"This is a tunneled corridor of {self.dungeon.name}.",
+
             "O": f"You are standing in the entryway to a large, open chamber.",
-            "|": f"You are against a {self.dungeon.barrier_name}.",
+
             "T": f"You are in a chamber of {self.dungeon.name} that seems to have been "
                  f"re-purposed as a sort of throne room.",
             "P": f"You are in a pit. Slime covers the ground beneath, and a putrid mist fills the air.",
@@ -8288,12 +8379,16 @@ class Player:
         # dungeon_room_exit_finder() calculates exits and prints out the description phrase as well as the exits
         if self.position in description_dict:
             description = (description_dict[self.position])
-            self.dungeon_room_exit_finder(description)
+        self.automatic_dungeon_description_and_room_exit_finder(description)
+        # self.dungeon_room_exit_finder(description)
 
         # Dungeon intersections. These can have several exits available.
         # dungeon_intersection_logic() is then called to figure it out
-        if self.position == "I":
-            self.dungeon_intersection_logic()
+        # if self.position == "I":
+        #    self.dungeon_intersection_logic()
+        # if self.intersection_check():
+        #    description = self.auto_intersection_description()
+        #    self.automatic_dungeon_description_and_room_exit_finder(description)
 
         # chamber openings are described above, and then the direction in which the corridor lies is calculated by
         # chamber_opening_logic()
@@ -9270,3 +9365,60 @@ return 0"""
         # T throne room
         # L Pit landing
         # P in a Pit"""
+"""    def dungeon_room_exit_finder(self, description_phrase):
+        # called from dungeon_description()
+        north_of_you = self.dungeon.grid[self.y - 1][self.x]
+        west_of_you = self.dungeon.grid[self.y][self.x - 1]
+        south_of_you = self.dungeon.grid[self.y + 1][self.x]
+        east_of_you = self.dungeon.grid[self.y][self.x + 1]
+        exits_list = []
+        if north_of_you != "*":
+            exits_list.append("North")
+        if south_of_you != "*":
+            exits_list.append("South")
+        if east_of_you != "*":
+            exits_list.append("East")
+        if west_of_you != "*":
+            exits_list.append("West")
+        number_of_ways = len(exits_list)
+        if number_of_ways > 1:
+            exits_list.insert(-1, 'and')  # add "and" before last element to be more naturally readable
+            exits = str(', '.join(exits_list[:-2]) + ' ' + ' '.join(exits_list[-2:]))
+            if description_phrase != "":
+                print(f"{description_phrase} Exits are to the {exits}.")
+            else:
+                print(f"Exits are to the {exits}.")
+        else:
+            separator = ""
+            exits = (separator.join(exits_list))
+            if description_phrase != "":
+                print(f"{description_phrase} The only exit is to the {exits}.")
+            else:
+                print(f"The only exit is to the {exits}.")"""
+"""
+    def dungeon_intersection_logic(self):
+        # called from dungeon_description()
+        north_of_you = self.dungeon.grid[self.y - 1][self.x]
+        west_of_you = self.dungeon.grid[self.y][self.x - 1]
+        south_of_you = self.dungeon.grid[self.y + 1][self.x]
+        east_of_you = self.dungeon.grid[self.y][self.x + 1]
+        exits_list = []
+        if north_of_you != "*":
+            exits_list.append("North")
+        if south_of_you != "*":
+            exits_list.append("South")
+        if east_of_you != "*":
+            exits_list.append("East")
+        if west_of_you != "*":
+            exits_list.append("West")
+        number_of_ways = len(exits_list)
+        if number_of_ways > 1:
+            exits_list.insert(-1, 'and')
+            exits = str(', '.join(exits_list[:-2]) + ' ' + ' '.join(exits_list[-2:]))
+            print(f"You are at a {number_of_ways}-way intersection. Corridors lead off to the {exits}.")
+        else:
+            # this code is ostensibly unreachable, unless "I" is added to the self.dungeon.grid in the wrong place:
+            separator = ""
+            exits = (separator.join(exits_list))
+            print(f"There appears to have been an intersection here at one time, but all except one corridor has "
+                  f"collapsed. The only exit is to the {exits}")"""

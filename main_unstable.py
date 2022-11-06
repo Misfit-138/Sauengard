@@ -185,7 +185,7 @@ while True:
                 # ENCOUNTER LOGIC IS DETERMINED *BEFORE* event_logic(), BUT CAN BE RE-ASSIGNED BASED ON
                 # RETURNED VALUES FROM event_logic()
                 encounter = encounter_logic()
-                # encounter = 15  # testing: this will make no monsters except bosses
+                encounter = 15  # testing: this will make no monsters except bosses 0 should make no monsters at all
                 # EVENT LOGIC IS DETERMINED BEFORE end_of_turn_calculation() AND player_1.check_dead(),
                 # IN CASE PLAYER SUFFERS DAMAGE, ETC.
                 event = player_1.event_logic()  # trigger any events corresponding to self.coordinates
@@ -204,7 +204,6 @@ while True:
                     continue
                 # LASTLY, dungeon_description()
                 player_1.dungeon_description()  # this seems to work best when put LAST
-                # encounter = 0  # this should make no monsters for testing
                 if encounter < 11 or encounter > 20:  # < 11 = normal monster. > 20 = boss
                     # IN PROXIMITY TO MONSTER LOOP *contains battle loop within it*
                     player_1.in_proximity_to_monster = True

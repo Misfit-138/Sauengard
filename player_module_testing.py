@@ -1935,6 +1935,7 @@ class Player:
         exit_boss = monster_cls()
         first_name = random.choice(rndm_boss_names)
         exit_boss.proper_name = f"{first_name} the {exit_boss.name} guardian"
+        self.hud()
         print(f"In the archway to the staircase leading down to {self.dungeon.name} "
               f"stands {exit_boss.proper_name}!\n"
               f"Without fear, without thought, the guardian looks upon you and readies itself for battle...")
@@ -2196,13 +2197,13 @@ class Player:
             player_initiative = dice_roll(1, 20) + self.dexterity_modifier + self.proficiency_bonus
         else:
             player_initiative = dice_roll(1, 20) + self.dexterity_modifier
-        if monster.level > 6:  # testing
+        if monster.level > 6:  # beta testing
             monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier + monster.proficiency_bonus
         else:
             monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier
         print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
         pause()
-        if player_initiative > monster_initiative:
+        if player_initiative >= monster_initiative:
             return True
         else:
             return False
@@ -8143,6 +8144,40 @@ class Player:
             return self.boss_clue_6()
         return
 
+    def wide_open_space_logic(self):
+        north_of_you = self.dungeon.grid[self.y - 1][self.x]
+        west_of_you = self.dungeon.grid[self.y][self.x - 1]
+        south_of_you = self.dungeon.grid[self.y + 1][self.x]
+        east_of_you = self.dungeon.grid[self.y][self.x + 1]
+        northeast_of_you = self.dungeon.grid[self.y - 1][self.x + 1]
+        northwest_of_you = self.dungeon.grid[self.y - 1][self.x - 1]
+        southeast_of_you = self.dungeon.grid[self.y + 1][self.x + 1]
+        southwest_of_you = self.dungeon.grid[self.y + 1][self.x - 1]
+        level_1_perimeter = []
+        if north_of_you != "*":
+            level_1_perimeter.append("North")
+        if south_of_you != "*":
+            level_1_perimeter.append("South")
+        if east_of_you != "*":
+            level_1_perimeter.append("East")
+        if west_of_you != "*":
+            level_1_perimeter.append("West")
+        if northeast_of_you != "*":
+            level_1_perimeter.append("Northeast")
+        if northwest_of_you != "*":
+            level_1_perimeter.append("Northwest")
+        if southeast_of_you != "*":
+            level_1_perimeter.append("Southeast")
+        if southwest_of_you != "*":
+            level_1_perimeter.append("Southwest")
+        level_1_openness = len(level_1_perimeter)
+        if level_1_openness == 7:
+            return f"This is a rather wide-open area of {self.dungeon.name}."
+        if level_1_openness == 8:
+            return f"This is a wide open area of {self.dungeon.name}."
+        else:
+            return f"This is a non-descript area of {self.dungeon.name}."
+
     def atrium_check(self):
         # an atrium connects a corridor to a wide-open chamber.
         # called from automatic_dungeon_description_and_room_exit_finder() *after* intersection_check
@@ -8156,13 +8191,13 @@ class Player:
         southeast_of_you = self.dungeon.grid[self.y + 1][self.x + 1]
         southwest_of_you = self.dungeon.grid[self.y + 1][self.x - 1]
         if northeast_of_you == "*" and northwest_of_you == "*" and north_of_you != "*":
-            return "North"
+            return "Northern"
         elif southeast_of_you == "*" and southwest_of_you == "*" and south_of_you != "*":
-            return "South"
+            return "Southern"
         elif northeast_of_you == "*" and southeast_of_you == "*" and east_of_you != "*":
-            return "East"
+            return "Eastern"
         elif northwest_of_you == "*" and southwest_of_you == "*" and west_of_you != "*":
-            return "West"
+            return "Western"
         else:
             return False
 
@@ -8195,7 +8230,7 @@ class Player:
         number_of_ways = len(exits_list)
         if number_of_ways > 1:
             # exits = convert_list_to_string_with_and(exits_list)
-            description = f"You are at in a domed chamber which forms a {number_of_ways}-way intersection."
+            description = f"You are in a domed chamber which forms a {number_of_ways}-way intersection."
             return description
         else:
             # this code is ostensibly unreachable
@@ -8238,7 +8273,8 @@ class Player:
         if number_of_walls == 0:
             if not self.intersection_check():  # if you are not at an intersection
                 if not self.atrium_check():  # and you are not in an atrium
-                    auto_description_phrase = f"This is a wide, open area of {self.dungeon.name}."
+                    # auto_description_phrase = f"This is a wide, open area of {self.dungeon.name}."
+                    auto_description_phrase = self.wide_open_space_logic()
                 else:  # you must be in an atrium
                     auto_description_phrase = f"You are standing in a large, vaulted atrium."
                     corridor_direction = self.atrium_check()
@@ -8280,19 +8316,25 @@ class Player:
             # exits = str(', '.join(exits_list[:-2]) + ' ' + ' '.join(exits_list[-2:]))
             exits = convert_list_to_string_with_and(exits_list)
             if description_phrase != "":
-                print(f"{description_phrase} auto{auto_description_phrase} Exits are to the {exits}.")
+                print(f"{description_phrase} {auto_description_phrase} Exits are to the {exits}.")
                 if corridor_direction != "":
-                    print(f"The exit to the {corridor_direction} leads to a corridor.")
+                    print(f"The {corridor_direction} exit leads to a corridor..")
+                    if self.dungeon_level_exit_check():
+                        sleep(1)
+                        print(f"It is the exit of {self.dungeon.name}!")
             else:
-                print(f"auto{auto_description_phrase} Exits are to the {exits}.")
+                print(f"{auto_description_phrase} Exits are to the {exits}.")
                 if corridor_direction != "":
-                    print(f"The exit to the {corridor_direction} leads to a corridor.")
+                    print(f"The {corridor_direction} exit leads to a corridor..")
+                    if self.dungeon_level_exit_check():
+                        sleep(1)
+                        print(f"It is the exit of {self.dungeon.name}!")
         else:
             exits = convert_list_to_string(exits_list)
             if description_phrase != "":
-                print(f"{description_phrase} auto{auto_description_phrase} The only exit is to the {exits}.")
+                print(f"{description_phrase} {auto_description_phrase} The only exit is to the {exits}.")
             else:
-                print(f"auto{auto_description_phrase} The only exit is to the {exits}.")
+                print(f"{auto_description_phrase} The only exit is to the {exits}.")
 
     def you_cannot_go_that_way(self):
         # called from dungeon_description()
@@ -8305,21 +8347,15 @@ class Player:
         self.coordinates = (self.x, self.y)
         self.position = self.dungeon.grid[self.y][self.x]
 
-    def dungeon_level_exit_direction_logic(self):
+    def dungeon_level_exit_check(self):
         # called from dungeon_description()
-        direction = ""
-        if self.position == ">":
-            direction = "East"
-        elif self.position == "<":
-            direction = "West"
-        elif self.position == "^":
-            direction = "North"
-        elif self.position == "v":
-            direction = "South"
-        description = ""
-        self.automatic_dungeon_description_and_room_exit_finder(description)
-        print(f"You see the dungeon exit to the {direction}!!")
-        return
+        north_of_you = self.dungeon.grid[self.y - 1][self.x]
+        west_of_you = self.dungeon.grid[self.y][self.x - 1]
+        south_of_you = self.dungeon.grid[self.y + 1][self.x]
+        east_of_you = self.dungeon.grid[self.y][self.x + 1]
+        # direction = ""
+        if north_of_you == "E" or west_of_you == "E" or east_of_you == "E" or south_of_you == "E":
+            return True
 
     def navigation_position_coordinates(self):
         # called from end of each navigation turn in main loop
@@ -8404,8 +8440,8 @@ class Player:
         #    self.chamber_opening_logic()
 
         # ^ <> v dungeon level EXIT in the indicated direction!
-        if self.position == ">" or self.position == "<" or self.position == "^" or self.position == "v":
-            self.dungeon_level_exit_direction_logic()
+        # if self.position == ">" or self.position == "<" or self.position == "^" or self.position == "v":
+        #    self.dungeon_level_exit_direction_logic()
 
         # self.coordinates is merely a tuple representing x,y coordinates on self.dungeon.grid
         # self.coordinates = (self.x, self.y)
@@ -9453,3 +9489,19 @@ return 0"""
         elif south_of_you == "H":
             direction = "Southern"
         print(f"The {direction} exit leads to a corridor.")"""
+"""    def dungeon_level_exit_direction_logic(self):
+        # called from dungeon_description()
+        # direction = ""
+        # if self.position == ">":
+        #    direction = "East"
+        # elif self.position == "<":
+        #    direction = "West"
+        # elif self.position == "^":
+        #    direction = "North"
+        # elif self.position == "v":
+        #    direction = "South"
+        description = ""
+        # self.automatic_dungeon_description_and_room_exit_finder(description)
+        # print(f"You see the dungeon exit to the {direction}!!")
+        print(f"It is the exit of {self.dungeon.name}!")
+        return"""

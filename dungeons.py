@@ -63,7 +63,7 @@ class Dungeon1(Dungeon):
         super().__init__()
         self.name = "The Fieldenberg Catacombs"
         self.level = 1
-        self.staircase = (5, 3)
+        self.staircase = (16, 3)
         self.barrier_name = "wall of tombs"
         self.barrier_name_plural = "walls of tombs"
         self.treasure_chest = (2, 14)

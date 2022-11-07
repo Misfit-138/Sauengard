@@ -116,6 +116,7 @@ while True:
                 # player_1.loot(0)  # for testing
                 # player_1.asi()  # for testing
                 if player_1.position == 0:  # 0 is the game/level start position
+                    player_1.hud()
                     print(player_1.dungeon.intro)
                     pause()
                     # set player position, which also removes intro condition

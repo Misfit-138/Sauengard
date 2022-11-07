@@ -8249,7 +8249,7 @@ class Player:
                 if not self.atrium_check():  # and you are not in an atrium lined with one wall
                     # you must be against a wall
                     direction = convert_list_to_string(walls_list)
-                    auto_description_phrase = f"There is a {self.dungeon.barrier_name} to the {direction}."
+                    auto_description_phrase = f"You are against a {self.dungeon.barrier_name} to the {direction}."
                 else:  # you must be in an atrium lined with one wall
                     direction = convert_list_to_string(walls_list)
                     auto_description_phrase = f"You are standing in an atrium lined with a " \

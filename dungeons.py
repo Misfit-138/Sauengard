@@ -1,55 +1,41 @@
-"""         ".": f"You are in a rather wide open area of {self.dungeon.name}. There are exits in each direction...",
-            "1": f"You are at a dead end. The only exit is to the North...",
-            "2": f"You are at a dead end. The only exit is to the South...",
-            "3": f"You are at a dead end. The only exit is to the East...",
-            "4": f"You are at a dead end. The only exit is to the West...",
-            "5": f"This is a tunnel corridor of {self.dungeon.name}. Exits are to the North and South...",
-            "6": f"You are in a corridor of {self.dungeon.name}. Exits are to the East and West...",
-            "7": f"You are in a corner. Exits are to the South and East.",
-            "8": f"You are in a corner. Exits are to the North and East.",
-            "9": f"You are in a corner. Exits are to the South and West.",
-            "-": f"You are in a corner. Exits are to the North and West.",
-            "|": f"You are against a {self.dungeon.barrier_name} to the North. Exits are to the South, East and West.",
-            "/": f"You are against a {self.dungeon.barrier_name} to the South. Exits are to the North, East and West.",
-            "(": f"You are against a {self.dungeon.barrier_name} to the West. Exits are to the North, South and East.",
-            ")": f"You are against a {self.dungeon.barrier_name} to the East. Exits are to the North, South and West.",
-            "T": f"You are in a chamber of {self.dungeon.name} that seems to have been "
-                 f"re-purposed as a sort of throne room.",
-            "L": f"You are on a slick patch of ground. High above you is a wide, gaping hole leading up to "
-                 f"dungeon level {self.dungeon.level - 1}.\"
-"""
 
-
-# maps
 class Dungeon:
 
     def __init__(self):
         self.name = ""
+        self.casual_name = ""
         self.level = 0
-        self.starting_x = 0
-        self.starting_y = 0
-        self.name = ""
-        self.level = 0
+        self.staircase = (0, 0)
         self.barrier_name = ""
         self.barrier_name_plural = ""
-        self.treasure_chest = None
-        self.quantum_treasure_chest = None
-        self.encounter_sikira = None
-        self.altar = None
-        self.throne = None
-        self.throne2 = None
-        self.fountain = None
-        self.fountain2 = None
-        self.teleporter = None
-        self.teleporter2 = None
-        self.teleporter_landing = None
-        self.staircase = None
-        self.elevator = None
-        self.elevator_landing = None
-        self.pit = None
-        self.pit2 = None
-        self.pit_landing = None
-        self.exit = None
+        self.pit_barrier_name = ""
+        self.pit_barrier_name_plural = ""
+        self.corridor_phrase = ""
+        self.corridor_name = ""
+        self.pit_description_phrase = ""
+        self.pit_corridor_phrase = ""
+        self.pit_corridor_name = ""
+        self.large_atrium_phrase = ""
+        self.one_walled_atrium_phrase = ""
+        self.pit_large_atrium_phrase = ""
+        self.pit_one_walled_atrium_phrase = ""
+        self.treasure_chest = (0, 0)
+        self.quantum_treasure_chest = (0, 0)
+        self.encounter_sikira = (0, 0)
+        self.altar = (0, 0)
+        self.throne = (0, 0)
+        self.throne2 = (0, 0)
+        self.fountain = (0, 0)
+        self.fountain2 = (0, 0)
+        self.teleporter = (0, 0)
+        self.teleporter2 = (0, 0)
+        self.teleporter_landing = (0, 0)
+        self.elevator = (0, 0)
+        self.elevator_landing = (0, 0)
+        self.pit = (0, 0)
+        self.pit2 = (0, 0)
+        self.pit_landing = (0, 0)
+        self.exit = (0, 0)
         self.grid = []
         self.player_grid = []
 
@@ -62,10 +48,24 @@ class Dungeon1(Dungeon):
     def __init__(self):
         super().__init__()
         self.name = "The Fieldenberg Catacombs"
+        self.casual_name = "the catacombs"
         self.level = 1
-        self.staircase = (16, 3)
-        self.barrier_name = "wall of tombs"
+        self.staircase = (1, 3)
+        self.barrier_name = "a wall of tombs"
         self.barrier_name_plural = "walls of tombs"
+        self.pit_barrier_name = "a wall of moist earth"
+        self.pit_barrier_name_plural = "walls of moist earth"
+        self.corridor_phrase = f"This is a corridor of ancient masonry of {self.casual_name}."
+        self.corridor_name = f"a tunneled corridor"
+        self.pit_description_phrase = f"Slime covers the ground beneath your feet, and a putrid mist fills the air."
+        self.pit_corridor_phrase = "You are in a narrow passage."
+        self.pit_corridor_name = "a cramped passage"
+        # an open-roofed entrance hall or central court
+        self.intersection_name = "a domed chamber"
+        self.large_atrium_phrase = "You are standing in a large, vaulted atrium."
+        self.one_walled_atrium_phrase = "You are standing in an atrium."
+        self.pit_large_atrium_phrase = "You are standing in a large cavity opening."
+        self.pit_one_walled_atrium_phrase = "You are standing in a cavity opening."
         self.treasure_chest = (2, 14)
         self.quantum_treasure_chest = (0, 0)
         self.encounter_sikira = (0, 0)
@@ -78,18 +78,18 @@ class Dungeon1(Dungeon):
         self.teleporter2 = (0, 0)
         self.teleporter_landing = (0, 0)
         self.elevator = (4, 18)
-        self.elevator_landing = (0, 0)
-        self.pit = (0, 0)
+        self.elevator_landing = (9, 3)
+        self.pit = (15, 3)
         self.pit2 = (0, 0)
         self.pit_landing = (1, 14)
         self.exit = (19, 3)
         self.grid = [
             # 0    1    2    3    4    5    6    7    8    9   10    11   12   13   14   15   16   17   18   19
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 0
-            ["*", "*", "*", "*", "*", "C", "C", "C", "C", "C", "*", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 1
-            ["*", "*", "*", "*", "*", "C", "*", "*", "*", "C", "*", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 2
-            ["*", "C", "C", "C", "C", "C", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", "S", ".", ">", "E"],  # 3
-            ["*", "*", "*", "*", "*", "C", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 4
+            ["*", ".", ".", ".", "*", "C", "C", "C", "C", "C", "*", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 1
+            ["*", "*", "*", "*", "*", "C", "*", "*", "*", "C", "*", ".", ".", ".", ".", "*", ".", ".", ".", "*"],  # 2
+            ["*", "C", "C", "C", "C", "C", "C", ".", ".", ".", ".", ".", ".", ".", ".", ".", "S", ".", ".", "E"],  # 3
+            ["*", "*", "*", "*", "*", "C", "*", ".", ".", ".", ".", ".", ".", ".", ".", "*", ".", "*", ".", "*"],  # 4
             ["*", ".", ".", ".", "*", "C", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 5
             ["*", ".", ".", ".", "*", "C", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 6
             ["*", ".", ".", ".", "*", "C", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 7
@@ -99,11 +99,11 @@ class Dungeon1(Dungeon):
             ["*", ".", ".", ".", ".", ".", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 11
             ["*", ".", ".", ".", ".", ".", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 12
             ["*", "*", "*", "*", "*", "*", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 13
-            ["*", "P", "P", "P", "P", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 14
-            ["*", "P", "P", "P", "P", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 15
-            ["*", "P", "P", "P", "P", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 16
-            ["*", "P", "P", "P", "P", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 17
-            ["*", "P", "P", "P", "P", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 18
+            ["*", ".", ".", ".", ".", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 14
+            ["*", "C", "*", ".", ".", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 15
+            ["*", "C", "*", ".", ".", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 16
+            ["*", "C", "*", "*", ".", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 17
+            ["*", "C", "C", "C", ".", "*", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "*"],  # 18
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"]]  # 19
 #             0    1    2    3    4    5    6    7    8    9   10    11   12   13   14   15   16   17   18   19
         self.player_grid = [
@@ -145,47 +145,60 @@ class Dungeon2(Dungeon):
     def __init__(self):
         super().__init__()
         self.name = "The Fieldenberg Lower Catacombs"
+        self.casual_name = "the lower catacombs"
         self.level = 2
         self.staircase = (1, 3)
-        self.barrier_name = "wall of smooth, precisely quarried stone"
-        self.barrier_name_plural = "walls of smooth, precisely quarried stone"
+        self.barrier_name = "a wall of tombs"
+        self.barrier_name_plural = "walls of tombs"
+        self.pit_barrier_name = "a wall of moist earth"
+        self.pit_barrier_name_plural = "walls of moist earth"
+        self.corridor_phrase = f"This is a corridor of ancient masonry of {self.casual_name}."
+        self.corridor_name = f"a tunneled corridor"
+        self.pit_description_phrase = f"Slime covers the ground beneath your feet, and a putrid mist fills the air."
+        self.pit_corridor_phrase = "You are in a narrow passage."
+        self.pit_corridor_name = "a cramped passage"
+        self.intersection_name = "a domed chamber"
+        self.large_atrium_phrase = "You are standing in a large, vaulted atrium."
+        self.one_walled_atrium_phrase = "You are standing in an atrium."
+        self.pit_large_atrium_phrase = "You are standing in a large cavity opening."
+        self.pit_one_walled_atrium_phrase = "You are standing in a cavity opening."
         self.treasure_chest = (2, 14)
         self.quantum_treasure_chest = (1, 2)
         self.altar = (1, 2)
         self.throne = (2, 3)
-        self.throne2 = (2, 4)
+        self.throne2 = (99, 99)
         self.fountain = (3, 3)
-        self.fountain2 = (3, 4)
+        self.fountain2 = (99, 99)
         self.teleporter = (4, 3)
-        self.teleporter2 = (4, 4)
+        self.teleporter2 = (99, 99)
         self.teleporter_landing = (1, 3)
         self.elevator = (5, 4)
         self.elevator_landing = (5, 5)
         self.pit = (1, 4)
-        self.pit2 = (1, 5)
-        self.pit_landing = (1, 6)
+        self.pit2 = (99, 99)
+        self.pit_landing = (1, 14)
         self.exit = (19, 3)
         self.grid = [
             # 0    1    2    3    4    5    6    7    8    9   10    11   12   13   14   15   16   17   18   19
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 0
             ["*", "7", "|", "|", "|", "|", "|", "|", "|", "|", "|", "|", "|", "|", "|", "|", "|", "|", "9", "*"],  # 1
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 2
-            ["*", "S", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ">", "E"],  # 3
+            ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ">", "E"],  # 3
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 4
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 5
-            ["*", "L", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 6
+            ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 6
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 7
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 8
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 9
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 10
             ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 11
-            ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 12
-            ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 13
-            ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 14
-            ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 15
-            ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 16
-            ["*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 17
-            ["*", "8", "/", "/", "/", "/", "/", "/", "/", "/", "/", "/", "/", "/", "/", "/", "/", "/", "-", "*"],  # 18
+            ["*", "8", "/", "/", "/", "/", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 12
+            ["*", "*", "*", "*", "*", "*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 13
+            ["*", "7", "|", "|", "9", "*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 14
+            ["*", "(", "P", "P", ")", "*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 15
+            ["*", "(", "P", "P", ")", "*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 16
+            ["*", "(", "P", "P", ")", "*", "(", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ")", "*"],  # 17
+            ["*", "8", "/", "/", "-", "*", "8", "/", "/", "/", "/", "/", "/", "/", "/", "/", "/", "/", "-", "*"],  # 18
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"]]  # 19
         self.player_grid = [
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],

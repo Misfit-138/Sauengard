@@ -8476,7 +8476,7 @@ class Player:
             north_south = "North"
 
         # You cannot go that way; Player has hit a dungeon wall and is returned to previous position
-        if self.position == "*":  # string representing walls
+        if self.position == "*":  # asterisk represents barrier
             self.you_cannot_go_that_way()
 
         # call the automatic description function

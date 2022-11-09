@@ -7362,7 +7362,6 @@ class Player:
         # because the throne has been stolen and repurposed by many kingdoms, it remains infinitely interactive.
         # however, the gems may only be pried once.
         # throne_discovery = f"level {self.dungeon.level} throne" # uncomment to only allow 1 interaction
-
         rndm_occurrence_lst = [nothing_happens, king_returns, self.increase_random_ability, self.teleporter_event,
                                nothing_happens, king_returns, self.increase_lowest_ability, self.lose_items,
                                king_returns, nothing_happens, self.heal_event, king_returns,
@@ -7562,6 +7561,7 @@ class Player:
         # self.x = random.randint(1, 18)
         # self.y = random.randint(1, 18)
         (self.x, self.y) = self.dungeon.teleporter_landing
+        self.coordinates = (self.x, self.y)  # beta
         self.previous_x = self.x
         self.previous_y = self.y
         self.position = self.dungeon.grid[self.y][self.x]
@@ -7590,6 +7590,7 @@ class Player:
                 # self.dungeon_key += 1
                 # self.dungeon = dungeon_dict[self.dungeon_key]
                 (self.x, self.y) = self.dungeon.pit_landing
+                self.coordinates = (self.x, self.y)  # beta self.dungeon.pit_landing
                 self.previous_x = self.x
                 self.previous_y = self.y
                 self.position = self.dungeon.grid[self.y][self.x]
@@ -7624,6 +7625,7 @@ class Player:
                 # self.dungeon_key += 1  # this can be used to land you on the next level down
                 # self.dungeon = dungeon_dict[self.dungeon_key]  # this can be used to land you on the next level down
                 (self.x, self.y) = self.dungeon.pit_landing
+                self.coordinates = (self.x, self.y)  # beta
                 self.previous_x = self.x
                 self.previous_y = self.y
                 self.position = self.dungeon.grid[self.y][self.x]
@@ -7639,7 +7641,7 @@ class Player:
         # this is a 'description' of the spiral staircase, if player navigates to it *after* the map is initialized
         # it is not an 'event', since it is not really interactive, so it is called from dungeon_description()
         # and not from event_logic()
-        print(f"This is the spiral staircase entrance to {self.dungeon.name}.")
+        print(f"The spiral staircase entrance to {self.dungeon.name} is here.")
         if self.dungeon.level > 1:
             previous_place = f"dungeon level {self.dungeon.level - 1}"
         else:
@@ -7699,7 +7701,7 @@ class Player:
                 self.previous_y = self.y
                 self.position = self.dungeon.grid[self.y][self.x]
                 print(f"You have arrived back at {self.dungeon.name}, dungeon level {self.dungeon.level}.")
-                sleep(2)
+                sleep(1)
                 self.dungeon_theme()
                 print(f"Watch your step.")
                 sleep(1)
@@ -7798,6 +7800,7 @@ class Player:
             return
 
     def encounter_sikira_event(self):
+        # called from event_logic()
         ally_discovery = f"level {self.dungeon.level} ally"
         rndm_orientation_lst = ["left", "right", "rear"]
         rndm_orientation = random.choice(rndm_orientation_lst)
@@ -8221,7 +8224,7 @@ class Player:
             return False
 
     def intersection_check(self):
-        # called from automatic_dungeon_description_and_room_exit_finder(
+        # called from automatic_dungeon_description_and_room_exit_finder()
         northeast_of_you = self.dungeon.grid[self.y - 1][self.x + 1]
         northwest_of_you = self.dungeon.grid[self.y - 1][self.x - 1]
         southeast_of_you = self.dungeon.grid[self.y + 1][self.x + 1]
@@ -8233,6 +8236,9 @@ class Player:
 
     def auto_intersection_description(self):
         # called from automatic_dungeon_description_and_room_exit_finder()
+        intersection_name = self.dungeon.intersection_name
+        if self.in_a_pit:
+            intersection_name = self.dungeon.pit_intersection_name
         north_of_you = self.dungeon.grid[self.y - 1][self.x]
         west_of_you = self.dungeon.grid[self.y][self.x - 1]
         south_of_you = self.dungeon.grid[self.y + 1][self.x]
@@ -8249,7 +8255,7 @@ class Player:
         number_of_ways = len(exits_list)
         if number_of_ways > 1:
             # exits = convert_list_to_string_with_and(exits_list)
-            description = f"You are in {self.dungeon.intersection_name} which " \
+            description = f"You are in {intersection_name} which " \
                           f"forms a {number_of_ways}-way intersection."
             return description
         else:
@@ -8274,7 +8280,6 @@ class Player:
             corridor_name = self.dungeon.pit_corridor_name
             large_atrium_phrase = self.dungeon.pit_large_atrium_phrase
             one_walled_atrium_phrase = self.dungeon.pit_one_walled_atrium_phrase
-            # print(f"Slime covers the ground beneath your feet, and a putrid mist fills the air.")
 
         corridor_direction = ""
         auto_description_phrase = ""
@@ -8304,7 +8309,7 @@ class Player:
         number_of_exits = len(exits_list)
         number_of_walls = len(walls_list)
 
-        if number_of_walls == 0:
+        if number_of_walls == 0:  # 4-way intersection, large atrium, or wide-open area
             if not self.intersection_check():  # if you are not at an intersection
                 if not self.atrium_check():  # and you are not in an atrium
                     auto_description_phrase = self.wide_open_space_logic()  # you must be in a wide open space
@@ -8316,10 +8321,10 @@ class Player:
                         multiple_corridors = True
                     else:  # only one corridor
                         corridor_direction = convert_list_to_string(corridor_direction)
-            else:  # you must be at a 4-way intersection
+            else:  # you must be at a 4-way intersection; intersections do not need to detect corridor_direction
                 auto_description_phrase = self.auto_intersection_description()
 
-        if number_of_walls == 1:
+        if number_of_walls == 1:  # 3-way intersection, wall-lined atrium, or against a wall
             if not self.intersection_check():  # if you are not at an intersection
                 if not self.atrium_check():  # and you are not in an atrium lined with one wall
                     # you must be against a wall
@@ -8335,10 +8340,10 @@ class Player:
                         multiple_corridors = True  # beta
                     else:  # beta
                         corridor_direction = convert_list_to_string(corridor_direction)  # beta
-            else:  # you must be at an intersection
+            else:  # you must be at a 3-way intersection; intersections do not need to detect corridor_direction
                 auto_description_phrase = self.auto_intersection_description()
 
-        if number_of_walls == 2:
+        if number_of_walls == 2:  # corridor, corner, or corner-atrium
             e_w_walls = ['East', 'West']
             n_s_walls = ['North', 'South']
             # if there are walls to your east and west *or* to your north and south:
@@ -8352,8 +8357,8 @@ class Player:
                                           f"There are {barrier_name_plural} to the {directions}."
                 if self.atrium_check():  # beta
                     corridor_direction = self.atrium_check()
-                    # you can sometimes be in an atrium and also be in a corner. i.e. there are 2 proximal corridors
-                    # in that rare case, the atrium description is ignored, because it is not really an atrium
+                    # you can sometimes be in a corner and also be in an atrium. i.e. there are 2 proximal corridors.
+                    # in that case, the atrium description is ignored, because it is not really an atrium
                     # by human definition, but corridor directions are still calculated:
                     if len(corridor_direction) > 1:
                         corridor_direction = convert_list_to_string_with_and(corridor_direction)  # beta
@@ -8366,18 +8371,31 @@ class Player:
             auto_description_phrase = f"This is a dead end. " \
                                       f"There are {barrier_name_plural} to the {directions}."
 
+        if number_of_walls == 4:  # this must never happen! :P
+            directions = convert_list_to_string_with_and(walls_list)
+            print(f"Ostensibly, you are in a cell. "
+                  f"There are {barrier_name_plural} to the {directions}.\n"
+                  f"You are completely trapped due to a programming error. The grid should never "
+                  f"have been created\nwith coordinates that place you in such a predicament. "
+                  f"Placing you back at staircase..")
+            pause()
+            (self.x, self.y) = self.dungeon.staircase
+            self.coordinates = (self.x, self.y)
+            return
+
         # finally, print auto_description_phrase and exits:
         if number_of_exits > 1:
             exits = convert_list_to_string_with_and(exits_list)
             print(f"{auto_description_phrase} Exits are to the {exits}.")
+
             # if there are corridors, calculate which exits lead to them and print out:
-            if corridor_direction != "":
-                if not self.dungeon_level_exit_check():  # if player is not at dungeon_level exit
+            if corridor_direction != "":  # you must be at an atrium, or corner-atrium
+                if not self.dungeon_level_exit_check():  # if player is not proximal to dungeon_level exit
                     if multiple_corridors:
                         print(f"The {corridor_direction} exits each lead to {corridor_name}.")
                     else:
                         print(f"The {corridor_direction} exit leads to {corridor_name}.")
-                else:  # you are at the dungeon_level exit
+                else:  # player IS proximal to the dungeon_level exit
                     if multiple_corridors:
                         print(f"The {corridor_direction} exits each lead to corridors.")
                         dungeon_exit_direction = self.dungeon_level_exit_check()
@@ -8386,10 +8404,17 @@ class Player:
                         sleep(1)
                     else:
                         corridor_direction = self.dungeon_level_exit_check()
-                        print(f"The {corridor_direction} exit leads to a staircase.."
+                        print(f"The {corridor_direction} corridor leads to a staircase.."
                               f"It is the exit of {self.dungeon.name}!")
                         sleep(1)
-        else:
+            else:  # you must be at an intersection. intersections are auto-described above.
+                # just check to see if player is proximal to the dungeon_level_exit:
+                if self.dungeon_level_exit_check():
+                    corridor_direction = self.dungeon_level_exit_check()
+                    print(f"The {corridor_direction} corridor leads to a staircase.."
+                          f"It is the exit of {self.dungeon.name}!")
+                    sleep(1)
+        else:  # you must be at a dead end
             exits = convert_list_to_string(exits_list)
             print(f"{auto_description_phrase} The only exit is to the {exits}.")
 
@@ -8409,15 +8434,11 @@ class Player:
 
     def dungeon_level_exit_check(self):
         # called from dungeon_description()
-        north_of_you = (self.x, (self.y - 1))  # self.dungeon.grid[self.y - 1][self.x]
-        west_of_you = ((self.x - 1), self.y)  # self.dungeon.grid[self.y][self.x - 1]
-        south_of_you = (self.x, (self.y + 1))  # self.dungeon.grid[self.y + 1][self.x]
-        east_of_you = ((self.x + 1), self.y)  # self.dungeon.grid[self.y][self.x + 1]
-        # direction = ""
+        north_of_you = (self.x, (self.y - 1))
+        west_of_you = ((self.x - 1), self.y)
+        south_of_you = (self.x, (self.y + 1))
+        east_of_you = ((self.x + 1), self.y)
         level_exit = self.dungeon.exit
-        # if north_of_you == level_exit or west_of_you == level_exit \
-        #        or east_of_you == level_exit or south_of_you == level_exit:
-        #   return True
         if north_of_you == level_exit:
             return "Northern"
         if west_of_you == level_exit:
@@ -8441,9 +8462,8 @@ class Player:
         self.previous_y = self.y
 
     def dungeon_description(self):
-        # called from navigation() and main loop
+        # meta-function called from navigation() and main loop
         self.hud()
-        # description = ""
         north_south = ""
         east_west = ""
         if self.x > 9:
@@ -8455,25 +8475,15 @@ class Player:
         elif self.y < 10:
             north_south = "North"
 
-        # description_dict = {
-            # ".": f"This is a wide-open, dimly lit area of {self.dungeon.name}.",
-
-            # "H": f"This is a tunneled corridor of {self.dungeon.name}.",
-
-            # "O": f"You are standing in the entryway to a large, open chamber.",
-
-            # "T": f"You are in a chamber of {self.dungeon.name} that seems to have been "
-            #     f"re-purposed as a sort of throne room.",
-            # "P": f"Slime covers the ground beneath your feet, and a putrid mist fills the air.",
-            # "S": ""  # "" is simply for logical readability
-        # } #
-
         # You cannot go that way; Player has hit a dungeon wall and is returned to previous position
         if self.position == "*":  # string representing walls
             self.you_cannot_go_that_way()
 
-        # Dungeon logical descriptions. These are more detailed and immersive due to their
-        # slightly more complex programming. They correspond to dungeon instance coordinates and player_module events
+        # call the automatic description function
+        self.automatic_dungeon_description_and_room_exit_finder()
+
+        # Dungeon logical descriptions. They correspond to dungeon instance coordinates and events.
+        # They are printed out after automatic description function
         if self.coordinates == self.dungeon.staircase:
             self.staircase_description()
         if self.coordinates == self.dungeon.elevator_landing:
@@ -8483,39 +8493,8 @@ class Player:
         if self.coordinates == self.dungeon.pit_landing:
             self.pit_landing_description()
 
-        # Dungeon generic descriptions. These description_dict keys and values
-        # correspond to self.position strings on the grid.
-        # If player position corresponds to the dictionary key,
-        # The description phrase is defined and then passed to automatic_dungeon_description_and_room_exit_finder()
-        # which calculates exits and prints out 1. the description phrase as well as
-        # 2. automatic descriptions and
-        # 3.exits
-        # otherwise, description is an empty string by default, and automatic_dungeon_description_and_room_exit_finder()
-        # does all the work
-        # if self.position in description_dict:
-        #    description = (description_dict[self.position])
-
-        # call the automatic description function
-        self.automatic_dungeon_description_and_room_exit_finder()
-        # Dungeon intersections. These can have several exits available.
-        # dungeon_intersection_logic() is then called to figure it out
-        # if self.position == "I":
-        #    self.dungeon_intersection_logic()
-        # if self.intersection_check():
-        #    description = self.auto_intersection_description()
-        #    self.automatic_dungeon_description_and_room_exit_finder(description)
-
-        # chamber openings are described above, and then the direction in which the corridor lies is calculated by
-        # chamber_opening_logic()
-        # if self.position == "O":
-        #    self.chamber_opening_logic()
-
-        # ^ <> v dungeon level EXIT in the indicated direction!
-        # if self.position == ">" or self.position == "<" or self.position == "^" or self.position == "v":
-        #    self.dungeon_level_exit_direction_logic()
-
         # self.coordinates is merely a tuple representing x,y coordinates on self.dungeon.grid
-        # self.coordinates = (self.x, self.y)
+        # self.coordinates = (self.x, self.y)  # commented out. seems to be unnecessary at this point in program.
 
         # print out dungeon level and coordinates before returning
         if self.in_a_pit:
@@ -8555,7 +8534,7 @@ class Player:
 
     def dungeon_exit_event(self):
         # dungeon dictionary in dungeons.py file
-        print(f"You approach the exit. With quiet resolve you turn to briefly look\n"
+        print(f"You approach the exit. With quiet resolve, you turn to briefly look\n"
               f"behind you, and then continue onward, toward your goal.")
         sleep(2)
         # the deepest dungeon level will have no exit, so there should be no chance of a KeyError by adding 1.
@@ -8567,8 +8546,6 @@ class Player:
         (self.x, self.y) = self.dungeon.staircase  # simplified with tuple instead of self.x = and self.y =
         # self.coordinates will be set after first move. otherwise, the intro will be printed 1st, followed by the
         # staircase description, which is awkward
-        # self.x = self.dungeon.starting_x
-        # self.y = self.dungeon.starting_y
         self.previous_x = self.x
         self.previous_y = self.y
         self.position = 0
@@ -9578,3 +9555,41 @@ return 0"""
         return"""
 """            # exits_list.insert(-1, 'and')  # add "and" before last element to be more naturally readable
             # exits = str(', '.join(exits_list[:-2]) + ' ' + ' '.join(exits_list[-2:]))"""
+"""# if self.position == "I":
+#    self.dungeon_intersection_logic()
+# if self.intersection_check():
+#    description = self.auto_intersection_description()
+#    self.automatic_dungeon_description_and_room_exit_finder(description)
+
+# chamber openings are described above, and then the direction in which the corridor lies is calculated by
+# chamber_opening_logic()
+# if self.position == "O":
+#    self.chamber_opening_logic()
+
+# ^ <> v dungeon level EXIT in the indicated direction!
+# if self.position == ">" or self.position == "<" or self.position == "^" or self.position == "v":
+#    self.dungeon_level_exit_direction_logic()"""
+"""# Dungeon generic descriptions. These description_dict keys and values
+        # correspond to self.position strings on the grid.
+        # If player position corresponds to the dictionary key,
+        # The description phrase is defined and then passed to automatic_dungeon_description_and_room_exit_finder()
+        # which calculates exits and prints out 1. the description phrase as well as
+        # 2. automatic descriptions and
+        # 3.exits
+        # otherwise, description is an empty string by default, and automatic_dungeon_description_and_room_exit_finder()
+        # does all the work
+        # if self.position in description_dict:
+        #    description = (description_dict[self.position])"""
+"""
+        # description_dict = {
+            # ".": f"This is a wide-open, dimly lit area of {self.dungeon.name}.",
+
+            # "H": f"This is a tunneled corridor of {self.dungeon.name}.",
+
+            # "O": f"You are standing in the entryway to a large, open chamber.",
+
+            # "T": f"You are in a chamber of {self.dungeon.name} that seems to have been "
+            #     f"re-purposed as a sort of throne room.",
+            # "P": f"Slime covers the ground beneath your feet, and a putrid mist fills the air.",
+            # "S": ""  # "" is simply for logical readability
+        # } #"""

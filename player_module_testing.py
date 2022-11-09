@@ -8812,6 +8812,7 @@ if len(self.pack):
            else:
                print("Your pack is empty..see if this statement is ever seen")
                return'''
+
 '''elif found_item.item_type != 'Armor' and found_item.item_type != 'Shields' and found_item.item_type != 
 'Cloaks' and found_item.item_type != 'Rings of Protection' and found_item.item_type != 
 'Rings of Regeneration' and found_item.item_type != 'Weapons' and found_item.item_type != 

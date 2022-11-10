@@ -994,6 +994,8 @@ def npc_end_of_turn_calculation(npc):
         npc.hit_points = npc.maximum_hit_points
         sleep(1)
 
+# NPC allies
+
 
 class VozzBozz:
 
@@ -1169,6 +1171,8 @@ class Magnus:
 
 
 magnus = Magnus()
+
+# Human Player:
 
 
 class Player:
@@ -3887,7 +3891,7 @@ class Player:
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
-                    number_of_dice = (12 + self.quantum_level - 6) * critical_bonus
+                    number_of_dice = (10 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 10) + 40
                     if damage_to_opponent > 0:
                         print(hit_statement)
@@ -3993,7 +3997,7 @@ class Player:
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
-                    number_of_dice = (8 + self.quantum_level - 4) * critical_bonus
+                    number_of_dice = (5 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -4013,7 +4017,7 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    number_of_dice = (8 + self.quantum_level - 4) * critical_bonus
+                    number_of_dice = (5 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -4093,8 +4097,8 @@ class Player:
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
-                    number_of_dice = (7 + self.quantum_level - 4) * critical_bonus
-                    damage_to_opponent = dice_roll(number_of_dice, 8) + (2 * number_of_dice)
+                    number_of_dice = (5 + self.proficiency_bonus) * critical_bonus
+                    damage_to_opponent = dice_roll(number_of_dice, 8) + (4 * number_of_dice)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
                     if damage_to_opponent > 0:
@@ -4102,7 +4106,7 @@ class Player:
                         sleep(1)
                         print(f"Your hands throb with blinding Quantum Energy!")
                         sleep(1)
-                        print(f"{number_of_dice}d8 roll + 2 * number of dice: {damage_to_opponent}")
+                        print(f"{number_of_dice}d8 roll + 4 * number of dice: {damage_to_opponent}")
                         print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
                         print(f"You extend a white-hot finger, merely touching your enemy, inflicting "
                               f"{total_damage_to_opponent} points of damage!")
@@ -4110,12 +4114,12 @@ class Player:
                         self.hud()
                         return total_damage_to_opponent
                     else:
-                        print(f"For all of its fear-inspiring appearance, your effect fails to land any damage!")  # 0
+                        print(f"Your effect fails to land any damage!")  # 0
                         sleep(1)
                         return 0
                 else:
-                    number_of_dice = (7 + self.quantum_level - 4) * critical_bonus
-                    damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (2 * number_of_dice)) / 2)
+                    number_of_dice = (5 + self.proficiency_bonus) * critical_bonus
+                    damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (4 * number_of_dice)) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
@@ -4207,7 +4211,7 @@ class Player:
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
-                    number_of_dice = (20 + self.quantum_level - 6) * critical_bonus
+                    number_of_dice = (15 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice) + \
                         dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack=force damage
                     melee_bonus = dice_roll(self.level, self.hit_dice)
@@ -4230,7 +4234,7 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    number_of_dice = (20 + self.quantum_level - 6) * critical_bonus
+                    number_of_dice = (15 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # no force damage
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -4318,7 +4322,7 @@ class Player:
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
-                    number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
+                    number_of_dice = (15 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
                         dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
                     melee_bonus = dice_roll(self.level, self.hit_dice)
@@ -4347,7 +4351,7 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
+                    number_of_dice = (15 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice)  # no force damage
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -4435,7 +4439,7 @@ class Player:
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
-                    number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
+                    number_of_dice = (15 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
                         dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = crushing damage
                     melee_bonus = dice_roll(self.level, self.hit_dice)
@@ -4462,7 +4466,7 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    number_of_dice = (15 + self.quantum_level - 6) * critical_bonus
+                    number_of_dice = (15 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice)  # no crushing damage
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -4552,7 +4556,7 @@ class Player:
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
-                    number_of_dice = (8 + self.quantum_level - 5) * critical_bonus
+                    number_of_dice = (10 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (4 * number_of_dice)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -4574,7 +4578,7 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    number_of_dice = (8 + self.quantum_level - 5) * critical_bonus
+                    number_of_dice = (10 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = math.ceil(dice_roll(number_of_dice, 8) + (4 * number_of_dice) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -4665,7 +4669,7 @@ class Player:
                 sleep(1)
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
-                    number_of_dice = (8 + self.quantum_level - 5) * critical_bonus
+                    number_of_dice = (10 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (4 * number_of_dice)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -4687,7 +4691,7 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    number_of_dice = (8 + self.quantum_level - 5) * critical_bonus
+                    number_of_dice = (10 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = math.ceil(dice_roll(number_of_dice, 8) + (4 * number_of_dice) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -4782,7 +4786,7 @@ class Player:
                 print(f"Monster Total: {monster_total}")
                 sleep(1)
                 if player_dc >= monster_total:  # > tie goes to defender >= tie goes to player
-                    number_of_dice = (4 + self.quantum_level - 3) * critical_bonus
+                    number_of_dice = (3 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -4802,7 +4806,7 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    number_of_dice = (4 + self.quantum_level - 3) * critical_bonus
+                    number_of_dice = (3 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -4882,7 +4886,7 @@ class Player:
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
-                    number_of_dice = (6 + self.quantum_level - 3) * critical_bonus
+                    number_of_dice = (3 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 6) + (1 * number_of_dice)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -4903,7 +4907,7 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    number_of_dice = (6 + self.quantum_level - 3) * critical_bonus
+                    number_of_dice = (3 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 6) + (1 * number_of_dice)) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -4994,7 +4998,7 @@ class Player:
                 print(f"Monster Total: {monster_total}")
                 sleep(1)
                 if roll_d20 == 20 or player_dc >= monster_total:
-                    number_of_dice = (7 + self.quantum_level - 3) * critical_bonus
+                    number_of_dice = (3 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 6)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -5015,7 +5019,7 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    number_of_dice = (7 + self.quantum_level - 3) * critical_bonus
+                    number_of_dice = (3 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = math.ceil(dice_roll(number_of_dice, 6) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -5105,7 +5109,7 @@ class Player:
                 print(f"Monster Total: {monster_total}")
                 sleep(1)
                 if roll_d20 == 20 or player_dc >= monster_total:
-                    number_of_dice = (7 + self.quantum_level - 3) * critical_bonus
+                    number_of_dice = (3 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 6)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -5127,7 +5131,7 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    number_of_dice = (7 + self.quantum_level - 3) * critical_bonus
+                    number_of_dice = (3 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = math.ceil(dice_roll(number_of_dice, 6) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -5205,7 +5209,7 @@ class Player:
                 print(f"Monster Total: {monster_total}")
                 if roll_d20 == 20 or player_total >= monster_total:
                     # number_of_dice = (3 + (self.level - 1)) * critical_bonus  #consider changing to self.quantum_level
-                    number_of_dice = (3 + self.quantum_level - 1) * critical_bonus
+                    number_of_dice = (1 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = (dice_roll(number_of_dice, 4) + (1 * number_of_dice))
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -5227,7 +5231,7 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    number_of_dice = (3 + self.quantum_level - 1) * critical_bonus
+                    number_of_dice = (1 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 4) + (1 * number_of_dice)) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -5307,7 +5311,7 @@ class Player:
                 if roll_d20 == 20 or player_total >= monster_total:
                     #
                     # number_of_dice = (3 + (self.level - 1)) * critical_bonus
-                    number_of_dice = (2 + self.quantum_level - 2) * critical_bonus
+                    number_of_dice = (1 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 6) + (1 * number_of_dice)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -5328,7 +5332,7 @@ class Player:
                         sleep(1)
                         return 0
                 else:
-                    number_of_dice = (2 + self.quantum_level - 2) * critical_bonus
+                    number_of_dice = (1 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 6) + (1 * number_of_dice)) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -6820,27 +6824,35 @@ class Player:
             return
 
     def loot(self, encounter):
+        # CALLED from main loop
         if encounter < 21:  # regular monster
             loot_difficulty_class = 10
+            treasure_chest_difficulty_class = 15
         else:  # boss
             loot_difficulty_class = 8
-        # place armor first here; it is first in pack.
-        # otherwise it seems to give unexpected argument warning
-        """loot_dict = {
-            'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
-            'Shields': [buckler, kite_shield, quantum_tower_shield],
-            'Boots': [elven_boots, ancestral_footsteps],
-            'Cloaks': [elven_cloak],
-            'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
-                        quantum_sword, battle_axe, great_axe, elvish_great_axe, quantum_axe],
-            'Elixirs': [elixir],
-            'Healing': [healing_potion],
-            'Rings of Regeneration': [ring_of_regeneration],
-            'Rings of Protection': [ring_of_protection],
-            'Town Portal Implements': [scroll_of_town_portal],
-            'Potions of Strength': [strength_potion],
-            'Antidotes': [antidote]
-        }"""
+            treasure_chest_difficulty_class = 12
+
+        # chance to get treasure chest
+        possible_treasure_chest = dice_roll(1, 20)
+        if encounter < 21:  # regular monster
+            if possible_treasure_chest >= treasure_chest_difficulty_class:
+                self.treasure_chest_event()
+                return
+        else:  # boss
+            if possible_treasure_chest >= treasure_chest_difficulty_class:
+                if self.dungeon.level < 3:
+                    self.treasure_chest_event()
+                    return
+                else:
+                    quantum_or_standard = dice_roll(1, 20)
+                    if quantum_or_standard > 11:
+                        self.quantum_treasure_chest_event()
+                        return
+                    else:
+                        self.treasure_chest_event()
+                        return
+
+        # regular loot
         loot_dict = top_level_loot_dict
         while True:
             # ****** NOTICE THE DIFFERENCE BETWEEN found_item and found_item.item_type !! ************************
@@ -6926,6 +6938,7 @@ class Player:
                     pause()
                     # continue
                 self.hud()"""
+
                 self.hud()
                 return  # self.dungeon_description()
 
@@ -6944,23 +6957,6 @@ class Player:
             sleep(1.5)
             pause()
             loot_difficulty_class = 7
-            # place armor first here; it is first in pack.
-            # otherwise it seems to give unexpected argument warning
-            """loot_dict = {
-                'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
-                'Shields': [buckler, kite_shield, quantum_tower_shield],
-                'Boots': [elven_boots, ancestral_footsteps],
-                'Cloaks': [elven_cloak],
-                'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
-                            quantum_sword, battle_axe, great_axe, elvish_great_axe, quantum_axe],
-                'Elixirs': [elixir],
-                'Healing': [healing_potion],
-                'Rings of Regeneration': [ring_of_regeneration],
-                'Rings of Protection': [ring_of_protection],
-                'Town Portal Implements': [scroll_of_town_portal],
-                'Potions of Strength': [strength_potion],
-                'Antidotes': [antidote]
-            }"""
             loot_dict = top_level_loot_dict
             while True:
                 # ****** NOTICE THE DIFFERENCE BETWEEN found_item and found_item.item_type !! ************************
@@ -7037,13 +7033,13 @@ class Player:
                         continue
                 else:
                     if successful_tries == 0:
-                        print(f"Inside is nothing else but cobwebs...")
+                        print(f"Besides the gold, there remains nothing but cobwebs...")
                         sleep(1)
                         pause()
                     self.discovered_interactives.append(treasure_chest_discovery)
                     self.hud()
                     return  # self.dungeon_description()
-        print(f"There is an empty treasure chest here.")
+        print(f"An empty treasure chest lies at your feet.")
         pause()
         return
 
@@ -7082,23 +7078,6 @@ class Player:
                 sleep(1.5)
                 pause()
                 loot_difficulty_class = 7
-                # place armor first here; it is first in pack.
-                # otherwise it seems to give unexpected argument warning
-                """loot_dict = {
-                    'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
-                    'Shields': [buckler, kite_shield, quantum_tower_shield],
-                    'Boots': [elven_boots, ancestral_footsteps],
-                    'Cloaks': [elven_cloak],
-                    'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
-                                quantum_sword, battle_axe, great_axe, elvish_great_axe, quantum_axe],
-                    'Elixirs': [elixir],
-                    'Healing': [healing_potion],
-                    'Rings of Regeneration': [ring_of_regeneration],
-                    'Rings of Protection': [ring_of_protection],
-                    'Town Portal Implements': [scroll_of_town_portal],
-                    'Potions of Strength': [strength_potion],
-                    'Antidotes': [antidote]
-                }"""
                 loot_dict = top_level_loot_dict
                 while True:
                     # ****** NOTICE THE DIFFERENCE BETWEEN found_item and found_item.item_type !! ***********
@@ -7598,7 +7577,7 @@ class Player:
                 self.hud()
                 print(f"You have landed at the bottom of a pit. The foul, humid air hangs in a mist around you.")
                 # print(self.dungeon.pit_intro)
-                self.dungeon_theme()
+                self.dungeon_theme()  # dungeon_theme() method logic determines which musical theme to play
                 pause()
                 return
             else:
@@ -7606,35 +7585,36 @@ class Player:
         else:
             print(f"The ground beneath your feet collapses!")
             sleep(1)
-            print(f"Desperately, you grope for a crag!")
+            # print(f"Desperately, you grope for a crag!")
+            # sleep(1)
+            # removed this code. now, either you fall in or you don't
+            # if dice_roll(1, 20) >= 15:
+            #    print(f"You succeed!")
+            #    pause()
+            #    return
+            # else:
+            self.in_a_pit = True
+            print(f"You fall in!")
+            damage = dice_roll(1, (3 * self.dungeon.level))  # dice_roll(1, self.dungeon.level)
+            self.hit_points -= damage
             sleep(1)
-            if dice_roll(1, 20) >= 15:
-                print(f"You succeed!")
-                pause()
-                return
-            else:
-                self.in_a_pit = True
-                print(f"You fall in!")
-                damage = dice_roll(1, (3 * self.dungeon.level))  # dice_roll(1, self.dungeon.level)
-                self.hit_points -= damage
-                sleep(1)
-                print(f"You suffer {damage} hit points..")
-                sleep(1)
-                pause()
-                # falling into pits lands you on the same dungeon level, at the dungeon.pit_landing coordinates
-                # self.dungeon_key += 1  # this can be used to land you on the next level down
-                # self.dungeon = dungeon_dict[self.dungeon_key]  # this can be used to land you on the next level down
-                (self.x, self.y) = self.dungeon.pit_landing
-                self.coordinates = (self.x, self.y)  # beta
-                self.previous_x = self.x
-                self.previous_y = self.y
-                self.position = self.dungeon.grid[self.y][self.x]
-                self.hud()
-                print(f"You have landed at the bottom of the pit. The foul, humid air hangs in a mist around you.")
-                # print(self.dungeon.pit_intro)
-                self.dungeon_theme()
-                pause()
-                return
+            print(f"You suffer {damage} hit points..")
+            sleep(1)
+            pause()
+            # falling into pits lands you on the same dungeon level, at the dungeon.pit_landing coordinates
+            # self.dungeon_key += 1  # this can be used to land you on the next level down
+            # self.dungeon = dungeon_dict[self.dungeon_key]  # this can be used to land you on the next level down
+            (self.x, self.y) = self.dungeon.pit_landing
+            self.coordinates = (self.x, self.y)  # beta
+            self.previous_x = self.x
+            self.previous_y = self.y
+            self.position = self.dungeon.grid[self.y][self.x]
+            self.hud()
+            print(f"You have landed at the bottom of the pit. The foul, humid air hangs in a mist around you.")
+            # print(self.dungeon.pit_intro)
+            self.dungeon_theme()  # dungeon_theme() method logic determines which musical theme to play
+            pause()
+            return
 
     def staircase_description(self):
         # called from dungeon_description()
@@ -7702,7 +7682,7 @@ class Player:
                 self.position = self.dungeon.grid[self.y][self.x]
                 print(f"You have arrived back at {self.dungeon.name}, dungeon level {self.dungeon.level}.")
                 sleep(1)
-                self.dungeon_theme()
+                self.dungeon_theme()  # dungeon_theme() method logic determines which musical theme to play
                 print(f"Watch your step.")
                 sleep(1)
                 pause()
@@ -7727,7 +7707,7 @@ class Player:
             self.position = self.dungeon.grid[self.y][self.x]
             print(f"Watch your step.")
             sleep(1)
-            self.dungeon_theme()
+            self.dungeon_theme()  # dungeon_theme() method logic determines which musical theme to play
             pause()
             return
 
@@ -7796,7 +7776,7 @@ class Player:
 
             return victory
 
-        else:
+        else:  # player has no NPC allies
             return
 
     def encounter_sikira_event(self):
@@ -8087,6 +8067,7 @@ class Player:
         print(f"You ponder this, and commit the image to memory. You wonder if there is someone in town who can shed\n"
               f"light on the strange symbol.")
         pause()
+        self.hud()
         self.boss_hint_1 = True
         return
 
@@ -8098,6 +8079,7 @@ class Player:
         sleep(1)
         print(f"You carefully place the dagger on your belt.")
         pause()
+        self.hud()
         self.boss_hint_2 = True
         return
 
@@ -8108,6 +8090,7 @@ class Player:
         print(f"You catch a glimpse of a flying creature overhead, just before it disappears into the darkness "
               f"far above.")
         pause()
+        self.hud()
         self.boss_hint_3 = True
         return
 
@@ -8115,6 +8098,7 @@ class Player:
         self.hud()
         print("You find a clue about the boss4")
         pause()
+        self.hud()
         self.boss_hint_4 = True
         return
 
@@ -8122,6 +8106,7 @@ class Player:
         self.hud()
         print("You find a clue about the boss5")
         pause()
+        self.hud()
         self.boss_hint_5 = True
         return
 
@@ -8129,6 +8114,7 @@ class Player:
         self.hud()
         print("You find a clue about the boss6")
         pause()
+        self.hud()
         self.boss_hint_6 = True
         return
 
@@ -9594,3 +9580,74 @@ return 0"""
             # "P": f"Slime covers the ground beneath your feet, and a putrid mist fills the air.",
             # "S": ""  # "" is simply for logical readability
         # } #"""
+
+
+"""loot_dict = {
+    'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
+    'Shields': [buckler, kite_shield, quantum_tower_shield],
+    'Boots': [elven_boots, ancestral_footsteps],
+    'Cloaks': [elven_cloak],
+    'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
+                quantum_sword, battle_axe, great_axe, elvish_great_axe, quantum_axe],
+    'Elixirs': [elixir],
+    'Healing': [healing_potion],
+    'Rings of Regeneration': [ring_of_regeneration],
+    'Rings of Protection': [ring_of_protection],
+    'Town Portal Implements': [scroll_of_town_portal],
+    'Potions of Strength': [strength_potion],
+    'Antidotes': [antidote]
+}"""
+"""    def chance_for_a_treasure(self, encounter):
+        possible_treasure_chest = dice_roll(1, 20)
+        if encounter < 21:  # regular monster
+            loot_difficulty_class = 15
+            if possible_treasure_chest > loot_difficulty_class:
+                self.treasure_chest_event()
+                return
+        else:  # boss
+            loot_difficulty_class = 8
+            if possible_treasure_chest > loot_difficulty_class:  # == 20:
+                if self.dungeon.level < 3:
+                    self.treasure_chest_event()
+                    return
+                else:
+                    quantum_or_standard = dice_roll(1, 20)
+                    if quantum_or_standard > 11:
+                        self.quantum_treasure_chest_event()
+                        return
+                    else:
+                        self.treasure_chest_event()
+                        return"""
+
+"""loot_dict = {
+    'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
+    'Shields': [buckler, kite_shield, quantum_tower_shield],
+    'Boots': [elven_boots, ancestral_footsteps],
+    'Cloaks': [elven_cloak],
+    'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
+                quantum_sword, battle_axe, great_axe, elvish_great_axe, quantum_axe],
+    'Elixirs': [elixir],
+    'Healing': [healing_potion],
+    'Rings of Regeneration': [ring_of_regeneration],
+    'Rings of Protection': [ring_of_protection],
+    'Town Portal Implements': [scroll_of_town_portal],
+    'Potions of Strength': [strength_potion],
+    'Antidotes': [antidote]
+}"""
+# place armor first here; it is first in pack.
+# otherwise it seems to give unexpected argument warning
+"""loot_dict = {
+    'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
+    'Shields': [buckler, kite_shield, quantum_tower_shield],
+    'Boots': [elven_boots, ancestral_footsteps],
+    'Cloaks': [elven_cloak],
+    'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
+                quantum_sword, battle_axe, great_axe, elvish_great_axe, quantum_axe],
+    'Elixirs': [elixir],
+    'Healing': [healing_potion],
+    'Rings of Regeneration': [ring_of_regeneration],
+    'Rings of Protection': [ring_of_protection],
+    'Town Portal Implements': [scroll_of_town_portal],
+    'Potions of Strength': [strength_potion],
+    'Antidotes': [antidote]
+}"""

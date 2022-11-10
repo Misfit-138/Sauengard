@@ -1676,7 +1676,7 @@ class Ghoul(Monster):
         self.multi_attack = False
         self.lesser_multi_attack = True
         self.attack_1 = 0  # attack bonus
-        self.attack_1_phrase = "It strikes swiftly with one terrible claw.."
+        self.attack_1_phrase = "It strikes swiftly, with one terrible claw.."
         self.attack_2 = 1
         self.attack_2_phrase = "It lunges forward and attacks with its hideous, rancid teeth!"
         self.attack_3 = 2

@@ -71,7 +71,7 @@ class Dungeon1(Dungeon):
         self.quantum_treasure_chest = (99, 99)
         self.encounter_sikira = (99, 99)
         self.altar = (99, 99)
-        self.throne = (99, 99)
+        self.throne = (14, 3)
         self.throne2 = (99, 99)
         self.fountain = (99, 99)
         self.fountain2 = (99, 99)

@@ -186,7 +186,7 @@ while True:
                 # ENCOUNTER LOGIC IS DETERMINED *BEFORE* event_logic(), BUT CAN BE RE-ASSIGNED BASED ON
                 # RETURNED VALUES FROM event_logic()
                 encounter = encounter_logic()
-                encounter = 15  # testing: this will make no monsters except bosses 0 should make no monsters at all
+                # encounter = 15  # testing: this will make no monsters except bosses 0 should make no monsters at all
                 # EVENT LOGIC IS DETERMINED BEFORE end_of_turn_calculation() AND player_1.check_dead(),
                 # IN CASE PLAYER SUFFERS DAMAGE, ETC.
                 event = player_1.event_logic()  # trigger any events corresponding to self.coordinates
@@ -355,10 +355,11 @@ while True:
                                             player_1.level_up(monster.experience_award, monster.gold)
                                             player_1.in_proximity_to_monster = False
                                             player_1.loot(encounter)
+
                                             if encounter > 20:  # if you kill the boss, you get extra chance for loot
                                                 if encounter == 99:  # level exit boss
                                                     player_1.boss_hint_logic()
-                                                player_1.loot(encounter)  # 8 difficulty class
+                                                # player_1.loot(encounter)  # 8 difficulty class
                                             player_1.dungeon_description()  # beta works so far
                                             break
                                     else:
@@ -379,10 +380,11 @@ while True:
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot(encounter)
+
                                     if encounter > 20:  # if you kill the boss, you get extra chance for loot
                                         if encounter == 99:  # if exit boss has been defeated,
                                             player_1.boss_hint_logic()  # give main boss hints
-                                        player_1.loot(encounter)  # 8 difficulty class: better chance at loot
+                                        # player_1.loot(encounter)  # 8 difficulty class: better chance at loot
                                     player_1.dungeon_description()  # beta works so far
                                     break
                                 # ****MONSTER TURN AFTER YOU SWIG POTION, fail to evade, or cast quantum attack******
@@ -447,10 +449,11 @@ while True:
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot(encounter)
+
                                     if encounter > 20:  # if you kill the boss, you get extra chance for loot
                                         if encounter == 99:  # if exit boss has been defeated,
                                             player_1.boss_hint_logic()  # give main boss hints
-                                        player_1.loot(encounter)  # 8 difficulty class: better chance at loot
+                                        # player_1.loot(encounter)  # 8 difficulty class: better chance at loot
                                     player_1.dungeon_description()  # beta works so far
                                     break
                                 # if monster still alive after player melee attack and player has allies
@@ -467,10 +470,11 @@ while True:
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot(encounter)
+
                                     if encounter > 20:  # if you kill the boss, you get extra chance for loot
                                         if encounter == 99:  # if exit boss has been defeated,
                                             player_1.boss_hint_logic()  # give main boss hints
-                                        player_1.loot(encounter)  # 8 difficulty class: better chance at loot
+                                        # player_1.loot(encounter)  # 8 difficulty class: better chance at loot
                                     player_1.dungeon_description()  # beta works so far
                                     break
                                 # monster turn if still alive after player melee attack:

@@ -6824,7 +6824,7 @@ class Player:
             return
 
     def loot(self, encounter):
-        # CALLED from main loop
+        # Called from main loop
         if encounter < 21:  # regular monster
             loot_difficulty_class = 10
             treasure_chest_difficulty_class = 15

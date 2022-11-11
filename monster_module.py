@@ -878,8 +878,8 @@ class WingedKobold(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "It readies its spear and lunges with a growling grunt.."
         self.introduction = f"You have encountered a {self.name}. Standing three feet tall, with short ivory horns\n" \
-                            f"and a frail body covered with mottled brick red scales, it grabs its dagger and\n" \
-                            f"spreads its leathery, batlike wings."
+                            f"and a frail body covered with mottled, brick-red scales, it grabs its dagger and\n" \
+                            f"spreads its leathery, bat-like wings."
         self.is_discovered = False
 
     # "Winged Kobold"

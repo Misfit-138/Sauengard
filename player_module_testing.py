@@ -7920,15 +7920,12 @@ class Player:
                       self.dungeon.treasure_chest: self.treasure_chest_event,
                       self.dungeon.altar: self.altar_event,
                       self.dungeon.throne: self.throne_event,
-                      self.dungeon.throne2: self.throne_event,
                       self.dungeon.fountain: self.fountain_event,
-                      self.dungeon.fountain2: self.fountain_event,
                       self.dungeon.teleporter: self.teleporter_event,
                       self.dungeon.elevator: self.elevator_event,
                       self.dungeon.pit: self.pit_event,
-                      self.dungeon.pit2: self.pit_event,
-                      self.dungeon.exit: self.dungeon_exit_event,
-                      self.dungeon.micro_boss: self.micro_boss_event
+                      self.dungeon.micro_boss: self.micro_boss_event,
+                      self.dungeon.exit: self.dungeon_exit_event
                       }
         if self.coordinates in event_dict.keys():
             event_function = (event_dict[self.coordinates])  # (event_dict[self.coordinates])
@@ -8427,19 +8424,19 @@ class Player:
                         dungeon_exit_direction = self.dungeon_level_exit_check()
                         print(f"The {dungeon_exit_direction} corridor leads to a staircase.."
                               f"It is the exit of {self.dungeon.name}!")
-                        sleep(1)
+                        #
                     else:
                         corridor_direction = self.dungeon_level_exit_check()
                         print(f"The {corridor_direction} corridor leads to a staircase.."
                               f"It is the exit of {self.dungeon.name}!")
-                        sleep(1)
+                        #
             else:  # you must be at an intersection. intersections are auto-described above.
                 # just check to see if player is proximal to the dungeon_level_exit:
                 if self.dungeon_level_exit_check():
                     corridor_direction = self.dungeon_level_exit_check()
                     print(f"The {corridor_direction} corridor leads to a staircase.."
                           f"It is the exit of {self.dungeon.name}!")
-                    sleep(1)
+                    #
         else:  # you must be at a dead end
             exits = convert_list_to_string(exits_list)
             print(f"{auto_description_phrase} The only exit is to the {exits}.")

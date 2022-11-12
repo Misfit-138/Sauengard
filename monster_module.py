@@ -1368,7 +1368,7 @@ class Drow(Monster):
         self.introduction = f"You have encountered a {self.name}; A race that, in many ways, resembles other\n" \
                             f"elves, yet, dark, twisted and evil. Its chiseled, attractive face, and wiry,\n" \
                             f"athletic frame belie its true nature."
-        self.poison_phrase = "It slashes at you with its poison dagger!!"
+        self.poison_phrase = "It slashes at you with its poisonous blade!!"
         self.is_discovered = False
 
 

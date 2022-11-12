@@ -248,6 +248,8 @@ def character_generator():
 
 def encounter_logic():
     monster_encounter = dice_roll(1, 20)
+    if monster_encounter == 1:
+        monster_encounter == 96
     return monster_encounter
 
 
@@ -1880,7 +1882,39 @@ class Player:
             boss_battle_theme()
             pause()
             self.hud()
+        elif encounter == 96:  # micro boss
+            monster = self.micro_boss_generator()
+            gong()
+            sleep(4)
+            boss_battle_theme()
+            pause()
+            self.hud()
         return monster
+
+    def micro_boss_generator(self):
+        # called from meta_monster_generator() if encounter == 96
+        # just in case I forget to make level 21 monsters.
+        rndm_boss_names = ['Sarlongrath', 'Sundor', 'Birrenol', 'Sontor', 'Marburr',
+                           'Belok', 'Sorlak', 'Grildorren', 'Falaur', 'Tildor', 'Durj',
+                           'Morgenor', 'Talgram', 'Teldanoth', 'Linmat', 'Worcon',
+                           'Hahrmon', 'Kardon', 'Corbrath', 'Willentor', 'Weggard',
+                           'Norrikon', 'Fellbrion', 'Sajanus', 'Qorrat', 'Sorenmir',
+                           'Kraw', 'Kullador', 'Qardrommir', 'Willendorn', 'Valwark',
+                           'Morluk']
+
+        # just in case I forget to make level 21 monsters.
+        if self.level < 20:
+            monster_key = (self.level + 1)
+        else:
+            monster_key = self.level
+        monster_cls = random.choice(monster_dict[monster_key])
+        boss_monster = monster_cls()
+        first_name = random.choice(rndm_boss_names)
+        boss_monster.proper_name = f"{first_name} the {boss_monster.name}"
+        self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
+        print(f"Before you "
+              f"stands {boss_monster.proper_name}!")
+        return boss_monster
 
     def regular_monster_generator(self):
         # called from meta_monster_generator() if encounter < 11
@@ -7265,6 +7299,14 @@ class Player:
         self.calculate_modifiers()
         pause()
 
+    def micro_boss_event(self):
+        micro_boss_discovery = f"level {self.dungeon.level} micro boss"
+        if micro_boss_discovery not in self.discovered_interactives:
+            self.discovered_interactives.append(micro_boss_discovery)
+            return "Micro Boss"
+        else:
+            return
+
     def altar_event(self):
         altar_discovery = f"level {self.dungeon.level} altar"
         if altar_discovery not in self.discovered_interactives:
@@ -7871,6 +7913,7 @@ class Player:
         # finally, the proper function is called and any
         # function values are returned to the main program
         # using 'return event_function()'
+        # monster_encounter = dice_roll(1, 20)
         self.coordinates = (self.x, self.y)
         event_dict = {self.dungeon.quantum_treasure_chest: self.quantum_treasure_chest_event,
                       self.dungeon.encounter_sikira: self.encounter_sikira_event,
@@ -7884,7 +7927,8 @@ class Player:
                       self.dungeon.elevator: self.elevator_event,
                       self.dungeon.pit: self.pit_event,
                       self.dungeon.pit2: self.pit_event,
-                      self.dungeon.exit: self.dungeon_exit_event
+                      self.dungeon.exit: self.dungeon_exit_event,
+                      self.dungeon.micro_boss: self.micro_boss_event
                       }
         if self.coordinates in event_dict.keys():
             event_function = (event_dict[self.coordinates])  # (event_dict[self.coordinates])
@@ -8526,8 +8570,10 @@ class Player:
         self.dungeon_key += 1
         self.dungeon = dungeon_dict[self.dungeon_key]
         (self.x, self.y) = self.dungeon.staircase  # simplified with tuple instead of self.x = and self.y =
-        # self.coordinates will be set after first move. otherwise, the intro will be printed 1st, followed by the
-        # staircase description, which is awkward
+        self.coordinates = (self.x, self.y)  # beta testing
+        # for a while, self.coordinates would be set after first move. otherwise, the intro would be printed 1st,
+        # followed by the staircase description, which was awkward. after migrating to automatic_description, this
+        # seems to no longer be the case
         self.previous_x = self.x
         self.previous_y = self.y
         self.position = 0

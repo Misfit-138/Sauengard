@@ -6864,10 +6864,10 @@ class Player:
 
         if encounter < 21:  # regular monster
             loot_difficulty_class = 10
-            treasure_chest_difficulty_class = 15
+            treasure_chest_difficulty_class = 20
         else:  # boss
             loot_difficulty_class = 8
-            treasure_chest_difficulty_class = 0
+            treasure_chest_difficulty_class = 16
 
         # chance to get treasure chest
         possible_treasure_chest = dice_roll(1, 20)

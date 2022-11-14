@@ -264,7 +264,7 @@ while True:
                                 break
                             # at this point, monster still has initiative
                             # therefore, if player has npc allies and monster has multi_attack or lesser_multi_attack,
-                            # monster attacks npc
+                            # monster attacks npc allies
                             player_1.monster_attacks_npc_meta(monster)
                         # OTHERWISE, PLAYER PROMPT and enter BATTLE LOOP
                         # ********************************* BATTLE LOOP ***********************************************

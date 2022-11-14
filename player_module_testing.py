@@ -248,8 +248,8 @@ def character_generator():
 
 def encounter_logic():
     monster_encounter = dice_roll(1, 20)
-    if monster_encounter == 1:
-        monster_encounter == 96
+    print(f"Monster encounter roll: {monster_encounter}")
+    pause()
     return monster_encounter
 
 
@@ -1264,10 +1264,10 @@ class Player:
         self.boss_hint_3_event = False
         self.boss_hint_4 = False
         self.boss_hint_4_event = False
-        self.boss_hint_5 = False
-        self.boss_hint_5_event = False
-        self.boss_hint_6 = False
-        self.boss_hint_6_event = False
+        # self.boss_hint_5 = False
+        # self.boss_hint_5_event = False
+        # self.boss_hint_6 = False
+        # self.boss_hint_6_event = False
         self.loaded_game = False
         self.forest_explored = False
         self.town_portal_exists = False
@@ -1812,7 +1812,7 @@ class Player:
             gain_hit_points1 = dice_roll(1, self.hit_dice) + self.constitution_modifier  # hp increase method 1
             gain_hit_points2 = 6 + self.constitution_modifier  # hp increase method 2
             hit_point_list = [gain_hit_points1, gain_hit_points2]
-            gain_hit_points = max(hit_point_list)  # the higher of method 1 and 2
+            gain_hit_points = max(hit_point_list)  # the highest of method 1 and 2
             self.hit_points += gain_hit_points  # you heal and gain max hp (previous HP + Hit Die roll + CON modifier)
             self.maximum_hit_points += gain_hit_points
             print(f"You gain {gain_hit_points} hit points")
@@ -1859,8 +1859,11 @@ class Player:
         # called from main loop
         monster = None
         if encounter < 11:  # regular monster
-            monster = self.regular_monster_generator()
-            # monster = Shadow()  # HobgoblinCaptain()  # testing
+            if encounter == 1:
+                monster = self.micro_boss_generator()
+            else:
+                monster = self.regular_monster_generator()
+        # monster = Shadow()  # HobgoblinCaptain()  # put testing monster here
         elif encounter == 99:  # level exit boss fight
             monster = self.exit_boss_generator()
             gong()
@@ -1893,7 +1896,6 @@ class Player:
 
     def micro_boss_generator(self):
         # called from meta_monster_generator() if encounter == 96
-        # just in case I forget to make level 21 monsters.
         rndm_boss_names = ['Sarlongrath', 'Sundor', 'Birrenol', 'Sontor', 'Marburr',
                            'Belok', 'Sorlak', 'Grildorren', 'Falaur', 'Tildor', 'Durj',
                            'Morgenor', 'Talgram', 'Teldanoth', 'Linmat', 'Worcon',
@@ -1918,7 +1920,11 @@ class Player:
 
     def regular_monster_generator(self):
         # called from meta_monster_generator() if encounter < 11
-        regular_monster_key = random.randint(1, self.level)  # (self.level + 1)
+        maximum_level = self.level  # (self.level + 1) makes it too hard
+        minimum_level = 1
+        if self.level > 2:
+            minimum_level = (self.level - 1)  # this should keep it more challenging and fun
+        regular_monster_key = random.randint(minimum_level, maximum_level)
         regular_monster_cls = random.choice(monster_dict[regular_monster_key])
         regular_monster = regular_monster_cls()
         return regular_monster
@@ -5716,13 +5722,10 @@ class Player:
                 f"Manage (W)eapons, (A)rmor, (S)hields, (B)oots, (C)loaks, View your (I)nventory, or (E)xit: ").lower()
             if item_to_manage == 'w':
                 self.item_management('Weapons', self.wielded_weapon)
-                # self.weapon_management()
                 continue
-
             elif item_to_manage == 'a':
                 self.item_management('Armor', self.armor)
                 continue
-
             elif item_to_manage == 's':
                 self.item_management('Shields', self.shield)
                 continue
@@ -5741,7 +5744,6 @@ class Player:
                 continue
 
     def blacksmith_main(self):
-
         while True:
             # you can make this into a dictionary, with each value being a function
             # something like
@@ -5825,9 +5827,6 @@ class Player:
                         print(value + 1, ':', key)
                     print(f"Your gold: {self.gold} GP")
                     buy_or_exit = input("Pick item by number, Display your (I)nventory, or go (B)ack: ").lower()
-                    # if buy_or_exit not in ('i', 'p', 'b'):
-                    #    self.hud()
-                    #    continue
                     if buy_or_exit == 'i':
                         self.inventory()
                         continue
@@ -5836,8 +5835,6 @@ class Player:
                     elif buy_or_exit not in ('i', 'b'):
                         try:
                             item_index_to_buy = int(buy_or_exit)
-                            # item_index_to_buy = int(
-                            #    input(f"Enter the number of the item you wish to consider for purchase: "))
                             item_index_to_buy -= 1  # again, indexing starts at 0 and is awkward
                             sale_item = (blacksmith_dict[item_type_to_buy])[item_index_to_buy]
                         except (IndexError, ValueError):
@@ -5909,6 +5906,7 @@ class Player:
         if swap_or_exit == "b":
             return
         elif swap_or_exit == "s":
+
             try:
                 new_item_index = int(input(f"Enter the number of the item from your inventory that you wish to use: "))
                 new_item_index -= 1  # again, indexing starts at 0 so add 1
@@ -5951,13 +5949,13 @@ class Player:
                 pause()
 
     def sell_blacksmith_items(self):
-
+        # sell_blacksmith_items() allows you to sell items from self.pack
         while True:
             cls()
             # self.hud()
             print(f"You have items eligible to sell in the following categories:")
             non_empty_item_type_lst = []
-            # make a list of non-empty inventory item keys from player's inventory
+            # make a list of non-empty inventory item keys from player's pack inventory
             for key in self.pack:
                 if len(self.pack[key]) > 0:
                     non_empty_item_type_lst.append(key)
@@ -6084,7 +6082,8 @@ class Player:
                         continue
 
     def sell_everything(self):
-        # this code took me many hours to come up with
+        # this code took me many hours to come up with.
+        # allows for liquidation of self.pack
         liquidate_lst = []
         item_type_lst = ['Weapons', 'Armor', 'Shields', 'Boots', 'Cloaks']
         mgmt_dict = {}
@@ -6122,7 +6121,6 @@ class Player:
 
     def poison_ingestion(self):
         # called from fountain_event(),
-        # rndm_occurrence_lst
         self.hud()
         self.dot_multiplier = self.dungeon.level
         self.dot_turns = dice_roll(1, 5)
@@ -6165,6 +6163,12 @@ class Player:
             return False
 
     def hint_event_1(self):
+        # hint_events move the story along by subtle hints to the player, revealed over time in the game, as
+        # they progress.
+        # hint_events take place in the tavern (so far). they correspond to boss_clues:
+        # hint_event_1 occurs after boss_clue_1, etc. the boss_clues occur after defeating the dungeon_exit boss
+        # hint_event_1 is a meeting with vozzbozz, introduction to tor'bron the barbarian, and another hint
+        # about the symbol of the wicked queen, which the player finds during boss_clue_1
         print(f"As soon as she sees you, Jenna motions discreetly toward the hallway leading away from the bar.")
         sleep(1)
         print(f"You direct your eyes that way and casually make your way down the hall...")
@@ -6185,6 +6189,7 @@ class Player:
                "start to follow a good distance behind, impatient and confused.\n")
         pause()
         cls()
+        # meeting with vozzbozz and introduction to tor'bron
         try:
             p = Path(__file__).with_name('hint_event_1.txt')
             with p.open('r') as hint_file:
@@ -6258,6 +6263,7 @@ class Player:
         return
 
     def hint_event_3(self):
+        # another meeting with vozzbozz. meet Magnus the dwarf
         print(f"Upon entering, you are met with the familiar sites, sounds and smells of the inn. Scanning the bar\n"
               f"area, you immediately notice the nasty-looking knife, still lodged in the wall. Before you even have\n"
               f"time to react, Lazarus swiftly lands on your shoulder. \'The master awaits you!\', he says plainly,\n"
@@ -6302,12 +6308,12 @@ class Player:
         if self.boss_hint_4 and not self.boss_hint_4_event:
             # return self.hint_event_4()
             print("hint 4 event")
-        if self.boss_hint_5 and not self.boss_hint_5_event:
+        # if self.boss_hint_5 and not self.boss_hint_5_event:
             # return self.hint_event_5()
-            print("hint 5 event")
-        if self.boss_hint_6 and not self.boss_hint_6_event:
+            # print("hint 5 event")
+        # if self.boss_hint_6 and not self.boss_hint_6_event:
             # return self.hint_event_6()
-            print("hint 6 event")
+            # print("hint 6 event")
 
     def inn(self):
 
@@ -7300,6 +7306,7 @@ class Player:
         pause()
 
     def micro_boss_event(self):
+        # called from event_logic()
         micro_boss_discovery = f"level {self.dungeon.level} micro boss"
         if micro_boss_discovery not in self.discovered_interactives:
             self.discovered_interactives.append(micro_boss_discovery)
@@ -8092,6 +8099,7 @@ class Player:
             return
 
     def boss_clue_1(self):
+        # player finds first clue about wicked queen boss
         self.hud()
         rndm_hint_list = ["a piece of parchment", "a torn piece of fabric", "a broken necklace", "a broken ring"]
         clue_item = random.choice(rndm_hint_list)
@@ -8124,8 +8132,7 @@ class Player:
         self.hud()
         print("You hear the flapping of wings nearby...")
         sleep(1)
-        print(f"You catch a glimpse of a flying creature overhead, just before it disappears into the darkness "
-              f"far above.")
+        print(f"You catch a glimpse of a flying creature overhead, just before it disappears into the darkness.")
         pause()
         self.hud()
         self.boss_hint_3 = True
@@ -8139,22 +8146,6 @@ class Player:
         self.boss_hint_4 = True
         return
 
-    def boss_clue_5(self):
-        self.hud()
-        print("You find a clue about the boss5")
-        pause()
-        self.hud()
-        self.boss_hint_5 = True
-        return
-
-    def boss_clue_6(self):
-        self.hud()
-        print("You find a clue about the boss6")
-        pause()
-        self.hud()
-        self.boss_hint_6 = True
-        return
-
     def boss_hint_logic(self):
         # called from main loop, after exit bosses are defeated
         if not self.boss_hint_1:
@@ -8165,10 +8156,10 @@ class Player:
             return self.boss_clue_3()
         if not self.boss_hint_4:
             return self.boss_clue_4()
-        if not self.boss_hint_5:
-            return self.boss_clue_5()
-        if not self.boss_hint_6:
-            return self.boss_clue_6()
+        # if not self.boss_hint_5:
+            # return self.boss_clue_5()
+        # if not self.boss_hint_6:
+            # eturn self.boss_clue_6()
         return
 
     def wide_open_space_logic(self):
@@ -9783,3 +9774,18 @@ return 0"""
                     self.discovered_interactives.append(treasure_chest_discovery)
                     self.hud()
                     return  # self.dungeon_description()"""
+"""    def boss_clue_5(self):
+        self.hud()
+        print("You find a clue about the boss5")
+        pause()
+        self.hud()
+        self.boss_hint_5 = True
+        return
+
+    def boss_clue_6(self):
+        self.hud()
+        print("You find a clue about the boss6")
+        pause()
+        self.hud()
+        self.boss_hint_6 = True
+        return"""

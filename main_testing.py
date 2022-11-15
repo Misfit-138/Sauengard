@@ -1,31 +1,37 @@
-# Dungeon Crawler by Jules Pitsker
-# (C)opyright 2022
+# Sauengard © Copyright 2022 by Jules Pitsker
+# GPLV3 LICENSE https://www.gnu.org/licenses/gpl-3.0.en.html
+
 # Dark Sorrowful Cello "Soul's Departure" Royalty Free Music by Darren Curtis
-# Blacksmith theme: 'Viking Intro loop' by Alexander Nakarada complete permission granted in YouTube
+# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
+# Blacksmith theme: 'Viking Intro loop' by Alexander Nakarada
+# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
 # Dungeon theme: 'Dragon Quest', 'Dragon Song', 'Medieval Metal', 'Cinematic Celtic Metal', by Alexander Nakarada
-# complete permission granted in YouTube
-# Chemist Theme: 'Might and Magic' by Alexander Nakarada complete permission granted in YouTube
-# Town theme: 'Tavern Loop 1' by Alexander Nakarada complete permission granted in YouTube
-# Boss battle theme: 'Dragon Castle' / Epic Orchestral Battle Music by Makai Symphony Creative commons license reuse ok
-# Tavern theme 'The Medieval Banquet / Silvermansound No Copyright. Royalty Free Music
-# Pit theme 'Epic 39' / Jules Pitsker
-# Telengard
-# MONSTERS = ["Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
-# "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon]
+# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
+# Chemist Theme: 'Might and Magic' by Alexander Nakarada
+# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
+# Town theme: 'Tavern Loop 1' by Alexander Nakarada
+# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
+# Boss battle theme: 'Dragon Castle' / Epic Orchestral Battle Music by Makai Symphony
+# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
+# Tavern Theme: 'The Medieval Banquet' by Silverman Sound is under a Creative Commons license (CC BY 3.0)
+# Music promoted by BreakingCopyright: http://bit.ly/Silvermansound_Medieval
 
 
-from player_module_testing import *
 import pickle
-# from monster_module import *
-# from typing_module import typing
+from dungeons import dungeon_dict
 import os
-# import winsound
-# from dungeons import *
+from player_module_testing import sad_cello_theme, cls, game_splash, character_generator, town_theme, gong, sleep, \
+    encounter_logic, pause  # boss_battle_theme, mountain_king_theme
 
 sad_cello_theme()
 cls()
 game_splash()
-# winsound.PlaySound(None, winsound.SND_ASYNC)
 cls()
 player_1 = ""  # to get rid of undefined warning
 player_name = ""  # to get rid of undefined warning
@@ -40,18 +46,17 @@ while True:
             print(f"{player_name} found.")
             with open(load_a_character, 'rb') as saved_player:
                 player_1 = pickle.load(saved_player)
-                time.sleep(1)
+                sleep(1)
                 print(f"{player_name} read.")
-                time.sleep(1)
-                # dungeon_key = player_1.dungeon_key
+                sleep(1)
                 dungeon = dungeon_dict[player_1.dungeon_key]  # remove after testing
                 print(dungeon.name)  # remove after testing
                 print(player_1.coordinates)  # remove after testing
                 player_1.loaded_game = True
-                time.sleep(1)
+                sleep(1)
         else:
             print(f"Could not find {player_name} ")
-            time.sleep(1.5)
+            sleep(1.5)
             continue
 
     if new_game_or_load == 's':
@@ -63,18 +68,18 @@ while True:
         if accept_stats == "y":
             player_1.dungeon_key = 1
             player_1.dungeon = dungeon_dict[player_1.dungeon_key]
-            # x,y is a numeric tuple corresponding to a classic grid with x and y coordinates
-            # coordinates is set to x,y
+            # x,y is a numeric tuple corresponding to a classic grid with x and y coordinates.
+            # 'coordinates' variable is set to x,y
             (player_1.x, player_1.y) = player_1.dungeon.staircase
             # 'position' corresponds to ASCII grids. 0 is the initialization position.
             # Thereafter, it is a string based on where the player lands in the ASCII grid,
-            # '*' = border, '.' = wide open area, '7' = northwest corner, etc
+            # '*' = border, '.' = wide open area, etc.
             # the ASCII grid 'position' is used for display_map() and for dungeon_description()
             player_1.position = 0
             player_1.hud()
 
     print(f"You enter the town of Fieldenberg.")
-    time.sleep(1.5)
+    sleep(1.5)
     player_1.in_town = True
     # player_1.in_dungeon = False  # should be unneeded. defined as False in Player class and after portal use
     discovered_monsters = []
@@ -97,14 +102,14 @@ while True:
                     cls()
                     gong()
                     print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
-                    time.sleep(4)
+                    sleep(4)
                     player_1.in_proximity_to_monster = False
                     player_1.in_dungeon = False
                     player_1.in_town = False
                     while True:
                         try_again = input("Do you wish to play again (y/n)? ").lower()
                         if try_again == "y":
-                            time.sleep(1)
+                            sleep(1)
                             cls()
                             player_1.in_proximity_to_monster = False
                             player_1.in_dungeon = False
@@ -116,20 +121,20 @@ while True:
                             exit()
                         if try_again not in ("y", "n"):
                             # print("Please enter y or n ")
-                            time.sleep(.5)
+                            sleep(.5)
                             continue
                 if not player_1.in_dungeon:
                     break
-                player_1.coordinates = (player_1.x, player_1.y)
-                player_1.previous_x = player_1.x
-                player_1.previous_y = player_1.y
+                player_1.navigation_turn_initialize()
                 # player_1.loot(0)  # for testing
                 # player_1.asi()  # for testing
-                if player_1.position == 0:  # 0 is the initialization position
+                if player_1.position == 0:  # 0 is the game/level start position
+                    player_1.hud()
                     print(player_1.dungeon.intro)
+                    pause()
                     # set player position, which also removes intro condition
                     player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]
-
+                    player_1.dungeon_description()
                 dungeon_command = input(
                     "(L)ook at surroundings, use (MAP), (C)larifying elixir,\n"
                     "(Quit), Town (P)ortal, (H)ealing potion, (M)anage inventory,\n"
@@ -189,18 +194,17 @@ while True:
                     continue  # continue means you do not waste a turn
 
                 # ***** END OF NAVIGATION choice *************************************************************
-                # !!!!!!!!!!!!!!!! V NOTE the INDENT below V !!!!!!!!!!!!!!!!
-                # ******************************************************************************************
-                # NAVIGATION CALCULATIONS:
-                player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]  # note indent
-                player_1.coordinates = (player_1.x, player_1.y)  #
+                # NAVIGATION position and coordinate CALCULATIONS:
+                player_1.navigation_position_coordinates()
                 # ENCOUNTER LOGIC IS DETERMINED *BEFORE* event_logic(), BUT CAN BE RE-ASSIGNED BASED ON
                 # RETURNED VALUES FROM event_logic()
                 encounter = encounter_logic()
-                # encounter = 15  # testing: this will make no monsters except bosses
+                # encounter = 15  # testing: this will make no monsters except bosses. 0 should make no monsters at all
                 # EVENT LOGIC IS DETERMINED BEFORE end_of_turn_calculation() AND player_1.check_dead(),
-                # IN CASE PLAYER SUFFERS DAMAGE, ETC
+                # IN CASE PLAYER SUFFERS DAMAGE, ETC.
                 event = player_1.event_logic()  # trigger any events corresponding to self.coordinates
+                if event == "Micro Boss":
+                    encounter = 96
                 if event == "Undead Prophet":
                     encounter = 97
                 elif event == "King Boss":
@@ -216,13 +220,7 @@ while True:
                     continue
                 # LASTLY, dungeon_description()
                 player_1.dungeon_description()  # this seems to work best when put LAST
-                # if player_1.position == "E":
-                #    encounter = 99  # dungeon level boss conditional
-                #    player_1.next_dungeon()
-                # ***********************************************************************************************>>>>
                 if encounter < 11 or encounter > 20:  # < 11 = normal monster. > 20 = boss
-                    monster = ""  # to prevent monster from being undefined
-                    # monster dictionary imported from monster module. keys correspond to difficulty levels
                     # IN PROXIMITY TO MONSTER LOOP *contains battle loop within it*
                     player_1.in_proximity_to_monster = True
                     player_is_dead = False
@@ -231,35 +229,11 @@ while True:
                             break
                         if not player_1.in_proximity_to_monster:
                             break
-                        # eventually offload this into a meta-monster generator function: ****************************
-                        if encounter < 11:  # regular monster
-                            monster = player_1.regular_monster_generator()
-                            # monster = HobgoblinCaptain()  # testing
-                        elif encounter == 99:  # level exit boss fight
-                            monster = player_1.exit_boss_generator()
-                            gong()
-                            sleep(4)
-                            boss_battle_theme()
-                            pause()
-                            player_1.hud()
-                        elif encounter == 98:  # undead king
-                            monster = player_1.king_monster_generator()
-                            gong()
-                            sleep(4)
-                            mountain_king_theme()
-                            pause()
-                            player_1.hud()
-                        elif encounter == 97:  # undead prophet
-                            monster = player_1.undead_prophet_generator()
-                            gong()
-                            sleep(4)
-                            boss_battle_theme()
-                            pause()
-                            player_1.hud()
-                        # ************************************************************************************
+                        # create a monster based on encounter variable: < 11 = normal monster. > 20 = boss
+                        monster = player_1.meta_monster_generator(encounter)
                         print(discovered_monsters)  # remove after testing
                         if monster.name in discovered_monsters:
-                            print(f"You have encountered a level {monster.level} {monster.name}.")
+                            print(f"You have encountered a {monster.name}. Challenge level: {monster.level}")
                             # remove lvl after testing
                             pause()
                         else:
@@ -268,7 +242,7 @@ while True:
                                 discovered_monsters.append(monster.name)
                             pause()
                         if encounter < 21:  # if not a boss, monster may like you or steal from you
-                            if player_1.monster_likes_you(monster.name, monster.intelligence):
+                            if player_1.monster_likes_you(monster):
                                 player_1.in_proximity_to_monster = False
                                 # player_1.event_logic()  # this will trigger an event without using (L)ook
                                 player_1.dungeon_description()
@@ -280,14 +254,10 @@ while True:
                                 break  # if monster steals something he gets away clean, if not, battle
 
                         # PLAYER INITIATIVE, MONSTER INITIATIVE
-                        player_initiative = player_1.initiative()
-                        monster_initiative = monster.initiative()
-                        print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
-                        pause()
+                        human_goes_first = player_1.initiative(monster)
                         # IF MONSTER GOES FIRST:
-                        if monster_initiative > player_initiative:
+                        if not human_goes_first:
                             player_1.hud()
-                            # player_1.meta_monster_function(monster)
                             monster.meta_monster_function(player_1)
                             # I tried to offload this code, but the breaks and continues are pretty tangled
                             if not player_1.check_dead():  # if player not dead
@@ -296,16 +266,19 @@ while True:
                                     if not player_1.check_dead():  # if player not dead
                                         print(f"You regain your faculties.")
                                         pause()
-                                        # continue
                                     else:
                                         print("You are dead and paralyzed!")
                                         player_is_dead = True
                                         break
                             else:  # you died
                                 player_1.rndm_death_statement()
-                                time.sleep(3)
+                                sleep(3)
                                 player_is_dead = True
                                 break
+                            # at this point, monster still has initiative
+                            # therefore, if player has npc allies and monster has multi_attack or lesser_multi_attack,
+                            # monster attacks npc allies
+                            player_1.monster_attacks_npc_meta(monster)
                         # OTHERWISE, PLAYER PROMPT and enter BATTLE LOOP
                         # ********************************* BATTLE LOOP ***********************************************
                         while True:
@@ -352,6 +325,8 @@ while True:
                                         if not player_1.in_proximity_to_monster:
                                             # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
                                             player_1.end_of_turn_calculation()
+                                            # allies heal and no longer retreat:
+                                            player_1.npc_calculation()
                                             if player_1.check_dead():  # you can die from poison or necrosis,
                                                 player_is_dead = True  # right after victory, following calculations
                                                 break
@@ -362,7 +337,6 @@ while True:
                                                 if encounter == 99:
                                                     player_1.boss_hint_logic()
                                             player_1.level_up(monster.experience_award, monster.gold)
-                                            # player_1.event_logic()  # this will trigger an event without using (L)ook
                                             player_1.dungeon_description()  # has worked well for a while
                                             # pause()
                                             break
@@ -386,6 +360,8 @@ while True:
                                                 print(f"You have defeated the {monster.name}..")
                                             # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
                                             player_1.end_of_turn_calculation()
+                                            # allies heal and no longer retreat:
+                                            player_1.npc_calculation()
                                             pause()
                                             if player_1.check_dead():  # you can die from poison or necrosis,
                                                 player_is_dead = True  # right after victory, following calculations
@@ -394,42 +370,38 @@ while True:
                                             player_1.level_up(monster.experience_award, monster.gold)
                                             player_1.in_proximity_to_monster = False
                                             player_1.loot(encounter)
+
                                             if encounter > 20:  # if you kill the boss, you get extra chance for loot
                                                 if encounter == 99:  # level exit boss
                                                     player_1.boss_hint_logic()
-                                                player_1.loot(encounter)  # 8 difficulty class
-                                            player_1.dungeon_description()  # beta works so far
-                                            break
-                                        # if monster still alive, and player has allies:
-                                        damage_to_monster = player_1.ally_logic(monster)
-                                        monster.reduce_health(damage_to_monster)
-                                        if monster.check_dead():
-                                            player_1.hud()
-                                            if encounter > 20:  # if fighting boss
-                                                gong()
-                                                if monster.proper_name != "None":
-                                                    print(f"You have vanquished {monster.proper_name}! "
-                                                          f"You are victorious!")
-                                                    player_1.vanquished_foes.append(monster.proper_name)
-                                                else:
-                                                    print(f"You have vanquished the {monster.name}!")
-                                                sleep(4)
-                                                player_1.dungeon_theme()
-                                            else:
-                                                print(f"You have defeated the {monster.name}..")
-                                            player_1.level_up(monster.experience_award, monster.gold)
-                                            player_1.in_proximity_to_monster = False
-                                            player_1.loot(encounter)
-                                            if encounter > 20:  # if you kill the boss, you get extra chance for loot
-                                                if encounter == 99:  # if exit boss has been defeated,
-                                                    player_1.boss_hint_logic()  # give main boss hints
-                                                player_1.loot(encounter)  # 8 difficulty class: better chance at loot
+                                                # player_1.loot(encounter)  # 8 difficulty class
                                             player_1.dungeon_description()  # beta works so far
                                             break
                                     else:
                                         print(f"You have no Quantum unit energy!")
                                         pause()
                                         continue  # if you have no QU, don't waste a turn!
+                                # if monster still alive after quantum attack, and player has allies:
+                                # npc allies attack monster
+                                if player_1.npc_attack_logic(monster, encounter):  # if npc ally defeats monster
+                                    player_1.end_of_turn_calculation()
+                                    # allies heal and no longer retreat:
+                                    player_1.npc_calculation()
+                                    pause()
+                                    if player_1.check_dead():
+                                        player_is_dead = True
+                                        player_1.in_proximity_to_monster = False
+                                        break
+                                    player_1.level_up(monster.experience_award, monster.gold)
+                                    player_1.in_proximity_to_monster = False
+                                    player_1.loot(encounter)
+
+                                    if encounter > 20:  # if you kill the boss, you get extra chance for loot
+                                        if encounter == 99:  # if exit boss has been defeated,
+                                            player_1.boss_hint_logic()  # give main boss hints
+                                        # player_1.loot(encounter)  # 8 difficulty class: better chance at loot
+                                    player_1.dungeon_description()  # beta works so far
+                                    break
                                 # ****MONSTER TURN AFTER YOU SWIG POTION, fail to evade, or cast quantum attack******
                                 #
                                 player_1.hud()
@@ -443,6 +415,8 @@ while True:
                                         if not player_1.check_dead():  # if player not dead
                                             print(f"You regain your faculties.")
                                             pause()
+                                            # if monster has multi_attack, then attack npc
+                                            player_1.monster_attacks_npc_meta(monster)  # beta testing
                                             continue
                                         else:
                                             print("You are dead and paralyzed!")
@@ -451,11 +425,11 @@ while True:
 
                                 else:
                                     print(f"You died!")
-                                    time.sleep(3)
+                                    sleep(3)
                                     player_is_dead = True
                                     break
-                                # player_1.hud()  # commented out and seemed like it worked fine beta
-                                # continue  # commented out and it seemed to work fine beta
+                                # if player has allies, monster attacks npc
+                                player_1.monster_attacks_npc_meta(monster)
 
                             # FIGHT: player chooses melee:
                             elif battle_choice == "f":
@@ -481,6 +455,8 @@ while True:
                                     pause()
                                     # CALCULATE REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
                                     player_1.end_of_turn_calculation()
+                                    # npc allies heal and no longer retreat:
+                                    player_1.npc_calculation()
                                     if player_1.check_dead():
                                         player_is_dead = True
                                         player_1.in_proximity_to_monster = False
@@ -488,36 +464,32 @@ while True:
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot(encounter)
+
                                     if encounter > 20:  # if you kill the boss, you get extra chance for loot
                                         if encounter == 99:  # if exit boss has been defeated,
                                             player_1.boss_hint_logic()  # give main boss hints
-                                        player_1.loot(encounter)  # 8 difficulty class: better chance at loot
+                                        # player_1.loot(encounter)  # 8 difficulty class: better chance at loot
                                     player_1.dungeon_description()  # beta works so far
                                     break
-                                # testing ally melee
-                                damage_to_monster = player_1.ally_logic(monster)
-                                monster.reduce_health(damage_to_monster)
-                                if monster.check_dead():
-                                    player_1.hud()
-                                    if encounter > 20:  # if fighting boss
-                                        gong()
-                                        if monster.proper_name != "None":
-                                            print(f"You have vanquished {monster.proper_name}! "
-                                                  f"You are victorious!")
-                                            player_1.vanquished_foes.append(monster.proper_name)
-                                        else:
-                                            print(f"You have vanquished the {monster.name}!")
-                                        sleep(4)
-                                        player_1.dungeon_theme()
-                                    else:
-                                        print(f"You have defeated the {monster.name}..")
+                                # if monster still alive after player melee attack and player has allies
+                                # npc allies attack monster
+                                if player_1.npc_attack_logic(monster, encounter):  # if npc ally defeats monster
+                                    player_1.end_of_turn_calculation()
+                                    # allies heal and no longer retreat:
+                                    player_1.npc_calculation()
+                                    pause()
+                                    if player_1.check_dead():
+                                        player_is_dead = True
+                                        player_1.in_proximity_to_monster = False
+                                        break
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot(encounter)
+
                                     if encounter > 20:  # if you kill the boss, you get extra chance for loot
                                         if encounter == 99:  # if exit boss has been defeated,
                                             player_1.boss_hint_logic()  # give main boss hints
-                                        player_1.loot(encounter)  # 8 difficulty class: better chance at loot
+                                        # player_1.loot(encounter)  # 8 difficulty class: better chance at loot
                                     player_1.dungeon_description()  # beta works so far
                                     break
                                 # monster turn if still alive after player melee attack:
@@ -531,6 +503,8 @@ while True:
                                             if not player_1.check_dead():  # if player not dead
                                                 print(f"You regain your faculties.")
                                                 pause()
+                                                # if monster has multi_attack, then attack npc
+                                                player_1.monster_attacks_npc_meta(monster)  # beta testing
                                                 continue
                                             else:
                                                 print("You are dead and paralyzed!")
@@ -538,196 +512,48 @@ while True:
                                                 break
                                     else:  # you died
                                         player_1.rndm_death_statement()
-                                        time.sleep(3)
+                                        sleep(3)
                                         player_is_dead = True
                                         break
                                     player_1.hud()
+                                # beta testing if player has allies, monster attacks npc
+                                player_1.monster_attacks_npc_meta(monster)
 
                             else:  # invalid inputs
                                 print(f"The {monster.name} is not amused.")
-                                time.sleep(1)
+                                sleep(1)
                                 player_1.hud()
                                 continue
                             #
-                else:  # if encounter condition False
+                else:  # encounter condition False; no monster, continue
                     continue
-        else:  # if player is in town and does not (E)nter dungeon
+        else:  # player is in town and does NOT (E)nter dungeon; continue
             continue
-# removed code:
-
-'''                if player_1.position == ".":
-                    print("You are in a dark corridor, there are doors leading in each direction...")
-                    sleep(1.5)
-                if player_1.position == "E":
-                    print("You found the exit...")
-                    player_1.dungeon_key += 1
-                    player_1.dungeon = dungeon_dict[player_1.dungeon_key]
-                    # current_dungeon_map = player_1.dungeon.grid
-                    # current_player_map = player_1.dungeon.player_grid
-                    x = player_1.dungeon.starting_x
-                    y = player_1.dungeon.starting_y
-                    player_1.position = 0
-                    player_1.current_dungeon_level = player_1.dungeon.level
-                    player_1.current_dungeon_level_name = player_1.dungeon.name
-                    pause()'''
-'''elif town_functions == 'm':
-            print("You visit the seller's market..")
-            sleep(1.5)
-            player_1.sell_items()'''
-'''                            else:
-                                print(f"The {monster.name} attacks!")
-                                time.sleep(1.5)
-                                print(f"You dodge, swiftly foiling its advantage!")
-                                os.system('pause')'''
-'''# if player_1.check_dead():
-                            winsound.PlaySound(None, winsound.SND_ASYNC)
-                            cls()
-                            #player_1.hud()
-                            winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\sound.wav',
-                                               winsound.SND_ASYNC)
-                            print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
-                            time.sleep(2)
-                            in_proximity_to_monster = False
-                            in_dungeon = False
-                            in_town = False
-                            player_is_dead = False
-                            while True:
-                                try_again = input("Do you wish to play again (y/n)? ").lower()
-                                if try_again == "y":
-                                    time.sleep(1)
-                                    cls()
-                                    break  # break out of prox to monster, dungeon and town, up to top loop
-                                if try_again == "n":
-                                    print(f"Farewell.")
-                                    exit()
-                                if try_again not in ("y", "n"):
-                                    print("Please enter y or n ")
-                                    time.sleep(.5)
-                                    continue'''
-"""                                if monster.quantum_energy and melee_or_quantum > 10:
-                                    damage_to_player = monster.quantum_energy_attack(monster.name,
-                                                                                     player_1.wisdom_modifier,
-                                                                                     player_1.ring_of_prot.protect)
-                                    player_1.reduce_health(damage_to_player)
-                                    player_1.calculate_potion_of_strength()  # potions of str have 5 uses; battle & nav
-                                    player_1.regenerate()
-                                    player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
-                                    player_1.calculate_necrotic_dot()
-                                else:
-                                    damage_to_player = monster.swing(monster.name, player_1.armor_class)
-                                    player_1.reduce_health(damage_to_player)
-                                    player_1.calculate_potion_of_strength()  # potions of str have 5 uses; battle & nav
-                                    player_1.regenerate()
-                                    player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
-                                    player_1.calculate_necrotic_dot()"""
-
-"""                if dungeon_command not in ('w', 'a', 's', 'd', 'l', 'e', 'map', 'p', 'g', 'h', 'm', 'i', 'q'):
-                    print("Unknown command")
-                    time.sleep(.25)
-                    player_1.dungeon_description()
-                    continue
-"""
-"""#if dungeon_command not in ('w', 'a', 's', 'd', 'l', 'c', 'map', 'p', 'g', 'h', 'm', 'i', 'quit'):
-                #    print("Unknown command")
-                #    time.sleep(.25)
-                #    player_1.dungeon_description()
-                #    continue"""
-
-"""melee_or_quantum = dice_roll(1, 20)
-                            if monster.quantum_energy and melee_or_quantum > 10:
-                                damage_to_player = monster.quantum_energy_attack(monster.name,
-                                                                                 player_1.wisdom_modifier,
-                                                                                 player_1.ring_of_prot.protect, 
-                                                                                 player_1.temp_protection_effect)
-                                player_1.reduce_health(damage_to_player)
-                                player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
-                                player_1.calculate_protection_effect()
-                                player_1.regenerate()
-                                player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
-                                player_1.calculate_necrotic_dot()
-                            else:
-                                damage_to_player = monster.swing(monster.name, player_1.armor_class)
-                                player_1.reduce_health(damage_to_player)
-                                player_1.calculate_potion_of_strength()  # potions of strength have 5 uses; battle & nav
-                                player_1.calculate_protection_effect()
-                                player_1.regenerate()
-                                player_1.calculate_poison()  # poison wears off after 5 turns of battle/navigation
-                                player_1.calculate_necrotic_dot()
-                            if player_1.check_dead():  # if player  dead
-                                print(f"You were caught off guard!")
-                                time.sleep(1.5)
-                                print(f"You died!")
-                                player_is_dead = True
-                                continue"""
-
-"""player_1.is_paralyzed = monster.paralyze(player_1.wisdom,
-                                                                                 player_1.ring_of_prot.protect)
-                                        if player_1.is_paralyzed:
-                                            player_1.damage_while_paralyzed(monster.number_of_hd,
-                                                                            monster.hit_dice)"""
-"""                    if dungeon_command == 'w':
-                        player_1.hud()
-                        print("North")
-                        player_1.y -= 1
-                        sleep(.5)
-                    if dungeon_command == 'a':
-                        player_1.hud()
-                        print("West")
-                        player_1.x -= 1
-                        sleep(.5)
-                    if dungeon_command == 's':
-                        player_1.hud()
-                        print("South")
-                        player_1.y += 1
-                        sleep(.5)
-                    if dungeon_command == 'd':
-                        player_1.hud()
-                        print("East")
-                        player_1.x += 1
-                        sleep(.5)
-                    if dungeon_command == 'l':
-                        # this will call dungeon_description().
-                        # after returning, event_logic() will be called at end of navigation turn
-                        # which will trigger any events corresponding to player self.coordinates
-                        player_1.dungeon_description()
-                        player_1.coordinates = (player_1.x, player_1.y)
-                        player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]
-                    if dungeon_command == 'map':
-                        player_1.display_map(player_1.dungeon.player_grid)  #
-                        pause()
-                        player_1.dungeon_description()
-                        # player_1.event_logic()
-                        # continue"""
-"""elif dungeon_command == 'w' or dungeon_command == 'a' or dungeon_command == 's' \
-                        or dungeon_command == 'd' or dungeon_command == 'l' or dungeon_command == 'map' or \
-                        dungeon_command == 'ne' or dungeon_command == 'nw' or dungeon_command == 'se' or \
-                        dungeon_command == 'sw':"""
-"""                elif dungeon_command == 'm':
-                    player_1.item_management_sub_menu()
-                    # continue
-                elif dungeon_command == 'i':
-                    player_1.inventory()"""
-# player_name = input("Thy name, noble sire? ")
-"""accept_stats = ""
-# player_1 = Player(player_name)
-
-while accept_stats != "y":
-    player_1 = character_generator()
-    cls()
-    print(f"Name: {player_1.name}")
-    print(f"Strength: {player_1.strength}")
-    print(f"Dexterity: {player_1.dexterity}")
-    print(f"Constitution {player_1.constitution}")
-    print(f"Intelligence: {player_1.intelligence}")
-    print(f"Wisdom: {player_1.wisdom}")
-    print(f"Charisma: {player_1.charisma}")
-    print(f"Hitpoints: {player_1.hit_points}")
-    print(f"Strength modifier: {player_1.strength_modifier}")
-    print(f"Constitution modifier: {player_1.constitution_modifier}")
-    print(f"Intelligence modifier: {player_1.intelligence_modifier}")
-    print(f"Wisdom modifier: {player_1.wisdom_modifier}")
-    print(f"Charisma modifier: {player_1.charisma_modifier}")
-    print(f"Proficiency bonus: {player_1.proficiency_bonus}")
-    accept_stats = input("Ok to continue? ").lower()
-# a while loop's 'else' part runs if no break occurs and the condition is false
-if accept_stats == "y":"""
+"""player_initiative = player_1.initiative()
+                        monster_initiative = monster.initiative()
+                        print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
+                        pause()"""
+"""                        if encounter < 11:  # regular monster
+                            monster = player_1.regular_monster_generator()
+                            # monster = Shadow()  # HobgoblinCaptain()  # testing
+                        elif encounter == 99:  # level exit boss fight
+                            monster = player_1.exit_boss_generator()
+                            gong()
+                            sleep(4)
+                            boss_battle_theme()
+                            pause()
+                            player_1.hud()
+                        elif encounter == 98:  # undead king
+                            monster = player_1.king_monster_generator()
+                            gong()
+                            sleep(4)
+                            mountain_king_theme()
+                            pause()
+                            player_1.hud()
+                        elif encounter == 97:  # undead prophet
+                            monster = player_1.undead_prophet_generator()
+                            gong()
+                            sleep(4)
+                            boss_battle_theme()
+                            pause()
+                            player_1.hud()"""

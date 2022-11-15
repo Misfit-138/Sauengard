@@ -1,25 +1,25 @@
 # Sauengard © Copyright 2022 by Jules Pitsker
 # GPLV3 LICENSE https://www.gnu.org/licenses/gpl-3.0.en.html
 
-# Dark Sorrowful Cello "Soul's Departure" Royalty Free Music by Darren Curtis
+# sad_cello_theme(): "Soul's Departure" Royalty Free Music by Darren Curtis
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
-# Blacksmith theme: 'Viking Intro loop' by Alexander Nakarada
+# blacksmith_theme(): 'Viking Intro loop' by Alexander Nakarada
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
-# Dungeon theme: 'Dragon Quest', 'Dragon Song', 'Medieval Metal', 'Cinematic Celtic Metal', by Alexander Nakarada
+# dungeon_theme(): 'Dragon Quest', 'Dragon Song', 'Medieval Metal', 'Cinematic Celtic Metal', by Alexander Nakarada
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
-# Chemist Theme: 'Might and Magic' by Alexander Nakarada
+# chemist_theme(): 'Might and Magic' by Alexander Nakarada
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
-# Town theme: 'Tavern Loop 1' by Alexander Nakarada
+# town_theme(): 'Tavern Loop 1' by Alexander Nakarada
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
-# Boss battle theme: 'Dragon Castle' / Epic Orchestral Battle Music by Makai Symphony
+# boss_battle_theme(): 'Dragon Castle' / Epic Orchestral Battle Music by Makai Symphony
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
-# Tavern Theme: 'The Medieval Banquet' by Silverman Sound is under a Creative Commons license (CC BY 3.0)
+# tavern_theme(): 'The Medieval Banquet' by Silverman Sound is under a Creative Commons license (CC BY 3.0)
 # Music promoted by BreakingCopyright: http://bit.ly/Silvermansound_Medieval
 
 

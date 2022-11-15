@@ -1,6 +1,5 @@
-# Dungeon Crawler by Jules Pitsker
-# (C)opyright 2022
-#
+# Sauengard © Copyright 2022 by Jules Pitsker
+# GPLV3 LICENSE https://www.gnu.org/licenses/gpl-3.0.en.html
 # Dark Sorrowful Cello "Soul's Departure" Royalty Free Music by Darren Curtis
 # Blacksmith theme: 'Viking Intro loop' by Alexander Nakarada complete permission granted in YouTube
 # Dungeon theme: 'Dragon Quest', 'Dragon Song', 'Medieval Metal', 'Cinematic Celtic Metal', by Alexander Nakarada

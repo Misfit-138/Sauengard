@@ -8,6 +8,11 @@ import random
 import time
 
 
+def sleep(seconds):
+    time.sleep(seconds)
+    return
+
+
 def dice_roll(no_of_dice, no_of_sides):
     dice_rolls = []  # create list for multiple die rolls
     for dice in range(no_of_dice):  # (1 hit die per level according to DnD 5E rules)
@@ -157,7 +162,7 @@ class Monster:
         print(f"The {self.name} attacks you! (It rolls {roll_d20})")
         if roll_d20 == 1:
             print(f"..it awkwardly strikes and you easily block.")
-            # time.sleep(2)
+            # sleep(2)
             # os.system('pause')
             pause()
             return 0
@@ -180,25 +185,25 @@ class Monster:
                 damage_to_opponent = 1  # a natural 20 must always hit - 5e rules
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
                 print(f"{attack_phrase}")
-                time.sleep(1.5)
+                sleep(1.5)
                 print(hit_statement)
                 print(f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice}: {damage_roll}")  # hd
-                time.sleep(1.5)
+                sleep(1.5)
                 print(f"Strength modifier: {self.strength_modifier}\nAttack bonus: {attack_bonus}\n"
                       f"Weapon bonus: {self.weapon_bonus}")
-                time.sleep(1.5)
+                sleep(1.5)
                 print(f"You suffer {damage_to_opponent} points of damage!")
                 pause()
-                # time.sleep(5)
+                # sleep(5)
                 return damage_to_opponent
             else:
                 # zero damage to player result
                 print(f"The {self.name} strikes..")
-                time.sleep(1)
+                sleep(1)
                 print(f"Your armor absorbs the blow!")
-                time.sleep(1)
+                sleep(1)
                 print(f"It does no damage..")
-                time.sleep(.25)
+                sleep(.25)
                 damage_to_opponent = 0
                 pause()
                 return damage_to_opponent  # 0 points damage to player
@@ -236,7 +241,7 @@ class Monster:
               f"{self.name} Total: {roll_d20 + self.wisdom_modifier + self.proficiency_bonus}")
         if roll_d20 == 1:
             print(f"..its attempts to procure the universal forces fail miserably.")
-            time.sleep(2)
+            sleep(2)
             return 0
         if roll_d20 == 20:
             critical_bonus = 2
@@ -258,18 +263,18 @@ class Monster:
             damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
                 print(f"{attack_phrase}")
-                time.sleep(1.5)
+                sleep(1.5)
                 print(hit_statement)
                 print(
                     f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} hit dice: {damage_roll}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}\nAttack bonus: {attack_bonus}")
                 print(f"You suffer {damage_to_opponent} points of damage!")
                 pause()
-                # time.sleep(5)
+                # sleep(5)
                 return damage_to_opponent
             else:
                 print(f"The {self.name} strikes with Quantum Powers, but you dodge the attack!")  # zero damage
-                time.sleep(2)
+                sleep(2)
                 return 0  # 0 points damage to player
         else:
             print(f"It fails to harness the mysterious powers..")
@@ -279,7 +284,7 @@ class Monster:
     def paralyze(self, player_1):
         player_1.hud()
         print(self.paralyze_phrase)
-        time.sleep(1.25)
+        sleep(1.25)
         paralyze_chance = dice_roll(1, 20)
         human_player_roll_d20 = dice_roll(1, 20)
         player_total = (human_player_roll_d20 + player_1.ring_of_prot.protect + player_1.temp_protection_effect)
@@ -295,10 +300,10 @@ class Monster:
         print(f"Your Total: {player_total}")
         if (paralyze_chance + self.wisdom_modifier) >= player_total:
             print("You are paralyzed!!")
-            time.sleep(1)
+            sleep(1)
             print(self.paralyze_free_attack_phrase)
             # print("As you stand, frozen and defenseless, it savagely gores you!")
-            time.sleep(1)
+            sleep(1)
             for i in range(self.paralyze_turns):  # this seems too brutal if paralyze turns is anything but 1!!!
                 paralyze_damage = (dice_roll(self.number_of_hd, self.hit_dice) -
                                    (player_1.ring_of_prot.protect + player_1.temp_protection_effect))
@@ -321,10 +326,10 @@ class Monster:
         # print(f"The {self.name} hisses in evil glee..")
         print(self.poison_phrase)
         print(f"Attack roll: {roll_d20}")
-        time.sleep(1)
+        sleep(1)
         if roll_d20 == 1:
             print("You easily dodge the poison attack!")
-            time.sleep(1)
+            sleep(1)
             pause()
             player_1.hud()
             return False
@@ -342,7 +347,7 @@ class Monster:
                                          ]
                 poisoned_phrase = random.choice(rndm_poisoned_phrases)
                 print(f"{poisoned_phrase}")
-                time.sleep(1.5)
+                sleep(1.5)
                 print(f"You have been poisoned!")
                 player_1.poisoned = True
                 player_1.poisoned_turns = 0
@@ -350,7 +355,7 @@ class Monster:
                 return player_1.poisoned
             else:
                 print(f"You swiftly dodge its poison attack!")
-                time.sleep(1)
+                sleep(1)
                 pause()
                 player_1.hud()
                 return False
@@ -359,10 +364,10 @@ class Monster:
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"The {self.name} attempts to harness its innate understanding of quantum necrosis..")
         print(f"Attack roll---> {roll_d20}")
-        time.sleep(1)
+        sleep(1)
         if roll_d20 == 1:
             print("You dodge the deadly necrotic attack!")
-            time.sleep(1)
+            sleep(1)
             pause()
             player_1.hud()
             return False
@@ -381,7 +386,7 @@ class Monster:
                                          ]
                 necrotic_phrase = random.choice(rndm_necrotic_phrases)
                 print(f"{necrotic_phrase}")
-                time.sleep(1.5)
+                sleep(1.5)
                 print(f"Necrotic forces ravage through your body!")
                 player_1.necrotic = True
                 player_1.necrotic_turns = 0
@@ -390,7 +395,7 @@ class Monster:
                 return player_1.necrotic
             else:
                 print(f"You swiftly dodge its death-dealing necrotic attack!")
-                time.sleep(1)
+                sleep(1)
                 pause()
                 player_1.hud()
                 return False
@@ -480,26 +485,26 @@ class Monster:
                 damage_to_opponent = 1  # a natural 20 always hits
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
                 print(f"{attack_phrase}")
-                time.sleep(1.5)
+                sleep(1.5)
                 print(hit_statement)
                 print(
                     f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice}: {damage_roll}")  # hd
-                time.sleep(1.5)
+                sleep(1.5)
                 print(f"Strength modifier: {self.strength_modifier}\nAttack bonus: {attack_bonus}\n"
                       f"Weapon bonus: {self.weapon_bonus}")
-                time.sleep(1.5)
+                sleep(1.5)
                 print(f"{npc.name} suffers {damage_to_opponent} points of damage!")
                 pause()
                 return damage_to_opponent
             else:
                 # zero damage to player result
                 print(f"The {self.name} strikes..")
-                time.sleep(1)
+                sleep(1)
                 print(f"{npc.name}'s armor absorbs the blow!")
                 damage_to_opponent = 0
-                time.sleep(1)
+                sleep(1)
                 print(f"No damage is sustained.")
-                time.sleep(.25)
+                sleep(.25)
                 pause()
                 return damage_to_opponent  # 0 points damage to player
         else:
@@ -536,7 +541,7 @@ class Monster:
               f"{self.name} Total: {roll_d20 + self.wisdom_modifier + self.proficiency_bonus}")
         if roll_d20 == 1:
             print(f"..its attempts to procure the universal forces fail miserably.")
-            time.sleep(2)
+            sleep(2)
             return 0
         if roll_d20 == 20:
             critical_bonus = 2
@@ -554,19 +559,19 @@ class Monster:
             damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)
             if damage_to_opponent > 0:  # at this point the npc is the opponent!
                 print(f"{attack_phrase}")
-                time.sleep(1.5)
+                sleep(1.5)
                 print(hit_statement)
                 print(
                     f"{self.name} rolls {self.number_of_hd * critical_bonus}d{self.hit_dice} hit dice: {damage_roll}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}\nAttack bonus: {attack_bonus}")
                 print(f"{npc.name} suffers {damage_to_opponent} points of damage!")
                 pause()
-                # time.sleep(5)
+                # sleep(5)
                 return damage_to_opponent
             else:
                 print(
                     f"The {self.name} strikes with Quantum Powers, but {npc.name} dodges the attack!")  # 0 damage
-                time.sleep(2)
+                sleep(2)
                 return 0  # 0 points damage to npc
         else:
             print(f"It fails to harness the mysterious powers..")

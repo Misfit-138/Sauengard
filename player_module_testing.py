@@ -275,8 +275,8 @@ def character_generator():
 
 def encounter_logic():
     monster_encounter = dice_roll(1, 20)
-    print(f"Monster encounter roll: {monster_encounter}")
-    pause()
+    # print(f"Monster encounter roll: {monster_encounter}")
+    # pause()
     return monster_encounter
 
 
@@ -1943,6 +1943,8 @@ class Player:
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
         print(f"Before you "
               f"stands {boss_monster.proper_name}!")
+        pause()
+        self.hud()
         return boss_monster
 
     def regular_monster_generator(self):

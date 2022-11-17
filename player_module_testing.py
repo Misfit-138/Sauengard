@@ -1845,7 +1845,10 @@ class Player:
             print(f"You gain {exp_award} experience points.")
             sleep(2)
             gong()
-            print(f"You gain a level reward!!")
+            if level_multiplier > 1:
+                print(f"You have gained {level_multiplier} experience levels!")
+            elif level_multiplier == 1:
+                print(f"You went up a level!!")
             sleep(2)
             print(f"You are now level {self.level}.")
             sleep(2)

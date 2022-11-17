@@ -34,7 +34,7 @@ import sys
 from collections import Counter
 import winsound
 from dungeons import dungeon_dict
-from monster_module import monster_dict, king_boss_list, undead_prophet_list
+from monster_module import monster_dict, king_boss_list, undead_prophet_list, WickedQueenJannbrielle
 from pathlib import Path
 
 # if you call a function and expect to use a return value, like, by printing it, you must first assign a variable in
@@ -50,6 +50,17 @@ Hard	15
 Very hard	20
 Incredibly hard	25
 Why bother?	30'''
+
+
+def are_you_sure():
+    while True:
+        confirm = input("Are you sure? (y/n) ").lower()
+        if confirm not in ('y', 'n'):
+            continue
+        elif confirm == 'y':
+            return True
+        elif confirm == 'n':
+            return False
 
 
 def typing(message):
@@ -1030,7 +1041,7 @@ class VozzBozz:
 
     def __init__(self):
         self.name = "Vozzbozz"
-        self.level = 20
+        self.level = 13
         self.quantum_level = 6
         self.maximum_quantum_units = 6000
         self.quantum_units = 6000
@@ -1162,7 +1173,7 @@ class Magnus:
 
     def __init__(self):
         self.name = "Magnus"
-        self.level = 14
+        self.level = 10
         self.quantum_level = 5
         self.maximum_quantum_units = 15
         self.quantum_units = 15
@@ -1208,8 +1219,8 @@ class Player:
 
     def __init__(self, name, strength, dexterity, constitution, intelligence, wisdom, charisma):
         self.name = name
-        self.level = 1
-        self.quantum_level = 2
+        self.level = 7
+        self.quantum_level = 4
         self.maximum_quantum_units = 600
         self.quantum_units = 600
         self.experience = 0
@@ -1279,10 +1290,10 @@ class Player:
         self.previous_y = 0
         self.in_a_pit = False
         self.vanquished_foes = []
-        self.sikira_ally = False
-        self.torbron_ally = False
-        self.magnus_ally = False
-        self.vozzbozz_ally = False
+        self.sikira_ally = True
+        self.torbron_ally = True
+        self.magnus_ally = True
+        self.vozzbozz_ally = True
         self.boss_hint_1 = False
         self.boss_hint_1_event = False
         self.boss_hint_2 = False
@@ -1730,6 +1741,7 @@ class Player:
         # Ability Score Improvement at levels 4, 8, 12, 16, and 19.
         # Fighters gain additional ASIs at the 6th and 14th levels
         # so, 4, 6, 8, 12, 14, 16, 19 for our purposes, since player is most like a fighter
+        # also, if player goes up more than one level, by gaining a large amount of experience, asi is available
         # Define list of attributes you are allowed to change
         if self.strength < 20 or self.dexterity < 20 or self.constitution < 20 or self.intelligence < 20 \
                 or self.wisdom < 20 or self.charisma < 20:
@@ -1763,6 +1775,8 @@ class Player:
                     if tries > 1:
                         print(f"You savor the empowering abilities you have gained..\n"
                               f"And yet, the dungeon horde grows more powerful with you!")
+                        pause()
+                        self.hud()
                         return
                     ability_dict = self.__dict__  # create variable as actual copy of player dict attribute
                     ability_lst = []  # list to be populated with all abilities < 20
@@ -1822,6 +1836,7 @@ class Player:
         self.calculate_proficiency_bonus()
         after_proficiency_bonus = self.proficiency_bonus
         after_level = self.level
+        level_multiplier = (after_level - before_level)  # in case player goes up more than 1 level
         after_quantum_level = self.quantum_level
         if after_level > before_level:
             if monster_gold > 0:
@@ -1830,14 +1845,14 @@ class Player:
             print(f"You gain {exp_award} experience points.")
             sleep(2)
             gong()
-            print(f"You went up a level!!")
+            print(f"You gain a level reward!!")
             sleep(2)
             print(f"You are now level {self.level}.")
             sleep(2)
             self.dungeon_theme()
             self.calculate_proficiency_bonus()  # according to DnD 5e
-            gain_hit_points1 = dice_roll(1, self.hit_dice) + self.constitution_modifier  # hp increase method 1
-            gain_hit_points2 = 6 + self.constitution_modifier  # hp increase method 2
+            gain_hit_points1 = (dice_roll(1, self.hit_dice) + self.constitution_modifier) * level_multiplier  # method 1
+            gain_hit_points2 = (6 + self.constitution_modifier) * level_multiplier  # hp increase method 2
             hit_point_list = [gain_hit_points1, gain_hit_points2]
             gain_hit_points = max(hit_point_list)  # the highest of method 1 and 2
             self.hit_points += gain_hit_points  # you heal and gain max hp (previous HP + Hit Die roll + CON modifier)
@@ -1846,22 +1861,25 @@ class Player:
             sleep(2.5)
             # Ability Score Improvement at levels 4, 8, 12, 16, and 19.
             # Fighters gain additional ASIs at the 6th and 14th levels
-            # so, 4, 6, 8, 12, 14, 16, 19
+            # so, 4, 6, 8, 12, 14, 16, 19 or if player goes up more than one level
             if self.level == 4 or self.level == 6 or self.level == 8 or self.level == 12 \
-                    or self.level == 14 or self.level == 16 or self.level == 19:
+                    or self.level == 14 or self.level == 16 or self.level == 19 or level_multiplier > 1:
                 self.asi()  # Ability Score Improvement calls calculate modifiers, so
             self.calculate_modifiers()  # you may want to remove this call to calculate modifiers
             if self.level == 5:
                 print(
                     "You gain the Extra Attack skill!!")  # this works in melee loop if level > 4, change to a boolean
-                sleep(2)
+                pause()
+                self.hud()
             if after_proficiency_bonus > before_proficiency_bonus:
                 print(f"Your proficiency bonus increases from {before_proficiency_bonus} to {after_proficiency_bonus}!")
-                sleep(2)
+                pause()
+                self.hud()
             if after_quantum_level > before_quantum_level:
                 print(f"Your Quantum knowledge level increases from {before_quantum_level} to {after_quantum_level}!")
                 self.quantum_units = self.maximum_quantum_units
-                sleep(2)
+                pause()
+                self.hud()
             self.hud()
         else:
             if monster_gold > 0:
@@ -1919,7 +1937,22 @@ class Player:
             boss_battle_theme()
             pause()
             self.hud()
+        elif encounter == 100:  # final boss
+            monster = self.wicked_queen_generator()
+            gong()
+            sleep(4)
+            boss_battle_theme()
+            pause()
+            self.hud()
         return monster
+
+    def wicked_queen_generator(self):
+        # called from meta_monster_generator() if encounter == 100
+        wicked_queen = WickedQueenJannbrielle()  # monster_dict([4][0])()
+        self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
+        print(f"The Queen stands, approaches the party and readies herself for battle!")
+
+        return wicked_queen
 
     def micro_boss_generator(self):
         # called from meta_monster_generator() if encounter == 96
@@ -2348,14 +2381,16 @@ class Player:
                     self.wielded_weapon.to_hit_bonus >= monster_armor_class:
                 damage_roll = dice_roll(self.level, self.hit_dice)
                 damage_to_opponent = \
-                    math.ceil(damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) * strength_bonus
+                    math.ceil((damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus)
+                              * strength_bonus)
                 print(f"You attack again for {damage_to_opponent} points of damage!")
                 pause()
                 self.hud()
                 return damage_to_opponent
             else:
                 print("You miss again.")
-                sleep(1)
+                pause()
+                self.hud()
                 return 0
         else:
             print(f"You missed...")
@@ -2393,8 +2428,8 @@ class Player:
         if roll_d20 == 20 or roll_d20 + ally.proficiency_bonus + \
                 ally.dexterity_modifier + ally.wielded_weapon.to_hit_bonus >= monster_armor_class:
             damage_roll = dice_roll((ally.level * critical_bonus), ally.hit_dice)
-            damage_to_opponent = math.ceil(
-                (damage_roll + ally.strength_modifier + ally.wielded_weapon.damage_bonus) * ally.strength_bonus)
+            damage_to_opponent = math.ceil((damage_roll + ally.strength_modifier + ally.wielded_weapon.damage_bonus)
+                                           * ally.strength_bonus)
             if damage_to_opponent > 0:
                 print(hit_statement)
                 sleep(1)
@@ -2423,15 +2458,16 @@ class Player:
                     ally.wielded_weapon.to_hit_bonus >= monster_armor_class:
                 damage_roll = dice_roll(ally.level, ally.hit_dice)
                 damage_to_opponent = \
-                    math.ceil(
-                        damage_roll + ally.strength_modifier + ally.wielded_weapon.damage_bonus) * ally.strength_bonus
+                    math.ceil((
+                        damage_roll + ally.strength_modifier + ally.wielded_weapon.damage_bonus) * ally.strength_bonus)
                 print(f"{ally.name} attacks again for {damage_to_opponent} points of damage!")
                 pause()
                 self.hud()
                 return damage_to_opponent
             else:
                 print(f"{ally.name} misses again.")
-                sleep(1)
+                pause()
+                self.hud()
                 return 0
         else:
             print(f"{ally.name}missed...")
@@ -3662,9 +3698,9 @@ class Player:
             critical_bonus = 1
             if dice_roll(1, 20) == 20:
                 critical_bonus = 2
-            number_of_dice = (20 + vozzbozz.quantum_level - 6) * critical_bonus
-            damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice) + \
-                dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack=force damage
+            number_of_dice = 20 * critical_bonus
+            damage_to_opponent = dice_roll(number_of_dice, 6) + (1 * number_of_dice) + \
+                dice_roll(number_of_dice, 6) + (1 * number_of_dice)  # 2nd attack=force damage
             melee_bonus = dice_roll(vozzbozz.level, vozzbozz.hit_dice)
             total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
 
@@ -3687,9 +3723,9 @@ class Player:
             critical_bonus = 1
             if dice_roll(1, 20) == 20:
                 critical_bonus = 2
-            number_of_dice = (20 + vozzbozz.quantum_level - 6) * critical_bonus
-            damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice) + \
-                dice_roll(number_of_dice, 8) + (1 * number_of_dice) / 2  # 2nd attack=force damage
+            number_of_dice = 20 * critical_bonus
+            damage_to_opponent = (dice_roll(number_of_dice, 6) + (1 * number_of_dice) +
+                                  dice_roll(number_of_dice, 6) + (1 * number_of_dice)) / 2  # 2nd attack=force damage
             melee_bonus = dice_roll(vozzbozz.level, vozzbozz.hit_dice)
             total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
             if damage_to_opponent > 0:
@@ -3720,7 +3756,8 @@ class Player:
             sleep(1)
             print(f"SUPPLICIUM!!")
             sleep(1.5)
-            print(f"The {monster.name} drops like a rock.")
+            print(f"The {monster.name} drops like a rock!!!")
+            pause()
             return monster.hit_points
         else:
             print(f"The {monster.name} has too much life energy to succumb to the quantum effect!")
@@ -3744,7 +3781,7 @@ class Player:
         print(f"Monster Total: {monster_total}")
         if player_total >= monster_total:
             #
-            number_of_dice = (15 + vozzbozz.quantum_level - 6) * critical_bonus
+            number_of_dice = 15 * critical_bonus
             damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
                 dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
             melee_bonus = dice_roll(vozzbozz.level, vozzbozz.hit_dice)
@@ -3773,11 +3810,16 @@ class Player:
                 sleep(1)
                 return 0
         else:
-            number_of_dice = (15 + vozzbozz.quantum_level - 6) * critical_bonus
+            number_of_dice = 15 * critical_bonus
             damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice)  # no force damage
             melee_bonus = dice_roll(vozzbozz.level, vozzbozz.hit_dice)
             total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
             # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
+            print(f"Vozzbozz forms a fist and then beckons the ground with his free hand..")
+            sleep(1)
+            print(f"Without warning, the ground swells with the thundering cacophony of countless skeletal\n"
+                  f"warriors arising from an abysmal black chasm!!")
+            sleep(1)
             print(f"The {monster.name} distracts the Master for a moment..")
             sleep(1)
             print(f"The skeletal horde takes form but does not inflict damage to its fullest potential..")
@@ -3808,7 +3850,7 @@ class Player:
             critical_bonus = 2
         if player_total >= monster_total:
             #
-            number_of_dice = (15 + vozzbozz.quantum_level - 6) * critical_bonus
+            number_of_dice = 15 * critical_bonus
             damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
                 dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = crushing damage
             melee_bonus = dice_roll(vozzbozz.level, vozzbozz.hit_dice)
@@ -3836,11 +3878,17 @@ class Player:
                 sleep(1)
                 return 0
         else:
-            number_of_dice = (15 + vozzbozz.quantum_level - 6) * critical_bonus
+            number_of_dice = 15 * critical_bonus
             damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice)  # no crushing damage
             melee_bonus = dice_roll(vozzbozz.level, vozzbozz.hit_dice)
             total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
             # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
+            print(f"Vozzbozz grasps at air, until his entire shape fades to a mere silhouette of blackness, with\n"
+                  f"stars and celestial bodies floating through!!")
+            sleep(1)
+            print(f"A harrowing and visceral vacuum of shear, black emptiness shoots forth "
+                  f"from his hands toward your enemy!!")
+            sleep(1)
             print(f"The {monster.name} distracts Vozzbozz for just a moment..")
             sleep(1)
             print(f"The plague takes form but does not inflict damage to its fullest potential..")
@@ -4072,6 +4120,7 @@ class Player:
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
+                    # print(f"Attack roll: {roll_d20}")
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
@@ -7334,6 +7383,18 @@ class Player:
         self.calculate_modifiers()
         pause()
 
+    def wicked_queen_event(self):
+        # called from event_logic()
+        wicked_queen_discovery = f"level {self.dungeon.level} wicked queen"
+        if wicked_queen_discovery not in self.discovered_interactives:
+            self.discovered_interactives.append(wicked_queen_discovery)
+            print(f"The Wicked Queen Jannbrielle sits on her horrible throne of skulls. Clad in shining armor and \n"
+                  f"equipped with her scepter, her intoxicating beauty is both irresistible and repugnant.")
+            pause()
+            return "Wicked Queen"
+        else:
+            return
+
     def micro_boss_event(self):
         # called from event_logic()
         micro_boss_discovery = f"level {self.dungeon.level} micro boss"
@@ -7961,6 +8022,7 @@ class Player:
                       self.dungeon.elevator: self.elevator_event,
                       self.dungeon.pit: self.pit_event,
                       self.dungeon.micro_boss: self.micro_boss_event,
+                      self.dungeon.wicked_queen: self.wicked_queen_event,
                       self.dungeon.exit: self.dungeon_exit_event
                       }
         if self.coordinates in event_dict.keys():
@@ -7972,10 +8034,8 @@ class Player:
         # NAVIGATION
 
     def town_navigation(self, player_name):
-        town_functions = input(
-            "(The Town of Fieldenberg)\n(S)ave, (Q)uit game, (I)nventory, (B)lacksmith, (C)hemist , (T)avern, or ("
-            "E)nter dungeon "
-            "--> ").lower()
+        town_functions = input("(The Town of Fieldenberg)\n(S)ave, (Q)uit game, (I)nventory, (B)lacksmith, "
+                               "(C)hemist , (T)avern, or (E)nter dungeon --> ").lower()
         '''        if town_functions == 'r':
             print("Restart")
             time.sleep(2)
@@ -7983,6 +8043,7 @@ class Player:
             in_town = False
             break'''
         if town_functions == 'q':
+
             while True:
                 cls()
                 confirm_quit = input(f"Quit game? (y/n) ").lower()

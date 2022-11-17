@@ -418,7 +418,7 @@ class Monster:
                 player_1.hud()
                 return player_1.necrotic
             else:
-                print(f"You swiftly dodge its death-dealing necrotic attack!")
+                print(f"You swiftly dodge the death-dealing necrotic attack!")
                 sleep(1)
                 pause()
                 player_1.hud()
@@ -2181,6 +2181,80 @@ class WhiteDragonWyrmling(Monster):
                             f"Confidently stepping forth,\nit roars viciously, undoubtedly preparing to have you " \
                             f"as a meal!"
         self.is_discovered = False
+
+
+class WickedQueenJannbrielle(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 20
+        self.name = "Wicked Queen"
+        self.proper_name = "Queen Jannbrielle"
+        self.experience_award = 64000
+        self.gold = random.randint(150, 2500)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 30
+        self.dexterity = 10
+        self.constitution = 29
+        self.intelligence = 18
+        self.wisdom = 18
+        self.charisma = 25
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = True
+        self.necrotic = True
+        self.dot_multiplier = 5
+        self.dot_turns = 5
+        self.undead = True
+        self.immunities = ["Turn Undead"]
+        self.vulnerabilities = ["Immolation", "Fireball", "Fire Storm"]
+        self.resistances = []
+        self.quantum_energy = True
+        self.difficulty_class = 10
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 20
+        self.hit_dice = 10
+        self.number_of_hd = 2
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = 1200  # dice_roll(35, 20) + 30
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 20
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 7  # attack bonus
+        self.attack_1_phrase = "The queen attacks with her skull-scepter!"
+        self.attack_2 = 10
+        self.attack_2_phrase = "With a gleeful laugh, she attacks with her whip!"
+        self.attack_3 = 12
+        self.attack_3_phrase = "With catlike agility, she strikes with her beautiful, horrible claws!"
+        self.attack_4 = 14
+        self.attack_4_phrase = "Producing a long, black blade, she strikes with a frenzied rage!"
+        self.attack_5 = 18
+        self.attack_5_phrase = "The queen leaps into the air and releases a crippling scream of fell hatred and malice!"
+        self.quantum_attack_1 = 10
+        self.quantum_attack_1_phrase = "The queen smiles, licks her lips with a forked tongue and attacks with a\n" \
+                                       "wall of quantum energy!"
+        self.quantum_attack_2 = 12
+        self.quantum_attack_2_phrase = "The queen unleashes a storm of dark, dancing liquid quantum energy\n" \
+                                       "from both of her outstretched hands!"
+        self.quantum_attack_3 = 14
+        self.quantum_attack_3_phrase = "Placing both hands together, she releases a black torrent of\n" \
+                                       "quantum energy!"
+        self.quantum_attack_4 = 16
+        self.quantum_attack_4_phrase = "From beautiful claw-like hands, she attacks with evil Quantum Forces\n" \
+                                       "that form a dark mist of terror!"
+        self.quantum_attack_5 = 20
+        self.quantum_attack_5_phrase = "The queen releases Quantum Forces which wildly entangle\n" \
+                                       "you in a maelstrom of malice!"
+        self.introduction = f"\'I shall enjoy watching you die.\', says the undead queen, plainly."
+        self.is_discovered = False
+        self.poison_phrase = f"The queen attacks with venomous fangs!"
+        self.paralyze_phrase = f"The irresistible beauty of the undead queen begins to weaken you.."
 
 
 # monster dictionaries. keys correspond to difficulty

@@ -27,7 +27,7 @@ import pickle
 from dungeons import dungeon_dict
 import os
 from player_module_testing import sad_cello_theme, cls, game_splash, character_generator, town_theme, gong, sleep, \
-    encounter_logic, pause  # boss_battle_theme, mountain_king_theme
+    encounter_logic, pause, are_you_sure  # boss_battle_theme, mountain_king_theme
 
 sad_cello_theme()
 cls()
@@ -81,7 +81,7 @@ while True:
     print(f"You enter the town of Fieldenberg.")
     sleep(1.5)
     player_1.in_town = True
-    # player_1.in_dungeon = False  # should be unneeded. defined as False in Player class and after portal use
+    player_1.in_dungeon = False  # defined as False after portal use
     discovered_monsters = []
     town_theme()
 
@@ -153,14 +153,11 @@ while True:
 
                 elif dungeon_command == 'quit':
                     print("Quit game..")
-                    while True:
-                        confirm_quit = input("Are you sure? (y/n) ").lower()
-                        if confirm_quit not in ('y', 'n'):
-                            continue
-                        elif confirm_quit == 'y':
-                            exit()
-                        elif confirm_quit == 'n':
-                            break
+                    if are_you_sure():
+                        exit()
+                    else:
+                        player_1.hud()
+                        continue
 
                 elif dungeon_command == "q":
                     player_1.hud()
@@ -211,6 +208,8 @@ while True:
                     encounter = 98
                 elif event == "Exit Boss":
                     encounter = 99
+                elif event == "Wicked Queen":
+                    encounter = 100
                 # META CALCULATION FUNCTION FOR REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
                 # this is also called after monster melee, necro, poison and quantum attack
                 # as well as after turning/banishing, etc., and player victory

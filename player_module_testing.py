@@ -2793,7 +2793,7 @@ class Player:
                     damage_to_monster = dice_roll((self.level * damage_modifier), self.hit_dice)
                     total_fails += 1
                     print(f"You inflict {damage_to_monster} hit points!")
-                    sleep(1.5)
+                    pause()
                     self.hud()
                     monster.reduce_health(damage_to_monster)
                     if not monster.check_dead():

@@ -169,6 +169,7 @@ class Monster:
         attack_bonus_roll = random.randint(1, 20)
         # print(f"Monster attack bonus roll: {attack_bonus_roll}")  # remove after testing
         attack_phrase = ""
+
         if attack_bonus_roll <= 10:
             attack_bonus = self.attack_1
             attack_phrase = self.attack_1_phrase
@@ -184,18 +185,22 @@ class Monster:
         if attack_bonus_roll > 19:
             attack_bonus = self.attack_5
             attack_phrase = self.attack_5_phrase
+
         roll_d20 = dice_roll(1, 20)
-        print(f"The {self.name} attacks you! (It rolls {roll_d20})")
+        print(f"The {self.name} attacks you! ({self.he_she_it.capitalize()} rolls {roll_d20})")
+
         if roll_d20 == 1:
             print(f"..{self.he_she_it} awkwardly strikes and you easily block.")
             pause()
             return 0
+
         if roll_d20 == 20:
             critical_bonus = 2
             hit_statement = "CRITICAL HIT!!"
         else:
             critical_bonus = 1
             hit_statement = ""
+
         monster_total = roll_d20 + self.dexterity_modifier + self.proficiency_bonus  # test out pro bonus
         print(f"{self.name} Attack bonus: {attack_bonus}")
         print(f"{self.name} Dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
@@ -244,6 +249,7 @@ class Monster:
         attack_phrase = ""
         attack_bonus_roll = random.randint(1, 20)
         # print(f"Monster attack bonus roll: {attack_bonus_roll}")  # remove after testing
+
         if attack_bonus_roll <= 10:
             attack_bonus = self.quantum_attack_1
             attack_phrase = self.quantum_attack_1_phrase
@@ -259,6 +265,7 @@ class Monster:
         if attack_bonus_roll > 19:
             attack_bonus = self.quantum_attack_5
             attack_phrase = self.quantum_attack_5_phrase
+
         human_player_roll_d20 = dice_roll(1, 20)
         roll_d20 = dice_roll(1, 20)
         print(f"The {self.name} attacks you with Quantum Energy!\n"
@@ -269,7 +276,7 @@ class Monster:
 
         if roll_d20 == 1:
             print(f"..{self.his_her_its} attempts to procure the universal forces fail miserably.")
-            sleep(2)
+            pause()
             return 0
 
         if roll_d20 == 20:
@@ -403,7 +410,7 @@ class Monster:
 
     def necrotic_attack(self, player_1):
         roll_d20 = dice_roll(1, 20)  # attack roll
-        print(f"The {self.name} attempts to harness its innate understanding of quantum necrosis..")
+        print(f"The {self.name} attempts to harness {self.his_her_its} innate understanding of quantum necrosis..")
         print(f"Attack roll---> {roll_d20}")
         sleep(1)
 
@@ -608,7 +615,7 @@ class Monster:
 
         if roll_d20 == 1:
             print(f"..{self.his_her_its} attempts to procure the universal forces fail miserably.")
-            sleep(2)
+            pause()
             return 0
 
         if roll_d20 == 20:
@@ -1273,9 +1280,9 @@ class ZombieProphet(Monster):
         self.attack_3 = 2
         self.attack_3_phrase = "He darts forward with reckless abandon.."
         self.attack_4 = 2
-        self.attack_4_phrase = "He thrusts forward with its heavy, iron sceptre!"
+        self.attack_4_phrase = "He thrusts forward with his heavy, iron sceptre!"
         self.attack_5 = 3
-        self.attack_5_phrase = "He strikes wildly with its iron sceptre!!"
+        self.attack_5_phrase = "He strikes wildly with his iron sceptre!!"
         self.introduction = f"The ancient prophet rises from the ground. The once beautiful and exquisite\n" \
                             f"garb now hangs off his rotten, worm-infested flesh in tatters and rags.\n" \
                             f"The air bristles with Quantum Energy.."
@@ -1338,7 +1345,7 @@ class SkeletonKing(Monster):
         self.attack_4 = 2
         self.attack_4_phrase = f"He thrusts forward with his heavy, iron spear!"
         self.attack_5 = 3
-        self.attack_5_phrase = f"Reaching over its back, it produces a battle axe and strikes wildly!!"
+        self.attack_5_phrase = f"Reaching over his back, he produces a battle axe and strikes wildly!!"
         self.introduction = f"The ancient king rises in skeletal form. The once gleaming armor and weaponry now\n" \
                             f"clings wearily to his bony form as he raises sword and shield, taunting you to " \
                             f"attack!\n" \
@@ -1402,7 +1409,7 @@ class SkeletalProphet(Monster):
         self.attack_4 = 2
         self.attack_4_phrase = f"Raising the sceptre overhead, he swings with both bony hands..!"
         self.attack_5 = 3
-        self.attack_5_phrase = f"Taunting and glaring through its rottenness, he strikes wildly!!"
+        self.attack_5_phrase = f"Taunting and glaring through his rottenness, he strikes wildly!!"
         self.introduction = f"The ancient prophet rises in skeletal form. The once spectacular raiment now\n" \
                             f"clings wearily to his bony form as he raises his sceptre, taunting you to attack!\n" \
                             f"The air bristles with Quantum Energy.."
@@ -1750,7 +1757,7 @@ class CultFanatic(Monster):
         self.introduction = f"You have encountered a Cult Fanatic. Decked in a grand robe of black and gold\n" \
                             f"symbology and face hidden in shadow, he cries aloud in dark allegiance\n" \
                             f"to his fell religious creed. His hands glow dimly with Quantum Weirdness..."
-        self.paralyze_phrase = "He points at you with one hand and slowly raises the other. Suddenly, he  clenches " \
+        self.paralyze_phrase = "He points at you with one hand and slowly raises the other. Suddenly, he clenches " \
                                "the raised hand into a fist..."
         self.paralyze_free_attack_phrase = "Patiently and sadistically, he slices at you with his crooked dagger " \
                                            "as you helplessly watch!"
@@ -2332,9 +2339,9 @@ class WickedQueenJannbrielle(Monster):
         self.dot_multiplier = 5
         self.dot_turns = 5
         self.undead = True
-        self.immunities = ["Turn Undead"]
-        self.vulnerabilities = ["Immolation", "Fireball", "Fire Storm"]
-        self.resistances = []
+        self.immunities = ["Turn Undead", "Web", "Sleep", "Hold Monster", "Banish"]
+        self.vulnerabilities = ["Fire Storm"]
+        self.resistances = ["All"]
         self.quantum_energy = True
         self.difficulty_class = 10
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -2344,35 +2351,35 @@ class WickedQueenJannbrielle(Monster):
         self.number_of_hd = 2
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.hit_points = 1200  # dice_roll(35, 20) + 30
+        self.hit_points = 1400  # dice_roll(35, 20) + 30
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 20
         self.multi_attack = True
         self.lesser_multi_attack = False
-        self.attack_1 = 7  # attack bonus
+        self.attack_1 = 12  # attack bonus
         self.attack_1_phrase = "The queen attacks with her skull-scepter!"
-        self.attack_2 = 10
+        self.attack_2 = 15
         self.attack_2_phrase = "With a gleeful laugh, she attacks with her whip!"
-        self.attack_3 = 12
+        self.attack_3 = 16
         self.attack_3_phrase = "With catlike agility, she strikes with her beautiful, horrible claws!"
-        self.attack_4 = 14
+        self.attack_4 = 18
         self.attack_4_phrase = "Producing a long, black blade, she strikes with a frenzied rage!"
-        self.attack_5 = 18
+        self.attack_5 = 20
         self.attack_5_phrase = "The queen leaps into the air and releases a crippling scream of fell hatred and malice!"
-        self.quantum_attack_1 = 10
+        self.quantum_attack_1 = 15
         self.quantum_attack_1_phrase = "The queen smiles, licks her lips with a forked tongue and attacks with a\n" \
                                        "wall of quantum energy!"
-        self.quantum_attack_2 = 12
+        self.quantum_attack_2 = 16
         self.quantum_attack_2_phrase = "The queen unleashes a storm of dark, dancing liquid quantum energy\n" \
                                        "from both of her outstretched hands!"
-        self.quantum_attack_3 = 14
+        self.quantum_attack_3 = 18
         self.quantum_attack_3_phrase = "Placing both hands together, she releases a black torrent of\n" \
                                        "quantum energy!"
-        self.quantum_attack_4 = 16
+        self.quantum_attack_4 = 20
         self.quantum_attack_4_phrase = "From beautiful claw-like hands, she attacks with evil Quantum Forces\n" \
                                        "that form a dark mist of terror!"
-        self.quantum_attack_5 = 20
+        self.quantum_attack_5 = 25
         self.quantum_attack_5_phrase = "The queen releases Quantum Forces which wildly entangle\n" \
                                        "you in a maelstrom of malice!"
         self.introduction = f"\'I shall enjoy watching you die.\', says the undead queen, plainly."

@@ -1219,11 +1219,11 @@ class Player:
 
     def __init__(self, name, strength, dexterity, constitution, intelligence, wisdom, charisma):
         self.name = name
-        self.level = 7
+        self.level = 3
         self.quantum_level = 4
         self.maximum_quantum_units = 600
         self.quantum_units = 600
-        self.experience = 0
+        self.experience = 6499
         self.base_dc = 8
         self.gold = 500000
         self.wielded_weapon = short_sword
@@ -1870,8 +1870,8 @@ class Player:
                 self.asi()  # Ability Score Improvement calls calculate modifiers, so
             self.calculate_modifiers()  # you may want to remove this call to calculate modifiers
             if self.level == 5:
-                print(
-                    "You gain the Extra Attack skill!!")  # this works in melee loop if level > 4, change to a boolean
+                self.extra_attack = True
+                print("You gain the Extra Attack skill!!")  # this works in melee loop if level > 4, change to a boolean
                 pause()
                 self.hud()
             if after_proficiency_bonus > before_proficiency_bonus:
@@ -2312,7 +2312,7 @@ class Player:
             monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier + monster.proficiency_bonus
         else:
             monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier
-        print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
+        print(f"Your initiative: {player_initiative}\n{monster.name} initiative: {monster_initiative}")
         pause()
         if player_initiative >= monster_initiative:
             return True
@@ -2374,7 +2374,7 @@ class Player:
                 print(f"Your attack is barely effective. You manage 1 point of damage.")  # zero damage result
                 sleep(1)
                 return 1
-        elif self.level > 4:
+        elif self.extra_attack:  # self.level > 4
             print("You missed..")
             sleep(2)
             print("Extra Attack Skill chance to hit!")
@@ -3710,7 +3710,7 @@ class Player:
             print(f"Vozzbozz closes his eyes for a moment.")
             sleep(1)
             print(f"Upon opening them, they burn brighter than the sun!")
-            sleep(1)
+            pause()
             self.hud()
             print(f"With a world-shaking and awe-inspiring eruption, "
                   f"a swarm of burning meteors materializes above and falls upon your enemy!!")
@@ -3735,7 +3735,7 @@ class Player:
                 print(f"Vozzbozz closes his eyes for a moment.")
                 sleep(1)
                 print(f"His focus is momentarily disrupted by the {monster.name}!")
-                sleep(1)
+                pause()
                 self.hud()
                 print(f"With a world-shaking and awe-inspiring eruption, "
                       f"a swarm of burning meteors materializes above and falls upon your enemy!!")

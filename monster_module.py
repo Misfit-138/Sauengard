@@ -2121,9 +2121,9 @@ class HobgoblinCaptain(Monster):
         self.level = 4
         self.name = "Hobgoblin Captain"
         self.proper_name = "None"
-        self.he_she_it = "it"
-        self.his_her_its = "its"
-        self.him_her_it = "it"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
         self.experience_award = 700
         self.gold = random.randint(7, 15)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 2
@@ -2161,19 +2161,19 @@ class HobgoblinCaptain(Monster):
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 1  # attack bonus
-        self.attack_1_phrase = "It thrusts mightily forward with its javelin!.."
+        self.attack_1_phrase = "He thrusts mightily forward with its javelin!.."
         self.attack_2 = 2
-        self.attack_2_phrase = "It swings its greatsword with blinding speed!"
+        self.attack_2_phrase = "He swings its greatsword with blinding speed!"
         self.attack_3 = 2
-        self.attack_3_phrase = "It swings its greatsword with blinding speed!"
+        self.attack_3_phrase = "He swings its greatsword with blinding speed!"
         self.attack_4 = 3
-        self.attack_4_phrase = "It roars and swings its greatsword with murderous rage!"
+        self.attack_4_phrase = "He roars and swings its greatsword with murderous rage!"
         self.attack_5 = 3
-        self.attack_5_phrase = "It raises its greatsword overhead with both hands for a mighty blow.."
+        self.attack_5_phrase = "He raises its greatsword overhead with both hands for a mighty blow.."
         self.introduction = f"You have encountered a Hobgoblin Captain. Fierce, intelligent and disciplined, " \
-                            f"its heavy armor and\nweaponry are polished and well-maintained. Its yellow " \
-                            f"teeth stretch into a surly grin behind its great helm.\nNarrowing its eyes, " \
-                            f"it approaches and stands before you unaffected and unafraid; ready for battle."
+                            f"his heavy armor and\nweaponry are polished and well-maintained. His yellow " \
+                            f"teeth stretch into a surly grin behind its great helm.\nNarrowing his eyes, " \
+                            f"he approaches and stands before you unaffected and unafraid; ready for battle."
         self.is_discovered = False
 
 

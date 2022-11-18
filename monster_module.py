@@ -66,6 +66,9 @@ class Monster:
         self.monster = "Super class"
         self.name = ""
         self.proper_name = ""
+        self.he_she_it = ""
+        self.his_her_its = ""
+        self.him_her_it = ""
         self.level = 0
         self.experience_award = 0
         self.gold = 0
@@ -181,13 +184,10 @@ class Monster:
         if attack_bonus_roll > 19:
             attack_bonus = self.attack_5
             attack_phrase = self.attack_5_phrase
-
         roll_d20 = dice_roll(1, 20)
         print(f"The {self.name} attacks you! (It rolls {roll_d20})")
         if roll_d20 == 1:
-            print(f"..it awkwardly strikes and you easily block.")
-            # sleep(2)
-            # os.system('pause')
+            print(f"..{self.he_she_it} awkwardly strikes and you easily block.")
             pause()
             return 0
         if roll_d20 == 20:
@@ -197,16 +197,19 @@ class Monster:
             critical_bonus = 1
             hit_statement = ""
         monster_total = roll_d20 + self.dexterity_modifier + self.proficiency_bonus  # test out pro bonus
-        print(f"Monster attack bonus: {attack_bonus}")
-        print(f"{self.name} dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
+        print(f"{self.name} Attack bonus: {attack_bonus}")
+        print(f"{self.name} Dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
         print(f"{self.name} Proficiency Bonus: {self.proficiency_bonus}")  # test out pro bonus
-        print(f"Monster Total: {monster_total}")
+        print(f"{self.name} Total: {monster_total}")
         print(f"Your armor class: {player_1.armor_class}")
+
         if monster_total >= player_1.armor_class:
             damage_roll = dice_roll((self.number_of_hd * critical_bonus), self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus + self.weapon_bonus)
+
             if roll_d20 == 20 and damage_to_opponent < 1:
                 damage_to_opponent = 1  # a natural 20 must always hit - 5e rules
+
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
                 print(f"{attack_phrase}")
                 sleep(1.5)
@@ -218,8 +221,8 @@ class Monster:
                 sleep(1.5)
                 print(f"You suffer {damage_to_opponent} points of damage!")
                 pause()
-                # sleep(5)
                 return damage_to_opponent
+
             else:
                 # zero damage to player result
                 print(f"The {self.name} strikes..")
@@ -232,7 +235,7 @@ class Monster:
                 pause()
                 return damage_to_opponent  # 0 points damage to player
         else:
-            print(f"It missed..")
+            print(f"{self.he_she_it.capitalize()} missed..")
             pause()
             return 0
 
@@ -259,32 +262,39 @@ class Monster:
         human_player_roll_d20 = dice_roll(1, 20)
         roll_d20 = dice_roll(1, 20)
         print(f"The {self.name} attacks you with Quantum Energy!\n"
-              f"(It rolls {roll_d20})\n"
+              f"({self.he_she_it.capitalize()} rolls {roll_d20})\n"
               f"Proficiency Bonus: {self.proficiency_bonus}\n"
               f"Wisdom modifier: {self.wisdom_modifier}\n"
               f"{self.name} Total: {roll_d20 + self.wisdom_modifier + self.proficiency_bonus}")
+
         if roll_d20 == 1:
-            print(f"..its attempts to procure the universal forces fail miserably.")
+            print(f"..{self.his_her_its} attempts to procure the universal forces fail miserably.")
             sleep(2)
             return 0
+
         if roll_d20 == 20:
             critical_bonus = 2
             hit_statement = "CRITICAL HIT!!"
+
         else:
             critical_bonus = 1
             hit_statement = ""
         print(f"Your Saving Throw: {human_player_roll_d20} + wisdom modifier: ({player_1.wisdom_modifier})")
+
         if player_1.ring_of_prot.protect > 0:
             print(f"Your Ring of Protection Modifier: {player_1.ring_of_prot.protect}")
+
         if player_1.temp_protection_effect:
             print(f"+ Quantum Protection effect: {player_1.temp_protection_effect} ")
         human_total = human_player_roll_d20 + player_1.wisdom_modifier + player_1.ring_of_prot.protect \
             + player_1.temp_protection_effect
         print(f"Your Total: {human_total}")
         monster_total = roll_d20 + self.wisdom_modifier + self.proficiency_bonus  # test out pro bonus
+
         if monster_total >= human_total:
             damage_roll = dice_roll(self.number_of_hd * critical_bonus, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)
+
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
                 print(f"{attack_phrase}")
                 sleep(1.5)
@@ -296,12 +306,14 @@ class Monster:
                 pause()
                 # sleep(5)
                 return damage_to_opponent
+
             else:
-                print(f"The {self.name} strikes with Quantum Powers, but you dodge the attack!")  # zero damage
+                print(f"The {self.name} strikes with Quantum Powers, but you dodge {self.his_her_its} attack!")  # 0 dmg
                 sleep(2)
                 return 0  # 0 points damage to player
+
         else:
-            print(f"It fails to harness the mysterious powers..")
+            print(f"{self.he_she_it.capitalize()} fails to harness the mysterious powers..")
             pause()
             return 0
 
@@ -312,34 +324,38 @@ class Monster:
         paralyze_chance = dice_roll(1, 20)
         human_player_roll_d20 = dice_roll(1, 20)
         player_total = (human_player_roll_d20 + player_1.ring_of_prot.protect + player_1.temp_protection_effect)
-        print(
-            f"Paralyze roll: {paralyze_chance} + monster wisdom modifier: {self.wisdom_modifier}")  # rm after testing
+        print(f"Paralyze roll: {paralyze_chance} + monster wisdom modifier: {self.wisdom_modifier}")  # rm after testing
         paralyze_total = paralyze_chance + self.wisdom_modifier
         print(f"Monster Total: {paralyze_total}")
         print(f"Your Saving Throw: {human_player_roll_d20} ")  # remove after testing
+
         if player_1.ring_of_prot.protect > 0:
             print(f"Your Ring of Protection Modifier: {player_1.ring_of_prot.protect}")
+
         if player_1.protection_effect:
             print(f"Protection from Evil Effect: {player_1.temp_protection_effect}")
         print(f"Your Total: {player_total}")
+
         if (paralyze_chance + self.wisdom_modifier) >= player_total:
             print("You are paralyzed!!")
             sleep(1)
             print(self.paralyze_free_attack_phrase)
             # print("As you stand, frozen and defenseless, it savagely gores you!")
             sleep(1)
+
             for i in range(self.paralyze_turns):  # this seems too brutal if paralyze turns is anything but 1!!!
                 paralyze_damage = (dice_roll(self.number_of_hd, self.hit_dice) -
                                    (player_1.ring_of_prot.protect + player_1.temp_protection_effect))
                 if paralyze_damage < 1:
                     paralyze_damage = self.level
                 player_1.reduce_health(paralyze_damage)
-                print(f"It strikes at you for {paralyze_damage} points of damage!!")
+                print(f"{self.he_she_it.capitalize()} strikes at you for {paralyze_damage} points of damage!!")
                 pause()
                 player_1.hud()
             return True
+
         else:
-            print("You ignore its wiles and break free from its grip!")
+            print(f"You ignore {self.his_her_its} wiles and break free from {self.his_her_its} grip!")
             return False
 
     def poison_attack(self, player_1):
@@ -352,7 +368,7 @@ class Monster:
         print(f"Attack roll: {roll_d20}")
         sleep(1)
         if roll_d20 == 1:
-            print("You easily dodge the poison attack!")
+            print(f"You easily dodge {self.his_her_its} poison attack!")
             sleep(1)
             pause()
             player_1.hud()
@@ -360,8 +376,8 @@ class Monster:
         else:
             print(f"Your Saving Throw: {player_saving_throw}\n"
                   f"Your Constitution Modifier: {player_1.constitution_modifier}\n")
-
             print(f"Your Total: {difficulty_class}")
+
             if roll_d20 == 20 or roll_d20 >= difficulty_class:  # self.constitution + self.constitution_modifier:
                 player_1.dot_multiplier = self.dot_multiplier
                 player_1.dot_turns = self.dot_turns
@@ -377,8 +393,9 @@ class Monster:
                 player_1.poisoned_turns = 0
                 pause()
                 return player_1.poisoned
+
             else:
-                print(f"You swiftly dodge its poison attack!")
+                print(f"You swiftly dodge {self.his_her_its} poison attack!")
                 sleep(1)
                 pause()
                 player_1.hud()
@@ -389,18 +406,21 @@ class Monster:
         print(f"The {self.name} attempts to harness its innate understanding of quantum necrosis..")
         print(f"Attack roll---> {roll_d20}")
         sleep(1)
+
         if roll_d20 == 1:
-            print("You dodge the deadly necrotic attack!")
+            print(f"You dodge {self.his_her_its} deadly necrotic attack!")
             sleep(1)
             pause()
             player_1.hud()
             return False
+
         else:
             player_saving_throw = (dice_roll(1, 20))
             difficulty_class = (player_saving_throw + player_1.constitution_modifier)
             print(f"Your Saving Throw: {player_saving_throw}\n"
                   f"Your Constitution Modifier: {player_1.constitution_modifier}\n")
             print(f"Your Total: {difficulty_class}")
+
             if roll_d20 == 20 or roll_d20 >= difficulty_class:
                 player_1.dot_multiplier = self.dot_multiplier
                 player_1.dot_turns = self.dot_turns
@@ -417,8 +437,9 @@ class Monster:
                 pause()
                 player_1.hud()
                 return player_1.necrotic
+
             else:
-                print(f"You swiftly dodge the death-dealing necrotic attack!")
+                print(f"You swiftly dodge {self.his_her_its} death-dealing necrotic attack!")
                 sleep(1)
                 pause()
                 player_1.hud()
@@ -428,15 +449,18 @@ class Monster:
         if not npc.retreating:
             melee_or_quantum = dice_roll(1, 20)
             # if monster has quantum energy
+
             if self.quantum_energy and melee_or_quantum > 10:
                 # quantum attack
                 damage_to_player = self.quantum_energy_attack_vs_npc(npc)
                 reduce_npc_health(npc, damage_to_player)
+
             else:
                 # if it has no quantum, then melee attack
                 damage_to_player = self.melee_vs_npc(npc)
                 reduce_npc_health(npc, damage_to_player)
             return
+
         else:
             # npc is in retreat. move on.
             return
@@ -444,24 +468,31 @@ class Monster:
     def meta_monster_function(self, player_1):
         melee_or_quantum = dice_roll(1, 20)
         # if monster has quantum energy and player is not poisoned or necrotic
+
         if self.quantum_energy and melee_or_quantum > 10 and not player_1.poisoned \
                 and not player_1.necrotic:
+
             if not self.can_poison and not self.necrotic:  # quantum attack if no necrotic or poison abilities
                 damage_to_player = self.quantum_energy_attack(player_1)
                 player_1.reduce_health(damage_to_player)
                 player_1.end_of_turn_calculation()
+
             elif self.can_poison and self.necrotic:  # if monster has both poison
                 poison_or_necrotic = dice_roll(1, 20)  # and necrotic damage,
+
                 if poison_or_necrotic > 10:  # greater than 10 for poison
                     self.poison_attack(player_1)  # player_1.poison_attack(self.name, self.dot_multiplier)
                 else:
                     self.necrotic_attack(player_1)  # player_1.necrotic_attack(self)
+
             elif self.can_poison:  # otherwise, if it can only poison, then attempt poison
                 self.poison_attack(player_1)  # player_1.poison_attack(self.name, self.dot_multiplier)
                 player_1.end_of_turn_calculation()
+
             elif self.necrotic:  # otherwise if it only has necrotic, then attempt necrotic
                 self.necrotic_attack(player_1)
                 player_1.end_of_turn_calculation()
+
         else:
             # if it has neither, then melee attack
             damage_to_player = self.melee(player_1)
@@ -474,6 +505,7 @@ class Monster:
         attack_bonus_roll = random.randint(1, 20)
         # print(f"Monster attack bonus roll: {attack_bonus_roll}")  # remove after testing
         attack_phrase = f"The {self.name} hits!"
+
         if attack_bonus_roll <= 10:
             attack_bonus = self.attack_1
         if attack_bonus_roll > 10 <= 15:
@@ -484,29 +516,36 @@ class Monster:
             attack_bonus = self.attack_4
         if attack_bonus_roll > 19:
             attack_bonus = self.attack_5
+
         roll_d20 = dice_roll(1, 20)
-        print(f"The {self.name} attacks {npc.name}! (It rolls {roll_d20})")
+        print(f"The {self.name} attacks {npc.name}! ({self.he_she_it.capitalize()} rolls {roll_d20})")
+
         if roll_d20 == 1:
-            print(f"..it awkwardly strikes and {npc.name} easily blocks.")
+            print(f"..{self.he_she_it} awkwardly strikes and {npc.name} easily blocks.")
             pause()
             return 0
+
         if roll_d20 == 20:
             critical_bonus = 2
             hit_statement = "CRITICAL HIT!!"
         else:
             critical_bonus = 1
             hit_statement = ""
+
         monster_total = roll_d20 + self.dexterity_modifier + self.proficiency_bonus  # test out pro bonus
-        print(f"Monster attack bonus: {attack_bonus}")
-        print(f"{self.name} dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
+        print(f"{self.name} Attack bonus: {attack_bonus}")
+        print(f"{self.name} Dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
         print(f"{self.name} Proficiency Bonus: {self.proficiency_bonus}")  # test out pro bonus
-        print(f"Monster Total: {monster_total}")
+        print(f"{self.name} Total: {monster_total}")
         print(f"{npc.name}'s armor class: {npc.armor_class}")
+
         if monster_total >= npc.armor_class:
             damage_roll = dice_roll((self.number_of_hd * critical_bonus), self.hit_dice)
             damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus + self.weapon_bonus)
+
             if roll_d20 == 20 and damage_to_opponent < 1:
                 damage_to_opponent = 1  # a natural 20 always hits
+
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
                 print(f"{attack_phrase}")
                 sleep(1.5)
@@ -520,6 +559,7 @@ class Monster:
                 print(f"{npc.name} suffers {damage_to_opponent} points of damage!")
                 pause()
                 return damage_to_opponent
+
             else:
                 # zero damage to player result
                 print(f"The {self.name} strikes..")
@@ -531,16 +571,18 @@ class Monster:
                 sleep(.25)
                 pause()
                 return damage_to_opponent  # 0 points damage to player
+
         else:
-            print(f"It missed..")
+            print(f"{self.he_she_it.capitalize()} missed..")
             pause()
             return 0
 
     def quantum_energy_attack_vs_npc(self, npc):
         attack_bonus = 0
-        attack_phrase = f"With great concentration, it procures the weird universal forces.."
+        attack_phrase = f"With great concentration, {self.he_she_it} procures the weird universal forces.."
         attack_bonus_roll = random.randint(1, 20)
         # print(f"Monster attack bonus roll: {attack_bonus_roll}")  # remove after testing
+
         if attack_bonus_roll <= 10:
             attack_bonus = self.quantum_attack_1
 
@@ -559,14 +601,16 @@ class Monster:
         npc_roll_d20 = dice_roll(1, 20)
         roll_d20 = dice_roll(1, 20)
         print(f"The {self.name} attacks {npc.name} with Quantum Energy!\n"
-              f"(It rolls {roll_d20})\n"
+              f"({self.he_she_it.capitalize()} rolls {roll_d20})\n"
               f"Proficiency Bonus: {self.proficiency_bonus}\n"
               f"Wisdom modifier: {self.wisdom_modifier}\n"
               f"{self.name} Total: {roll_d20 + self.wisdom_modifier + self.proficiency_bonus}")
+
         if roll_d20 == 1:
-            print(f"..its attempts to procure the universal forces fail miserably.")
+            print(f"..{self.his_her_its} attempts to procure the universal forces fail miserably.")
             sleep(2)
             return 0
+
         if roll_d20 == 20:
             critical_bonus = 2
             hit_statement = "CRITICAL HIT!!"
@@ -574,13 +618,16 @@ class Monster:
             critical_bonus = 1
             hit_statement = f"The weird energies are unleashed upon {npc.name}.."
         print(f"{npc.name} Saving Throw: {npc_roll_d20} + wisdom modifier: ({npc.wisdom_modifier})")
+
         if npc.protect > 0:
             print(f"Protection Modifier: {npc.protect}")
         print(f"{npc.name} Total: {npc_roll_d20 + npc.wisdom_modifier + npc.protect}")
         monster_total = roll_d20 + self.wisdom_modifier + self.proficiency_bonus  # pro bonus
+
         if monster_total >= (npc_roll_d20 + npc.wisdom_modifier + npc.protect):
             damage_roll = dice_roll(self.number_of_hd * critical_bonus, self.hit_dice)
             damage_to_opponent = round(damage_roll + self.wisdom_modifier + attack_bonus)
+
             if damage_to_opponent > 0:  # at this point the npc is the opponent!
                 print(f"{attack_phrase}")
                 sleep(1.5)
@@ -592,13 +639,15 @@ class Monster:
                 pause()
                 # sleep(5)
                 return damage_to_opponent
+
             else:
                 print(
                     f"The {self.name} strikes with Quantum Powers, but {npc.name} dodges the attack!")  # 0 damage
                 sleep(2)
                 return 0  # 0 points damage to npc
+
         else:
-            print(f"It fails to harness the mysterious powers..")
+            print(f"{self.he_she_it.capitalize()} fails to harness the mysterious powers..")
             pause()
             return 0
 
@@ -610,6 +659,9 @@ class Quasit(Monster):
         self.level = 1
         self.name = "Quasit"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = 25
         self.gold = random.randint(0, 1)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -673,6 +725,9 @@ class Kobold(Monster):
         self.level = 1
         self.name = "Kobold"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = 25
         self.gold = random.randint(1, 3)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -737,6 +792,9 @@ class Cultist(Monster):
         self.level = 1
         self.name = "Cultist"
         self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
         self.experience_award = 50
         self.gold = random.randint(2, 8)  # self.level * 373 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -774,11 +832,11 @@ class Cultist(Monster):
         self.multi_attack = False
         self.lesser_multi_attack = False
         self.attack_1 = 0  # attack bonus
-        self.attack_1_phrase = "With unexpected speed, it strikes with its dagger.."
+        self.attack_1_phrase = "With unexpected speed, he strikes with its dagger.."
         self.attack_2 = 1
         self.attack_2_phrase = "He swings his gleaming scimitar!"
         self.attack_3 = 2
-        self.attack_3_phrase = "It throws an acrid powder at you!"
+        self.attack_3_phrase = "He throws an acrid powder at you!"
         self.attack_4 = 2
         self.attack_4_phrase = "With blinding speed, he swings his scimitar.."
         self.attack_5 = 3
@@ -799,6 +857,9 @@ class Goblin(Monster):
         self.level = 1
         self.name = "Goblin"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = self.level * 50
         self.gold = random.randint(2, 10)  # self.level * 200 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -860,6 +921,9 @@ class WingedKobold(Monster):
         self.level = 1
         self.name = "Winged Kobold"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = 50
         self.gold = random.randint(1, 5)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -921,6 +985,9 @@ class Shadow(Monster):
         self.level = 2
         self.name = "Shadow"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = 100
         self.gold = random.randint(0, 1)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -1005,6 +1072,9 @@ class ShadowKing(Monster):
         self.level = 2
         self.name = "Shadow King"
         self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
         self.experience_award = 100
         self.gold = random.randint(5, 10)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -1088,6 +1158,9 @@ class Skeleton(Monster):
         self.level = 1  # I think level 1 is more appropriate.
         self.name = "Skeleton"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = 100
         self.gold = random.randint(0, 5)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -1153,6 +1226,9 @@ class ZombieProphet(Monster):
         self.level = 2
         self.name = "Zombie Prophet"
         self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
         self.experience_award = 200
         self.gold = random.randint(6, 15)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -1191,15 +1267,15 @@ class ZombieProphet(Monster):
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 0  # attack bonus
-        self.attack_1_phrase = "It strikes at you with unnerving strength and speed..."
+        self.attack_1_phrase = "He strikes at you with unnerving strength and speed..."
         self.attack_2 = 1
-        self.attack_2_phrase = "It strikes at you with arms flailing..."
+        self.attack_2_phrase = "He strikes at you with arms flailing..."
         self.attack_3 = 2
-        self.attack_3_phrase = "It darts forward with reckless abandon.."
+        self.attack_3_phrase = "He darts forward with reckless abandon.."
         self.attack_4 = 2
-        self.attack_4_phrase = "It thrusts forward with its heavy, iron sceptre!"
+        self.attack_4_phrase = "He thrusts forward with its heavy, iron sceptre!"
         self.attack_5 = 3
-        self.attack_5_phrase = "It strikes wildly with its iron sceptre!!"
+        self.attack_5_phrase = "He strikes wildly with its iron sceptre!!"
         self.introduction = f"The ancient prophet rises from the ground. The once beautiful and exquisite\n" \
                             f"garb now hangs off his rotten, worm-infested flesh in tatters and rags.\n" \
                             f"The air bristles with Quantum Energy.."
@@ -1213,6 +1289,9 @@ class SkeletonKing(Monster):
         self.level = 2
         self.name = "Skeleton King"
         self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
         self.experience_award = 200
         self.gold = random.randint(6, 22)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 2
@@ -1274,6 +1353,9 @@ class SkeletalProphet(Monster):
         self.level = 2
         self.name = "Skeletal Prophet"
         self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
         self.experience_award = 200
         self.gold = random.randint(6, 22)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 2
@@ -1334,6 +1416,9 @@ class Drow(Monster):
         self.level = 2
         self.name = "Drow"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = 100
         self.gold = random.randint(5, 12)  # self.level * 300 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -1408,6 +1493,9 @@ class Zombie(Monster):
         self.level = 2
         self.name = "Zombie"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = 100
         self.gold = random.randint(1, 5)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -1468,6 +1556,9 @@ class Troglodyte(Monster):
         self.level = 2
         self.name = "Troglodyte"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = 50
         self.gold = random.randint(2, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 2
@@ -1529,6 +1620,9 @@ class Orc(Monster):
         self.level = 2
         self.name = "Orc"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = 100
         self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -1590,6 +1684,9 @@ class CultFanatic(Monster):
         self.level = 2
         self.name = "Cult Fanatic"
         self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
         self.experience_award = 450
         self.gold = random.randint(2, 8)  # self.level * 373 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -1667,6 +1764,9 @@ class Ghoul(Monster):
         self.level = 2
         self.name = "Ghoul"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = 200
         self.gold = random.randint(0, 5)  # self.level * 103 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -1731,6 +1831,9 @@ class Bugbear(Monster):
         self.level = 3
         self.name = "Bugbear"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = 200
         self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -1790,6 +1893,9 @@ class HalfOgre(Monster):
         self.level = 3
         self.name = "Half-Ogre"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = 200
         self.gold = random.randint(5, 12)
         self.weapon_bonus = 0
@@ -1849,6 +1955,9 @@ class Specter(Monster):
         self.level = 3
         self.name = "Specter"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = 250
         self.gold = random.randint(0, 1)  # self.level * 103 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -1930,6 +2039,9 @@ class SpecterKing(Monster):
         self.level = 3
         self.name = "Specter King"
         self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
         self.experience_award = 500
         self.gold = random.randint(6, 16)
         self.weapon_bonus = 0
@@ -2009,6 +2121,9 @@ class HobgoblinCaptain(Monster):
         self.level = 4
         self.name = "Hobgoblin Captain"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = 700
         self.gold = random.randint(7, 15)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 2
@@ -2069,6 +2184,9 @@ class GreenDragonWyrmling(Monster):
         self.level = 4
         self.name = "Green Dragon Wyrmling"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = 450
         self.gold = random.randint(15, 25)
         self.weapon_bonus = 0
@@ -2131,6 +2249,9 @@ class WhiteDragonWyrmling(Monster):
         self.level = 4
         self.name = "White Dragon Wyrmling"
         self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.experience_award = 450
         self.gold = random.randint(15, 25)
         self.weapon_bonus = 0
@@ -2190,6 +2311,9 @@ class WickedQueenJannbrielle(Monster):
         self.level = 20
         self.name = "Wicked Queen"
         self.proper_name = "Queen Jannbrielle"
+        self.he_she_it = "she"
+        self.his_her_its = "her"
+        self.him_her_it = "her"
         self.experience_award = 64000
         self.gold = random.randint(150, 2500)
         self.weapon_bonus = 0

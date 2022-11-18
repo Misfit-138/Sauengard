@@ -3763,7 +3763,7 @@ class Player:
             pause()
             return monster.hit_points
         else:
-            print(f"The {monster.name} has too much life energy to succumb to the quantum effect!")
+            print(f"The {monster.name} has too much life energy to succumb to the quantum word kill effect!")
             pause()
             return 0
 
@@ -3795,9 +3795,10 @@ class Player:
                 print(f"Without warning, the ground swells with the thundering cacophony of countless skeletal\n"
                       f"warriors arising from an abysmal black chasm!!")
                 sleep(1)
-                print(f"Some on horseback, others on foot, but with one mind and purpose, they swarm upon\n"
+                print(f"Some upon skeletal horseback, others on foot, but with one mind and purpose, they swarm upon\n"
                       f"your enemy, thrusting ever forward in a voracious clashing of bone, steel and shield!!")
-                sleep(1)
+                pause()
+                self.hud()
                 print(f"{number_of_dice}d12 + {number_of_dice}d8 force damage + 1 per skeleton bludgeoning "
                       f"damage: {damage_to_opponent}")
                 print(f"{vozzbozz.level}d{vozzbozz.hit_dice} Damage Bonus: {melee_bonus}")
@@ -7391,8 +7392,19 @@ class Player:
         wicked_queen_discovery = f"level {self.dungeon.level} wicked queen"
         if wicked_queen_discovery not in self.discovered_interactives:
             self.discovered_interactives.append(wicked_queen_discovery)
-            print(f"The Wicked Queen Jannbrielle sits on her horrible throne of skulls. Clad in shining armor and \n"
-                  f"equipped with her scepter, her intoxicating beauty is both irresistible and repugnant.")
+            cls()
+            print(f"Upon a horrible throne of skulls, clad in a shining breastplate and equipped with a scepter"
+                  f" topped with\n"
+                  f"a human skull, sits the most awe-inspiringly beautiful creature you have ever beheld in your mortal"
+                  f"\nlife; the wicked Queen Jannbrielle.\n"
+                  f"She smiles and flashes a forked tongue between gleaming fangs. Her impossibly smooth, milky-white"
+                  f"\nskin shimmers beneath the torchlight. On her head sits a crown of many skulls. Her raven-black\n"
+                  f"hair shines gloriously. Every muscle, vein, and bone of her lovely flesh draw you to her."
+                  f"\nYou cannot help but stare at her regal face, with her strong jawline, black, pouting lips"
+                  f" and eyes of\n"
+                  f"deep obsidian. \'How could such beauty exist?', you find yourself marveling aloud!\n"
+                  f"The undead queen hears you and looks straight at you with pure, wicked pride, her head held high."
+                  f"\n")
             pause()
             return "Wicked Queen"
         else:

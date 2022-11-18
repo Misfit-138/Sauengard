@@ -1100,7 +1100,7 @@ class ShadowKing(Monster):
         self.dot_multiplier = 2
         self.dot_turns = dice_roll(1, 8)
         self.undead = True
-        self.immunities = ["Sleep", "Charm"]
+        self.immunities = ["Turn Undead", "Web", "Hold Monster", "Banish"]
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = True
@@ -1186,7 +1186,7 @@ class Skeleton(Monster):
         self.dot_multiplier = 1
         self.dot_turns = 1
         self.undead = True
-        self.immunities = ["Sleep", "Charm"]
+        self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
@@ -1254,7 +1254,7 @@ class ZombieProphet(Monster):
         self.dot_multiplier = 1
         self.dot_turns = 1
         self.undead = True
-        self.immunities = ["Sleep", "Charm"]
+        self.immunities = ["Turn Undead", "Web", "Hold Monster", "Banish"]
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
@@ -1317,7 +1317,7 @@ class SkeletonKing(Monster):
         self.dot_multiplier = 1
         self.dot_turns = 1
         self.undead = True
-        self.immunities = ["Sleep", "Charm"]
+        self.immunities = ["Turn Undead", "Web", "Hold Monster", "Banish"]
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
@@ -1381,7 +1381,7 @@ class SkeletalProphet(Monster):
         self.dot_multiplier = 1
         self.dot_turns = 1
         self.undead = True
-        self.immunities = ["Sleep", "Charm"]
+        self.immunities = ["Turn Undead", "Web", "Hold Monster", "Banish"]
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
@@ -1521,7 +1521,7 @@ class Zombie(Monster):
         self.dot_multiplier = 1
         self.dot_turns = 1
         self.undead = True
-        self.immunities = ["Sleep", "Charm"]
+        self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
@@ -1792,7 +1792,7 @@ class Ghoul(Monster):
         self.dot_multiplier = 1
         self.dot_turns = dice_roll(1, 6)
         self.undead = True
-        self.immunities = ["Sleep", "Charm"]
+        self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
@@ -1983,7 +1983,7 @@ class Specter(Monster):
         self.dot_multiplier = 2
         self.dot_turns = dice_roll(1, 8)
         self.undead = True
-        self.immunities = ["Sleep", "Charm"]
+        self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = True
@@ -2067,7 +2067,7 @@ class SpecterKing(Monster):
         self.dot_multiplier = 2
         self.dot_turns = dice_roll(1, 10)
         self.undead = True
-        self.immunities = ["Sleep", "Charm"]
+        self.immunities = ["Turn Undead", "Web", "Hold Monster", "Banish"]
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = True
@@ -2087,35 +2087,35 @@ class SpecterKing(Monster):
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 0  # attack bonus
-        self.attack_1_phrase = "It places a cold, yet immaterial hand upon you for just a moment.."
+        self.attack_1_phrase = "He places a cold, yet immaterial hand upon you for just a moment.."
         self.attack_2 = 1
-        self.attack_2_phrase = "It extends a hand, which elongates into a horrible mist that thrusts toward you.. "
+        self.attack_2_phrase = "He extends a hand, which elongates into a horrible mist that thrusts toward you.. "
         self.attack_3 = 2
         self.attack_3_phrase = f"A cold, dreadful feeling overcomes you as the {self.name} looms over you, reaching\n" \
-                               f"out to embrace you within its deadly touch!"
+                               f"out to embrace you within his deadly touch!"
         self.attack_4 = 2
-        self.attack_4_phrase = "It rushes straight at you and phase-shifts. It re-appears behind you, ready to strike!!"
+        self.attack_4_phrase = "He rushes straight at you and phase-shifts. He re-appears behind you, ready to strike!!"
         self.attack_5 = 3
-        self.attack_5_phrase = "It silently raises its hands, releasing dreadfully wicked energies!!"
+        self.attack_5_phrase = "He silently raises his hands, releasing dreadfully wicked energies!!"
         self.quantum_attack_1 = 2
-        self.quantum_attack_1_phrase = "It releases weird draining energies from its outstretched hand!!"
+        self.quantum_attack_1_phrase = "He releases weird draining energies from its outstretched hand!!"
         self.quantum_attack_2 = 2
-        self.quantum_attack_2_phrase = "Dreadful black droplets dance over its form as it unleashes\n" \
+        self.quantum_attack_2_phrase = "Dreadful black droplets dance over his form as he unleashes\n" \
                                        "impossibly cold, white flames from both of its outstretched hands!!"
         self.quantum_attack_3 = 2
-        self.quantum_attack_3_phrase = "Its empty eyes widen, as it rises up, harnessing the quantum energies and\n" \
+        self.quantum_attack_3_phrase = "His empty eyes widen, as he rises up, harnessing the quantum energies and\n" \
                                        "hurling a wall of black energy toward you!"
         self.quantum_attack_4 = 3
-        self.quantum_attack_4_phrase = "Swirling around you in a confusing arc, it releases a mist\n" \
+        self.quantum_attack_4_phrase = "Swirling around you in a confusing arc, he releases a mist\n" \
                                        "of dark energy which envelopes you!"
         self.quantum_attack_5 = 3
         self.quantum_attack_5_phrase = "With muted malice, its arms elongate unnaturally, wildly entangling\n" \
                                        "you in a storm of wicked forces!"
         self.introduction = f"From out of nothingness, the Specter King materializes..A vile, undead form\n" \
-                            f"of fear-inspiring and unnatural horrors. Its ghostly form resembles its former\n" \
-                            f"royal greatness, but now its entire existence is a mere quantum-driven and\n" \
-                            f"endless nightmare of madness, devoid of any humanity. Upon seeing you, it silently\n" \
-                            f"approaches, its countenance twisted in insane thirst for your life-energy.."
+                            f"of fear-inspiring and unnatural horrors. His ghostly form resembles his former\n" \
+                            f"royal greatness, but now his entire existence is a mere quantum-driven and\n" \
+                            f"endless nightmare of madness, devoid of any humanity. Upon seeing you, he silently\n" \
+                            f"approaches, his countenance twisted in insane thirst for your life-energy.."
         self.is_discovered = False
         self.paralyze_phrase = "With unnatural speed and silent swiftness, it places a cold, immaterial hand upon you.."
         self.paralyze_free_attack_phrase = "You feel agony crawling deep within you as you stand helpless and still!!"
@@ -2170,17 +2170,17 @@ class HobgoblinCaptain(Monster):
         self.attack_1 = 1  # attack bonus
         self.attack_1_phrase = "He thrusts mightily forward with its javelin!.."
         self.attack_2 = 2
-        self.attack_2_phrase = "He swings its greatsword with blinding speed!"
+        self.attack_2_phrase = "He swings his greatsword with blinding speed!"
         self.attack_3 = 2
-        self.attack_3_phrase = "He swings its greatsword with blinding speed!"
+        self.attack_3_phrase = "He swings his greatsword with blinding speed!"
         self.attack_4 = 3
-        self.attack_4_phrase = "He roars and swings its greatsword with murderous rage!"
+        self.attack_4_phrase = "He roars and swings his greatsword with murderous rage!"
         self.attack_5 = 3
-        self.attack_5_phrase = "He raises its greatsword overhead with both hands for a mighty blow.."
+        self.attack_5_phrase = "He raises his greatsword overhead with both hands for a mighty blow.."
         self.introduction = f"You have encountered a Hobgoblin Captain. Fierce, intelligent and disciplined, " \
                             f"his heavy armor and\nweaponry are polished and well-maintained. His yellow " \
-                            f"teeth stretch into a surly grin behind its great helm.\nNarrowing his eyes, " \
-                            f"he approaches and stands before you unaffected and unafraid; ready for battle."
+                            f"teeth stretch into a surly grin behind his iron helm.\nNarrowing his eyes, " \
+                            f"he approaches and stands before you unaffected, and unafraid; ready for battle."
         self.is_discovered = False
 
 
@@ -2327,7 +2327,7 @@ class WickedQueenJannbrielle(Monster):
         self.armor = 0
         self.shield = 0
         self.strength = 30
-        self.dexterity = 10
+        self.dexterity = 16
         self.constitution = 29
         self.intelligence = 18
         self.wisdom = 18
@@ -2339,7 +2339,7 @@ class WickedQueenJannbrielle(Monster):
         self.dot_multiplier = 5
         self.dot_turns = 5
         self.undead = True
-        self.immunities = ["Turn Undead", "Web", "Sleep", "Hold Monster", "Banish"]
+        self.immunities = ["Turn Undead", "Web", "Hold Monster", "Banish"]
         self.vulnerabilities = ["Fire Storm"]
         self.resistances = ["All"]
         self.quantum_energy = True
@@ -2351,7 +2351,7 @@ class WickedQueenJannbrielle(Monster):
         self.number_of_hd = 2
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.hit_points = 1400  # dice_roll(35, 20) + 30
+        self.hit_points = 1600  # dice_roll(35, 20) + 30
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 20
@@ -2362,7 +2362,7 @@ class WickedQueenJannbrielle(Monster):
         self.attack_2 = 15
         self.attack_2_phrase = "With a gleeful laugh, she attacks with her whip!"
         self.attack_3 = 16
-        self.attack_3_phrase = "With catlike agility, she strikes with her beautiful, horrible claws!"
+        self.attack_3_phrase = "With catlike elegance and agility, she strikes with her beautiful and horrible claws!"
         self.attack_4 = 18
         self.attack_4_phrase = "Producing a long, black blade, she strikes with a frenzied rage!"
         self.attack_5 = 20
@@ -2382,13 +2382,13 @@ class WickedQueenJannbrielle(Monster):
         self.quantum_attack_5 = 25
         self.quantum_attack_5_phrase = "The queen releases Quantum Forces which wildly entangle\n" \
                                        "you in a maelstrom of malice!"
-        self.introduction = f"\'I shall enjoy watching you die.\', says the undead queen, plainly."
+        self.introduction = f"\'I am your doom. Your life beckons to be taken!\', says the undead queen, plainly."
         self.is_discovered = False
         self.poison_phrase = f"The queen attacks with venomous fangs!"
         self.paralyze_phrase = f"The irresistible beauty of the undead queen begins to weaken you.."
 
 
-# monster dictionaries. keys correspond to difficulty
+# monster dictionaries. keys correspond to difficulty/challenge level
 
 # regular monsters:
 monster_dict = {
@@ -2406,10 +2406,3 @@ undead_monster_dict = {
 # boss lists
 undead_prophet_list = [ZombieProphet(), SkeletalProphet()]
 king_boss_list = [SkeletonKing(), ShadowKing(), SpecterKing()]
-
-"""    def initiative(self):
-        if self.level > 6:  # testing
-            monster_initiative = dice_roll(1, 20) + self.dexterity_modifier + self.proficiency_bonus
-        else:
-            monster_initiative = dice_roll(1, 20) + self.dexterity_modifier
-        return monster_initiative"""

@@ -448,15 +448,15 @@ class Monster:
     def meta_monster_vs_npc_function(self, npc):
         if not npc.retreating:
             melee_or_quantum = dice_roll(1, 20)
-            # if monster has quantum energy
 
+            # if monster has quantum energy:
             if self.quantum_energy and melee_or_quantum > 10:
                 # quantum attack
                 damage_to_player = self.quantum_energy_attack_vs_npc(npc)
                 reduce_npc_health(npc, damage_to_player)
 
             else:
-                # if it has no quantum, then melee attack
+                # if it has no quantum, then melee attack:
                 damage_to_player = self.melee_vs_npc(npc)
                 reduce_npc_health(npc, damage_to_player)
             return
@@ -467,8 +467,8 @@ class Monster:
 
     def meta_monster_function(self, player_1):
         melee_or_quantum = dice_roll(1, 20)
-        # if monster has quantum energy and player is not poisoned or necrotic
 
+        # if monster has quantum energy and player is not poisoned or necrotic
         if self.quantum_energy and melee_or_quantum > 10 and not player_1.poisoned \
                 and not player_1.necrotic:
 

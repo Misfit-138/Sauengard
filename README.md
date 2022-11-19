@@ -4,11 +4,11 @@ SAUENGARD (C) 2022 by JULES PITSKER  (pitsker@proton.me)
 
 > SAUENGARD is an old-school text adventure inspired by 8-bit
 games from the 1970's and 1980's such as Infocom's Zork series
-and Telengard by Daniel Lawrence. It also draws from fond
-memories of Milton Bradley's Dark Tower, and my limited 
-exposure to 'Advanced Dungeons and Dragons'.
-It is a text-driven adventure RPG with a sophisticated leveling
-system, battle mechanics and character creation/leveling. 
+and Telengard by Daniel Lawrence as well as Milton Bradley's brilliant Dark Tower
+table-top electronic board game. The core mechanics derive heavily from the d20
+system.
+It is a text-driven adventure RPG with a fun and sophisticated battle system, 
+character creation, and leveling.
 
 ## Development:
 

@@ -632,9 +632,6 @@ class Shield:
         self.minimum_level = 1
 
     def __repr__(self):
-        #        return self.name
-
-        # def __str__(self):
         return f'{self.name} - AC: {self.ac}  Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP'
 
 
@@ -705,9 +702,6 @@ class Boots:
         self.minimum_level = 1
 
     def __repr__(self):
-        #        return self.name
-
-        # def __str__(self):
         return f'{self.name} - AC: {self.ac}  Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP'
 
 
@@ -764,9 +758,6 @@ class Cloak:
         self.minimum_level = 1
 
     def __repr__(self):
-        #        return self.name
-
-        # def __str__(self):
         return f'{self.name} - Stealth: {self.stealth}  Minimum level: {self.minimum_level}  ' \
                f'Purchase Price: {self.buy_price} GP'
 
@@ -809,8 +800,6 @@ class Healing:
         self.minimum_level = 1
 
     def __repr__(self):
-        #        return self.name
-        # def __str__(self):
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
 
 
@@ -856,6 +845,9 @@ class HealingPotion(Healing):
         self.sell_price = 20
         self.minimum_level = 1
 
+    def __repr__(self):
+        return f'{self.name} - Purchase Price: {self.buy_price} GP'
+
 
 healing_potion = HealingPotion()
 
@@ -870,7 +862,6 @@ class StrengthPotion:
         self.minimum_level = 1
 
     def __repr__(self):
-
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
 
 
@@ -1219,11 +1210,11 @@ class Player:
 
     def __init__(self, name, strength, dexterity, constitution, intelligence, wisdom, charisma):
         self.name = name
-        self.level = 3
-        self.quantum_level = 4
+        self.level = 1
+        self.quantum_level = 1
         self.maximum_quantum_units = 600
         self.quantum_units = 600
-        self.experience = 6499
+        self.experience = 0
         self.base_dc = 8
         self.gold = 500000
         self.wielded_weapon = short_sword

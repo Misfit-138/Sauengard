@@ -301,8 +301,19 @@ def gong():
 
 def sad_cello_theme():
     if os.name == 'nt':
-        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\sad_cello_darren_curtis.wav',
-                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+        try:
+            p = Path(__file__).with_name('sad_cello_darren_curtis.wav')
+            with p.open('r') as sad_cello:
+                if sad_cello.readable():
+                    winsound.PlaySound('sad_cello_darren_curtis.wav',
+                                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+        except FileNotFoundError:
+            pass
+        # print(f"Missing sad cello theme or bad file path.")
+        # pause()
+    # if os.name == 'nt':
+    #    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\sad_cello_darren_curtis.wav',
+    #                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 
 
 def blacksmith_theme():
@@ -1240,7 +1251,7 @@ class Player:
         self.hit_dice = 10
         self.proficiency_bonus = 2
         self.maximum_hit_points = 100 + self.constitution_modifier
-        self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.hit_points = 1  # self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
         self.is_paralyzed = False
         self.cloak = canvas_cloak
@@ -2171,12 +2182,12 @@ class Player:
         else:
             return False
 
-    def quick_move(self, monster_name):
+    def quick_move(self, monster):
         # called from main loop
         self.hud()
         quick_move_roll = dice_roll(1, 20)  # - self.stealth
         if quick_move_roll == 20:
-            print(f"The {monster_name} makes a quick move...")
+            print(f"The {monster.name} makes a quick move...")
             sleep(1.5)
             # pack inventory logic:
             pack_item_types_to_steal = []
@@ -2194,10 +2205,10 @@ class Player:
                     print(f"He steals a {stolen_item.name}")  # from your {item_type}")
                     pause()
                     return True  # True means monster gets away clean
-            # if pack is empty, the thief moves to the belt.
-            # Belt inventory is handled differently. This is clunky but should work.
-            # belt inventory logic:
 
+            # if pack is empty, the thief moves to the belt.
+            # Belt inventory is handled differently.
+            # belt inventory logic:
             elif sum(belt_item_types_to_steal) > 0:
                 item_string = ""
                 # Define list of attributes you are allowed to change
@@ -2221,7 +2232,7 @@ class Player:
                 for key, value in grammar_dict.items():
                     if random_stolen_item == key:
                         item_string = value
-                print(f"It steals a {item_string} right off of your belt!")
+                print(f"{monster.he_she_it.capitalize()} steals a {item_string} right off of your belt!")
                 self_dict[random_stolen_item] -= 1
                 pause()
                 return True  # True means monster gets away clean
@@ -2266,7 +2277,7 @@ class Player:
                     print(f"You are revived!")
                     sleep(1)
                     self.hit_points = 1
-                    return False
+                    return False  # player is NOT dead
                 if fails >= 3:
                     print(f"Death saving throw failed!")
                     sleep(1)
@@ -2279,14 +2290,20 @@ class Player:
                     print(f"20 Roll! You are revived!")
                     sleep(1)
                     self.hit_points = 1
-                    return False
+                    return False  # player is NOT dead
                 if death_save > 9:
                     successes += 1
-                    print(f"{successes} Successful saves..")
+                    if successes == 1:
+                        print(f"{successes} Successful save..")
+                    else:
+                        print(f"{successes} Successful saves..")
                     sleep(1)
                 if 10 > death_save > 1:
                     fails += 1
-                    print(f"{fails} Failed saves..")
+                    if fails == 1:
+                        print(f"{fails} Failed save..")
+                    else:
+                        print(f"{fails} Failed saves..")
                     sleep(1)
                 if death_save == 1:
                     fails += 2

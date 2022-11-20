@@ -29,15 +29,21 @@ import pickle
 from dungeons import dungeon_dict
 import os
 from player_module_testing import sad_cello_theme, cls, game_splash, character_generator, town_theme, gong, sleep, \
-    encounter_logic, pause, are_you_sure  # boss_battle_theme, mountain_king_theme
+    encounter_logic, pause, are_you_sure
 
-sad_cello_theme()
-cls()
-game_splash()
-cls()
-player_1 = ""  # to get rid of undefined warning
-player_name = ""  # to get rid of undefined warning
+# sad_cello_theme()
+# cls()
+# game_splash()
+# cls()
+# player_1 = ""  # to get rid of undefined warning
+# player_name = ""  # to get rid of undefined warning
 while True:
+    sad_cello_theme()
+    cls()
+    game_splash()
+    cls()
+    player_1 = ""  # to get rid of undefined warning
+    player_name = ""  # to get rid of undefined warning
     new_game_or_load = input("(S)tart a new character or (L)oad a saved one? ").lower()
     if new_game_or_load not in ('s', 'l'):
         continue
@@ -75,7 +81,7 @@ while True:
             (player_1.x, player_1.y) = player_1.dungeon.staircase
             # 'position' corresponds to ASCII grids. 0 is the initialization position.
             # Thereafter, it is a string based on where the player lands in the ASCII grid,
-            # '*' = border, '.' = wide open area, etc.
+            # '*' = border, all other strings are just for code readability
             # the ASCII grid 'position' is used for display_map() and for dungeon_description()
             player_1.position = 0
             player_1.hud()
@@ -248,7 +254,7 @@ while True:
                                 # player_1.event_logic()  # this will trigger an event without using (L)ook
                                 player_1.dungeon_description()
                                 break
-                            if player_1.quick_move(monster.name):
+                            if player_1.quick_move(monster):
                                 player_1.in_proximity_to_monster = False
                                 # player_1.event_logic()  # this will trigger an event without using (L)ook
                                 player_1.dungeon_description()
@@ -273,7 +279,7 @@ while True:
                                         break
                             else:  # you died
                                 player_1.rndm_death_statement()
-                                sleep(3)
+                                pause()
                                 player_is_dead = True
                                 break
                             # at this point, monster still has initiative

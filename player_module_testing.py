@@ -1,5 +1,7 @@
 # Sauengard © Copyright 2022 by Jules Pitsker
-# GPLV3 LICENSE https://www.gnu.org/licenses/gpl-3.0.en.html
+# All rights reserved.
+# This source code is licensed under the BSD-style license found in the
+# LICENSE file in the root directory of this source tree.
 
 # Dark Sorrowful Cello "Soul's Departure" Royalty Free Music by Darren Curtis
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
@@ -32,10 +34,11 @@ import time
 import os
 import sys
 from collections import Counter
-import winsound
 from dungeons import dungeon_dict
 from monster_module import monster_dict, king_boss_list, undead_prophet_list, WickedQueenJannbrielle
 from pathlib import Path
+if os.name == 'nt':
+    import winsound
 
 # if you call a function and expect to use a return value, like, by printing it, you must first assign a variable in
 # the call itself!!!

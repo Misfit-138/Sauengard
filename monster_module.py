@@ -1,5 +1,7 @@
 # Sauengard © Copyright 2022 by Jules Pitsker
-# GPLV3 LICENSE https://www.gnu.org/licenses/gpl-3.0.en.html
+# All rights reserved.
+# This source code is licensed under the BSD-style license found in the
+# LICENSE file in the root directory of this source tree.
 
 # Dark Sorrowful Cello "Soul's Departure" Royalty Free Music by Darren Curtis
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
@@ -350,7 +352,7 @@ class Monster:
             # print("As you stand, frozen and defenseless, it savagely gores you!")
             sleep(1)
 
-            for i in range(self.paralyze_turns):  # this seems too brutal if paralyze turns is anything but 1!!!
+            for i in range(self.paralyze_turns):  # this seems too brutal if paralyze_turns is anything but 1!!!
                 paralyze_damage = (dice_roll(self.number_of_hd, self.hit_dice) -
                                    (player_1.ring_of_prot.protect + player_1.temp_protection_effect))
                 if paralyze_damage < 1:

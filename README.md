@@ -1,14 +1,16 @@
-SAUENGARD (C) 2022 by JULES PITSKER  (pitsker@proton.me)
+SAUENGARD © 2022 by JULES PITSKER  (pitsker@proton.me)
 
 # Sauengard
 
-> SAUENGARD is an old-school text adventure inspired by 8-bit
-games from the 1970's and 1980's such as Infocom's Zork series
-and Telengard by Daniel Lawrence as well as Milton Bradley's brilliant Dark Tower
-table-top electronic board game. The core mechanics derive heavily from the d20
-system.
-It is a text-driven adventure RPG with a fun and sophisticated battle system, 
-character creation, and leveling.
+> SAUENGARD is an old-school *text adventure* inspired by 8-bit
+games from the 1970's and 1980's such as Infocom's Zork series,
+Telengard by Daniel Lawrence, as well as Milton Bradley's 
+brilliant Dark Tower table-top electronic board game. 
+The core mechanics derive heavily from the ubiquitous 20-side
+die system.
+It is a fun and immersive RPG with relatively sophisticated 
+battle system, great loot and inventory, customizable character
+creation, and leveling.
 
 ## Development:
 
@@ -21,16 +23,17 @@ should be quite simple.
 
 - Prerequisites: Python v3
 - Download the files to a folder and run with
-
-C:\ py */path/to/main.py*
-
+```
+C:\ py /path/to/main.py
+```
 or
-
-$ python */path/to/main.py*
-
+```
+$ python3 /path/to/main.py
+```
 ## License
 
-
-- **[GPL v3 LICENSE](https://www.gnu.org/licenses/gpl-3.0.en.html)**
+[![BSD](https://img.shields.io/badge/BSD-4--Clause-blue)](https://spdx.org/licenses/BSD-4-Clause.html)
+- This source code is licensed under the BSD-style license found in the
+LICENSE file in the root directory of this source tree.
 - Copyright © 2022 Jules Pitsker 
 - pitsker@proton.me

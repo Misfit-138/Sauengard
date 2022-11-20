@@ -4,8 +4,8 @@ perhaps the most cruel was what is often called, 'brain fog'- a frustrating, cog
 ability to think, function and create. It was suggested by one of my doctors that I try to 'exercise' my brain, possibly
 by learning a language. Later, my daughter recommended I combine the suggestion with my beloved computer hobby, and
 teach myself a computer language.
-Though I have been building and fiddling with PC's for more that 30 years, I hadn't actually coded anything on a
-computer since 1983 or so. (I am, of course, not counting BASH scripts) Back then, machines generally shipped with a
+Though I have been building and fiddling with PC's for more than 40 years, I hadn't actually coded anything on a
+computer since 1983 or so. (I am, of course, not counting BASH scripts.) Back then, machines generally shipped with a
 BASIC interpreter, and BASIC is all I ever worked with. Many years later, I read Edsger Dijkstra's somewhat famous
 quote: 'It is practically impossible to teach good programming style to students that have had prior exposure to BASIC;
 As potential programmers they are mentally mutilated beyond hope of regeneration.'

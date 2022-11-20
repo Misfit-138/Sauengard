@@ -1233,7 +1233,7 @@ class Player:
         self.hit_dice = 10
         self.proficiency_bonus = 2
         self.maximum_hit_points = 100 + self.constitution_modifier
-        self.hit_points = 1  # self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
         self.is_paralyzed = False
         self.cloak = canvas_cloak

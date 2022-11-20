@@ -348,8 +348,16 @@ def boss_battle_theme():
 
 def town_theme():
     if os.name == 'nt':
-        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_(tavern)_loop_by_alexander_nakarada.wav',
-                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+        try:
+            p = Path(__file__).with_name('town_(tavern)_loop_by_alexander_nakarada.wav')
+            with p.open('r') as theme_song:
+                if theme_song.readable():
+                    winsound.PlaySound('town_(tavern)_loop_by_alexander_nakarada.wav',
+                                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+        except FileNotFoundError:
+            pass
+        # winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_(tavern)_loop_by_alexander_nakarada.wav',
+        #                   winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
         # place these files in same directory. use following syntax:
         # winsound.PlaySound('town_(tavern)_loop_by_alexander_nakarada.wav',
         # winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)

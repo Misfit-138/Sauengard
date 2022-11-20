@@ -294,79 +294,53 @@ def encounter_logic():
     return monster_encounter
 
 
-def gong():
+def sound_player(sound_file):
     if os.name == 'nt':
-        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\gong.wav', winsound.SND_ASYNC)
+        try:
+            p = Path(__file__).with_name(sound_file)
+            with p.open('r') as sound:
+                if sound.readable():
+                    winsound.PlaySound(sound_file, winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+        except FileNotFoundError:
+            print(f"{sound_file} not found in directory path.")
+            pause()
+            # pass
+
+
+def gong():
+    sound_player('gong.wav')
 
 
 def sad_cello_theme():
-    if os.name == 'nt':
-        try:
-            p = Path(__file__).with_name('sad_cello_darren_curtis.wav')
-            with p.open('r') as sad_cello:
-                if sad_cello.readable():
-                    winsound.PlaySound('sad_cello_darren_curtis.wav',
-                                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-        except FileNotFoundError:
-            pass
-        # print(f"Missing sad cello theme or bad file path.")
-        # pause()
-    # if os.name == 'nt':
-    #    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\sad_cello_darren_curtis.wav',
-    #                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    sound_player('sad_cello_darren_curtis.wav')
 
 
 def blacksmith_theme():
-    if os.name == 'nt':
-        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\blacksmith_theme_2.wav',
-                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    sound_player('blacksmith_theme_2.wav')
 
 
 def chemist_theme():
-    if os.name == 'nt':
-        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\chemist_theme.wav',
-                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    sound_player('chemist_theme.wav')
 
 
 def mountain_king_theme():
-    if os.name == 'nt':
-        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\mountain_king.wav',
-                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    sound_player('mountain_king.wav')
 
 
 def pit_theme():
-    if os.name == 'nt':
-        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
-                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    sound_player('creepy_dungeon_theme.wav')
 
 
 def boss_battle_theme():
-    if os.name == 'nt':
-        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\boss_battle_2.wav',
-                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    sound_player('boss_battle_2.wav')
 
 
 def town_theme():
-    if os.name == 'nt':
-        try:
-            p = Path(__file__).with_name('town_(tavern)_loop_by_alexander_nakarada.wav')
-            with p.open('r') as theme_song:
-                if theme_song.readable():
-                    winsound.PlaySound('town_(tavern)_loop_by_alexander_nakarada.wav',
-                                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-        except FileNotFoundError:
-            pass
-        # winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_(tavern)_loop_by_alexander_nakarada.wav',
-        #                   winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
-        # place these files in same directory. use following syntax:
-        # winsound.PlaySound('town_(tavern)_loop_by_alexander_nakarada.wav',
-        # winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    sound_player('town_(tavern)_loop_by_alexander_nakarada.wav')
 
 
 def tavern_theme():
-    if os.name == 'nt':
-        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\silvermandsound_the medieval_banquet.wav',
-                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    sound_player('silvermansound_the medieval_banquet.wav')
 
 
 class Weapon:
@@ -6469,6 +6443,7 @@ class Player:
                     pause()
                     continue
             elif inn_choice == 't':
+                self.hud()
                 print(f"Jenna gestures to you that it will be a moment, as she continues waiting on patrons..")
                 sleep(1.5)
                 print(f"She briskly approaches, wiping her hands on her apron and fixing her long, luxuriant hair.")
@@ -6477,6 +6452,7 @@ class Player:
                 pause()
                 continue
             elif inn_choice == 'e':
+                self.hud()
                 print(f"You walk out the door, but not before turning to see Jenna's wink and bright smile.\n"
                       f"\"Don't be a stranger, now, love! Ye are always welcome!\"")
                 sleep(1.25)
@@ -9913,3 +9889,54 @@ return 0"""
         self.hud()
         self.boss_hint_6 = True
         return"""
+"""    if os.name == 'nt':
+        try:
+            p = Path(__file__).with_name('sad_cello_darren_curtis.wav')
+            with p.open('r') as sad_cello:
+                if sad_cello.readable():
+                    winsound.PlaySound('sad_cello_darren_curtis.wav',
+                                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+        except FileNotFoundError:
+            pass"""
+# print(f"Missing sad cello theme or bad file path.")
+# pause()
+# if os.name == 'nt':
+#    winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\sad_cello_darren_curtis.wav',
+#                       winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+"""if os.name == 'nt':
+    try:
+        p = Path(__file__).with_name('town_(tavern)_loop_by_alexander_nakarada.wav')
+        with p.open('r') as theme_song:
+            if theme_song.readable():
+                winsound.PlaySound('town_(tavern)_loop_by_alexander_nakarada.wav',
+                                   winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    except FileNotFoundError:
+        pass
+    # winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\town_(tavern)_loop_by_alexander_nakarada.wav',
+    #                   winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+    # place these files in same directory. use following syntax:
+    # winsound.PlaySound('town_(tavern)_loop_by_alexander_nakarada.wav',
+    # winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)"""
+"""    if os.name == 'nt':
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\SOUNDS\\GONG\\gong.wav', winsound.SND_ASYNC)
+"""
+"""    if os.name == 'nt':
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\blacksmith_theme_2.wav',
+                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)"""
+"""    if os.name == 'nt':
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\chemist_theme.wav',
+                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)"""
+"""    if os.name == 'nt':
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\mountain_king.wav',
+                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)"""
+"""    if os.name == 'nt':
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
+                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)"""
+"""    if os.name == 'nt':
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\boss_battle_2.wav',
+                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+"""
+"""    if os.name == 'nt':
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\silvermandsound_the medieval_banquet.wav',
+                           winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+"""

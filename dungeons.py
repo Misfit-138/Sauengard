@@ -106,7 +106,7 @@ class Dungeon1(Dungeon):
         self.pit = (7, 1)
         self.pit_landing = (1, 14)
         self.micro_boss = (18, 2)  # migrate to elite, legendary monsters logic and change name!
-        self.wicked_queen = (2, 3)
+        self.wicked_queen = (3, 3)
         self.exit = (19, 3)
 
         self.grid = [

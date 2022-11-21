@@ -101,6 +101,7 @@ while True:
             player_1.town_portal_exists = False
             player_1.in_dungeon = True
             player_1.hud()
+            player_1.dungeon_description()
             player_1.dungeon_theme()
             navigation_list = ['w', 'a', 's', 'd', 'ne', 'nw', 'se', 'sw', 'l', 'map', 'm', 'i']
             # DUNGEON NAVIGATION LOOP:
@@ -268,8 +269,7 @@ while True:
                             monster.meta_monster_function(player_1)
                             # I tried to offload this code, but the breaks and continues are pretty tangled
                             if not player_1.check_dead():  # if player not dead
-                                if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
-                                    monster.paralyze(player_1)
+                                if monster.can_paralyze and monster.paralyze(player_1):
                                     if not player_1.check_dead():  # if player not dead
                                         print(f"You regain your faculties.")
                                         pause()
@@ -415,9 +415,9 @@ while True:
                                 monster.meta_monster_function(player_1)
                                 if not player_1.check_dead():  # if player not dead
                                     # I tried to offload this code, but the breaks and continues are pretty tangled
-                                    if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
-                                        sleep(1)
-                                        monster.paralyze(player_1)
+                                    if monster.can_paralyze and monster.paralyze(player_1):
+                                        # sleep(1)
+                                        # monster.paralyze(player_1)
                                         # pause()
                                         if not player_1.check_dead():  # if player not dead
                                             print(f"You regain your faculties.")
@@ -435,6 +435,7 @@ while True:
                                     sleep(3)
                                     player_is_dead = True
                                     break
+
                                 # if player has allies, monster attacks npc
                                 player_1.monster_attacks_npc_meta(monster)
 
@@ -504,8 +505,8 @@ while True:
                                     monster.meta_monster_function(player_1)
                                     # I tried to offload this code, but the breaks and continues are pretty tangled
                                     if not player_1.check_dead():  # if player not dead
-                                        if monster.can_paralyze:  # dice_roll(1, 20) > 17 and monster.can_paralyze:
-                                            monster.paralyze(player_1)
+                                        if monster.can_paralyze and monster.paralyze(player_1):
+                                            # monster.paralyze(player_1)
                                             # pause()
                                             if not player_1.check_dead():  # if player not dead
                                                 print(f"You regain your faculties.")

@@ -295,6 +295,23 @@ def encounter_logic():
 
 
 def sound_player(sound_file):
+    # a sound player function which simply plays sound_file asynchronously
+    if os.name == 'nt':
+        try:
+            p = Path(__file__).with_name(sound_file)
+            with p.open('r') as sound:
+                if sound.readable():
+                    # print(f"Sound is readable..")
+                    # pause()
+                    winsound.PlaySound(sound_file, winsound.SND_FILENAME | winsound.SND_ASYNC)
+        except FileNotFoundError:
+            print(f"{sound_file} not found in directory path.")
+            pause()
+            # pass
+
+
+def sound_player_loop(sound_file):
+    # a sound player function which loops sound_file asynchronously
     if os.name == 'nt':
         try:
             p = Path(__file__).with_name(sound_file)
@@ -310,39 +327,40 @@ def sound_player(sound_file):
 
 
 def gong():
+    # notice the gong is not looped
     sound_player('gong.wav')
 
 
 def sad_cello_theme():
-    sound_player('sad_cello_darren_curtis.wav')
+    sound_player_loop('sad_cello_darren_curtis.wav')
 
 
 def blacksmith_theme():
-    sound_player('blacksmith_theme_2.wav')
+    sound_player_loop('blacksmith_theme_2.wav')
 
 
 def chemist_theme():
-    sound_player('chemist_theme.wav')
+    sound_player_loop('chemist_theme.wav')
 
 
 def mountain_king_theme():
-    sound_player('mountain_king.wav')
+    sound_player_loop('mountain_king.wav')
 
 
 def pit_theme():
-    sound_player('creepy_dungeon_theme.wav')
+    sound_player_loop('creepy_dungeon_theme.wav')
 
 
 def boss_battle_theme():
-    sound_player('boss_battle_2.wav')
+    sound_player_loop('boss_battle_2.wav')
 
 
 def town_theme():
-    sound_player('town_(tavern)_loop_by_alexander_nakarada.wav')
+    sound_player_loop('town_(tavern)_loop_by_alexander_nakarada.wav')
 
 
 def tavern_theme():
-    sound_player('silvermansound_the medieval_banquet.wav')
+    sound_player_loop('silvermansound_the medieval_banquet.wav')
 
 
 class Weapon:
@@ -1388,7 +1406,7 @@ class Player:
 
     # CALCULATION
     def monster_attacks_npc_meta(self, monster):
-        # called from main loop, after monster attacks human player. also called after paralyze attacks.
+        # called from main loop, after monster attacks human player. (also called after paralyze attacks.)
         # if monster has multi_attack ability, monster attacks all npc allies
         self.hud()
         if monster.multi_attack:
@@ -3820,7 +3838,8 @@ class Player:
                   f"warriors arising from an abysmal black chasm!!")
             sleep(1)
             print(f"The {monster.name} distracts the Master for a moment..")
-            sleep(1)
+            pause()
+            self.hud()
             print(f"The skeletal horde takes form but does not inflict damage to its fullest potential..")
             sleep(1)
             print(f"{number_of_dice}d12 roll + 1 per skeleton bludgeoning damage = {damage_to_opponent}")
@@ -3889,7 +3908,8 @@ class Player:
                   f"from his hands toward your enemy!!")
             sleep(1)
             print(f"The {monster.name} distracts Vozzbozz for just a moment..")
-            sleep(1)
+            pause()
+            self.hud()
             print(f"The plague takes form but does not inflict damage to its fullest potential..")
             sleep(1)
             print(
@@ -7980,13 +8000,13 @@ class Player:
             print(f"Her face and mood again shift, and she removes her blade and begins to smile! It is then that you\n"
                   f"begin to notice the signs you missed earlier; Her teeth, black and smooth as raven's claws,\n"
                   f"tiny fangs, deep red eyes and her unusually petite, yet athletic build. But how could a Drow have\n"
-                  f"such purely white complexion, you wonder silently...")
+                  f"such purely white complexion, you wonder silently...Are they not grey-skinned?")
             pause()
             self.hud()
             print(f"\'Well. {self.name} of Tinbar, well met!\', she says with an evil chuckle. \'I am Si'Kira,\n"
                   f"Child of the Moon Forest. My people too, have all been slain. I also seek to destroy the\n"
-                  f"wicked Queen Jannbrielle.\'. She sheathes her blade and her long silver hair glistens gorgeously\n"
-                  f"in the dim air, as does her wondrous armor.")
+                  f"wicked Queen Jannbrielle.\'. She sheathes her blade, and her long silver hair glistens gorgeously\n"
+                  f"in the darkness, as does her wondrous armor.")
             pause()
             self.hud()
             print(f"\'Queen Jannbrielle..\', you repeat thoughtfully. Si'Kira looks at you as you say the name.\n"

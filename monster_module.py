@@ -327,44 +327,52 @@ class Monster:
             return 0
 
     def paralyze(self, player_1):
-        player_1.hud()
-        print(self.paralyze_phrase)
-        sleep(1.25)
-        paralyze_chance = dice_roll(1, 20)
-        human_player_roll_d20 = dice_roll(1, 20)
-        player_total = (human_player_roll_d20 + player_1.ring_of_prot.protect + player_1.temp_protection_effect)
-        print(f"Paralyze roll: {paralyze_chance} + monster wisdom modifier: {self.wisdom_modifier}")  # rm after testing
-        paralyze_total = paralyze_chance + self.wisdom_modifier
-        print(f"Monster Total: {paralyze_total}")
-        print(f"Your Saving Throw: {human_player_roll_d20} ")  # remove after testing
+        if dice_roll(1, 20) > 10:  # 50% chance
+            player_1.hud()
+            print(self.paralyze_phrase)
+            sleep(1.25)
+            paralyze_chance = dice_roll(1, 20)
+            human_player_roll_d20 = dice_roll(1, 20)
+            player_total = (human_player_roll_d20 + player_1.ring_of_prot.protect + player_1.temp_protection_effect)
+            print(f"Paralyze roll: {paralyze_chance} + monster wisdom modifier: {self.wisdom_modifier}")  # testing
+            paralyze_total = paralyze_chance + self.wisdom_modifier
+            print(f"Monster Total: {paralyze_total}")
+            print(f"Your Saving Throw: {human_player_roll_d20} ")  # remove after testing
 
-        if player_1.ring_of_prot.protect > 0:
-            print(f"Your Ring of Protection Modifier: {player_1.ring_of_prot.protect}")
+            if player_1.ring_of_prot.protect > 0:
+                print(f"Your Ring of Protection Modifier: {player_1.ring_of_prot.protect}")
 
-        if player_1.protection_effect:
-            print(f"Protection from Evil Effect: {player_1.temp_protection_effect}")
-        print(f"Your Total: {player_total}")
+            if player_1.protection_effect:
+                print(f"Protection from Evil Effect: {player_1.temp_protection_effect}")
+            print(f"Your Total: {player_total}")
 
-        if (paralyze_chance + self.wisdom_modifier) >= player_total:
-            print("You are paralyzed!!")
-            sleep(1)
-            print(self.paralyze_free_attack_phrase)
-            # print("As you stand, frozen and defenseless, it savagely gores you!")
-            sleep(1)
+            if (paralyze_chance + self.wisdom_modifier) >= player_total:
+                print("You are paralyzed!!")
+                sleep(1)
+                print(self.paralyze_free_attack_phrase)
+                sleep(1)
+                turns = 0
+                for i in range(self.paralyze_turns):  # this seems too brutal if paralyze_turns is anything but 1!!!
+                    paralyze_damage = (dice_roll((self.number_of_hd * 2), self.hit_dice) -
+                                       (player_1.ring_of_prot.protect + player_1.temp_protection_effect))
+                    turns += 1
+                    if paralyze_damage < 1:
+                        paralyze_damage = self.level
+                    player_1.reduce_health(paralyze_damage)
+                    if turns == 1:
+                        print(f"{self.he_she_it.capitalize()} strikes at you for {paralyze_damage} points of damage!!")
+                    else:
+                        print(f"{self.he_she_it.capitalize()} strikes again for {paralyze_damage} points of damage!!")
+                    pause()
+                    player_1.hud()
+                return True
 
-            for i in range(self.paralyze_turns):  # this seems too brutal if paralyze_turns is anything but 1!!!
-                paralyze_damage = (dice_roll(self.number_of_hd, self.hit_dice) -
-                                   (player_1.ring_of_prot.protect + player_1.temp_protection_effect))
-                if paralyze_damage < 1:
-                    paralyze_damage = self.level
-                player_1.reduce_health(paralyze_damage)
-                print(f"{self.he_she_it.capitalize()} strikes at you for {paralyze_damage} points of damage!!")
+            else:
+                print(f"You ignore {self.his_her_its} wiles and break free from {self.his_her_its} grip!")
                 pause()
                 player_1.hud()
-            return True
-
+                return False
         else:
-            print(f"You ignore {self.his_her_its} wiles and break free from {self.his_her_its} grip!")
             return False
 
     def poison_attack(self, player_1):
@@ -376,6 +384,7 @@ class Monster:
         print(self.poison_phrase)
         print(f"Attack roll: {roll_d20}")
         sleep(1)
+
         if roll_d20 == 1:
             print(f"You easily dodge {self.his_her_its} poison attack!")
             sleep(1)
@@ -2335,10 +2344,10 @@ class WickedQueenJannbrielle(Monster):
         self.wisdom = 18
         self.charisma = 25
         self.can_paralyze = True
-        self.paralyze_turns = 1
+        self.paralyze_turns = 2
         self.can_poison = True
         self.necrotic = True
-        self.dot_multiplier = 5
+        self.dot_multiplier = dice_roll(1, 6)
         self.dot_turns = 5
         self.undead = True
         self.immunities = ["Turn Undead", "Web", "Hold Monster", "Banish"]
@@ -2360,7 +2369,7 @@ class WickedQueenJannbrielle(Monster):
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 12  # attack bonus
-        self.attack_1_phrase = "The queen attacks with her skull-scepter!"
+        self.attack_1_phrase = "She strikes with her foul skull-scepter!"
         self.attack_2 = 15
         self.attack_2_phrase = "With a gleeful laugh, she attacks with her whip!"
         self.attack_3 = 16

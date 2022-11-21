@@ -300,6 +300,8 @@ def sound_player(sound_file):
             p = Path(__file__).with_name(sound_file)
             with p.open('r') as sound:
                 if sound.readable():
+                    # print(f"Sound is readable..")
+                    # pause()
                     winsound.PlaySound(sound_file, winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
         except FileNotFoundError:
             print(f"{sound_file} not found in directory path.")

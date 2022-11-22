@@ -297,7 +297,6 @@ def character_generator():
 def encounter_logic():
     monster_encounter = dice_roll(1, 20)
     # print(f"Monster encounter roll: {monster_encounter}")
-    # pause()
     return monster_encounter
 
 

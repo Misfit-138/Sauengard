@@ -31,15 +31,11 @@ import os
 from player_module_testing import sad_cello_theme, cls, game_splash, character_generator, town_theme, gong, sleep, \
     encounter_logic, pause, are_you_sure
 
-# sad_cello_theme()
-# cls()
-# game_splash()
-# cls()
-# player_1 = ""  # to get rid of undefined warning
-# player_name = ""  # to get rid of undefined warning
 while True:
     sad_cello_theme()
     cls()
+    print(f"For best experience, maximize terminal screen size.")
+    pause()
     game_splash()
     cls()
     player_1 = ""  # to get rid of undefined warning

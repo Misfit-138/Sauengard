@@ -76,54 +76,52 @@ def typing(message):
     return ""
 
 
+def print_txt_file(txt_file_name):
+    cls()
+    try:
+        p = Path(__file__).with_name(txt_file_name)
+        with p.open('r') as txt:
+            # if txt.readable():
+            print(txt.read())
+
+    except FileNotFoundError:
+        print(f"Missing {txt_file_name} or bad file path.")
+
+
+def type_txt_file(txt_file_name):
+    cls()
+    try:
+        p = Path(__file__).with_name(txt_file_name)
+        with p.open('r') as message:
+            # if message.readable():
+            typing(message.read())
+
+    except FileNotFoundError:
+        print(f"Missing {txt_file_name} or bad file path.")
+
+
 def game_splash():
     while True:
         cls()
-        try:
-            p = Path(__file__).with_name('splash_art.txt')
-            with p.open('r') as splash:
-                if splash.readable():
-                    print(splash.read())
-
-        except FileNotFoundError:
-            print(f"Missing splash_art.txt or bad file path.")
-            # pause()
+        print_txt_file('splash_art.txt')
         typing("                               W  E  L  C  O  M  E    T  O    S  A  U  E  N  G  A  R  D.\n")
         print()
         choice = input(f"                                       (I)ntroduction  (A)bout  (T)ips  (B)egin ").lower()
         if choice not in ('i', 'a', 't', 'b'):
             continue
-        elif choice == 'i':
-            cls()
-            try:
-                p = Path(__file__).with_name('introduction.txt')
-                with p.open('r') as intro:
-                    if intro.readable():
-                        typing(intro.read())
 
-            except FileNotFoundError:
-                print(f"Missing introduction.txt or bad file path.")
+        elif choice == 'i':
+            type_txt_file('introduction.txt')
             pause()
+
         elif choice == 'a':
-            cls()
-            try:
-                p = Path(__file__).with_name('about.txt')
-                with p.open('r') as about:
-                    if about.readable():
-                        typing(about.read())
-            except FileNotFoundError:
-                print(f"Missing about.txt or bad file path.")
+            type_txt_file('about.txt')
             pause()
+
         elif choice == 't':
-            cls()
-            try:
-                p = Path(__file__).with_name('tips.txt')
-                with p.open('r') as tips:
-                    if tips.readable():
-                        typing(tips.read())
-            except FileNotFoundError:
-                print(f"Missing tips.txt or bad file path.")
+            type_txt_file('tips.txt')
             pause()
+
         elif choice == 'b':
             return
 
@@ -308,9 +306,9 @@ def sound_player(sound_file):
     if os.name == 'nt':
         try:
             p = Path(__file__).with_name(sound_file)
-            with p.open('r') as sound:
+            with p.open('rb') as sound:
                 if sound.readable():
-                    winsound.PlaySound(sound_file, winsound.SND_FILENAME | winsound.SND_ASYNC)
+                    winsound.PlaySound(str(p), winsound.SND_FILENAME | winsound.SND_ASYNC)
         except FileNotFoundError:
             print(f"{sound_file} not found in directory path.")
             pause()
@@ -318,14 +316,12 @@ def sound_player(sound_file):
 
 
 def sound_player_loop(sound_file):
-    # a sound player function which loops sound_file asynchronously
+    # a sound player function which plays sound_file asynchronously on a continuous loop
     if os.name == 'nt':
         try:
             p = Path(__file__).with_name(sound_file)
             with p.open('rb') as sound:
                 if sound.readable():
-                    # print(f"Sound is readable..")
-                    # pause()
                     winsound.PlaySound(str(p), winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
         except FileNotFoundError:
             print(f"{sound_file} not found in directory path.")
@@ -6294,15 +6290,8 @@ class Player:
         pause()
         cls()
         # meeting with vozzbozz and introduction to tor'bron
-        try:
-            p = Path(__file__).with_name('hint_event_1.txt')
-            with p.open('r') as hint_file:
-                if hint_file.readable():
-                    typing(hint_file.read())
-                    pause()
-        except FileNotFoundError:
-            print(f"Missing hint_event_1.txt or bad file path.")
-            pause()
+        type_txt_file('hint_event_1.txt')
+        pause()
 
         cls()
         typing(f"{self.name},\nThe guardian of {self.dungeon.name} has, in its possession, an ornate dagger "
@@ -6353,15 +6342,8 @@ class Player:
         pause()
         cls()
         # meet Tor'bron, get hints
-        try:
-            p = Path(__file__).with_name('hint_event_2.txt')
-            with p.open('r') as hint_file:
-                if hint_file.readable():
-                    typing(hint_file.read())
-                    pause()
-        except FileNotFoundError:
-            print(f"Missing hint_event_2.txt or bad file path.")
-            pause()
+        type_txt_file('hint_event_2.txt')
+        pause()
         cls()
         self.boss_hint_2_event = True
         return
@@ -6389,15 +6371,8 @@ class Player:
         pause()
         cls()
         # another meeting, get hints
-        try:
-            p = Path(__file__).with_name('hint_event_3.txt')
-            with p.open('r') as hint_file:
-                if hint_file.readable():
-                    typing(hint_file.read())
-                    pause()
-        except FileNotFoundError:
-            print(f"Missing hint_event_3.txt or bad file path.")
-            pause()
+        type_txt_file('hint_event_3.txt')
+        pause()
         cls()
         self.boss_hint_3_event = True
         return
@@ -9969,3 +9944,47 @@ return 0"""
         winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\silvermandsound_the medieval_banquet.wav',
                            winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
 """
+"""cls()
+            try:
+                p = Path(__file__).with_name('introduction.txt')
+                with p.open('r') as intro:
+                    if intro.readable():
+                        typing(intro.read())
+
+            except FileNotFoundError:
+                print(f"Missing introduction.txt or bad file path.")
+            pause()"""
+"""cls()
+        try:
+            p = Path(__file__).with_name('splash_art.txt')
+            with p.open('r') as splash:
+                if splash.readable():
+                    print(splash.read())
+
+        except FileNotFoundError:
+            print(f"Missing splash_art.txt or bad file path.")
+            # pause()"""
+"""        try:
+            p = Path(__file__).with_name('hint_event_1.txt')
+            with p.open('r') as hint_file:
+                if hint_file.readable():
+                    typing(hint_file.read())
+                    pause()
+        except FileNotFoundError:
+            print(f"Missing hint_event_1.txt or bad file path.")"""
+"""        try:
+            p = Path(__file__).with_name('hint_event_2.txt')
+            with p.open('r') as hint_file:
+                if hint_file.readable():
+                    typing(hint_file.read())
+                    pause()
+        except FileNotFoundError:
+            print(f"Missing hint_event_2.txt or bad file path.")"""
+"""        try:
+            p = Path(__file__).with_name('hint_event_3.txt')
+            with p.open('r') as hint_file:
+                if hint_file.readable():
+                    typing(hint_file.read())
+                    pause()
+        except FileNotFoundError:
+            print(f"Missing hint_event_3.txt or bad file path.")"""

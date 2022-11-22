@@ -82,8 +82,8 @@ def print_txt_file(txt_file_name):
     try:
         p = Path(__file__).with_name(txt_file_name)
         with p.open('r') as txt:
-            # if txt.readable():
-            print(txt.read())
+            if txt.readable():
+                print(txt.read())
 
     except FileNotFoundError:
         print(f"Missing {txt_file_name} or bad file path.")
@@ -94,8 +94,8 @@ def type_txt_file(txt_file_name):
     try:
         p = Path(__file__).with_name(txt_file_name)
         with p.open('r') as message:
-            # if message.readable():
-            typing(message.read())
+            if message.readable():
+                typing(message.read())
 
     except FileNotFoundError:
         print(f"Missing {txt_file_name} or bad file path.")

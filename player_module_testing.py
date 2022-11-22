@@ -137,16 +137,19 @@ rndm_aroma_lst = ['agarwood', 'angelica root', 'anise', 'basil', 'bergamot', 'ca
                   'vanilla sweet grass', 'warionia', 'vetiver', 'wintergreen', 'yarrow oil']
 
 
-def convert_list_to_string_with_commas_only(list1):
-    return str(list1).replace('[', '').replace(']', '').replace("'", "")
-
-
 def convert_list_to_string(list1):
+    # no brackets, no quotes, no commas
     return str(list1).replace('[', '').replace(']', '').replace("'", "").replace(",", "")
 
 
+def convert_list_to_string_with_commas_only(list1):
+    # no brackets, no quotes. WITH commas
+    return str(list1).replace('[', '').replace(']', '').replace("'", "")
+
+
 def convert_list_to_string_with_and(list1):
-    list1.insert(-1, 'and')  # add "and" before last element to be more naturally readable
+    # no brackets, no quotes. WITH commas. add "and" before last element to be more naturally readable
+    list1.insert(-1, 'and')
     readable_list = str(', '.join(list1[:-2]) + ' ' + ' '.join(list1[-2:]))
     return readable_list
 
@@ -159,7 +162,7 @@ def pause():
     if os.name == 'nt':
         os.system('pause')
     else:
-        input("Strike [ENTER] to continue. . .")
+        input("Press [ENTER] to continue . . . ")
     return
 
 

@@ -79,9 +79,18 @@ def typing(message):
 def game_splash():
     while True:
         cls()
-        typing("Welcome to Sauengard.\n")
+        try:
+            p = Path(__file__).with_name('splash_art.txt')
+            with p.open('r') as splash:
+                if splash.readable():
+                    print(splash.read())
+
+        except FileNotFoundError:
+            print(f"Missing splash_art.txt or bad file path.")
+            # pause()
+        typing("                               W  E  L  C  O  M  E    T  O    S  A  U  E  N  G  A  R  D.\n")
         print()
-        choice = input(f"(I)ntroduction  (A)bout  (T)ips  (B)egin ").lower()
+        choice = input(f"                                       (I)ntroduction  (A)bout  (T)ips  (B)egin ").lower()
         if choice not in ('i', 'a', 't', 'b'):
             continue
         elif choice == 'i':
@@ -301,8 +310,6 @@ def sound_player(sound_file):
             p = Path(__file__).with_name(sound_file)
             with p.open('r') as sound:
                 if sound.readable():
-                    # print(f"Sound is readable..")
-                    # pause()
                     winsound.PlaySound(sound_file, winsound.SND_FILENAME | winsound.SND_ASYNC)
         except FileNotFoundError:
             print(f"{sound_file} not found in directory path.")
@@ -315,7 +322,7 @@ def sound_player_loop(sound_file):
     if os.name == 'nt':
         try:
             p = Path(__file__).with_name(sound_file)
-            with p.open('r') as sound:
+            with p.open('rb') as sound:
                 if sound.readable():
                     # print(f"Sound is readable..")
                     # pause()

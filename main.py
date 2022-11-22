@@ -31,19 +31,19 @@
 import pickle
 from dungeons import dungeon_dict
 import os
-from player_module_testing import sad_cello_theme, cls, game_splash, character_generator, town_theme, gong, sleep, \
+from player_module import sad_cello_theme, cls, game_splash, character_generator, town_theme, gong, sleep, \
     encounter_logic, pause, are_you_sure
 
+cls()
+print(f"For best experience, maximize terminal screen size.")
+pause()
 while True:
     sad_cello_theme()
-    cls()
-    print(f"For best experience, maximize terminal screen size.")
-    pause()
     game_splash()
     cls()
     player_1 = ""  # to get rid of undefined warning
     player_name = ""  # to get rid of undefined warning
-    new_game_or_load = input("(S)tart a new character or (L)oad a saved one? ").lower()
+    new_game_or_load = input("(S)tart a new character (L)oad a saved one, or go (B)ack to main menu: ").lower()
     if new_game_or_load not in ('s', 'l'):
         continue
     if new_game_or_load == 'l':

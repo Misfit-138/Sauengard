@@ -24,6 +24,9 @@
 # Tavern Theme: 'The Medieval Banquet' by Silverman Sound is under a Creative Commons license (CC BY 3.0)
 # Music promoted by BreakingCopyright: http://bit.ly/Silvermansound_Medieval
 
+# Pit theme 'Epic 39' by Jules Pitsker
+# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
 # Telengard monsters:
 # "Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",
 # "Troll", "Wraith", "Ogre", "Minotaur", "Giant", "Specter", "Vampire", "Balrog", Dragon

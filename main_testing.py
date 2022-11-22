@@ -24,6 +24,9 @@
 # tavern_theme(): 'The Medieval Banquet' by Silverman Sound is under a Creative Commons license (CC BY 3.0)
 # Music promoted by BreakingCopyright: http://bit.ly/Silvermansound_Medieval
 
+# Pit theme 'Epic 39' by Jules Pitsker
+# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
 
 import pickle
 from dungeons import dungeon_dict

@@ -24,7 +24,8 @@
 # Tavern Theme: 'The Medieval Banquet' by Silverman Sound is under a Creative Commons license (CC BY 3.0)
 # Music promoted by BreakingCopyright: http://bit.ly/Silvermansound_Medieval
 
-# Pit theme 'Epic 39' by Jules Pitsker CC-BY 4.0 License
+# Pit theme 'Epic 39' by Jules Pitsker
+# Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
 import collections
 import math
@@ -106,11 +107,9 @@ def game_splash():
         print_txt_file('splash_art.txt')
         typing("                               W  E  L  C  O  M  E    T  O    S  A  U  E  N  G  A  R  D.\n")
         print()
-        choice = input(f"                                       (I)ntroduction  (A)bout  (T)ips  (B)egin ").lower()
-        if choice not in ('i', 'a', 't', 'b'):
-            continue
+        choice = input(f"                                (I)ntroduction  (A)bout  (T)ips  (L)icense  (B)egin ").lower()
 
-        elif choice == 'i':
+        if choice == 'i':
             type_txt_file('introduction.txt')
             pause()
 
@@ -120,6 +119,10 @@ def game_splash():
 
         elif choice == 't':
             type_txt_file('tips.txt')
+            pause()
+
+        elif choice == 'l':
+            print_txt_file('LICENSE')
             pause()
 
         elif choice == 'b':

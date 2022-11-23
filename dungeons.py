@@ -164,7 +164,7 @@ class Dungeon1(Dungeon):
                      "As the echoes throughout the emptiness linger, you hear the muffled scraping of a mighty " \
                      "chain\n" \
                      "being quickly wrestled into place, and finally, locked and released with a thud.\n" \
-                     "This is the entrance of the catacombs. Blackness and the stench of filth surround you."
+                     "Blackness and the stench of filth surround you.  BEWARE . . .\n"
 
 
 dungeon_1 = Dungeon1()

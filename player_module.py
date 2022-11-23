@@ -70,10 +70,10 @@ def are_you_sure():
 def typing(message):
     print("")
     for word in message:
-        time.sleep(0.01)  # (random.choice([0.1, 0.09, 0.08, 0.07, 0.06]))
+        sleep(0.0075)  # (random.choice([0.1, 0.09, 0.08, 0.07, 0.06])) 0.01 seems very good
         sys.stdout.write(word)
         sys.stdout.flush()
-    time.sleep(.1)
+    sleep(.1)
     return ""
 
 
@@ -298,6 +298,28 @@ def character_generator():
     player_1 = Player(name=player_name, **stats)  # **stats sends the 'stats' dictionary as parameters
     # pause()
     return player_1
+
+
+def asi_intro():
+    cls()
+    print(f"                                  *Ability Score Improvement*")
+    print()
+    print(
+        f"You may choose to improve a single ability score, such as strength, and increase it by 2 points.\n"
+        f"\n"
+        f"                           *OR*\n"
+        f"\n"
+        f"You may choose to improve two ability scores, such as charisma and constitution, by 1 point each.\n"
+        f"\n"
+        f"NOTES: \n"
+        f"* Ability *modifiers* improve with each ascending even-numbered score, therefore, if unsure,\n"
+        f"  it is generally recommended to apply 1 point to odd-numbered ability scores and apply \n"
+        f"2 points to even-numbered scores.\n"
+        f"* When your Constitution modifier increases by 1, your hit point maximum increases by 1 for each\n"
+        f"  level you have attained.\n"
+        f"                         *The maximum score for any ability is 20*"
+        f"\n")
+    pause()
 
 
 def encounter_logic():
@@ -1234,11 +1256,11 @@ class Player:
 
     def __init__(self, name, strength, dexterity, constitution, intelligence, wisdom, charisma):
         self.name = name
-        self.level = 1
+        self.level = 3
         self.quantum_level = 1
         self.maximum_quantum_units = 600
         self.quantum_units = 600
-        self.experience = 0
+        self.experience = 2699
         self.base_dc = 8
         self.gold = 500000
         self.wielded_weapon = short_sword
@@ -1417,6 +1439,7 @@ class Player:
         # called from main loop, after monster attacks human player. (also called after paralyze attacks.)
         # if monster has multi_attack ability, monster attacks all npc allies
         self.hud()
+        # multi_attack ability allows monster to attack ALL npc allies
         if monster.multi_attack:
             if self.sikira_ally:
                 if not sikira.retreating:
@@ -1449,29 +1472,35 @@ class Player:
             return
 
         elif monster.lesser_multi_attack:
-            # lesser_multi_attack creates a list of non-retreating allies, if any.
-            # one ally is then randomly chosen and attacked by monster
+
+            # lesser_multi_attack creates a list of non-retreating allies, if any:
             allies = []
+
             if self.sikira_ally:
                 if not sikira.retreating:
                     allies.append(sikira)
                 else:
                     npc_retreat_counter_logic(sikira)
+
             if self.torbron_ally:
                 if not torbron.retreating:
                     allies.append(torbron)
                 else:
                     npc_retreat_counter_logic(torbron)
+
             if self.magnus_ally:
                 if not magnus.retreating:
                     allies.append(magnus)
                 else:
                     npc_retreat_counter_logic(magnus)
+
             if self.vozzbozz_ally:
                 if not vozzbozz.retreating:
                     allies.append(vozzbozz)
                 else:
                     npc_retreat_counter_logic(vozzbozz)
+
+            # one ally is then randomly chosen and attacked by monster:
             if len(allies):
                 ally = random.choice(allies)
                 monster.meta_monster_vs_npc_function(ally)
@@ -1521,11 +1550,13 @@ class Player:
     def calculate_poison(self):
         # called from end_of_turn_calculation() meta function
         if self.poisoned:
+
             if self.poisoned_turns >= self.dot_turns:
                 self.poisoned = False
                 self.poisoned_turns = 0
                 print(f"The poison leaves your body..")
                 sleep(1.5)
+
             else:
                 self.poisoned = True
                 self.poisoned_turns += 1
@@ -1533,16 +1564,19 @@ class Player:
                 self.hit_points -= poison_damage
                 print(f"*POISON DAMAGE: {poison_damage}*")
                 sleep(1.5)
+
         return self.poisoned
 
     def calculate_necrotic_dot(self):
         # called from end_of_turn_calculation() meta function
         if self.necrotic:
+
             if self.necrotic_turns >= self.dot_turns:
                 self.necrotic = False
                 self.necrotic_turns = 0
                 print(f"The necrotic plague leaves your body..")
                 sleep(1.5)
+
             else:
                 self.necrotic = True
                 self.necrotic_turns += 1
@@ -1550,49 +1584,59 @@ class Player:
                 self.hit_points -= necrotic_damage
                 print(f"*NECROTIC DAMAGE: {necrotic_damage}*")
                 sleep(1.5)
+
         return self.necrotic
 
     def calculate_quantum_strength(self):
         # called from end_of_turn_calculation() meta function
         if self.quantum_strength_effect:
+
             if self.quantum_strength_uses >= self.max_quantum_strength_uses:  # self.quantum_lvl+self.strength_modifier
                 self.quantum_strength_effect = False
                 self.quantum_strength_uses = 0
                 print(f"The Quantum Effects wear off....the giant strength leaves your body..")
                 pause()
+
             else:
                 self.quantum_strength_effect = True
                 self.quantum_strength_uses += 1
+
         return self.quantum_strength_effect
 
     def calculate_potion_of_strength(self):
         # called from end_of_turn_calculation() meta function
         if self.potion_of_strength_effect:
+
             if self.potion_of_strength_uses >= self.max_quantum_strength_uses:  # self.strength_modifier + 2:
                 self.potion_of_strength_effect = False
                 self.potion_of_strength_uses = 0
                 print(f"The potion's effect wears off....the giant strength leaves your body..")
                 pause()
+
             else:
                 self.potion_of_strength_effect = True
                 self.potion_of_strength_uses += 1
+
         return self.potion_of_strength_effect
 
     def calculate_protection_effect(self):
         # called from end_of_turn_calculation() meta function
         if self.protection_effect:
+
             if self.protection_effect_uses >= self.max_protection_effect_uses:
                 self.protection_effect = False
                 self.protection_effect_uses = 0
                 self.temp_protection_effect = 0
                 print(f"The Quantum Protection effect wears off...")
                 pause()
+
             else:
                 self.protection_effect = True
                 self.protection_effect_uses += 1
                 # self.temp_protection_effect = (2 + self.level)
                 if self.temp_protection_effect > 10:
                     self.temp_protection_effect = 10
+
         return self.protection_effect
 
     def calculate_modifiers(self):
@@ -1627,14 +1671,19 @@ class Player:
         # called from level_up()
         if self.level <= 4:
             self.proficiency_bonus = 2
+
         if self.level > 4 < 9:
             self.proficiency_bonus = 3
+
         if self.level > 8 < 13:
             self.proficiency_bonus = 4
+
         if self.level > 12 < 17:
             self.proficiency_bonus = 5
+
         if self.level > 16:
             self.proficiency_bonus = 6
+
         return
 
     # Quantum LEVEL   EXPERIENCE LEVEL
@@ -1751,94 +1800,81 @@ class Player:
         return
 
     # LEVEL AND EXPERIENCE
+    def asi_eligibility(self):
+        if self.strength < 20 or self.dexterity < 20 or self.constitution < 20 or self.intelligence < 20 \
+                or self.wisdom < 20 or self.charisma < 20:
+            return True
+        else:
+            print(f"All abilities at maximum!")  # remove after testing
+            return False
+
     def asi(self):
         # called from level_up()
         # Ability Score Improvement at levels 4, 8, 12, 16, and 19.
         # Fighters gain additional ASIs at the 6th and 14th levels
         # so, 4, 6, 8, 12, 14, 16, 19 for our purposes, since player is most like a fighter
         # also, if player goes up more than one level, by gaining a large amount of experience, asi is available
-        # Define list of attributes you are allowed to change
-        if self.strength < 20 or self.dexterity < 20 or self.constitution < 20 or self.intelligence < 20 \
-                or self.wisdom < 20 or self.charisma < 20:
-            os.system('cls')
-            print(f"                                  *Ability Score Improvement*")
-            print()
-            print(
-                f"You may choose to improve a single ability score, such as strength, and increase it by 2 points.\n"
-                f"\n"
-                f"                           *OR*\n"
-                f"\n"
-                f"You may choose to improve two ability scores, such as charisma and constitution, by 1 point each.\n"
-                f"\n"
-                f"NOTES: \n"
-                f"* Ability *modifiers* improve with each ascending even-numbered score, therefore, if unsure,\n"
-                f"  it is generally recommended to apply 1 point to odd-numbered ability scores and apply \n"
-                f"2 points to even-numbered scores.\n"
-                f"* When your Constitution modifier increases by 1, your hit point maximum increases by 1 for each\n"
-                f"  level you have attained.\n"
-                f"                         *The maximum score for any ability is 20*"
-                f"\n")
-            pause()
 
+        while True:
+            self.hud()
+            tries = 0
+            points = 2
             while True:
                 self.hud()
-                tries = 0
-                points = 2
-                while True:
-                    self.hud()
-                    # print(f"Ability Score Improvement for level {self.level}")
-                    if tries > 1:
-                        print(f"You savor the empowering abilities you have gained..\n"
-                              f"And yet, the dungeon horde grows more powerful with you!")
-                        pause()
-                        self.hud()
-                        return
-                    ability_dict = self.__dict__  # create variable as actual copy of player dict attribute
-                    ability_lst = []  # list to be populated with all abilities < 20
-                    # the working dict and 'for' loop just takes the place of many 'if:' statements
-                    working_dict = {'strength': self.strength, 'dexterity': self.dexterity,
-                                    'constitution': self.constitution, 'intelligence': self.intelligence,
-                                    'wisdom': self.wisdom, 'charisma': self.charisma}
-                    # add all abilities < 20 in working dict to ability list
-                    for key, value in working_dict.items():
-                        if value < 20:
-                            ability_lst.append(key)
-                    # this code should be reachable if stats are maxed out, and player level_up calls it
-                    if not len(ability_lst):  # if ability list is empty, all stats at 20; no more improvements allowed
-                        print(f"All of your abilities are at the maximum level!")
-                        # pause()
-                        return
-                    print(f"Ability Score Improvement for level {self.level}")
-                    print(f"Points to distribute: {points}")
-                    # create a subset ability dictionary from the ability list by indexing, and then print out
-                    ability_dict_subset_too = {}
-                    for ability in ability_lst:
-                        if len(ability_lst):
-                            ability_dict_subset_too[ability_lst.index(ability)] = ability
-                    for key, value in ability_dict_subset_too.items():
-                        print(key + 1, ':', value.capitalize())  # add 1 to key since indexing begins at 0
-                    try:
-                        ability_index = int(input(f"Enter the ability to improve.\n"
-                                                  f"(THIS IS PERMANENT!) : "))
-                        ability_index -= 1  # indexing begins at zero...
-                        ability_to_improve = (ability_dict_subset_too[ability_index])
-                        old_score = ability_dict[ability_to_improve]
-                        ability_dict[ability_to_improve] += 1
-                        print(
-                            f"Your {ability_to_improve} has been increased from {old_score} "
-                            f"to {ability_dict[ability_to_improve]}!")
-                        self.calculate_modifiers()
-                        tries += 1
-                        points -= 1
-                        pause()
-                        continue
-                    except (ValueError, KeyError):
-                        print("Invalid entry..")
-                        sleep(1)
-                        continue
-        else:
-            print(f"All abilities at maximum!")  # remove after testing
-            return
+                # print(f"Ability Score Improvement for level {self.level}")
+
+                if tries > 1:
+                    return
+
+                ability_dict = self.__dict__  # create variable as actual copy of player dict attribute
+                ability_lst = []  # list to be populated with all abilities < 20
+                # the working dict and 'for' loop just takes the place of many 'if:' statements
+                working_dict = {'strength': self.strength, 'dexterity': self.dexterity,
+                                'constitution': self.constitution, 'intelligence': self.intelligence,
+                                'wisdom': self.wisdom, 'charisma': self.charisma}
+
+                # add all abilities < 20 in working dict to ability_lst to define attributes you are allowed to change:
+                for key, value in working_dict.items():
+                    if value < 20:
+                        ability_lst.append(key)
+
+                # this code should be reachable if stats are maxed out, and player level_up calls it:
+                if not len(ability_lst):  # if ability list is empty, all stats at 20; no more improvements allowed
+                    print(f"All of your abilities are at the maximum level!")
+                    sleep(1.25)
+                    return
+
+                print(f"Ability Score Improvement\n"
+                      f"Player level: {self.level}")
+                print(f"Points to distribute: {points}")
+                # create a subset ability dictionary from the ability list by indexing, and then print out
+                ability_dict_subset_too = {}
+                for ability in ability_lst:
+                    if len(ability_lst):
+                        ability_dict_subset_too[ability_lst.index(ability)] = ability
+                for key, value in ability_dict_subset_too.items():
+                    print(key + 1, ':', value.capitalize())  # add 1 to key since indexing begins at 0
+
+                try:
+                    ability_index = int(input(f"Enter the ability to improve.\n"
+                                              f"(THIS IS PERMANENT!) : "))
+                    ability_index -= 1  # indexing begins at zero...
+                    ability_to_improve = (ability_dict_subset_too[ability_index])
+                    old_score = ability_dict[ability_to_improve]
+                    ability_dict[ability_to_improve] += 1
+                    print(
+                        f"Your {ability_to_improve} has been increased from {old_score} "
+                        f"to {ability_dict[ability_to_improve]}!")
+                    self.calculate_modifiers()
+                    tries += 1
+                    points -= 1
+                    pause()
+                    continue
+
+                except (ValueError, KeyError):
+                    print("Invalid entry..")
+                    sleep(1)
+                    continue
 
     def level_up(self, exp_award, monster_gold):
         # called from main loop after victory
@@ -1877,28 +1913,72 @@ class Player:
             self.maximum_hit_points += gain_hit_points
             print(f"You gain {gain_hit_points} hit points")
             sleep(2.5)
+
             # Ability Score Improvement at levels 4, 8, 12, 16, and 19.
             # Fighters gain additional ASIs at the 6th and 14th levels
             # so, 4, 6, 8, 12, 14, 16, 19 or if player goes up more than one level
-            if self.level == 4 or self.level == 6 or self.level == 8 or self.level == 12 \
-                    or self.level == 14 or self.level == 16 or self.level == 19 or level_multiplier > 1:
-                self.asi()  # Ability Score Improvement calls calculate modifiers, so
-            self.calculate_modifiers()  # you may want to remove this call to calculate modifiers
-            if self.level == 5:
+
+            # ASI logic
+            # This logic also works for players going up more than one level,
+            # e.g. vanquishing a monster with very high experience reward
+            # Logic works by creating 2 lists and comparing whether the player's current level, or any levels between
+            # their last level and current level are ASI eligible. Ranges are initially counterintuitive in python;
+            # they do not include the last number in range, so I added +1 to end_range
+            # Also, for the current purposes, I added +1 to start_range as well, since we don't want to award ASI
+            # based on the previous experience level, only on current level and any eligible levels between.
+            range_1 = range((before_level + 1), (after_level + 1), 1)  # enumerate lvls between, inc. after_level
+            all_levels_between = list(range_1)  # create a list containing levels between, including after_level
+            asi_levels = [4, 6, 8, 12, 14, 16, 19]
+            # check if any levels between are ASI levels by comparing elements from both lists
+            # number_of_asi_awards = sum of all_levels_between elements which exist in asi_levels
+            number_of_asi_awards = sum(el in all_levels_between for el in asi_levels)
+            asi_level_check = False
+            if number_of_asi_awards > 0:
+                asi_level_check = True
+
+            # remove after testing:
+            print(f"Range between the before and after levels: {range_1}")  # remove after testing
+            print(f"Levels between last and current (including current): {all_levels_between}")  # remove after testing
+            print(f"ASI levels: {asi_levels}")  # remove after testing
+            print(f"Number of ASI awards: {number_of_asi_awards}")  # remove after testing
+            pause()  # remove after testing
+
+            if asi_level_check:
+                if self.asi_eligibility():  # ensure player has at least 1 ability score < 20
+                    if number_of_asi_awards > 1:
+                        print(f"You have earned {number_of_asi_awards} ability score improvements!")
+                        pause()
+
+                    asi_intro()
+                    for i in range(number_of_asi_awards):
+                        self.asi()
+
+                    print(f"You savor the empowering abilities you have gained..\n"
+                          f"And yet, the dungeon horde grows more powerful with you!")
+                    pause()
+                    self.hud()
+
+            self.calculate_modifiers()
+
+            if 5 in all_levels_between:  # fighters gain extra attack skill at level 5 # self.level == 5:
                 self.extra_attack = True
                 print("You gain the Extra Attack skill!!")  # this works in melee loop if level > 4, change to a boolean
                 pause()
                 self.hud()
+
             if after_proficiency_bonus > before_proficiency_bonus:
                 print(f"Your proficiency bonus increases from {before_proficiency_bonus} to {after_proficiency_bonus}!")
                 pause()
                 self.hud()
+
             if after_quantum_level > before_quantum_level:
                 print(f"Your Quantum knowledge level increases from {before_quantum_level} to {after_quantum_level}!")
                 self.quantum_units = self.maximum_quantum_units
                 pause()
                 self.hud()
+
             self.hud()
+
         else:
             if monster_gold > 0:
                 print(f"You snarf {monster_gold} gold pieces.")
@@ -5529,12 +5609,12 @@ class Player:
                 return True
             else:
                 print(f"The {monster.name} swiftly blocks your escape!")
-                time.sleep(.5)
+                sleep(.5)
                 print(f"You are rooted to the spot. You must stand your ground!")
                 pause()
                 self.hud()
                 # print(f"You raise your {self.wielded_weapon.name}..")
-                # time.sleep(1.5)
+                # sleep(1.5)
                 return False
         else:
             # bosses cannot be evaded.
@@ -5542,7 +5622,7 @@ class Player:
                 print(f"{monster.proper_name} foils your stealthy attempt and swiftly blocks your escape!")
             else:
                 print(f"The {monster.name} swiftly blocks your escape!")
-            time.sleep(.5)
+            sleep(.5)
             print(f"You are rooted to the spot. You must stand your ground!")
             pause()
             self.hud()
@@ -6215,13 +6295,13 @@ class Player:
     def use_scroll_of_town_portal(self):
         if self.town_portals < 1:
             print(f"You have no scrolls!")
-            time.sleep(2)
+            sleep(1.25)
             return False
         else:
             self.hud()
             self.town_portals -= 1
             print(f"The quantum portal appears before you; a seemingly impossible tunneling between distant places..")
-            time.sleep(1.5)
+            sleep(1.5)
             return True
 
     def poison_ingestion(self):
@@ -8053,26 +8133,20 @@ class Player:
         # NAVIGATION
 
     def town_navigation(self, player_name):
-        town_functions = input("(The Town of Fieldenberg)\n(S)ave, (Q)uit game, (I)nventory, (B)lacksmith, "
-                               "(C)hemist , (T)avern, or (E)nter dungeon --> ").lower()
-        '''        if town_functions == 'r':
-            print("Restart")
-            time.sleep(2)
-            cls()
-            in_town = False
-            break'''
-        if town_functions == 'q':
-
-            while True:
+        town_functions = input("(The Town of Fieldenberg)\n(S)ave, (Q)uit game, (R)estart game (I)nventory, "
+                               "(B)lacksmith, (C)hemist , (T)avern, or (E)nter dungeon --> ").lower()
+        if town_functions == 'r':
+            if are_you_sure():
+                print("Restart")
+                sleep(1.5)
                 cls()
-                confirm_quit = input(f"Quit game? (y/n) ").lower()
-                if confirm_quit not in ('y', 'n'):
-                    continue
-                elif confirm_quit == 'n':
-                    break
-                elif confirm_quit == 'y':
-                    print(f"Exiting...")
-                    exit()
+                self.in_town = False
+                return "Restart"
+
+        if town_functions == 'q':
+            if are_you_sure():
+                print(f"Exiting...")
+                exit()
         elif town_functions == 's':
             save_a_character = player_name + ".sav"
             if os.path.isfile(save_a_character):
@@ -8088,7 +8162,7 @@ class Player:
                         with open(character_filename, 'wb') as player_save:
                             pickle.dump(self, player_save)
                             print(f"{self.name} saved.")
-                            time.sleep(2)
+                            sleep(2)
                             break
             else:
                 print(f"Saving {self.name}...")
@@ -8096,7 +8170,7 @@ class Player:
                 with open(character_filename, 'wb') as player_save:
                     pickle.dump(self, player_save)
                     print(f"{self.name} saved.")
-                    time.sleep(2)
+                    sleep(2)
 
         elif town_functions == 'i':
             self.inventory()
@@ -8110,7 +8184,7 @@ class Player:
 
         elif town_functions == 'c':
             print("You make your way to the chemist manipulator..")
-            time.sleep(1.5)
+            sleep(1.5)
             chemist_theme()
             self.chemist_main()
             town_theme()
@@ -8129,8 +8203,10 @@ class Player:
                 print(f"You re-enter the portal.")
                 # self.town_portal_exists = False  # beta 10/12/2022
             else:
-                print("You enter the dungeon..")
-            time.sleep(1)
+                print("You make your descent..")
+                # sleep(1)
+                # print(f"BEWARE . . .")
+            sleep(1)
             return 'e'
 
     def navigation(self, dungeon_command):
@@ -9993,3 +10069,31 @@ return 0"""
                     pause()
         except FileNotFoundError:
             print(f"Missing hint_event_3.txt or bad file path.")"""
+"""confirm_quit = input(f"Quit game? (y/n) ").lower()
+                if confirm_quit not in ('y', 'n'):
+                    continue
+                elif confirm_quit == 'n':
+                    break
+                elif confirm_quit == 'y':"""
+"""cls()
+            print(f"                                  *Ability Score Improvement*")
+            print()
+            print(
+                f"You may choose to improve a single ability score, such as strength, and increase it by 2 points.\n"
+                f"\n"
+                f"                           *OR*\n"
+                f"\n"
+                f"You may choose to improve two ability scores, such as charisma and constitution, by 1 point each.\n"
+                f"\n"
+                f"NOTES: \n"
+                f"* Ability *modifiers* improve with each ascending even-numbered score, therefore, if unsure,\n"
+                f"  it is generally recommended to apply 1 point to odd-numbered ability scores and apply \n"
+                f"2 points to even-numbered scores.\n"
+                f"* When your Constitution modifier increases by 1, your hit point maximum increases by 1 for each\n"
+                f"  level you have attained.\n"
+                f"                         *The maximum score for any ability is 20*"
+                f"\n")
+            pause()
+"""
+"""if self.level == 4 or self.level == 6 or self.level == 8 or self.level == 12 \
+                    or self.level == 14 or self.level == 16 or self.level == 19 or asi_level_check:"""

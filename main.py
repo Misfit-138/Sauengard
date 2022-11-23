@@ -95,6 +95,8 @@ while True:
     while player_1.in_town:
         player_1.hud()
         command = player_1.town_navigation(player_name)
+        if command == "Restart":
+            break
         if command == 'e':
             player_1.in_town = False
             player_1.town_portal_exists = False

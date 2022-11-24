@@ -385,7 +385,7 @@ def mountain_king_theme():
 
 
 def pit_theme():
-    sound_player_loop('creepy_dungeon_theme.wav')
+    sound_player_loop('creepy_dungeon_theme_loop.wav')
 
 
 def boss_battle_theme():
@@ -7439,7 +7439,7 @@ class Player:
         ability_dict_subset = {key: value for key, value in ability_dict.items() if key in attributes}
         # Choose random attribute name
         random_attribute = random.choice(list(ability_dict_subset.keys()))
-        print(f"You feel as though something has been taken from you at the most visceral level..")
+        print(f"You feel as though you have been robbed at the most visceral level..")
         sleep(1.5)
         print(f"Your {random_attribute} has dropped!")
         ability_dict[random_attribute] -= 1
@@ -7484,11 +7484,10 @@ class Player:
         if wicked_queen_discovery not in self.discovered_interactives:
             self.discovered_interactives.append(wicked_queen_discovery)
             cls()
-            print(f"Upon a horrible throne of skulls, clad in a shining breastplate and equipped with a scepter"
-                  f" topped with\n"
-                  f"a human skull, sits the most awe-inspiringly beautiful creature you have ever beheld in your mortal"
-                  f"\nlife; the wicked Queen Jannbrielle.\n"
-                  f"She smiles and flashes a forked tongue between gleaming fangs. Her impossibly smooth, milky-white"
+            print_txt_file('queen_splash.txt')
+            pause()
+            cls()
+            print(f"She smiles and flashes a forked tongue between gleaming fangs. Her impossibly smooth, milky-white"
                   f"\nskin shimmers beneath the torchlight. On her head sits a crown of many skulls. Her raven-black\n"
                   f"hair shines gloriously. Every muscle, vein, and bone of her lovely flesh draw you to her."
                   f"\nYou cannot help but stare at her regal face, with her strong jawline, black, pouting lips"
@@ -10022,7 +10021,7 @@ return 0"""
         winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\mountain_king.wav',
                            winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)"""
 """    if os.name == 'nt':
-        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme.wav',
+        winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\creepy_dungeon_theme_loop.wav',
                            winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)"""
 """    if os.name == 'nt':
         winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\boss_battle_2.wav',

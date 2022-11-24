@@ -4,6 +4,7 @@ The gateway to the Sauengard Dungeon. Here, you will find a tavern, a blacksmith
 armor, and weapons may be purchased and sold for gold. Visiting the tavern allows for rest, which heals wounds and
 recovers quantum energy (for a small fee). The tavern is also a local gathering place where you will participate in
 events which will be triggered by your progress in the dungeon. Visit the tavern often; it's an interesting place.
+
 Dungeon Navigation
 W-A-S-D is used for North, South, East, and West. Also, if in wider-open areas, compound movements may be used;
 NE, NW, SE, SW. Pay attention to the descriptions of the spaces you navigate to. Use the (L)ook function if you are

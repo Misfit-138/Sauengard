@@ -1,7 +1,7 @@
 # Sauengard © Copyright 2022 by Jules Pitsker
 # All rights reserved.
 # This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
+# LICENSE.txt file in the root directory of this source tree.
 
 # Dark Sorrowful Cello "Soul's Departure" Royalty Free Music by Darren Curtis
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)

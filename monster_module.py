@@ -1,7 +1,7 @@
 # Sauengard © Copyright 2022 by Jules Pitsker
 # All rights reserved.
 # This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
+# LICENSE.txt file in the root directory of this source tree.
 
 # Dark Sorrowful Cello "Soul's Departure" Royalty Free Music by Darren Curtis
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
@@ -2331,7 +2331,7 @@ class WickedQueenJannbrielle(Monster):
         super().__init__()
         self.level = 20
         self.name = "Wicked Queen"
-        self.proper_name = "Queen Jannbrielle"
+        self.proper_name = "Queen Jannbrielle the Wicked"
         self.he_she_it = "she"
         self.his_her_its = "her"
         self.him_her_it = "her"
@@ -2353,7 +2353,7 @@ class WickedQueenJannbrielle(Monster):
         self.dot_multiplier = dice_roll(1, 6)
         self.dot_turns = 5
         self.undead = True
-        self.immunities = ["Turn Undead", "Web", "Hold Monster", "Banish"]
+        self.immunities = ["All"]  # ["Turn Undead", "Web", "Hold Monster", "Banish"]
         self.vulnerabilities = ["Fire Storm"]
         self.resistances = ["All"]
         self.quantum_energy = True
@@ -2365,7 +2365,7 @@ class WickedQueenJannbrielle(Monster):
         self.number_of_hd = 2
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.hit_points = 1600  # dice_roll(35, 20) + 30
+        self.hit_points = 1750  # dice_roll(35, 20) + 30
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 20
@@ -2376,7 +2376,7 @@ class WickedQueenJannbrielle(Monster):
         self.attack_2 = 15
         self.attack_2_phrase = "With a gleeful laugh, she attacks with her whip!"
         self.attack_3 = 16
-        self.attack_3_phrase = "With catlike elegance and agility, she strikes with her beautiful and horrible claws!"
+        self.attack_3_phrase = "With catlike elegance and agility, she strikes with a nasty dagger!"
         self.attack_4 = 18
         self.attack_4_phrase = "Producing a long, black blade, she strikes with a frenzied rage!"
         self.attack_5 = 20
@@ -2398,7 +2398,7 @@ class WickedQueenJannbrielle(Monster):
                                        "you in a maelstrom of malice!"
         self.introduction = f"\'I am your doom. Your life beckons to be taken!\', says the undead queen, plainly."
         self.is_discovered = False
-        self.poison_phrase = f"The queen attacks with venomous fangs!"
+        self.poison_phrase = f"The queen attacks with her venomous fangs!"
         self.paralyze_phrase = f"The irresistible beauty of the undead queen begins to weaken you.."
 
 

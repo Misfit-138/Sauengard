@@ -4,15 +4,15 @@ perhaps the most cruel was what is often called, 'brain fog'- a frustrating, cog
 ability to think, function and create. It was suggested by one of my doctors that I try to 'exercise' my brain, possibly
 by learning a language. Later, my daughter recommended I combine the suggestion with my beloved computer hobby, and
 teach myself a computer language.
-Though I have been building and fiddling with PC's for more than 40 years, I hadn't actually coded anything on a
-computer since 1983 or so. (I am, of course, not counting BASH scripts.) Back then, machines generally shipped with a
-BASIC interpreter, and BASIC is all I ever worked with. Many years later, I read Edsger Dijkstra's somewhat famous
-quote: 'It is practically impossible to teach good programming style to students that have had prior exposure to BASIC;
-As potential programmers they are mentally mutilated beyond hope of regeneration.'
+Though I have been building and fiddling with PC's for more than 40 years, I hadn't actually coded much of anything on a
+computer since about 1983. Back then, machines generally shipped with a BASIC interpreter, and BASIC is all I ever
+coded with. Many years later, I read Edsger Dijkstra's somewhat famous quote: 'It is practically impossible to teach
+good programming style to students that have had prior exposure to BASIC; As potential programmers they are mentally
+mutilated beyond hope of regeneration.'
 I am sure that in my case, this is humorous due to the truth it conveys. This is my first attempt at Python, as well as
 Object-Oriented-Programming concepts. If you are a programmer, I am sure you will be shaking your head at all of the
 inefficiency, redundancy and amateur choices I have made. However, I am quite content to have simply been able to
-accomplish something I never thought possible, and to learn a little something along the way.
+accomplish something I never thought possible, to learn a little something along the way, and to have some fun.
 This program is the culmination of many thousands of challenging, often grueling, hours, in front of a screen, during
 the 'productive time of my day', when ability, desire and motivation diverge.
 
@@ -21,4 +21,6 @@ Commodore 64, such as Infocom's Zork, Zork II, Zork III, Infidel, and dungeon ga
 The monsters, atmosphere and combat systems are perhaps most similar to Telengard, (though far more sophisticated),
 but also draw from other fantasy games, like AD&D, and most affectionately, Milton Bradley's 1981 'Dark Tower'
 electronic board game. Sauengard is similar to the Infocom games in its navigation, descriptions, and low-key humor.
+Fans of 8-bit computing will likely recognize some throwbacks and homages to these wonderful games from a bygone
+era of computing.
 

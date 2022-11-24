@@ -1,7 +1,7 @@
 # Sauengard © Copyright 2022 by Jules Pitsker
 # All rights reserved.
 # This source code is licensed under the BSD-style license found in the
-# LICENSE file in the root directory of this source tree.
+# LICENSE.txt file in the root directory of this source tree.
 
 # Dark Sorrowful Cello "Soul's Departure" Royalty Free Music by Darren Curtis
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
@@ -67,7 +67,7 @@ def are_you_sure():
             return False
 
 
-def typing(message):
+def typewriter(message):
     print("")
     for word in message:
         sleep(0.0075)  # (random.choice([0.1, 0.09, 0.08, 0.07, 0.06])) 0.01 seems very good
@@ -89,13 +89,13 @@ def print_txt_file(txt_file_name):
         print(f"Missing {txt_file_name} or bad file path.")
 
 
-def type_txt_file(txt_file_name):
+def typewriter_txt_file(txt_file_name):
     cls()
     try:
         p = Path(__file__).with_name(txt_file_name)
         with p.open('r') as message:
             if message.readable():
-                typing(message.read())
+                typewriter(message.read())
 
     except FileNotFoundError:
         print(f"Missing {txt_file_name} or bad file path.")
@@ -105,22 +105,23 @@ def game_splash():
     while True:
         cls()
         print_txt_file('splash_art.txt')
-        typing("                               "
-               "W  E  L  C  O  M  E    T  O    S  A  U  E  N  G  A  R  D.\n")
-        print()
+        typewriter("                               "
+                   "W  E  L  C  O  M  E    T  O    S  A  U  E  N  G  A  R  D.\n")
+        print(f"                                         "
+              f"© Copyright 2022 by Jules Pitsker")
         choice = input(f"                     "
                        f"(I)ntroduction  (A)bout  (T)ips  (M)usic Acknowledgement  (L)icense  (B)egin ").lower()
 
         if choice == 'i':
-            type_txt_file('introduction.txt')
+            typewriter_txt_file('introduction.txt')
             pause()
 
         elif choice == 'a':
-            type_txt_file('about.txt')
+            typewriter_txt_file('about.txt')
             pause()
 
         elif choice == 't':
-            type_txt_file('tips.txt')
+            typewriter_txt_file('tips.txt')
             pause()
 
         elif choice == 'm':
@@ -128,7 +129,7 @@ def game_splash():
             pause()
 
         elif choice == 'l':
-            print_txt_file('LICENSE')
+            print_txt_file('LICENSE.txt')
             pause()
 
         elif choice == 'b':
@@ -165,11 +166,10 @@ def compare():
 
 
 def pause():
-    """    if os.name == 'nt':
+    if os.name == 'nt':
         os.system('pause')
     else:
-        input("Press [ENTER] to continue . . . ")"""
-    input("Press [ENTER] to continue . . . ")
+        input("Press [ENTER] to continue . . . ")
     return
 
 
@@ -1921,10 +1921,7 @@ class Player:
             print(f"You gain {gain_hit_points} hit points")
             sleep(2.5)
 
-            # Ability Score Improvement at levels 4, 8, 12, 16, and 19.
-            # Fighters gain additional ASIs at the 6th and 14th levels
-            # so, 4, 6, 8, 12, 14, 16, 19 or if player goes up more than one level
-
+            # Ability Score Improvement at levels 4, 6, 8, 12, 14, 16, 19
             # ASI logic
             # This logic also works for players going up more than one level,
             # e.g. vanquishing a monster with very high experience reward
@@ -1944,7 +1941,7 @@ class Player:
                 asi_level_check = True
 
             # remove after testing:
-            print(f"Range between the before and after levels: {range_1}")  # remove after testing
+            # print(f"Range between the before and after levels: {range_1}")  # remove after testing
             print(f"Levels between last and current (including current): {all_levels_between}")  # remove after testing
             print(f"ASI levels: {asi_levels}")  # remove after testing
             print(f"Number of ASI awards: {number_of_asi_awards}")  # remove after testing
@@ -1967,7 +1964,7 @@ class Player:
 
             self.calculate_modifiers()
 
-            if 5 in all_levels_between:  # fighters gain extra attack skill at level 5 # self.level == 5:
+            if 5 in all_levels_between:  # players gain extra attack skill at level 5 # self.level == 5:
                 self.extra_attack = True
                 print("You gain the Extra Attack skill!!")  # this works in melee loop if level > 4, change to a boolean
                 pause()
@@ -6367,29 +6364,29 @@ class Player:
         sleep(1)
         pause()
         cls()
-        typing(f"Jenna catches up to you at end of the hallway. \'Ye are {self.name}, are ye not?\'")
-        typing(f"Nodding and instinctively looking about for eavesdroppers, you re-focus on her concerned look.")
+        typewriter(f"Jenna catches up to you at end of the hallway. \'Ye are {self.name}, are ye not?\'")
+        typewriter(f"Nodding and instinctively looking about for eavesdroppers, you re-focus on her concerned look.")
         if len(self.vanquished_foes):
             vanquished_foes = convert_list_to_string_with_commas_only(self.vanquished_foes)
-            typing(f"\'I know of ye.\' Your puzzled look speaks for you, as she continues,\n"
-                   f"\'We 'ave 'eard of it.. how ye' 'ave defeated {vanquished_foes}...and others!\'")
-        typing("\'There is somethin' ye should know!\' Her level of anxiety gives you pause; it seems out of\n"
-               "character for her.\n\'Ye should seek out Vozzbozz!\' Pausing with a far away look, she nods.\n"
-               "\'I'm headin' back to the bar, and we'll make like we never spoke o' this..\'\n"
-               "\'Vozzbozz is in the barroom. He's the one with the raven on 'is shoulder!\'\n"
-               "The meeting ends as abruptly as it began. Jenna disappears toward the bar as you slowly\n"
-               "start to follow a good distance behind, impatient and confused.\n")
+            typewriter(f"\'I know of ye.\' Your puzzled look speaks for you, as she continues,\n"
+                       f"\'We 'ave 'eard of it.. how ye' 'ave defeated {vanquished_foes}...and others!\'")
+        typewriter("\'There is somethin' ye should know!\' Her level of anxiety gives you pause; it seems out of\n"
+                   "character for her.\n\'Ye should seek out Vozzbozz!\' Pausing with a far away look, she nods.\n"
+                   "\'I'm headin' back to the bar, and we'll make like we never spoke o' this..\'\n"
+                   "\'Vozzbozz is in the barroom. He's the one with the raven on 'is shoulder!\'\n"
+                   "The meeting ends as abruptly as it began. Jenna disappears toward the bar as you slowly\n"
+                   "start to follow a good distance behind, impatient and confused.\n")
         pause()
         cls()
         # meeting with vozzbozz and introduction to tor'bron
-        type_txt_file('hint_event_1.txt')
+        typewriter_txt_file('hint_event_1.txt')
         pause()
 
         cls()
-        typing(f"{self.name},\nThe guardian of {self.dungeon.name} has, in its possession, an ornate dagger "
-               f"of very fine craftsmanship.\nIt is imperative you retrieve it. Return here with it so that "
-               f"matters may progress.\n"
-               f"\n                                                     -V\n")
+        typewriter(f"{self.name},\nThe guardian of {self.dungeon.name} has, in its possession, an ornate dagger "
+                   f"of very fine craftsmanship.\nIt is imperative you retrieve it. Return here with it so that "
+                   f"matters may progress.\n"
+                   f"\n                                                     -V\n")
         self.boss_hint_1_event = True
         pause()
         return
@@ -6403,38 +6400,42 @@ class Player:
         sleep(1)
         pause()
         cls()
-        typing(f"\'Well! {self.name}!\', he bellows in his booming voice. \'Sit!\' Something in his dour demeanor\n"
-               f"tells you it is not an invitation, but an order. You marvel at the size and strength of the man.\n"
-               f"His jet black hair lays long on his head, and covers his body in a wiry patchwork.\n"
-               f"Long sideburns flank a strong jawbone, and his deep-set amber eyes burn with gripping intensity.\n"
-               f"\'And where is it? Do you have it?\', he asks, his tone tense and distrustful.\n"
-               f"You carefully retrieve the dagger and pass it to him across the table. Roughly and without regard,\n"
-               f"he swipes it from you, yanks it from its sheath and launches it across the room, over the heads\n"
-               f"of all the patrons on this side of the bar, until it abruptly lodges in the wall with a bang.")
+        typewriter(f"\'Well! {self.name}!\', he bellows in his booming voice. \'Sit!\' Something in his dour demeanor\n"
+                   f"tells you it is not an invitation, but an order. You marvel at the size and strength of the man.\n"
+                   f"His jet black hair lays long on his head, and covers his body in a wiry patchwork.\n"
+                   f"Long sideburns flank a strong jawbone, and his deep-set amber eyes burn with gripping intensity.\n"
+                   f"\'And where is it? Do you have it?\', he asks, his tone tense and distrustful.\n"
+                   f"You carefully retrieve the dagger and pass it to him across the table. Roughly and without "
+                   f"regard,\n"
+                   f"he swipes it from you, yanks it from its sheath and launches it across the room, over the heads\n"
+                   f"of all the patrons on this side of the bar, until it abruptly lodges in the wall with a bang.")
         if len(self.vanquished_foes):
             vanquished_foes = convert_list_to_string_with_commas_only(self.vanquished_foes)
-            typing(f"\'The slayer of {vanquished_foes}...\n...and others besides!\'\n")
-        typing(f"\'When first I saw you, I was...\', he searches for the word. \'..skeptical!\'\n"
-               "But now, things are different! Now I know you are able-bodied and strong! Good! Very good, this!\' "
-               "He nods.\n"
-               "A sting of disrespect hits you. After the toil and struggle to retrieve the prized dagger, you are\n"
-               "now realizing it was nothing more than a test to prove your mettle to this stranger!\n"
-               "\'You  must be Tor'bron!\', you say as you slide into the booth. His eyes\n"
-               f"narrow slightly and he takes a sip of ale. Continuing, you say, \'I heard Vozzbozz address you\n"
-               "the last time we saw each other. And may I add, I never doubted *your* abilities!\'\n"
-               "Still alert, he thinks about your words. His glowering slowly turns to what must be a smile.\n"
-               "Then, he laughs, a deep and hearty laugh. Instantly, he fiercely slams the table with his fist,\n"
-               "so that the entire room shakes and becomes silent. He raises his huge hand, pointing\n"
-               "straight at you. \'Good! Don't ever doubt them!\' And again he smiles and laughs as the tavern ambience"
-               f"\ngradually returns. Reaching his tree-trunk arm toward you, he slams you on the shoulder with a"
-               f" heavy hand.\n"
-               f"You are thankful for the {self.armor.name.lower()} you wear; without it, the blow would undoubtedly "
-               "have been an injury!\nInstinctively reaching for the aching shoulder, you reply plainly, "
-               "\'I certainly will not..\'\n")
+            typewriter(f"\'The slayer of {vanquished_foes}...\n...and others besides!\'\n")
+        typewriter(f"\'When first I saw you, I was...\', he searches for the word. \'..skeptical!\'\n"
+                   "But now, things are different! Now I know you are able-bodied and strong! Good! Very good, this!\' "
+                   "He nods.\n"
+                   "A sting of disrespect hits you. After the toil and struggle to retrieve the prized dagger, "
+                   "you are\n"
+                   "now realizing it was nothing more than a test to prove your mettle to this stranger!\n"
+                   "\'You  must be Tor'bron!\', you say as you slide into the booth. His eyes\n"
+                   f"narrow slightly and he takes a sip of ale. Continuing, you say, \'I heard Vozzbozz address you\n"
+                   "the last time we saw each other. And may I add, I never doubted *your* abilities!\'\n"
+                   "Still alert, he thinks about your words. His glowering slowly turns to what must be a smile.\n"
+                   "Then, he laughs, a deep and hearty laugh. Instantly, he fiercely slams the table with his fist,\n"
+                   "so that the entire room shakes and becomes silent. He raises his huge hand, pointing\n"
+                   "straight at you. \'Good! Don't ever doubt them!\' And again he smiles and laughs as the tavern "
+                   "ambience"
+                   f"\ngradually returns. Reaching his tree-trunk arm toward you, he slams you on the shoulder with a"
+                   f" heavy hand.\n"
+                   f"You are thankful for the {self.armor.name.lower()} you wear; without it, the blow would "
+                   f"undoubtedly "
+                   "have been an injury!\nInstinctively reaching for the aching shoulder, you reply plainly, "
+                   "\'I certainly will not..\'\n")
         pause()
         cls()
         # meet Tor'bron, get hints
-        type_txt_file('hint_event_2.txt')
+        typewriter_txt_file('hint_event_2.txt')
         pause()
         cls()
         self.boss_hint_2_event = True
@@ -6463,7 +6464,7 @@ class Player:
         pause()
         cls()
         # another meeting, get hints
-        type_txt_file('hint_event_3.txt')
+        typewriter_txt_file('hint_event_3.txt')
         pause()
         cls()
         self.boss_hint_3_event = True

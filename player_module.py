@@ -105,9 +105,11 @@ def game_splash():
     while True:
         cls()
         print_txt_file('splash_art.txt')
-        typing("                               W  E  L  C  O  M  E    T  O    S  A  U  E  N  G  A  R  D.\n")
+        typing("                               "
+               "W  E  L  C  O  M  E    T  O    S  A  U  E  N  G  A  R  D.\n")
         print()
-        choice = input(f"                                (I)ntroduction  (A)bout  (T)ips  (L)icense  (B)egin ").lower()
+        choice = input(f"                     "
+                       f"(I)ntroduction  (A)bout  (T)ips  (M)usic Acknowledgement  (L)icense  (B)egin ").lower()
 
         if choice == 'i':
             type_txt_file('introduction.txt')
@@ -119,6 +121,10 @@ def game_splash():
 
         elif choice == 't':
             type_txt_file('tips.txt')
+            pause()
+
+        elif choice == 'm':
+            print_txt_file('music_acknowledgement.txt')
             pause()
 
         elif choice == 'l':
@@ -159,10 +165,11 @@ def compare():
 
 
 def pause():
-    if os.name == 'nt':
+    """    if os.name == 'nt':
         os.system('pause')
     else:
-        input("Press [ENTER] to continue . . . ")
+        input("Press [ENTER] to continue . . . ")"""
+    input("Press [ENTER] to continue . . . ")
     return
 
 

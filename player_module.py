@@ -329,12 +329,6 @@ def asi_intro():
     pause()
 
 
-def encounter_logic():
-    monster_encounter = dice_roll(1, 20)
-    # print(f"Monster encounter roll: {monster_encounter}")
-    return monster_encounter
-
-
 def sound_player(sound_file):
     # a sound player function which simply plays sound_file asynchronously
     if os.name == 'nt':
@@ -1263,13 +1257,14 @@ class Player:
 
     def __init__(self, name, strength, dexterity, constitution, intelligence, wisdom, charisma):
         self.name = name
-        self.level = 3
+        self.level = 1
         self.quantum_level = 1
-        self.maximum_quantum_units = 600
-        self.quantum_units = 600
-        self.experience = 2699
+        self.maximum_quantum_units = 2
+        self.quantum_units = 2
+        self.encounter = 0
+        self.experience = 0
         self.base_dc = 8
-        self.gold = 500000
+        self.gold = 0
         self.wielded_weapon = short_sword
         self.armor = padded_armor
         self.shield = no_shield
@@ -1289,8 +1284,8 @@ class Player:
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.hit_dice = 10
         self.proficiency_bonus = 2
-        self.maximum_hit_points = 100 + self.constitution_modifier
-        self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.maximum_hit_points = 10 + self.constitution_modifier
+        self.hit_points = 100000  # self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
         self.is_paralyzed = False
         self.cloak = canvas_cloak
@@ -1301,11 +1296,11 @@ class Player:
         self.armor_class = (self.armor.ac + self.armor.armor_bonus +
                             self.shield.ac + self.boots.ac + self.dexterity_modifier)
         self.stealth = self.cloak.stealth
-        self.town_portals = 10
-        self.elixirs = 10
-        self.potions_of_healing = 10
-        self.antidotes = 10
-        self.potions_of_strength = 10
+        self.town_portals = 1
+        self.elixirs = 1
+        self.potions_of_healing = 1
+        self.antidotes = 1
+        self.potions_of_strength = 1
         self.potion_of_strength_effect = False
         self.potion_of_strength_uses = 0
         self.max_quantum_strength_uses = self.quantum_level + self.strength_modifier
@@ -1334,10 +1329,10 @@ class Player:
         self.previous_y = 0
         self.in_a_pit = False
         self.vanquished_foes = []
-        self.sikira_ally = True
-        self.torbron_ally = True
-        self.magnus_ally = True
-        self.vozzbozz_ally = True
+        self.sikira_ally = False
+        self.torbron_ally = False
+        self.magnus_ally = False
+        self.vozzbozz_ally = False
         self.boss_hint_1 = False
         self.boss_hint_1_event = False
         self.boss_hint_2 = False
@@ -1993,6 +1988,29 @@ class Player:
             self.hud()
 
     # BATTLE AND PROXIMITY TO MONSTER OCCURRENCES
+
+    def encounter_logic(self):
+        self.encounter = dice_roll(1, 20)
+        # monster_encounter = dice_roll(1, 20)
+        # print(f"Monster encounter roll: {monster_encounter}")
+        # return monster_encounter
+
+    def check_for_boss(self, event):
+        if event == "Legendary Monster":
+            self.encounter = 95
+        elif event == "Elite Monster":
+            self.encounter = 96
+        elif event == "Undead Prophet":
+            self.encounter = 97
+        elif event == "King Boss":
+            self.encounter = 98
+        elif event == "Exit Boss":
+            self.encounter = 99
+        elif event == "Wicked Queen":
+            self.encounter = 100
+        else:
+            return False
+
     def rndm_death_statement(self):
         # called from main loop
         rndm_statements = ["You have succumbed to your injuries!",
@@ -2002,44 +2020,48 @@ class Player:
         print(random.choice(rndm_statements))
         return
 
-    def meta_monster_generator(self, encounter):
+    def meta_monster_generator(self):
         # called from main loop
         monster = None
-        if encounter < 11:  # regular monster
-            if encounter == 1:
-                monster = self.micro_boss_generator()
-            else:
-                monster = self.regular_monster_generator()
+        if self.encounter < 11:  # regular monster
+            monster = self.regular_monster_generator()
         # monster = Shadow()  # HobgoblinCaptain()  # put testing monster here
-        elif encounter == 99:  # level exit boss fight
+        elif self.encounter == 99:  # level exit boss fight
             monster = self.exit_boss_generator()
             gong()
             sleep(4)
             boss_battle_theme()
             pause()
             self.hud()
-        elif encounter == 98:  # undead king
+        elif self.encounter == 98:  # undead king
             monster = self.king_monster_generator()
             gong()
             sleep(4)
             mountain_king_theme()
             pause()
             self.hud()
-        elif encounter == 97:  # undead prophet
+        elif self.encounter == 97:  # undead prophet
             monster = self.undead_prophet_generator()
             gong()
             sleep(4)
             boss_battle_theme()
             pause()
             self.hud()
-        elif encounter == 96:  # micro boss
-            monster = self.micro_boss_generator()
+        elif self.encounter == 96:  # elite monster
+            monster = self.elite_monster_generator()
+            gong()  # consider removing this
+            sleep(4)  # same
+            boss_battle_theme()  # same
+            pause()
+            self.hud()
+        elif self.encounter == 95:  # legendary monster
+            monster = self.legendary_monster_generator()
             gong()
             sleep(4)
             boss_battle_theme()
             pause()
             self.hud()
-        elif encounter == 100:  # final boss
+        elif self.encounter == 100:  # final boss
             monster = self.wicked_queen_generator()
             gong()
             sleep(4)
@@ -2053,10 +2075,42 @@ class Player:
         wicked_queen = WickedQueenJannbrielle()  # monster_dict([4][0])()
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
         print(f"The Queen stands, approaches the party and readies herself for battle!")
-
         return wicked_queen
 
-    def micro_boss_generator(self):
+    def legendary_monster_generator(self):
+        # called from meta_monster_generator() if encounter == 95
+        rndm_boss_names = ['Sarlen', 'Sinedor', 'Birlendor', 'Lichtor', 'Renburr',
+                           'Belorg', 'Sirlak', 'Gruldirren', 'Falldorren', 'Tilenbor', 'Durjinn',
+                           'Morgenoth', 'Tergoam', 'Terdannor', 'Lorenqor', 'Worgoth',
+                           'Hahrbinnor', 'Korrendor', 'Karbrath', 'Qintar', 'Wobard',
+                           'Sorrikon', 'Dellbrion', 'Selanius', 'Qorron', 'Sorrendir',
+                           'Mawleon', 'Sador', 'Qardormirr', 'Bendorn', 'Vallqedon',
+                           'Merlkandon']
+
+        # just in case I forget to make level 21 monsters.
+        if self.level < 20:
+            monster_key = (self.level + 1)
+        else:
+            monster_key = self.level
+        monster_cls = random.choice(monster_dict[monster_key])
+        boss_monster = monster_cls()
+        first_name = random.choice(rndm_boss_names)
+        boss_monster.proper_name = f"{first_name} the Legendary {boss_monster.name}"
+        boss_monster.hit_points = math.ceil(boss_monster.hit_points * 2)
+        boss_monster.experience_award = math.ceil(boss_monster.experience_award * 2)
+        boss_monster.strength += 4
+        boss_monster.dexterity += 4
+        boss_monster.constitution += 4
+        boss_monster.intelligence += 4
+        boss_monster.wisdom += 4
+        boss_monster.charisma += 4
+        boss_monster.armor_class += 2
+        boss_monster.resistances = ["All"]
+        self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
+        print(f"Before you stands {boss_monster.proper_name}!")
+        return boss_monster
+
+    def elite_monster_generator(self):
         # called from meta_monster_generator() if encounter == 96
         rndm_boss_names = ['Sarlongrath', 'Sundor', 'Birrenol', 'Sontor', 'Marburr',
                            'Belok', 'Sorlak', 'Grildorren', 'Falaur', 'Tildor', 'Durj',
@@ -2074,12 +2128,18 @@ class Player:
         monster_cls = random.choice(monster_dict[monster_key])
         boss_monster = monster_cls()
         first_name = random.choice(rndm_boss_names)
-        boss_monster.proper_name = f"{first_name} the {boss_monster.name}"
+        boss_monster.proper_name = f"{first_name} the Elite {boss_monster.name}"
+        boss_monster.hit_points = math.ceil(boss_monster.hit_points * 1.5)
+        boss_monster.experience_award = math.ceil(boss_monster.experience_award * 1.5)
+        boss_monster.strength += 2
+        boss_monster.dexterity += 2
+        boss_monster.constitution += 2
+        boss_monster.intelligence += 2
+        boss_monster.wisdom += 2
+        boss_monster.charisma += 2
+        boss_monster.armor_class += 2
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
-        print(f"Before you "
-              f"stands {boss_monster.proper_name}!")
-        pause()
-        self.hud()
+        print(f"Before you stands {boss_monster.proper_name}!")
         return boss_monster
 
     def regular_monster_generator(self):
@@ -2087,8 +2147,10 @@ class Player:
         maximum_level = self.level  # (self.level + 1) makes it too hard
         minimum_level = 1
         if self.level > 2:
-            minimum_level = (self.level - 1)  # this should keep it more challenging and fun
+            minimum_level = (self.level - 2)  # this should keep it more challenging and fun
         regular_monster_key = random.randint(minimum_level, maximum_level)
+        if self.encounter == 1:  # 5% chance of running into monsters that are +1 level
+            regular_monster_key = self.level + 1
         regular_monster_cls = random.choice(monster_dict[regular_monster_key])
         regular_monster = regular_monster_cls()
         return regular_monster
@@ -2142,8 +2204,9 @@ class Player:
             monster_key = self.level
         monster_cls = random.choice(monster_dict[monster_key])
         exit_boss = monster_cls()
+        exit_boss.hit_points = math.ceil(exit_boss.hit_points * 1.25)
         first_name = random.choice(rndm_boss_names)
-        exit_boss.proper_name = f"{first_name} the {exit_boss.name} guardian"
+        exit_boss.proper_name = f"{first_name} the Elite {exit_boss.name} guardian"
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
         print(f"In the archway to the staircase leading down to {self.dungeon.name} "
               f"stands {exit_boss.proper_name}!\n"
@@ -5596,9 +5659,9 @@ class Player:
             sleep(1)
             return
 
-    def evade(self, monster, encounter):
+    def evade(self, monster):
         # called from main loop
-        if encounter < 21:
+        if self.encounter < 21:
             print(f"You attempt an evasive maneuver..")
             sleep(1)
             evade_success = dice_roll(1, 20)
@@ -7039,10 +7102,10 @@ class Player:
             pause()
             return
 
-    def loot(self, encounter):
+    def loot(self):
         # Called from main loop
 
-        if encounter < 21:  # regular monster
+        if self.encounter < 21:  # regular monster
             loot_difficulty_class = 10
             treasure_chest_difficulty_class = 20
         else:  # boss
@@ -7051,7 +7114,7 @@ class Player:
 
         # chance to get treasure chest
         possible_treasure_chest = dice_roll(1, 20)
-        if encounter < 21:  # regular monster
+        if self.encounter < 21:  # regular monster
             if possible_treasure_chest >= treasure_chest_difficulty_class:
                 self.treasure_chest()
                 return
@@ -7501,12 +7564,21 @@ class Player:
         else:
             return
 
-    def micro_boss_event(self):
+    def legendary_monster_event(self):
+        # called from event_logic()
+        mini_boss_discovery = f"level {self.dungeon.level} mini boss"
+        if mini_boss_discovery not in self.discovered_interactives:
+            self.discovered_interactives.append(mini_boss_discovery)
+            return "Legendary Monster"
+        else:
+            return
+
+    def elite_monster_event(self):
         # called from event_logic()
         micro_boss_discovery = f"level {self.dungeon.level} micro boss"
         if micro_boss_discovery not in self.discovered_interactives:
             self.discovered_interactives.append(micro_boss_discovery)
-            return "Micro Boss"
+            return "Elite Monster"
         else:
             return
 
@@ -7952,13 +8024,13 @@ class Player:
             pause()
             return
 
-    def npc_defeats_monster_logic(self, monster, damage, encounter):
+    def npc_defeats_monster_logic(self, monster, damage):
         # called from npc_attack_logic() to discern if npc defeats monster, and
         # monster dies mid-party-turn
         monster.reduce_health(damage)
         if monster.check_dead():
             self.hud()
-            if encounter > 20:  # if fighting boss
+            if self.encounter > 20:  # if fighting boss
                 gong()
                 if monster.proper_name != "None":
                     print(f"The party has vanquished {monster.proper_name}! "
@@ -7975,14 +8047,14 @@ class Player:
         else:
             return False
 
-    def npc_attack_logic(self, monster, encounter):
+    def npc_attack_logic(self, monster):
         # called from main loop after player quantum or melee attack (or potion)
         if self.sikira_ally or self.vozzbozz_ally or self.torbron_ally or self.magnus_ally:
             victory = False
             if self.sikira_ally:
                 if not sikira.retreating:
                     ally_dmg1 = self.npc_melee(sikira, monster.name, monster.armor_class)
-                    if self.npc_defeats_monster_logic(monster, ally_dmg1, encounter):
+                    if self.npc_defeats_monster_logic(monster, ally_dmg1):
                         victory = True
                         return victory
                     else:
@@ -7991,7 +8063,7 @@ class Player:
             if self.torbron_ally:
                 if not torbron.retreating:
                     ally_dmg2 = self.npc_melee(torbron, monster.name, monster.armor_class)
-                    if self.npc_defeats_monster_logic(monster, ally_dmg2, encounter):
+                    if self.npc_defeats_monster_logic(monster, ally_dmg2):
                         victory = True
                         return victory
                     else:
@@ -8000,7 +8072,7 @@ class Player:
             if self.magnus_ally:
                 if not magnus.retreating:
                     ally_dmg3 = self.npc_melee(magnus, monster.name, monster.armor_class)
-                    if self.npc_defeats_monster_logic(monster, ally_dmg3, encounter):
+                    if self.npc_defeats_monster_logic(monster, ally_dmg3):
                         victory = True
                         return victory
                     else:
@@ -8009,7 +8081,7 @@ class Player:
             if self.vozzbozz_ally:
                 if not vozzbozz.retreating:
                     ally_dmg4 = self.vozzbozz_attack(monster)
-                    if self.npc_defeats_monster_logic(monster, ally_dmg4, encounter):
+                    if self.npc_defeats_monster_logic(monster, ally_dmg4):
                         victory = True
                         return victory
                     else:
@@ -8127,7 +8199,8 @@ class Player:
                       self.dungeon.teleporter: self.teleporter_event,
                       self.dungeon.elevator: self.elevator_event,
                       self.dungeon.pit: self.pit_event,
-                      self.dungeon.micro_boss: self.micro_boss_event,
+                      self.dungeon.elite_monster: self.elite_monster_event,
+                      self.dungeon.legendary_monster: self.legendary_monster_event,
                       self.dungeon.wicked_queen: self.wicked_queen_event,
                       self.dungeon.exit: self.dungeon_exit_event
                       }

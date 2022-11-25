@@ -32,10 +32,11 @@ import pickle
 from dungeons import dungeon_dict
 import os
 from player_module import sad_cello_theme, cls, game_splash, character_generator, town_theme, gong, sleep, \
-    encounter_logic, pause, are_you_sure
+    pause, are_you_sure
 
 cls()
-print(f"For best experience, maximize terminal screen size.")
+if os.name == 'nt':
+    print(f"For best gaming experience, please ensure terminal window is maximized.")
 pause()
 while True:
     sad_cello_theme()
@@ -205,21 +206,12 @@ while True:
                 player_1.navigation_position_coordinates()
                 # ENCOUNTER LOGIC IS DETERMINED *BEFORE* event_logic(), BUT CAN BE RE-ASSIGNED BASED ON
                 # RETURNED VALUES FROM event_logic()
-                encounter = encounter_logic()
-                # encounter = 15  # testing: this will make no monsters except bosses. 0 should make no monsters at all
+                player_1.encounter_logic()
+                # player_1.encounter = 96  #  0 should make no monsters at all
                 # EVENT LOGIC IS DETERMINED BEFORE end_of_turn_calculation() AND player_1.check_dead(),
                 # IN CASE PLAYER SUFFERS DAMAGE, ETC.
                 event = player_1.event_logic()  # trigger any events corresponding to self.coordinates
-                if event == "Micro Boss":
-                    encounter = 96
-                if event == "Undead Prophet":
-                    encounter = 97
-                elif event == "King Boss":
-                    encounter = 98
-                elif event == "Exit Boss":
-                    encounter = 99
-                elif event == "Wicked Queen":
-                    encounter = 100
+                player_1.check_for_boss(event)  # check if event should trigger a boss encounter
                 # META CALCULATION FUNCTION FOR REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
                 # this is also called after monster melee, necro, poison and quantum attack
                 # as well as after turning/banishing, etc., and player victory
@@ -229,7 +221,7 @@ while True:
                     continue
                 # LASTLY, dungeon_description()
                 player_1.dungeon_description()  # this seems to work best when put LAST
-                if encounter < 11 or encounter > 20:  # < 11 = normal monster. > 20 = boss
+                if player_1.encounter < 11 or player_1.encounter > 20:  # < 11 = normal monster. > 20 = boss
                     # IN PROXIMITY TO MONSTER LOOP *contains battle loop within it*
                     player_1.in_proximity_to_monster = True
                     player_is_dead = False
@@ -238,8 +230,8 @@ while True:
                             break
                         if not player_1.in_proximity_to_monster:
                             break
-                        # create a monster based on encounter variable: < 11 = normal monster. > 20 = boss
-                        monster = player_1.meta_monster_generator(encounter)
+                        # create a monster based on player_1.encounter: < 11 = normal monster. > 20 = boss
+                        monster = player_1.meta_monster_generator()
                         print(discovered_monsters)  # remove after testing
                         if monster.name in discovered_monsters:
                             print(f"You have encountered a {monster.name}. Challenge level: {monster.level}")
@@ -247,10 +239,10 @@ while True:
                             pause()
                         else:
                             print(f"{monster.introduction}")
-                            if encounter < 21:  # if not a boss
+                            if player_1.encounter < 21:  # if not a boss
                                 discovered_monsters.append(monster.name)
                             pause()
-                        if encounter < 21:  # if not a boss, monster may like you or steal from you
+                        if player_1.encounter < 21:  # if not a boss, monster may like you or steal from you
                             if player_1.monster_likes_you(monster):
                                 player_1.in_proximity_to_monster = False
                                 # player_1.event_logic()  # this will trigger an event without using (L)ook
@@ -302,9 +294,7 @@ while True:
                             if battle_choice == 'e' or battle_choice == 'h' or battle_choice == 'g' or \
                                     battle_choice == 'v' or battle_choice == 'c' or battle_choice == 'q':
                                 if battle_choice == "e":
-                                    if player_1.evade(monster, encounter):
-                                        # if encounter > 20:  # if evading a boss at this point,
-                                        #    player_1.dungeon_theme()  # go back to dungeon theme song
+                                    if player_1.evade(monster):
                                         player_1.in_proximity_to_monster = False  # get out of battle loop and prox loop
                                         break
                                 elif battle_choice == 'h':
@@ -338,11 +328,11 @@ while True:
                                             if player_1.check_dead():  # you can die from poison or necrosis,
                                                 player_is_dead = True  # right after victory, following calculations
                                                 break
-                                            if encounter > 20:  # if fighting a boss, go back to regular music
+                                            if player_1.encounter > 20:  # if fighting a boss, go back to regular music
                                                 gong()
                                                 sleep(4)
                                                 player_1.dungeon_theme()
-                                                if encounter == 99:
+                                                if player_1.encounter == 99:
                                                     player_1.boss_hint_logic()
                                             player_1.level_up(monster.experience_award, monster.gold)
                                             player_1.dungeon_description()  # has worked well for a while
@@ -354,7 +344,8 @@ while True:
                                         monster.reduce_health(damage_to_monster)
                                         if monster.check_dead():
                                             player_1.hud()
-                                            if encounter > 20:  # if fighting boss
+                                            if player_1.encounter > 20:  # if fighting boss
+                                                # make this into a function:
                                                 gong()
                                                 if monster.proper_name != "None":
                                                     print(f"You have vanquished {monster.proper_name}! "
@@ -377,12 +368,12 @@ while True:
                                                 break
                                             player_1.level_up(monster.experience_award, monster.gold)
                                             player_1.in_proximity_to_monster = False
-                                            player_1.loot(encounter)
+                                            player_1.loot()
 
-                                            if encounter > 20:  # if you kill the boss, you get extra chance for loot
-                                                if encounter == 99:  # level exit boss
+                                            if player_1.encounter > 20:  # if you kill the boss, extra chance for loot
+                                                if player_1.encounter == 99:  # level exit boss
                                                     player_1.boss_hint_logic()
-                                                # player_1.loot(encounter)  # 8 difficulty class
+                                                # player_1.loot()  # 8 difficulty class
                                             player_1.dungeon_description()  # beta works so far
                                             break
                                     else:
@@ -391,7 +382,7 @@ while True:
                                         continue  # if you have no QU, don't waste a turn!
                                 # if monster still alive after quantum attack, and player has allies:
                                 # npc allies attack monster
-                                if player_1.npc_attack_logic(monster, encounter):  # if npc ally defeats monster
+                                if player_1.npc_attack_logic(monster):  # if npc ally defeats monster
                                     player_1.end_of_turn_calculation()
                                     # allies heal and no longer retreat:
                                     player_1.npc_calculation()
@@ -402,12 +393,12 @@ while True:
                                         break
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
-                                    player_1.loot(encounter)
+                                    player_1.loot()
 
-                                    if encounter > 20:  # if you kill the boss, you get extra chance for loot
-                                        if encounter == 99:  # if exit boss has been defeated,
+                                    if player_1.encounter > 20:  # if you kill the boss, you get extra chance for loot
+                                        if player_1.encounter == 99:  # if exit boss has been defeated,
                                             player_1.boss_hint_logic()  # give main boss hints
-                                        # player_1.loot(encounter)  # 8 difficulty class: better chance at loot
+                                        # player_1.loot()  # 8 difficulty class: better chance at loot
                                     player_1.dungeon_description()  # beta works so far
                                     break
                                 # ****MONSTER TURN AFTER YOU SWIG POTION, fail to evade, or cast quantum attack******
@@ -450,7 +441,7 @@ while True:
                                 # just pass encounter parameter
                                 if monster.check_dead():
                                     player_1.hud()
-                                    if encounter > 20:  # if fighting boss
+                                    if player_1.encounter > 20:  # if fighting boss
                                         gong()
                                         if monster.proper_name != "None":
                                             print(f"You have vanquished {monster.proper_name}! You are victorious!")
@@ -472,17 +463,17 @@ while True:
                                         break
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
-                                    player_1.loot(encounter)
+                                    player_1.loot()
 
-                                    if encounter > 20:  # if you kill the boss, you get extra chance for loot
-                                        if encounter == 99:  # if exit boss has been defeated,
+                                    if player_1.encounter > 20:  # if you kill the boss, you get extra chance for loot
+                                        if player_1.encounter == 99:  # if exit boss has been defeated,
                                             player_1.boss_hint_logic()  # give main boss hints
-                                        # player_1.loot(encounter)  # 8 difficulty class: better chance at loot
+                                        # player_1.loot()  # 8 difficulty class: better chance at loot
                                     player_1.dungeon_description()  # beta works so far
                                     break
                                 # if monster still alive after player melee attack and player has allies
                                 # npc allies attack monster
-                                if player_1.npc_attack_logic(monster, encounter):  # if npc ally defeats monster
+                                if player_1.npc_attack_logic(monster):  # if npc ally defeats monster
                                     player_1.end_of_turn_calculation()
                                     # allies heal and no longer retreat:
                                     player_1.npc_calculation()
@@ -493,12 +484,12 @@ while True:
                                         break
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
-                                    player_1.loot(encounter)
+                                    player_1.loot()
 
-                                    if encounter > 20:  # if you kill the boss, you get extra chance for loot
-                                        if encounter == 99:  # if exit boss has been defeated,
+                                    if player_1.encounter > 20:  # if you kill the boss, you get extra chance for loot
+                                        if player_1.encounter == 99:  # if exit boss has been defeated,
                                             player_1.boss_hint_logic()  # give main boss hints
-                                        # player_1.loot(encounter)  # 8 difficulty class: better chance at loot
+                                        # player_1.loot()  # 8 difficulty class: better chance at loot
                                     player_1.dungeon_description()  # beta works so far
                                     break
                                 # monster turn if still alive after player melee attack:
@@ -566,3 +557,15 @@ while True:
                             boss_battle_theme()
                             pause()
                             player_1.hud()"""
+"""                if event == "Legendary Monster":
+                    player_1.encounter = 95
+                if event == "Elite Monster":
+                    player_1.encounter = 96
+                if event == "Undead Prophet":
+                    player_1.encounter = 97
+                elif event == "King Boss":
+                    player_1.encounter = 98
+                elif event == "Exit Boss":
+                    player_1.encounter = 99
+                elif event == "Wicked Queen":
+                    player_1.encounter = 100"""

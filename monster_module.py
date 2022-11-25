@@ -853,7 +853,7 @@ class Cultist(Monster):
         self.multi_attack = False
         self.lesser_multi_attack = False
         self.attack_1 = 0  # attack bonus
-        self.attack_1_phrase = "With unexpected speed, he strikes with its dagger.."
+        self.attack_1_phrase = "With unexpected speed, he strikes with his dagger.."
         self.attack_2 = 1
         self.attack_2_phrase = "He swings his gleaming scimitar!"
         self.attack_3 = 2
@@ -2198,6 +2198,72 @@ class HobgoblinCaptain(Monster):
         self.is_discovered = False
 
 
+class Harpy(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 4
+        self.name = "Harpy"
+        self.proper_name = "None"
+        self.he_she_it = "she"
+        self.his_her_its = "her"
+        self.him_her_it = "her"
+        self.experience_award = 450
+        self.gold = random.randint(1, 5)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = random.randint(11, 13)
+        self.dexterity = 13
+        self.constitution = random.randint(11, 13)
+        self.intelligence = 7
+        self.wisdom = 10
+        self.charisma = 13
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(1, 6)
+        self.dot_turns = dice_roll(1, 6)
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = ["Fear", "Charm"]
+        self.quantum_energy = False
+        self.difficulty_class = 4
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 1
+        self.hit_dice = 10
+        self.number_of_hd = 1
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(36, 40)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = random.randint(15, 16)
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 4  # attack bonus
+        self.attack_1_phrase = "She strikes with her blood-soaked club.."
+        self.attack_2 = 5
+        self.attack_2_phrase = "With a guttural growl, she strikes with her foul claws.. "
+        self.attack_3 = 6
+        self.attack_3_phrase = "She raises her heavy club overhead.."
+        self.attack_4 = 8
+        self.attack_4_phrase = "With terrible speed, she swings her horrid claws!"
+        self.attack_5 = 14
+        self.attack_5_phrase = "She leaps upon you, goring and striking fiercely!"
+        self.introduction = f"You have encountered a Harpy. With the upper body of a humanoid female and unnatural, " \
+                            f"horrific bestial appendages,\nshe stands, sniffing the air in your direction. " \
+                            f"Her grotesque face contorts behind a nest of matted hair which hangs in clumps\n" \
+                            f"as she lets out a shreak..."
+        self.poison_phrase = ""
+        self.is_discovered = False
+        self.paralyze_phrase = "She begins to sing a most beautiful, harmonic melody that is hypnotically alluring.."
+        self.paralyze_free_attack_phrase = "You stand frozen in place as she ferociously attacks!!"
+
+
 class GreenDragonWyrmling(Monster):
 
     def __init__(self):
@@ -2238,7 +2304,7 @@ class GreenDragonWyrmling(Monster):
         self.number_of_hd = 1
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.hit_points = (random.randint(30, 32)) + self.constitution_modifier
+        self.hit_points = (random.randint(36, 40)) + self.constitution_modifier
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(15, 16)
@@ -2322,6 +2388,67 @@ class WhiteDragonWyrmling(Monster):
         self.introduction = f"You have encountered a White Dragon Wyrmling; a slow witted, evil, efficient hunter. " \
                             f"Confidently stepping forth,\nit roars viciously, undoubtedly preparing to have you " \
                             f"as a meal!"
+        self.is_discovered = False
+
+
+class Troll(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 5
+        self.name = "Troll"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 2000
+        self.gold = random.randint(5, 10)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 18
+        self.dexterity = 13
+        self.constitution = 20
+        self.intelligence = 7
+        self.wisdom = 9
+        self.charisma = 7
+        self.can_paralyze = False
+        self.paralyze_turns = 0
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 0
+        self.dot_turns = 0
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = ["Immolation", "Fireball", "Fire Storm"]
+        self.resistances = ["All"]
+        self.quantum_energy = False
+        self.difficulty_class = 5
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 1
+        self.hit_dice = 10
+        self.number_of_hd = 3
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(80, 85)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = random.randint(15, 16)
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 5  # attack bonus
+        self.attack_1_phrase = "It thrusts forward with gaping jaws.."
+        self.attack_2 = 6
+        self.attack_2_phrase = "It strikes with one terrible claw.. "
+        self.attack_3 = 8
+        self.attack_3_phrase = "With unexpected speed, it thrusts forward with it jaws.."
+        self.attack_4 = 10
+        self.attack_4_phrase = "It strikes with both terrible claws!"
+        self.attack_5 = 15
+        self.attack_5_phrase = "It assaults you with both its claws and horrid teeth!"
+        self.introduction = f"You have encountered a Troll; A giant lizard-like humanoid of immense stature. " \
+                            f"An insatiable, vile and stout creature,\nit slurps, snorts and approaches you fearlessly."
         self.is_discovered = False
 
 
@@ -2409,7 +2536,8 @@ monster_dict = {
     1: [Quasit, Kobold, Cultist, Goblin, Skeleton, WingedKobold],
     2: [Shadow, Drow, Troglodyte, Orc, Zombie, Ghoul],
     3: [Specter, Bugbear, CultFanatic, HalfOgre],
-    4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain]
+    4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain, Harpy],
+    5: [Troll]
 }
 # undead monsters:
 undead_monster_dict = {

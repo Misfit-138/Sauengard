@@ -2530,7 +2530,7 @@ class Player:
         self.hud()
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"You strike at the {monster_name}..")
-        print(f"Attack Roll: {roll_d20}")
+        print(f"Melee Attack Roll: {roll_d20}")
         sleep(1)
         if roll_d20 == 1:
             print("You awkwardly strike.")

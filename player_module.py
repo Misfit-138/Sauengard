@@ -1385,11 +1385,11 @@ class Player:
     def hud(self):
         cls()
         print(f"Name: {self.name}")
-        print(f"Level: {self.level}")
+        print(f"Level: {self.level} ({self.level}d{self.hit_dice})")
         print(f"Experience: {self.experience}")
         print(f"Gold: {self.gold}")
         print(f"Weapon: {self.wielded_weapon.name} (Damage Bonus: {self.wielded_weapon.damage_bonus}) "
-              f"(To hit bonus: + {self.wielded_weapon.to_hit_bonus})")
+              f"(To hit bonus: {self.wielded_weapon.to_hit_bonus})")
         print(f"Armor: {self.armor.name} (AC: {self.armor.ac})")
         print(f"Shield: {self.shield.name} (AC: {self.shield.ac})")
         print(f"Boots: {self.boots.name} (AC: {self.boots.ac})")
@@ -1996,9 +1996,10 @@ class Player:
         # return monster_encounter
 
     def check_for_boss(self, event):
-        if event == "Legendary Monster":
+
+        if event == "Elite Monster":
             self.encounter = 95
-        elif event == "Elite Monster":
+        if event == "Legendary Monster":
             self.encounter = 96
         elif event == "Undead Prophet":
             self.encounter = 97
@@ -2023,44 +2024,14 @@ class Player:
     def meta_monster_generator(self):
         # called from main loop
         monster = None
+
         if self.encounter < 11:  # regular monster
             monster = self.regular_monster_generator()
-        # monster = Shadow()  # HobgoblinCaptain()  # put testing monster here
-        elif self.encounter == 99:  # level exit boss fight
-            monster = self.exit_boss_generator()
-            gong()
-            sleep(4)
-            boss_battle_theme()
-            pause()
-            self.hud()
-        elif self.encounter == 98:  # undead king
-            monster = self.king_monster_generator()
-            gong()
-            sleep(4)
-            mountain_king_theme()
-            pause()
-            self.hud()
-        elif self.encounter == 97:  # undead prophet
-            monster = self.undead_prophet_generator()
-            gong()
-            sleep(4)
-            boss_battle_theme()
-            pause()
-            self.hud()
-        elif self.encounter == 96:  # elite monster
-            monster = self.elite_monster_generator()
-            gong()  # consider removing this
-            sleep(4)  # same
-            boss_battle_theme()  # same
-            pause()
-            self.hud()
-        elif self.encounter == 95:  # legendary monster
-            monster = self.legendary_monster_generator()
-            gong()
-            sleep(4)
-            boss_battle_theme()
-            pause()
-            self.hud()
+
+        # put testing monster here
+            # from monster_module import Troll
+            # monster = Troll()
+
         elif self.encounter == 100:  # final boss
             monster = self.wicked_queen_generator()
             gong()
@@ -2068,6 +2039,47 @@ class Player:
             boss_battle_theme()
             pause()
             self.hud()
+
+        elif self.encounter == 99:  # level exit boss fight
+            monster = self.exit_boss_generator()
+            gong()
+            sleep(4)
+            boss_battle_theme()
+            pause()
+            self.hud()
+
+        elif self.encounter == 98:  # undead king
+            monster = self.king_monster_generator()
+            gong()
+            sleep(4)
+            mountain_king_theme()
+            pause()
+            self.hud()
+
+        elif self.encounter == 97:  # undead prophet
+            monster = self.undead_prophet_generator()
+            gong()
+            sleep(4)
+            boss_battle_theme()
+            pause()
+            self.hud()
+
+        elif self.encounter == 96:  # legendary monster
+            monster = self.legendary_monster_generator()
+            gong()
+            sleep(4)
+            boss_battle_theme()
+            pause()
+            self.hud()
+
+        elif self.encounter == 95:  # elite
+            monster = self.elite_monster_generator()
+            gong()
+            sleep(4)
+            boss_battle_theme()
+            pause()
+            self.hud()
+
         return monster
 
     def wicked_queen_generator(self):
@@ -2078,7 +2090,7 @@ class Player:
         return wicked_queen
 
     def legendary_monster_generator(self):
-        # called from meta_monster_generator() if encounter == 95
+        # called from meta_monster_generator() if encounter == 96
         rndm_boss_names = ['Sarlen', 'Sinedor', 'Birlendor', 'Lichtor', 'Renburr',
                            'Belorg', 'Sirlak', 'Gruldirren', 'Falldorren', 'Tilenbor', 'Durjinn',
                            'Morgenoth', 'Tergoam', 'Terdannor', 'Lorenqor', 'Worgoth',
@@ -2106,18 +2118,19 @@ class Player:
         boss_monster.charisma += 4
         boss_monster.armor_class += 2
         boss_monster.resistances = ["All"]
+        boss_monster.weapon_bonus = math.ceil(self.level * 2)
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
         print(f"Before you stands {boss_monster.proper_name}!")
         return boss_monster
 
     def elite_monster_generator(self):
-        # called from meta_monster_generator() if encounter == 96
+        # called from meta_monster_generator() if encounter == 95
         rndm_boss_names = ['Sarlongrath', 'Sundor', 'Birrenol', 'Sontor', 'Marburr',
                            'Belok', 'Sorlak', 'Grildorren', 'Falaur', 'Tildor', 'Durj',
                            'Morgenor', 'Talgram', 'Teldanoth', 'Linmat', 'Worcon',
                            'Hahrmon', 'Kardon', 'Corbrath', 'Willentor', 'Weggard',
                            'Norrikon', 'Fellbrion', 'Sajanus', 'Qorrat', 'Sorenmir',
-                           'Kraw', 'Kullador', 'Qardrommir', 'Willendorn', 'Valwark',
+                           'Kraw', 'Kullador', 'Qardrommir', 'Wiltendorn', 'Valwark',
                            'Morluk']
 
         # just in case I forget to make level 21 monsters.
@@ -2138,6 +2151,9 @@ class Player:
         boss_monster.wisdom += 2
         boss_monster.charisma += 2
         boss_monster.armor_class += 2
+        boss_monster.dot_multiplier = self.proficiency_bonus
+        boss_monster.experience_award = 350 * self.level
+        boss_monster.weapon_bonus = math.ceil(self.level * 1.5)
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
         print(f"Before you stands {boss_monster.proper_name}!")
         return boss_monster
@@ -2146,11 +2162,20 @@ class Player:
         # called from meta_monster_generator() if encounter < 11
         maximum_level = self.level  # (self.level + 1) makes it too hard
         minimum_level = 1
+
         if self.level > 2:
             minimum_level = (self.level - 2)  # this should keep it more challenging and fun
+
         regular_monster_key = random.randint(minimum_level, maximum_level)
-        if self.encounter == 1:  # 5% chance of running into monsters that are +1 level
-            regular_monster_key = self.level + 1
+
+        if self.encounter == 1:  # beta 5% chance of running into monsters that are +1 level to keep it challenging
+
+            if self.level < 20:
+                regular_monster_key = (self.level + 1)
+
+            else:
+                regular_monster_key = self.level
+
         regular_monster_cls = random.choice(monster_dict[regular_monster_key])
         regular_monster = regular_monster_cls()
         return regular_monster
@@ -2177,12 +2202,13 @@ class Player:
         name = random.choice(rndm_prophet_names)
         epithet = random.choice(rndm_epithets)
         undead_prophet.proper_name = f"{name} {epithet}"
-        undead_prophet.hit_points = math.ceil(self.maximum_hit_points * 1.25)
+        undead_prophet.hit_points = math.ceil(self.maximum_hit_points * 1.5)
         undead_prophet.level = self.level
         undead_prophet.number_of_hd = self.level
         undead_prophet.weapon_bonus = self.wielded_weapon.damage_bonus
-        undead_prophet.dot_multiplier = self.dungeon.level
+        undead_prophet.dot_multiplier = self.proficiency_bonus
         undead_prophet.experience_award = 350 * self.level
+
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
         print(f"The undead prophet, {name} {epithet} returns!")
         return undead_prophet
@@ -2207,6 +2233,13 @@ class Player:
         exit_boss.hit_points = math.ceil(exit_boss.hit_points * 1.25)
         first_name = random.choice(rndm_boss_names)
         exit_boss.proper_name = f"{first_name} the Elite {exit_boss.name} guardian"
+        # exit_boss.hit_points = math.ceil(self.maximum_hit_points * 1.5)
+        exit_boss.level = self.level
+        exit_boss.number_of_hd = self.level
+        exit_boss.dot_multiplier = self.dungeon.level
+        exit_boss.experience_award = 350 * self.level
+        exit_boss.weapon_bonus = self.wielded_weapon.damage_bonus
+
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
         print(f"In the archway to the staircase leading down to {self.dungeon.name} "
               f"stands {exit_boss.proper_name}!\n"
@@ -5686,9 +5719,9 @@ class Player:
         else:
             # bosses cannot be evaded.
             if monster.proper_name != "None":
-                print(f"{monster.proper_name} foils your stealthy attempt and swiftly blocks your escape!")
+                print(f"{monster.proper_name} is far too adept to be evaded!")
             else:
-                print(f"The {monster.name} swiftly blocks your escape!")
+                print(f"The {monster.name} is far too adept to be evaded!!")
             sleep(.5)
             print(f"You are rooted to the spot. You must stand your ground!")
             pause()

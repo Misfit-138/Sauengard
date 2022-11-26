@@ -232,13 +232,17 @@ while True:
                             break
                         # create a monster based on player_1.encounter: < 11 = normal monster. > 20 = boss
                         monster = player_1.meta_monster_generator()
+
                         print(discovered_monsters)  # remove after testing
                         if monster.name in discovered_monsters:
+                            player_1.hud()  # beta
                             print(f"You have encountered a {monster.name}. Challenge level: {monster.level}")
                             # remove lvl after testing
                             pause()
                         else:
+                            player_1.hud()  # beta
                             print(f"{monster.introduction}")
+
                             if player_1.encounter < 21:  # if not a boss
                                 discovered_monsters.append(monster.name)
                             pause()
@@ -380,43 +384,47 @@ while True:
                                         print(f"You have no Quantum unit energy!")
                                         pause()
                                         continue  # if you have no QU, don't waste a turn!
-                                # if monster still alive after quantum attack, and player has allies:
+
+                                # if monster is still alive after quantum attack, and player has allies:
                                 # npc allies attack monster
                                 if player_1.npc_attack_logic(monster):  # if npc ally defeats monster
                                     player_1.end_of_turn_calculation()
                                     # allies heal and no longer retreat:
                                     player_1.npc_calculation()
                                     pause()
+
                                     if player_1.check_dead():
                                         player_is_dead = True
                                         player_1.in_proximity_to_monster = False
                                         break
+
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot()
 
-                                    if player_1.encounter > 20:  # if you kill the boss, you get extra chance for loot
+                                    if player_1.encounter > 20:  # if you kill the boss
                                         if player_1.encounter == 99:  # if exit boss has been defeated,
                                             player_1.boss_hint_logic()  # give main boss hints
                                         # player_1.loot()  # 8 difficulty class: better chance at loot
+
                                     player_1.dungeon_description()  # beta works so far
                                     break
+
                                 # ****MONSTER TURN AFTER YOU SWIG POTION, fail to evade, or cast quantum attack******
                                 #
                                 player_1.hud()
                                 monster.meta_monster_function(player_1)
                                 if not player_1.check_dead():  # if player not dead
-                                    # I tried to offload this code, but the breaks and continues are pretty tangled
+                                    # I tried to offload this code, but the breaks and continues are pretty tangled:
                                     if monster.can_paralyze and monster.paralyze(player_1):
-                                        # sleep(1)
-                                        # monster.paralyze(player_1)
-                                        # pause()
-                                        if not player_1.check_dead():  # if player not dead
+
+                                        if not player_1.check_dead():
                                             print(f"You regain your faculties.")
                                             pause()
                                             # if monster has multi_attack, then attack npc
-                                            player_1.monster_attacks_npc_meta(monster)  # beta testing
+                                            player_1.monster_attacks_npc_meta(monster)
                                             continue
+
                                         else:
                                             print("You are dead and paralyzed!")
                                             player_is_dead = True
@@ -441,26 +449,34 @@ while True:
                                 # just pass encounter parameter
                                 if monster.check_dead():
                                     player_1.hud()
+
                                     if player_1.encounter > 20:  # if fighting boss
                                         gong()
+
                                         if monster.proper_name != "None":
                                             print(f"You have vanquished {monster.proper_name}! You are victorious!")
                                             player_1.vanquished_foes.append(monster.proper_name)
+
                                         else:
                                             print(f"You have vanquished the {monster.name}!")
+
                                         sleep(4)
                                         player_1.dungeon_theme()
+
                                     else:
                                         print(f"You are victorious..")
+
                                     pause()
                                     # CALCULATE REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
                                     player_1.end_of_turn_calculation()
                                     # npc allies heal and no longer retreat:
                                     player_1.npc_calculation()
+
                                     if player_1.check_dead():
                                         player_is_dead = True
                                         player_1.in_proximity_to_monster = False
                                         break
+
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot()
@@ -469,8 +485,10 @@ while True:
                                         if player_1.encounter == 99:  # if exit boss has been defeated,
                                             player_1.boss_hint_logic()  # give main boss hints
                                         # player_1.loot()  # 8 difficulty class: better chance at loot
+
                                     player_1.dungeon_description()  # beta works so far
                                     break
+
                                 # if monster still alive after player melee attack and player has allies
                                 # npc allies attack monster
                                 if player_1.npc_attack_logic(monster):  # if npc ally defeats monster
@@ -478,10 +496,12 @@ while True:
                                     # allies heal and no longer retreat:
                                     player_1.npc_calculation()
                                     pause()
+
                                     if player_1.check_dead():
                                         player_is_dead = True
                                         player_1.in_proximity_to_monster = False
                                         break
+
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot()
@@ -490,33 +510,42 @@ while True:
                                         if player_1.encounter == 99:  # if exit boss has been defeated,
                                             player_1.boss_hint_logic()  # give main boss hints
                                         # player_1.loot()  # 8 difficulty class: better chance at loot
+
                                     player_1.dungeon_description()  # beta works so far
                                     break
+
                                 # monster turn if still alive after player melee attack:
                                 else:
                                     monster.meta_monster_function(player_1)
+
                                     # I tried to offload this code, but the breaks and continues are pretty tangled
                                     if not player_1.check_dead():  # if player not dead
+
                                         if monster.can_paralyze and monster.paralyze(player_1):
                                             # monster.paralyze(player_1)
                                             # pause()
+
                                             if not player_1.check_dead():  # if player not dead
                                                 print(f"You regain your faculties.")
                                                 pause()
                                                 # if monster has multi_attack, then attack npc
                                                 player_1.monster_attacks_npc_meta(monster)  # beta testing
                                                 continue
+
                                             else:
                                                 print("You are dead and paralyzed!")
                                                 player_is_dead = True
                                                 break
+
                                     else:  # you died
                                         player_1.rndm_death_statement()
                                         sleep(3)
                                         player_is_dead = True
                                         break
+
                                     player_1.hud()
-                                # beta testing if player has allies, monster attacks npc
+
+                                # if player has npc allies, monster attacks them:
                                 player_1.monster_attacks_npc_meta(monster)
 
                             else:  # invalid inputs

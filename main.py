@@ -142,7 +142,6 @@ while True:
                 if player_1.position == 0:  # 0 is the game/level start position
                     # player_1.hud()
                     cls()
-                    # sad_cello_theme()
                     typewriter(player_1.dungeon.intro)
                     pause()
                     # set player position, which also removes intro condition

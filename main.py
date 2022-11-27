@@ -32,7 +32,7 @@ import pickle
 from dungeons import dungeon_dict
 import os
 from player_module import sad_cello_theme, cls, game_splash, character_generator, town_theme, gong, sleep, \
-    pause, are_you_sure
+    pause, are_you_sure, typewriter
 
 cls()
 if os.name == 'nt':
@@ -140,8 +140,10 @@ while True:
                 # player_1.loot(0)  # for testing
                 # player_1.asi()  # for testing
                 if player_1.position == 0:  # 0 is the game/level start position
-                    player_1.hud()
-                    print(player_1.dungeon.intro)
+                    # player_1.hud()
+                    cls()
+                    # sad_cello_theme()
+                    typewriter(player_1.dungeon.intro)
                     pause()
                     # set player position, which also removes intro condition
                     player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]

@@ -8911,20 +8911,25 @@ class Player:
         else:
             cls()
             print("You look at the map..")
-            print(f"Position key: {self.position}")  # remove after testing
+            # print(f"Position key: {self.position}")  # remove after testing
             self.coordinates = (self.x, self.y)
-            if self.position == 0:
-                print(self.dungeon.intro)
             print(f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}) Coordinates: {self.coordinates}")
-            if self.position != 0 and self.coordinates != self.dungeon.staircase:
+            # if self.position != 0 and self.coordinates != self.dungeon.staircase:
+            if self.coordinates != self.dungeon.staircase:
                 self.dungeon.player_grid[self.y][self.x] = "X"
+
             for element in range(0, 20):
                 print(*maps[element])
-            # replace the X with a dot so that it doesn't leave a trail:
-            if self.position != 0 and self.coordinates != self.dungeon.staircase:
+
+            # replace the X with a dot after printing so that it doesn't leave a trail:
+            if self.coordinates != self.dungeon.staircase:
                 self.dungeon.player_grid[self.y][self.x] = "."
+
             self.position = self.dungeon.grid[self.y][self.x]
-            print(f"S = Staircase X = your position E = Exit")
+            if self.coordinates != self.dungeon.staircase:
+                print(f"S = Staircase X = your position E = Exit")
+            else:
+                print(f"S = Staircase E = Exit\nYou are currently at the staircase.")
             # place the next line in the main file to leave a trail of x's throughout the map to see where you've been.
             # player_1.dungeon.player_grid[player_1.y][player_1.x] = "x"
             return

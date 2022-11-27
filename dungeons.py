@@ -79,7 +79,7 @@ class Dungeon1(Dungeon):
         self.name = "The Fieldenberg Catacombs"
         self.casual_name = "the catacombs"
         self.level = 1
-        self.staircase = (1, 3)
+        self.staircase = (18, 3)
         self.barrier_name = "a wall of tombs"
         self.barrier_name_plural = "walls of tombs"
         self.pit_barrier_name = "a wall of moist earth"
@@ -250,7 +250,7 @@ class Dungeon2(Dungeon):
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]]
         # the intro is similar to the staircase description. however, the intro is more of an active description
         self.intro = f"The door above closes solidly. You find yourself in a deeper level of the catacombs.\n" \
-                     f"Thick, oppressive gloom and disturbing sounds fill the air."
+                     f"Thick, oppressive gloom and disturbing sounds fill the air.\n"
 
 
 dungeon_2 = Dungeon2()

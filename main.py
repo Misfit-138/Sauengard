@@ -235,12 +235,12 @@ while True:
 
                         print(discovered_monsters)  # remove after testing
                         if monster.name in discovered_monsters:
-                            player_1.hud()  # beta
+                            player_1.hud()  # placing a hud() here erases the dungeon description; more appropriate
                             print(f"You have encountered a {monster.name}. Challenge level: {monster.level}")
                             # remove lvl after testing
                             pause()
                         else:
-                            player_1.hud()  # beta
+                            player_1.hud()  # # placing a hud() here erases the dungeon description; more appropriate
                             print(f"{monster.introduction}")
 
                             if player_1.encounter < 21:  # if not a boss
@@ -288,11 +288,7 @@ while True:
                         while True:
                             if not player_1.in_proximity_to_monster:
                                 break
-                            player_1.hud()
-                            monster.monster_data()
-                            battle_choice = input("(F)ight, (H)ealing potion, (C)larifying elixir,\n"
-                                                  "(G)iant Strength potion, (V)ial of Antidote,\n(Q)uantum Effects or "
-                                                  "(E)vade\nF/H/C/G/V/Q/E --> ").lower()
+                            battle_choice = player_1.battle_menu_choices(monster)
 
                             # these choices count as turns, and are therefore followed by monster's turn:
                             if battle_choice == 'e' or battle_choice == 'h' or battle_choice == 'g' or \
@@ -548,8 +544,8 @@ while True:
                                 # if player has npc allies, monster attacks them:
                                 player_1.monster_attacks_npc_meta(monster)
 
-                            else:  # invalid inputs
-                                print(f"The {monster.name} is not amused.")
+                            else:  # invalid inputs. this should be unreachable, since creating battle_menu_choices()
+                                print(f"Invalid input.")
                                 sleep(1)
                                 player_1.hud()
                                 continue
@@ -598,3 +594,9 @@ while True:
                     player_1.encounter = 99
                 elif event == "Wicked Queen":
                     player_1.encounter = 100"""
+"""#player_1.hud()
+                            #monster.monster_data()
+                            #battle_choice = input("(F)ight, (H)ealing potion, (C)larifying elixir,\n"
+                            #                      "(G)iant Strength potion, (V)ial of Antidote,\n(Q)uantum Effects or "
+                            #                      "(E)vade\nF/H/C/G/V/Q/E --> ").lower()
+"""

@@ -18,9 +18,9 @@ the 'productive time of my day', when ability, desire and motivation diverge.
 
 Sauengard is inspired by old school games from the 8-bit microcomputer era, specifically, games which I played on the
 Commodore 64, such as Infocom's Zork, Zork II, Zork III, Infidel, and dungeon games like Telengard, Kaiv and others..
-The monsters, atmosphere and combat systems are perhaps most similar to Telengard, (though far more sophisticated),
+The monsters, atmosphere and combat systems are perhaps most similar to Telengard, (though a bit more sophisticated),
 but also draw from other fantasy games, like AD&D, and most affectionately, Milton Bradley's 1981 'Dark Tower'
-electronic board game. Sauengard is similar to the Infocom games in its navigation, descriptions, and low-key humor.
+electronic board game. (The name is, of course, inspired by Telengard.)
+Sauengard is similar to the Infocom games in its navigation, descriptions, and low-key humor.
 Fans of 8-bit computing will likely recognize some throwbacks and homages to these wonderful games from a bygone
 era of computing.
-

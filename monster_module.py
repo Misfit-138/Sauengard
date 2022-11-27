@@ -1159,16 +1159,16 @@ class ShadowKing(Monster):
         self.quantum_attack_5_phrase = "Its looming form towers over you..\n" \
                                        "it clutches you with necrotic malice!"
         self.introduction = f"From the nothingness you see the {self.name} approach with ancient malice.\n" \
-                            f"Its body rises up, absorbing all ambient light into a silhouette of\n" \
-                            f"endless darkness. And yet, somehow, you randomly catch glimpses of its actual form\n" \
-                            f"beneath- impossibly long, bony, outstretched arms extending from its once\n" \
-                            f"royal raiment..a humanoid, skullish face forever grimacing in confusion over its\n" \
+                            f"His body rises up, absorbing all ambient light into a silhouette of\n" \
+                            f"endless darkness. And yet, somehow, you randomly catch glimpses of his actual form\n" \
+                            f"beneath- impossibly long, bony, outstretched arms extending from his once\n" \
+                            f"royal raiment..a humanoid, skullish face forever grimacing in confusion over his\n" \
                             f"own existence..and lamenting the long lost grandeur of a kingdom now forgotten\n" \
                             f"and erased from the annals of time.\n" \
                             f"You feel the air crackle with quantum energy.."
-        self.paralyze_phrase = "Rising menacingly and with both clawed, shadowy hands, it reaches out, and you\n" \
+        self.paralyze_phrase = "Rising menacingly and with both clawed, shadowy hands, he reaches out, and you\n" \
                                "feel your motor skills quivering.."
-        self.paralyze_free_attack_phrase = "You feel your life force weakening as it drains you mercilessly!"
+        self.paralyze_free_attack_phrase = "You feel your life force weakening as he drains you mercilessly!"
         self.is_discovered = False
 
 

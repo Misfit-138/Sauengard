@@ -1995,6 +1995,40 @@ class Player:
         # print(f"Monster encounter roll: {monster_encounter}")
         # return monster_encounter
 
+    def battle_menu_choices(self, monster):
+        # main loop battle menu. a party of adventurers cannot evade
+        while True:
+            self.hud()
+            monster.monster_data()
+
+            if not self.sikira_ally and not self.torbron_ally and not self.magnus_ally and not self.vozzbozz_ally:
+                battle_choice = input("(F)ight, (H)ealing potion, (C)larifying elixir,\n"
+                                      "(G)iant Strength potion, (V)ial of Antidote,\n(Q)uantum Effects or "
+                                      "(E)vade\nF/H/C/G/V/Q/E --> ").lower()
+
+                if battle_choice in ('f', 'h', 'c', 'g', 'v', 'q', 'e'):
+                    return battle_choice
+
+                else:  # invalid inputs
+                    print(f"The {monster.name} is not amused.")
+                    sleep(.75)
+                    self.hud()
+                    continue
+
+            else:  # a party of adventurers cannot evade
+                battle_choice = input("(F)ight, (H)ealing potion, (C)larifying elixir,\n"
+                                      "(G)iant Strength potion, (V)ial of Antidote,\n or (Q)uantum Effects\n"
+                                      "F/H/C/G/V/Q --> ").lower()
+
+                if battle_choice in ('f', 'h', 'c', 'g', 'v', 'q'):
+                    return battle_choice
+
+                else:  # invalid inputs
+                    print(f"The {monster.name} is not amused.")
+                    sleep(.75)
+                    self.hud()
+                    continue
+
     def check_for_boss(self, event):
 
         if event == "Elite Monster":
@@ -5693,29 +5727,45 @@ class Player:
             return
 
     def evade(self, monster):
-        # called from main loop
+        # called from main loop, using return value from battle_menu_choices(), (if player has no allies)
         if self.encounter < 21:
-            print(f"You attempt an evasive maneuver..")
+            print(f"You attempt a stealthy evasive maneuver..")
             sleep(1)
-            evade_success = dice_roll(1, 20)
             monster_roll = dice_roll(1, 20)
-            if evade_success + self.dexterity_modifier + self.stealth >= monster_roll + monster.dexterity_modifier \
+            player_roll = dice_roll(1, 20)
+            evade_success = player_roll + self.dexterity_modifier + self.stealth + self.proficiency_bonus
+            if self.level > 3:
+                evade_success += self.proficiency_bonus
+            print(f"Stealth Check: {player_roll}")
+            print(f"Dexterity Modifier: {self.dexterity_modifier}")
+            print(f"Stealth bonus: {self.stealth}")
+            if self.level > 3:
+                print(f"Proficiency Bonus: {self.proficiency_bonus}")
+
+            print(f"Total: {evade_success}")
+            sleep(1)
+            print(f"Monster Roll: {monster_roll}")
+
+            if evade_success >= monster_roll + monster.dexterity_modifier \
                     or evade_success == 20:
                 print(f"Your stealth and dexterity have served you well!")
                 sleep(1)
-                print(f"You successfully evade the {monster.name}!")
+                print(f"The {monster.name} looks at {monster.his_her_its} surroundings, and departs,"
+                      f" obviously confused.")
+                sleep(1)
+                print(f"You have successfully evaded the {monster.name}!")
                 pause()
                 self.hud()
                 return True
+
             else:
                 print(f"The {monster.name} swiftly blocks your escape!")
                 sleep(.5)
                 print(f"You are rooted to the spot. You must stand your ground!")
                 pause()
                 self.hud()
-                # print(f"You raise your {self.wielded_weapon.name}..")
-                # sleep(1.5)
                 return False
+
         else:
             # bosses cannot be evaded.
             if monster.proper_name != "None":
@@ -5738,6 +5788,7 @@ class Player:
             print(f"(In Town, Quantum Chemist Shop)")
             print(f"Jahns, the Fieldenberg quantum chemist is here, busying himself at the crucible.\n"
                   f"Mortars and pestles litter the counter and the smell of {rndm_aroma} fills the air...")
+
             if self.hit_points < self.maximum_hit_points:
                 print("The aura fills your nostrils and lungs...healing you to full strength!")
                 self.hit_points = self.maximum_hit_points
@@ -5747,31 +5798,37 @@ class Player:
             chemist_choice = input(
                 "(P)urchase quantum items, (S)ell quantum items, Display your (I)nventory, or "
                 "(E)xit the chemist: ").lower()
-            # if chemist_choice not in ('p', 's', 'i', 'e'):
-            #    continue
+
             if chemist_choice == 'p':
                 self.buy_chemist_items()
                 continue
+
             elif chemist_choice == 's':
                 self.sell_chemist_items()
                 continue
+
             elif chemist_choice == 'i':
                 self.inventory()
                 continue
+
             elif chemist_choice == 'e':
                 return
+
             else:
                 continue
 
     def sell_chemist_items(self):
+        # this code was written very early on and is extremely amateurish
         # in the future, clean this up by making a list of nonzero items into a dictionary
         while True:
             self.hud()
+
             if self.potions_of_healing == 0 and self.town_portals == 0 and \
                     self.potions_of_strength == 0 and self.elixirs == 0 and self.antidotes == 0:
                 print(f"You have no quantum items to sell..")
                 pause()
                 return
+
             print(f"You currently carry the following quantum items:")
             print(f"1: Potions of Healing - Quantity: {self.potions_of_healing}")
             print(f"2: Scrolls of Town Portal - Quantity: {self.town_portals}")
@@ -5780,10 +5837,13 @@ class Player:
             print(f"5: Poison Antidote Vials - Quantity: {self.antidotes}")
             print(f"Your gold: {self.gold} GP")
             type_to_sell = input(f"Pick item to sell by number, or go (B)ack: ").lower()
+
             if type_to_sell == 'b':
                 return
+
             elif type_to_sell == '1':
                 your_item = "potions"
+
                 if self.potions_of_healing < 1:
                     print(f"You do not have any {your_item}..")
                     sleep(1)
@@ -5791,35 +5851,45 @@ class Player:
 
             elif type_to_sell == '2':
                 your_item = "scrolls of town portal"
+
                 if self.town_portals < 1:
                     print(f"You do not have any {your_item}..")
                     sleep(1)
                     continue
+
             elif type_to_sell == '3':
                 your_item = "potions of strength"
+
                 if self.potions_of_strength < 1:
                     print(f"You do not have any {your_item}..")
                     sleep(1)
                     continue
+
             elif type_to_sell == '4':
                 your_item = "clarifying elixirs"
+
                 if self.elixirs < 1:
                     print(f"You do not have any {your_item}..")
                     sleep(1)
                     continue
+
             elif type_to_sell == '5':
                 your_item = "vials of antidote"
+
                 if self.antidotes < 1:
                     print(f"You do not have any {your_item}..")
                     sleep(1)
                     continue
+
             else:
                 print(f"Invalid..")
                 continue
 
             try:
                 number_of_items_to_sell = int(input(f"Enter number of {your_item} to sell: "))
+
                 if type_to_sell == '1' and number_of_items_to_sell > 0:
+
                     if self.potions_of_healing >= number_of_items_to_sell:
                         self.potions_of_healing -= number_of_items_to_sell
                         gold_recieved = (healing_potion.sell_price * number_of_items_to_sell)
@@ -5827,11 +5897,14 @@ class Player:
                         print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
                         pause()
                         continue
+
                     else:
                         print(f"Invalid.")
                         sleep(1)
                         continue
+
                 elif type_to_sell == '2' and number_of_items_to_sell > 0:
+
                     if self.town_portals >= number_of_items_to_sell:
                         self.town_portals -= number_of_items_to_sell
                         gold_recieved = (scroll_of_town_portal.sell_price * number_of_items_to_sell)
@@ -5839,11 +5912,14 @@ class Player:
                         print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
                         pause()
                         continue
+
                     else:
                         print(f"Invalid.")
                         sleep(1)
                         continue
+
                 elif type_to_sell == '3' and number_of_items_to_sell > 0:
+
                     if self.potions_of_strength >= number_of_items_to_sell:
                         self.potions_of_strength -= number_of_items_to_sell
                         gold_recieved = (strength_potion.sell_price * number_of_items_to_sell)
@@ -5851,11 +5927,14 @@ class Player:
                         print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
                         pause()
                         continue
+
                     else:
                         print(f"Invalid.")
                         sleep(1)
                         continue
+
                 elif type_to_sell == '4' and number_of_items_to_sell > 0:
+
                     if self.elixirs >= number_of_items_to_sell:
                         self.elixirs -= number_of_items_to_sell
                         gold_recieved = (elixir.sell_price * number_of_items_to_sell)
@@ -5863,11 +5942,14 @@ class Player:
                         print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
                         pause()
                         continue
+
                     else:
                         print(f"Invalid.")
                         sleep(1)
                         continue
+
                 elif type_to_sell == '5' and number_of_items_to_sell > 0:
+
                     if self.antidotes >= number_of_items_to_sell:
                         self.antidotes -= number_of_items_to_sell
                         gold_recieved = (antidote.sell_price * number_of_items_to_sell)
@@ -5875,12 +5957,15 @@ class Player:
                         print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
                         pause()
                         continue
+
                     else:
                         print(f"Invalid.")
                         sleep(1)
                         continue
+
                 else:
                     print(f"Invalid entry..")
+
             except ValueError:
                 print("Invalid input")
                 continue

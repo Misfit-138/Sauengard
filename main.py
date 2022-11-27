@@ -328,7 +328,7 @@ while True:
                                             if player_1.check_dead():  # you can die from poison or necrosis,
                                                 player_is_dead = True  # right after victory, following calculations
                                                 break
-                                            if player_1.encounter > 20:  # if fighting a boss, go back to regular music
+                                            if player_1.encounter > 20:  # if fighting a boss:
                                                 gong()
                                                 sleep(4)
                                                 player_1.dungeon_theme()
@@ -382,7 +382,7 @@ while True:
                                         continue  # if you have no QU, don't waste a turn!
 
                                 # if monster is still alive after quantum attack, and player has allies:
-                                # npc allies attack monster
+                                # npc allies attack monster:
                                 if player_1.npc_attack_logic(monster):  # if npc ally defeats monster
                                     player_1.end_of_turn_calculation()
                                     # allies heal and no longer retreat:
@@ -398,7 +398,7 @@ while True:
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot()
 
-                                    if player_1.encounter > 20:  # if you kill the boss
+                                    if player_1.encounter > 20:  # if you kill a boss
                                         if player_1.encounter == 99:  # if exit boss has been defeated,
                                             player_1.boss_hint_logic()  # give main boss hints
                                         # player_1.loot()  # 8 difficulty class: better chance at loot
@@ -432,7 +432,7 @@ while True:
                                     player_is_dead = True
                                     break
 
-                                # if player has allies, monster attacks npc
+                                # if player has npc allies, monster attacks them
                                 player_1.monster_attacks_npc_meta(monster)
 
                             # FIGHT: player chooses melee:

@@ -79,7 +79,6 @@ class Dungeon1(Dungeon):
         self.name = "The Fieldenberg Catacombs"
         self.casual_name = "the catacombs"
         self.level = 1
-        self.staircase = (18, 3)
         self.barrier_name = "a wall of tombs"
         self.barrier_name_plural = "walls of tombs"
         self.pit_barrier_name = "a wall of moist earth"
@@ -96,11 +95,12 @@ class Dungeon1(Dungeon):
         self.one_walled_atrium_phrase = "You are standing in an atrium."
         self.pit_large_atrium_phrase = "You are standing in a large cavity."
         self.pit_one_walled_atrium_phrase = "You are standing in a cavity."
-        self.treasure_chest = (99, 99)
+        self.staircase = (1, 3)
+        self.treasure_chest = (3, 16)
         self.quantum_treasure_chest = (99, 99)
         self.encounter_sikira = (99, 99)
         self.altar = (99, 99)
-        self.throne = (2, 3)
+        self.throne = (99, 99)
         self.fountain = (99, 99)
         self.teleporter = (99, 99)
         self.teleporter_landing = (99, 99)
@@ -116,7 +116,7 @@ class Dungeon1(Dungeon):
         self.grid = [
             # 0    1    2    3    4    5    6    7    8    9   10    11   12   13   14   15   16   17   18   19
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 0
-            ["*", ".", ".", ".", "*", "C", "C", "C", "*", "*", "*", "C", "C", "C", "C", "C", "C", "C", "C", "*"],  # 1
+            ["*", "*", "*", "*", "*", "C", "C", "C", "*", "*", "*", "C", "C", "C", "C", "C", "C", "C", "C", "*"],  # 1
             ["*", "*", "*", "*", "*", "C", "*", "*", "*", "*", "*", "C", "*", "*", "*", "*", "*", "*", "C", "*"],  # 2
             ["*", "S", "C", "C", "C", "C", "C", ".", ".", ".", "*", "C", "*", "*", ".", ".", ".", "C", "+", "E"],  # 3
             ["*", "*", "*", "*", "*", "*", "*", ".", ".", ".", "*", "C", "*", "*", ".", ".", ".", "*", "C", "*"],  # 4

@@ -1994,6 +1994,7 @@ class Player:
         # monster_encounter = dice_roll(1, 20)
         # print(f"Monster encounter roll: {monster_encounter}")
         # return monster_encounter
+        # self.encounter = 15  # this will make it so there are no monsters
 
     def battle_menu_choices(self, monster):
         # main loop battle menu. a party of adventurers cannot evade
@@ -7236,10 +7237,9 @@ class Player:
             if possible_treasure_chest >= treasure_chest_difficulty_class:
                 self.treasure_chest()
                 return
-        else:  # boss
+        else:  # boss. function then continues to give regular loot after treasure chest
             if possible_treasure_chest >= treasure_chest_difficulty_class:
                 self.treasure_chest()
-                # return
 
         # regular loot
         loot_dict = top_level_loot_dict
@@ -8911,25 +8911,24 @@ class Player:
         else:
             cls()
             print("You look at the map..")
-            # print(f"Position key: {self.position}")  # remove after testing
+            print(f"Position key: {self.position}")  # remove after testing
+
             self.coordinates = (self.x, self.y)
             print(f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}) Coordinates: {self.coordinates}")
-            # if self.position != 0 and self.coordinates != self.dungeon.staircase:
+
             if self.coordinates != self.dungeon.staircase:
                 self.dungeon.player_grid[self.y][self.x] = "X"
-
-            for element in range(0, 20):
-                print(*maps[element])
-
-            # replace the X with a dot after printing so that it doesn't leave a trail:
-            if self.coordinates != self.dungeon.staircase:
+                for element in range(0, 20):
+                    print(*maps[element])
+                # replace the X with a dot after printing map so that it doesn't leave a trail of x's:
                 self.dungeon.player_grid[self.y][self.x] = "."
-
-            self.position = self.dungeon.grid[self.y][self.x]
-            if self.coordinates != self.dungeon.staircase:
                 print(f"S = Staircase X = your position E = Exit")
+
             else:
+                for element in range(0, 20):
+                    print(*maps[element])
                 print(f"S = Staircase E = Exit\nYou are currently at the staircase.")
+
             # place the next line in the main file to leave a trail of x's throughout the map to see where you've been.
             # player_1.dungeon.player_grid[player_1.y][player_1.x] = "x"
             return
@@ -10300,3 +10299,33 @@ return 0"""
 """
 """if self.level == 4 or self.level == 6 or self.level == 8 or self.level == 12 \
                     or self.level == 14 or self.level == 16 or self.level == 19 or asi_level_check:"""
+"""    def display_map(self, maps):
+        if self.in_a_pit:
+            print(f"You are in uncharted territory..")
+            sleep(1)
+            return
+        else:
+            cls()
+            print("You look at the map..")
+            print(f"Position key: {self.position}")  # remove after testing
+            self.coordinates = (self.x, self.y)
+            print(f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}) Coordinates: {self.coordinates}")
+            # if self.position != 0 and self.coordinates != self.dungeon.staircase:
+            if self.coordinates != self.dungeon.staircase:
+                self.dungeon.player_grid[self.y][self.x] = "X"
+
+            for element in range(0, 20):
+                print(*maps[element])
+
+            # replace the X with a dot after printing so that it doesn't leave a trail:
+            if self.coordinates != self.dungeon.staircase:
+                self.dungeon.player_grid[self.y][self.x] = "."
+
+            self.position = self.dungeon.grid[self.y][self.x]
+            if self.coordinates != self.dungeon.staircase:
+                print(f"S = Staircase X = your position E = Exit")
+            else:
+                print(f"S = Staircase E = Exit\nYou are currently at the staircase.")
+            # place the next line in the main file to leave a trail of x's throughout the map to see where you've been.
+            # player_1.dungeon.player_grid[player_1.y][player_1.x] = "x"
+            return"""

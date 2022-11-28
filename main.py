@@ -208,14 +208,14 @@ while True:
                 # ENCOUNTER LOGIC IS DETERMINED *BEFORE* event_logic(), BUT CAN BE RE-ASSIGNED BASED ON
                 # RETURNED VALUES FROM event_logic()
                 player_1.encounter_logic()
-                # player_1.encounter = 96  #  0 should make no monsters at all
+                # player_1.encounter = 96  should make no monsters at all
                 # EVENT LOGIC IS DETERMINED BEFORE end_of_turn_calculation() AND player_1.check_dead(),
                 # IN CASE PLAYER SUFFERS DAMAGE, ETC.
                 event = player_1.event_logic()  # trigger any events corresponding to self.coordinates
                 player_1.check_for_boss(event)  # check if event should trigger a boss encounter
                 # META CALCULATION FUNCTION FOR REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
                 # this is also called after monster melee, necro, poison and quantum attack
-                # as well as after turning/banishing, etc., and player victory
+                # as well as after turning/banishing, and player victory, etc.,
                 player_1.end_of_turn_calculation()
                 if player_1.check_dead():  # player can die of necrosis/poison/event damage after calculations
                     player_is_dead = True
@@ -345,7 +345,7 @@ while True:
                                         monster.reduce_health(damage_to_monster)
                                         if monster.check_dead():
                                             player_1.hud()
-                                            if player_1.encounter > 20:  # if fighting boss
+                                            if player_1.encounter > 20:  # if victory over boss
                                                 # make this into a function:
                                                 gong()
                                                 if monster.proper_name != "None":
@@ -371,10 +371,10 @@ while True:
                                             player_1.in_proximity_to_monster = False
                                             player_1.loot()
 
-                                            if player_1.encounter > 20:  # if you kill the boss, extra chance for loot
+                                            if player_1.encounter > 20:  # if you kill the boss
                                                 if player_1.encounter == 99:  # level exit boss
                                                     player_1.boss_hint_logic()
-                                                # player_1.loot()  # 8 difficulty class
+
                                             player_1.dungeon_description()  # beta works so far
                                             break
                                     else:

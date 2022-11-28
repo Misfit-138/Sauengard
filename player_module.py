@@ -5733,6 +5733,7 @@ class Player:
             print(f"You attempt a stealthy evasive maneuver..")
             sleep(1)
             monster_roll = dice_roll(1, 20)
+            monster_total = monster_roll + monster.dexterity_modifier
             player_roll = dice_roll(1, 20)
             evade_success = player_roll + self.dexterity_modifier + self.stealth + self.proficiency_bonus
             if self.level > 3:
@@ -5745,10 +5746,10 @@ class Player:
 
             print(f"Total: {evade_success}")
             sleep(1)
-            print(f"Monster Roll: {monster_roll}")
-
-            if evade_success >= monster_roll + monster.dexterity_modifier \
-                    or evade_success == 20:
+            print(f"Enemy Roll: {monster_roll}")
+            print(f"Enemy Dexterity Modifier: {monster.dexterity_modifier}")
+            print(f"Enemy Total: {monster_total}")
+            if evade_success >= monster_total or evade_success == 20:
                 print(f"Your stealth and dexterity have served you well!")
                 sleep(1)
                 print(f"The {monster.name} looks at {monster.his_her_its} surroundings, and departs,"

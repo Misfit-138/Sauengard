@@ -241,7 +241,7 @@ while True:
                             # remove lvl after testing
                             pause()
                         else:
-                            player_1.hud()  # # placing a hud() here erases the dungeon description; more appropriate
+                            player_1.hud()  # placing a hud() here erases the dungeon description; more appropriate
                             print(f"{monster.introduction}")
 
                             if player_1.encounter < 21:  # if not a boss
@@ -375,7 +375,7 @@ while True:
                                                 if player_1.encounter == 99:  # level exit boss
                                                     player_1.boss_hint_logic()
 
-                                            player_1.dungeon_description()  # beta works so far
+                                            player_1.dungeon_description()
                                             break
                                     else:
                                         print(f"You have no Quantum unit energy!")
@@ -404,7 +404,7 @@ while True:
                                             player_1.boss_hint_logic()  # give main boss hints
                                         # player_1.loot()  # 8 difficulty class: better chance at loot
 
-                                    player_1.dungeon_description()  # beta works so far
+                                    player_1.dungeon_description()
                                     break
 
                                 # ****MONSTER TURN AFTER YOU SWIG POTION, fail to evade, or cast quantum attack******
@@ -483,7 +483,7 @@ while True:
                                             player_1.boss_hint_logic()  # give main boss hints
                                         # player_1.loot()  # 8 difficulty class: better chance at loot
 
-                                    player_1.dungeon_description()  # beta works so far
+                                    player_1.dungeon_description()
                                     break
 
                                 # if monster still alive after player melee attack and player has allies
@@ -526,7 +526,7 @@ while True:
                                                 print(f"You regain your faculties.")
                                                 pause()
                                                 # if monster has multi_attack, then attack npc
-                                                player_1.monster_attacks_npc_meta(monster)  # beta testing
+                                                player_1.monster_attacks_npc_meta(monster)
                                                 continue
 
                                             else:

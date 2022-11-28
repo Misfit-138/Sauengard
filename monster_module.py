@@ -1230,7 +1230,7 @@ class Skeleton(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "Reaching over its back, it produces a battle axe and strikes wildly!!"
         self.introduction = f"From the ground rises a skeleton warrior. Its battle-scarred and weary weaponry still\n" \
-                            f"in hand, it fearlessly hammers its shield with sword, taunting an attack. " \
+                            f"in hand, it fearlessly hammers its sword hilt against its shield, taunting an attack. " \
                             f"A full-toothed\n" \
                             f"grin forever emblazoned on its bony countenance, it shouts an absent, yet echoing\n" \
                             f"battle-cry at you from behind its slack, gaping jaw!\n" \

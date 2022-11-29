@@ -194,6 +194,14 @@ def dice_roll(no_of_dice, no_of_sides):
     return your_roll_sum
 
 
+def dungeon_command_choices():
+    command = input("(L)ook at surroundings, use (MAP), (C)larifying elixir,\n"
+                    "(Quit), Town (P)ortal, (H)ealing potion, (M)anage inventory,\n"
+                    "(G)iant strength potion, (V)ial of Antidote, (I)nventory,\n"
+                    "(Q)uantum effects, or W-A-S-D to navigate. --> ").lower()
+    return command
+
+
 def character_generator():
     cls()
     explanation_dict = {"Strength": "Strength is a measure of a character's physical power. A character high\n"
@@ -219,8 +227,8 @@ def character_generator():
                                   "many Quantum effects, as well as avoiding many Quantum attacks.",
                         "Charisma": "Charisma measures one's ability to interact effectively with others. It includes\n"
                                     "such factors as confidence, persuasion and eloquence, and it can represent a\n"
-                                    "charming or commanding personality. Players with high charisma will also have a\n"
-                                    "better chance of favorable outcomes when encountering certain monsters."}
+                                    "charming or commanding personality. *Players with high charisma will also have a\n"
+                                    "better chance of favorable outcomes when encountering certain monsters.*"}
     standard_array = f"Ability Score    	Ability Modifier\n" \
                      f"15	                            +3\n14	                            " \
                      f"+2\n13	                            +1\n12	                            +1\n10" \
@@ -404,6 +412,7 @@ class Weapon:
         self.sell_price = 0
         self.buy_price = 0
         self.minimum_level = 1
+        self.a_an = "a"
 
     def __repr__(self):
         return f"{self.name} - Damage Bonus: {self.damage_bonus}  To hit: {self.to_hit_bonus}  " \
@@ -420,6 +429,7 @@ class ShortSword(Weapon):
         self.sell_price = 5
         self.buy_price = 10
         self.minimum_level = 1
+        self.a_an = "a"
 
 
 short_sword = ShortSword()
@@ -435,6 +445,7 @@ class BroadSword(Weapon):
         self.sell_price = 5
         self.buy_price = 15
         self.minimum_level = 1
+        self.a_an = "a"
 
 
 broad_sword = BroadSword()
@@ -450,6 +461,7 @@ class GreatSword(Weapon):
         self.sell_price = 15
         self.buy_price = 500
         self.minimum_level = 4
+        self.a_an = "a"
 
 
 great_sword = GreatSword()
@@ -465,6 +477,7 @@ class ElvishGreatSword(Weapon):
         self.sell_price = 2500
         self.buy_price = 5000
         self.minimum_level = 8
+        self.a_an = "an"
 
 
 elvish_great_sword = ElvishGreatSword()
@@ -480,6 +493,7 @@ class QuantumSword(Weapon):
         self.sell_price = 5000
         self.buy_price = 8000
         self.minimum_level = 10  # 3
+        self.a_an = "a"
 
 
 quantum_sword = QuantumSword()
@@ -495,6 +509,7 @@ class QuantumAxe(Weapon):
         self.sell_price = 5000
         self.buy_price = 8000
         self.minimum_level = 10  # 3
+        self.a_an = "a"
 
 
 quantum_axe = QuantumAxe()
@@ -510,6 +525,7 @@ class ShortAxe(Weapon):
         self.sell_price = 1
         self.buy_price = 5
         self.minimum_level = 1
+        self.a_an = "a"
 
 
 short_axe = ShortAxe()
@@ -525,6 +541,7 @@ class BattleAxe(Weapon):
         self.sell_price = 5
         self.buy_price = 15
         self.minimum_level = 2
+        self.a_an = "a"
 
 
 battle_axe = BattleAxe()
@@ -540,6 +557,7 @@ class GreatAxe(Weapon):
         self.sell_price = 15
         self.buy_price = 500
         self.minimum_level = 4
+        self.a_an = "a"
 
 
 great_axe = GreatAxe()
@@ -555,6 +573,7 @@ class ElvishGreatAxe(Weapon):
         self.sell_price = 2750
         self.buy_price = 6000
         self.minimum_level = 8
+        self.a_an = "an"
 
 
 elvish_great_axe = ElvishGreatAxe()
@@ -570,6 +589,7 @@ class Armor:
         self.sell_price = 0
         self.buy_price = 0
         self.minimum_level = 1
+        self.a_an = "a set of"
 
     def __repr__(self):
         #        return self.name
@@ -588,6 +608,7 @@ class PaddedArmor(Armor):
         self.sell_price = 1
         self.buy_price = 5
         self.minimum_level = 1
+        self.a_an = "a set of"
 
 
 padded_armor = PaddedArmor()
@@ -603,6 +624,7 @@ class LeatherArmor(Armor):
         self.sell_price = 5
         self.buy_price = 15
         self.minimum_level = 1
+        self.a_an = "a set of"
 
 
 leather_armor = LeatherArmor()
@@ -618,6 +640,7 @@ class StuddedLeatherArmor(Armor):
         self.sell_price = 30
         self.buy_price = 45
         self.minimum_level = 2
+        self.a_an = "a set of"
 
 
 studded_leather_armor = StuddedLeatherArmor()
@@ -631,8 +654,9 @@ class ScaleMail(Armor):
         self.ac = 14
         self.armor_bonus = 0
         self.sell_price = 300
-        self.buy_price = 400
-        self.minimum_level = 4
+        self.buy_price = 500
+        self.minimum_level = 7
+        self.a_an = "a set of"
 
 
 scale_mail = ScaleMail()
@@ -647,7 +671,8 @@ class HalfPlate(Armor):
         self.armor_bonus = 0
         self.sell_price = 550
         self.buy_price = 750
-        self.minimum_level = 6
+        self.minimum_level = 8
+        self.a_an = "a set of"
 
 
 half_plate = HalfPlate()
@@ -663,6 +688,7 @@ class FullPlate(Armor):
         self.sell_price = 1000
         self.buy_price = 1500
         self.minimum_level = 10
+        self.a_an = "a set of"
 
 
 full_plate = FullPlate()
@@ -677,6 +703,7 @@ class Shield:
         self.sell_price = 0
         self.buy_price = 0
         self.minimum_level = 1
+        self.a_an = ""
 
     def __repr__(self):
         return f'{self.name} - AC: {self.ac}  Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP'
@@ -691,6 +718,7 @@ class NoShield(Shield):  # default
         self.sell_price = 0
         self.buy_price = 0
         self.minimum_level = 1
+        self.a_an = ""
 
 
 no_shield = NoShield()
@@ -705,6 +733,7 @@ class Buckler(Shield):
         self.sell_price = 5
         self.buy_price = 50
         self.minimum_level = 1  # 2
+        self.a_an = "a"
 
 
 buckler = Buckler()
@@ -719,6 +748,7 @@ class KiteShield(Shield):
         self.sell_price = 50
         self.buy_price = 100
         self.minimum_level = 5
+        self.a_an = "a"
 
 
 kite_shield = KiteShield()
@@ -733,6 +763,7 @@ class QuantumTowerShield(Shield):
         self.sell_price = 375
         self.buy_price = 700
         self.minimum_level = 7
+        self.a_an = "a"
 
 
 quantum_tower_shield = QuantumTowerShield()
@@ -747,6 +778,7 @@ class Boots:
         self.sell_price = 0
         self.buy_price = 0
         self.minimum_level = 1
+        self.a_an = "a pair of"
 
     def __repr__(self):
         return f'{self.name} - AC: {self.ac}  Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP'
@@ -761,6 +793,7 @@ class LeatherBoots(Boots):
         self.sell_price = 1
         self.buy_price = 1
         self.minimum_level = 1
+        self.a_an = "a pair of"
 
 
 leather_boots = LeatherBoots()
@@ -775,6 +808,7 @@ class ElvenBoots(Boots):
         self.sell_price = 30
         self.buy_price = 50
         self.minimum_level = 1
+        self.a_an = "a pair of"
 
 
 elven_boots = ElvenBoots()
@@ -789,6 +823,7 @@ class AncestralFootsteps(Boots):
         self.sell_price = 300
         self.buy_price = 500
         self.minimum_level = 5
+        self.a_an = "a pair of"
 
 
 ancestral_footsteps = AncestralFootsteps()
@@ -803,6 +838,7 @@ class Cloak:
         self.sell_price = 0
         self.buy_price = 0
         self.minimum_level = 1
+        self.a_an = "a"
 
     def __repr__(self):
         return f'{self.name} - Stealth: {self.stealth}  Minimum level: {self.minimum_level}  ' \
@@ -818,6 +854,7 @@ class CanvasCloak(Cloak):
         self.sell_price = 1
         self.buy_price = 0
         self.minimum_level = 1
+        self.a_an = "a"
 
 
 canvas_cloak = CanvasCloak()
@@ -832,6 +869,7 @@ class ElvenCloak(Cloak):
         self.sell_price = 25
         self.buy_price = 50
         self.minimum_level = 1
+        self.a_an = "an"
 
 
 elven_cloak = ElvenCloak()
@@ -845,6 +883,7 @@ class Healing:
         self.buy_price = 0
         self.sell_price = 0
         self.minimum_level = 1
+        self.a_an = "a"
 
     def __repr__(self):
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
@@ -858,6 +897,7 @@ class Elixir:
         self.buy_price = 50
         self.sell_price = 20
         self.minimum_level = 1
+        self.a_an = "a"
 
     def __repr__(self):
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
@@ -874,6 +914,7 @@ class Antidote:
         self.buy_price = 50
         self.sell_price = 20
         self.minimum_level = 1
+        self.a_an = "a"
 
     def __repr__(self):
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
@@ -891,6 +932,7 @@ class HealingPotion(Healing):
         self.buy_price = 50
         self.sell_price = 20
         self.minimum_level = 1
+        self.a_an = "a"
 
     def __repr__(self):
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
@@ -907,6 +949,7 @@ class StrengthPotion:
         self.buy_price = 50
         self.sell_price = 20
         self.minimum_level = 1
+        self.a_an = "a"
 
     def __repr__(self):
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
@@ -924,6 +967,7 @@ class Regeneration:
         self.sell_price = 10000
         self.buy_price = 10000
         self.minimum_level = 1
+        self.a_an = "a"
 
     def __repr__(self):
         return self.name
@@ -938,6 +982,7 @@ class DefaultRingOfRegeneration(Regeneration):
         self.sell_price = 10000
         self.buy_price = 10000
         self.minimum_level = 1
+        self.a_an = ""
 
 
 default_ring_of_regeneration = DefaultRingOfRegeneration()
@@ -952,6 +997,7 @@ class RingOfRegeneration(Regeneration):
         self.sell_price = 10000
         self.buy_price = 10000
         self.minimum_level = 1
+        self.a_an = "a"
 
 
 ring_of_regeneration = RingOfRegeneration()
@@ -966,6 +1012,7 @@ class Protection:
         self.sell_price = 10000
         self.buy_price = 10000
         self.minimum_level = 1
+        self.a_an = "a"
 
     def __repr__(self):
         return self.name
@@ -980,6 +1027,7 @@ class DefaultRingOfProtection(Protection):
         self.sell_price = 10000
         self.buy_price = 10000
         self.minimum_level = 1
+        self.a_an = ""
 
 
 default_ring_of_protection = DefaultRingOfProtection()
@@ -994,6 +1042,7 @@ class RingOfProtection(Protection):
         self.sell_price = 10000
         self.buy_price = 10000
         self.minimum_level = 1
+        self.a_an = "a"
 
 
 ring_of_protection = RingOfProtection()
@@ -1009,6 +1058,7 @@ class TownPortalImplements:
         self.buy_price = 50
         self.minimum_level = 1
         self.uses = 1
+        self.a_an = "a"
 
     def __repr__(self):
         #        return self.name
@@ -1260,7 +1310,7 @@ class Player:
         self.level = 1
         self.quantum_level = 1
         self.maximum_quantum_units = 2
-        self.quantum_units = 2
+        self.quantum_units = self.maximum_quantum_units
         self.encounter = 0
         self.experience = 0
         self.base_dc = 8
@@ -1321,6 +1371,7 @@ class Player:
         self.dungeon_key = 1
         self.dungeon = dungeon_dict[self.dungeon_key]
         self.discovered_interactives = []
+        self.discovered_monsters = []
         self.position = 0
         self.x = 0
         self.y = 0
@@ -1367,8 +1418,7 @@ class Player:
     def dungeon_theme(self):
         if os.name == 'nt':
             if not self.in_a_pit:
-                winsound.PlaySound('C:\\Program Files\\Telengard\\MEDIA\\MUSIC\\dungeon_theme_2.wav',
-                                   winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
+                sound_player_loop('dungeon_theme_2.wav')
             else:
                 pit_theme()
 
@@ -1989,12 +2039,79 @@ class Player:
 
     # BATTLE AND PROXIMITY TO MONSTER OCCURRENCES
 
+    def choose_to_play_again(self):
+        cls()
+        gong()
+        typewriter(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
+        sleep(4)
+        self.in_proximity_to_monster = False
+        self.in_dungeon = False
+        self.in_town = False
+        while True:
+            cls()
+            try_again = input("Do you wish to play again (y/n)? ").lower()
+            if try_again == "y":
+                sleep(1)
+                cls()
+                self.in_proximity_to_monster = False
+                self.in_dungeon = False
+                self.in_town = False
+                # player_is_dead = False
+                return True
+            if try_again == "n":
+                print(f"Farewell.")
+                sleep(.5)
+                cls()
+                sys.exit()
+            # if try_again not in ("y", "n"):
+                # print("Please enter y or n ")
+            #    sleep(.5)
+            #    continue
+
     def encounter_logic(self):
+        # called from main loop
         self.encounter = dice_roll(1, 20)
         # monster_encounter = dice_roll(1, 20)
         # print(f"Monster encounter roll: {monster_encounter}")
         # return monster_encounter
         # self.encounter = 15  # this will make it so there are no monsters
+
+    def monster_introduction(self, monster):
+        # called from main loop
+        if monster.name in self.discovered_monsters:
+            self.hud()  # placing a hud() here erases the dungeon description; more appropriate
+            print(f"(TESTING) Discovered monsters: {self.discovered_monsters}")  # remove after testing
+            print(f"You have encountered a {monster.name}. Challenge level: {monster.level}")
+            # remove lvl after testing
+            pause()
+        else:
+            self.hud()  # placing a hud() here erases the dungeon description; more appropriate
+            print(f"{monster.introduction}")
+
+            if self.encounter < 21:  # if not a boss
+                self.discovered_monsters.append(monster.name)
+            pause()
+
+    def monster_likes_you_or_steals_from_you(self, monster):
+        if self.encounter < 21:  # if not a boss, monster may like you or steal from you
+
+            if self.monster_likes_you(monster):
+                self.in_proximity_to_monster = False
+                # player_1.event_logic()  # this will trigger an event without using (L)ook
+                self.dungeon_description()
+                return True
+
+            if self.quick_move(monster):
+                self.in_proximity_to_monster = False
+                # player_1.event_logic()  # this will trigger an event without using (L)ook
+                self.dungeon_description()
+                return True  # if monster steals something he gets away clean, if not, battle
+
+            else:
+                return False
+
+        else:
+            return False
 
     def battle_menu_choices(self, monster):
         # main loop battle menu. a party of adventurers cannot evade
@@ -2046,6 +2163,25 @@ class Player:
             self.encounter = 100
         else:
             return False
+
+    def victory_statements(self, monster):
+        statements_list = [f"You are victorious!", f"You have defeated the {monster.name}!"]
+        if self.encounter > 20:  # if victory over boss
+            gong()
+            if monster.proper_name != "None":
+                print(f"You have vanquished {monster.proper_name}! You are victorious!")
+                self.vanquished_foes.append(monster.proper_name)
+            else:
+                print(f"You have vanquished the {monster.name}!")
+            sleep(4)
+            self.dungeon_theme()
+        else:
+            statement = random.choice(statements_list)
+            print(statement)
+
+    def victory_over_boss_logic(self):
+        if self.encounter == 99:  # if dungeon level exit boss
+            self.boss_hint_logic()
 
     def rndm_death_statement(self):
         # called from main loop
@@ -2314,91 +2450,116 @@ class Player:
 
     def monster_likes_you(self, monster):
         # called from main loop after encounter with regular monster
-        if dice_roll(1, 20) > 19 and monster.intelligence > 12 and monster.charisma > 14 and self.charisma > 14:
+        if dice_roll(1, 20) > 19 and monster.intelligence > 12 and monster.charisma > 14 and self.charisma > 10:
             print(f"The {monster.name} likes you!")
             sleep(1)
             upgradeable = True
+
             while upgradeable:
+
                 if self.armor.ac < 18 or self.shield.ac < 3 or self.wielded_weapon.damage_bonus < 15 or \
-                        self.wielded_weapon.to_hit_bonus < 6 or self.boots.ac < 3:
+                        self.wielded_weapon.to_hit_bonus < 6 or self.boots.ac < 3 \
+                        or self.hit_points < self.maximum_hit_points:
                     upgradeable = True
+
                 else:
                     upgradeable = False
+
                 if not upgradeable:
                     gold_gift = random.randint(100, 5000)
-                    print(f"It gives you {gold_gift} GP!")
+                    print(f"{monster.he_she_it.capitalize()} gives you {gold_gift} GP!")
                     self.gold += gold_gift
                     pause()
                     return True
-                gift_item = dice_roll(1, 5)
+
+                gift_item = dice_roll(1, 6)
+
                 if gift_item == 1:
                     if self.armor.ac < 18:
                         if self.armor.name != padded_armor.name:
                             self.armor.ac += 1
                             self.calculate_armor_class()
-                            print(f"It enhances your {self.armor.name} to AC {self.armor.ac}!")
+                            print(f"{monster.he_she_it.capitalize()} enhances your {self.armor.name} "
+                                  f"to AC {self.armor.ac}!")
                         else:
                             self.armor = leather_armor
-                            print(f"It gives you {self.armor.name}!")
+                            print(f"{monster.he_she_it.capitalize()} gives you {self.armor.name}!")
                             self.calculate_armor_class()
                         pause()
                         return True
                     else:
                         continue
+
                 if gift_item == 2:
                     if self.shield.ac < 3:
                         if self.shield.name != no_shield.name:
                             self.shield.ac += 1
                             self.calculate_armor_class()
-                            print(f"It enhances your {self.shield.name} to AC {self.shield.ac}!")
+                            print(f"{monster.he_she_it.capitalize()} enhances your {self.shield.name} "
+                                  f"to AC {self.shield.ac}!")
                         else:
                             self.shield = buckler
-                            print(f"It gives you a {self.shield.name}!")
+                            print(f"{monster.he_she_it.capitalize()} gives you a {self.shield.name}!")
                             self.calculate_armor_class()
                         pause()
                         return True
                     else:
                         continue
+
                 if gift_item == 3:
                     if self.wielded_weapon.damage_bonus < 15:
                         if self.wielded_weapon.name != short_sword.name:
                             self.wielded_weapon.damage_bonus += 1
-                            print(f"It enhances your {self.wielded_weapon.name} damage bonus to + "
+                            print(f"{monster.he_she_it.capitalize()} enhances your {self.wielded_weapon.name} "
+                                  f"damage bonus to + "
                                   f"{self.wielded_weapon.damage_bonus}!")
                             pause()
                             return True
                         else:
                             self.wielded_weapon = broad_sword
-                            print(f"It gives you a {self.wielded_weapon.name}!")
+                            print(f"{monster.he_she_it.capitalize()} gives you a {self.wielded_weapon.name}!")
                             pause()
                             return True
                     else:
                         continue
+
                 if gift_item == 4:
                     if self.wielded_weapon.to_hit_bonus < 6:
                         if self.wielded_weapon.name != short_sword.name:
                             self.wielded_weapon.to_hit_bonus += 1
-                            print(f"It enhances your {self.wielded_weapon.name} to-hit bonus to + "
+                            print(f"{monster.he_she_it.capitalize()} enhances your {self.wielded_weapon.name} "
+                                  f"to-hit bonus to + "
                                   f"{self.wielded_weapon.to_hit_bonus}!")
                             pause()
                             return True
                         else:
                             self.wielded_weapon = broad_sword
-                            print(f"It gives you a {self.wielded_weapon.name}!")
+                            print(f"{monster.he_she_it.capitalize()} gives you a {self.wielded_weapon.name}!")
                             pause()
                             return True
                     else:
                         continue
+
                 if gift_item == 5:
                     if self.boots.ac < 3:
                         if self.boots.name != leather_boots.name:
                             self.boots.ac += 1
                             self.calculate_armor_class()
-                            print(f"It enhances your {self.boots.name} to AC {self.boots.ac}!")
+                            print(f"{monster.he_she_it.capitalize()} enhances your {self.boots.name} "
+                                  f"to AC {self.boots.ac}!")
                         else:
                             self.boots = elven_boots
-                            print(f"It gives you a pair of {self.boots.name}!")
+                            print(f"{monster.he_she_it.capitalize()} gives you a pair of {self.boots.name}!")
                             self.calculate_armor_class()
+                        pause()
+                        return True
+                    else:
+                        continue
+
+                if gift_item == 6:
+                    if self.hit_points < self.maximum_hit_points:
+                        self.hit_points = self.maximum_hit_points
+                        print(f"{monster.he_she_it.capitalize()} heals you to full strength!")
                         pause()
                         return True
                     else:
@@ -2427,7 +2588,8 @@ class Player:
                 if len(self.pack[item_type]) > 0:  # If the player has an item of type "item_type" in their pack
                     # pop random item from that item type. -1 because indexes start at 0
                     stolen_item = (self.pack[item_type].pop(random.randint(0, len(self.pack[item_type]) - 1)))
-                    print(f"He steals a {stolen_item.name}")  # from your {item_type}")
+                    print(f"{monster.he_she_it.capitalize()} steals the {stolen_item.name}"
+                          f"from your pack!")
                     pause()
                     return True  # True means monster gets away clean
 
@@ -2462,7 +2624,7 @@ class Player:
                 pause()
                 return True  # True means monster gets away clean
             else:
-                print("You have nothing to steal!")
+                print(f"You have nothing {monster.he_she_it} wants to steal!")
                 pause()
                 # sleep(2)
                 return True  # Changing this to False means your inventory is empty and monster sticks around to fight
@@ -3821,104 +3983,113 @@ class Player:
         return None
 
     def quantum_effects(self, monster):
-        printable_quantum_book = {1: {1: "Quantum Missile",
-                                      2: "Sleep",
-                                      3: "Heal Wounds",
-                                      4: "Protection from Evil",
-                                      5: "Turn Undead"},
-                                  2: {1: "Web",
-                                      2: "Purify",
-                                      3: "Strength",
-                                      4: "Scorch",
-                                      5: "Charm"},
-                                  3: {1: "Lightning",
-                                      2: "Hold Monster",
-                                      3: "Phantasm",
-                                      4: "Immolation",
-                                      5: "Vortex"},
-                                  4: {1: "Fireball",
-                                      2: "Flesh to Stone",
-                                      3: "Fear",
-                                      4: "Finger of Death",
-                                      5: "Banish"},
-                                  5: {1: "Disintegrate",
-                                      2: "Ice Storm",
-                                      3: "Firestorm",
-                                      4: "Gravity Well"},
-                                  6: {1: "Quantum Word Kill",
-                                      2: "Meteor Swarm",
-                                      3: "Skeletal Remains",
-                                      4: "Negative Energy Plague"}
+        # called from main loop
+        if self.quantum_units > 0:
+            printable_quantum_book = {1: {1: "Quantum Missile",
+                                          2: "Sleep",
+                                          3: "Heal Wounds",
+                                          4: "Protection from Evil",
+                                          5: "Turn Undead"},
+                                      2: {1: "Web",
+                                          2: "Purify",
+                                          3: "Strength",
+                                          4: "Scorch",
+                                          5: "Charm"},
+                                      3: {1: "Lightning",
+                                          2: "Hold Monster",
+                                          3: "Phantasm",
+                                          4: "Immolation",
+                                          5: "Vortex"},
+                                      4: {1: "Fireball",
+                                          2: "Flesh to Stone",
+                                          3: "Fear",
+                                          4: "Finger of Death",
+                                          5: "Banish"},
+                                      5: {1: "Disintegrate",
+                                          2: "Ice Storm",
+                                          3: "Firestorm",
+                                          4: "Gravity Well"},
+                                      6: {1: "Quantum Word Kill",
+                                          2: "Meteor Swarm",
+                                          3: "Skeletal Remains",
+                                          4: "Negative Energy Plague"}
 
-                                  }
-        quantum_book = {1: {0: self.quantum_help1,
-                            1: self.quantum_missile,
-                            2: self.quantum_sleep,
-                            3: self.quantum_heal_wounds,
-                            4: self.protection_from_evil,
-                            5: self.turn_undead},
-                        2: {0: self.quantum_help2,
-                            1: self.quantum_web,
-                            2: self.quantum_purify,
-                            3: self.quantum_strength,
-                            4: self.quantum_scorch,
-                            5: self.quantum_charm},
-                        3: {0: self.quantum_help3,
-                            1: self.quantum_lightning,
-                            2: self.hold_monster,
-                            3: self.phantasm,
-                            4: self.immolation,
-                            5: self.vortex},
-                        4: {0: self.quantum_help4,
-                            1: self.fireball,
-                            2: self.flesh_to_stone,
-                            3: self.fear,
-                            4: self.finger_of_death,
-                            5: self.banish},
-                        5: {0: self.quantum_help5,
-                            1: self.disintegrate,
-                            2: self.ice_storm,
-                            3: self.fire_storm,
-                            4: self.gravity_well},
-                        6: {1: self.quantum_word_kill,
-                            2: self.meteor_swarm,
-                            3: self.skeletal_remains,
-                            4: self.negative_energy_plague}
-                        }
-        while True:
-            self.hud()
-            try:
-                print(f"Your Quantum Knowledge level: {self.quantum_level}")
-                q_level = int(input(f"Quantum Level to cast: "))
+                                      }
+            quantum_book = {1: {0: self.quantum_help1,
+                                1: self.quantum_missile,
+                                2: self.quantum_sleep,
+                                3: self.quantum_heal_wounds,
+                                4: self.protection_from_evil,
+                                5: self.turn_undead},
+                            2: {0: self.quantum_help2,
+                                1: self.quantum_web,
+                                2: self.quantum_purify,
+                                3: self.quantum_strength,
+                                4: self.quantum_scorch,
+                                5: self.quantum_charm},
+                            3: {0: self.quantum_help3,
+                                1: self.quantum_lightning,
+                                2: self.hold_monster,
+                                3: self.phantasm,
+                                4: self.immolation,
+                                5: self.vortex},
+                            4: {0: self.quantum_help4,
+                                1: self.fireball,
+                                2: self.flesh_to_stone,
+                                3: self.fear,
+                                4: self.finger_of_death,
+                                5: self.banish},
+                            5: {0: self.quantum_help5,
+                                1: self.disintegrate,
+                                2: self.ice_storm,
+                                3: self.fire_storm,
+                                4: self.gravity_well},
+                            6: {1: self.quantum_word_kill,
+                                2: self.meteor_swarm,
+                                3: self.skeletal_remains,
+                                4: self.negative_energy_plague}
+                            }
+            while True:
+                self.hud()
+                try:
+                    print(f"Your Quantum Knowledge level: {self.quantum_level}")
+                    q_level = int(input(f"Quantum Level to cast: "))
 
-                if self.quantum_level >= q_level and self.quantum_units >= q_level:
-                    # create key and value lists from nested dict in order to produce cleanly printable dictionary
-                    key_lst = list(printable_quantum_book[q_level].keys())
-                    value_list = list(printable_quantum_book[q_level].values())
-                    working_dict = {key_lst[i]: value_list[i] for i in range(len(key_lst))}
-                    for key, value in working_dict.items():
-                        print(f"{key}: {value}")
-                    q_to_cast = int(input(f"Number of Quantum Effect to cast (or 0 for HELP): "))
-                    # noinspection PyArgumentList
-                    quantum_function = (quantum_book[q_level][q_to_cast](monster))
-                    if q_to_cast == 0:  # if HELP, call function and return here
+                    if self.quantum_level >= q_level and self.quantum_units >= q_level:
+                        # create key and value lists from nested dict in order to produce cleanly printable dictionary
+                        key_lst = list(printable_quantum_book[q_level].keys())
+                        value_list = list(printable_quantum_book[q_level].values())
+                        working_dict = {key_lst[i]: value_list[i] for i in range(len(key_lst))}
+                        for key, value in working_dict.items():
+                            print(f"{key}: {value}")
+                        q_to_cast = int(input(f"Number of Quantum Effect to cast (or 0 for HELP): "))
                         # noinspection PyArgumentList
-                        quantum_function
-                    else:  # if not HELP, return to main loop from function
-                        return quantum_function
-                else:
-                    if self.quantum_level < q_level:
-                        print(f"You have not yet acquired that level of Quantum knowledge!")
-                        sleep(1)
-                        continue
-                    if self.quantum_units < q_level:
-                        print(f"You do not have enough Quantum Energy Units!")
-                        continue
-            except (ValueError, KeyError):
-                print(f"Invalid input")
-                sleep(.25)
-                return None  # -999 creates condition for a continue statement in main loop so a turn is not wasted
-                # return 0
+                        quantum_function = (quantum_book[q_level][q_to_cast](monster))
+
+                        if q_to_cast == 0:  # if HELP, call function and return here
+                            quantum_function
+
+                        else:  # if not HELP, return to main loop from function
+                            return quantum_function
+
+                    else:
+                        if self.quantum_level < q_level:
+                            print(f"You have not yet acquired that level of Quantum knowledge!")
+                            sleep(1)
+                            continue
+
+                        if self.quantum_units < q_level:
+                            print(f"You do not have enough Quantum Energy Units!")
+                            continue
+
+                except (ValueError, KeyError):
+                    print(f"Invalid input")
+                    sleep(.25)
+                    return None  # creates condition for a continue statement in main loop so a turn is not wasted
+        else:
+            print(f"You have no Quantum unit energy!")
+            pause()
+            return None  # creates condition for a continue statement in main loop so a turn is not wasted
 
     def vozzbozz_meteor_swarm(self, monster):
         player_total = vozzbozz.base_dc + vozzbozz.wisdom_modifier + vozzbozz.proficiency_bonus
@@ -6091,7 +6262,8 @@ class Player:
         while True:
             self.hud()
             item_to_manage = input(
-                f"Manage (W)eapons, (A)rmor, (S)hields, (B)oots, (C)loaks, View your (I)nventory, or (E)xit: ").lower()
+                f"Manage (W)eapons, (A)rmor, (S)hields, (B)oots, (C)loaks, View your (I)nventory, or "
+                f"(E)xit Item Management: ").lower()
             if item_to_manage == 'w':
                 self.item_management('Weapons', self.wielded_weapon)
                 continue
@@ -7126,7 +7298,7 @@ class Player:
                     continue
         else:
             print(f"Worn boots >= found item...")  # remove after testing
-            pause()
+            pause()  # remove after testing
             return
 
     def found_cloak_substitution(self, found_item):
@@ -7172,7 +7344,7 @@ class Player:
                     continue
         else:
             print(f"Stealth already >= .25 * dex...")  # remove after testing
-            pause()
+            pause()  # remove after testing
             return
 
     def found_ring_of_reg_substitution(self, found_item):
@@ -7187,6 +7359,7 @@ class Player:
             self.regenerate()  # this is fair. this could save you from poison or necrosis
             pause()
             return
+
         elif self.ring_of_reg.regenerate < math.ceil(self.maximum_hit_points * .17):
             # old_ring = self.ring_of_reg
             self.ring_of_reg.regenerate = (self.ring_of_reg.regenerate + 1)
@@ -7197,7 +7370,7 @@ class Player:
 
         else:
             print("Ring of reg already equal to or more than 17% of max hit points")  # remove after testing
-            pause()
+            pause()  # remove after testing
             return
 
     def found_ring_of_prot_substitution(self, found_item):
@@ -7211,15 +7384,17 @@ class Player:
             print(f"Tunneling through realities, it permanently fuses to flesh and bone!")
             pause()
             return
-        elif self.ring_of_prot.protect < math.ceil(self.wisdom * .33):
+
+        elif self.ring_of_prot.protect < math.ceil(self.wisdom * .20):
             self.ring_of_prot.protect += 1
             print(f"Quantum wierdness fills the air...")
             print(f"Your {ring_of_protection.name} is enhanced to + {self.ring_of_prot.protect} !")
             pause()
             return
+
         else:
-            print("Ring of prot already equal to or more than 33% of wisdom")  # remove after testing
-            pause()
+            print("Ring of prot already equal to or more than 20% of wisdom")  # remove after testing
+            pause()  # remove after testing
             return
 
     def loot(self):
@@ -7255,6 +7430,7 @@ class Player:
                 rndm_item_index = random.randrange(len(loot_dict[key]))
                 found_item = loot_dict[key][rndm_item_index]
                 print(found_item)  # REMOVE AFTER TESTING *****************************************************
+
                 if self.level >= found_item.minimum_level:
                     if found_item.item_type == 'Armor':
                         self.found_armor_substitution(found_item)
@@ -7549,7 +7725,7 @@ class Player:
                                 pause()
                                 continue
                         else:
-                            print(f"You see a {found_item.name}.")
+                            print(f"You see {found_item.a_an} {found_item.name}.")
                             sleep(1)
                             print(f"Even with the Quantum Weirdness of the chest, you are unable to use it.")
                             sleep(1)
@@ -8332,8 +8508,12 @@ class Player:
         # NAVIGATION
 
     def town_navigation(self, player_name):
-        town_functions = input("(The Town of Fieldenberg)\n(S)ave, (Q)uit game, (R)estart game (I)nventory, "
-                               "(B)lacksmith, (C)hemist , (T)avern, or (E)nter dungeon --> ").lower()
+        if self.town_portal_exists or self.loaded_game:
+            town_functions = input("(The Town of Fieldenberg)\n(S)ave, (Q)uit game, (R)estart game (I)nventory, "
+                                   "(B)lacksmith, (C)hemist , (T)avern, or re-(E)nter dungeon --> ").lower()
+        else:
+            town_functions = input("(The Town of Fieldenberg)\n(S)ave, (Q)uit game, (R)estart game (I)nventory, "
+                                   "(B)lacksmith, (C)hemist , (T)avern, or (E)nter dungeon --> ").lower()
         if town_functions == 'r':
             if are_you_sure():
                 print("Restart")
@@ -8345,7 +8525,9 @@ class Player:
         if town_functions == 'q':
             if are_you_sure():
                 print(f"Exiting...")
-                exit()
+                sleep(.5)
+                cls()
+                sys.exit()
         elif town_functions == 's':
             save_a_character = player_name + ".sav"
             if os.path.isfile(save_a_character):

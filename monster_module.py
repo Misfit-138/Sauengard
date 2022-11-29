@@ -1230,10 +1230,9 @@ class Skeleton(Monster):
         self.attack_5 = 3
         self.attack_5_phrase = "Reaching over its back, it produces a battle axe and strikes wildly!!"
         self.introduction = f"From the ground rises a skeleton warrior. Its battle-scarred and weary weaponry still\n" \
-                            f"in hand, it fearlessly hammers its sword hilt against its shield, taunting an attack. " \
-                            f"A full-toothed\n" \
-                            f"grin forever emblazoned on its bony countenance, it shouts an absent, yet echoing\n" \
-                            f"battle-cry at you from behind its slack, gaping jaw!\n" \
+                            f"in hand, it fearlessly hammers its sword hilt against its shield, taunting an attack." \
+                            f"\nA full-toothed grin forever emblazoned on its bony countenance, it shouts an\n" \
+                            f"absent, yet echoing battle-cry at you from behind its slack, gaping jaw!\n" \
                             f"The air bristles with Quantum Energy.."
         self.is_discovered = False
 
@@ -1579,7 +1578,7 @@ class Troglodyte(Monster):
         self.he_she_it = "it"
         self.his_her_its = "its"
         self.him_her_it = "it"
-        self.experience_award = 50
+        self.experience_award = 200
         self.gold = random.randint(2, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 2
         self.armor = 0
@@ -2042,7 +2041,7 @@ class Specter(Monster):
                                        "a storm of wicked forces!"
         self.introduction = f"From out of nothingness, materializes a Specter....A vile, undead form created\n" \
                             f"through a combination of wickedness, quantum manipulations, and a violent death.\n" \
-                            f"Its ghostly form resembles what it was in life, but its now dispossessed\n" \
+                            f"Its ghastly form resembles what it was in life, but its now dispossessed\n" \
                             f"identity has been completely erased and replaced with a simple motive and \n" \
                             f"purpose; A revulsion for the living and a hunger for their life-energy.."
         self.is_discovered = False
@@ -2193,7 +2192,7 @@ class HobgoblinCaptain(Monster):
         self.introduction = f"You have encountered a Hobgoblin Captain. Fierce, intelligent and disciplined, " \
                             f"his heavy armor and\nweaponry are polished and well-maintained. His yellow " \
                             f"teeth stretch into a surly grin behind his iron helm.\nNarrowing his eyes, " \
-                            f"he approaches and stands before you unaffected, and unafraid; ready for battle."
+                            f"he approaches and stands before you unaffected and unafraid; ready for battle."
         self.is_discovered = False
 
 
@@ -2508,9 +2507,9 @@ class ZombieOgre(Monster):
         self.attack_4_phrase = "It swings its morningstar with murderous rage!"
         self.attack_5 = 6
         self.attack_5_phrase = "It raises its morningstar overhead with both hands for a mighty blow.."
-        self.introduction = f"You have encountered a Zombie Ogre; an abomination of nature which should not be." \
-                            f"Devoid of life energy,\nand, through some evil Quantum Manipulation, its giant hulking" \
-                            f"mass exists now in an indefinite,\nmindless grind of seeking out the living and" \
+        self.introduction = f"You have encountered a Zombie Ogre; an abomination of nature which should not be. " \
+                            f"Devoid of life energy,\nand, through some evil Quantum Manipulation, its giant hulking " \
+                            f"mass now exists in an indefinite,\nmindless quest of seeking out the living and " \
                             f"devouring them entirely!\nIts towering, undead form bristles with quantum weirdness.."
         self.is_discovered = False
 

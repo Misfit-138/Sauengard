@@ -29,10 +29,12 @@
 
 
 import pickle
+import sys
+
 from dungeons import dungeon_dict
 import os
 from player_module import sad_cello_theme, cls, game_splash, character_generator, town_theme, gong, sleep, \
-    pause, are_you_sure, typewriter
+    pause, are_you_sure, typewriter, dungeon_command_choices
 
 cls()
 if os.name == 'nt':
@@ -76,13 +78,7 @@ while True:
         if accept_stats == "y":
             player_1.dungeon_key = 1
             player_1.dungeon = dungeon_dict[player_1.dungeon_key]
-            # x,y is a numeric tuple corresponding to a classic grid with x and y coordinates.
-            # 'coordinates' variable is set to x,y
             (player_1.x, player_1.y) = player_1.dungeon.staircase
-            # 'position' corresponds to ASCII grids. 0 is the initialization position.
-            # Thereafter, it is a string based on where the player lands in the ASCII grid,
-            # '*' = border, all other strings are just for code readability
-            # the ASCII grid 'position' is used for display_map() and for dungeon_description()
             player_1.position = 0
             player_1.hud()
 
@@ -90,7 +86,6 @@ while True:
     sleep(1.5)
     player_1.in_town = True
     player_1.in_dungeon = False  # defined as False after portal use
-    discovered_monsters = []
     town_theme()
 
     while player_1.in_town:
@@ -110,30 +105,8 @@ while True:
             player_is_dead = False
             while player_1.in_dungeon:
                 if player_is_dead:
-                    cls()
-                    gong()
-                    print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
-                    sleep(4)
-                    player_1.in_proximity_to_monster = False
-                    player_1.in_dungeon = False
-                    player_1.in_town = False
-                    while True:
-                        try_again = input("Do you wish to play again (y/n)? ").lower()
-                        if try_again == "y":
-                            sleep(1)
-                            cls()
-                            player_1.in_proximity_to_monster = False
-                            player_1.in_dungeon = False
-                            player_1.in_town = False
-                            player_is_dead = False
-                            break
-                        if try_again == "n":
-                            print(f"Farewell.")
-                            exit()
-                        if try_again not in ("y", "n"):
-                            # print("Please enter y or n ")
-                            sleep(.5)
-                            continue
+                    if player_1.choose_to_play_again():
+                        break
                 if not player_1.in_dungeon:
                     break
                 player_1.navigation_turn_initialize()
@@ -147,11 +120,7 @@ while True:
                     # set player position, which also removes intro condition
                     player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]
                     player_1.dungeon_description()
-                dungeon_command = input(
-                    "(L)ook at surroundings, use (MAP), (C)larifying elixir,\n"
-                    "(Quit), Town (P)ortal, (H)ealing potion, (M)anage inventory,\n"
-                    "(G)iant strength potion, (V)ial of Antidote, (I)nventory,\n"
-                    "(Q)uantum effects, or W-A-S-D to navigate. --> ").lower()
+                dungeon_command = dungeon_command_choices()
 
                 if dungeon_command == 'p':
                     if player_1.use_scroll_of_town_portal():
@@ -166,7 +135,7 @@ while True:
                 elif dungeon_command == 'quit':
                     print("Quit game..")
                     if are_you_sure():
-                        exit()
+                        sys.exit()
                     else:
                         player_1.hud()
                         continue
@@ -174,8 +143,7 @@ while True:
                 elif dungeon_command == "q":
                     player_1.hud()
                     monster = None  # quantum_effects needs monster parameter, but player is not in battle at this point
-                    if player_1.quantum_units > 0:
-                        player_1.quantum_effects(monster)
+                    player_1.quantum_effects(monster)
 
                 elif dungeon_command == 'g':
                     if not player_1.drink_potion_of_strength():
@@ -233,31 +201,10 @@ while True:
                             break
                         # create a monster based on player_1.encounter: < 11 = normal monster. > 20 = boss
                         monster = player_1.meta_monster_generator()
+                        player_1.monster_introduction(monster)
 
-                        print(discovered_monsters)  # remove after testing
-                        if monster.name in discovered_monsters:
-                            player_1.hud()  # placing a hud() here erases the dungeon description; more appropriate
-                            print(f"You have encountered a {monster.name}. Challenge level: {monster.level}")
-                            # remove lvl after testing
-                            pause()
-                        else:
-                            player_1.hud()  # placing a hud() here erases the dungeon description; more appropriate
-                            print(f"{monster.introduction}")
-
-                            if player_1.encounter < 21:  # if not a boss
-                                discovered_monsters.append(monster.name)
-                            pause()
-                        if player_1.encounter < 21:  # if not a boss, monster may like you or steal from you
-                            if player_1.monster_likes_you(monster):
-                                player_1.in_proximity_to_monster = False
-                                # player_1.event_logic()  # this will trigger an event without using (L)ook
-                                player_1.dungeon_description()
-                                break
-                            if player_1.quick_move(monster):
-                                player_1.in_proximity_to_monster = False
-                                # player_1.event_logic()  # this will trigger an event without using (L)ook
-                                player_1.dungeon_description()
-                                break  # if monster steals something he gets away clean, if not, battle
+                        if player_1.monster_likes_you_or_steals_from_you(monster):
+                            break
 
                         # PLAYER INITIATIVE, MONSTER INITIATIVE
                         human_goes_first = player_1.initiative(monster)
@@ -313,74 +260,52 @@ while True:
                                 # PLAYER QUANTUM ATTACK
                                 elif battle_choice == "q":
                                     player_1.hud()
-                                    if player_1.quantum_units > 0:
-                                        damage_to_monster = player_1.quantum_effects(monster)
-                                        # if invalid input during quantum effect, None is returned:
-                                        if damage_to_monster is None:  # invalid input
-                                            continue  # should not waste a turn
-                                        # If monster is successfully turned, stone-petrified, fearful,
-                                        # disintegrated, lost to gravity well or banished, etc., experience is gained,
-                                        # but player gets no gold or loot:
-                                        if not player_1.in_proximity_to_monster:
-                                            # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
-                                            player_1.end_of_turn_calculation()
-                                            # allies heal and no longer retreat:
-                                            player_1.npc_calculation()
-                                            if player_1.check_dead():  # you can die from poison or necrosis,
-                                                player_is_dead = True  # right after victory, following calculations
-                                                break
-                                            if player_1.encounter > 20:  # if fighting a boss:
-                                                gong()
-                                                sleep(4)
-                                                player_1.dungeon_theme()
-                                                if player_1.encounter == 99:
-                                                    player_1.boss_hint_logic()
-                                            player_1.level_up(monster.experience_award, monster.gold)
-                                            player_1.dungeon_description()  # has worked well for a while
-                                            # pause()
+                                    damage_to_monster = player_1.quantum_effects(monster)
+                                    # if invalid input during quantum effect, None is returned:
+                                    if damage_to_monster is None:  # invalid input
+                                        continue  # should not waste a turn
+                                    # If monster is successfully turned, stone-petrified, fearful,
+                                    # disintegrated, lost to gravity well or banished, etc., experience is gained,
+                                    # but player gets no gold or loot:
+                                    if not player_1.in_proximity_to_monster:
+                                        # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
+                                        player_1.end_of_turn_calculation()
+                                        # allies heal and no longer retreat:
+                                        player_1.npc_calculation()
+                                        if player_1.check_dead():  # you can die from poison or necrosis,
+                                            player_is_dead = True  # right after victory, following calculations
                                             break
-                                        # otherwise, calculate damage:
-                                        # if total monster hit points is returned from quantum_effects(),
-                                        # then monster will die instantly and player gets loot
-                                        monster.reduce_health(damage_to_monster)
-                                        if monster.check_dead():
-                                            player_1.hud()
-                                            if player_1.encounter > 20:  # if victory over boss
-                                                # make this into a function:
-                                                gong()
-                                                if monster.proper_name != "None":
-                                                    print(f"You have vanquished {monster.proper_name}! "
-                                                          f"You are victorious!")
-                                                    player_1.vanquished_foes.append(monster.proper_name)
-                                                else:
-                                                    print(f"You have vanquished the {monster.name}!")
-                                                sleep(4)
-                                                player_1.dungeon_theme()
-                                            else:
-                                                print(f"You have defeated the {monster.name}..")
-                                            # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
-                                            player_1.end_of_turn_calculation()
-                                            # allies heal and no longer retreat:
-                                            player_1.npc_calculation()
-                                            pause()
-                                            if player_1.check_dead():  # you can die from poison or necrosis,
-                                                player_is_dead = True  # right after victory, following calculations
-                                                player_1.in_proximity_to_monster = False
-                                                break
-                                            player_1.level_up(monster.experience_award, monster.gold)
-                                            player_1.in_proximity_to_monster = False
-                                            player_1.loot()
-
-                                            if player_1.encounter > 20:  # if you kill the boss
-                                                if player_1.encounter == 99:  # level exit boss
-                                                    player_1.boss_hint_logic()
-
-                                            player_1.dungeon_description()
-                                            break
-                                    else:
-                                        print(f"You have no Quantum unit energy!")
+                                        if player_1.encounter > 20:  # if victory over a boss by quantum 'turning':
+                                            gong()
+                                            sleep(4)
+                                            player_1.dungeon_theme()
+                                            player_1.victory_over_boss_logic()
+                                        player_1.level_up(monster.experience_award, monster.gold)
+                                        player_1.dungeon_description()  # has worked well for a while
+                                        # pause()
+                                        break
+                                    # otherwise, calculate damage:
+                                    # if total monster hit points is returned from quantum_effects(),
+                                    # then monster will die instantly and player gets loot
+                                    monster.reduce_health(damage_to_monster)
+                                    if monster.check_dead():
+                                        player_1.hud()
+                                        player_1.victory_statements(monster)
+                                        # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
+                                        player_1.end_of_turn_calculation()
+                                        # allies heal and no longer retreat:
+                                        player_1.npc_calculation()
                                         pause()
-                                        continue  # if you have no QU, don't waste a turn!
+                                        if player_1.check_dead():  # you can die from poison or necrosis,
+                                            player_is_dead = True  # right after victory, following calculations
+                                            player_1.in_proximity_to_monster = False
+                                            break
+                                        player_1.level_up(monster.experience_award, monster.gold)
+                                        player_1.in_proximity_to_monster = False
+                                        player_1.loot()
+                                        player_1.victory_over_boss_logic()
+                                        player_1.dungeon_description()
+                                        break
 
                                 # if monster is still alive after quantum attack, and player has allies:
                                 # npc allies attack monster:
@@ -390,7 +315,7 @@ while True:
                                     player_1.npc_calculation()
                                     pause()
 
-                                    if player_1.check_dead():
+                                    if player_1.check_dead():  # player can die of poison/necrosis
                                         player_is_dead = True
                                         player_1.in_proximity_to_monster = False
                                         break
@@ -398,12 +323,7 @@ while True:
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot()
-
-                                    if player_1.encounter > 20:  # if you kill a boss
-                                        if player_1.encounter == 99:  # if exit boss has been defeated,
-                                            player_1.boss_hint_logic()  # give main boss hints
-                                        # player_1.loot()  # 8 difficulty class: better chance at loot
-
+                                    player_1.victory_over_boss_logic()
                                     player_1.dungeon_description()
                                     break
 
@@ -446,23 +366,7 @@ while True:
                                 # just pass encounter parameter
                                 if monster.check_dead():
                                     player_1.hud()
-
-                                    if player_1.encounter > 20:  # if fighting boss
-                                        gong()
-
-                                        if monster.proper_name != "None":
-                                            print(f"You have vanquished {monster.proper_name}! You are victorious!")
-                                            player_1.vanquished_foes.append(monster.proper_name)
-
-                                        else:
-                                            print(f"You have vanquished the {monster.name}!")
-
-                                        sleep(4)
-                                        player_1.dungeon_theme()
-
-                                    else:
-                                        print(f"You are victorious..")
-
+                                    player_1.victory_statements(monster)
                                     pause()
                                     # CALCULATE REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
                                     player_1.end_of_turn_calculation()
@@ -477,12 +381,7 @@ while True:
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot()
-
-                                    if player_1.encounter > 20:  # if you kill the boss, you get extra chance for loot
-                                        if player_1.encounter == 99:  # if exit boss has been defeated,
-                                            player_1.boss_hint_logic()  # give main boss hints
-                                        # player_1.loot()  # 8 difficulty class: better chance at loot
-
+                                    player_1.victory_over_boss_logic()
                                     player_1.dungeon_description()
                                     break
 
@@ -502,12 +401,7 @@ while True:
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot()
-
-                                    if player_1.encounter > 20:  # if you kill the boss, you get extra chance for loot
-                                        if player_1.encounter == 99:  # if exit boss has been defeated,
-                                            player_1.boss_hint_logic()  # give main boss hints
-                                        # player_1.loot()  # 8 difficulty class: better chance at loot
-
+                                    player_1.victory_over_boss_logic()
                                     player_1.dungeon_description()  # beta works so far
                                     break
 
@@ -601,3 +495,61 @@ while True:
                             #                      "(G)iant Strength potion, (V)ial of Antidote,\n(Q)uantum Effects or "
                             #                      "(E)vade\nF/H/C/G/V/Q/E --> ").lower()
 """
+"""                        if player_1.encounter < 21:  # if not a boss, monster may like you or steal from you
+                            if player_1.monster_likes_you(monster):
+                                player_1.in_proximity_to_monster = False
+                                # player_1.event_logic()  # this will trigger an event without using (L)ook
+                                player_1.dungeon_description()
+                                break
+                            if player_1.quick_move(monster):
+                                player_1.in_proximity_to_monster = False
+                                # player_1.event_logic()  # this will trigger an event without using (L)ook
+                                player_1.dungeon_description()
+                                break  # if monster steals something he gets away clean, if not, battle"""
+"""cls()
+                    gong()
+                    print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
+                    sleep(4)
+                    player_1.in_proximity_to_monster = False
+                    player_1.in_dungeon = False
+                    player_1.in_town = False
+                    while True:
+                        try_again = input("Do you wish to play again (y/n)? ").lower()
+                        if try_again == "y":
+                            sleep(1)
+                            cls()
+                            player_1.in_proximity_to_monster = False
+                            player_1.in_dungeon = False
+                            player_1.in_town = False
+                            player_is_dead = False
+                            break
+                        if try_again == "n":
+                            print(f"Farewell.")
+                            exit()
+                        if try_again not in ("y", "n"):
+                            # print("Please enter y or n ")
+                            sleep(.5)
+                            continue"""
+"""    if new_game_or_load == 'l':
+        player_name = input("Enter name of saved character: ")
+        load_a_character = player_name + ".sav"
+        if os.path.isfile(load_a_character):
+            print(f"{player_name} found.")
+            with open(load_a_character, 'rb') as saved_player:
+                player_1 = pickle.load(saved_player)
+                sleep(1)
+                print(f"{player_name} read.")
+                sleep(1)
+                dungeon = dungeon_dict[player_1.dungeon_key]  # remove after testing
+                print(dungeon.name)  # remove after testing
+                print(player_1.coordinates)  # remove after testing
+                player_1.loaded_game = True
+                sleep(1)
+        else:
+            print(f"Could not find {player_name} ")
+            sleep(1.5)
+            continue"""
+"""else:
+                                    print(f"You have no Quantum unit energy!")
+                                    pause()
+                                    continue  # if you have no QU, don't waste a turn!"""

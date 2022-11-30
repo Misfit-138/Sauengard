@@ -110,7 +110,7 @@ def game_splash():
         print(f"                                         "
               f"© Copyright 2022 by Jules Pitsker")
         choice = input(f"                     "
-                       f"(I)ntroduction  (A)bout  (T)ips  (M)usic Acknowledgement  (L)icense  (B)egin ").lower()
+                       f"(I)ntroduction  (A)bout  (T)ips  (C)redits and Acknowledgement  (L)icense  (B)egin ").lower()
 
         if choice == 'i':
             typewriter_txt_file('introduction.txt')
@@ -124,8 +124,8 @@ def game_splash():
             typewriter_txt_file('tips.txt')
             pause()
 
-        elif choice == 'm':
-            print_txt_file('music_acknowledgement.txt')
+        elif choice == 'c':
+            print_txt_file('credits.txt')
             pause()
 
         elif choice == 'l':
@@ -8308,7 +8308,7 @@ class Player:
             print(f"You have arrived back at {self.dungeon.name}, dungeon level {self.dungeon.level}.")
             sleep(2)
             self.in_a_pit = False
-            (self.x, self.y) = self.dungeon.elevator_landing  # simplified with tuple instead of self.x = and self.y =
+            (self.x, self.y) = self.dungeon.elevator_landing
             self.coordinates = (self.x, self.y)
             self.previous_x = self.x
             self.previous_y = self.y
@@ -8845,6 +8845,8 @@ class Player:
                   f"collapsed. The only exit is to the {exits}")
 
     def automatic_dungeon_description_and_room_exit_finder(self):
+        # I am very proud of this code. I wrote it all from scratch,
+        # which is quite an accomplishment for me.
         # called from dungeon_description()
         multiple_corridors = False
         barrier_name = self.dungeon.barrier_name
@@ -8890,52 +8892,67 @@ class Player:
         number_of_walls = len(walls_list)
 
         if number_of_walls == 0:  # 4-way intersection, large atrium, or wide-open area
+
             if not self.intersection_check():  # if you are not at an intersection
+
                 if not self.atrium_check():  # and you are not in an atrium
                     auto_description_phrase = self.wide_open_space_logic()  # you must be in a wide open space
+
                 else:  # you must be in a large atrium with 0 walls
                     auto_description_phrase = large_atrium_phrase
                     corridor_direction = self.atrium_check()
+
                     if len(corridor_direction) > 1:  # beta if more than 1 corridor
                         corridor_direction = convert_list_to_string_with_and(corridor_direction)
                         multiple_corridors = True
+
                     else:  # only one corridor
                         corridor_direction = convert_list_to_string(corridor_direction)
+
             else:  # you must be at a 4-way intersection; intersections do not need to detect corridor_direction
                 auto_description_phrase = self.auto_intersection_description()
 
         if number_of_walls == 1:  # 3-way intersection, wall-lined atrium, or against a wall
+
             if not self.intersection_check():  # if you are not at an intersection
+
                 if not self.atrium_check():  # and you are not in an atrium lined with one wall
                     # you must be against a wall
                     direction = convert_list_to_string(walls_list)
                     auto_description_phrase = f"You are against {barrier_name} to the {direction}."
+
                 else:  # you must be in an atrium lined with one wall
                     direction = convert_list_to_string(walls_list)
                     auto_description_phrase = f"{one_walled_atrium_phrase} The {direction} " \
                                               f"side is lined with {barrier_name}."
                     corridor_direction = self.atrium_check()
-                    if len(corridor_direction) > 1:  # beta
-                        corridor_direction = convert_list_to_string_with_and(corridor_direction)  # beta
-                        multiple_corridors = True  # beta
+
+                    if len(corridor_direction) > 1:
+                        corridor_direction = convert_list_to_string_with_and(corridor_direction)
+                        multiple_corridors = True
+
                     else:  # beta
-                        corridor_direction = convert_list_to_string(corridor_direction)  # beta
+                        corridor_direction = convert_list_to_string(corridor_direction)
+
             else:  # you must be at a 3-way intersection; intersections do not need to detect corridor_direction
                 auto_description_phrase = self.auto_intersection_description()
 
         if number_of_walls == 2:  # corridor, corner, or corner-atrium
             e_w_walls = ['East', 'West']
             n_s_walls = ['North', 'South']
+
             # if there are walls to your east and west *or* to your north and south:
             if set(e_w_walls) == set(walls_list) or set(n_s_walls) == set(walls_list):  # you must be in a corridor:
                 directions = convert_list_to_string_with_and(walls_list)
                 auto_description_phrase = f"{corridor_phrase} " \
                                           f"There are {barrier_name_plural} to the {directions}."
+
             else:  # otherwise, you must be in a corner:
                 directions = convert_list_to_string_with_and(walls_list)
                 auto_description_phrase = f"You are in a corner. " \
                                           f"There are {barrier_name_plural} to the {directions}."
-                if self.atrium_check():  # beta
+
+                if self.atrium_check():
                     corridor_direction = self.atrium_check()
                     # you can sometimes be in a corner and also be in an atrium. i.e. there are 2 proximal corridors.
                     # in that case, the atrium description is ignored, because it is not really an atrium
@@ -8943,6 +8960,7 @@ class Player:
                     if len(corridor_direction) > 1:
                         corridor_direction = convert_list_to_string_with_and(corridor_direction)  # beta
                         multiple_corridors = True
+
                     else:
                         corridor_direction = convert_list_to_string(corridor_direction)  # beta
 
@@ -8970,29 +8988,32 @@ class Player:
 
             # if there are corridors, calculate which exits lead to them and print out:
             if corridor_direction != "":  # you must be at an atrium, or corner-atrium
+
                 if not self.dungeon_level_exit_check():  # if player is not proximal to dungeon_level exit
+
                     if multiple_corridors:
                         print(f"The {corridor_direction} exits each lead to {corridor_name}.")
                     else:
                         print(f"The {corridor_direction} exit leads to {corridor_name}.")
+
                 else:  # player IS proximal to the dungeon_level exit
                     if multiple_corridors:
                         print(f"The {corridor_direction} exits each lead to corridors.")
                         dungeon_exit_direction = self.dungeon_level_exit_check()
                         print(f"The {dungeon_exit_direction} corridor leads to a staircase.."
-                              f"It is the exit of {self.dungeon.name}!")
+                              f"*IT IS THE EXIT OF {self.dungeon.name}!*")
                         #
                     else:
                         corridor_direction = self.dungeon_level_exit_check()
                         print(f"The {corridor_direction} corridor leads to a staircase.."
-                              f"It is the exit of {self.dungeon.name}!")
+                              f"*IT IS THE EXIT OF {self.dungeon.name}!*")
                         #
             else:  # you must be at an intersection. intersections are auto-described above.
                 # just check to see if player is proximal to the dungeon_level_exit:
                 if self.dungeon_level_exit_check():
                     corridor_direction = self.dungeon_level_exit_check()
                     print(f"The {corridor_direction} corridor leads to a staircase.."
-                          f"It is the exit of {self.dungeon.name}!")
+                          f"*IT IS THE EXIT OF {self.dungeon.name}!*")
                     #
         else:  # you must be at a dead end
             exits = convert_list_to_string(exits_list)
@@ -9073,7 +9094,6 @@ class Player:
         if self.coordinates == self.dungeon.pit_landing:
             self.pit_landing_description()
 
-        # self.coordinates is merely a tuple representing x,y coordinates on self.dungeon.grid
         # self.coordinates = (self.x, self.y)  # commented out. seems to be unnecessary at this point in program.
 
         # print out dungeon level and coordinates before returning

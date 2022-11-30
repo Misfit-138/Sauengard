@@ -1,3 +1,12 @@
+Concept, coding, creation and play testing: Jules Pitsker
+
+Thanks to Stack Overflow members:
+The Spider, Anentropic, and Optimal for helping me get my footing during my first hours of learning python
+Yarik0urWorld for help with list syntax
+Angus Nicolson for self.__dict__ code snippet and explanation
+Liju and snakecharmerb for explanatory assistance with hashable objects
+
+MUSIC:
 Main theme: "Soul's Departure" Royalty Free Music by Darren Curtis
 Creative Commons Attribution License 4.0 International (CC BY 4.0)
 

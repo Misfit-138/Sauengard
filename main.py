@@ -29,12 +29,10 @@
 
 
 import pickle
-import sys
-
 from dungeons import dungeon_dict
 import os
 from player_module import sad_cello_theme, cls, game_splash, character_generator, town_theme, gong, sleep, \
-    pause, are_you_sure, typewriter, dungeon_command_choices
+    pause, typewriter, dungeon_command_choices, quit_game
 
 cls()
 if os.name == 'nt':
@@ -133,11 +131,8 @@ while True:
                         continue  # if you have no scrolls, don't waste a turn
 
                 elif dungeon_command == 'quit':
-                    print("Quit game..")
-                    if are_you_sure():
-                        sys.exit()
-                    else:
-                        player_1.hud()
+                    if not quit_game():
+                        player_1.dungeon_description()
                         continue
 
                 elif dungeon_command == "q":

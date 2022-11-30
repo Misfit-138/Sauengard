@@ -38,11 +38,15 @@ from collections import Counter
 from dungeons import dungeon_dict
 from monster_module import monster_dict, king_boss_list, undead_prophet_list, WickedQueenJannbrielle
 from pathlib import Path
+import keyboard
 if os.name == 'nt':
     import winsound
 
 # if you call a function and expect to use a return value, like, by printing it, you must first assign a variable in
 # the call itself!!!
+# when passing a list as an argument, remember to use the * unpacking operator
+# seq = [1, 2, 3]
+# foo(*seq)
 
 '''DIFFICULTY CLASSES (HIPSTER’S REMIX)
 Task Difficulty	DC
@@ -56,25 +60,51 @@ Incredibly hard	25
 Why bother?	30'''
 
 
+def check_for_escape():
+    if keyboard.is_pressed('Esc'):
+        quit_game()
+
+
+def quit_game():
+    cls()
+    typewriter("Quit game..")
+
+    if are_you_sure():
+        sys.exit()
+
+    else:
+        return
+
+
 def are_you_sure():
     while True:
         confirm = input("Are you sure? (y/n) ").lower()
-        if confirm not in ('y', 'n'):
-            continue
-        elif confirm == 'y':
+
+        if confirm == 'y':
             return True
-        elif confirm == 'n':
+        else:
             return False
 
 
 def typewriter(message):
-    print("")
-    for word in message:
-        sleep(0.0075)  # (random.choice([0.1, 0.09, 0.08, 0.07, 0.06])) 0.01 seems very good
-        sys.stdout.write(word)
+    # based this snippet on a snippet from 101computing.net:
+    print()
+    for each_char in message:
+        sleep(0.0065)  # 0.01 seems very good
+        sys.stdout.write(each_char)
         sys.stdout.flush()
+
+        # I am proud of this little snippet I figured out :)
+        if keyboard.is_pressed('Esc'):
+            # print("\n\n*SKIP*")
+            # if are_you_sure():
+            cls()
+            print()
+            print(message)
+            return
+
     sleep(.1)
-    return ""
+    return
 
 
 def print_txt_file(txt_file_name):
@@ -105,8 +135,8 @@ def game_splash():
     while True:
         cls()
         print_txt_file('splash_art.txt')
-        typewriter("                               "
-                   "W  E  L  C  O  M  E    T  O    S  A  U  E  N  G  A  R  D.\n")
+        print("                               "
+              "W  E  L  C  O  M  E    T  O    S  A  U  E  N  G  A  R  D.\n")
         print(f"                                         "
               f"© Copyright 2022 by Jules Pitsker")
         choice = input(f"                     "
@@ -1384,7 +1414,7 @@ class Player:
         self.torbron_ally = False
         self.magnus_ally = False
         self.vozzbozz_ally = False
-        self.boss_hint_1 = False
+        self.boss_hint_1 = True
         self.boss_hint_1_event = False
         self.boss_hint_2 = False
         self.boss_hint_2_event = False
@@ -6713,18 +6743,21 @@ class Player:
         # hint_event_1 occurs after boss_clue_1, etc. the boss_clues occur after defeating the dungeon_exit boss
         # hint_event_1 is a meeting with vozzbozz, introduction to tor'bron the barbarian, and another hint
         # about the symbol of the wicked queen, which the player finds during boss_clue_1
+        cls()
         print(f"As soon as she sees you, Jenna motions discreetly toward the hallway leading away from the bar.")
         sleep(1)
         print(f"You direct your eyes that way and casually make your way down the hall...")
         sleep(1)
         pause()
         cls()
-        typewriter(f"Jenna catches up to you at end of the hallway. \'Ye are {self.name}, are ye not?\'")
-        typewriter(f"Nodding and instinctively looking about for eavesdroppers, you re-focus on her concerned look.")
+        print(f"Jenna catches up to you at end of the hallway. \'Ye are {self.name}, are ye not?\'\n"
+              f"Nodding and instinctively looking about for eavesdroppers, you re-focus on her concerned look.")
         if len(self.vanquished_foes):
             vanquished_foes = convert_list_to_string_with_commas_only(self.vanquished_foes)
-            typewriter(f"\'I know of ye.\' Your puzzled look speaks for you, as she continues,\n"
-                       f"\'We 'ave 'eard of it.. how ye' 'ave defeated {vanquished_foes}...and others!\'")
+            print(f"\'I know of ye.\' Your puzzled look speaks for you, as she continues,\n"
+                  f"\'We 'ave 'eard of it.. how ye' 'ave defeated {vanquished_foes}...and others!\'")
+        pause()
+        cls()
         typewriter("\'There is somethin' ye should know!\' Her level of anxiety gives you pause; it seems out of\n"
                    "character for her.\n\'Ye should seek out Vozzbozz!\' Pausing with a far away look, she nods.\n"
                    "\'I'm headin' back to the bar, and we'll make like we never spoke o' this..\'\n"

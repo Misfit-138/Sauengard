@@ -1,17 +1,15 @@
-The Town of Fieldenberg
-
+The Town of Fieldenberg:
 The gateway to the Sauengard Dungeon. Here, you will find a tavern, a blacksmith and a quantum chemist. Quantum items,
 armor, and weapons may be purchased and sold for gold. Visiting the tavern allows for rest, which heals wounds and
 recovers quantum energy (for a small fee). The tavern is also a local gathering place where you will participate in
 events which will be triggered by your progress in the dungeon. Visit the tavern often; it's an interesting place.
 
-Dungeon Navigation
+Dungeon Navigation:
 W-A-S-D is used for North, South, East, and West. Also, if in wider-open areas, compound movements may be used;
 NE, NW, SE, SW. Pay attention to the descriptions of the spaces you navigate to. Use the (L)ook function if you are
 interrupted by an encounter with a monster.
 
 MAGIC?? WHAT MAGIC?
-
 It has often, and quite accurately, been said that yesterdays 'magic' is nothing more than today's science. While it is
 quite true that there is, by the very quantum nature of the universe we live in, an infinitesimally small (but nonzero)
 chance that you could actually walk through a wall of solid rock, (as if 'magically'), if you try enough times, I do not

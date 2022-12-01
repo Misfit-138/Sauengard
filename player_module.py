@@ -6875,6 +6875,36 @@ class Player:
             # return self.hint_event_6()
             # print("hint 6 event")
 
+    def talk_to_jenna(self):
+        cls()
+        opening_phrase = "\'Feelin' chatty, love?\', queries Jenna in a coy tone."
+
+        if self.dungeon.level == 1:
+            if self.town_portal_exists:
+                opening_phrase = f"\'Feelin' chatty, love?\', queries Jenna in a coy tone.\nI've 'eard ye entered" \
+                                 f" town through a portal. 'Tis good, sir. 'Cept a word o' caution:\n" \
+                                 f"Make good use of yer time here while it's open. Ye don't want ta be wastin' yer\n" \
+                                 f"portals, seein' as scrolls can be rare!"
+            typewriter(f"{opening_phrase}\n")
+            treasure_chest_discovery = f"level {self.dungeon.level} treasure chest"
+            if treasure_chest_discovery not in self.discovered_interactives:
+                typewriter(f"She continues, \'{self.dungeon.name} is full of dangers for the "
+                           f"unwary,\n"
+                           f"but there are treasures to be had as well. 'Tis said that there be a pit below the "
+                           f"dungeon\n"
+                           f"where ye may find gold, but it be full of monsters and fiends.\' ")
+            else:
+                typewriter(f"With a big, welcoming smile, she says, \'I 'eard it said ye 'ave found treasure in the "
+                           f"pit below {self.dungeon.name}!\n"
+                           f"Care to spend some o' that loot?\', she adds with a wink.")
+
+            micro_boss_discovery = f"level {self.dungeon.level} micro boss"
+            if micro_boss_discovery not in self.discovered_interactives:
+                typewriter(f"Lowering her tone, she goes on, \'I've also 'eard it said that there's an elite enemy\n"
+                           f"down there, just waitin' for unsuspectin' adventurers in a dead ended corridor!\n"
+                           f"Take good care, now, and be wise!\' ")
+            pause()
+
     def inn(self):
 
         self.hud()
@@ -6929,12 +6959,7 @@ class Player:
                     continue
             elif inn_choice == 't':
                 self.hud()
-                print(f"Jenna gestures to you that it will be a moment, as she continues waiting on patrons..")
-                sleep(1.5)
-                print(f"She briskly approaches, wiping her hands on her apron and fixing her long, luxuriant hair.")
-                sleep(1)
-                print(f"What ye be needin'?")
-                pause()
+                self.talk_to_jenna()
                 continue
             elif inn_choice == 'e':
                 self.hud()
@@ -7382,7 +7407,7 @@ class Player:
 
     def found_ring_of_reg_substitution(self, found_item):
 
-        if self.ring_of_reg.name == default_ring_of_regeneration.name:  # self.ring_of_reg.regenerate == 0:
+        if self.ring_of_reg.name == default_ring_of_regeneration.name:
             # self.ring_of_regeneration and default class object has 0 regenerate
             self.ring_of_reg = found_item
             print(f"Quantum wierdness fills the air...")
@@ -7458,10 +7483,13 @@ class Player:
             self.hud()
             print(f"Loot roll ---> {loot_roll}")  # remove after testing ?
             pause()
+            # item_class = random.choice(list(loot_dict.keys()))
+            # new_item_instance = random.choice(loot_dict[item_class])()  # Calling class __init__ method
             if loot_roll >= loot_difficulty_class:
                 key = random.choice(list(loot_dict.keys()))
                 rndm_item_index = random.randrange(len(loot_dict[key]))
                 found_item = loot_dict[key][rndm_item_index]
+                # found_item = random.choice(loot_dict[key])()  # change objects to classes and try again
                 print(found_item)  # REMOVE AFTER TESTING *****************************************************
 
                 if self.level >= found_item.minimum_level:

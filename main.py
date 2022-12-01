@@ -27,7 +27,6 @@
 # Pit theme 'Epic 39' by Jules Pitsker
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
-
 import pickle
 from dungeons import dungeon_dict
 import os
@@ -39,6 +38,7 @@ if os.name == 'nt':
     print(f"For best gaming experience, please ensure terminal window is maximized.")
 pause()
 while True:
+
     sad_cello_theme()
     game_splash()
     cls()
@@ -108,7 +108,7 @@ while True:
                 if not player_1.in_dungeon:
                     break
                 player_1.navigation_turn_initialize()
-                # player_1.loot(0)  # for testing
+                # player_1.loot()  # for testing
                 # player_1.asi()  # for testing
                 if player_1.position == 0:  # 0 is the game/level start position
                     # player_1.hud()

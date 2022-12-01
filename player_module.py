@@ -445,7 +445,7 @@ class Weapon:
         self.a_an = "a"
 
     def __repr__(self):
-        return f"{self.name} - Damage Bonus: {self.damage_bonus}  To hit: {self.to_hit_bonus}  " \
+        return f"{self.name} - Damage Bonus: {self.damage_bonus}  To-hit bonus: {self.to_hit_bonus}  " \
                f"Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP"
 
 
@@ -1006,7 +1006,7 @@ class Regeneration:
 class DefaultRingOfRegeneration(Regeneration):
     def __init__(self):
         super().__init__()
-        self.name = "No Ring"
+        self.name = "Lead Ring"
         self.item_type = "Rings of Regeneration"
         self.regenerate = 0
         self.sell_price = 10000
@@ -1051,13 +1051,13 @@ class Protection:
 class DefaultRingOfProtection(Protection):
     def __init__(self):
         super().__init__()
-        self.name = "No Ring"
+        self.name = "Tin Ring"
         self.item_type = "Rings of Protection"
         self.protect = 0
         self.sell_price = 10000
         self.buy_price = 10000
         self.minimum_level = 1
-        self.a_an = ""
+        self.a_an = "a"
 
 
 default_ring_of_protection = DefaultRingOfProtection()
@@ -1114,6 +1114,21 @@ top_level_loot_dict = {
             'Potions of Strength': [strength_potion],
             'Antidotes': [antidote]
         }
+
+new_top_level_loot_dict = {
+            'Armor': [LeatherArmor, StuddedLeatherArmor, ScaleMail, HalfPlate, FullPlate],
+            'Shields': [Buckler, KiteShield, QuantumTowerShield],
+            'Boots': [ElvenBoots, AncestralFootsteps],
+            'Cloaks': [ElvenCloak],
+            'Weapons': [ShortAxe, BroadSword, GreatSword, ElvishGreatSword, QuantumSword,
+                        BattleAxe, GreatAxe, QuantumAxe],
+            'Elixirs': [Elixir],
+            'Healing': [HealingPotion],
+            'Rings of Regeneration': [RingOfRegeneration],
+            'Rings of Protection': [RingOfProtection],
+            'Town Portal Implements': [TownPortalImplements],
+            'Potions of Strength': [StrengthPotion],
+            'Antidotes': [Antidote]}
 
 
 def undead_prophet_returns():
@@ -1620,7 +1635,7 @@ class Player:
 
     def calculate_stealth(self):
         # called from found_cloak_substitution() as well as item_management()
-        self.stealth += self.cloak.stealth
+        self.stealth = self.cloak.stealth
         return
 
     def calculate_armor_class(self):
@@ -7363,11 +7378,12 @@ class Player:
 
         if self.cloak.stealth < math.ceil(self.dexterity * .25):
             if found_item.name == self.cloak.name:
-                found_item.stealth += 1
-                print(f"Quantum wierdness fills the air...\nYour {self.cloak.name} is enhanced to stealth +"
-                      f" {found_item.stealth}!")
-                self.cloak.stealth = found_item.stealth
+                # found_item.stealth += 1
+                self.cloak.stealth += 1
                 self.calculate_stealth()
+                print(f"Quantum wierdness fills the air...\nYour {self.cloak.name} is enhanced to stealth +"
+                      f" {self.cloak.stealth}!")
+
                 pause()
                 return
             else:
@@ -7459,7 +7475,7 @@ class Player:
         # Called from main loop
 
         if self.encounter < 21:  # regular monster
-            loot_difficulty_class = 10
+            loot_difficulty_class = 1  # 10
             treasure_chest_difficulty_class = 20
         else:  # boss
             loot_difficulty_class = 8
@@ -7476,7 +7492,7 @@ class Player:
                 self.treasure_chest()
 
         # regular loot
-        loot_dict = top_level_loot_dict
+        loot_dict = new_top_level_loot_dict
         while True:
             # ****** NOTICE THE DIFFERENCE BETWEEN found_item and found_item.item_type !! ************************
             loot_roll = dice_roll(1, 20)
@@ -7487,9 +7503,9 @@ class Player:
             # new_item_instance = random.choice(loot_dict[item_class])()  # Calling class __init__ method
             if loot_roll >= loot_difficulty_class:
                 key = random.choice(list(loot_dict.keys()))
-                rndm_item_index = random.randrange(len(loot_dict[key]))
-                found_item = loot_dict[key][rndm_item_index]
-                # found_item = random.choice(loot_dict[key])()  # change objects to classes and try again
+                # rndm_item_index = random.randrange(len(loot_dict[key]))
+                # found_item = loot_dict[key][rndm_item_index]
+                found_item = random.choice(loot_dict[key])()  # Calling class __init__ method
                 print(found_item)  # REMOVE AFTER TESTING *****************************************************
 
                 if self.level >= found_item.minimum_level:
@@ -7580,7 +7596,7 @@ class Player:
         sleep(1.5)
         pause()
         loot_difficulty_class = 7
-        loot_dict = top_level_loot_dict
+        loot_dict = new_top_level_loot_dict
         while True:
             # ****** NOTICE THE DIFFERENCE BETWEEN found_item and found_item.item_type !! ************************
             loot_roll = dice_roll(1, 20)
@@ -7590,8 +7606,9 @@ class Player:
             if loot_roll >= loot_difficulty_class:
                 successful_tries += 1
                 key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
-                rndm_item_index = random.randrange(len(loot_dict[key]))
-                found_item = loot_dict[key][rndm_item_index]
+                # rndm_item_index = random.randrange(len(loot_dict[key]))
+                # found_item = loot_dict[key][rndm_item_index]
+                found_item = random.choice(loot_dict[key])()  # Calling class __init__ method
                 print(found_item)  # REMOVE AFTER TESTING *****************************************************
                 if self.level >= found_item.minimum_level:
                     if found_item.item_type == 'Armor':
@@ -7715,7 +7732,7 @@ class Player:
                 sleep(1.5)
                 pause()
                 loot_difficulty_class = 7
-                loot_dict = top_level_loot_dict
+                loot_dict = new_top_level_loot_dict
                 while True:
                     # ****** NOTICE THE DIFFERENCE BETWEEN found_item and found_item.item_type !! ***********
                     loot_roll = dice_roll(1, 20)
@@ -7725,8 +7742,9 @@ class Player:
                     if loot_roll >= loot_difficulty_class:
                         successful_tries += 1
                         key = random.choice(list(loot_dict.keys()))  # this code should negate item key type list
-                        rndm_item_index = random.randrange(len(loot_dict[key]))
-                        found_item = loot_dict[key][rndm_item_index]
+                        # rndm_item_index = random.randrange(len(loot_dict[key]))
+                        # found_item = loot_dict[key][rndm_item_index]
+                        found_item = random.choice(loot_dict[key])()  # Calling class __init__ method
                         print(found_item)  # REMOVE AFTER TESTING ****************************************************
                         if found_item.minimum_level - self.level <= 2:
                             if found_item.item_type == 'Armor':

@@ -108,7 +108,7 @@ while True:
                 if not player_1.in_dungeon:
                     break
                 player_1.navigation_turn_initialize()
-                # player_1.loot()  # for testing
+                player_1.loot()  # for testing
                 # player_1.asi()  # for testing
                 if player_1.position == 0:  # 0 is the game/level start position
                     # player_1.hud()

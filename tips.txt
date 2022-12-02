@@ -2,12 +2,14 @@ The Town of Fieldenberg:
 The gateway to the Sauengard Dungeon. Here, you will find a tavern, a blacksmith and a quantum chemist. Quantum items,
 armor, and weapons may be purchased and sold for gold. Visiting the tavern allows for rest, which heals wounds and
 recovers quantum energy (for a small fee). The tavern is also a local gathering place where you will participate in
-events which will be triggered by your progress in the dungeon. Visit the tavern often; it's an interesting place.
+events which will be triggered by your progress in the dungeon.
+Visit often, and remember to save your character to disk!
 
 Dungeon Navigation:
 W-A-S-D is used for North, South, East, and West. Also, if in wider-open areas, compound movements may be used;
-NE, NW, SE, SW. Pay attention to the descriptions of the spaces you navigate to. Use the (L)ook function if you are
-interrupted by an encounter with a monster.
+NE, NW, SE, SW. Pay attention to the descriptions of the spaces you navigate to! Use the (L)ook function if you are
+interrupted by an encounter with a monster. You may want to keep track of your progress throughout the dungeons
+with graph paper.
 
 MAGIC?? WHAT MAGIC?
 It has often, and quite accurately, been said that yesterdays 'magic' is nothing more than today's science. While it is
@@ -22,7 +24,7 @@ on the actual impossibly small, but nonzero chances of such occurrences in our w
 this 'weird art'. Harnessing such effects are critical to success in the dungeons, and most require substantial Wisdom
 to master, though a few require Intelligence as well.
 
-A Paladin? A Fighter? A Quantum Manipulator? What am I?
+A Paladin? A Fighter? A 'Quantum Manipulator'? What am I?
 
 Sauengard allows players access to the Standard Array, often used in RPGs to streamline character creation. This system
 allows for a reasonable compromise between what is fair, possible, and fun, when creating a player character. It is

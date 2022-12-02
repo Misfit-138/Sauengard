@@ -27,11 +27,11 @@
 # Pit theme 'Epic 39' by Jules Pitsker
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
-# import pickle
-# from dungeons import dungeon_dict
+import pickle
+from dungeons import dungeon_dict
 import os
-from player_module import cls, town_theme, gong, sleep, \
-    pause, typewriter, dungeon_command_choices, quit_game, game_start
+from player_module_old import sad_cello_theme, cls, game_splash, character_generator, town_theme, gong, sleep, \
+    pause, typewriter, dungeon_command_choices, quit_game
 
 cls()
 if os.name == 'nt':
@@ -39,7 +39,47 @@ if os.name == 'nt':
 pause()
 while True:
 
-    player_1 = game_start()
+    sad_cello_theme()
+    game_splash()
+    cls()
+    player_1 = ""  # to get rid of undefined warning
+    player_name = ""  # to get rid of undefined warning
+    new_game_or_load = input("(S)tart a new character (L)oad a saved one, or go (B)ack to main menu: ").lower()
+    if new_game_or_load not in ('s', 'l'):
+        continue
+    if new_game_or_load == 'l':
+        player_name = input("Enter name of saved character: ")
+        load_a_character = player_name + ".sav"
+        if os.path.isfile(load_a_character):
+            print(f"{player_name} found.")
+            with open(load_a_character, 'rb') as saved_player:
+                player_1 = pickle.load(saved_player)
+                sleep(1)
+                print(f"{player_name} read.")
+                sleep(1)
+                dungeon = dungeon_dict[player_1.dungeon_key]  # remove after testing
+                print(dungeon.name)  # remove after testing
+                print(player_1.coordinates)  # remove after testing
+                player_1.loaded_game = True
+                sleep(1)
+        else:
+            print(f"Could not find {player_name} ")
+            sleep(1.5)
+            continue
+
+    if new_game_or_load == 's':
+        accept_stats = ""
+        while accept_stats != 'y':
+            player_1 = character_generator()
+            player_1.hud()
+            accept_stats = input(f"Accept character and continue? (y/n): ").lower()
+        if accept_stats == "y":
+            player_1.dungeon_key = 1
+            player_1.dungeon = dungeon_dict[player_1.dungeon_key]
+            (player_1.x, player_1.y) = player_1.dungeon.staircase
+            player_1.position = 0
+            player_1.hud()
+
     print(f"You enter the town of Fieldenberg.")
     sleep(1.5)
     player_1.in_town = True
@@ -48,7 +88,7 @@ while True:
 
     while player_1.in_town:
         player_1.hud()
-        command = player_1.town_navigation()
+        command = player_1.town_navigation(player_name)
         if command == "Restart":
             break
         if command == 'e':
@@ -444,109 +484,107 @@ while True:
                     continue
         else:  # player is in town and does NOT (E)nter dungeon; continue
             continue
-
-    """player_initiative = player_1.initiative()
-                            monster_initiative = monster.initiative()
-                            print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
-                            pause()"""
-    """                        if encounter < 11:  # regular monster
-                                monster = player_1.regular_monster_generator()
-                                # monster = Shadow()  # HobgoblinCaptain()  # testing
-                            elif encounter == 99:  # level exit boss fight
-                                monster = player_1.exit_boss_generator()
-                                gong()
-                                sleep(4)
-                                boss_battle_theme()
-                                pause()
-                                player_1.hud()
-                            elif encounter == 98:  # undead king
-                                monster = player_1.king_monster_generator()
-                                gong()
-                                sleep(4)
-                                mountain_king_theme()
-                                pause()
-                                player_1.hud()
-                            elif encounter == 97:  # undead prophet
-                                monster = player_1.undead_prophet_generator()
-                                gong()
-                                sleep(4)
-                                boss_battle_theme()
-                                pause()
-                                player_1.hud()"""
-    """                if event == "Legendary Monster":
-                        player_1.encounter = 95
-                    if event == "Elite Monster":
-                        player_1.encounter = 96
-                    if event == "Undead Prophet":
-                        player_1.encounter = 97
-                    elif event == "King Boss":
-                        player_1.encounter = 98
-                    elif event == "Exit Boss":
-                        player_1.encounter = 99
-                    elif event == "Wicked Queen":
-                        player_1.encounter = 100"""
-    """#player_1.hud()
-                                #monster.monster_data()
-                                #battle_choice = input("(F)ight, (H)ealing potion, (C)larifying elixir,\n"
-                                #                      "(G)iant Strength potion, (V)ial of Antidote,\n(Q)uantum Effects 
-                                or "
-                                #                      "(E)vade\nF/H/C/G/V/Q/E --> ").lower()
-    """
-    """                        if player_1.encounter < 21:  # if not a boss, monster may like you or steal from you
-                                if player_1.monster_likes_you(monster):
-                                    player_1.in_proximity_to_monster = False
-                                    # player_1.event_logic()  # this will trigger an event without using (L)ook
-                                    player_1.dungeon_description()
-                                    break
-                                if player_1.quick_move(monster):
-                                    player_1.in_proximity_to_monster = False
-                                    # player_1.event_logic()  # this will trigger an event without using (L)ook
-                                    player_1.dungeon_description()
-                                    break  # if monster steals something he gets away clean, if not, battle"""
-    """cls()
-                        gong()
-                        print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
-                        sleep(4)
-                        player_1.in_proximity_to_monster = False
-                        player_1.in_dungeon = False
-                        player_1.in_town = False
-                        while True:
-                            try_again = input("Do you wish to play again (y/n)? ").lower()
-                            if try_again == "y":
-                                sleep(1)
-                                cls()
+"""player_initiative = player_1.initiative()
+                        monster_initiative = monster.initiative()
+                        print(f"Your initiative: {player_initiative}\nMonster initiative: {monster_initiative}")
+                        pause()"""
+"""                        if encounter < 11:  # regular monster
+                            monster = player_1.regular_monster_generator()
+                            # monster = Shadow()  # HobgoblinCaptain()  # testing
+                        elif encounter == 99:  # level exit boss fight
+                            monster = player_1.exit_boss_generator()
+                            gong()
+                            sleep(4)
+                            boss_battle_theme()
+                            pause()
+                            player_1.hud()
+                        elif encounter == 98:  # undead king
+                            monster = player_1.king_monster_generator()
+                            gong()
+                            sleep(4)
+                            mountain_king_theme()
+                            pause()
+                            player_1.hud()
+                        elif encounter == 97:  # undead prophet
+                            monster = player_1.undead_prophet_generator()
+                            gong()
+                            sleep(4)
+                            boss_battle_theme()
+                            pause()
+                            player_1.hud()"""
+"""                if event == "Legendary Monster":
+                    player_1.encounter = 95
+                if event == "Elite Monster":
+                    player_1.encounter = 96
+                if event == "Undead Prophet":
+                    player_1.encounter = 97
+                elif event == "King Boss":
+                    player_1.encounter = 98
+                elif event == "Exit Boss":
+                    player_1.encounter = 99
+                elif event == "Wicked Queen":
+                    player_1.encounter = 100"""
+"""#player_1.hud()
+                            #monster.monster_data()
+                            #battle_choice = input("(F)ight, (H)ealing potion, (C)larifying elixir,\n"
+                            #                      "(G)iant Strength potion, (V)ial of Antidote,\n(Q)uantum Effects or "
+                            #                      "(E)vade\nF/H/C/G/V/Q/E --> ").lower()
+"""
+"""                        if player_1.encounter < 21:  # if not a boss, monster may like you or steal from you
+                            if player_1.monster_likes_you(monster):
                                 player_1.in_proximity_to_monster = False
-                                player_1.in_dungeon = False
-                                player_1.in_town = False
-                                player_is_dead = False
+                                # player_1.event_logic()  # this will trigger an event without using (L)ook
+                                player_1.dungeon_description()
                                 break
-                            if try_again == "n":
-                                print(f"Farewell.")
-                                exit()
-                            if try_again not in ("y", "n"):
-                                # print("Please enter y or n ")
-                                sleep(.5)
-                                continue"""
-    """    if new_game_or_load == 'l':
-            player_name = input("Enter name of saved character: ")
-            load_a_character = player_name + ".sav"
-            if os.path.isfile(load_a_character):
-                print(f"{player_name} found.")
-                with open(load_a_character, 'rb') as saved_player:
-                    player_1 = pickle.load(saved_player)
-                    sleep(1)
-                    print(f"{player_name} read.")
-                    sleep(1)
-                    dungeon = dungeon_dict[player_1.dungeon_key]  # remove after testing
-                    print(dungeon.name)  # remove after testing
-                    print(player_1.coordinates)  # remove after testing
-                    player_1.loaded_game = True
-                    sleep(1)
-            else:
-                print(f"Could not find {player_name} ")
-                sleep(1.5)
-                continue"""
-    """else:
-                                        print(f"You have no Quantum unit energy!")
-                                        pause()
-                                        continue  # if you have no QU, don't waste a turn!"""
+                            if player_1.quick_move(monster):
+                                player_1.in_proximity_to_monster = False
+                                # player_1.event_logic()  # this will trigger an event without using (L)ook
+                                player_1.dungeon_description()
+                                break  # if monster steals something he gets away clean, if not, battle"""
+"""cls()
+                    gong()
+                    print(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
+                    sleep(4)
+                    player_1.in_proximity_to_monster = False
+                    player_1.in_dungeon = False
+                    player_1.in_town = False
+                    while True:
+                        try_again = input("Do you wish to play again (y/n)? ").lower()
+                        if try_again == "y":
+                            sleep(1)
+                            cls()
+                            player_1.in_proximity_to_monster = False
+                            player_1.in_dungeon = False
+                            player_1.in_town = False
+                            player_is_dead = False
+                            break
+                        if try_again == "n":
+                            print(f"Farewell.")
+                            exit()
+                        if try_again not in ("y", "n"):
+                            # print("Please enter y or n ")
+                            sleep(.5)
+                            continue"""
+"""    if new_game_or_load == 'l':
+        player_name = input("Enter name of saved character: ")
+        load_a_character = player_name + ".sav"
+        if os.path.isfile(load_a_character):
+            print(f"{player_name} found.")
+            with open(load_a_character, 'rb') as saved_player:
+                player_1 = pickle.load(saved_player)
+                sleep(1)
+                print(f"{player_name} read.")
+                sleep(1)
+                dungeon = dungeon_dict[player_1.dungeon_key]  # remove after testing
+                print(dungeon.name)  # remove after testing
+                print(player_1.coordinates)  # remove after testing
+                player_1.loaded_game = True
+                sleep(1)
+        else:
+            print(f"Could not find {player_name} ")
+            sleep(1.5)
+            continue"""
+"""else:
+                                    print(f"You have no Quantum unit energy!")
+                                    pause()
+                                    continue  # if you have no QU, don't waste a turn!"""

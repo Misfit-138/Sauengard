@@ -84,17 +84,6 @@ def are_you_sure():
             return False
 
 
-def same_line_print(string):
-    sys.stdout.write(string)
-    sys.stdout.flush()
-
-
-def dot_dot_dot(number_of_dots):
-    for i in range(number_of_dots):
-        sleep(.33)
-        same_line_print(".")
-
-
 def typewriter(message):
     # based this snippet on a snippet from 101computing.net:
     print()
@@ -371,14 +360,13 @@ def game_start():
         if new_game_or_load == 'l':
             player_name = input("Enter name of saved character: ")
             load_a_character = player_name + ".sav"
-            p = Path(__file__).with_name(load_a_character)
-            if p.is_file():
-                with p.open('rb') as saved_player:
-                    same_line_print(f"{player_name} found")
+            if os.path.isfile(load_a_character):
+                print(f"{player_name} found.")
+                with open(load_a_character, 'rb') as saved_player:
                     player_1 = pickle.load(saved_player)
-                    dot_dot_dot(5)
-                    same_line_print(f"{player_name} read.\n")
-                    sleep(2)
+                    sleep(1)
+                    print(f"{player_name} read.")
+                    sleep(1)
                     dungeon = dungeon_dict[player_1.dungeon_key]  # remove after testing
                     print(dungeon.name)  # remove after testing
                     print(player_1.coordinates)  # remove after testing
@@ -386,7 +374,7 @@ def game_start():
                     sleep(1)
                     return player_1
             else:
-                print(f"Could not find {player_name} ")
+                print(f"Could not find {load_a_character} ")
                 sleep(1.5)
                 continue
 
@@ -1533,51 +1521,9 @@ class Player:
             self.hit_points = self.hit_points + regeneration
             if self.hit_points > self.maximum_hit_points:
                 self.hit_points = self.maximum_hit_points
-            print(f"*YOU REGENERATE + {regeneration}*")  # remove after testing
+            print(f"You regenerate + {regeneration}")  # remove after testing
             sleep(1)
         return
-
-    def restart(self):
-        print("Restart..")
-        sleep(.5)
-        if are_you_sure():
-            # print("Restart")
-            sleep(1)
-            cls()
-            self.in_town = False
-            return "Restart"
-        else:
-            return False
-
-    def save_character(self):
-        save_a_character = self.name + ".sav"
-        p = Path(__file__).with_name(save_a_character)
-
-        if p.is_file():
-            while True:
-                confirm_save = input(f"{self.name} already saved. Overwrite? (y/n) ").lower()
-
-                if confirm_save not in ('y', 'n'):
-                    continue
-
-                elif confirm_save == 'n':
-                    break
-
-                elif confirm_save == 'y':
-                    same_line_print(f"Saving {self.name}")
-                    dot_dot_dot(5)
-                    with p.open('wb') as character_filename:
-                        pickle.dump(self, character_filename)
-                        same_line_print(f"{self.name} saved.\n")
-                        sleep(2)
-                        break
-        else:
-            same_line_print(f"Saving {self.name}")
-            dot_dot_dot(5)
-            with p.open('wb') as character_filename:
-                pickle.dump(self, character_filename)
-                same_line_print(f"{self.name} saved.\n")
-                sleep(2)
 
     def hud(self):
         cls()
@@ -1781,7 +1727,7 @@ class Player:
                 self.necrotic_turns += 1
                 necrotic_damage = (1 * self.dot_multiplier)
                 self.hit_points -= necrotic_damage
-                print(f"*NECROTIC DAMAGE -{necrotic_damage}*")
+                print(f"*NECROTIC DAMAGE: {necrotic_damage}*")
                 sleep(1.5)
 
         return self.necrotic
@@ -2134,10 +2080,10 @@ class Player:
 
             # remove after testing:
             # print(f"Range between the before and after levels: {range_1}")  # remove after testing
-            # print(f"Levels between last and current (including current): {all_levels_between}")  # rem after testing
-            # print(f"ASI levels: {asi_levels}")  # remove after testing
-            # print(f"Number of ASI awards: {number_of_asi_awards}")  # remove after testing
-            # pause()  # remove after testing
+            print(f"Levels between last and current (including current): {all_levels_between}")  # remove after testing
+            print(f"ASI levels: {asi_levels}")  # remove after testing
+            print(f"Number of ASI awards: {number_of_asi_awards}")  # remove after testing
+            pause()  # remove after testing
 
             if asi_level_check:
                 if self.asi_eligibility():  # ensure player has at least 1 ability score < 20
@@ -2228,7 +2174,7 @@ class Player:
         if monster.name in self.discovered_monsters:
             self.hud()  # placing a hud() here erases the dungeon description; more appropriate
             print(f"(TESTING) Discovered monsters: {self.discovered_monsters}")  # remove after testing
-            print(f"You have encountered {monster.a_an} {monster.name}. Challenge level: {monster.level}")
+            print(f"You have encountered a {monster.name}. Challenge level: {monster.level}")
             # remove lvl after testing
             pause()
         else:
@@ -2735,7 +2681,7 @@ class Player:
                 if len(self.pack[item_type]) > 0:  # If the player has an item of type "item_type" in their pack
                     # pop random item from that item type. -1 because indexes start at 0
                     stolen_item = (self.pack[item_type].pop(random.randint(0, len(self.pack[item_type]) - 1)))
-                    print(f"{monster.he_she_it.capitalize()} steals the {stolen_item.name} "
+                    print(f"{monster.he_she_it.capitalize()} steals the {stolen_item.name}"
                           f"from your pack!")
                     pause()
                     return True  # True means monster gets away clean
@@ -7009,18 +6955,17 @@ class Player:
                            f"unwary,\n"
                            f"but there are treasures to be had as well. 'Tis said that there be a pit below the "
                            f"dungeon\n"
-                           f"where ye may find gold, but it be full of monsters, traps and fiends. Search carefully\n"
-                           f"and thoroughly if ye venture there!\' ")
+                           f"where ye may find gold, but it be full of monsters and fiends.\' ")
             else:
                 typewriter(f"With a big, welcoming smile, she says, \'I 'eard it said ye 'ave found treasure in the "
-                           f"pit below {self.dungeon.name}!'\n"
-                           f"'Care to spend some o' that loot?\', she adds with a wink.")
+                           f"pit below {self.dungeon.name}!\n"
+                           f"Care to spend some o' that loot?\', she adds with a wink.")
 
             micro_boss_discovery = f"level {self.dungeon.level} micro boss"
             if micro_boss_discovery not in self.discovered_interactives:
                 typewriter(f"Lowering her tone, she goes on, \'I've also 'eard it said that there's an elite enemy\n"
-                           f"down there, just waitin' for unsuspectin' adventurers in a dead ended corridor!'\n"
-                           f"'Take good care, now, and be wise!\' ")
+                           f"down there, just waitin' for unsuspectin' adventurers in a dead ended corridor!\n"
+                           f"Take good care, now, and be wise!\' ")
             pause()
 
     def inn(self):
@@ -7318,7 +7263,7 @@ class Player:
                     pause()
                     return
             else:
-                print(f"You have found {found_item.a_an} {found_item.name}. Damage bonus: {found_item.damage_bonus}. "
+                print(f"You have found a {found_item.name}. Damage bonus: {found_item.damage_bonus}. "
                       f"To-hit bonus: {found_item.to_hit_bonus}.")
                 print(f"You are currently wielding a {self.wielded_weapon.name}. "
                       f"Damage bonus: {self.wielded_weapon.damage_bonus}. "
@@ -7372,7 +7317,7 @@ class Player:
                     self.calculate_armor_class()
                     if not self.duplicate_item(found_item.item_type, old_armor):
                         (self.pack[found_item.item_type]).append(old_armor)
-                        print(f"You place the {old_armor.name} in your pack..")
+                        print(f"You place the {old_armor.name} upon your back..")
                     else:
                         print(f"You drop your {old_armor.name}.")
                     pause()
@@ -7382,7 +7327,7 @@ class Player:
                     if not self.duplicate_item(found_item.item_type, found_item):
                         # if found_item not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(found_item)
-                        print(f"You place the {found_item.name} in your pack.")
+                        print(f"You place the {found_item.name} on your back.")
 
                     else:
                         print(f"However, you cannot carry any more armor of this type. You leave it.")
@@ -7397,7 +7342,7 @@ class Player:
 
     def found_shield_substitution(self, sub_item):
         if self.shield.ac < sub_item.ac:
-            print(f"You have found {sub_item.a_an} {sub_item.name}!! Armor Class: {sub_item.ac}")
+            print(f"You have found a {sub_item.name}!! Armor Class: {sub_item.ac}")
             if self.shield.name == 'No Shield':
                 print(f"You currently hold no shield in your off hand.")
             else:
@@ -7490,7 +7435,7 @@ class Player:
                 pause()
                 return
             else:
-                print(f"You have found {found_item.a_an} {found_item.name}!! Stealth: {found_item.stealth}")
+                print(f"You have found a {found_item.name}!! Stealth: {found_item.stealth}")
                 print(f"Your current {self.cloak.name} Stealth: {self.cloak.stealth}")
             while True:
                 replace_cloak = input(f"Do you wish to wear the {found_item.name} instead? y/n: ").lower()
@@ -7502,7 +7447,7 @@ class Player:
                     if not self.duplicate_item(old_cloak.item_type,
                                                old_cloak):  # old_cloak not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(old_cloak)
-                        print(f"You roll up the {old_cloak.name} and place it in your dungeoneer's pack..")
+                        print(f"You place the {old_cloak.name} in your dungeoneer's pack..")
                     else:
                         print(f"You drop your {old_cloak.name}.")
                     pause()
@@ -8689,6 +8634,18 @@ class Player:
 
         # NAVIGATION
 
+    def restart(self):
+        print("Restart..")
+        sleep(.5)
+        if are_you_sure():
+            # print("Restart")
+            sleep(1)
+            cls()
+            self.in_town = False
+            return "Restart"
+        else:
+            return False
+
     def town_navigation(self):
         if self.town_portal_exists:  # or self.loaded_game:
             town_functions = input("(The Town of Fieldenberg)\n(Quit) to desktop, (S)ave, (R)estart game (I)nventory, "
@@ -8703,7 +8660,29 @@ class Player:
             quit_game()
 
         elif town_functions == 's':
-            self.save_character()
+            save_a_character = self.name + ".sav"
+            if os.path.isfile(save_a_character):
+                while True:
+                    confirm_save = input(f"{self.name} already saved. Overwrite? (y/n) ").lower()
+                    if confirm_save not in ('y', 'n'):
+                        continue
+                    elif confirm_save == 'n':
+                        break
+                    elif confirm_save == 'y':
+                        print(f"Saving {self.name}...")
+                        character_filename = self.name + ".sav"
+                        with open(character_filename, 'wb') as player_save:
+                            pickle.dump(self, player_save)
+                            print(f"{self.name} saved.")
+                            sleep(2)
+                            break
+            else:
+                print(f"Saving {self.name}...")
+                character_filename = self.name + ".sav"
+                with open(character_filename, 'wb') as player_save:
+                    pickle.dump(self, player_save)
+                    print(f"{self.name} saved.")
+                    sleep(2)
 
         elif town_functions == 'i':
             self.inventory()

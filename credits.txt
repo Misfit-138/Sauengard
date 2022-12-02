@@ -5,6 +5,7 @@ The Spider, Anentropic, The Thonnu and Optimal: for helping me get my footing du
 Yarik0urWorld: for help with python list syntax
 Angus Nicolson: for self.__dict__ code snippet and explanation
 Liju and snakecharmerb: for explanatory assistance with hashable objects
+Pawel Pietraszko: for assistance with initializing new object instances every time player gets new item
 
 MUSIC:
 Main theme: "Soul's Departure" Royalty Free Music by Darren Curtis

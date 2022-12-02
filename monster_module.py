@@ -74,6 +74,7 @@ class Monster:
         self.he_she_it = ""
         self.his_her_its = ""
         self.him_her_it = ""
+        self.a_an = "a"
         self.level = 0
         self.experience_award = 0
         self.gold = 0
@@ -1176,7 +1177,7 @@ class Skeleton(Monster):
 
     def __init__(self):
         super().__init__()
-        self.level = 1  # I think level 1 is more appropriate.
+        self.level = 2  # I think level 1 might be more appropriate.
         self.name = "Skeleton"
         self.proper_name = "None"
         self.he_she_it = "it"
@@ -1642,6 +1643,7 @@ class Orc(Monster):
         self.he_she_it = "it"
         self.his_her_its = "its"
         self.him_her_it = "it"
+        self.a_an = "an"
         self.experience_award = 100
         self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
@@ -1732,7 +1734,7 @@ class CultFanatic(Monster):
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
-        self.hit_dice = 6  #
+        self.hit_dice = 8  #
         self.number_of_hd = 1
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
@@ -1886,7 +1888,7 @@ class Bugbear(Monster):
         self.hit_points = (random.randint(25, 28)) + self.constitution_modifier
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
-        self.armor_class = random.randint(14, 16)
+        self.armor_class = random.randint(15, 16)
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 1  # attack bonus
@@ -1948,7 +1950,7 @@ class HalfOgre(Monster):
         self.hit_points = (random.randint(28, 32)) + self.constitution_modifier
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
-        self.armor_class = random.randint(11, 12)
+        self.armor_class = 13
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 2  # attack bonus
@@ -2169,8 +2171,8 @@ class HobgoblinCaptain(Monster):
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
-        self.hit_dice = 6  # MM
-        self.number_of_hd = 2  # mm
+        self.hit_dice = 8
+        self.number_of_hd = 2
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(36, 49)) + self.constitution_modifier
@@ -2179,15 +2181,15 @@ class HobgoblinCaptain(Monster):
         self.armor_class = random.randint(17, 17)
         self.multi_attack = True
         self.lesser_multi_attack = False
-        self.attack_1 = 1  # attack bonus
+        self.attack_1 = 3  # attack bonus
         self.attack_1_phrase = "He thrusts mightily forward with its javelin!.."
-        self.attack_2 = 2
+        self.attack_2 = 3
         self.attack_2_phrase = "He swings his greatsword with blinding speed!"
-        self.attack_3 = 2
+        self.attack_3 = 3
         self.attack_3_phrase = "He swings his greatsword with blinding speed!"
-        self.attack_4 = 3
+        self.attack_4 = 5
         self.attack_4_phrase = "He roars and swings his greatsword with murderous rage!"
-        self.attack_5 = 3
+        self.attack_5 = 5
         self.attack_5_phrase = "He raises his greatsword overhead with both hands for a mighty blow.."
         self.introduction = f"You have encountered a Hobgoblin Captain. Fierce, intelligent and disciplined, " \
                             f"his heavy armor and\nweaponry are polished and well-maintained. His yellow " \
@@ -2308,11 +2310,11 @@ class GreenDragonWyrmling(Monster):
         self.armor_class = random.randint(15, 16)
         self.multi_attack = True
         self.lesser_multi_attack = False
-        self.attack_1 = 2  # attack bonus
+        self.attack_1 = 5  # attack bonus
         self.attack_1_phrase = "It thrusts forward with gaping jaws.."
-        self.attack_2 = 3
+        self.attack_2 = 5
         self.attack_2_phrase = "With a languid growl, it strikes with its jaws.. "
-        self.attack_3 = 4
+        self.attack_3 = 5
         self.attack_3_phrase = "Proud and poised, it prepares to strike with its murderous jaws.."
         self.attack_4 = 14
         self.attack_4_phrase = "\'I am sorry. This will hurt you, my little friend.\', it says dryly, as it " \
@@ -2373,11 +2375,11 @@ class WhiteDragonWyrmling(Monster):
         self.armor_class = random.randint(15, 16)
         self.multi_attack = True
         self.lesser_multi_attack = False
-        self.attack_1 = 2  # attack bonus
+        self.attack_1 = 5  # attack bonus
         self.attack_1_phrase = "It thrusts forward with gaping jaws.."
-        self.attack_2 = 3
+        self.attack_2 = 5
         self.attack_2_phrase = "With a serpentine swaying, it strikes with its jaws.. "
-        self.attack_3 = 4
+        self.attack_3 = 5
         self.attack_3_phrase = "Perfectly focused, it prepares to strike.."
         self.attack_4 = 14
         self.attack_4_phrase = "Rearing up with elegant, murderous intent, it exhales an icy blast of hail!"
@@ -2399,6 +2401,7 @@ class Ogre(Monster):
         self.he_she_it = "it"
         self.his_her_its = "its"
         self.him_her_it = "it"
+        self.a_an = "an"
         self.experience_award = 450
         self.gold = random.randint(5, 12)
         self.weapon_bonus = 0
@@ -2494,7 +2497,7 @@ class ZombieOgre(Monster):
         self.hit_points = (random.randint(80, 84)) + self.constitution_modifier
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
-        self.armor_class = 8
+        self.armor_class = 10
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 4  # attack bonus
@@ -2656,8 +2659,8 @@ class WickedQueenJannbrielle(Monster):
 
 # regular monsters:
 monster_dict = {
-    1: [Quasit, Kobold, Cultist, Goblin, Skeleton, WingedKobold],
-    2: [Shadow, Drow, Troglodyte, Orc, Zombie, Ghoul],
+    1: [Quasit, Kobold, Cultist, Goblin, WingedKobold],
+    2: [Skeleton, Shadow, Drow, Troglodyte, Orc, Zombie, Ghoul],
     3: [Specter, Bugbear, CultFanatic, HalfOgre],
     4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain, Harpy],
     5: [Ogre, ZombieOgre],

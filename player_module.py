@@ -273,9 +273,11 @@ def character_generator():
                                   "harnessing\n"
                                   "many Quantum effects, as well as avoiding many Quantum attacks.",
                         "Charisma": "Charisma measures one's ability to interact effectively with others. It includes\n"
-                                    "such factors as confidence, persuasion and eloquence, and it can represent a\n"
-                                    "charming or commanding personality. *Players with high charisma will also have a\n"
-                                    "better chance of favorable outcomes when encountering certain monsters.*"}
+                                    "such factors as confidence, persuasion and attraction, and it can represent a\n"
+                                    "charming or magnetic personality. Players with high charisma will have a\n"
+                                    "better chance of favorable outcomes when encountering certain monsters.\n"
+                                    "Charisma can mean the difference between great fortune and death."}
+
     standard_array = f"Ability Score    	Ability Modifier\n" \
                      f"15	                            +3\n14	                            " \
                      f"+2\n13	                            +1\n12	                            +1\n10" \
@@ -325,6 +327,7 @@ def character_generator():
     pause()
     score_list = [15, 14, 13, 12, 10, 8]
     while len(score_list):
+
         for key in stats:
             cls()
             print(standard_array)
@@ -333,8 +336,10 @@ def character_generator():
             print(explanation_dict[human_key])
             scores = convert_list_to_string_with_commas_only(score_list)
             print(f"Available scores: {scores}")
+
             try:
                 score = int(input(f"Enter score to assign to {human_key} (or hit [ENTER] to start over): "))
+
                 if score in score_list:
                     print(f"{key} = {score}")
                     sleep(.5)
@@ -348,6 +353,7 @@ def character_generator():
                     print(f"Starting over.")
                     sleep(0.5)
                     break
+
             except ValueError:
                 print(f"Invalid entry..")
                 score_list = [15, 14, 13, 12, 10, 8]  # re-set list
@@ -368,15 +374,16 @@ def game_start():
         game_splash()
         cls()
         player_1 = ""  # to get rid of undefined warning
-        #
-        # player_name = ""  # to get rid of undefined warning
         new_game_or_load = input("(S)tart a new character (L)oad a saved one, or go (B)ack to main menu: ").lower()
+
         if new_game_or_load not in ('s', 'l'):
             continue
+
         if new_game_or_load == 'l':
             player_name = input("Enter name of saved character: ")
             load_a_character = player_name + ".sav"
             p = Path(__file__).with_name(load_a_character)
+
             if p.is_file():
                 with p.open('rb') as saved_player:
                     same_line_print(f"{player_name} found")
@@ -390,6 +397,7 @@ def game_start():
                     player_1.loaded_game = True
                     sleep(1)
                     return player_1
+
             else:
                 print(f"Could not find {player_name} ")
                 sleep(1.5)
@@ -397,10 +405,12 @@ def game_start():
 
         if new_game_or_load == 's':
             accept_stats = ""
+
             while accept_stats != 'y':
                 player_1 = character_generator()
                 player_1.hud()
                 accept_stats = input(f"Accept character and continue? (y/n): ").lower()
+
             if accept_stats == "y":
                 player_1.dungeon_key = 1
                 player_1.dungeon = dungeon_dict[player_1.dungeon_key]

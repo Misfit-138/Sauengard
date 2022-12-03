@@ -1,11 +1,12 @@
 Concept, coding, creation and play testing: Jules Pitsker
 
-Thanks to STACK OVERFLOW members:
+Thanks to the following STACK OVERFLOW members:
 The Spider, Anentropic, The Thonnu and Optimal: for helping me get my footing during my first days of learning python
 Yarik0urWorld: for help with python list syntax
 Angus Nicolson: for self.__dict__ code snippet and explanation
-Liju and snakecharmerb: for explanatory assistance with hashable objects
+Liju and snakecharmerb: for explanation of hashable objects
 Pawel Pietraszko: for assistance with initializing new object instances every time player gets new item
+triplee: for assistance with Path syntax
 
 MUSIC:
 Main theme: "Soul's Departure" Royalty Free Music by Darren Curtis

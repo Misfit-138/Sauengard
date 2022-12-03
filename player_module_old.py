@@ -445,7 +445,7 @@ def sound_player_loop(sound_file):
 
 def gong():
     # notice the gong is not looped
-    sound_player('gong.wav')
+    sound_player('sound/gong.wav')
 
 
 def sad_cello_theme():
@@ -461,7 +461,7 @@ def chemist_theme():
 
 
 def mountain_king_theme():
-    sound_player_loop('mountain_king.wav')
+    sound_player_loop('sound/mountain_king.wav')
 
 
 def pit_theme():
@@ -473,11 +473,11 @@ def boss_battle_theme():
 
 
 def town_theme():
-    sound_player_loop('town_(tavern)_loop_by_alexander_nakarada.wav')
+    sound_player_loop('sound/town_(tavern)_loop_by_alexander_nakarada.wav')
 
 
 def tavern_theme():
-    sound_player_loop('silvermansound_the medieval_banquet.wav')
+    sound_player_loop('sound/silvermansound_the medieval_banquet.wav')
 
 
 class Weapon:
@@ -1511,7 +1511,7 @@ class Player:
     def dungeon_theme(self):
         if os.name == 'nt':
             if not self.in_a_pit:
-                sound_player_loop('dungeon_theme_2.wav')
+                sound_player_loop('sound/dungeon_theme_2.wav')
             else:
                 pit_theme()
 

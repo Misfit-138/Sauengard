@@ -29,6 +29,7 @@
 
 import collections
 import math
+
 import pickle
 import random
 import time
@@ -237,8 +238,8 @@ def dice_roll(no_of_dice, no_of_sides):
 
 
 def dungeon_command_choices():
-    command = input("(Quit) to desktop, (R)estart game, (L)ook at surroundings, use (MAP)\n"
-                    "(C)larifying elixir, Town (P)ortal, (H)ealing potion, (M)anage inventory,\n"
+    command = input("(QUIT) to desktop, (R)estart game, (L)ook at surroundings, (STAY) where you are,\n"
+                    "use (MAP), (C)larifying elixir, Town (P)ortal, (H)ealing potion, (M)anage inventory,\n"
                     "(G)iant strength potion, (V)ial of Antidote, (I)nventory, (Q)uantum effects,\n"
                     "or W-A-S-D to navigate. --> ").lower()
     return command
@@ -430,13 +431,16 @@ def asi_intro():
 def sound_player(sound_file):
     # a sound player function which simply plays sound_file asynchronously
     if os.name == 'nt':
+        p = ""
         try:
-            p = Path(__file__).with_name(sound_file)
+            sound_folder = Path(__file__).with_name("sound")
+            p = sound_folder / sound_file
+            # p = Path(__file__).with_name(sound_file)
             with p.open('rb') as sound:
                 if sound.readable():
                     winsound.PlaySound(str(p), winsound.SND_FILENAME | winsound.SND_ASYNC)
         except FileNotFoundError:
-            print(f"{sound_file} not found in directory path.")
+            print(f"{p} not found.")
             pause()
             # pass
 
@@ -444,13 +448,17 @@ def sound_player(sound_file):
 def sound_player_loop(sound_file):
     # a sound player function which plays sound_file asynchronously on a continuous loop
     if os.name == 'nt':
+        p = ""
         try:
-            p = Path(__file__).with_name(sound_file)
-            with p.open('rb') as sound:
-                if sound.readable():
+            sound_folder = Path(__file__).with_name("sound")
+            p = sound_folder / sound_file
+            print(p)
+            # p = Path(__file__).with_name(sound_file)
+            with p.open('rb') as sound_loop:
+                if sound_loop.readable():
                     winsound.PlaySound(str(p), winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
         except FileNotFoundError:
-            print(f"{sound_file} not found in directory path.")
+            print(f"{p} not found.")
             pause()
             # pass
 
@@ -1489,7 +1497,7 @@ class Player:
         self.torbron_ally = False
         self.magnus_ally = False
         self.vozzbozz_ally = False
-        self.boss_hint_1 = True
+        self.boss_hint_1 = False
         self.boss_hint_1_event = False
         self.boss_hint_2 = False
         self.boss_hint_2_event = False
@@ -1541,7 +1549,6 @@ class Player:
         print("Restart..")
         sleep(.5)
         if are_you_sure():
-            # print("Restart")
             sleep(1)
             cls()
             self.in_town = False
@@ -2240,6 +2247,7 @@ class Player:
             pause()
 
     def monster_likes_you_or_steals_from_you(self, monster):
+        # called from main loop
         if self.encounter < 21:  # if not a boss, monster may like you or steal from you
 
             if self.monster_likes_you(monster):
@@ -6992,38 +7000,41 @@ class Player:
             # return self.hint_event_6()
             # print("hint 6 event")
 
+    def jennas_level_1_gab(self, opening_phrase):
+        if self.town_portal_exists:
+            opening_phrase = f"\'Feelin' chatty, love?\', queries Jenna in a coy tone.\nI've 'eard ye entered" \
+                             f" town through a portal. 'Tis good, sir. 'Cept a word o' caution:\n" \
+                             f"Make good use of yer time here while it's open. Ye don't want ta be wastin' yer\n" \
+                             f"portals, seein' as scrolls can be rare!"
+        typewriter(f"{opening_phrase}\n")
+        treasure_chest_discovery = f"level {self.dungeon.level} treasure chest"
+        if treasure_chest_discovery not in self.discovered_interactives:
+            typewriter(f"She continues, \'{self.dungeon.name} is full of dangers for the "
+                       f"unwary,\n"
+                       f"but there are treasures to be had as well. 'Tis said that there be a pit below the "
+                       f"dungeon\n"
+                       f"where ye may find gold, but it be full of monsters, traps, and fiends. Search carefully\n"
+                       f"and thoroughly if ye venture there!\' ")
+        else:
+            typewriter(f"With a big, welcoming smile, she says, \'I 'eard it said ye 'ave found treasure in the "
+                       f"pit below {self.dungeon.name}!'\n"
+                       f"'Care to spend some o' that loot?\', she adds with a wink.")
+
+        micro_boss_discovery = f"level {self.dungeon.level} micro boss"
+        if micro_boss_discovery not in self.discovered_interactives:
+            typewriter(f"Lowering her tone, she goes on, \'I've also 'eard it said that there's an elite enemy\n"
+                       f"down there, just waitin' for unsuspectin' adventurers in a dead ended corridor!'\n"
+                       f"'Take good care, now, and be wise!\'\n ")
+        pause()
+
     def talk_to_jenna(self):
         cls()
         opening_phrase = "\'Feelin' chatty, love?\', queries Jenna in a coy tone."
 
         if self.dungeon.level == 1:
-            if self.town_portal_exists:
-                opening_phrase = f"\'Feelin' chatty, love?\', queries Jenna in a coy tone.\nI've 'eard ye entered" \
-                                 f" town through a portal. 'Tis good, sir. 'Cept a word o' caution:\n" \
-                                 f"Make good use of yer time here while it's open. Ye don't want ta be wastin' yer\n" \
-                                 f"portals, seein' as scrolls can be rare!"
-            typewriter(f"{opening_phrase}\n")
-            treasure_chest_discovery = f"level {self.dungeon.level} treasure chest"
-            if treasure_chest_discovery not in self.discovered_interactives:
-                typewriter(f"She continues, \'{self.dungeon.name} is full of dangers for the "
-                           f"unwary,\n"
-                           f"but there are treasures to be had as well. 'Tis said that there be a pit below the "
-                           f"dungeon\n"
-                           f"where ye may find gold, but it be full of monsters, traps and fiends. Search carefully\n"
-                           f"and thoroughly if ye venture there!\' ")
-            else:
-                typewriter(f"With a big, welcoming smile, she says, \'I 'eard it said ye 'ave found treasure in the "
-                           f"pit below {self.dungeon.name}!'\n"
-                           f"'Care to spend some o' that loot?\', she adds with a wink.")
+            self.jennas_level_1_gab(opening_phrase)
 
-            micro_boss_discovery = f"level {self.dungeon.level} micro boss"
-            if micro_boss_discovery not in self.discovered_interactives:
-                typewriter(f"Lowering her tone, she goes on, \'I've also 'eard it said that there's an elite enemy\n"
-                           f"down there, just waitin' for unsuspectin' adventurers in a dead ended corridor!'\n"
-                           f"'Take good care, now, and be wise!\' ")
-            pause()
-
-    def inn(self):
+    def tavern(self):
 
         self.hud()
         print(f"You have come upon the Slumbering Bear Inn- a handsome building with all the trimmings and character\n"
@@ -7035,18 +7046,24 @@ class Player:
         self.hint_event_logic()
         while True:
             self.hud()
+
             if self.boss_hint_1:
                 print(f"(In Town, The Slumbering Bear Inn)")
                 print(f"Jenna catches your gaze and nods discreetly. \'Let me know if ye be needin' anything, love.\'")
+
             else:
                 print(f"The barroom is bustling as always, but Jenna, the barkeep, notices you and calls over,\n"
                       f"very matter-of-factly, \"What do ye be needin' love?\"")
+
             inn_choice = input(f"(R)oom for the evening - 10 GP\n(T)alk to Jenna\n(E)xit the inn\n"
-                               f">: ").lower()
+                               f"--> ").lower()
+
             if inn_choice == 'r':
+
                 if self.hit_points < self.maximum_hit_points or self.quantum_units < self.maximum_quantum_units \
                         or self.necrotic or self.poisoned:
                     self.hud()
+
                     if self.gold >= 10:
                         self.gold -= 10
                         print(f"You find your way to your room, which is upstairs. "
@@ -7057,6 +7074,7 @@ class Player:
                         sleep(1)
                         print(f"Your body and mind feel better.")
                         sleep(1)
+
                         if self.hit_points < self.maximum_hit_points:
                             self.hit_points = self.maximum_hit_points
                         self.recover_quantum_energy()
@@ -7064,10 +7082,12 @@ class Player:
                         self.necrotic = False
                         self.end_of_turn_calculation()
                         continue
+
                     else:
                         print(f"You do not have enough gold!")
                         pause()
                         continue
+
                 else:
                     print(f"Jenna chuckles as she shakes her head at you. \"Ye are in the pink, love!\"\n"
                           f"\"What ye be needin' a room fer?\" She hurries off to her busy routines...")
@@ -7075,10 +7095,12 @@ class Player:
                     print(f"You realize she's right! You are in perfect condition!")
                     pause()
                     continue
+
             elif inn_choice == 't':
                 self.hud()
                 self.talk_to_jenna()
                 continue
+
             elif inn_choice == 'e':
                 self.hud()
                 print(f"You walk out the door, but not before turning to see Jenna's wink and bright smile.\n"
@@ -7087,6 +7109,7 @@ class Player:
                 pause()
                 # town_theme()
                 return
+
             else:
                 continue
 
@@ -8726,7 +8749,7 @@ class Player:
             print(f"You make your way to the tavern..")
             sleep(1.25)
             tavern_theme()
-            self.inn()
+            self.tavern()
             town_theme()
 
         elif town_functions == 'e':
@@ -8742,7 +8765,7 @@ class Player:
             sleep(1)
             return 'e'
 
-    def navigation(self, dungeon_command):
+    def dungeon_navigation(self, dungeon_command):
         if dungeon_command == 'w':
             self.hud()
             print("North")
@@ -8811,6 +8834,10 @@ class Player:
             return
         elif dungeon_command == 'i':
             self.inventory()
+            return
+        elif dungeon_command == 'stay':
+            print(f"Stay.")
+            sleep(1)
             return
         else:  # remove after testing
             print(f"This should be unreachable.")

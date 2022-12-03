@@ -58,7 +58,7 @@ while True:
             player_1.hud()
             player_1.dungeon_description()
             player_1.dungeon_theme()
-            navigation_list = ['w', 'a', 's', 'd', 'ne', 'nw', 'se', 'sw', 'l', 'map', 'm', 'i']
+            navigation_list = ['w', 'a', 's', 'd', 'ne', 'nw', 'se', 'sw', 'l', 'map', 'm', 'i', 'stay']
 
             # DUNGEON NAVIGATION LOOP:
             player_is_dead = False
@@ -131,7 +131,7 @@ while True:
                         continue  # if you have no potions, don't waste a turn!
 
                 elif dungeon_command in navigation_list:
-                    player_1.navigation(dungeon_command)
+                    player_1.dungeon_navigation(dungeon_command)
 
                 else:
                     print("Unknown command..")

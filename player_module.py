@@ -1456,7 +1456,7 @@ class Player:
         self.hit_dice = 10
         self.proficiency_bonus = 2
         self.maximum_hit_points = 10 + self.constitution_modifier
-        self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.hit_points = 1  # self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
         self.is_paralyzed = False
         self.cloak = canvas_cloak
@@ -2203,9 +2203,11 @@ class Player:
 
     def choose_to_play_again(self):
         cls()
+        print_txt_file('grim_reaper.txt')
         gong()
-        typewriter(f"Another adventurer has fallen prey to the Sauengard Dungeon!")
-        sleep(4)
+        typewriter(f"\n                 "
+                   f"Another adventurer has fallen prey to the Sauengard Dungeon!")
+        sleep(4.5)
         self.in_proximity_to_monster = False
         self.in_dungeon = False
         self.in_town = False

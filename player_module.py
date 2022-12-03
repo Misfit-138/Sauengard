@@ -29,7 +29,6 @@
 
 import collections
 import math
-
 import pickle
 import random
 import time
@@ -215,16 +214,20 @@ def compare():
 def pause():
     if os.name == 'nt':
         os.system('pause')
+
     else:
         input("Press [ENTER] to continue . . . ")
+
     return
 
 
 def cls():
     if os.name == 'nt':
         os.system('cls')
+
     else:
         os.system('clear')
+
     return
 
 
@@ -235,8 +238,10 @@ def sleep(seconds):
 
 def dice_roll(no_of_dice, no_of_sides):
     dice_rolls = []  # create list for multiple die rolls
+
     for dice in range(no_of_dice):
         dice_rolls.append(random.randint(1, no_of_sides))
+
     your_roll_sum = sum(dice_rolls)
     return your_roll_sum
 
@@ -295,26 +300,33 @@ def character_generator():
     while True:
         cls()
         player_name = input(f"Please enter character name: ")
+
         if len(player_name) < 3:
             print(f"Minimum 3 characters!")
             sleep(.25)
             continue
+
         confirm_player_name = input(f"Player name is {player_name}. Is this ok? (y/n) ").lower()
+
         if confirm_player_name == 'y':
             break
+
         else:
             continue
 
     cls()
     # print(f"{player_name}:")
     print(f"Standard ability scores (Recommended if unsure)")
+
     for key, value in stats.items():
         print(key.capitalize(), ":", value)
     default_choice = input(f"[ENTER] to use the above default ability scores or (C)ustomize? ([ENTER]/C): ").lower()
+
     if default_choice != 'c':
         player_1 = Player(name=player_name, **stats)
         # pause()
         return player_1
+
     cls()
     print(f"Customization involves assigning scores from The Standard Array.\n"
           f"The Standard Array is a set pool of six numbers: 15, 14, 13, 12, 10, 8\n"
@@ -326,6 +338,7 @@ def character_generator():
     print(standard_array)
     pause()
     score_list = [15, 14, 13, 12, 10, 8]
+
     while len(score_list):
 
         for key in stats:
@@ -704,8 +717,7 @@ class Armor:
         self.a_an = "a set of"
 
     def __repr__(self):
-        #        return self.name
-        # def __str__(self):
+
         return f'{self.name} - AC: {self.ac}  Armor bonus: {self.armor_bonus}  ' \
                f'Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP'
 
@@ -809,13 +821,13 @@ full_plate = FullPlate()
 class Shield:
 
     def __init__(self):
-        self.name = ""
+        self.name = "Shield"
         self.item_type = "Shields"
         self.ac = 0
         self.sell_price = 0
         self.buy_price = 0
         self.minimum_level = 1
-        self.a_an = ""
+        self.a_an = "a"
 
     def __repr__(self):
         return f'{self.name} - AC: {self.ac}  Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP'
@@ -1094,7 +1106,7 @@ class DefaultRingOfRegeneration(Regeneration):
         self.sell_price = 10000
         self.buy_price = 10000
         self.minimum_level = 1
-        self.a_an = ""
+        self.a_an = "a"
 
 
 default_ring_of_regeneration = DefaultRingOfRegeneration()
@@ -1173,8 +1185,6 @@ class TownPortalImplements:
         self.a_an = "a"
 
     def __repr__(self):
-        #        return self.name
-        # def __str__(self):
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
 
 
@@ -1182,22 +1192,6 @@ scroll_of_town_portal = TownPortalImplements()
 
 
 top_level_loot_dict = {
-            'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
-            'Shields': [buckler, kite_shield, quantum_tower_shield],
-            'Boots': [elven_boots, ancestral_footsteps],
-            'Cloaks': [elven_cloak],
-            'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
-                        quantum_sword, battle_axe, great_axe, elvish_great_axe, quantum_axe],
-            'Elixirs': [elixir],
-            'Healing': [healing_potion],
-            'Rings of Regeneration': [ring_of_regeneration],
-            'Rings of Protection': [ring_of_protection],
-            'Town Portal Implements': [scroll_of_town_portal],
-            'Potions of Strength': [strength_potion],
-            'Antidotes': [antidote]
-        }
-
-new_top_level_loot_dict = {
             'Armor': [LeatherArmor, StuddedLeatherArmor, ScaleMail, HalfPlate, FullPlate],
             'Shields': [Buckler, KiteShield, QuantumTowerShield],
             'Boots': [ElvenBoots, AncestralFootsteps],
@@ -7632,7 +7626,7 @@ class Player:
                 self.treasure_chest()
 
         # regular loot
-        loot_dict = new_top_level_loot_dict
+        loot_dict = top_level_loot_dict
         while True:
             # ****** NOTICE THE DIFFERENCE BETWEEN found_item and found_item.item_type !! ************************
             loot_roll = dice_roll(1, 20)
@@ -7736,7 +7730,7 @@ class Player:
         sleep(1.5)
         pause()
         loot_difficulty_class = 7
-        loot_dict = new_top_level_loot_dict
+        loot_dict = top_level_loot_dict
         while True:
             # ****** NOTICE THE DIFFERENCE BETWEEN found_item and found_item.item_type !! ************************
             loot_roll = dice_roll(1, 20)
@@ -7872,7 +7866,7 @@ class Player:
                 sleep(1.5)
                 pause()
                 loot_difficulty_class = 7
-                loot_dict = new_top_level_loot_dict
+                loot_dict = top_level_loot_dict
                 while True:
                     # ****** NOTICE THE DIFFERENCE BETWEEN found_item and found_item.item_type !! ***********
                     loot_roll = dice_roll(1, 20)
@@ -10775,3 +10769,20 @@ return 0"""
                 player_1.position = 0
                 player_1.hud()
                 return player_1"""
+"""
+
+top_level_loot_dict = {
+            'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],
+            'Shields': [buckler, kite_shield, quantum_tower_shield],
+            'Boots': [elven_boots, ancestral_footsteps],
+            'Cloaks': [elven_cloak],
+            'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
+                        quantum_sword, battle_axe, great_axe, elvish_great_axe, quantum_axe],
+            'Elixirs': [elixir],
+            'Healing': [healing_potion],
+            'Rings of Regeneration': [ring_of_regeneration],
+            'Rings of Protection': [ring_of_protection],
+            'Town Portal Implements': [scroll_of_town_portal],
+            'Potions of Strength': [strength_potion],
+            'Antidotes': [antidote]
+        }"""

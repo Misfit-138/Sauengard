@@ -46,6 +46,7 @@ while True:
     player_1.in_dungeon = False  # defined as False after portal use
     town_theme()
 
+    # in_town loop:
     while player_1.in_town:
         player_1.hud()
         command = player_1.town_navigation()
@@ -161,11 +162,10 @@ while True:
                 player_1.dungeon_description()  # this seems to work best when put LAST
 
                 if player_1.encounter < 11 or player_1.encounter > 20:  # < 11 = normal monster. > 20 = boss
-
-                    # IN PROXIMITY TO MONSTER LOOP *contains battle loop within it*
                     player_1.in_proximity_to_monster = True
                     player_is_dead = False
 
+                    # IN PROXIMITY TO MONSTER LOOP *contains battle loop within it*
                     while player_1.in_proximity_to_monster:
 
                         if player_is_dead:
@@ -188,7 +188,6 @@ while True:
                         if not human_goes_first:
                             player_1.hud()
                             monster.meta_monster_function(player_1)
-                            # I tried to offload this code, but the breaks and continues are pretty tangled
 
                             if not player_1.check_dead():  # if player not dead
 
@@ -274,8 +273,7 @@ while True:
                                             player_1.victory_over_boss_logic()
 
                                         player_1.level_up(monster.experience_award, monster.gold)
-                                        player_1.dungeon_description()  # has worked well for a while
-                                        # pause()
+                                        player_1.dungeon_description()
                                         break
 
                                     # otherwise, calculate damage:
@@ -307,8 +305,7 @@ while True:
                                 # npc allies attack monster:
                                 if player_1.npc_attack_logic(monster):  # if npc ally defeats monster
                                     player_1.end_of_turn_calculation()
-                                    # allies heal and no longer retreat:
-                                    player_1.npc_calculation()
+                                    player_1.npc_calculation()  # allies heal and no longer retreat
                                     pause()
 
                                     if player_1.check_dead():  # player can die of poison/necrosis
@@ -328,7 +325,7 @@ while True:
                                 player_1.hud()
                                 monster.meta_monster_function(player_1)
                                 if not player_1.check_dead():  # if player not dead
-                                    # I tried to offload this code, but the breaks and continues are pretty tangled:
+
                                     if monster.can_paralyze and monster.paralyze(player_1):
 
                                         if not player_1.check_dead():
@@ -355,7 +352,6 @@ while True:
                             # FIGHT: player chooses melee:
                             elif battle_choice == "f":
                                 print(f"Fight.")
-                                # player chooses melee:
                                 damage_to_monster = player_1.melee(monster.name, monster.armor_class)
                                 monster.reduce_health(damage_to_monster)
 

@@ -102,7 +102,7 @@ def typewriter(message):
     for each_char in message:
         sys.stdout.write(each_char)
         sys.stdout.flush()
-        sleep(0.0065)  # 0.01 seems very good
+        sleep(0.0065)  # 0.01 seems good
 
         # I am proud of this little snippet I figured out :)
         if keyboard.is_pressed('Esc'):

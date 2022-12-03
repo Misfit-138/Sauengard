@@ -120,7 +120,9 @@ def typewriter(message):
 def print_txt_file(txt_file_name):
     cls()
     try:
-        p = Path(__file__).with_name(txt_file_name)
+        text_folder = Path(__file__).with_name("text")
+        p = text_folder / txt_file_name
+        # p = Path(__file__).with_name(txt_file_name)
         with p.open('r') as txt:
             if txt.readable():
                 print(txt.read())
@@ -132,7 +134,9 @@ def print_txt_file(txt_file_name):
 def typewriter_txt_file(txt_file_name):
     cls()
     try:
-        p = Path(__file__).with_name(txt_file_name)
+        text_folder = Path(__file__).with_name("text")
+        p = text_folder / txt_file_name
+        # p = Path(__file__).with_name(txt_file_name)
         with p.open('r') as message:
             if message.readable():
                 typewriter(message.read())

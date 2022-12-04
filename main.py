@@ -27,11 +27,8 @@
 # Pit theme 'Epic 39' by Jules Pitsker
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
-# import pickle
-# from dungeons import dungeon_dict
-import os
-from player_module import cls, town_theme, gong, sleep, \
-    pause, teletype, dungeon_command_choices, quit_game, game_start, os_check
+from player_module import cls, town_theme, gong, sleep, pause, teletype, \
+     dungeon_command_choices, quit_game, game_start, os_check
 
 os_check()
 while True:

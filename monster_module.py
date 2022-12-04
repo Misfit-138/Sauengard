@@ -1720,7 +1720,7 @@ class CultFanatic(Monster):
         self.wisdom = random.randint(12, 13)
         self.charisma = 14
         self.can_paralyze = True
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1769,7 +1769,7 @@ class CultFanatic(Monster):
         self.quantum_attack_5_phrase = "With a horrible cry, he releases a green mist from his hands\n" \
                                        "that envelopes you!"
         self.introduction = f"You have encountered a Cult Fanatic. Decked in a grand robe of black and gold\n" \
-                            f"symbology and face hidden in shadow, he cries aloud in dark allegiance\n" \
+                            f"symbology and with face hidden in shadow, he cries aloud in dark allegiance\n" \
                             f"to his fell religious creed. His hands glow dimly with Quantum Weirdness..."
         self.paralyze_phrase = "He points at you with one hand and slowly raises the other. Suddenly, he clenches " \
                                "the raised hand into a fist..."

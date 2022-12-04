@@ -479,7 +479,7 @@ def sound_player_loop(sound_file):
         try:
             sound_folder = Path(__file__).with_name("sound")
             p = sound_folder / sound_file
-            print(p)
+            # print(p)
             # p = Path(__file__).with_name(sound_file)
             with p.open('rb') as sound_loop:
                 if sound_loop.readable():
@@ -557,7 +557,7 @@ class ShortSword(Weapon):
         self.a_an = "a"
 
 
-short_sword = ShortSword()
+# short_sword = ShortSword()
 
 
 class BroadSword(Weapon):
@@ -568,12 +568,12 @@ class BroadSword(Weapon):
         self.damage_bonus = 2
         self.to_hit_bonus = 1
         self.sell_price = 5
-        self.buy_price = 15
+        self.buy_price = 25
         self.minimum_level = 1
         self.a_an = "a"
 
 
-broad_sword = BroadSword()
+# broad_sword = BroadSword()
 
 
 class GreatSword(Weapon):
@@ -589,7 +589,7 @@ class GreatSword(Weapon):
         self.a_an = "a"
 
 
-great_sword = GreatSword()
+# great_sword = GreatSword()
 
 
 class ElvishGreatSword(Weapon):
@@ -601,11 +601,11 @@ class ElvishGreatSword(Weapon):
         self.to_hit_bonus = 3
         self.sell_price = 2500
         self.buy_price = 5000
-        self.minimum_level = 8
+        self.minimum_level = 10
         self.a_an = "an"
 
 
-elvish_great_sword = ElvishGreatSword()
+# elvish_great_sword = ElvishGreatSword()
 
 
 class QuantumSword(Weapon):
@@ -617,11 +617,11 @@ class QuantumSword(Weapon):
         self.to_hit_bonus = 4
         self.sell_price = 5000
         self.buy_price = 8000
-        self.minimum_level = 10  # 3
+        self.minimum_level = 12
         self.a_an = "a"
 
 
-quantum_sword = QuantumSword()
+# quantum_sword = QuantumSword()
 
 
 class QuantumAxe(Weapon):
@@ -633,11 +633,11 @@ class QuantumAxe(Weapon):
         self.to_hit_bonus = 4
         self.sell_price = 5000
         self.buy_price = 8000
-        self.minimum_level = 10  # 3
+        self.minimum_level = 12  # 3
         self.a_an = "a"
 
 
-quantum_axe = QuantumAxe()
+# quantum_axe = QuantumAxe()
 
 
 class ShortAxe(Weapon):
@@ -653,7 +653,7 @@ class ShortAxe(Weapon):
         self.a_an = "a"
 
 
-short_axe = ShortAxe()
+# short_axe = ShortAxe()
 
 
 class BattleAxe(Weapon):
@@ -665,11 +665,11 @@ class BattleAxe(Weapon):
         self.to_hit_bonus = 0
         self.sell_price = 5
         self.buy_price = 15
-        self.minimum_level = 2
+        self.minimum_level = 3
         self.a_an = "a"
 
 
-battle_axe = BattleAxe()
+# battle_axe = BattleAxe()
 
 
 class GreatAxe(Weapon):
@@ -685,7 +685,7 @@ class GreatAxe(Weapon):
         self.a_an = "a"
 
 
-great_axe = GreatAxe()
+# great_axe = GreatAxe()
 
 
 class ElvishGreatAxe(Weapon):
@@ -697,11 +697,11 @@ class ElvishGreatAxe(Weapon):
         self.to_hit_bonus = 2
         self.sell_price = 2750
         self.buy_price = 6000
-        self.minimum_level = 8
+        self.minimum_level = 12
         self.a_an = "an"
 
 
-elvish_great_axe = ElvishGreatAxe()
+# elvish_great_axe = ElvishGreatAxe()
 
 
 class Armor:
@@ -735,7 +735,7 @@ class PaddedArmor(Armor):
         self.a_an = "a set of"
 
 
-padded_armor = PaddedArmor()
+# padded_armor = PaddedArmor()
 
 
 class LeatherArmor(Armor):
@@ -751,7 +751,7 @@ class LeatherArmor(Armor):
         self.a_an = "a set of"
 
 
-leather_armor = LeatherArmor()
+# leather_armor = LeatherArmor()
 
 
 class StuddedLeatherArmor(Armor):
@@ -767,7 +767,7 @@ class StuddedLeatherArmor(Armor):
         self.a_an = "a set of"
 
 
-studded_leather_armor = StuddedLeatherArmor()
+# studded_leather_armor = StuddedLeatherArmor()
 
 
 class ScaleMail(Armor):
@@ -783,7 +783,7 @@ class ScaleMail(Armor):
         self.a_an = "a set of"
 
 
-scale_mail = ScaleMail()
+# scale_mail = ScaleMail()
 
 
 class HalfPlate(Armor):
@@ -795,11 +795,11 @@ class HalfPlate(Armor):
         self.armor_bonus = 0
         self.sell_price = 550
         self.buy_price = 750
-        self.minimum_level = 8
+        self.minimum_level = 12
         self.a_an = "a set of"
 
 
-half_plate = HalfPlate()
+# half_plate = HalfPlate()
 
 
 class FullPlate(Armor):
@@ -811,11 +811,11 @@ class FullPlate(Armor):
         self.armor_bonus = 0
         self.sell_price = 1000
         self.buy_price = 1500
-        self.minimum_level = 10
+        self.minimum_level = 15
         self.a_an = "a set of"
 
 
-full_plate = FullPlate()
+# full_plate = FullPlate()
 
 
 class Shield:
@@ -845,7 +845,7 @@ class NoShield(Shield):  # default
         self.a_an = ""
 
 
-no_shield = NoShield()
+# no_shield = NoShield()
 
 
 class Buckler(Shield):
@@ -860,7 +860,7 @@ class Buckler(Shield):
         self.a_an = "a"
 
 
-buckler = Buckler()
+# buckler = Buckler()
 
 
 class KiteShield(Shield):
@@ -871,11 +871,11 @@ class KiteShield(Shield):
         self.ac = 2
         self.sell_price = 50
         self.buy_price = 100
-        self.minimum_level = 5
+        self.minimum_level = 7
         self.a_an = "a"
 
 
-kite_shield = KiteShield()
+# kite_shield = KiteShield()
 
 
 class QuantumTowerShield(Shield):
@@ -886,11 +886,11 @@ class QuantumTowerShield(Shield):
         self.ac = 3
         self.sell_price = 375
         self.buy_price = 700
-        self.minimum_level = 7
+        self.minimum_level = 12
         self.a_an = "a"
 
 
-quantum_tower_shield = QuantumTowerShield()
+# quantum_tower_shield = QuantumTowerShield()
 
 
 class Boots:
@@ -920,7 +920,7 @@ class LeatherBoots(Boots):
         self.a_an = "a pair of"
 
 
-leather_boots = LeatherBoots()
+# leather_boots = LeatherBoots()
 
 
 class ElvenBoots(Boots):
@@ -935,7 +935,7 @@ class ElvenBoots(Boots):
         self.a_an = "a pair of"
 
 
-elven_boots = ElvenBoots()
+# elven_boots = ElvenBoots()
 
 
 class AncestralFootsteps(Boots):
@@ -946,11 +946,11 @@ class AncestralFootsteps(Boots):
         self.ac = 2
         self.sell_price = 300
         self.buy_price = 500
-        self.minimum_level = 5
+        self.minimum_level = 10
         self.a_an = "a pair of"
 
 
-ancestral_footsteps = AncestralFootsteps()
+# ancestral_footsteps = AncestralFootsteps()
 
 
 class Cloak:
@@ -981,7 +981,7 @@ class CanvasCloak(Cloak):
         self.a_an = "a"
 
 
-canvas_cloak = CanvasCloak()
+# canvas_cloak = CanvasCloak()
 
 
 class ElvenCloak(Cloak):
@@ -996,9 +996,9 @@ class ElvenCloak(Cloak):
         self.a_an = "an"
 
 
-elven_cloak = ElvenCloak()
+# elven_cloak = ElvenCloak()
 
-
+# global belt items
 class Healing:
     def __init__(self):
         self.name = ""
@@ -1082,6 +1082,26 @@ class StrengthPotion:
 strength_potion = StrengthPotion()
 
 
+class TownPortalImplements:
+
+    def __init__(self):
+        self.name = "Scroll of Town Portal"
+        self.item_type = "Town Portal Implements"
+        self.protect = 1
+        self.sell_price = 25
+        self.buy_price = 50
+        self.minimum_level = 1
+        self.uses = 1
+        self.a_an = "a"
+
+    def __repr__(self):
+        return f'{self.name} - Purchase Price: {self.buy_price} GP'
+
+
+scroll_of_town_portal = TownPortalImplements()
+
+
+# rings
 class Regeneration:
 
     def __init__(self):
@@ -1100,7 +1120,7 @@ class Regeneration:
 class DefaultRingOfRegeneration(Regeneration):
     def __init__(self):
         super().__init__()
-        self.name = "Lead Ring"
+        self.name = "No Ring of Regeneration"
         self.item_type = "Rings of Regeneration"
         self.regenerate = 0
         self.sell_price = 10000
@@ -1109,7 +1129,7 @@ class DefaultRingOfRegeneration(Regeneration):
         self.a_an = "a"
 
 
-default_ring_of_regeneration = DefaultRingOfRegeneration()
+# default_ring_of_regeneration = DefaultRingOfRegeneration()
 
 
 class RingOfRegeneration(Regeneration):
@@ -1124,7 +1144,7 @@ class RingOfRegeneration(Regeneration):
         self.a_an = "a"
 
 
-ring_of_regeneration = RingOfRegeneration()
+# ring_of_regeneration = RingOfRegeneration()
 
 
 class Protection:
@@ -1145,7 +1165,7 @@ class Protection:
 class DefaultRingOfProtection(Protection):
     def __init__(self):
         super().__init__()
-        self.name = "Tin Ring"
+        self.name = "No Ring of Protection"
         self.item_type = "Rings of Protection"
         self.protect = 0
         self.sell_price = 10000
@@ -1154,13 +1174,13 @@ class DefaultRingOfProtection(Protection):
         self.a_an = "a"
 
 
-default_ring_of_protection = DefaultRingOfProtection()
+# default_ring_of_protection = DefaultRingOfProtection()
 
 
 class RingOfProtection(Protection):
     def __init__(self):
         super().__init__()
-        self.name = "Ring Of Protection"
+        self.name = "Ring of Protection"
         self.item_type = "Rings of Protection"
         self.protect = 1
         self.sell_price = 10000
@@ -1169,26 +1189,7 @@ class RingOfProtection(Protection):
         self.a_an = "a"
 
 
-ring_of_protection = RingOfProtection()
-
-
-class TownPortalImplements:
-
-    def __init__(self):
-        self.name = "Scroll of Town Portal"
-        self.item_type = "Town Portal Implements"
-        self.protect = 1
-        self.sell_price = 25
-        self.buy_price = 50
-        self.minimum_level = 1
-        self.uses = 1
-        self.a_an = "a"
-
-    def __repr__(self):
-        return f'{self.name} - Purchase Price: {self.buy_price} GP'
-
-
-scroll_of_town_portal = TownPortalImplements()
+# ring_of_protection = RingOfProtection()
 
 
 top_level_loot_dict = {
@@ -1257,10 +1258,10 @@ class VozzBozz:
         self.experience = 0
         self.base_dc = 10
         self.gold = random.randint(2500, 4000)
-        self.wielded_weapon = quantum_sword
-        self.armor = half_plate
-        self.shield = no_shield
-        self.boots = elven_boots
+        self.wielded_weapon = QuantumSword()
+        self.armor = HalfPlate()
+        self.shield = NoShield()
+        self.boots = ElvenBoots()
         self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = 13
         self.strength_bonus = 1
@@ -1301,10 +1302,10 @@ class SiKira:
         self.experience = 0
         self.base_dc = 8
         self.gold = random.randint(2500, 4000)
-        self.wielded_weapon = elvish_great_sword
-        self.armor = scale_mail
-        self.shield = kite_shield
-        self.boots = elven_boots
+        self.wielded_weapon = ElvishGreatSword()
+        self.armor = ScaleMail()
+        self.shield = KiteShield()
+        self.boots = ElvenBoots()
         self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = 13
         self.strength_bonus = 1
@@ -1345,10 +1346,10 @@ class TorBron:
         self.experience = 0
         self.base_dc = 8
         self.gold = random.randint(2500, 4000)
-        self.wielded_weapon = quantum_sword
-        self.armor = half_plate
-        self.shield = kite_shield
-        self.boots = ancestral_footsteps
+        self.wielded_weapon = QuantumSword()
+        self.armor = HalfPlate()
+        self.shield = KiteShield()
+        self.boots = AncestralFootsteps()
         self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = 17
         self.strength_bonus = 1.5
@@ -1389,10 +1390,10 @@ class Magnus:
         self.experience = 0
         self.base_dc = 8
         self.gold = random.randint(2500, 4000)
-        self.wielded_weapon = quantum_axe
-        self.armor = half_plate
-        self.shield = kite_shield
-        self.boots = ancestral_footsteps
+        self.wielded_weapon = QuantumAxe()
+        self.armor = HalfPlate()
+        self.shield = KiteShield()
+        self.boots = AncestralFootsteps()
         self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = 16
         self.strength_bonus = 1.33
@@ -1436,10 +1437,10 @@ class Player:
         self.experience = 0
         self.base_dc = 8
         self.gold = 0
-        self.wielded_weapon = short_sword
-        self.armor = padded_armor
-        self.shield = no_shield
-        self.boots = leather_boots
+        self.wielded_weapon = ShortSword()
+        self.armor = PaddedArmor()
+        self.shield = NoShield()
+        self.boots = LeatherBoots()
         self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = strength
         self.strength_modifier = math.floor((self.strength - 10) / 2)
@@ -1456,11 +1457,14 @@ class Player:
         self.hit_dice = 10
         self.proficiency_bonus = 2
         self.maximum_hit_points = 10 + self.constitution_modifier
-        self.hit_points = 1  # self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
         self.is_paralyzed = False
+        canvas_cloak = CanvasCloak()
         self.cloak = canvas_cloak
+        default_ring_of_protection = DefaultRingOfProtection()
         self.ring_of_prot = default_ring_of_protection
+        default_ring_of_regeneration = DefaultRingOfRegeneration()
         self.ring_of_reg = default_ring_of_regeneration
         self.two_handed = False
         self.extra_attack = 0
@@ -1601,7 +1605,7 @@ class Player:
         print(f"Experience: {self.experience}")
         print(f"Gold: {self.gold}")
         print(f"Weapon: {self.wielded_weapon.name} (Damage Bonus: {self.wielded_weapon.damage_bonus}) "
-              f"(To hit bonus: {self.wielded_weapon.to_hit_bonus})")
+              f"(To-hit bonus: {self.wielded_weapon.to_hit_bonus})")
         print(f"Armor: {self.armor.name} (AC: {self.armor.ac})")
         print(f"Shield: {self.shield.name} (AC: {self.shield.ac})")
         print(f"Boots: {self.boots.name} (AC: {self.boots.ac})")
@@ -1641,9 +1645,9 @@ class Player:
         if self.town_portals > 0:
             number_of_portal_scrolls = self.town_portals
             print(f"Town Portal Scrolls: {number_of_portal_scrolls}")
-        if self.ring_of_reg.name != default_ring_of_regeneration.name:
+        if self.ring_of_reg.name != "No Ring of Regeneration":
             print(f"Ring of Regeneration: +{self.ring_of_reg.regenerate}")
-        if self.ring_of_prot.name != default_ring_of_protection.name:
+        if self.ring_of_prot.name != "No Ring of Protection":
             print(f"Ring of Protection: +{self.ring_of_prot.protect}")
         print()
         return
@@ -2330,7 +2334,8 @@ class Player:
             return False
 
     def victory_statements(self, monster):
-        statements_list = [f"You are victorious!", f"You have defeated the {monster.name}!"]
+        statements_list = [f"You are victorious!", f"You have defeated the {monster.name}.", f"You have vanquished"
+                           f" the {monster.name}.", "You have defeated your enemy.", "Your enemy is defeated."]
         if self.encounter > 20:  # if victory over boss
             gong()
             if monster.proper_name != "None":
@@ -2454,7 +2459,7 @@ class Player:
         boss_monster.charisma += 4
         boss_monster.armor_class += 2
         boss_monster.resistances = ["All"]
-        boss_monster.weapon_bonus = math.ceil(self.level * 2)
+        boss_monster.weapon_bonus = math.ceil(self.proficiency_bonus * 2)
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
         print(f"Before you stands {boss_monster.proper_name}!")
         return boss_monster
@@ -2641,12 +2646,13 @@ class Player:
 
                 if gift_item == 1:
                     if self.armor.ac < 18:
-                        if self.armor.name != padded_armor.name:
+                        if self.armor.name != "Padded Armor":
                             self.armor.ac += 1
                             self.calculate_armor_class()
                             print(f"{monster.he_she_it.capitalize()} enhances your {self.armor.name} "
                                   f"to AC {self.armor.ac}!")
                         else:
+                            leather_armor = LeatherArmor()
                             self.armor = leather_armor
                             print(f"{monster.he_she_it.capitalize()} gives you {self.armor.name}!")
                             self.calculate_armor_class()
@@ -2657,12 +2663,13 @@ class Player:
 
                 if gift_item == 2:
                     if self.shield.ac < 3:
-                        if self.shield.name != no_shield.name:
+                        if self.shield.name != "No Shield":
                             self.shield.ac += 1
                             self.calculate_armor_class()
                             print(f"{monster.he_she_it.capitalize()} enhances your {self.shield.name} "
                                   f"to AC {self.shield.ac}!")
                         else:
+                            buckler = Buckler()
                             self.shield = buckler
                             print(f"{monster.he_she_it.capitalize()} gives you a {self.shield.name}!")
                             self.calculate_armor_class()
@@ -2673,7 +2680,7 @@ class Player:
 
                 if gift_item == 3:
                     if self.wielded_weapon.damage_bonus < 15:
-                        if self.wielded_weapon.name != short_sword.name:
+                        if self.wielded_weapon.name != "Short Sword":
                             self.wielded_weapon.damage_bonus += 1
                             print(f"{monster.he_she_it.capitalize()} enhances your {self.wielded_weapon.name} "
                                   f"damage bonus to + "
@@ -2681,6 +2688,7 @@ class Player:
                             pause()
                             return True
                         else:
+                            broad_sword = BroadSword()
                             self.wielded_weapon = broad_sword
                             print(f"{monster.he_she_it.capitalize()} gives you a {self.wielded_weapon.name}!")
                             pause()
@@ -2690,7 +2698,7 @@ class Player:
 
                 if gift_item == 4:
                     if self.wielded_weapon.to_hit_bonus < 6:
-                        if self.wielded_weapon.name != short_sword.name:
+                        if self.wielded_weapon.name != "Short Sword":
                             self.wielded_weapon.to_hit_bonus += 1
                             print(f"{monster.he_she_it.capitalize()} enhances your {self.wielded_weapon.name} "
                                   f"to-hit bonus to + "
@@ -2698,6 +2706,7 @@ class Player:
                             pause()
                             return True
                         else:
+                            broad_sword = BroadSword()
                             self.wielded_weapon = broad_sword
                             print(f"{monster.he_she_it.capitalize()} gives you a {self.wielded_weapon.name}!")
                             pause()
@@ -2707,12 +2716,14 @@ class Player:
 
                 if gift_item == 5:
                     if self.boots.ac < 3:
-                        if self.boots.name != leather_boots.name:
+
+                        if self.boots.name != "Leather Boots":
                             self.boots.ac += 1
                             self.calculate_armor_class()
                             print(f"{monster.he_she_it.capitalize()} enhances your {self.boots.name} "
                                   f"to AC {self.boots.ac}!")
                         else:
+                            elven_boots = ElvenBoots()
                             self.boots = elven_boots
                             print(f"{monster.he_she_it.capitalize()} gives you a pair of {self.boots.name}!")
                             self.calculate_armor_class()
@@ -2910,7 +2921,7 @@ class Player:
             hit_statement = "You hit!"
         print(f"Dexterity modifier {self.dexterity_modifier}\nProficiency bonus {self.proficiency_bonus}")
         if self.wielded_weapon.to_hit_bonus > 0:
-            print(f"Weapon to hit bonus {self.wielded_weapon.to_hit_bonus}")
+            print(f"Weapon to-hit bonus {self.wielded_weapon.to_hit_bonus}")
         roll_total = roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus
         print(f"Your Total Attack Roll: {roll_total}")
         print(f"Monster armor class {monster_armor_class}")
@@ -2987,7 +2998,7 @@ class Player:
             hit_statement = f"{ally.name} HITS!"
         print(f"Dexterity modifier {ally.dexterity_modifier}\nProficiency bonus {ally.proficiency_bonus}")
         if ally.wielded_weapon.to_hit_bonus > 0:
-            print(f"Weapon to hit bonus {ally.wielded_weapon.to_hit_bonus}")
+            print(f"Weapon to-hit bonus {ally.wielded_weapon.to_hit_bonus}")
         roll_total = roll_d20 + ally.proficiency_bonus + ally.dexterity_modifier + ally.wielded_weapon.to_hit_bonus
         print(f"{ally.name} Total Attack Roll: {roll_total}")
         print(f"Monster armor class {monster_armor_class}")
@@ -6486,6 +6497,27 @@ class Player:
                 continue
 
     def buy_blacksmith_items(self):
+        # create new instances of all objects:
+        short_axe = ShortAxe()
+        broad_sword = BroadSword()
+        great_sword = GreatSword()
+        elvish_great_sword = ElvishGreatSword()
+        quantum_sword = QuantumSword()
+        battle_axe = BattleAxe()
+        great_axe = GreatAxe()
+        elvish_great_axe = ElvishGreatAxe()
+        quantum_axe = QuantumAxe()
+        leather_armor = LeatherArmor()
+        studded_leather_armor = StuddedLeatherArmor()
+        scale_mail = ScaleMail()
+        half_plate = HalfPlate()
+        full_plate = FullPlate()
+        buckler = Buckler()
+        kite_shield = KiteShield()
+        quantum_tower_shield = QuantumTowerShield()
+        elven_boots = ElvenBoots()
+        ancestral_footsteps = AncestralFootsteps()
+        elven_cloak = ElvenCloak()
 
         blacksmith_dict = {
             'Weapons': [short_axe, broad_sword, great_sword, elvish_great_sword,
@@ -7298,9 +7330,9 @@ class Player:
         print(
             f"You are wearing:\n{self.armor.name}. Armor class: {self.armor.ac}, Armor bonus: {self.armor.armor_bonus}")
         print(f"{self.cloak.name}. Stealth: {self.cloak.stealth}")
-        if self.ring_of_reg.name != 'No Ring':
+        if self.ring_of_reg.name != "No Ring of Regeneration":
             print(f"A Ring of Regeneration + {self.ring_of_reg.regenerate}")
-        if self.ring_of_prot.name != 'No Ring':
+        if self.ring_of_prot.name != "No Ring of Protection":
             print(f"A Ring of Protection + {self.ring_of_prot.protect} ")
         print(f"On your belt, you are carrying:")
         print(f"A coil of rope")  # like indiana jones and his whip.
@@ -7559,7 +7591,7 @@ class Player:
 
     def found_ring_of_reg_substitution(self, found_item):
 
-        if self.ring_of_reg.name == default_ring_of_regeneration.name:
+        if self.ring_of_reg.name == "No Ring of Regeneration":
             # self.ring_of_regeneration and default class object has 0 regenerate
             self.ring_of_reg = found_item
             print(f"Quantum wierdness fills the air...")
@@ -7574,7 +7606,7 @@ class Player:
             # old_ring = self.ring_of_reg
             self.ring_of_reg.regenerate = (self.ring_of_reg.regenerate + 1)
             print(f"Quantum wierdness fills the air...")
-            print(f"Your {ring_of_regeneration.name} is enhanced to + {self.ring_of_reg.regenerate} !")
+            print(f"Your {self.ring_of_reg.name} is enhanced to + {self.ring_of_reg.regenerate} !")
             pause()
             return
 
@@ -7585,7 +7617,7 @@ class Player:
 
     def found_ring_of_prot_substitution(self, found_item):
 
-        if self.ring_of_prot.name == default_ring_of_protection.name:  # default ring is transparent placeholder
+        if self.ring_of_prot.name == "No Ring of Protection":  # default ring is transparent placeholder
             self.ring_of_prot = found_item
             # (self.pack[found_item.item_type]).append(found_item) you can't sell rings. new rule
             print(f"Quantum wierdness fills the air...")
@@ -7598,7 +7630,7 @@ class Player:
         elif self.ring_of_prot.protect < math.ceil(self.wisdom * .20):
             self.ring_of_prot.protect += 1
             print(f"Quantum wierdness fills the air...")
-            print(f"Your {ring_of_protection.name} is enhanced to + {self.ring_of_prot.protect} !")
+            print(f"Your {self.ring_of_prot.name} is enhanced to + {self.ring_of_prot.protect} !")
             pause()
             return
 

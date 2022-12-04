@@ -38,9 +38,13 @@ from collections import Counter
 from dungeons import dungeon_dict
 from monster_module import monster_dict, king_boss_list, undead_prophet_list, WickedQueenJannbrielle
 from pathlib import Path
-import keyboard
+
 if os.name == 'nt':
     import winsound
+    import keyboard
+if os.name == 'posix':
+    from termios import tcflush, TCIFLUSH
+
 
 # if you call a function and expect to use a return value, like, by printing it, you must first assign a variable in
 # the call itself!!!
@@ -60,9 +64,25 @@ Incredibly hard	25
 Why bother?	30'''
 
 
+def os_check():
+    cls()
+    print()
+    print("Welcome!")
+    print(f"Operating System identifies as: {os.name}")
+    if os.name == 'nt':
+        print(f"For best gaming experience, please ensure terminal window is maximized.")
+
+    elif os.name == 'posix':
+        print(f"Sauengard should be stable, with the following 2 limitations:\n"
+              f"1. Sound support is not currently available.\n"
+              f"2. The 'keyboard' module requires root permissions on GNU/Linux, and I could not get it to work\n"
+              f"reliably. Therefore, users will be unable to skip through teletype-style messages.")
+    pause()
+
+
 def quit_game():
     cls()
-    typewriter("Quit game..")
+    teletype("Quit game..")
 
     if are_you_sure():
         print(f"Farewell. . .")
@@ -95,29 +115,30 @@ def dot_dot_dot(number_of_dots):
         same_line_print(".")
 
 
-def typewriter(message):
+def teletype(message):
     # based this snippet on a snippet from 101computing.net:
     print()
-    for each_char in message:
-        sys.stdout.write(each_char)
+    for each_character in message:
+        sys.stdout.write(each_character)
         sys.stdout.flush()
-        sleep(0.0065)  # 0.01 seems good
+        sleep(0.0050)  # 0.0065, 0.01 seems good
 
-        # I am proud of this little snippet I figured out :)
-        if keyboard.is_pressed('Esc'):
-            # print("\n\n*SKIP*")
-            # if are_you_sure():
-            cls()
-            print()
-            print(message)
-            return
+        # I am proud of this little snippet I figured out..
+        # but unfortunately, it does not work reliably on *nix due to permissions problems with the 'keyboard' module.
+        if os.name == 'nt':
+            if keyboard.is_pressed('Esc'):  # Skip through teletype message straight to printing if escape is pressed:
+                cls()
+                print()
+                print(message)
+                return
 
-    sleep(.1)
+    sleep(0.1)
     return
 
 
 def print_txt_file(txt_file_name):
     cls()
+    p = ""
     try:
         text_folder = Path(__file__).with_name("text")
         p = text_folder / txt_file_name
@@ -127,21 +148,22 @@ def print_txt_file(txt_file_name):
                 print(txt.read())
 
     except FileNotFoundError:
-        print(f"Missing {txt_file_name} or bad file path.")
+        print(f"Missing {p} or bad file path.")
 
 
-def typewriter_txt_file(txt_file_name):
+def teletype_txt_file(txt_file_name):
     cls()
+    p = ""
     try:
         text_folder = Path(__file__).with_name("text")
         p = text_folder / txt_file_name
         # p = Path(__file__).with_name(txt_file_name)
         with p.open('r') as message:
             if message.readable():
-                typewriter(message.read())
+                teletype(message.read())
 
     except FileNotFoundError:
-        print(f"Missing {txt_file_name} or bad file path.")
+        print(f"Missing {p} or bad file path.")
 
 
 def game_splash():
@@ -152,19 +174,20 @@ def game_splash():
               "W  E  L  C  O  M  E    T  O    S  A  U  E  N  G  A  R  D.\n")
         print(f"                                         "
               f"© Copyright 2022 by Jules Pitsker")
-        choice = input(f"(Quit) to Desktop  (I)ntroduction  (A)bout  (T)ips  (C)redits and Acknowledgement  "
+        choice = input(f"                   "
+                       f"(Quit) to Desktop  (I)ntroduction  (A)bout  (T)ips  (C)redits  "
                        f"(L)icense  (B)egin ").lower()
 
         if choice == 'i':
-            typewriter_txt_file('introduction.txt')
+            teletype_txt_file('introduction.txt')
             pause()
 
         elif choice == 'a':
-            typewriter_txt_file('about.txt')
+            teletype_txt_file('about.txt')
             pause()
 
         elif choice == 't':
-            typewriter_txt_file('tips.txt')
+            teletype_txt_file('tips.txt')
             pause()
 
         elif choice == 'c':
@@ -212,16 +235,21 @@ def compare():
 
 
 def pause():
+    # for cross-platform compatibility, I have tried to make this as best I can.
+    # MS Windows users will have a slight convenience in the ability to hit any key,
+    # whereas GNU/Linux users must hit ENTER
     if os.name == 'nt':
         os.system('pause')
 
     else:
+        tcflush(sys.stdin, TCIFLUSH)  # flush input stream to prevent game disruption by player mashing ENTER key!
         input("Press [ENTER] to continue . . . ")
 
     return
 
 
 def cls():
+    # for cross-platform compatibility
     if os.name == 'nt':
         os.system('cls')
 
@@ -2209,7 +2237,7 @@ class Player:
         cls()
         print_txt_file('grim_reaper.txt')
         gong()
-        typewriter(f"\n                 "
+        teletype(f"\n                 "
                    f"Another adventurer has fallen prey to the Sauengard Dungeon!")
         sleep(4.5)
         self.in_proximity_to_monster = False
@@ -6925,7 +6953,7 @@ class Player:
                   f"\'We 'ave 'eard of it.. how ye' 'ave defeated {vanquished_foes}...and others!\'")
         pause()
         cls()
-        typewriter("\'There is somethin' ye should know!\' Her level of anxiety gives you pause; it seems out of\n"
+        teletype("\'There is somethin' ye should know!\' Her level of anxiety gives you pause; it seems out of\n"
                    "character for her.\n\'Ye should seek out Vozzbozz!\' Pausing with a far away look, she nods.\n"
                    "\'I'm headin' back to the bar, and we'll make like we never spoke o' this..\'\n"
                    "\'Vozzbozz is in the barroom. He's the one with the raven on 'is shoulder!\'\n"
@@ -6934,11 +6962,11 @@ class Player:
         pause()
         cls()
         # meeting with vozzbozz and introduction to tor'bron
-        typewriter_txt_file('hint_event_1.txt')
+        teletype_txt_file('hint_event_1.txt')
         pause()
 
         cls()
-        typewriter(f"{self.name},\nThe guardian of {self.dungeon.name} has, in its possession, an ornate dagger "
+        teletype(f"{self.name},\nThe guardian of {self.dungeon.name} has, in its possession, an ornate dagger "
                    f"of very fine craftsmanship.\nIt is imperative you retrieve it. Return here with it so that "
                    f"matters may progress.\n"
                    f"\n                                                     -V\n")
@@ -6955,7 +6983,7 @@ class Player:
         sleep(1)
         pause()
         cls()
-        typewriter(f"\'Well! {self.name}!\', he bellows in his booming voice. \'Sit!\' Something in his dour demeanor\n"
+        teletype(f"\'Well! {self.name}!\', he bellows in his booming voice. \'Sit!\' Something in his dour demeanor\n"
                    f"tells you it is not an invitation, but an order. You marvel at the size and strength of the man.\n"
                    f"His jet black hair lays long on his head, and covers his body in a wiry patchwork.\n"
                    f"Long sideburns flank a strong jawbone, and his deep-set amber eyes burn with gripping intensity.\n"
@@ -6966,8 +6994,8 @@ class Player:
                    f"of all the patrons on this side of the bar, until it abruptly lodges in the wall with a bang.")
         if len(self.vanquished_foes):
             vanquished_foes = convert_list_to_string_with_commas_only(self.vanquished_foes)
-            typewriter(f"\'The slayer of {vanquished_foes}...\n...and others besides!\'\n")
-        typewriter(f"\'When first I saw you, I was...\', he searches for the word. \'..skeptical!\'\n"
+            teletype(f"\'The slayer of {vanquished_foes}...\n...and others besides!\'\n")
+        teletype(f"\'When first I saw you, I was...\', he searches for the word. \'..skeptical!\'\n"
                    "But now, things are different! Now I know you are able-bodied and strong! Good! Very good, this!\' "
                    "He nods.\n"
                    "A sting of disrespect hits you. After the toil and struggle to retrieve the prized dagger, "
@@ -6990,7 +7018,7 @@ class Player:
         pause()
         cls()
         # meet Tor'bron, get hints
-        typewriter_txt_file('hint_event_2.txt')
+        teletype_txt_file('hint_event_2.txt')
         pause()
         cls()
         self.boss_hint_2_event = True
@@ -7019,7 +7047,7 @@ class Player:
         pause()
         cls()
         # another meeting, get hints
-        typewriter_txt_file('hint_event_3.txt')
+        teletype_txt_file('hint_event_3.txt')
         pause()
         cls()
         self.boss_hint_3_event = True
@@ -7048,23 +7076,23 @@ class Player:
                              f" town through a portal. 'Tis good, sir. 'Cept a word o' caution:\n" \
                              f"Make good use of yer time here while it's open. Ye don't want ta be wastin' yer\n" \
                              f"portals, seein' as scrolls can be rare!"
-        typewriter(f"{opening_phrase}\n")
+        teletype(f"{opening_phrase}\n")
         treasure_chest_discovery = f"level {self.dungeon.level} treasure chest"
         if treasure_chest_discovery not in self.discovered_interactives:
-            typewriter(f"She continues, \'{self.dungeon.name} is full of dangers for the "
+            teletype(f"She continues, \'{self.dungeon.name} is full of dangers for the "
                        f"unwary,\n"
                        f"but there are treasures to be had as well. 'Tis said that there be a pit below the "
                        f"dungeon\n"
                        f"where ye may find gold, but it be full of monsters, traps, and fiends. Search carefully\n"
                        f"and thoroughly if ye venture there!\' ")
         else:
-            typewriter(f"With a big, welcoming smile, she says, \'I 'eard it said ye 'ave found treasure in the "
+            teletype(f"With a big, welcoming smile, she says, \'I 'eard it said ye 'ave found treasure in the "
                        f"pit below {self.dungeon.name}!'\n"
                        f"'Care to spend some o' that loot?\', she adds with a wink.")
 
         micro_boss_discovery = f"level {self.dungeon.level} micro boss"
         if micro_boss_discovery not in self.discovered_interactives:
-            typewriter(f"Lowering her tone, she goes on, \'I've also 'eard it said that there's an elite enemy\n"
+            teletype(f"Lowering her tone, she goes on, \'I've also 'eard it said that there's an elite enemy\n"
                        f"down there, just waitin' for unsuspectin' adventurers in a dead ended corridor!'\n"
                        f"'Take good care, now, and be wise!\'\n ")
         pause()

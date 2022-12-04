@@ -31,12 +31,9 @@
 # from dungeons import dungeon_dict
 import os
 from player_module import cls, town_theme, gong, sleep, \
-    pause, typewriter, dungeon_command_choices, quit_game, game_start
+    pause, teletype, dungeon_command_choices, quit_game, game_start, os_check
 
-cls()
-if os.name == 'nt':
-    print(f"For best gaming experience, please ensure terminal window is maximized.")
-pause()
+os_check()
 while True:
 
     player_1 = game_start()
@@ -80,7 +77,7 @@ while True:
                 if player_1.position == 0:  # 0 is the game/level start position
                     # player_1.hud()
                     cls()
-                    typewriter(player_1.dungeon.intro)
+                    teletype(player_1.dungeon.intro)
                     pause()
                     # set player position, which also removes intro condition
                     player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]

@@ -70,7 +70,7 @@ def os_check():
     print("Welcome!")
 
     if os.name == 'nt':
-        floppy_insert_and_read()
+        floppy_insert_and_load()
         teletype(f"Operating System identifies as: Microsoft Mindows\n"
                  f"For best gaming experience, please ensure terminal window is maximized.\n\n")
 
@@ -81,6 +81,19 @@ def os_check():
                  f"2. The 'keyboard' module requires root permissions on GNU/Linux, and I could not get it to work\n"
                  f"reliably. Therefore, users will be unable to skip through teletype-style messages.\n\n")
     pause()
+
+
+def initial_loading_screen():
+    cls()
+    same_line_print(f"\nLOADING.")
+    dot_dot_dot(20)
+
+
+def loading_screen():
+    cls()
+    floppy_rw2()
+    same_line_print(f"\nLOADING.")
+    dot_dot_dot(20)
 
 
 def quit_game():
@@ -439,7 +452,8 @@ def game_start():
             player_name = input("Enter name of saved character: ")
             load_a_character = player_name + ".sav"
             p = Path(__file__).with_name(load_a_character)
-
+            floppy_rw2()
+            sleep(2)
             if p.is_file():
                 with p.open('rb') as saved_player:
                     same_line_print(f"{player_name} found")
@@ -542,8 +556,16 @@ def floppy_rw():
     sound_player('floppy_rw.wav')
 
 
-def floppy_insert_and_read():
-    sound_player('floppy_insert_and_read.wav')
+def floppy_rw2():
+    sound_player('floppy_rw2.wav')
+
+
+def floppy_insert_and_load():
+    sound_player('floppy_insert.wav')
+    sleep(1)
+    sound_player_loop('floppy_rw.wav')
+    # floppy_rw()
+    # sound_player('floppy_insert_and_load.wav')
 
 
 def sad_cello_theme():
@@ -1501,7 +1523,7 @@ class Player:
         print("Restart..")
         sleep(.5)
         if are_you_sure():
-            floppy_rw()
+            floppy_rw2()
             sleep(3)
             cls()
             self.in_town = False
@@ -1526,7 +1548,7 @@ class Player:
                     break
 
         same_line_print(f"Saving {self.name}")
-        floppy_rw()
+        floppy_rw2()
         dot_dot_dot(15)
         with p.open('wb') as character_filename:
             pickle.dump(self, character_filename)
@@ -2151,7 +2173,7 @@ class Player:
         teletype(f"\n                 "
                  f"Another adventurer has fallen prey to the Sauengard Dungeon!")
         sleep(4.5)
-        floppy_rw()
+        floppy_rw2()
         sleep(1)
         self.in_proximity_to_monster = False
         self.in_dungeon = False
@@ -8770,16 +8792,16 @@ class Player:
             town_theme()
 
         elif town_functions == 'e':
-            # self.in_town = False
-            # self.in_dungeon = True
+
             if self.town_portal_exists:  # or self.loaded_game:
-                print(f"You re-enter the portal.")
-                # self.town_portal_exists = False  # beta 10/12/2022
+                same_line_print(f"You re-enter the portal.")
+
             else:
-                print("You make your descent..")
-                # sleep(1)
-                # print(f"BEWARE . . .")
-            sleep(1)
+                same_line_print("You make your descent..")
+
+            floppy_rw2()
+            dot_dot_dot(15)
+            sleep(3)
             return 'e'
 
     def dungeon_navigation(self, dungeon_command):

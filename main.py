@@ -28,13 +28,15 @@
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
 from player_module import cls, town_theme, gong, sleep, pause, teletype, \
-    dungeon_command_choices, quit_game, game_start, os_check
+    dungeon_command_choices, quit_game, game_start, os_check, initial_loading_screen, loading_screen
 
 os_check()
+initial_loading_screen()
 
 while True:
 
     player_1 = game_start()
+    loading_screen()
     print(f"You enter the town of Fieldenberg.")
     sleep(1.5)
     player_1.in_town = True

@@ -110,7 +110,7 @@ class Dungeon1(Dungeon):
         self.pit_landing = (1, 14)
         self.elite_monster = (4, 10)
         self.legendary_monster = (99, 99)
-        self.wicked_queen = (2, 3)
+        self.wicked_queen = (99, 99)
         self.exit = (19, 3)
 
         self.grid = [

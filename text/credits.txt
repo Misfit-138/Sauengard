@@ -1,3 +1,5 @@
+Sauengard Copyright 2022 by Jules Pitsker
+Please see the LICENSE.txt in the program source directory, or choose the (L)icense option from the main menu.
 Concept, coding, creation and play testing: Jules Pitsker
 
 Thanks to the following STACK OVERFLOW members:
@@ -8,27 +10,3 @@ Liju and snakecharmerb: for explanation of hashable objects
 Pawel Pietraszko: for assistance with initializing new object instances every time player gets new item
 triplee: for assistance with Path syntax
 
-MUSIC:
-Main theme: "Soul's Departure" Royalty Free Music by Darren Curtis
-Creative Commons Attribution License 4.0 International (CC BY 4.0)
-
-Blacksmith Theme: 'Viking Intro loop' by Alexander Nakarada
-Creative Commons Attribution License 4.0 International (CC BY 4.0)
-
-Dungeon Themes: 'Dragon Quest', 'Dragon Song', 'Medieval Metal', 'Cinematic Celtic Metal', by Alexander Nakarada
-Creative Commons Attribution License 4.0 International (CC BY 4.0)
-
-Chemist Theme: 'Might and Magic' by Alexander Nakarada
-Creative Commons Attribution License 4.0 International (CC BY 4.0)
-
-Fieldenberg Theme: 'Tavern Loop 1' by Alexander Nakarada
-Creative Commons Attribution License 4.0 International (CC BY 4.0)
-
-Boss battle theme: 'Dragon Castle' / Epic Orchestral Battle Music by Makai Symphony
-Creative Commons Attribution License 4.0 International (CC BY 4.0)
-
-Tavern Theme: 'The Medieval Banquet' by Silverman Sound is under a Creative Commons license (CC BY 3.0)
-Music promoted by BreakingCopyright: http://bit.ly/Silvermansound_Medieval
-
-Pit theme: 'Epic 39' by Jules Pitsker
-Creative Commons Attribution License 4.0 International (CC BY 4.0)

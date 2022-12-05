@@ -38,6 +38,7 @@ from collections import Counter
 from dungeons import dungeon_dict
 from monster_module import monster_dict, king_boss_list, undead_prophet_list, WickedQueenJannbrielle
 from pathlib import Path
+import itertools
 
 if os.name == 'nt':
     import winsound
@@ -67,15 +68,18 @@ def os_check():
     cls()
     print()
     print("Welcome!")
-    print(f"Operating System identifies as: {os.name}")
-    if os.name == 'nt':
-        print(f"For best gaming experience, please ensure terminal window is maximized.")
 
-    elif os.name == 'posix':
-        print(f"Sauengard should be stable, with the following 2 limitations:\n"
-              f"1. Sound support is not currently available.\n"
-              f"2. The 'keyboard' module requires root permissions on GNU/Linux, and I could not get it to work\n"
-              f"reliably. Therefore, users will be unable to skip through teletype-style messages.")
+    if os.name == 'nt':
+        floppy_insert_and_read()
+        teletype(f"Operating System identifies as: Microsoft Mindows\n"
+                 f"For best gaming experience, please ensure terminal window is maximized.\n\n")
+
+    else:
+        teletype(f"Operating System identifies as: {os.name.title()}")
+        teletype(f"Sauengard should be stable, with the following 2 limitations:\n"
+                 f"1. Sound support is not currently available.\n"
+                 f"2. The 'keyboard' module requires root permissions on GNU/Linux, and I could not get it to work\n"
+                 f"reliably. Therefore, users will be unable to skip through teletype-style messages.\n\n")
     pause()
 
 
@@ -103,6 +107,16 @@ def are_you_sure():
             return False
 
 
+def spinner(number_of_spins):
+    spin_cycle = itertools.cycle(['-', '/', '|', '\\'])
+
+    for i in range(number_of_spins):
+        sys.stdout.write(next(spin_cycle))   #
+        sys.stdout.flush()
+        sys.stdout.write('\b')  # erase the last written char
+        sleep(.005)
+
+
 def same_line_print(string):
     sys.stdout.write(string)
     sys.stdout.flush()
@@ -110,7 +124,7 @@ def same_line_print(string):
 
 def dot_dot_dot(number_of_dots):
     for i in range(number_of_dots):
-        sleep(.33)
+        sleep(.2)
         same_line_print(".")
 
 
@@ -125,7 +139,7 @@ def teletype(message):
         # I am proud of this little snippet I figured out,
         # but unfortunately, it does not work reliably on *nix due to permissions problems with the 'keyboard' module.
         if os.name == 'nt':
-            if keyboard.is_pressed('Esc'):  # Skip through teletype message straight to printing if escape is pressed:
+            if keyboard.is_pressed('Esc'):  # Skip through teletype message straight to printing, if escape is pressed:
                 cls()
                 print()
                 print(message)
@@ -191,6 +205,8 @@ def game_splash():
 
         elif choice == 'c':
             print_txt_file('credits.txt')
+            pause()
+            print_txt_file('credits2.txt')
             pause()
 
         elif choice == 'l':
@@ -520,6 +536,14 @@ def sound_player_loop(sound_file):
 def gong():
     # notice the gong is not looped
     sound_player('gong.wav')
+
+
+def floppy_rw():
+    sound_player('floppy_rw.wav')
+
+
+def floppy_insert_and_read():
+    sound_player('floppy_insert_and_read.wav')
 
 
 def sad_cello_theme():
@@ -1188,7 +1212,7 @@ class VozzBozz:
         self.armor = HalfPlate()
         self.shield = NoShield()
         self.boots = ElvenBoots()
-        self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
+        # self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = 13
         self.strength_bonus = 1
         self.strength_modifier = math.floor((self.strength - 10) / 2)
@@ -1229,7 +1253,7 @@ class SiKira:
         self.armor = ScaleMail()
         self.shield = KiteShield()
         self.boots = ElvenBoots()
-        self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
+        # self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = 13
         self.strength_bonus = 1
         self.strength_modifier = math.floor((self.strength - 10) / 2)
@@ -1270,7 +1294,7 @@ class TorBron:
         self.armor = HalfPlate()
         self.shield = KiteShield()
         self.boots = AncestralFootsteps()
-        self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
+        # self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = 17
         self.strength_bonus = 1.5
         self.strength_modifier = math.floor((self.strength - 10) / 2)
@@ -1311,7 +1335,7 @@ class Magnus:
         self.armor = HalfPlate()
         self.shield = KiteShield()
         self.boots = AncestralFootsteps()
-        self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
+        # self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = 16
         self.strength_bonus = 1.33
         self.strength_modifier = math.floor((self.strength - 10) / 2)
@@ -1356,7 +1380,7 @@ class Player:
         self.armor = PaddedArmor()
         self.shield = NoShield()
         self.boots = LeatherBoots()
-        self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
+        # self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = strength
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.dexterity = dexterity
@@ -1372,15 +1396,12 @@ class Player:
         self.hit_dice = 10
         self.proficiency_bonus = 2
         self.maximum_hit_points = 10 + self.constitution_modifier
-        self.hit_points = 100  # self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
         self.is_paralyzed = False
-        canvas_cloak = CanvasCloak()
-        self.cloak = canvas_cloak
-        default_ring_of_protection = DefaultRingOfProtection()
-        self.ring_of_prot = default_ring_of_protection
-        default_ring_of_regeneration = DefaultRingOfRegeneration()
-        self.ring_of_reg = default_ring_of_regeneration
+        self.cloak = CanvasCloak()
+        self.ring_of_prot = DefaultRingOfProtection()
+        self.ring_of_reg = DefaultRingOfRegeneration()
         self.two_handed = False
         self.extra_attack = 0
         self.armor_class = (self.armor.ac + self.armor.armor_bonus +
@@ -1420,10 +1441,10 @@ class Player:
         self.previous_y = 0
         self.in_a_pit = False
         self.vanquished_foes = []
-        self.sikira_ally = True
-        self.torbron_ally = True
-        self.magnus_ally = True
-        self.vozzbozz_ally = True
+        self.sikira_ally = False
+        self.torbron_ally = False
+        self.magnus_ally = False
+        self.vozzbozz_ally = False
         self.sikira = SiKira()
         self.torbron = TorBron()
         self.magnus = Magnus()
@@ -1480,7 +1501,8 @@ class Player:
         print("Restart..")
         sleep(.5)
         if are_you_sure():
-            sleep(1)
+            floppy_rw()
+            sleep(3)
             cls()
             self.in_town = False
             return "Restart"
@@ -1504,11 +1526,13 @@ class Player:
                     break
 
         same_line_print(f"Saving {self.name}")
-        dot_dot_dot(5)
+        floppy_rw()
+        dot_dot_dot(15)
         with p.open('wb') as character_filename:
             pickle.dump(self, character_filename)
             same_line_print(f"{self.name} saved.\n")
             sleep(2)
+        town_theme()
         return
 
     def hud(self):
@@ -1519,7 +1543,10 @@ class Player:
         print(f"Gold: {self.gold}")
         print(f"Weapon: {self.wielded_weapon.name} (Damage Bonus: {self.wielded_weapon.damage_bonus}) "
               f"(To-hit bonus: {self.wielded_weapon.to_hit_bonus})")
-        print(f"Armor: {self.armor.name} (AC: {self.armor.ac})")
+        if self.armor.armor_bonus > 0:
+            print(f"Armor: {self.armor.name} (AC: {self.armor.ac}) (ARMOR BONUS: {self.armor.armor_bonus}")
+        else:
+            print(f"Armor: {self.armor.name} (AC: {self.armor.ac})")
         print(f"Shield: {self.shield.name} (AC: {self.shield.ac})")
         print(f"Boots: {self.boots.name} (AC: {self.boots.ac})")
         print(f"Your Armor Class: {self.armor_class}")
@@ -1570,7 +1597,7 @@ class Player:
         # called from main loop, after monster attacks human player. (also called after paralyze attacks.)
         # if monster has multi_attack ability, monster attacks all npc allies
         self.hud()
-        # multi_attack ability allows monster to attack ALL npc allies
+        # monster.multi_attack ability allows monster to attack ALL npc allies
         if monster.multi_attack:
             if self.sikira_ally:
                 if not self.sikira.retreating:
@@ -1604,7 +1631,7 @@ class Player:
 
         elif monster.lesser_multi_attack:
 
-            # lesser_multi_attack creates a list of non-retreating allies, if any:
+            # monster.lesser_multi_attack. create a list of non-retreating allies, if any:
             allies = []
 
             if self.sikira_ally:
@@ -2124,6 +2151,8 @@ class Player:
         teletype(f"\n                 "
                  f"Another adventurer has fallen prey to the Sauengard Dungeon!")
         sleep(4.5)
+        floppy_rw()
+        sleep(1)
         self.in_proximity_to_monster = False
         self.in_dungeon = False
         self.in_town = False
@@ -2131,7 +2160,7 @@ class Player:
             cls()
             try_again = input("Do you wish to play again (y/n)? ").lower()
             if try_again == "y":
-                sleep(1)
+                sleep(1.5)
                 cls()
                 self.in_proximity_to_monster = False
                 self.in_dungeon = False
@@ -2140,7 +2169,7 @@ class Player:
                 return True
             if try_again == "n":
                 print(f"Farewell.")
-                sleep(.5)
+                sleep(1.5)
                 cls()
                 sys.exit()
 
@@ -2552,12 +2581,12 @@ class Player:
                 gift_item = dice_roll(1, 6)
 
                 if gift_item == 1:
-                    if self.armor.ac < 18:
+                    if (self.armor.ac + self.armor.armor_bonus) < 18:
                         if self.armor.name != "Padded Armor":
-                            self.armor.ac += 1
+                            self.armor.armor_bonus += 1
                             self.calculate_armor_class()
                             print(f"{monster.he_she_it.capitalize()} enhances your {self.armor.name} "
-                                  f"to AC {self.armor.ac}!")
+                                  f"with an Armor Bonus +{self.armor.armor_bonus}!")
                         else:
                             self.armor = LeatherArmor()
                             print(f"{monster.he_she_it.capitalize()} gives you {self.armor.name}!")
@@ -2584,7 +2613,9 @@ class Player:
                         continue
 
                 if gift_item == 3:
+
                     if self.wielded_weapon.damage_bonus < 15:
+
                         if self.wielded_weapon.name != "Short Sword":
                             self.wielded_weapon.damage_bonus += 1
                             print(f"{monster.he_she_it.capitalize()} enhances your {self.wielded_weapon.name} "
@@ -2592,6 +2623,7 @@ class Player:
                                   f"{self.wielded_weapon.damage_bonus}!")
                             pause()
                             return True
+
                         else:
                             self.wielded_weapon = BroadSword()
                             print(f"{monster.he_she_it.capitalize()} gives you a {self.wielded_weapon.name}!")
@@ -7364,9 +7396,12 @@ class Player:
 
     def found_armor_substitution(self, found_item):
         # ADD armor_bonus FOR FOUND PLATE ARMOR AFTER PLAYER REACHES CERTAIN LEVEL?
-        if self.armor.ac < found_item.ac:
+        if (self.armor.ac + self.armor.armor_bonus) < (found_item.ac + found_item.armor_bonus):
             print(f"You have found {found_item.name}!! Armor Class: {found_item.ac}")
-            print(f"Your current {self.armor.name} Armor Class: {self.armor.ac}")
+            if self.armor.armor_bonus > 0:
+                print(f"Your current {self.armor.name} Armor Class: {self.armor.ac}, Bonus: +{self.armor.armor_bonus}")
+            else:
+                print(f"Your current {self.armor.name} Armor Class: {self.armor.ac}")
 
             while True:
                 replace_armor = input(f"Do you wish to wear the {found_item.name} instead? y/n: ").lower()
@@ -7396,7 +7431,7 @@ class Player:
                 elif replace_armor not in ("y", "n"):
                     continue
         else:
-            print(f"Worn armor >= found item...")  # remove after testing
+            print(f"Worn armor ac + armor_bonus >= found item...")  # remove after testing
             pause()  # remove after testing
             return
 

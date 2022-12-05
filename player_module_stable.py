@@ -45,6 +45,7 @@ if os.name == 'nt':
 if os.name == 'posix':
     from termios import tcflush, TCIFLUSH
 
+
 # if you call a function and expect to use a return value, like, by printing it, you must first assign a variable in
 # the call itself!!!
 # when passing a list as an argument, remember to use the * unpacking operator
@@ -584,6 +585,7 @@ class ShortSword(Weapon):
         self.a_an = "a"
 
 
+
 class BroadSword(Weapon):
     def __init__(self):
         super().__init__()
@@ -595,6 +597,7 @@ class BroadSword(Weapon):
         self.buy_price = 25
         self.minimum_level = 1
         self.a_an = "a"
+
 
 
 class GreatSword(Weapon):
@@ -610,6 +613,7 @@ class GreatSword(Weapon):
         self.a_an = "a"
 
 
+
 class ElvishGreatSword(Weapon):
     def __init__(self):
         super().__init__()
@@ -621,6 +625,7 @@ class ElvishGreatSword(Weapon):
         self.buy_price = 5000
         self.minimum_level = 10
         self.a_an = "an"
+
 
 
 class QuantumSword(Weapon):
@@ -636,6 +641,7 @@ class QuantumSword(Weapon):
         self.a_an = "a"
 
 
+
 class QuantumAxe(Weapon):
     def __init__(self):
         super().__init__()
@@ -647,6 +653,7 @@ class QuantumAxe(Weapon):
         self.buy_price = 8000
         self.minimum_level = 12  # 3
         self.a_an = "a"
+
 
 
 class ShortAxe(Weapon):
@@ -662,6 +669,7 @@ class ShortAxe(Weapon):
         self.a_an = "a"
 
 
+
 class BattleAxe(Weapon):
     def __init__(self):
         super().__init__()
@@ -673,6 +681,7 @@ class BattleAxe(Weapon):
         self.buy_price = 15
         self.minimum_level = 3
         self.a_an = "a"
+
 
 
 class GreatAxe(Weapon):
@@ -688,6 +697,7 @@ class GreatAxe(Weapon):
         self.a_an = "a"
 
 
+
 class ElvishGreatAxe(Weapon):
     def __init__(self):
         super().__init__()
@@ -699,6 +709,7 @@ class ElvishGreatAxe(Weapon):
         self.buy_price = 6000
         self.minimum_level = 12
         self.a_an = "an"
+
 
 
 class Armor:
@@ -714,6 +725,7 @@ class Armor:
         self.a_an = "a set of"
 
     def __repr__(self):
+
         return f'{self.name} - AC: {self.ac}  Armor bonus: {self.armor_bonus}  ' \
                f'Minimum level: {self.minimum_level}  Purchase Price: {self.buy_price} GP'
 
@@ -731,6 +743,7 @@ class PaddedArmor(Armor):
         self.a_an = "a set of"
 
 
+
 class LeatherArmor(Armor):
     def __init__(self):
         super().__init__()
@@ -742,6 +755,7 @@ class LeatherArmor(Armor):
         self.buy_price = 15
         self.minimum_level = 1
         self.a_an = "a set of"
+
 
 
 class StuddedLeatherArmor(Armor):
@@ -757,6 +771,7 @@ class StuddedLeatherArmor(Armor):
         self.a_an = "a set of"
 
 
+
 class ScaleMail(Armor):
     def __init__(self):
         super().__init__()
@@ -768,6 +783,7 @@ class ScaleMail(Armor):
         self.buy_price = 500
         self.minimum_level = 7
         self.a_an = "a set of"
+
 
 
 class HalfPlate(Armor):
@@ -783,6 +799,7 @@ class HalfPlate(Armor):
         self.a_an = "a set of"
 
 
+
 class FullPlate(Armor):
     def __init__(self):
         super().__init__()
@@ -794,6 +811,7 @@ class FullPlate(Armor):
         self.buy_price = 1500
         self.minimum_level = 15
         self.a_an = "a set of"
+
 
 
 class Shield:
@@ -823,6 +841,7 @@ class NoShield(Shield):  # default
         self.a_an = ""
 
 
+
 class Buckler(Shield):
     def __init__(self):
         super().__init__()
@@ -833,6 +852,7 @@ class Buckler(Shield):
         self.buy_price = 50
         self.minimum_level = 1  # 2
         self.a_an = "a"
+
 
 
 class KiteShield(Shield):
@@ -847,6 +867,7 @@ class KiteShield(Shield):
         self.a_an = "a"
 
 
+
 class QuantumTowerShield(Shield):
     def __init__(self):
         super().__init__()
@@ -857,6 +878,7 @@ class QuantumTowerShield(Shield):
         self.buy_price = 700
         self.minimum_level = 12
         self.a_an = "a"
+
 
 
 class Boots:
@@ -886,6 +908,7 @@ class LeatherBoots(Boots):
         self.a_an = "a pair of"
 
 
+
 class ElvenBoots(Boots):
     def __init__(self):
         super().__init__()
@@ -898,6 +921,7 @@ class ElvenBoots(Boots):
         self.a_an = "a pair of"
 
 
+
 class AncestralFootsteps(Boots):
     def __init__(self):
         super().__init__()
@@ -908,6 +932,7 @@ class AncestralFootsteps(Boots):
         self.buy_price = 500
         self.minimum_level = 10
         self.a_an = "a pair of"
+
 
 
 class Cloak:
@@ -936,6 +961,7 @@ class CanvasCloak(Cloak):
         self.buy_price = 0
         self.minimum_level = 1
         self.a_an = "a"
+
 
 
 class ElvenCloak(Cloak):
@@ -979,6 +1005,7 @@ class Elixir:
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
 
 
+
 class Antidote:
     def __init__(self):
         self.name = "Vial of Antidote"
@@ -991,6 +1018,7 @@ class Antidote:
 
     def __repr__(self):
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
+
 
 
 class HealingPotion(Healing):
@@ -1008,6 +1036,7 @@ class HealingPotion(Healing):
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
 
 
+
 class StrengthPotion:
     def __init__(self):
         self.name = "Potion of Strength"
@@ -1020,6 +1049,7 @@ class StrengthPotion:
 
     def __repr__(self):
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
+
 
 
 class TownPortalImplements:
@@ -1036,6 +1066,7 @@ class TownPortalImplements:
 
     def __repr__(self):
         return f'{self.name} - Purchase Price: {self.buy_price} GP'
+
 
 
 # rings
@@ -1066,6 +1097,7 @@ class DefaultRingOfRegeneration(Regeneration):
         self.a_an = "a"
 
 
+
 class RingOfRegeneration(Regeneration):
     def __init__(self):
         super().__init__()
@@ -1076,6 +1108,7 @@ class RingOfRegeneration(Regeneration):
         self.buy_price = 10000
         self.minimum_level = 1
         self.a_an = "a"
+
 
 
 class Protection:
@@ -1105,6 +1138,7 @@ class DefaultRingOfProtection(Protection):
         self.a_an = "a"
 
 
+
 class RingOfProtection(Protection):
     def __init__(self):
         super().__init__()
@@ -1117,20 +1151,21 @@ class RingOfProtection(Protection):
         self.a_an = "a"
 
 
+
 top_level_loot_dict = {
-    'Armor': [LeatherArmor, StuddedLeatherArmor, ScaleMail, HalfPlate, FullPlate],
-    'Shields': [Buckler, KiteShield, QuantumTowerShield],
-    'Boots': [ElvenBoots, AncestralFootsteps],
-    'Cloaks': [ElvenCloak],
-    'Weapons': [ShortAxe, BroadSword, GreatSword, ElvishGreatSword, QuantumSword,
-                BattleAxe, GreatAxe, QuantumAxe],
-    'Elixirs': [Elixir],
-    'Healing': [HealingPotion],
-    'Rings of Regeneration': [RingOfRegeneration],
-    'Rings of Protection': [RingOfProtection],
-    'Town Portal Implements': [TownPortalImplements],
-    'Potions of Strength': [StrengthPotion],
-    'Antidotes': [Antidote]}
+            'Armor': [LeatherArmor, StuddedLeatherArmor, ScaleMail, HalfPlate, FullPlate],
+            'Shields': [Buckler, KiteShield, QuantumTowerShield],
+            'Boots': [ElvenBoots, AncestralFootsteps],
+            'Cloaks': [ElvenCloak],
+            'Weapons': [ShortAxe, BroadSword, GreatSword, ElvishGreatSword, QuantumSword,
+                        BattleAxe, GreatAxe, QuantumAxe],
+            'Elixirs': [Elixir],
+            'Healing': [HealingPotion],
+            'Rings of Regeneration': [RingOfRegeneration],
+            'Rings of Protection': [RingOfProtection],
+            'Town Portal Implements': [TownPortalImplements],
+            'Potions of Strength': [StrengthPotion],
+            'Antidotes': [Antidote]}
 
 
 def undead_prophet_returns():
@@ -1168,7 +1203,6 @@ def npc_end_of_turn_calculation(npc):
         print(f"{npc.name} heals to full strength.")
         npc.hit_points = npc.maximum_hit_points
         sleep(1)
-
 
 # NPC allies
 
@@ -1214,6 +1248,9 @@ class VozzBozz:
         self.retreat_counter_threshold = 1  # 1 full round of retreat, not including initial round
 
 
+vozzbozz = VozzBozz()
+
+
 class SiKira:
 
     def __init__(self):
@@ -1253,6 +1290,9 @@ class SiKira:
         self.retreating = False
         self.retreat_counter = 0
         self.retreat_counter_threshold = 2  # 2 full rounds of retreat, not including initial round
+
+
+sikira = SiKira()
 
 
 class TorBron:
@@ -1296,6 +1336,9 @@ class TorBron:
         self.retreat_counter_threshold = 1  # 1 full round of retreat, not including initial round
 
 
+torbron = TorBron()
+
+
 class Magnus:
 
     def __init__(self):
@@ -1337,6 +1380,8 @@ class Magnus:
         self.retreat_counter_threshold = 1  # 1 full round of retreat, not including initial round
 
 
+magnus = Magnus()
+
 # Human Player:
 
 
@@ -1372,7 +1417,7 @@ class Player:
         self.hit_dice = 10
         self.proficiency_bonus = 2
         self.maximum_hit_points = 10 + self.constitution_modifier
-        self.hit_points = 100  # self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
+        self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
         self.is_paralyzed = False
         canvas_cloak = CanvasCloak()
@@ -1420,14 +1465,10 @@ class Player:
         self.previous_y = 0
         self.in_a_pit = False
         self.vanquished_foes = []
-        self.sikira_ally = True
-        self.torbron_ally = True
-        self.magnus_ally = True
-        self.vozzbozz_ally = True
-        self.sikira = SiKira()
-        self.torbron = TorBron()
-        self.magnus = Magnus()
-        self.vozzbozz = VozzBozz()
+        self.sikira_ally = False
+        self.torbron_ally = False
+        self.magnus_ally = False
+        self.vozzbozz_ally = False
         self.boss_hint_1 = False
         self.boss_hint_1_event = False
         self.boss_hint_2 = False
@@ -1492,24 +1533,30 @@ class Player:
         p = Path(__file__).with_name(save_a_character)
 
         if p.is_file():
-
             while True:
-                self.hud()
                 confirm_save = input(f"{self.name} already saved. Overwrite? (y/n) ").lower()
 
-                if confirm_save == 'n':
-                    return
+                if confirm_save not in ('y', 'n'):
+                    continue
 
-                elif confirm_save == 'y':
+                elif confirm_save == 'n':
                     break
 
-        same_line_print(f"Saving {self.name}")
-        dot_dot_dot(5)
-        with p.open('wb') as character_filename:
-            pickle.dump(self, character_filename)
-            same_line_print(f"{self.name} saved.\n")
-            sleep(2)
-        return
+                elif confirm_save == 'y':
+                    same_line_print(f"Saving {self.name}")
+                    dot_dot_dot(5)
+                    with p.open('wb') as character_filename:
+                        pickle.dump(self, character_filename)
+                        same_line_print(f"{self.name} saved.\n")
+                        sleep(2)
+                        break
+        else:
+            same_line_print(f"Saving {self.name}")
+            dot_dot_dot(5)
+            with p.open('wb') as character_filename:
+                pickle.dump(self, character_filename)
+                same_line_print(f"{self.name} saved.\n")
+                sleep(2)
 
     def hud(self):
         cls()
@@ -1573,33 +1620,33 @@ class Player:
         # multi_attack ability allows monster to attack ALL npc allies
         if monster.multi_attack:
             if self.sikira_ally:
-                if not self.sikira.retreating:
-                    monster.meta_monster_vs_npc_function(self.sikira)
-                    self.npc_retreat_logic(self.sikira)
+                if not sikira.retreating:
+                    monster.meta_monster_vs_npc_function(sikira)
+                    self.npc_retreat_logic(sikira)
                     self.hud()
                 else:
-                    npc_retreat_counter_logic(self.sikira)
+                    npc_retreat_counter_logic(sikira)
             if self.torbron_ally:
-                if not self.torbron.retreating:
-                    monster.meta_monster_vs_npc_function(self.torbron)
-                    self.npc_retreat_logic(self.torbron)
+                if not torbron.retreating:
+                    monster.meta_monster_vs_npc_function(torbron)
+                    self.npc_retreat_logic(torbron)
                     self.hud()
                 else:
-                    npc_retreat_counter_logic(self.torbron)
+                    npc_retreat_counter_logic(torbron)
             if self.magnus_ally:
-                if not self.magnus.retreating:
-                    monster.meta_monster_vs_npc_function(self.magnus)
-                    self.npc_retreat_logic(self.magnus)
+                if not magnus.retreating:
+                    monster.meta_monster_vs_npc_function(magnus)
+                    self.npc_retreat_logic(magnus)
                     self.hud()
                 else:
-                    npc_retreat_counter_logic(self.magnus)
+                    npc_retreat_counter_logic(magnus)
             if self.vozzbozz_ally:
-                if not self.vozzbozz.retreating:
-                    monster.meta_monster_vs_npc_function(self.vozzbozz)
-                    self.npc_retreat_logic(self.vozzbozz)
+                if not vozzbozz.retreating:
+                    monster.meta_monster_vs_npc_function(vozzbozz)
+                    self.npc_retreat_logic(vozzbozz)
                     self.hud()
                 else:
-                    npc_retreat_counter_logic(self.vozzbozz)
+                    npc_retreat_counter_logic(vozzbozz)
             return
 
         elif monster.lesser_multi_attack:
@@ -1608,28 +1655,28 @@ class Player:
             allies = []
 
             if self.sikira_ally:
-                if not self.sikira.retreating:
-                    allies.append(self.sikira)
+                if not sikira.retreating:
+                    allies.append(sikira)
                 else:
-                    npc_retreat_counter_logic(self.sikira)
+                    npc_retreat_counter_logic(sikira)
 
             if self.torbron_ally:
-                if not self.torbron.retreating:
-                    allies.append(self.torbron)
+                if not torbron.retreating:
+                    allies.append(torbron)
                 else:
-                    npc_retreat_counter_logic(self.torbron)
+                    npc_retreat_counter_logic(torbron)
 
             if self.magnus_ally:
-                if not self.magnus.retreating:
-                    allies.append(self.magnus)
+                if not magnus.retreating:
+                    allies.append(magnus)
                 else:
-                    npc_retreat_counter_logic(self.magnus)
+                    npc_retreat_counter_logic(magnus)
 
             if self.vozzbozz_ally:
-                if not self.vozzbozz.retreating:
-                    allies.append(self.vozzbozz)
+                if not vozzbozz.retreating:
+                    allies.append(vozzbozz)
                 else:
-                    npc_retreat_counter_logic(self.vozzbozz)
+                    npc_retreat_counter_logic(vozzbozz)
 
             # one ally is then randomly chosen and attacked by monster:
             if len(allies):
@@ -1650,13 +1697,13 @@ class Player:
         # when monster defeated, turned, or no longer in proximity, npc allies no longer in retreat
         # they also fully heal
         if self.sikira_ally:
-            npc_end_of_turn_calculation(self.sikira)
+            npc_end_of_turn_calculation(sikira)
         if self.torbron_ally:
-            npc_end_of_turn_calculation(self.torbron)
+            npc_end_of_turn_calculation(torbron)
         if self.magnus_ally:
-            npc_end_of_turn_calculation(self.magnus)
+            npc_end_of_turn_calculation(magnus)
         if self.vozzbozz_ally:
-            npc_end_of_turn_calculation(self.vozzbozz)
+            npc_end_of_turn_calculation(vozzbozz)
 
     def end_of_turn_calculation(self):
         # called from main loop at end of player navigation, or battle turn
@@ -1952,6 +1999,7 @@ class Player:
             points = 2
             while True:
                 self.hud()
+                # print(f"Ability Score Improvement for level {self.level}")
 
                 if tries > 1:
                     return
@@ -1968,7 +2016,7 @@ class Player:
                     if value < 20:
                         ability_lst.append(key)
 
-                # this code is reachable if stats are maxed out, and level_up() calls it:
+                # this code should be reachable if stats are maxed out, and player level_up calls it:
                 if not len(ability_lst):  # if ability list is empty, all stats at 20; no more improvements allowed
                     print(f"All of your abilities are at the maximum level!")
                     sleep(1.25)
@@ -2053,7 +2101,7 @@ class Player:
             # they do not include the last number in range, so I added +1 to end_range
             # Also, for the current purposes, I added +1 to start_range as well, since we don't want to award ASI
             # based on the previous experience level, only on current level and any eligible levels between.
-            range_1 = range((before_level + 1), (after_level + 1), 1)  # enumerate lvls between, inc. after_level by 1
+            range_1 = range((before_level + 1), (after_level + 1), 1)  # enumerate lvls between, inc. after_level
             all_levels_between = list(range_1)  # create a list containing levels between, including after_level
             asi_levels = [4, 6, 8, 12, 14, 16, 19]
             # check if any levels between are ASI levels by comparing elements from both lists
@@ -2087,7 +2135,7 @@ class Player:
 
             self.calculate_modifiers()
 
-            if 5 in all_levels_between:  # players gain extra attack skill at level 5 # if self.level == 5:
+            if 5 in all_levels_between:  # players gain extra attack skill at level 5 # self.level == 5:
                 self.extra_attack = True
                 print("You gain the Extra Attack skill!!")  # this works in melee loop if level > 4, change to a boolean
                 pause()
@@ -2122,7 +2170,7 @@ class Player:
         print_txt_file('grim_reaper.txt')
         gong()
         teletype(f"\n                 "
-                 f"Another adventurer has fallen prey to the Sauengard Dungeon!")
+                   f"Another adventurer has fallen prey to the Sauengard Dungeon!")
         sleep(4.5)
         self.in_proximity_to_monster = False
         self.in_dungeon = False
@@ -2143,11 +2191,17 @@ class Player:
                 sleep(.5)
                 cls()
                 sys.exit()
+            # if try_again not in ("y", "n"):
+                # print("Please enter y or n ")
+            #    sleep(.5)
+            #    continue
 
     def encounter_logic(self):
         # called from main loop
         self.encounter = dice_roll(1, 20)
+        # monster_encounter = dice_roll(1, 20)
         # print(f"Monster encounter roll: {monster_encounter}")
+        # return monster_encounter
         # self.encounter = 15  # this will make it so there are no monsters
 
     def monster_introduction(self, monster):
@@ -2189,7 +2243,7 @@ class Player:
             return False
 
     def battle_menu_choices(self, monster):
-        # main loop battle menu. note that a party of adventurers cannot evade
+        # main loop battle menu. a party of adventurers cannot evade
         while True:
             self.hud()
             monster.monster_data()
@@ -2241,8 +2295,7 @@ class Player:
 
     def victory_statements(self, monster):
         statements_list = [f"You are victorious!", f"You have defeated the {monster.name}.", f"You have vanquished"
-                                                                                             f" the {monster.name}.",
-                           "You have defeated your enemy.", "Your enemy is defeated."]
+                           f" the {monster.name}.", "You have defeated your enemy.", "Your enemy is defeated."]
         if self.encounter > 20:  # if victory over boss
             gong()
             if monster.proper_name != "None":
@@ -2257,7 +2310,6 @@ class Player:
             print(statement)
 
     def victory_over_boss_logic(self):
-        # called from main loop
         if self.encounter == 99:  # if dungeon level exit boss
             self.boss_hint_logic()
 
@@ -2276,9 +2328,10 @@ class Player:
 
         if self.encounter < 11:  # regular monster
             monster = self.regular_monster_generator()
-        # put testing monster here:
-        #   from monster_module import Troll
-        #   monster = Troll()
+
+        # put testing monster here
+            # from monster_module import Troll
+            # monster = Troll()
 
         elif self.encounter == 100:  # final boss
             monster = self.wicked_queen_generator()
@@ -2366,7 +2419,7 @@ class Player:
         boss_monster.charisma += 4
         boss_monster.armor_class += 2
         boss_monster.resistances = ["All"]
-        boss_monster.weapon_bonus = math.ceil(self.proficiency_bonus * 2.5)
+        boss_monster.weapon_bonus = math.ceil(self.proficiency_bonus * 2)
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
         print(f"Before you stands {boss_monster.proper_name}!")
         return boss_monster
@@ -2390,7 +2443,7 @@ class Player:
         boss_monster = monster_cls()
         first_name = random.choice(rndm_boss_names)
         boss_monster.proper_name = f"{first_name} the Elite {boss_monster.name}"
-        boss_monster.hit_points = math.ceil(boss_monster.hit_points * 2)
+        boss_monster.hit_points = math.ceil(boss_monster.hit_points * 1.5)
         boss_monster.experience_award = math.ceil(boss_monster.experience_award * 1.5)
         boss_monster.strength += 2
         boss_monster.dexterity += 2
@@ -2559,7 +2612,8 @@ class Player:
                             print(f"{monster.he_she_it.capitalize()} enhances your {self.armor.name} "
                                   f"to AC {self.armor.ac}!")
                         else:
-                            self.armor = LeatherArmor()
+                            leather_armor = LeatherArmor()
+                            self.armor = leather_armor
                             print(f"{monster.he_she_it.capitalize()} gives you {self.armor.name}!")
                             self.calculate_armor_class()
                         pause()
@@ -2575,7 +2629,8 @@ class Player:
                             print(f"{monster.he_she_it.capitalize()} enhances your {self.shield.name} "
                                   f"to AC {self.shield.ac}!")
                         else:
-                            self.shield = Buckler()
+                            buckler = Buckler()
+                            self.shield = buckler
                             print(f"{monster.he_she_it.capitalize()} gives you a {self.shield.name}!")
                             self.calculate_armor_class()
                         pause()
@@ -2593,7 +2648,8 @@ class Player:
                             pause()
                             return True
                         else:
-                            self.wielded_weapon = BroadSword()
+                            broad_sword = BroadSword()
+                            self.wielded_weapon = broad_sword
                             print(f"{monster.he_she_it.capitalize()} gives you a {self.wielded_weapon.name}!")
                             pause()
                             return True
@@ -2609,9 +2665,9 @@ class Player:
                                   f"{self.wielded_weapon.to_hit_bonus}!")
                             pause()
                             return True
-
                         else:
-                            self.wielded_weapon = BroadSword()
+                            broad_sword = BroadSword()
+                            self.wielded_weapon = broad_sword
                             print(f"{monster.he_she_it.capitalize()} gives you a {self.wielded_weapon.name}!")
                             pause()
                             return True
@@ -2627,7 +2683,8 @@ class Player:
                             print(f"{monster.he_she_it.capitalize()} enhances your {self.boots.name} "
                                   f"to AC {self.boots.ac}!")
                         else:
-                            self.boots = ElvenBoots()
+                            elven_boots = ElvenBoots()
+                            self.boots = elven_boots
                             print(f"{monster.he_she_it.capitalize()} gives you a pair of {self.boots.name}!")
                             self.calculate_armor_class()
                         pause()
@@ -2939,7 +2996,7 @@ class Player:
                 damage_roll = dice_roll(ally.level, ally.hit_dice)
                 damage_to_opponent = \
                     math.ceil((
-                                      damage_roll + ally.strength_modifier + ally.wielded_weapon.damage_bonus) * ally.strength_bonus)
+                        damage_roll + ally.strength_modifier + ally.wielded_weapon.damage_bonus) * ally.strength_bonus)
                 print(f"{ally.name} attacks again for {damage_to_opponent} points of damage!")
                 pause()
                 self.hud()
@@ -2973,7 +3030,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + \
-                            self.wisdom_modifier + vulnerability_modifier + level_advantage
+                    self.wisdom_modifier + vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3052,7 +3109,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
-                            vulnerability_modifier + level_advantage
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3132,7 +3189,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
-                            vulnerability_modifier + level_advantage
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3278,7 +3335,7 @@ class Player:
                         if self.level > monster.level:
                             level_advantage = self.level - monster.level
                         player_dc = self.base_dc + self.proficiency_bonus + \
-                                    self.wisdom_modifier + vulnerability_modifier + level_advantage
+                            self.wisdom_modifier + vulnerability_modifier + level_advantage
                         print(f"Player base DC = {self.base_dc}\n"
                               f"Wisdom Modifier: {self.wisdom_modifier}\n"
                               f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3394,7 +3451,7 @@ class Player:
                             if self.level > monster.level:
                                 level_advantage = self.level - monster.level
                             player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
-                                        vulnerability_modifier + level_advantage
+                                vulnerability_modifier + level_advantage
                             print(f"Player base DC = {self.base_dc}\n"
                                   f"Wisdom Modifier: {self.wisdom_modifier}\n"
                                   f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3479,7 +3536,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
-                            vulnerability_modifier + level_advantage
+                    vulnerability_modifier + level_advantage
                 print(f"Player DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3641,7 +3698,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.charisma_modifier + \
-                            vulnerability_modifier + level_advantage
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Charisma Modifier: {self.charisma_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3735,7 +3792,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.intelligence_modifier + \
-                            vulnerability_modifier + level_advantage
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Intelligence Modifier: {self.intelligence_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -4171,10 +4228,10 @@ class Player:
             return None  # creates condition for a continue statement in main loop so a turn is not wasted
 
     def vozzbozz_meteor_swarm(self, monster):
-        player_total = self.vozzbozz.base_dc + self.vozzbozz.wisdom_modifier + self.vozzbozz.proficiency_bonus
-        print(f"Player base DC: {self.vozzbozz.base_dc}")
-        print(f"Wisdom modifier: {self.vozzbozz.wisdom_modifier}")
-        print(f"Proficiency bonus: {self.vozzbozz.proficiency_bonus}")
+        player_total = vozzbozz.base_dc + vozzbozz.wisdom_modifier + vozzbozz.proficiency_bonus
+        print(f"Player base DC: {vozzbozz.base_dc}")
+        print(f"Wisdom modifier: {vozzbozz.wisdom_modifier}")
+        print(f"Proficiency bonus: {vozzbozz.proficiency_bonus}")
         print(f"Total: {player_total}")
         sleep(1)
         monster_roll = dice_roll(1, 20)
@@ -4189,8 +4246,8 @@ class Player:
                 critical_bonus = 2
             number_of_dice = 20 * critical_bonus
             damage_to_opponent = dice_roll(number_of_dice, 6) + (1 * number_of_dice) + \
-                                 dice_roll(number_of_dice, 6) + (1 * number_of_dice)  # 2nd attack=force damage
-            melee_bonus = dice_roll(self.vozzbozz.level, self.vozzbozz.hit_dice)
+                dice_roll(number_of_dice, 6) + (1 * number_of_dice)  # 2nd attack=force damage
+            melee_bonus = dice_roll(vozzbozz.level, vozzbozz.hit_dice)
             total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
 
             print(f"Vozzbozz closes his eyes for a moment.")
@@ -4202,7 +4259,7 @@ class Player:
                   f"a swarm of burning meteors materializes above and falls upon your enemy!!")
             print(f"{number_of_dice}d8 + {number_of_dice}d8 force damage + 1 per die rolled: "
                   f"{damage_to_opponent}")
-            print(f"{self.vozzbozz.level}d{self.vozzbozz.hit_dice} Damage Bonus: {melee_bonus}")
+            print(f"{vozzbozz.level}d{vozzbozz.hit_dice} Damage Bonus: {melee_bonus}")
             print(f"The great storm of fire and stone explodes directly on target in surreal "
                   f"glory and inflicts {total_damage_to_opponent} points of damage!")
             pause()
@@ -4215,7 +4272,7 @@ class Player:
             number_of_dice = 20 * critical_bonus
             damage_to_opponent = (dice_roll(number_of_dice, 6) + (1 * number_of_dice) +
                                   dice_roll(number_of_dice, 6) + (1 * number_of_dice)) / 2  # 2nd attack=force damage
-            melee_bonus = dice_roll(self.vozzbozz.level, self.vozzbozz.hit_dice)
+            melee_bonus = dice_roll(vozzbozz.level, vozzbozz.hit_dice)
             total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
             if damage_to_opponent > 0:
                 print(f"Vozzbozz closes his eyes for a moment.")
@@ -4227,7 +4284,7 @@ class Player:
                       f"a swarm of burning meteors materializes above and falls upon your enemy!!")
                 print(f"{number_of_dice}d8 + {number_of_dice}d8 force damage + 1 per die rolled: "
                       f"{damage_to_opponent}")
-                print(f"{self.vozzbozz.level}d{self.vozzbozz.hit_dice} Damage Bonus: {melee_bonus}")
+                print(f"{vozzbozz.level}d{vozzbozz.hit_dice} Damage Bonus: {melee_bonus}")
                 print(f"The great storm of fire and stone explodes directly on target in surreal "
                       f"glory, but due to the interruption, it only inflicts {total_damage_to_opponent} points\n"
                       f"of damage!")
@@ -4254,10 +4311,10 @@ class Player:
             return 0
 
     def vozzbozz_skeletal_remains(self, monster):
-        print(f"Player Base DC: {self.vozzbozz.base_dc}")
-        print(f"Wisdom modifier: {self.vozzbozz.wisdom_modifier}")
-        print(f"Proficiency bonus: {self.vozzbozz.proficiency_bonus}")
-        player_total = self.vozzbozz.base_dc + self.vozzbozz.wisdom_modifier + self.vozzbozz.proficiency_bonus
+        print(f"Player Base DC: {vozzbozz.base_dc}")
+        print(f"Wisdom modifier: {vozzbozz.wisdom_modifier}")
+        print(f"Proficiency bonus: {vozzbozz.proficiency_bonus}")
+        player_total = vozzbozz.base_dc + vozzbozz.wisdom_modifier + vozzbozz.proficiency_bonus
         print(f"Total: {player_total}")
         critical_bonus = 1
         if dice_roll(1, 20) == 20:
@@ -4272,8 +4329,8 @@ class Player:
             #
             number_of_dice = 15 * critical_bonus
             damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                                 dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
-            melee_bonus = dice_roll(self.vozzbozz.level, self.vozzbozz.hit_dice)
+                dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
+            melee_bonus = dice_roll(vozzbozz.level, vozzbozz.hit_dice)
             total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
             if damage_to_opponent > 0:
                 print(f"Vozzbozz forms a fist and then beckons the ground with his free hand..")
@@ -4287,7 +4344,7 @@ class Player:
                 self.hud()
                 print(f"{number_of_dice}d12 + {number_of_dice}d8 force damage + 1 per skeleton bludgeoning "
                       f"damage: {damage_to_opponent}")
-                print(f"{self.vozzbozz.level}d{self.vozzbozz.hit_dice} Damage Bonus: {melee_bonus}")
+                print(f"{vozzbozz.level}d{vozzbozz.hit_dice} Damage Bonus: {melee_bonus}")
                 # print(f"It hits for {total_damage_to_opponent} points of damage..")
                 print(f"The great swarm of armor, axe, sword and spear inflicts "
                       f"{total_damage_to_opponent} points of damage!")
@@ -4302,7 +4359,7 @@ class Player:
         else:
             number_of_dice = 15 * critical_bonus
             damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice)  # no force damage
-            melee_bonus = dice_roll(self.vozzbozz.level, self.vozzbozz.hit_dice)
+            melee_bonus = dice_roll(vozzbozz.level, vozzbozz.hit_dice)
             total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
             # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
             print(f"Vozzbozz forms a fist and then beckons the ground with his free hand..")
@@ -4316,17 +4373,17 @@ class Player:
             print(f"The skeletal horde takes form but does not inflict damage to its fullest potential..")
             sleep(1)
             print(f"{number_of_dice}d12 roll + 1 per skeleton bludgeoning damage = {damage_to_opponent}")
-            print(f"{self.vozzbozz.level}d{self.vozzbozz.hit_dice} Damage Bonus: {melee_bonus}")
+            print(f"{vozzbozz.level}d{vozzbozz.hit_dice} Damage Bonus: {melee_bonus}")
             print(f"It hits for {total_damage_to_opponent} points of damage..")
             pause()
             self.hud()
             return total_damage_to_opponent
 
     def vozzbozz_negative_energy_plague(self, monster):
-        print(f"Player Base DC: {self.vozzbozz.base_dc}")
-        print(f"Wisdom modifier: {self.vozzbozz.wisdom_modifier}")
-        print(f"Proficiency bonus: {self.vozzbozz.proficiency_bonus}")
-        player_total = self.vozzbozz.base_dc + self.vozzbozz.wisdom_modifier + self.vozzbozz.proficiency_bonus
+        print(f"Player Base DC: {vozzbozz.base_dc}")
+        print(f"Wisdom modifier: {vozzbozz.wisdom_modifier}")
+        print(f"Proficiency bonus: {vozzbozz.proficiency_bonus}")
+        player_total = vozzbozz.base_dc + vozzbozz.wisdom_modifier + vozzbozz.proficiency_bonus
         print(f"Total: {player_total}")
         sleep(1)
         monster_roll = dice_roll(1, 20)
@@ -4343,12 +4400,12 @@ class Player:
             #
             number_of_dice = 15 * critical_bonus
             damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                                 dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = crushing damage
-            melee_bonus = dice_roll(self.vozzbozz.level, self.vozzbozz.hit_dice)
+                dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = crushing damage
+            melee_bonus = dice_roll(vozzbozz.level, vozzbozz.hit_dice)
             total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
             if damage_to_opponent > 0:
-                print(f"Vozzbozz grasps at the air, until his entire shape fades to a mere black silhouette\n"
-                      f"of stars and celestial bodies floating through!!")
+                print(f"Vozzbozz grasps at air, until his entire shape fades to a mere silhouette of blackness, with\n"
+                      f"stars and celestial bodies floating through!!")
                 sleep(1)
                 print(f"A harrowing and visceral vacuum of shear, black emptiness shoots forth "
                       f"from his hands toward your enemy!!")
@@ -4357,7 +4414,7 @@ class Player:
                 sleep(1)
                 print(f"{number_of_dice}d12 necrotic damage + {number_of_dice}d8 crushing damage + 1 per die "
                       f"rolled mental anguish: {damage_to_opponent}")
-                print(f"{self.vozzbozz.level}d{self.vozzbozz.hit_dice} Damage Bonus: {melee_bonus}")
+                print(f"{vozzbozz.level}d{vozzbozz.hit_dice} Damage Bonus: {melee_bonus}")
                 print(f"The great, empty darkness inflicts "
                       f"{total_damage_to_opponent} points of damage!")
                 pause()
@@ -4371,10 +4428,10 @@ class Player:
         else:
             number_of_dice = 15 * critical_bonus
             damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice)  # no crushing damage
-            melee_bonus = dice_roll(self.vozzbozz.level, self.vozzbozz.hit_dice)
+            melee_bonus = dice_roll(vozzbozz.level, vozzbozz.hit_dice)
             total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
             # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
-            print(f"Vozzbozz grasps at the air, until his entire shape fades to a mere silhouette of blackness, with\n"
+            print(f"Vozzbozz grasps at air, until his entire shape fades to a mere silhouette of blackness, with\n"
                   f"stars and celestial bodies floating through!!")
             sleep(1)
             print(f"A harrowing and visceral vacuum of shear, black emptiness shoots forth "
@@ -4387,7 +4444,7 @@ class Player:
             sleep(1)
             print(
                 f"{number_of_dice}d12 necrotic damage + 1 per die rolled mental damage: {damage_to_opponent}")
-            print(f"{self.vozzbozz.level}d{self.vozzbozz.hit_dice} Damage Bonus: {melee_bonus}")
+            print(f"{vozzbozz.level}d{vozzbozz.hit_dice} Damage Bonus: {melee_bonus}")
             print(f"It hits for {total_damage_to_opponent} points of damage..")
             pause()
             self.hud()
@@ -4825,7 +4882,7 @@ class Player:
                     #
                     number_of_dice = (15 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice) + \
-                                         dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack=force damage
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack=force damage
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
                     if damage_to_opponent > 0:
@@ -4936,8 +4993,7 @@ class Player:
                     #
                     number_of_dice = (15 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                                         dice_roll(number_of_dice, 8) + (
-                                                     1 * number_of_dice)  # 2nd attack = force damage
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
                     if damage_to_opponent > 0:
@@ -5054,8 +5110,7 @@ class Player:
                     #
                     number_of_dice = (15 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                                         dice_roll(number_of_dice, 8) + (
-                                                     1 * number_of_dice)  # 2nd attack = crushing damage
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = crushing damage
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
                     if damage_to_opponent > 0:
@@ -5379,7 +5434,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
-                            vulnerability_modifier + level_advantage
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -5593,7 +5648,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
-                            vulnerability_modifier + level_advantage
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
                 print(f"Proficiency bonus: {self.proficiency_bonus}")
@@ -5704,7 +5759,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
-                            vulnerability_modifier + level_advantage
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
                 print(f"Proficiency bonus: {self.proficiency_bonus}")
@@ -6866,11 +6921,11 @@ class Player:
         pause()
         cls()
         teletype("\'There is somethin' ye should know!\' Her level of anxiety gives you pause; it seems out of\n"
-                 "character for her.\n\'Ye should seek out Vozzbozz!\' Pausing with a far away look, she nods.\n"
-                 "\'I'm headin' back to the bar, and we'll make like we never spoke o' this..\'\n"
-                 "\'Vozzbozz is in the barroom. He's the one with the raven on 'is shoulder!\'\n"
-                 "The meeting ends as abruptly as it began. Jenna disappears toward the bar as you slowly\n"
-                 "start to follow a good distance behind, impatient and confused.\n")
+                   "character for her.\n\'Ye should seek out Vozzbozz!\' Pausing with a far away look, she nods.\n"
+                   "\'I'm headin' back to the bar, and we'll make like we never spoke o' this..\'\n"
+                   "\'Vozzbozz is in the barroom. He's the one with the raven on 'is shoulder!\'\n"
+                   "The meeting ends as abruptly as it began. Jenna disappears toward the bar as you slowly\n"
+                   "start to follow a good distance behind, impatient and confused.\n")
         pause()
         cls()
         # meeting with vozzbozz and introduction to tor'bron
@@ -6879,9 +6934,9 @@ class Player:
 
         cls()
         teletype(f"{self.name},\nThe guardian of {self.dungeon.name} has, in its possession, an ornate dagger "
-                 f"of very fine craftsmanship.\nIt is imperative you retrieve it. Return here with it so that "
-                 f"matters may progress.\n"
-                 f"\n                                                     -V\n")
+                   f"of very fine craftsmanship.\nIt is imperative you retrieve it. Return here with it so that "
+                   f"matters may progress.\n"
+                   f"\n                                                     -V\n")
         self.boss_hint_1_event = True
         pause()
         return
@@ -6896,37 +6951,37 @@ class Player:
         pause()
         cls()
         teletype(f"\'Well! {self.name}!\', he bellows in his booming voice. \'Sit!\' Something in his dour demeanor\n"
-                 f"tells you it is not an invitation, but an order. You marvel at the size and strength of the man.\n"
-                 f"His jet black hair lays long on his head, and covers his body in a wiry patchwork.\n"
-                 f"Long sideburns flank a strong jawbone, and his deep-set amber eyes burn with gripping intensity.\n"
-                 f"\'And where is it? Do you have it?\', he asks, his tone tense and distrustful.\n"
-                 f"You carefully retrieve the dagger and pass it to him across the table. Roughly and without "
-                 f"regard,\n"
-                 f"he swipes it from you, yanks it from its sheath and launches it across the room, over the heads\n"
-                 f"of all the patrons on this side of the bar, until it abruptly lodges in the wall with a bang.")
+                   f"tells you it is not an invitation, but an order. You marvel at the size and strength of the man.\n"
+                   f"His jet black hair lays long on his head, and covers his body in a wiry patchwork.\n"
+                   f"Long sideburns flank a strong jawbone, and his deep-set amber eyes burn with gripping intensity.\n"
+                   f"\'And where is it? Do you have it?\', he asks, his tone tense and distrustful.\n"
+                   f"You carefully retrieve the dagger and pass it to him across the table. Roughly and without "
+                   f"regard,\n"
+                   f"he swipes it from you, yanks it from its sheath and launches it across the room, over the heads\n"
+                   f"of all the patrons on this side of the bar, until it abruptly lodges in the wall with a bang.")
         if len(self.vanquished_foes):
             vanquished_foes = convert_list_to_string_with_commas_only(self.vanquished_foes)
             teletype(f"\'The slayer of {vanquished_foes}...\n...and others besides!\'\n")
         teletype(f"\'When first I saw you, I was...\', he searches for the word. \'..skeptical!\'\n"
-                 "But now, things are different! Now I know you are able-bodied and strong! Good! Very good, this!\' "
-                 "He nods.\n"
-                 "A sting of disrespect hits you. After the toil and struggle to retrieve the prized dagger, "
-                 "you are\n"
-                 "now realizing it was nothing more than a test to prove your mettle to this stranger!\n"
-                 "\'You  must be Tor'bron!\', you say as you slide into the booth. His eyes\n"
-                 f"narrow slightly and he takes a sip of ale. Continuing, you say, \'I heard Vozzbozz address you\n"
-                 "the last time we saw each other. And may I add, I never doubted *your* abilities!\'\n"
-                 "Still alert, he thinks about your words. His glowering slowly turns to what must be a smile.\n"
-                 "Then, he laughs, a deep and hearty laugh. Instantly, he fiercely slams the table with his fist,\n"
-                 "so that the entire room shakes and becomes silent. He raises his huge hand, pointing\n"
-                 "straight at you. \'Good! Don't ever doubt them!\' And again he smiles and laughs as the tavern "
-                 "ambience"
-                 f"\ngradually returns. Reaching his tree-trunk arm toward you, he slams you on the shoulder with a"
-                 f" heavy hand.\n"
-                 f"You are thankful for the {self.armor.name.lower()} you wear; without it, the blow would "
-                 f"undoubtedly "
-                 "have been an injury!\nInstinctively reaching for the aching shoulder, you reply plainly, "
-                 "\'I certainly will not..\'\n")
+                   "But now, things are different! Now I know you are able-bodied and strong! Good! Very good, this!\' "
+                   "He nods.\n"
+                   "A sting of disrespect hits you. After the toil and struggle to retrieve the prized dagger, "
+                   "you are\n"
+                   "now realizing it was nothing more than a test to prove your mettle to this stranger!\n"
+                   "\'You  must be Tor'bron!\', you say as you slide into the booth. His eyes\n"
+                   f"narrow slightly and he takes a sip of ale. Continuing, you say, \'I heard Vozzbozz address you\n"
+                   "the last time we saw each other. And may I add, I never doubted *your* abilities!\'\n"
+                   "Still alert, he thinks about your words. His glowering slowly turns to what must be a smile.\n"
+                   "Then, he laughs, a deep and hearty laugh. Instantly, he fiercely slams the table with his fist,\n"
+                   "so that the entire room shakes and becomes silent. He raises his huge hand, pointing\n"
+                   "straight at you. \'Good! Don't ever doubt them!\' And again he smiles and laughs as the tavern "
+                   "ambience"
+                   f"\ngradually returns. Reaching his tree-trunk arm toward you, he slams you on the shoulder with a"
+                   f" heavy hand.\n"
+                   f"You are thankful for the {self.armor.name.lower()} you wear; without it, the blow would "
+                   f"undoubtedly "
+                   "have been an injury!\nInstinctively reaching for the aching shoulder, you reply plainly, "
+                   "\'I certainly will not..\'\n")
         pause()
         cls()
         # meet Tor'bron, get hints
@@ -6976,11 +7031,11 @@ class Player:
             # return self.hint_event_4()
             print("hint 4 event")
         # if self.boss_hint_5 and not self.boss_hint_5_event:
-        # return self.hint_event_5()
-        # print("hint 5 event")
+            # return self.hint_event_5()
+            # print("hint 5 event")
         # if self.boss_hint_6 and not self.boss_hint_6_event:
-        # return self.hint_event_6()
-        # print("hint 6 event")
+            # return self.hint_event_6()
+            # print("hint 6 event")
 
     def jennas_level_1_gab(self, opening_phrase):
         if self.town_portal_exists:
@@ -6992,21 +7047,21 @@ class Player:
         treasure_chest_discovery = f"level {self.dungeon.level} treasure chest"
         if treasure_chest_discovery not in self.discovered_interactives:
             teletype(f"She continues, \'{self.dungeon.name} is full of dangers for the "
-                     f"unwary,\n"
-                     f"but there are treasures to be had as well. 'Tis said that there be a pit below the "
-                     f"dungeon\n"
-                     f"where ye may find gold, but it be full of monsters, traps, and fiends. Search carefully\n"
-                     f"and thoroughly if ye venture there!\' ")
+                       f"unwary,\n"
+                       f"but there are treasures to be had as well. 'Tis said that there be a pit below the "
+                       f"dungeon\n"
+                       f"where ye may find gold, but it be full of monsters, traps, and fiends. Search carefully\n"
+                       f"and thoroughly if ye venture there!\' ")
         else:
             teletype(f"With a big, welcoming smile, she says, \'I 'eard it said ye 'ave found treasure in the "
-                     f"pit below {self.dungeon.name}!'\n"
-                     f"'Care to spend some o' that loot?\', she adds with a wink.")
+                       f"pit below {self.dungeon.name}!'\n"
+                       f"'Care to spend some o' that loot?\', she adds with a wink.")
 
         micro_boss_discovery = f"level {self.dungeon.level} micro boss"
         if micro_boss_discovery not in self.discovered_interactives:
             teletype(f"Lowering her tone, she goes on, \'I've also 'eard it said that there's an elite enemy\n"
-                     f"down there, just waitin' for unsuspectin' adventurers in a dead ended corridor!'\n"
-                     f"'Take good care, now, and be wise!\'\n ")
+                       f"down there, just waitin' for unsuspectin' adventurers in a dead ended corridor!'\n"
+                       f"'Take good care, now, and be wise!\'\n ")
         pause()
 
     def talk_to_jenna(self):
@@ -8534,8 +8589,8 @@ class Player:
         if self.sikira_ally or self.vozzbozz_ally or self.torbron_ally or self.magnus_ally:
             victory = False
             if self.sikira_ally:
-                if not self.sikira.retreating:
-                    ally_dmg1 = self.npc_melee(self.sikira, monster.name, monster.armor_class)
+                if not sikira.retreating:
+                    ally_dmg1 = self.npc_melee(sikira, monster.name, monster.armor_class)
                     if self.npc_defeats_monster_logic(monster, ally_dmg1):
                         victory = True
                         return victory
@@ -8543,8 +8598,8 @@ class Player:
                         victory = False
 
             if self.torbron_ally:
-                if not self.torbron.retreating:
-                    ally_dmg2 = self.npc_melee(self.torbron, monster.name, monster.armor_class)
+                if not torbron.retreating:
+                    ally_dmg2 = self.npc_melee(torbron, monster.name, monster.armor_class)
                     if self.npc_defeats_monster_logic(monster, ally_dmg2):
                         victory = True
                         return victory
@@ -8552,8 +8607,8 @@ class Player:
                         victory = False
 
             if self.magnus_ally:
-                if not self.magnus.retreating:
-                    ally_dmg3 = self.npc_melee(self.magnus, monster.name, monster.armor_class)
+                if not magnus.retreating:
+                    ally_dmg3 = self.npc_melee(magnus, monster.name, monster.armor_class)
                     if self.npc_defeats_monster_logic(monster, ally_dmg3):
                         victory = True
                         return victory
@@ -8561,7 +8616,7 @@ class Player:
                         victory = False
 
             if self.vozzbozz_ally:
-                if not self.vozzbozz.retreating:
+                if not vozzbozz.retreating:
                     ally_dmg4 = self.vozzbozz_attack(monster)
                     if self.npc_defeats_monster_logic(monster, ally_dmg4):
                         victory = True
@@ -8884,9 +8939,9 @@ class Player:
         if not self.boss_hint_4:
             return self.boss_clue_4()
         # if not self.boss_hint_5:
-        # return self.boss_clue_5()
+            # return self.boss_clue_5()
         # if not self.boss_hint_6:
-        # eturn self.boss_clue_6()
+            # eturn self.boss_clue_6()
         return
 
     def wide_open_space_logic(self):
@@ -10361,6 +10416,7 @@ return 0"""
             # "P": f"Slime covers the ground beneath your feet, and a putrid mist fills the air.",
             # "S": ""  # "" is simply for logical readability
         # } #"""
+
 
 """loot_dict = {
     'Armor': [leather_armor, studded_leather_armor, scale_mail, half_plate, full_plate],

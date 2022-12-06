@@ -89,9 +89,16 @@ def initial_loading_screen():
     dot_dot_dot(20)
 
 
+def random_floppy_rw_sound():
+    floppy_sound = [floppy_rw, floppy_rw2]
+    loading_sound = random.choice(floppy_sound)
+    loading_sound()
+
+
 def loading_screen():
     cls()
-    floppy_rw2()
+    random_floppy_rw_sound()
+    # floppy_rw2()
     same_line_print(f"\nLOADING.")
     dot_dot_dot(20)
 
@@ -463,7 +470,8 @@ def game_start():
             player_name = input("Enter name of saved character: ")
             load_a_character = player_name + ".sav"
             p = Path(__file__).with_name(load_a_character)
-            floppy_rw2()
+            random_floppy_rw_sound()
+            # floppy_rw2()
             sleep(2)
             if p.is_file():
                 with p.open('rb') as saved_player:
@@ -1534,7 +1542,8 @@ class Player:
         print("Restart..")
         sleep(.5)
         if are_you_sure():
-            floppy_rw2()
+            random_floppy_rw_sound()
+            # floppy_rw2()
             sleep(3)
             cls()
             self.in_town = False
@@ -1559,7 +1568,8 @@ class Player:
                     break
 
         same_line_print(f"Saving {self.name}")
-        floppy_rw2()
+        random_floppy_rw_sound()
+        # floppy_rw2()
         dot_dot_dot(15)
         with p.open('wb') as character_filename:
             pickle.dump(self, character_filename)
@@ -2184,7 +2194,8 @@ class Player:
         teletype(f"\n                 "
                  f"Another adventurer has fallen prey to the Sauengard Dungeon!")
         sleep(4.5)
-        floppy_rw2()
+        random_floppy_rw_sound()
+        # floppy_rw2()
         sleep(1)
         self.in_proximity_to_monster = False
         self.in_dungeon = False
@@ -6694,6 +6705,17 @@ class Player:
                 print(f"You are well equipped.")
                 pause()
 
+    def check_if_pack_empty(self):
+        non_empty_item_type_lst = []
+        for key in self.pack:
+            if len(self.pack[key]) > 0:
+                non_empty_item_type_lst.append(key)
+        number_of_items_in_pack = len(non_empty_item_type_lst)
+        if number_of_items_in_pack < 1:
+            return True
+        else:
+            return False
+
     def sell_blacksmith_items(self):
         # sell_blacksmith_items() allows you to sell items from self.pack
         while True:
@@ -6705,10 +6727,12 @@ class Player:
             for key in self.pack:
                 if len(self.pack[key]) > 0:
                     non_empty_item_type_lst.append(key)
-            if len(non_empty_item_type_lst) < 1:
-                print(f"Your inventory is empty")
+            number_of_items_in_pack = len(non_empty_item_type_lst)
+            if number_of_items_in_pack < 1:
+                print(f"Your pack is empty.")
                 pause()
                 return
+
             else:
                 # print(non_empty_item_type_lst)  # remove after testing
                 # make a dictionary from the non_empty item type list. index, and print
@@ -6739,6 +6763,7 @@ class Player:
                     print("Invalid entry..")
                     sleep(1)
                     continue
+
             while True:
                 cls()
                 # self.hud()
@@ -6777,15 +6802,27 @@ class Player:
                             print(f"You sell all of your {item_type_to_sell} for {gold_for_all_items} GP.")
                             self.gold += gold_for_all_items
                             (self.pack[item_type_to_sell]).clear()
-                            pause()
-                            break
+
+                            if self.check_if_pack_empty():
+                                print(f"You have no more {persistent_item_type.lower()} to sell, and your pack is "
+                                      f"now completely empty.")
+                                pause()
+                                return
+
+                            else:
+                                pause()
+                                break
+
                         elif yes_or_no == 'n':
                             break
+
                 elif sell_or_exit == 'i':
                     self.inventory()
                     continue
+
                 elif sell_or_exit == 'b':
                     break
+
                 elif sell_or_exit == 's':
 
                     try:
@@ -6797,7 +6834,7 @@ class Player:
                         print("Invalid entry..")
                         sleep(1)
                         continue
-                    # sold_item = (self.pack[item_type_to_sell])[item_index_to_sell]
+
                     confirm_sale = input(f"Sell the {sold_item.name} for {sold_item.sell_price} GP (y/n)? ").lower()
                     if confirm_sale == 'y':
                         print(f"You sell the {sold_item.name} for {sold_item.sell_price} GP")
@@ -6807,24 +6844,34 @@ class Player:
                         pause()
                         cls()
                         # self.hud()
+
                         if len(self.pack[item_type_to_sell]) > 0:
                             self.item_type_inventory(item_type_to_sell)
                             print(f"Your gold: {self.gold} GP")
                             sell_again = input(
                                 f"(S)ell more {persistent_item_type} (B)ack to main market menu or "
                                 f"(E)xit to town: ").lower()
+
                             if sell_again == 's':
                                 continue
+
                             elif sell_again == 'b':
                                 break
+
                             else:
                                 # if sell_again not in ('y', 'n'):
                                 return
                         else:
                             # print(f"Your gold: {self.gold} GP")
-                            print(f"Your {persistent_item_type} inventory is now empty.")
-                            pause()
-                            break
+                            if self.check_if_pack_empty():
+                                print(f"You have no more {persistent_item_type.lower()} to sell, and your pack is "
+                                      f"now completely empty.")
+                                pause()
+                                return
+                            else:
+                                print(f"You have no more {persistent_item_type.lower()} to sell...")
+                                pause()
+                                break
                     else:
                         continue
 
@@ -6862,8 +6909,9 @@ class Player:
         else:
             self.hud()
             self.town_portals -= 1
+            random_floppy_rw_sound()
             print(f"The quantum portal appears before you; a seemingly impossible tunneling between distant places..")
-            sleep(1.5)
+            sleep(3.0)
             return True
 
     def poison_ingestion(self):
@@ -8809,11 +8857,11 @@ class Player:
                 same_line_print(f"You re-enter the portal.")
 
             else:
-                same_line_print("You make your descent..")
-
-            floppy_rw2()
+                same_line_print("You make your descent.")
+            random_floppy_rw_sound()
+            # floppy_rw2()
             dot_dot_dot(15)
-            sleep(3)
+            # sleep(3)
             return 'e'
 
     def dungeon_navigation(self, dungeon_command):

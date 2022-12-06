@@ -28,7 +28,8 @@
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
 from player_module import cls, town_theme, gong, sleep, pause, teletype, \
-    dungeon_command_choices, quit_game, game_start, os_check, initial_loading_screen, loading_screen
+    dungeon_command_choices, quit_game, game_start, os_check, initial_loading_screen, loading_screen, \
+    random_floppy_rw_sound
 
 os_check()
 initial_loading_screen()
@@ -55,6 +56,8 @@ while True:
             player_1.in_dungeon = True
             player_1.hud()
             player_1.dungeon_description()
+            # random_floppy_loading_sound()
+            # sleep(2)
             player_1.dungeon_theme()
             navigation_list = ['w', 'a', 's', 'd', 'ne', 'nw', 'se', 'sw', 'l', 'map', 'm', 'i', 'stay']
 
@@ -79,6 +82,7 @@ while True:
                     cls()
                     teletype(player_1.dungeon.intro)
                     pause()
+
                     # set player position, which also removes intro condition
                     player_1.position = player_1.dungeon.grid[player_1.y][player_1.x]
                     player_1.dungeon_description()

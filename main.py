@@ -28,8 +28,7 @@
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
 from player_module import cls, town_theme, gong, sleep, pause, teletype, \
-    dungeon_command_choices, quit_game, game_start, os_check, initial_loading_screen, loading_screen, \
-    random_floppy_rw_sound
+    dungeon_command_choices, quit_game, game_start, os_check, initial_loading_screen, loading_screen
 
 os_check()
 initial_loading_screen()

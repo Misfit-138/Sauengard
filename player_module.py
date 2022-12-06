@@ -73,6 +73,8 @@ def os_check():
         floppy_insert_and_load()
         teletype(f"Operating System identifies as: Microsoft Windows\n"
                  f"For best gaming experience, please ensure terminal window is maximized.\n\n")
+        pause()
+        ibm_dos_screen()
 
     else:
         teletype(f"Operating System identifies as: {os.name.title()}")
@@ -80,8 +82,19 @@ def os_check():
                  f"1. Sound support is not currently available.\n"
                  f"2. The 'keyboard' module requires root permissions on GNU/Linux, and I could not get it to work\n"
                  f"reliably. Therefore, users will be unable to skip through teletype-style messages.\n\n")
-    pause()
+        pause()
 
+
+def ibm_dos_screen():
+    cls()
+    print("\n\n\n\n\n\n")
+    print("The IBM Personal Computer DOS\n"
+          "Version 1.10 (C)opyright IBM Corp 1981, 1982")
+    sleep(1)
+    same_line_print("A> ")
+    sleep(1)
+    same_line_teletype("Sauengard.bat")
+    sleep(1)
 
 def initial_loading_screen():
     cls()
@@ -159,6 +172,12 @@ def same_line_print(string):
     sys.stdout.write(string)
     sys.stdout.flush()
 
+
+def same_line_teletype(string):
+    for each_character in string:
+        sys.stdout.write(each_character)
+        sys.stdout.flush()
+        sleep(0.05)
 
 def dot_dot_dot(number_of_dots):
     for i in range(number_of_dots):

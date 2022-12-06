@@ -27,7 +27,7 @@
 # Pit theme 'Epic 39' by Jules Pitsker
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
-import collections
+# import collections
 import math
 import pickle
 import random
@@ -71,7 +71,7 @@ def os_check():
 
     if os.name == 'nt':
         floppy_insert_and_load()
-        teletype(f"Operating System identifies as: Microsoft Mindows\n"
+        teletype(f"Operating System identifies as: Microsoft Windows\n"
                  f"For best gaming experience, please ensure terminal window is maximized.\n\n")
 
     else:
@@ -112,7 +112,7 @@ def quit_game():
 
 def are_you_sure():
     while True:
-        confirm = input("Are you sure? (y/n) ").lower()
+        confirm = input("Are you sure (y/n)? ").lower()
 
         if confirm == 'y':
             return True
@@ -130,6 +130,24 @@ def spinner(number_of_spins):
         sleep(.005)
 
 
+def escape_key_interrupt_teletype(message):
+    # I am proud of this little snippet I figured out,
+    # but unfortunately, it does not work reliably on *nix due to permissions problems with the 'keyboard' module.
+    if os.name == 'nt':
+
+        if keyboard.is_pressed('Esc'):  # Skip through teletype message straight to printing, if escape is pressed:
+            cls()
+            print()  # skip a line, just like teletype(), so printed text will line up perfectly with teletyped text
+            print(message)
+            return True
+
+        else:
+            return False
+
+    else:
+        return False
+
+
 def same_line_print(string):
     sys.stdout.write(string)
     sys.stdout.flush()
@@ -143,20 +161,13 @@ def dot_dot_dot(number_of_dots):
 
 def teletype(message):
     # based this snippet on a snippet from 101computing.net:
-    print()
+    print()  # skip a line
     for each_character in message:
         sys.stdout.write(each_character)
         sys.stdout.flush()
-        sleep(0.0050)  # 0.0065, 0.01 seems good
-
-        # I am proud of this little snippet I figured out,
-        # but unfortunately, it does not work reliably on *nix due to permissions problems with the 'keyboard' module.
-        if os.name == 'nt':
-            if keyboard.is_pressed('Esc'):  # Skip through teletype message straight to printing, if escape is pressed:
-                cls()
-                print()
-                print(message)
-                return
+        sleep(0.0050)  # 0.0065, 0.01 all seem good
+        if escape_key_interrupt_teletype(message):
+            return
 
     sleep(0.1)
     return
@@ -258,8 +269,8 @@ def convert_list_to_string_with_and(list1):
     return readable_list
 
 
-def compare():
-    lambda x, y: collections.Counter(x) == collections.Counter(y)
+# def compare():  # unused function?
+#    lambda x, y: collections.Counter(x) == collections.Counter(y)
 
 
 def pause():
@@ -362,7 +373,7 @@ def character_generator():
             sleep(.25)
             continue
 
-        confirm_player_name = input(f"Player name is {player_name}. Is this ok? (y/n) ").lower()
+        confirm_player_name = input(f"Player name is {player_name}. Is this ok (y/n)? ").lower()
 
         if confirm_player_name == 'y':
             break
@@ -479,7 +490,7 @@ def game_start():
             while accept_stats != 'y':
                 player_1 = character_generator()
                 player_1.hud()
-                accept_stats = input(f"Accept character and continue? (y/n): ").lower()
+                accept_stats = input(f"Accept character and continue? (y/n)? ").lower()
 
             if accept_stats == "y":
                 player_1.dungeon_key = 1
@@ -1397,7 +1408,7 @@ class Player:
         self.encounter = 0
         self.experience = 0
         self.base_dc = 8
-        self.gold = 0
+        self.gold = 10000000000000000
         self.wielded_weapon = ShortSword()
         self.armor = PaddedArmor()
         self.shield = NoShield()
@@ -1539,7 +1550,7 @@ class Player:
 
             while True:
                 self.hud()
-                confirm_save = input(f"{self.name} already saved. Overwrite? (y/n) ").lower()
+                confirm_save = input(f"{self.name} already saved. Overwrite? (y/n)? ").lower()
 
                 if confirm_save == 'n':
                     return
@@ -6688,7 +6699,7 @@ class Player:
         while True:
             cls()
             # self.hud()
-            print(f"You have items eligible to sell in the following categories:")
+            # print(f"You have items eligible to sell in the following categories:")
             non_empty_item_type_lst = []
             # make a list of non-empty inventory item keys from player's pack inventory
             for key in self.pack:
@@ -6701,6 +6712,7 @@ class Player:
             else:
                 # print(non_empty_item_type_lst)  # remove after testing
                 # make a dictionary from the non_empty item type list. index, and print
+                print(f"You have items eligible to sell in the following categories:")
                 item_type_dict = {}
                 for item_type in self.pack:
                     if len(self.pack[item_type]) and item_type != 'Rings of Protection' and \
@@ -6758,7 +6770,7 @@ class Player:
                 elif sell_or_exit == 'a':
 
                     while True:
-                        yes_or_no = input(f"Sell all {item_type_to_sell} for {gold_for_all_items} GP? ").lower()
+                        yes_or_no = input(f"Sell all {item_type_to_sell} for {gold_for_all_items} GP? (y/n)? ").lower()
                         if yes_or_no not in ('y', 'n'):
                             continue
                         elif yes_or_no == 'y':
@@ -8244,7 +8256,7 @@ class Player:
             if read_roll + self.wisdom_modifier > difficulty_class:  # wisdom to recognize language
                 print(f"You recognize the ancient language!")
                 sleep(1)
-                translate = input(f"Do you want to attempt to translate it into the common tongue? (y/n): ").lower()
+                translate = input(f"Do you want to attempt to translate it into the common tongue? (y/n)? ").lower()
                 if translate == 'y':
                     difficulty_class = 8
                     translate_roll = dice_roll(1, 20)
@@ -8413,7 +8425,7 @@ class Player:
         if (pit_outcome + self.dexterity_modifier + self.intelligence_modifier) > pit_difficulty_class:
             print(f"It appears to be about 3 fathoms deep.")
             sleep(1)
-            descend_or_not = input(f"Do you wish to descend (y/n)?: ").lower()
+            descend_or_not = input(f"Do you wish to descend (y/n)? ").lower()
             if descend_or_not == 'y':
                 self.in_a_pit = True
                 print(f"Retrieving the rope from your belt, you deftly repel down the slick, "

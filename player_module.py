@@ -67,14 +67,17 @@ Why bother?	30'''
 def os_check():
     cls()
     print()
-    print("Welcome!")
+    # print("Welcome!")
 
     if os.name == 'nt':
+        pc_powerup()
+        sleep(5)
         floppy_insert_and_load()
         teletype(f"Operating System identifies as: Microsoft Windows\n"
                  f"For best gaming experience, please ensure terminal window is maximized.\n\n")
+        sleep(1)
         pause()
-        ibm_dos_screen()
+
 
     else:
         teletype(f"Operating System identifies as: {os.name.title()}")
@@ -87,14 +90,35 @@ def os_check():
 
 def ibm_dos_screen():
     cls()
-    print("\n\n\n\n\n\n")
+    sleep(2)
+    stop_sound()
+    print("Current date is Tue 1-01-1980")
+    same_line_print("Enter new date (mm-dd-yy): ")
+    sleep(1)
+    clacky_keyboard_short()
+    same_line_teletype("5-27-1983\n")
+    print("Current time is 0:00:25:36")
+    same_line_print("Enter new time: ")
+    sleep(1)
+    clacky_keyboard_short()
+    same_line_teletype("8:02\n")
+    sleep(1)
+    print("\n\n")
     print("The IBM Personal Computer DOS\n"
           "Version 1.10 (C)opyright IBM Corp 1981, 1982")
     sleep(1)
     same_line_print("A> ")
     sleep(1)
-    same_line_teletype("Sauengard.bat")
+    clacky_keyboard_short()
     sleep(1)
+    same_line_teletype("Sauengard.bat")
+    random_floppy_rw_sound()
+    sleep(1)
+
+
+def clacky_keyboard_short():
+    sound_player('clacky_keyboard_short.wav')
+
 
 def initial_loading_screen():
     cls()
@@ -550,6 +574,10 @@ def asi_intro():
     pause()
 
 
+def stop_sound():
+    winsound.PlaySound(None, 0)
+
+
 def sound_player(sound_file):
     # a sound player function which simply plays sound_file asynchronously
     if os.name == 'nt':
@@ -588,6 +616,10 @@ def sound_player_loop(sound_file):
 def gong():
     # notice the gong is not looped
     sound_player('gong.wav')
+
+
+def pc_powerup():
+    sound_player('pc_powerup.wav')
 
 
 def floppy_rw():

@@ -77,7 +77,8 @@ def os_check():
                  f"For best gaming experience, please ensure terminal window is maximized.\n\n")
         sleep(1)
         pause()
-
+        # ibm_dos_screen()
+        # initial_loading_screen()
 
     else:
         teletype(f"Operating System identifies as: {os.name.title()}")
@@ -86,6 +87,7 @@ def os_check():
                  f"2. The 'keyboard' module requires root permissions on GNU/Linux, and I could not get it to work\n"
                  f"reliably. Therefore, users will be unable to skip through teletype-style messages.\n\n")
         pause()
+        unix_screen()
 
 
 def ibm_dos_screen():
@@ -94,30 +96,83 @@ def ibm_dos_screen():
     stop_sound()
     print("Current date is Tue 1-01-1980")
     same_line_print("Enter new date (mm-dd-yy): ")
-    sleep(1)
-    clacky_keyboard_short()
+    sleep(.5)
+    clacky_keyboard_short2()
     same_line_teletype("5-27-1983\n")
+    sleep(.25)
+    stop_sound()
     print("Current time is 0:00:25:36")
     same_line_print("Enter new time: ")
     sleep(1)
     clacky_keyboard_short()
+    sleep(.4)
     same_line_teletype("8:02\n")
+    stop_sound()
     sleep(1)
     print("\n\n")
     print("The IBM Personal Computer DOS\n"
-          "Version 1.10 (C)opyright IBM Corp 1981, 1982")
+          "Version 3.00 (C)opyright IBM Corp 1984")
     sleep(1)
     same_line_print("A> ")
     sleep(1)
-    clacky_keyboard_short()
-    sleep(1)
+    clacky_keyboard_short2()
+    sleep(.25)
     same_line_teletype("Sauengard.bat")
+    print("\n")
+    sleep(.5)
     random_floppy_rw_sound()
     sleep(1)
+
+def unix_screen():
+    # UNIX original devs, 'DND', 'dnd' and 'Dungeon' authors :)
+    user_list = ["dennis_ritchie", "ken_thompson", "gary_whisenhunt", "ray_wood", "daniel_lawrence", "don_daglow"]
+    user = random.choice(user_list)
+    cls()
+    sleep(2)
+    print("total real memory       = 33157120")
+    sleep(.5)
+    print("total available memory  = 31068160\n")
+    sleep(.5)
+    print("AT&T UNIX System V Release 1.0 version 1.1")
+    print("Copyright (c) 1984 AT&T")
+    print("All Rights Reserved")
+    sleep(1.5)
+    same_line_print("The system is coming up.  ")
+    sleep(1)
+    same_line_print("Please wait.\n")
+    sleep(2)
+    cls()
+    same_line_print("Console Login: ")
+    sleep(1)
+    same_line_teletype(user)
+    print()
+    sleep(.5)
+    print()
+    sleep(.5)
+    same_line_print("Password: ")
+    sleep(2)
+    print("\n")
+    print("AT&T UNIX System V Release 1.0 version 1.1")
+    print("Copyright (c) 1984 AT&T")
+    print("All Rights Reserved")
+    print("Last login: Thu Sep 10 01:50:13 on console")
+    sleep(1)
+    print("/        :    Disk space 1.14 MB of 10 MB available (1.14%) ")
+    same_line_print("# ")
+    sleep(2)
+    same_line_teletype("./sauengard.sh\n")
+    print("\n")
+
+    sleep(2)
+
 
 
 def clacky_keyboard_short():
     sound_player('clacky_keyboard_short.wav')
+
+
+def clacky_keyboard_short2():
+    sound_player('clacky_keyboard_short2.wav')
 
 
 def initial_loading_screen():
@@ -201,7 +256,7 @@ def same_line_teletype(string):
     for each_character in string:
         sys.stdout.write(each_character)
         sys.stdout.flush()
-        sleep(0.05)
+        sleep(0.07)
 
 def dot_dot_dot(number_of_dots):
     for i in range(number_of_dots):
@@ -281,6 +336,8 @@ def game_splash():
             print_txt_file('credits.txt')
             pause()
             print_txt_file('credits2.txt')
+            pause()
+            print_txt_file('credits3.txt')
             pause()
 
         elif choice == 'l':

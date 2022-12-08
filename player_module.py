@@ -73,12 +73,12 @@ def os_check():
         pc_powerup()
         sleep(5)
         floppy_insert_and_load()
-        teletype(f"Operating System identifies as: Microsoft Windows\n"
-                 f"For best gaming experience, please ensure terminal window is maximized.\n\n")
-        sleep(1)
-        pause()
-        # ibm_dos_screen()
-        # initial_loading_screen()
+        # teletype(f"Operating System identifies as: Microsoft Windows\n"
+        #         f"For best gaming experience, please ensure terminal window is maximized.\n\n")
+        # sleep(1)
+        # pause()
+        ibm_dos_screen()
+        initial_loading_screen()
 
     else:
         teletype(f"Operating System identifies as: {os.name.title()}")
@@ -131,7 +131,7 @@ def unix_screen():
     # 'Dungeon' :)
     # note that 'dnd' (Whisenhunt, Wood, Dirk Pellett, Flint Pellett, developed on the PLATO network)
     # and 'DND' (Daniel Lawrence) are different games with an interesting, and contentious history.
-    # Lawrence later wrote 'Telengard', a game based on 'DND' which was a commercial success.
+    # Lawrence later wrote 'Telengard', a game based on 'DND'. 'Telengard' was a commercial success.
     # Lawrence denied having ever played 'dnd' on PLATO.
     # dnd maintainer and author, Dirk Pellett claims Lawrence outright plagiarized it.
     user_list = ["dennis_ritchie", "ken_thompson", "gary_whisenhunt", "ray_wood", "daniel_lawrence",
@@ -155,7 +155,6 @@ def unix_screen():
     sleep(.25)
     print("total available memory  = 901068\n")
     sleep(.25)
-
     print("AT&T UNIX System V Release 1.0 version 1.1")
     print("(Bell Labs internal USG UNIX 5.0 codebase. *Not for re-distribution.*)")
     print("Copyright (c) 1983 AT&T")

@@ -1,9 +1,9 @@
 Why Sauengard?
 In 2020 I contracted Covid-19...and it never left my body. Among the dozens of symptoms associated with 'Long COVID',
-perhaps the most cruel is what is often called, 'brain fog'- a frustrating, cognitive impairment which hampers one's
-ability to think, function and create. It was suggested by one of my doctors that I try to 'exercise' my brain, possibly
-by learning a language. Later, my daughter recommended I combine the suggestion with my beloved computer hobby, and
-teach myself a computer language.
+perhaps the most cruel are insomnia, and what is often called, 'brain fog'- a frustrating, cognitive impairment which
+hampers one's ability to think, function and create. It was suggested by one of my doctors that I try to 'exercise'
+my brain, possibly by learning a language. Later, my daughter recommended I combine the suggestion with my beloved
+computer hobby, and teach myself a computer language.
 Though I have been building and fiddling with PC's for more than 40 years, I hadn't actually coded much of anything on a
 computer since about 1983. Back then, machines generally shipped with a BASIC interpreter, and BASIC is all I ever
 coded with. Many years later, I read Edsger Dijkstra's somewhat famous quote: 'It is practically impossible to teach
@@ -14,15 +14,17 @@ Object-Oriented-Programming concepts. If you are a programmer, I am sure you wil
 inefficiency, redundancy and amateur choices I have made. However, I am quite content to have simply been able to
 accomplish something I never thought possible, to learn a little something along the way, and to have some fun.
 This program is the culmination of many challenging, often grueling, hours in front of a screen, during
-the 'productive time of my day', when ability, desire, and motivation converge.
+the my productive time of day, when ability, desire, and motivation converge.
 
-Sauengard is inspired by old school games from the 8-bit microcomputer era, specifically, games which I played on the
-Commodore 64, such as Infocom's Zork, Zork II, Zork III, Infidel, and dungeon games like Telengard, Kaiv and others..
+Sauengard is inspired by games from the early microcomputer era, specifically, games which I played on the
+Commodore 64 and IBM PC, such as Infocom's Zork, Zork II, Zork III, Infidel, and dungeon games like Telengard,
+which was based on an earlier game called 'DND', which was ported from an earlier game called 'dnd'.
+(According to a 'dnd' author, 'DND' was outright plagiarized. For more: http://www.armory.com/~dlp/dnd1.html)
 The monsters, atmosphere and combat systems are perhaps most similar to Telengard, (though a bit more sophisticated),
 but also draw from other fantasy games, like AD&D, and most affectionately, Milton Bradley's 1981 'Dark Tower'
 electronic board game. (The name Sauengard is, of course, inspired by Telengard.)
 Sauengard is similar to the Infocom games in its navigation, descriptions, and low-key humor.
-Fans of 8-bit computing will likely recognize some throwbacks and homages to these wonderful games from a bygone
+Fans of retro computing will likely recognize some throwbacks and homages to these wonderful games from a bygone
 era of computing. I coded this mainly for myself and my cousin Bill, with whom I spent many late evenings playing
 on my Commodore 64, but it is my hope that you enjoy it as well. If you have a problem or suggestion, or if you are
 enjoying Sauengard, feel free to email me at:

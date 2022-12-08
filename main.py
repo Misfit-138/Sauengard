@@ -28,13 +28,13 @@
 # Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
 from player_module import cls, town_theme, gong, sleep, pause, teletype, \
-    dungeon_command_choices, quit_game, game_start, os_check, initial_loading_screen, loading_screen, ibm_dos_screen, \
-    unix_screen
+    dungeon_command_choices, quit_game, game_start, os_check, loading_screen
+# ibm_dos_screen, unix_screen, initial_loading_screen,
 
-# os_check()
+os_check()
 # ibm_dos_screen()
 # initial_loading_screen()
-unix_screen()
+# unix_screen()
 
 while True:
 

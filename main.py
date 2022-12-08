@@ -31,7 +31,7 @@ from player_module import cls, town_theme, gong, sleep, pause, teletype, \
     dungeon_command_choices, quit_game, game_start, os_check, initial_loading_screen, loading_screen, ibm_dos_screen, \
     unix_screen
 
-os_check()
+# os_check()
 # ibm_dos_screen()
 # initial_loading_screen()
 unix_screen()

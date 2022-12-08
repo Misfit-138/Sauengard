@@ -117,22 +117,45 @@ def ibm_dos_screen():
     sleep(1)
     clacky_keyboard_short2()
     sleep(.25)
-    same_line_teletype("Sauengard.bat")
+    same_line_teletype("SAUENGARD.BAT")
     print("\n")
     sleep(.5)
     random_floppy_rw_sound()
     sleep(1)
 
 def unix_screen():
-    # UNIX original devs, 'DND', 'dnd' and 'Dungeon' authors :)
-    user_list = ["dennis_ritchie", "ken_thompson", "gary_whisenhunt", "ray_wood", "daniel_lawrence", "don_daglow"]
+    # original devs of
+    # UNIX,
+    # 'dnd',
+    # 'DND' and
+    # 'Dungeon' :)
+    # note that 'dnd' (Whisenhunt, Wood, Dirk Pellett, Flint Pellett, developed on the PLATO network)
+    # and 'DND' (Daniel Lawrence) are different games with an interesting, and contentious history.
+    # Lawrence later wrote 'Telengard', a game based on 'DND' which was a commercial success.
+    # Lawrence denied having ever played 'dnd' on PLATO.
+    # dnd maintainer and author, Dirk Pellett claims Lawrence outright plagiarized it.
+    user_list = ["dennis_ritchie", "ken_thompson", "gary_whisenhunt", "ray_wood", "daniel_lawrence",
+                 "don_daglow", "dirk_pellett", "flint_pellett"]
     user = random.choice(user_list)
     cls()
-    sleep(2)
-    print("total real memory       = 33157120")
+    print("digital PDP 11/23 PLUS")
+    sleep(1)
+    cls()
+    same_line_print("BOOT> ")
+    sleep(1.5)
+    same_line_teletype("DU 0\n")
     sleep(.5)
-    print("total available memory  = 31068160\n")
+    print("73Boot from ra(0,0,0) at 0172150")
     sleep(.5)
+    print(":\n: ra(0,0,0)unix")
+    sleep(.5)
+    print("Boot: bootdev=02400 bootcsr=0172150")
+    sleep(.5)
+    print("total real memory       = 1024000")
+    sleep(.25)
+    print("total available memory  = 901068\n")
+    sleep(.25)
+
     print("AT&T UNIX System V Release 1.0 version 1.1")
     print("(Bell Labs internal USG UNIX 5.0 codebase. *Not for re-distribution.*)")
     print("Copyright (c) 1983 AT&T")
@@ -152,20 +175,29 @@ def unix_screen():
     print()
     sleep(.5)
     same_line_print("Password: ")
-    sleep(2)
+    sleep(1.5)
     print("\n")
     print("AT&T UNIX System V Release 1.0 version 1.1")
     print("Copyright (c) 1983 AT&T")
     print("All Rights Reserved")
     print("Last login: Thu Sep 10 01:50:13 on console")
+    sleep(.5)
+    print("/        :    Disk space 5.14 MB of 10 MB available (51.4%) ")
     sleep(1)
-    print("/        :    Disk space 1.14 MB of 10 MB available (1.14%) ")
     same_line_print("$ ")
-    sleep(2)
-    same_line_teletype("./sauengard.sh\n")
+    sleep(1.5)
+    same_line_teletype("cd /usr/games\n")
+    sleep(.5)
+    same_line_print("$ ")
+    sleep(1.5)
+    same_line_teletype("ls\n")
+    sleep(.25)
+    print(f"adventure\ncanyon\ndnd\nDND\ndungeon\nsauengard\nwumpus\n")
+    same_line_print("$ ")
+    sleep(1.5)
+    same_line_teletype("./sauengard\n")
     print("\n")
     sleep(2)
-
 
 
 def clacky_keyboard_short():

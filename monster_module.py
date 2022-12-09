@@ -1778,6 +1778,70 @@ class CultFanatic(Monster):
         self.is_discovered = False
 
 
+class Gargoyle(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 3
+        self.name = "Gargoyle"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 450
+        self.gold = random.randint(1, 5)  # self.level * 373 * round(random.uniform(1, 2))
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 15
+        self.dexterity = 11
+        self.constitution = 16
+        self.intelligence = 6
+        self.wisdom = 11
+        self.charisma = 7
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 1
+        self.dot_turns = 1
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = True
+        self.difficulty_class = 2
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 2
+        self.hit_dice = 6  #
+        self.number_of_hd = 1
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = 52
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 15
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 3  # attack bonus
+        self.attack_1_phrase = "It strikes with its ravenous jaws.."
+        self.attack_2 = 3
+        self.attack_2_phrase = "It strikes with a horrible claw.."
+        self.attack_3 = 3
+        self.attack_3_phrase = "It swings its spiked tail with surprising, fluid speed."
+        self.attack_4 = 5
+        self.attack_4_phrase = "With blinding speed, it strikes with both terrible claws.."
+        self.attack_5 = 6
+        self.attack_5_phrase = "In a flurry of movement, it strikes with teeth and claws in deadly combination! "
+        self.introduction = f"You see a grotesque, fiendish-looking statue in the form of a winged beast. " \
+                            f"Suddenly, it begins to move!\n" \
+                            f"You have encountered a Gargoyle! It breaks from its suspended pose and approaches you."
+        self.paralyze_phrase = ""
+        self.paralyze_free_attack_phrase = ""
+        self.is_discovered = False
+
+
 class Ghoul(Monster):
 
     def __init__(self):
@@ -2390,6 +2454,67 @@ class WhiteDragonWyrmling(Monster):
                             f"as a meal!"
         self.is_discovered = False
 
+class BugbearCaptain(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 4
+        self.name = "Bugbear Captain"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 700
+        self.gold = random.randint(3, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 17
+        self.dexterity = 14
+        self.constitution = 14
+        self.intelligence = 11
+        self.wisdom = 12
+        self.charisma = 11
+        self.can_paralyze = False
+        self.paralyze_turns = 0
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 1
+        self.dot_turns = 1
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = False
+        self.difficulty_class = 4
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 4
+        self.hit_dice = 12
+        self.number_of_hd = 2
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = 65 + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 17
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 2  # attack bonus
+        self.attack_1_phrase = "It thrusts mightily forward with its javelin!.."
+        self.attack_2 = 4
+        self.attack_2_phrase = "It swings its morningstar with blinding speed!"
+        self.attack_3 = 4
+        self.attack_3_phrase = "It swings its morningstar with blinding speed!"
+        self.attack_4 = 5
+        self.attack_4_phrase = "It roars and swings its morningstar with murderous rage!"
+        self.attack_5 = 6
+        self.attack_5_phrase = "It raises its morningstar overhead with both hands for a mighty blow.."
+        self.introduction = f"You have encountered a Bugbear Captain; A battle-proven and fierce " \
+                            f"enemy, driven by its\nhatred for humankind.  It stands, with weapons at the ready," \
+                            f"releasing a deep, slow snarl..."
+        self.is_discovered = False
+
 
 class Ogre(Monster):
 
@@ -2661,8 +2786,8 @@ class WickedQueenJannbrielle(Monster):
 monster_dict = {
     1: [Quasit, Kobold, Cultist, Goblin, WingedKobold],
     2: [Skeleton, Shadow, Drow, Troglodyte, Orc, Zombie, Ghoul],
-    3: [Specter, Bugbear, CultFanatic, HalfOgre],
-    4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain, Harpy],
+    3: [Specter, Bugbear, CultFanatic, HalfOgre, Gargoyle],
+    4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain, Harpy, BugbearCaptain],
     5: [Ogre, ZombieOgre],
     6: [Troll]
 }
@@ -2670,7 +2795,8 @@ monster_dict = {
 undead_monster_dict = {
     1: [Skeleton],
     2: [Shadow, Zombie, Ghoul],
-    3: [Specter]
+    3: [Specter],
+    5: [ZombieOgre]
 }
 # boss lists
 undead_prophet_list = [ZombieProphet(), SkeletalProphet()]

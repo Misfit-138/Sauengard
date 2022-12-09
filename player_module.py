@@ -222,7 +222,6 @@ def random_floppy_rw_sound():
 def loading_screen():
     cls()
     random_floppy_rw_sound()
-    # floppy_rw2()
     same_line_print(f"\nLOADING.")
     dot_dot_dot(20)
 
@@ -603,7 +602,6 @@ def game_start():
             load_a_character = player_name + ".sav"
             p = Path(__file__).with_name(load_a_character)
             random_floppy_rw_sound()
-            # floppy_rw2()
             sleep(2)
             if p.is_file():
                 with p.open('rb') as saved_player:
@@ -1683,7 +1681,6 @@ class Player:
         sleep(.5)
         if are_you_sure():
             random_floppy_rw_sound()
-            # floppy_rw2()
             sleep(3)
             cls()
             self.in_town = False
@@ -1709,7 +1706,6 @@ class Player:
 
         same_line_print(f"Saving {self.name}")
         random_floppy_rw_sound()
-        # floppy_rw2()
         dot_dot_dot(15)
         with p.open('wb') as character_filename:
             pickle.dump(self, character_filename)
@@ -2335,7 +2331,6 @@ class Player:
                  f"Another adventurer has fallen prey to the Sauengard Dungeon!")
         sleep(4.5)
         random_floppy_rw_sound()
-        # floppy_rw2()
         sleep(1)
         self.in_proximity_to_monster = False
         self.in_dungeon = False
@@ -8999,9 +8994,7 @@ class Player:
             else:
                 same_line_print("You make your descent.")
             random_floppy_rw_sound()
-            # floppy_rw2()
             dot_dot_dot(15)
-            # sleep(3)
             return 'e'
 
     def dungeon_navigation(self, dungeon_command):

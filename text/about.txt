@@ -27,5 +27,5 @@ Sauengard is similar to the Infocom games in its navigation, descriptions, and l
 Fans of retro computing will likely recognize some throwbacks and homages to these wonderful games from a bygone
 era of computing. I coded this mainly for myself and my cousin Bill, with whom I spent many late evenings playing
 on my Commodore 64, but it is my hope that you enjoy it as well. If you have a problem or suggestion, or if you are
-enjoying Sauengard, feel free to email me at:
+enjoying Sauengard, please feel free to email me at:
 pitsker@proton.me

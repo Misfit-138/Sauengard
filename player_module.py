@@ -339,7 +339,7 @@ def game_splash():
     while True:
         cls()
         print_txt_file('splash_art.txt')
-        print("                                  "
+        print("                                   "
               "W  E  L  C  O  M  E    T  O    S  A  U  E  N  G  A  R  D.\n")
         print(f"                                         "
               f"© Copyright 2022 by Jules Pitsker")

@@ -2855,7 +2855,7 @@ class WickedQueenJannbrielle(Monster):
 monster_dict = {
     1: [Quasit, Kobold, Cultist, Goblin, WingedKobold],
     2: [Skeleton, Shadow, Drow, Troglodyte, Orc, Zombie, Ghoul],
-    3: [Specter, Bugbear, CultFanatic, HalfOgre, Gargoyle],
+    3: [Specter, Bugbear, CultFanatic, HalfOgre, Gargoyle, Doppelganger],
     4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain, Harpy, BugbearCaptain],
     5: [Ogre, ZombieOgre],
     6: [Troll]

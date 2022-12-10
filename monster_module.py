@@ -2037,7 +2037,7 @@ class Doppelganger(Monster):
 
     def __init__(self):
         super().__init__()
-        forms = ["a silvery-haired, white-bearded fiend with spectacles wearing a slick green coat and heavy boots",
+        forms = ["a silvery-haired, white-bearded fiend with spectacles wearing a slick, green coat and heavy boots",
                  "a black-bearded, silvery-haired, spectacled and slovenly fiend in a filthy undergarment",
                  "an exact representation of you",
                  "a tall, spectacled, smelly and lanky man with a lizard hanging from his nose by its teeth",

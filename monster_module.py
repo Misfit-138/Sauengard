@@ -2037,9 +2037,13 @@ class Doppelganger(Monster):
 
     def __init__(self):
         super().__init__()
-        forms = ["a silvery-haired, white-bearded fiend with spectacles",
-                 "a black-bearded silvery-haired and slovenly fiend", "an exact representation of you",
-                 "a tall, spectacled, lanky man with a lizard biting his nose"]
+        forms = ["a silvery-haired, white-bearded fiend with spectacles wearing a slick green coat and heavy boots",
+                 "a black-bearded, silvery-haired, spectacled and slovenly fiend in a filthy undergarment",
+                 "an exact representation of you",
+                 "a tall, spectacled, smelly and lanky man with a lizard hanging from his nose by its teeth",
+                 "a mirror-image of you",
+                 "a silvery-haired, white-bearded fiend with spectacles wearing a dress coat",
+                 "an extremely short man with a gray wig, hat, and a long coat"]
         self.level = 3
         self.name = "Doppelganger"
         self.proper_name = "None"
@@ -2064,7 +2068,7 @@ class Doppelganger(Monster):
         self.dot_multiplier = 1
         self.dot_turns = 1
         self.undead = False
-        self.immunities = ["Charm"]
+        self.immunities = ["Charm", "Sleep"]
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
@@ -2072,8 +2076,8 @@ class Doppelganger(Monster):
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 3
-        self.hit_dice = 6
-        self.number_of_hd = 1
+        self.hit_dice = 8
+        self.number_of_hd = 2
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = 52
@@ -2085,15 +2089,15 @@ class Doppelganger(Monster):
         self.attack_1 = 4  # attack bonus
         self.attack_1_phrase = f"It polymorphs into the form of {random.choice(forms)}!!"
         self.attack_2 = 4
-        self.attack_2_phrase = f"It polymorphs into the form of {random.choice(forms)}!!"
+        self.attack_2_phrase = f"It shape-shifts into the form of {random.choice(forms)}!!"
         self.attack_3 = 4
-        self.attack_3_phrase = f"It polymorphs into the form of {random.choice(forms)}!!"
+        self.attack_3_phrase = f"It becomes {random.choice(forms)}!!"
         self.attack_4 = 4
-        self.attack_4_phrase = f"It polymorphs into the form of {random.choice(forms)}!!"
+        self.attack_4_phrase = f"It changes into {random.choice(forms)}!!"
         self.attack_5 = 4
-        self.attack_5_phrase = f"It polymorphs into the form of {random.choice(forms)}!!"
-        self.introduction = f"You have encountered a Doppelganger! Its dark silhouette begins to churn like a " \
-                            f"tempestuous body of water\nas soon as you look upon it.. "
+        self.attack_5_phrase = f"It morphs into {random.choice(forms)}!!"
+        self.introduction = f"You have encountered a Doppelganger! Its dark humanoid silhouette begins to " \
+                            f"churn like a tempestuous body of black water\nas soon as you look upon it.. "
         self.is_discovered = False
 
 

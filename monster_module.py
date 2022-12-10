@@ -1969,6 +1969,71 @@ class HalfOgre(Monster):
         self.is_discovered = False
 
 
+class Doppelganger(Monster):
+
+    def __init__(self):
+        super().__init__()
+        forms = ["a silvery-haired, white-bearded fiend with spectacles",
+                 "a black-bearded silvery-haired and slovenly fiend", "an exact representation of you",
+                 "a tall, spectacled, lanky man with a lizard biting his nose"]
+        self.level = 3
+        self.name = "Doppelganger"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 700
+        self.gold = random.randint(1, 5)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 11
+        self.dexterity = 18
+        self.constitution = 14
+        self.intelligence = 11
+        self.wisdom = 12
+        self.charisma = 14
+        self.can_paralyze = False
+        self.paralyze_turns = 0
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 1
+        self.dot_turns = 1
+        self.undead = False
+        self.immunities = ["Charm"]
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = False
+        self.difficulty_class = 3
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 3
+        self.hit_dice = 6
+        self.number_of_hd = 1
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = 52
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 14
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 4  # attack bonus
+        self.attack_1_phrase = f"It polymorphs into the form of {random.choice(forms)}!!"
+        self.attack_2 = 4
+        self.attack_2_phrase = f"It polymorphs into the form of {random.choice(forms)}!!"
+        self.attack_3 = 4
+        self.attack_3_phrase = f"It polymorphs into the form of {random.choice(forms)}!!"
+        self.attack_4 = 4
+        self.attack_4_phrase = f"It polymorphs into the form of {random.choice(forms)}!!"
+        self.attack_5 = 4
+        self.attack_5_phrase = f"It polymorphs into the form of {random.choice(forms)}!!"
+        self.introduction = f"You have encountered a Doppelganger! Its dark silhouette begins to churn like a " \
+                            f"tempestuous body of water\nas soon as you look upon it.. "
+        self.is_discovered = False
+
+
+
 class Specter(Monster):
 
     def __init__(self):

@@ -21,7 +21,7 @@ Commodore 64 and IBM PC, such as Infocom's Zork, Zork II, Zork III, Infidel, and
 which was based on an earlier game called 'DND', which was ported from an earlier game called 'dnd'.
 (According to a 'dnd' author, 'DND' was outright plagiarized. For more: http://www.armory.com/~dlp/dnd1.html)
 The monsters, atmosphere and combat systems are perhaps most similar to Telengard, (though a bit more sophisticated),
-but also draw from other fantasy games, like AD&D, and most affectionately, Milton Bradley's 1981 'Dark Tower'
+but also draw from other fantasy games, like AD&D, and perhaps most affectionately, Milton Bradley's 1981 'Dark Tower'
 electronic board game. (The name Sauengard is, of course, inspired by Telengard.)
 Sauengard is similar to the Infocom games in its navigation, descriptions, and low-key humor.
 Fans of retro computing will likely recognize some throwbacks and homages to these wonderful games from a bygone

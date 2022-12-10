@@ -73,10 +73,6 @@ def os_check():
         pc_powerup()
         sleep(5)
         floppy_insert_and_load()
-        # teletype(f"Operating System identifies as: Microsoft Windows\n"
-        #         f"For best gaming experience, please ensure terminal window is maximized.\n\n")
-        # sleep(1)
-        # pause()
         ibm_dos_screen()
         initial_loading_screen()
 
@@ -139,7 +135,7 @@ def unix_screen():
     user = random.choice(user_list)
     cls()
     print("digital PDP 11/23 PLUS")
-    sleep(1)
+    sleep(.5)
     cls()
     same_line_print("BOOT> ")
     sleep(1.5)
@@ -149,21 +145,21 @@ def unix_screen():
     sleep(.5)
     print(":\n: ra(0,0,0)unix")
     sleep(.5)
-    print("Boot: bootdev=02400 bootcsr=0172150")
+    print("Boot: bootdev=02400 bootcsr=0172150")  # I'm curious about what 'bootcsr' means.
     sleep(.5)
     print("total real memory       = 1024000")
     sleep(.25)
     print("total available memory  = 901068\n")
     sleep(.25)
     print("AT&T UNIX System V Release 1.0 version 1.1")
-    print("(Bell Labs internal USG UNIX 5.0 codebase. *Not for re-distribution.*)")
+    print("(Bell Labs internal USG UNIX 5.0 codebase. *Not for re-distribution*)")
     print("Copyright (c) 1983 AT&T")
     print("All Rights Reserved")
     sleep(1.5)
     same_line_print("The system is coming up.  ")
     sleep(1)
     same_line_print("Please wait. ")
-    spinner(500)
+    spinner(500)  # this is anachronistic, but I thought it looked cool, like openBSD or something. consider removing.
     # sleep(2)
     cls()
     same_line_print("Console Login: ")
@@ -344,7 +340,7 @@ def game_splash():
     while True:
         cls()
         print_txt_file('splash_art.txt')
-        print("                               "
+        print("                                  "
               "W  E  L  C  O  M  E    T  O    S  A  U  E  N  G  A  R  D.\n")
         print(f"                                         "
               f"© Copyright 2022 by Jules Pitsker")
@@ -2485,13 +2481,14 @@ class Player:
 
     def meta_monster_generator(self):
         # called from main loop
+        from monster_module import Doppelganger
         monster = None
 
         if self.encounter < 11:  # regular monster
             monster = self.regular_monster_generator()
         # put testing monster here:
-        #   from monster_module import Troll
-        #   monster = Troll()
+        #   from monster_module import Doppelganger
+            monster = Doppelganger()
 
         elif self.encounter == 100:  # final boss
             monster = self.wicked_queen_generator()

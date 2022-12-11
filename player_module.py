@@ -2476,14 +2476,13 @@ class Player:
 
     def meta_monster_generator(self):
         # called from main loop
-        # from monster_module import Doppelganger
         monster = None
 
         if self.encounter < 11:  # regular monster
             monster = self.regular_monster_generator()
         # put testing monster here:
-        #   from monster_module import Doppelganger
-        #    monster = Doppelganger()
+            # from monster_module import Doppelganger
+            # monster = Doppelganger()
 
         elif self.encounter == 100:  # final boss
             monster = self.wicked_queen_generator()

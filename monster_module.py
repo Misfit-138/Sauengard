@@ -90,7 +90,7 @@ class Monster:
         self.charisma = 0
         self.hit_points = 0
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -208,7 +208,7 @@ class Monster:
             hit_statement = ""
 
         monster_total = roll_d20 + self.dexterity_modifier + self.proficiency_bonus  # test out pro bonus
-        print(f"{self.name} Attack bonus: {attack_bonus}")
+        # print(f"{self.name} Attack bonus: {attack_bonus}")
         print(f"{self.name} Dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
         print(f"{self.name} Proficiency Bonus: {self.proficiency_bonus}")  # test out pro bonus
         print(f"{self.name} Total: {monster_total}")
@@ -555,7 +555,7 @@ class Monster:
             hit_statement = ""
 
         monster_total = roll_d20 + self.dexterity_modifier + self.proficiency_bonus  # test out pro bonus
-        print(f"{self.name} Attack bonus: {attack_bonus}")
+        # print(f"{self.name} Attack bonus: {attack_bonus}")
         print(f"{self.name} Dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
         print(f"{self.name} Proficiency Bonus: {self.proficiency_bonus}")  # test out pro bonus
         print(f"{self.name} Total: {monster_total}")
@@ -696,7 +696,7 @@ class Quasit(Monster):
         self.wisdom = random.randint(9, 10)
         self.charisma = random.randint(9, 11)
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -762,7 +762,7 @@ class Kobold(Monster):
         self.wisdom = random.randint(7, 8)
         self.charisma = random.randint(7, 8)
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -829,7 +829,7 @@ class Cultist(Monster):
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(9, 11)
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -894,7 +894,7 @@ class Goblin(Monster):
         self.wisdom = random.randint(7, 9)
         self.charisma = random.randint(7, 9)
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -958,7 +958,7 @@ class WingedKobold(Monster):
         self.wisdom = random.randint(6, 8)
         self.charisma = random.randint(6, 8)
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1195,7 +1195,7 @@ class Skeleton(Monster):
         self.wisdom = random.randint(7, 9)
         self.charisma = random.randint(5, 6)
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1262,7 +1262,7 @@ class ZombieProphet(Monster):
         self.wisdom = 13
         self.charisma = 10
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1325,7 +1325,7 @@ class SkeletonKing(Monster):
         self.wisdom = 12
         self.charisma = 10
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1389,7 +1389,7 @@ class SkeletalProphet(Monster):
         self.wisdom = 13
         self.charisma = 10
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1451,7 +1451,7 @@ class Drow(Monster):
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(12, 13)
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = True
         self.necrotic = True
         self.dot_multiplier = 1
@@ -1528,7 +1528,7 @@ class Zombie(Monster):
         self.wisdom = random.randint(6, 7)
         self.charisma = random.randint(5, 6)
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1591,7 +1591,7 @@ class Troglodyte(Monster):
         self.wisdom = random.randint(9, 11)
         self.charisma = random.randint(5, 7)
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1656,7 +1656,7 @@ class Orc(Monster):
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(9, 11)
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1931,7 +1931,7 @@ class Bugbear(Monster):
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(8, 10)
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -1993,7 +1993,7 @@ class HalfOgre(Monster):
         self.wisdom = random.randint(8, 10)
         self.charisma = random.randint(9, 11)
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -2061,16 +2061,16 @@ class Doppelganger(Monster):
         self.intelligence = 11
         self.wisdom = 12
         self.charisma = 14
-        self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.can_paralyze = True
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
         self.dot_turns = 1
         self.undead = False
-        self.immunities = ["Charm", "Sleep"]
-        self.vulnerabilities = []
-        self.resistances = []
+        self.immunities = ["Charm", "Sleep", "Web", "Phantasm"]
+        self.vulnerabilities = ["Scorch", "Fireball", "Firestorm", "Immolation"]
+        self.resistances = ["Hold Monster", "Banish"]
         self.quantum_energy = False
         self.difficulty_class = 3
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
@@ -2096,8 +2096,14 @@ class Doppelganger(Monster):
         self.attack_4_phrase = f"It changes into {random.choice(forms)}!!"
         self.attack_5 = 4
         self.attack_5_phrase = f"It morphs into {random.choice(forms)}!!"
-        self.introduction = f"You have encountered a Doppelganger! Its dark humanoid silhouette begins to " \
-                            f"churn like a tempestuous body of black water\nas soon as you look upon it.. "
+        self.introduction = f"You have encountered a Doppelganger! Your eyes see it as it truly is for just an " \
+                            f"instant,\nbefore its dark humanoid silhouette begins to " \
+                            f"churn like a tempestuous body of black water;\nTall, horrific, foul, and with inhuman " \
+                            f"eyes that smoulder with greedy hunger.\nIts flesh is covered in disease and its mouth " \
+                            f"is full of razor-sharp teeth.\nIt begins to smile in hideous delight."
+        self.paralyze_phrase = "It thrusts forward, clutching your arm within its iron grip!!"
+        self.paralyze_free_attack_phrase = "Completely petrified, you stand helpless as it slices at you with a " \
+                                           "horrid claw!!"
         self.is_discovered = False
 
 
@@ -2175,7 +2181,7 @@ class Specter(Monster):
         self.quantum_attack_5_phrase = "With muted malice, its arms elongate unnaturally, wildly entangling you in \n" \
                                        "a storm of wicked forces!"
         self.introduction = f"From out of nothingness, materializes a Specter....A vile, undead form created\n" \
-                            f"through a combination of wickedness, quantum manipulations, and a violent death.\n" \
+                            f"through a combination of wickedness, quantum manipulations, and its own death.\n" \
                             f"Its ghastly form resembles what it was in life, but its now dispossessed\n" \
                             f"identity has been completely erased and replaced with a simple motive and \n" \
                             f"purpose; A revulsion for the living and a hunger for their life-energy.."
@@ -2290,7 +2296,7 @@ class HobgoblinCaptain(Monster):
         self.wisdom = 10
         self.charisma = 13
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -2419,7 +2425,7 @@ class GreenDragonWyrmling(Monster):
         self.wisdom = 11
         self.charisma = 13
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = True
         self.necrotic = False
         self.dot_multiplier = dice_roll(1, 6)
@@ -2484,7 +2490,7 @@ class WhiteDragonWyrmling(Monster):
         self.wisdom = random.randint(10, 11)
         self.charisma = random.randint(10, 11)
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -2545,7 +2551,7 @@ class BugbearCaptain(Monster):
         self.wisdom = 12
         self.charisma = 11
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -2596,7 +2602,7 @@ class Ogre(Monster):
         self.his_her_its = "its"
         self.him_her_it = "it"
         self.a_an = "an"
-        self.experience_award = 450
+        self.experience_award = 550
         self.gold = random.randint(5, 12)
         self.weapon_bonus = 0
         self.armor = 0
@@ -2608,7 +2614,7 @@ class Ogre(Monster):
         self.wisdom = 7
         self.charisma = 7
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -2647,6 +2653,72 @@ class Ogre(Monster):
                             f"It approaches, standing some 10 feet tall and shaking the ground beneath you.."
         self.is_discovered = False
 
+class DarkDwarf(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 5
+        self.name = "Dark Dwarf"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.a_an = "a"
+        self.experience_award = 550
+        self.gold = random.randint(5, 12)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 14
+        self.dexterity = 11
+        self.constitution = 15
+        self.intelligence = 11
+        self.wisdom = 11
+        self.charisma = 9
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 1
+        self.dot_turns = 1
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = ["Charm", "Sleep"]
+        self.quantum_energy = False
+        self.difficulty_class = 1
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 1
+        self.hit_dice = 12
+        self.number_of_hd = 2
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = 70
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 16
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 4  # attack bonus
+        self.attack_1_phrase = "He raises his warpick.."
+        self.attack_2 = 4
+        self.attack_2_phrase = "He swings his warhammer with blinding speed!"
+        self.attack_3 = 4
+        self.attack_3_phrase = "He readies his javelin for a stout thrust."
+        self.attack_4 = 4
+        self.attack_4_phrase = "He bellows with malice and rage as he swings his greataxe!"
+        self.attack_5 = 6
+        self.attack_5_phrase = "He raises his greataxe overhead with both hands for a mighty blow.."
+        self.introduction = f"You have encountered a Dark Dwarf; A race of Dwarves who were cast out and forced " \
+                            f"to delve more deeply\ninto the subterranean realms, eventually embracing the darkness " \
+                            f"and shunning all outsiders.\nTheir shame turned to evil and their isolation to " \
+                            f"rage. They call themselves the Duergar, \nand though they still resemble their" \
+                            f" Dwarven cousins in stature, all else about them appears gray, evil and without light."
+        self.is_discovered = False
+
+
+
 
 class ZombieOgre(Monster):
 
@@ -2658,7 +2730,7 @@ class ZombieOgre(Monster):
         self.he_she_it = "it"
         self.his_her_its = "its"
         self.him_her_it = "it"
-        self.experience_award = 450
+        self.experience_award = 750
         self.gold = random.randint(5, 12)
         self.weapon_bonus = 0
         self.armor = 0
@@ -2670,7 +2742,7 @@ class ZombieOgre(Monster):
         self.wisdom = 6
         self.charisma = 5
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
@@ -2733,7 +2805,7 @@ class Troll(Monster):
         self.wisdom = 9
         self.charisma = 7
         self.can_paralyze = False
-        self.paralyze_turns = 0
+        self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 0

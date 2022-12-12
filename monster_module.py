@@ -210,7 +210,7 @@ class Monster:
         monster_total = roll_d20 + self.dexterity_modifier + self.proficiency_bonus  # test out pro bonus
         # print(f"{self.name} Attack bonus: {attack_bonus}")
         print(f"{self.name} Dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
-        print(f"{self.name} Proficiency Bonus: {self.proficiency_bonus}")  # test out pro bonus
+        print(f"{self.name} Proficiency Bonus: {self.proficiency_bonus}")  # testing out pro bonus
         print(f"{self.name} Total: {monster_total}")
         print(f"Your armor class: {player_1.armor_class}")
 
@@ -219,7 +219,7 @@ class Monster:
             damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus + self.weapon_bonus)
 
             if roll_d20 == 20 and damage_to_opponent < 1:
-                damage_to_opponent = 1  # a natural 20 must always hit - 5e rules
+                damage_to_opponent = 1  # a natural 20 always hits
 
             if damage_to_opponent > 0:  # # at this point the player is the opponent!
                 print(f"{attack_phrase}")
@@ -557,7 +557,7 @@ class Monster:
         monster_total = roll_d20 + self.dexterity_modifier + self.proficiency_bonus  # test out pro bonus
         # print(f"{self.name} Attack bonus: {attack_bonus}")
         print(f"{self.name} Dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
-        print(f"{self.name} Proficiency Bonus: {self.proficiency_bonus}")  # test out pro bonus
+        print(f"{self.name} Proficiency Bonus: {self.proficiency_bonus}")  # testing out pro bonus
         print(f"{self.name} Total: {monster_total}")
         print(f"{npc.name}'s armor class: {npc.armor_class}")
 

@@ -2565,8 +2565,8 @@ class BugbearCaptain(Monster):
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 4
-        self.hit_dice = 12
-        self.number_of_hd = 2
+        self.hit_dice = 10
+        self.number_of_hd = 3
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = 65 + self.constitution_modifier
@@ -2602,7 +2602,7 @@ class Ogre(Monster):
         self.his_her_its = "its"
         self.him_her_it = "it"
         self.a_an = "an"
-        self.experience_award = 550
+        self.experience_award = 650
         self.gold = random.randint(5, 12)
         self.weapon_bonus = 0
         self.armor = 0
@@ -2628,11 +2628,11 @@ class Ogre(Monster):
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
-        self.hit_dice = 12
-        self.number_of_hd = 2
+        self.hit_dice = 10
+        self.number_of_hd = 4
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.hit_points = (random.randint(28, 32)) + self.constitution_modifier
+        self.hit_points = (random.randint(58, 62)) + self.constitution_modifier
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 11
@@ -2653,6 +2653,69 @@ class Ogre(Monster):
                             f"It approaches, standing some 10 feet tall and shaking the ground beneath you.."
         self.is_discovered = False
 
+
+class Minotaur(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 5
+        self.name = "Minotaur"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.a_an = "an"
+        self.experience_award = 750
+        self.gold = random.randint(3, 11)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 18
+        self.dexterity = 11
+        self.constitution = 16
+        self.intelligence = 6
+        self.wisdom = 16
+        self.charisma = 9
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 1
+        self.dot_turns = 1
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = False
+        self.difficulty_class = 5
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 5
+        self.hit_dice = 10
+        self.number_of_hd = 4
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(70, 75)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 14
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 4  # attack bonus
+        self.attack_1_phrase = "It swings its greataxe with terrible power."
+        self.attack_2 = 4
+        self.attack_2_phrase = "It swings a heavy warhammer with awesome speed."
+        self.attack_3 = 4
+        self.attack_3_phrase = "It swings its greataxe."
+        self.attack_4 = 4
+        self.attack_4_phrase = "With a snort from its ringed nose, it raises its axe overhead for a mighty blow."
+        self.attack_5 = 6
+        self.attack_5_phrase = "It roars and swings its greataxe with murderous rage!"
+        self.introduction = f"You have encountered a Minotaur; a massive, improbable humanoid of incredible strength" \
+                            f"and stature.\nWith the head of a bull atop a towering frame, it roars with fearsome " \
+                            f"evil and stands to face you!"
+        self.is_discovered = False
+
 class DarkDwarf(Monster):
 
     def __init__(self):
@@ -2664,7 +2727,7 @@ class DarkDwarf(Monster):
         self.his_her_its = "his"
         self.him_her_it = "him"
         self.a_an = "a"
-        self.experience_award = 550
+        self.experience_award = 750
         self.gold = random.randint(5, 12)
         self.weapon_bonus = 0
         self.armor = 0
@@ -2690,8 +2753,8 @@ class DarkDwarf(Monster):
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
-        self.hit_dice = 12
-        self.number_of_hd = 2
+        self.hit_dice = 10
+        self.number_of_hd = 4
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = 70
@@ -2718,6 +2781,67 @@ class DarkDwarf(Monster):
         self.is_discovered = False
 
 
+class Mummy(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 5
+        self.name = "Mummy"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.a_an = "a"
+        self.experience_award = 700
+        self.gold = random.randint(5, 12)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 16
+        self.dexterity = 8
+        self.constitution = 15
+        self.intelligence = 6
+        self.wisdom = 10
+        self.charisma = 12
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = True
+        self.dot_multiplier = dice_roll(2, 3)
+        self.dot_turns = 5
+        self.undead = True
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = ["Web", "Banish"]
+        self.quantum_energy = False
+        self.difficulty_class = 5
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 5
+        self.hit_dice = 10
+        self.number_of_hd = 4
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = 70
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 11
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 4  # attack bonus
+        self.attack_1_phrase = "It gropes you in unnatural evil."
+        self.attack_2 = 4
+        self.attack_2_phrase = "It swings its dry limbs with unexpected speed."
+        self.attack_3 = 4
+        self.attack_3_phrase = "It thrusts a rotting fist toward you with great speed."
+        self.attack_4 = 4
+        self.attack_4_phrase = "It raises both rotting arms overhead to strike."
+        self.attack_5 = 6
+        self.attack_5_phrase = "It strikes with both dry, bony fists."
+        self.introduction = f"Deadly and yet undead; You have encountered a Mummy. Still wrapped in bandages and " \
+                            f"lurching slowly but unwaveringly\ntowards you, it stands before you in a field of " \
+                            f"crackling Quantum energy."
+        self.is_discovered = False
 
 
 class ZombieOgre(Monster):
@@ -2756,8 +2880,8 @@ class ZombieOgre(Monster):
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
-        self.hit_dice = 12
-        self.number_of_hd = 2
+        self.hit_dice = 10
+        self.number_of_hd = 3
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(80, 84)) + self.constitution_modifier
@@ -2819,8 +2943,8 @@ class Troll(Monster):
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
-        self.hit_dice = 10
-        self.number_of_hd = 2
+        self.hit_dice = 12
+        self.number_of_hd = 4
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(80, 85)) + self.constitution_modifier
@@ -2841,6 +2965,68 @@ class Troll(Monster):
         self.attack_5_phrase = "It assaults you with both its claws and horrid teeth!"
         self.introduction = f"You have encountered a Troll; A giant lizard-like humanoid of immense stature. " \
                             f"An insatiable, vile and stout creature,\nit slurps, snorts and approaches you fearlessly."
+        self.is_discovered = False
+
+
+class HillGiant(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 6
+        self.name = "Hill Giant"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 2000
+        self.gold = random.randint(2, 12)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 21
+        self.dexterity = 8
+        self.constitution = 19
+        self.intelligence = 5
+        self.wisdom = 9
+        self.charisma = 6
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 0
+        self.dot_turns = 0
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = False
+        self.difficulty_class = 6
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 6
+        self.hit_dice = 12
+        self.number_of_hd = 4
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(100, 105)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 13
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 5  # attack bonus
+        self.attack_1_phrase = "It thrusts forward with club in hand, swinging wildly."
+        self.attack_2 = 6
+        self.attack_2_phrase = "It strikes at you with great speed and strength. "
+        self.attack_3 = 7
+        self.attack_3_phrase = "It raises its fists overhead to strike.."
+        self.attack_4 = 8
+        self.attack_4_phrase = "It swings the club with dizzying power!"
+        self.attack_5 = 10
+        self.attack_5_phrase = "It reaches for you with its massive, crushing hands!"
+        self.introduction = f"You have encountered a Hill Giant; A monstrous humanoid of immense size and miniscule " \
+                            f"intellect. Holding a twisted tree in its hand\nwhich serves as a club, it shakes the " \
+                            f"ground beneath your feet in its approach."
         self.is_discovered = False
 
 
@@ -2869,19 +3055,19 @@ class WickedQueenJannbrielle(Monster):
         self.paralyze_turns = 2
         self.can_poison = True
         self.necrotic = True
-        self.dot_multiplier = dice_roll(1, 6)
+        self.dot_multiplier = dice_roll(4, 8)
         self.dot_turns = 5
         self.undead = True
         self.immunities = ["All"]  # ["Turn Undead", "Web", "Hold Monster", "Banish"]
-        self.vulnerabilities = ["Fire Storm"]
-        self.resistances = ["All"]
+        self.vulnerabilities = []
+        self.resistances = []
         self.quantum_energy = True
         self.difficulty_class = 10
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 20
         self.hit_dice = 10
-        self.number_of_hd = 2
+        self.number_of_hd = 3
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = 1750  # dice_roll(35, 20) + 30
@@ -2929,8 +3115,8 @@ monster_dict = {
     2: [Skeleton, Shadow, Drow, Troglodyte, Orc, Zombie, Ghoul],
     3: [Specter, Bugbear, CultFanatic, HalfOgre, Gargoyle, Doppelganger],
     4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain, Harpy, BugbearCaptain],
-    5: [Ogre, ZombieOgre],
-    6: [Troll]
+    5: [Ogre, ZombieOgre, DarkDwarf, Minotaur, Mummy],
+    6: [Troll, HillGiant]
 }
 # undead monsters:
 undead_monster_dict = {

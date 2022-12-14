@@ -1000,6 +1000,67 @@ class WingedKobold(Monster):
     # "Winged Kobold"
 
 
+class Gnoll(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 2
+        self.name = "Gnoll"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 100
+        self.gold = random.randint(1, 7)  # self.level * 200 * round(random.uniform(1, 2))
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 14
+        self.dexterity = 12
+        self.constitution = random.randint(9, 11)
+        self.intelligence = 6
+        self.wisdom = 10
+        self.charisma = 7
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 1
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = False
+        self.difficulty_class = 2
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 2
+        self.hit_dice = 8
+        self.number_of_hd = 1
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = self.level * (random.randint(18, 21)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 15
+        self.multi_attack = False
+        self.lesser_multi_attack = True
+        self.attack_1 = 0  # attack bonus
+        self.attack_1_phrase = "It thrusts forward, jaws gaping.."
+        self.attack_2 = 2
+        self.attack_2_phrase = "It pounces, ready to bite!"
+        self.attack_3 = 2
+        self.attack_3_phrase = "It strikes with gnarled and hairy claws.."
+        self.attack_4 = 3
+        self.attack_4_phrase = "It grabs a jagged dagger from its belt and strikes.."
+        self.attack_5 = 3
+        self.attack_5_phrase = "It strikes forward with its bloodied spear!"
+        self.introduction = f"You have encountered a {self.name}. A wild, unthinking unnatural humanoid driven\n" \
+                            f"by basic instincts of necessity. Like its Kobold cousins, it lurks about, in search\n" \
+                            f"of food and supplies which can be procured by any means.."
+        self.is_discovered = False
+
+
 class Shadow(Monster):
 
     def __init__(self):
@@ -1815,7 +1876,7 @@ class Gargoyle(Monster):
         self.damage = 0
         self.challenge_rating = 2
         self.hit_dice = 6  #
-        self.number_of_hd = 1
+        self.number_of_hd = 2
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = 52
@@ -2629,7 +2690,7 @@ class Ogre(Monster):
         self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 10
-        self.number_of_hd = 4
+        self.number_of_hd = 3
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(58, 62)) + self.constitution_modifier
@@ -2692,7 +2753,7 @@ class Minotaur(Monster):
         self.damage = 0
         self.challenge_rating = 5
         self.hit_dice = 10
-        self.number_of_hd = 4
+        self.number_of_hd = 3
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(70, 75)) + self.constitution_modifier
@@ -2754,7 +2815,7 @@ class DarkDwarf(Monster):
         self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 10
-        self.number_of_hd = 4
+        self.number_of_hd = 3
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = 70
@@ -2818,8 +2879,8 @@ class Mummy(Monster):
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 5
-        self.hit_dice = 10
-        self.number_of_hd = 4
+        self.hit_dice = 8
+        self.number_of_hd = 3
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = 70
@@ -2880,7 +2941,7 @@ class ZombieOgre(Monster):
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
-        self.hit_dice = 10
+        self.hit_dice = 8
         self.number_of_hd = 3
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
@@ -2943,8 +3004,8 @@ class Troll(Monster):
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
-        self.hit_dice = 12
-        self.number_of_hd = 4
+        self.hit_dice = 10
+        self.number_of_hd = 3
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(80, 85)) + self.constitution_modifier
@@ -3004,8 +3065,8 @@ class HillGiant(Monster):
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 6
-        self.hit_dice = 12
-        self.number_of_hd = 4
+        self.hit_dice = 10
+        self.number_of_hd = 3
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(100, 105)) + self.constitution_modifier
@@ -3027,6 +3088,68 @@ class HillGiant(Monster):
         self.introduction = f"You have encountered a Hill Giant; A monstrous humanoid of immense size and miniscule " \
                             f"intellect. Holding a twisted tree in its hand\nwhich serves as a club, it shakes the " \
                             f"ground beneath your feet in its approach."
+        self.is_discovered = False
+
+
+class Cyclops(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 6
+        self.name = "Cyclops"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 2300
+        self.gold = random.randint(2, 12)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 22
+        self.dexterity = 1
+        self.constitution = 20
+        self.intelligence = 8
+        self.wisdom = 6
+        self.charisma = 10
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 0
+        self.dot_turns = 0
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = False
+        self.difficulty_class = 6
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 6
+        self.hit_dice = 10
+        self.number_of_hd = 3
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(100, 105)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 13
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 5  # attack bonus
+        self.attack_1_phrase = "The Cyclops lifts a rock to hurl at you."
+        self.attack_2 = 6
+        self.attack_2_phrase = "It grabs for you, attemping to crush your tiny frame! "
+        self.attack_3 = 7
+        self.attack_3_phrase = "It clenches a fist and swings its gargantuan left arm.."
+        self.attack_4 = 8
+        self.attack_4_phrase = "It raises its greatclub overheard to strike you."
+        self.attack_5 = 10
+        self.attack_5_phrase = "It reaches for you with its massive, crushing hands!"
+        self.introduction = f"You have encountered a Cyclops; A one-eyed giant of fear-inspiring size and strength " \
+                            f"who languidly wanders the underground realms.\nIt approaches you with ground-shaking " \
+                            f"power and mass."
         self.is_discovered = False
 
 
@@ -3112,7 +3235,7 @@ class WickedQueenJannbrielle(Monster):
 # regular monsters:
 monster_dict = {
     1: [Quasit, Kobold, Cultist, Goblin, WingedKobold],
-    2: [Skeleton, Shadow, Drow, Troglodyte, Orc, Zombie, Ghoul],
+    2: [Skeleton, Gnoll, Shadow, Drow, Troglodyte, Orc, Zombie, Ghoul],
     3: [Specter, Bugbear, CultFanatic, HalfOgre, Gargoyle, Doppelganger],
     4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain, Harpy, BugbearCaptain],
     5: [Ogre, ZombieOgre, DarkDwarf, Minotaur, Mummy],

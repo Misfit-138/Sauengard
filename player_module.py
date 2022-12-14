@@ -1550,7 +1550,7 @@ class Player:
         self.encounter = 0
         self.experience = 0
         self.base_dc = 8
-        self.gold = 10000000000000000
+        self.gold = 0
         self.wielded_weapon = ShortSword()
         self.armor = PaddedArmor()
         self.shield = NoShield()

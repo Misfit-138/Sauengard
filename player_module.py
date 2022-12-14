@@ -2986,7 +2986,7 @@ class Player:
             return True  # player IS dead
 
     def initiative(self, monster):
-        # called from main loop after encountering monster
+        # called from main loop after encountering monster.
         self.hud()
         if self.level > 6:
             player_initiative = dice_roll(1, 20) + self.dexterity_modifier + self.proficiency_bonus

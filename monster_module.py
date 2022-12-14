@@ -3239,7 +3239,7 @@ monster_dict = {
     3: [Specter, Bugbear, CultFanatic, HalfOgre, Gargoyle, Doppelganger],
     4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain, Harpy, BugbearCaptain],
     5: [Ogre, ZombieOgre, DarkDwarf, Minotaur, Mummy],
-    6: [Troll, HillGiant]
+    6: [Troll, HillGiant, Cyclops]
 }
 # undead monsters:
 undead_monster_dict = {

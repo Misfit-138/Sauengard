@@ -137,7 +137,6 @@ class Monster:
         self.paralyze_phrase = ""
         self.paralyze_free_attack_phrase = ""
         self.poison_phrase = ""
-        self.is_discovered = False
 
     def reduce_health(self, damage):
         self.hit_points -= damage
@@ -735,9 +734,6 @@ class Quasit(Monster):
                             f"with a continual twitching. Its long, serpentine tail wags with its sinews and scales\n" \
                             f"as it lets out a high pitched, fiendish and wretched cry. The air around it " \
                             f"becomes hazy.."
-        self.is_discovered = False
-
-    # name = "Quasit"
 
 
 class Kobold(Monster):
@@ -802,9 +798,6 @@ class Kobold(Monster):
                             f"it was stolen from an unwary adventurer. Its tail stands up as it retrieves a dagger\n" \
                             f"from a brass scabbard, twirling it deftly between scaled, sinewy fingers. It looks\n" \
                             f"you over for items to rid you of!"
-        self.is_discovered = False
-
-    # name = "Kobold"
 
 
 class Cultist(Monster):
@@ -867,9 +860,6 @@ class Cultist(Monster):
                             f"symbols, and face hidden in the deep shadow of his cowl, you see his insane eyes\n" \
                             f"smoulder in the darkness. His loyalties long since revealed, he cries out in sworn\n" \
                             f"allegiance to some dark Quantum Manipulator..."
-        self.is_discovered = False
-
-    # name = "Cultist"
 
 
 class Goblin(Monster):
@@ -931,9 +921,6 @@ class Goblin(Monster):
                             f"wrinkles up as it sniffs the air around you. Its pointed ears twitch and then draw \n" \
                             f"straight up. Smiling wickedly with blackened teeth, it unsheathes a rusty, crooked\n" \
                             f"scimitar and faces you."
-        self.is_discovered = False
-
-    # name = "Goblin"
 
 
 class WingedKobold(Monster):
@@ -995,9 +982,6 @@ class WingedKobold(Monster):
         self.introduction = f"You have encountered a {self.name}. Standing three feet tall, with short ivory horns\n" \
                             f"and a frail body covered with mottled, brick-red scales, it grabs its dagger and\n" \
                             f"spreads its leathery, bat-like wings."
-        self.is_discovered = False
-
-    # "Winged Kobold"
 
 
 class Gnoll(Monster):
@@ -1039,7 +1023,7 @@ class Gnoll(Monster):
         self.number_of_hd = 1
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.hit_points = self.level * (random.randint(18, 21)) + self.constitution_modifier
+        self.hit_points = (random.randint(18, 21)) + self.constitution_modifier
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 15
@@ -1058,7 +1042,6 @@ class Gnoll(Monster):
         self.introduction = f"You have encountered a {self.name}. A wild, unthinking unnatural humanoid driven\n" \
                             f"by basic instincts of necessity. Like its Kobold cousins, it lurks about, in search\n" \
                             f"of food and supplies which can be procured by any means.."
-        self.is_discovered = False
 
 
 class Shadow(Monster):
@@ -1143,9 +1126,6 @@ class Shadow(Monster):
                                "feel your motor skills quivering.."
         self.paralyze_free_attack_phrase = "As you stand frozen and defenseless, the Shadow silently places\n" \
                                            "its hands upon you..a sickening visceral emptiness fills you!"
-        self.is_discovered = False
-
-    # name = "Shadow"
 
 
 class ShadowKing(Monster):
@@ -1231,7 +1211,6 @@ class ShadowKing(Monster):
         self.paralyze_phrase = "Rising menacingly and with both clawed, shadowy hands, he reaches out, and you\n" \
                                "feel your motor skills quivering.."
         self.paralyze_free_attack_phrase = "You feel your life force weakening as he drains you mercilessly!"
-        self.is_discovered = False
 
 
 class Skeleton(Monster):
@@ -1296,9 +1275,6 @@ class Skeleton(Monster):
                             f"\nA full-toothed grin forever emblazoned on its bony countenance, it shouts an\n" \
                             f"absent, yet echoing battle-cry at you from behind its slack, gaping jaw!\n" \
                             f"The air bristles with Quantum Energy.."
-        self.is_discovered = False
-
-    # name = "Skeleton"
 
 
 class ZombieProphet(Monster):
@@ -1361,7 +1337,6 @@ class ZombieProphet(Monster):
         self.introduction = f"The ancient prophet rises from the ground. The once beautiful and exquisite\n" \
                             f"garb now hangs off his rotten, worm-infested flesh in tatters and rags.\n" \
                             f"The air bristles with Quantum Energy.."
-        self.is_discovered = False
 
 
 class SkeletonKing(Monster):
@@ -1425,7 +1400,6 @@ class SkeletonKing(Monster):
                             f"clings wearily to his bony form as he raises sword and shield, taunting you to " \
                             f"attack!\n" \
                             f"The air bristles with Quantum Energy.."
-        self.is_discovered = False
 
 
 class SkeletalProphet(Monster):
@@ -1487,7 +1461,6 @@ class SkeletalProphet(Monster):
         self.introduction = f"The ancient prophet rises in skeletal form. His once spectacular raiment now\n" \
                             f"clings wearily to his bony form as he raises his sceptre and laughs wildly!\n" \
                             f"The air bristles with Quantum Energy.."
-        self.is_discovered = False
 
 
 class Drow(Monster):
@@ -1564,7 +1537,6 @@ class Drow(Monster):
                             f"elves, yet, dark, twisted and evil. Its chiseled, attractive face, and wiry,\n" \
                             f"athletic frame belie its true nature."
         self.poison_phrase = "It slashes at you with its poisonous blade!!"
-        self.is_discovered = False
 
 
 class Zombie(Monster):
@@ -1627,7 +1599,6 @@ class Zombie(Monster):
         self.introduction = f"From the ground rises a languishing zombie. Lurching with jerking, uneven gait\n" \
                             f"and befouled with the stench of putrefaction, it mindlessly approaches, deaf, mute\n" \
                             f"and blind- and yet somehow, consumed with murderous intent."
-        self.is_discovered = False
 
 
 class Troglodyte(Monster):
@@ -1689,9 +1660,6 @@ class Troglodyte(Monster):
         self.introduction = f"You have encountered a Troglodyte; a horrid reptilian humanoid. Short, with spindly\n" \
                             f"but muscular arms and squat legs and a long, slender tail which raises at the site\n" \
                             f"you, its eyes light up in malicious glee."
-        self.is_discovered = False
-
-    # "Troglodyte"
 
 
 class Orc(Monster):
@@ -1754,9 +1722,6 @@ class Orc(Monster):
         self.introduction = f"You have encountered a savage Orc. Stooping forward with its piggish face " \
                             f"and prominent teeth,\nit prepares to satisfy its bloodlust by slaying any " \
                             f"humanoids that stand against it.."
-        self.is_discovered = False
-
-    # name = "Orc"
 
 
 class CultFanatic(Monster):
@@ -1836,7 +1801,6 @@ class CultFanatic(Monster):
                                "the raised hand into a fist..."
         self.paralyze_free_attack_phrase = "Patiently and sadistically, he slices at you with his crooked dagger " \
                                            "as you helplessly watch!"
-        self.is_discovered = False
 
 
 class Gargoyle(Monster):
@@ -1900,7 +1864,6 @@ class Gargoyle(Monster):
                             f"You have encountered a Gargoyle! It breaks from its suspended pose and approaches you."
         self.paralyze_phrase = ""
         self.paralyze_free_attack_phrase = ""
-        self.is_discovered = False
 
 
 class Ghoul(Monster):
@@ -1964,10 +1927,8 @@ class Ghoul(Monster):
                             "it drops the skull and rises to its feet, hissing through razor-sharp teeth and\n" \
                             "working its jagged claws. Driven by an insatiable hunger for humanoid flesh,\n" \
                             "its bulbous black eyes grow impossibly wide as it draws in its serpentine tongue. "
-        self.is_discovered = False
         self.paralyze_phrase = "It lurches forward, grabbing your arm in its cold, sinewy and awful claws!"
         self.paralyze_free_attack_phrase = "As you stand helplessly frozen, it savagely gores you!"
-    # name = "Ghoul"
 
 
 class Bugbear(Monster):
@@ -2029,7 +1990,6 @@ class Bugbear(Monster):
         self.introduction = f"You have encountered a Bugbear; a hairy goblinoid born for battle and mayhem. " \
                             f"Equally deadly at hunting,\nraiding and melee, it stands before you, fearlessly " \
                             f"brandishing its weapons with a deep, slow snarl..."
-        self.is_discovered = False
 
 
 class HalfOgre(Monster):
@@ -2091,7 +2051,6 @@ class HalfOgre(Monster):
         self.introduction = f"You have encountered a Half-Ogre; a brutal, muscled monstrosity of primal rage." \
                             f"Neither human nor ogre,\nand equally shunned in both worlds, it lumbers " \
                             f"toward you, towering above and shaking the ground with great power.."
-        self.is_discovered = False
 
 
 class Doppelganger(Monster):
@@ -2165,7 +2124,6 @@ class Doppelganger(Monster):
         self.paralyze_phrase = "It thrusts forward, clutching your arm within its iron grip!!"
         self.paralyze_free_attack_phrase = "Completely petrified, you stand helpless as it slices at you with a " \
                                            "horrid claw!!"
-        self.is_discovered = False
 
 
 
@@ -2246,8 +2204,6 @@ class Specter(Monster):
                             f"Its ghastly form resembles what it was in life, but its now dispossessed\n" \
                             f"identity has been completely erased and replaced with a simple motive and \n" \
                             f"purpose; A revulsion for the living and a hunger for their life-energy.."
-        self.is_discovered = False
-        self.is_discovered = False
         self.paralyze_phrase = "It places a cold, yet immaterial hand upon you!!"
         self.paralyze_free_attack_phrase = "Completely helpless, you feel your strength failing as it unnaturally " \
                                            "drains you!!"
@@ -2330,7 +2286,6 @@ class SpecterKing(Monster):
                             f"royal greatness, but now his entire existence is a mere quantum-driven and\n" \
                             f"endless nightmare of madness, devoid of any humanity. Upon seeing you, he silently\n" \
                             f"approaches, his countenance twisted in insane thirst for your life-energy.."
-        self.is_discovered = False
         self.paralyze_phrase = "With unnatural speed and silent swiftness, it places a cold, immaterial hand upon you.."
         self.paralyze_free_attack_phrase = "You feel agony crawling deep within you as you stand helpless and still!!"
 
@@ -2395,7 +2350,6 @@ class HobgoblinCaptain(Monster):
                             f"his heavy armor and\nweaponry are polished and well-maintained. His yellow " \
                             f"teeth stretch into a surly grin behind his iron helm.\nNarrowing his eyes, " \
                             f"he approaches and stands before you unaffected and unafraid; ready for battle."
-        self.is_discovered = False
 
 
 class Harpy(Monster):
@@ -2459,7 +2413,6 @@ class Harpy(Monster):
                             f"Her grotesque face contorts behind a nest of matted hair which hangs in clumps\n" \
                             f"as she lets out an awful shriek..."
         self.poison_phrase = ""
-        self.is_discovered = False
         self.paralyze_phrase = "She begins to sing a most beautiful, harmonic melody that is hypnotically alluring.."
         self.paralyze_free_attack_phrase = "You stand frozen in place as she ferociously attacks!!"
 
@@ -2526,7 +2479,6 @@ class GreenDragonWyrmling(Monster):
                             f"\"Greetings, little one! It is most fortuitous to meet you..\"\n" \
                             f"You have very little time to ponder its greeting..."
         self.poison_phrase = "Wide-eyed and evil, it exhales a blast of putrid poison from its deepest evil innards!!"
-        self.is_discovered = False
 
 
 class WhiteDragonWyrmling(Monster):
@@ -2588,7 +2540,6 @@ class WhiteDragonWyrmling(Monster):
         self.introduction = f"You have encountered a White Dragon Wyrmling; a slow witted, evil, efficient hunter. " \
                             f"Confidently stepping forth,\nit roars viciously, undoubtedly preparing to have you " \
                             f"as a meal!"
-        self.is_discovered = False
 
 class BugbearCaptain(Monster):
 
@@ -2649,7 +2600,6 @@ class BugbearCaptain(Monster):
         self.introduction = f"You have encountered a Bugbear Captain; A battle-proven and fierce " \
                             f"enemy, driven by its\nhatred for humankind.  It stands, with weapons at the ready," \
                             f"releasing a deep, slow snarl..."
-        self.is_discovered = False
 
 
 class Ogre(Monster):
@@ -2712,7 +2662,6 @@ class Ogre(Monster):
         self.introduction = f"You have encountered an Ogre; a dim-witted, ugly, giant brute of solid muscle. " \
                             f"Its dull disinterest quickly\nchanges to alertness as soon as it spots you. " \
                             f"It approaches, standing some 10 feet tall and shaking the ground beneath you.."
-        self.is_discovered = False
 
 
 class Minotaur(Monster):
@@ -2775,7 +2724,7 @@ class Minotaur(Monster):
         self.introduction = f"You have encountered a Minotaur; a massive, improbable humanoid of incredible strength" \
                             f"and stature.\nWith the head of a bull atop a towering frame, it roars with fearsome " \
                             f"evil and stands to face you!"
-        self.is_discovered = False
+
 
 class DarkDwarf(Monster):
 
@@ -2839,7 +2788,6 @@ class DarkDwarf(Monster):
                             f"and shunning all outsiders.\nTheir shame turned to evil and their isolation to " \
                             f"rage. They call themselves the Duergar, \nand though they still resemble their" \
                             f" Dwarven cousins in stature, all else about them appears gray, evil and without light."
-        self.is_discovered = False
 
 
 class Mummy(Monster):
@@ -2902,7 +2850,8 @@ class Mummy(Monster):
         self.introduction = f"Deadly and yet undead; You have encountered a Mummy. Still wrapped in bandages and " \
                             f"lurching slowly but unwaveringly\ntowards you, it stands before you in a field of " \
                             f"crackling Quantum energy."
-        self.is_discovered = False
+        self.paralyze_phrase = "It latches onto your arm with an iron grip!"
+        self.paralyze_free_attack_phrase = "You stare in complete helplessness as it gores you mercilessly!"
 
 
 class ZombieOgre(Monster):
@@ -2932,7 +2881,7 @@ class ZombieOgre(Monster):
         self.necrotic = False
         self.dot_multiplier = 1
         self.dot_turns = 1
-        self.undead = False
+        self.undead = True
         self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
@@ -2965,7 +2914,6 @@ class ZombieOgre(Monster):
                             f"Devoid of life energy,\nand, through some evil Quantum Manipulation, its giant hulking " \
                             f"mass now exists in an indefinite,\nmindless quest of seeking out the living and " \
                             f"devouring them entirely!\nIts towering, undead form bristles with quantum weirdness.."
-        self.is_discovered = False
 
 
 class Troll(Monster):
@@ -3026,7 +2974,6 @@ class Troll(Monster):
         self.attack_5_phrase = "It assaults you with both its claws and horrid teeth!"
         self.introduction = f"You have encountered a Troll; A giant lizard-like humanoid of immense stature. " \
                             f"An insatiable, vile and stout creature,\nit slurps, snorts and approaches you fearlessly."
-        self.is_discovered = False
 
 
 class HillGiant(Monster):
@@ -3088,7 +3035,6 @@ class HillGiant(Monster):
         self.introduction = f"You have encountered a Hill Giant; A monstrous humanoid of immense size and miniscule " \
                             f"intellect. Holding a twisted tree in its hand\nwhich serves as a club, it shakes the " \
                             f"ground beneath your feet in its approach."
-        self.is_discovered = False
 
 
 class Cyclops(Monster):
@@ -3107,7 +3053,7 @@ class Cyclops(Monster):
         self.armor = 0
         self.shield = 0
         self.strength = 22
-        self.dexterity = 1
+        self.dexterity = 11
         self.constitution = 20
         self.intelligence = 8
         self.wisdom = 6
@@ -3150,7 +3096,133 @@ class Cyclops(Monster):
         self.introduction = f"You have encountered a Cyclops; A one-eyed giant of fear-inspiring size and strength " \
                             f"who languidly wanders the underground realms.\nIt approaches you with ground-shaking " \
                             f"power and mass."
-        self.is_discovered = False
+
+
+class MorbidRevenant(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 6
+        self.name = "Morbid Revenant"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 2300
+        self.gold = random.randint(1, 10)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 18
+        self.dexterity = 14
+        self.constitution = 18
+        self.intelligence = 13
+        self.wisdom = 16
+        self.charisma = 18
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 2
+        self.dot_turns = 5
+        self.undead = True
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = ["Turn Undead"]
+        self.quantum_energy = False
+        self.difficulty_class = 6
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 6
+        self.hit_dice = 10
+        self.number_of_hd = 3
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(120, 135)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 13
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 5  # attack bonus
+        self.attack_1_phrase = "It lunges at you with its dagger."
+        self.attack_2 = 6
+        self.attack_2_phrase = "With a wide swing, it slices at you with its dagger."
+        self.attack_3 = 7
+        self.attack_3_phrase = "Swiftly, it stabs you with its nasty dagger."
+        self.attack_4 = 8
+        self.attack_4_phrase = "It feints to the side, then, switching hands, it swings its dagger with deadly speed."
+        self.attack_5 = 10
+        self.attack_5_phrase = "With incredible speed, it juts forward, stabbing mercilessly."
+        self.introduction = f"You have encountered a Morbid Revenant; The unnatural, undead, quantum-infused remains " \
+                            f"of a human victim of an egregious injustice-\nforever searching for its killer. " \
+                            f"It seems to have found you first..."
+        self.paralyze_phrase = "Its white, lifeless eyes begin to burn with bright fury! You feel your motor skills " \
+                               "retreat as it gazes upon you.."
+        self.paralyze_free_attack_phrase = "Patiently and without remorse, it slices at you with misguided purpose " \
+                                           "and hate."
+
+
+class HobgoblinWarlord(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 6
+        self.name = "Hobgoblin Warlord"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 2300
+        self.gold = random.randint(1, 10)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 16
+        self.dexterity = 14
+        self.constitution = 16
+        self.intelligence = 14
+        self.wisdom = 11
+        self.charisma = 15
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 0
+        self.dot_turns = 0
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = False
+        self.difficulty_class = 6
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 6
+        self.hit_dice = 10
+        self.number_of_hd = 3
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(90, 105)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 20
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 5  # attack bonus
+        self.attack_1_phrase = "It swings its longsword with great power."
+        self.attack_2 = 6
+        self.attack_2_phrase = "It raises its longsword overhead for a chopping blow."
+        self.attack_3 = 7
+        self.attack_3_phrase = "It jumps to the side, turns, and thrusts its heavy javelin with fluid speed."
+        self.attack_4 = 8
+        self.attack_4_phrase = "It bashes you with its massive shield!"
+        self.attack_5 = 11
+        self.attack_5_phrase = "It swings its sword mightily, and then bashes with its heavy shield for a lethal " \
+                               "combination attack!"
+        self.introduction = f"You have encountered a Hobgoblin Warlord; A calculating, seasoned veteran, forged by " \
+                            f"countless wars and battles.\nIts thick, heavy armor covers every inch of vulnerable " \
+                            f"flesh. Only its eyes, smouldering in the shadows of a great helm, can be seen."
 
 
 class WickedQueenJannbrielle(Monster):
@@ -3225,10 +3297,10 @@ class WickedQueenJannbrielle(Monster):
         self.quantum_attack_5_phrase = "The queen releases Quantum Forces which wildly entangle\n" \
                                        "you in a maelstrom of malice!"
         self.introduction = f"\'I am your doom. Your life beckons to be taken!\', says the undead queen, plainly."
-        self.is_discovered = False
         self.poison_phrase = f"The queen attacks with her venomous fangs!"
         self.paralyze_phrase = f"The irresistible beauty of the undead queen begins to weaken you.."
-
+        self.paralyze_free_attack_phrase = "Up close and personal, the wicked queen looks deeply into your eyes " \
+                                           "as she slowly and sadistically gores you with her terrible claws!"
 
 # monster dictionaries. keys correspond to difficulty/challenge level
 
@@ -3239,7 +3311,7 @@ monster_dict = {
     3: [Specter, Bugbear, CultFanatic, HalfOgre, Gargoyle, Doppelganger],
     4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain, Harpy, BugbearCaptain],
     5: [Ogre, ZombieOgre, DarkDwarf, Minotaur, Mummy],
-    6: [Troll, HillGiant, Cyclops]
+    6: [Troll, HillGiant, Cyclops, MorbidRevenant, HobgoblinWarlord]
 }
 # undead monsters:
 undead_monster_dict = {

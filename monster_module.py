@@ -1834,7 +1834,7 @@ class Gargoyle(Monster):
         self.immunities = []
         self.vulnerabilities = []
         self.resistances = []
-        self.quantum_energy = True
+        self.quantum_energy = False
         self.difficulty_class = 2
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
@@ -3225,6 +3225,152 @@ class HobgoblinWarlord(Monster):
                             f"flesh. Only its eyes, smouldering in the shadows of a great helm, can be seen."
 
 
+class Wyvern(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 7
+        self.name = "Wyvern"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 2800
+        self.gold = random.randint(1, 5)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 19
+        self.dexterity = 10
+        self.constitution = 16
+        self.intelligence = 5
+        self.wisdom = 12
+        self.charisma = 6
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = True
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(7, 6)
+        self.dot_turns = dice_roll(1, 2)
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = False
+        self.difficulty_class = 6
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 7
+        self.hit_dice = 10
+        self.number_of_hd = 3
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(105, 115)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 13
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 5  # attack bonus
+        self.attack_1_phrase = "It swings its deadly claws great power."
+        self.attack_2 = 7
+        self.attack_2_phrase = "It thrusts forward with ravenous jaws!"
+        self.attack_3 = 8
+        self.attack_3_phrase = "Flapping its great wings, it rears up and prepares to pounce!"
+        self.attack_4 = 9
+        self.attack_4_phrase = "It swings its claws in a swift combination."
+        self.attack_5 = 13
+        self.attack_5_phrase = "It bites, and then claws you in a horrible combination!"
+        self.introduction = f"You have encountered a Wyvern; A dragon-like beast with wide, fleshy wings and skin " \
+                            f"covered in jagged spikes.\nIt holds a long, deadly, twitching tail high in the air. " \
+                            f"You spot the lethal, poisonous barb at the tip, and steel yourself for\n" \
+                            f"the confrontation."
+        self.poison_phrase = f"The Wyvern attacks with its poisonous tail stinger!"
+
+
+class DrowManipulator(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 7
+        self.name = "Drow Manipulator"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.experience_award = 3000
+        self.gold = random.randint(1, 15)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 9
+        self.dexterity = 14
+        self.constitution = 10
+        self.intelligence = 17
+        self.wisdom = 13
+        self.charisma = 17
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = True
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(2, 6)
+        self.dot_turns = dice_roll(1, 3)
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = True
+        self.difficulty_class = 7
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)
+        self.damage = 0
+        self.challenge_rating = 7
+        self.hit_dice = 10
+        self.number_of_hd = 5
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = 45
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 15
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 8  # attack bonus
+        self.attack_1_phrase = "He raises a fist, and disappears in a puff of darkness, reappearing behind you and " \
+                               "striking with a nasty knife!"
+        self.attack_2 = 8
+        self.attack_2_phrase = "He phase-shifts into nothingness, appearing beside you and stabbing with deadly " \
+                               "quickness!"
+        self.attack_3 = 8
+        self.attack_3_phrase = "Time seems to slow, and you along with it, as he swings his dagger with impossible, " \
+                               "world-bending speed!"
+        self.attack_4 = 8
+        self.attack_4_phrase = "The room spins, disorienting you, as he stabs at you mercilessly!"
+        self.attack_5 = 12
+        self.attack_5_phrase = "He splits into 12 replicas of himself, all stabbing at you from every conceivable " \
+                               "angle!"
+        self.quantum_attack_1 = 12
+        self.quantum_attack_1_phrase = "Deadly tentacles of dark energies thrust toward you from his outstretched " \
+                                       "hand!"
+        self.quantum_attack_2 = 12
+        self.quantum_attack_2_phrase = "Dark weaponry is released from his palms in the form of weird Quantum " \
+                                       "flames!"
+        self.quantum_attack_3 = 12
+        self.quantum_attack_3_phrase = "He raises both hands, harnessing the quantum energies and\n" \
+                                       "releases bolts of searing lightning!"
+        self.quantum_attack_4 = 13
+        self.quantum_attack_4_phrase = "He steps forward, thrusting his hands toward you, as disturbing\n" \
+                                       "images and fearsome nightmarish creatures materialize in your mind!"
+        self.quantum_attack_5 = 13
+        self.quantum_attack_5_phrase = "He releases a frigid ice storm from his hands that envelopes you!"
+        self.introduction = f"You see a fuzzy silhouette of a humanoid approaching, as the air bristles with " \
+                            f"Quantum Weirdness.\n" \
+                            f"You have encountered a Drow Manipulator! It phases into form and approaches you."
+        self.paralyze_phrase = "The manipulator holds out a hand, and you fight the gripping Quantum Forces holding " \
+                               "you fast!"
+        self.paralyze_free_attack_phrase = "With perfect and pragmatic poise, he slices at you with his nasty knife!"
+        self.poison_phrase = f"He attacks with a poisonous dagger!"
+
+
 class WickedQueenJannbrielle(Monster):
 
     def __init__(self):
@@ -3245,12 +3391,12 @@ class WickedQueenJannbrielle(Monster):
         self.constitution = 29
         self.intelligence = 18
         self.wisdom = 18
-        self.charisma = 25
+        self.charisma = 30
         self.can_paralyze = True
         self.paralyze_turns = 2
         self.can_poison = True
         self.necrotic = True
-        self.dot_multiplier = dice_roll(4, 8)
+        self.dot_multiplier = dice_roll(6, 8)
         self.dot_turns = 5
         self.undead = True
         self.immunities = ["All"]  # ["Turn Undead", "Web", "Hold Monster", "Banish"]
@@ -3291,12 +3437,13 @@ class WickedQueenJannbrielle(Monster):
         self.quantum_attack_3_phrase = "Placing both hands together, she releases a black torrent of\n" \
                                        "quantum energy!"
         self.quantum_attack_4 = 20
-        self.quantum_attack_4_phrase = "From beautiful claw-like hands, she attacks with evil Quantum Forces\n" \
+        self.quantum_attack_4_phrase = "From beautiful hands that elongate into claws, she attacks with evil " \
+                                       "Quantum Forces\n" \
                                        "that form a dark mist of terror!"
         self.quantum_attack_5 = 25
         self.quantum_attack_5_phrase = "The queen releases Quantum Forces which wildly entangle\n" \
                                        "you in a maelstrom of malice!"
-        self.introduction = f"\'I am your doom. Your life beckons to be taken!\', says the undead queen, plainly."
+        self.introduction = f"\'I am your doom. Your life beckons to be taken!\', says the undead queen, with a hiss!"
         self.poison_phrase = f"The queen attacks with her venomous fangs!"
         self.paralyze_phrase = f"The irresistible beauty of the undead queen begins to weaken you.."
         self.paralyze_free_attack_phrase = "Up close and personal, the wicked queen looks deeply into your eyes " \
@@ -3311,7 +3458,8 @@ monster_dict = {
     3: [Specter, Bugbear, CultFanatic, HalfOgre, Gargoyle, Doppelganger],
     4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain, Harpy, BugbearCaptain],
     5: [Ogre, ZombieOgre, DarkDwarf, Minotaur, Mummy],
-    6: [Troll, HillGiant, Cyclops, MorbidRevenant, HobgoblinWarlord]
+    6: [Troll, HillGiant, Cyclops, MorbidRevenant, HobgoblinWarlord],
+    7: [Wyvern, DrowManipulator]
 }
 # undead monsters:
 undead_monster_dict = {

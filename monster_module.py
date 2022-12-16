@@ -3098,12 +3098,12 @@ class Cyclops(Monster):
                             f"power and mass."
 
 
-class MorbidRevenant(Monster):
+class MorbidAvenger(Monster):
 
     def __init__(self):
         super().__init__()
         self.level = 6
-        self.name = "Morbid Revenant"
+        self.name = "Morbid Avenger"
         self.proper_name = "None"
         self.he_she_it = "it"
         self.his_her_its = "its"
@@ -3123,8 +3123,8 @@ class MorbidRevenant(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = 2
-        self.dot_turns = 5
+        self.dot_multiplier = dice_roll(4, 6)
+        self.dot_turns = dice_roll(4, 6)
         self.undead = True
         self.immunities = []
         self.vulnerabilities = []
@@ -3154,9 +3154,9 @@ class MorbidRevenant(Monster):
         self.attack_4_phrase = "It feints to the side, then, switching hands, it swings its dagger with deadly speed."
         self.attack_5 = 10
         self.attack_5_phrase = "With incredible speed, it juts forward, stabbing mercilessly."
-        self.introduction = f"You have encountered a Morbid Revenant; The unnatural, undead, quantum-infused remains " \
-                            f"of a human victim of an egregious injustice-\nforever searching for its killer. " \
-                            f"It seems to have found you first..."
+        self.introduction = f"You have encountered a Morbid Avenger; The unnatural, undead, quantum-infused remains " \
+                            f"of a human victim of an egregious injustice-\nforever searching for its killer... " \
+                            f"It seems to have found you first!"
         self.paralyze_phrase = "Its white, lifeless eyes begin to burn with bright fury! You feel your motor skills " \
                                "retreat as it gazes upon you.."
         self.paralyze_free_attack_phrase = "Patiently and without remorse, it slices at you with misguided purpose " \
@@ -3371,6 +3371,72 @@ class DrowManipulator(Monster):
         self.poison_phrase = f"He attacks with a poisonous dagger!"
 
 
+class WrathfulDefender(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 7
+        self.name = "Wrathful Defender"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 3000
+        self.gold = random.randint(2, 14)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 18
+        self.dexterity = 16
+        self.constitution = 18
+        self.intelligence = 13
+        self.wisdom = 16
+        self.charisma = 18
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(5, 8)
+        self.dot_turns = dice_roll(3, 5)
+        self.undead = True
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = ["Turn Undead"]
+        self.quantum_energy = False
+        self.difficulty_class = 6
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 6
+        self.hit_dice = 12
+        self.number_of_hd = 4
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(135, 145)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 16
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 8  # attack bonus
+        self.attack_1_phrase = "It swings its greatsword with haste and hate."
+        self.attack_2 = 8
+        self.attack_2_phrase = "With a skillful feint, it strikes with its greatsword."
+        self.attack_3 = 8
+        self.attack_3_phrase = "Moving forward in a flurry of Quantum energy, it strikes with fiery power!"
+        self.attack_4 = 10
+        self.attack_4_phrase = "Thrusting toward you, it swings its great blade, crackling with white-hot lightning!"
+        self.attack_5 = 16
+        self.attack_5_phrase = "With great strength, it bashes with its shield and follows up with a deadly " \
+                               "sword strike!"
+        self.introduction = f"You have encountered a Wrathful Defender; An undead soldier who swore, ages ago, " \
+                            f"an oath to preserve and protect\nthe peace and prosperity of Sauengard. Now infused " \
+                            f"with Quantum Energy by some evil Manipulator, the Defender roams the dungeons,\n" \
+                            f"forever bound to a pointless mission: Attack the living."
+        self.paralyze_phrase = "It slams its shield on the ground at your feet, sending shockwaves through you! You" \
+                               "feel your body weakening..."
+        self.paralyze_free_attack_phrase = "In your pertrified state, it hacks at you mercilessly with evil malice!"
+
+
 class WickedQueenJannbrielle(Monster):
 
     def __init__(self):
@@ -3458,8 +3524,8 @@ monster_dict = {
     3: [Specter, Bugbear, CultFanatic, HalfOgre, Gargoyle, Doppelganger],
     4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain, Harpy, BugbearCaptain],
     5: [Ogre, ZombieOgre, DarkDwarf, Minotaur, Mummy],
-    6: [Troll, HillGiant, Cyclops, MorbidRevenant, HobgoblinWarlord],
-    7: [Wyvern, DrowManipulator]
+    6: [Troll, HillGiant, Cyclops, MorbidAvenger, HobgoblinWarlord],
+    7: [Wyvern, DrowManipulator, WrathfulDefender]
 }
 # undead monsters:
 undead_monster_dict = {

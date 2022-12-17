@@ -108,7 +108,7 @@ class Dungeon1(Dungeon):
         self.elevator_landing = (4, 3)
         self.pit = (7, 1)
         self.pit_landing = (1, 14)
-        self.elite_monster = (4, 10)
+        self.elite_monster = (4, 10)  # 4, 10
         self.legendary_monster = (99, 99)
         self.wicked_queen = (99, 99)
         self.exit = (19, 3)

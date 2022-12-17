@@ -3,29 +3,59 @@
 # This source code is licensed under the BSD-style license found in the
 # LICENSE.txt file in the root directory of this source tree.
 
-# Dark Sorrowful Cello "Soul's Departure" Royalty Free Music by Darren Curtis
-# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+"""Thanks to the following STACK OVERFLOW members:
+The Spider, Anentropic, The Thonnu and Optimal: for helping me get my footing during my first days of learning python
+Yarik0urWorld: for help with python list syntax
+Angus Nicolson: for self.__dict__ code snippet and explanation
+Liju and snakecharmerb: for explanation of hashable objects
+Pawel Pietraszko: for assistance with initializing new object instances every time player gets new item
+triplee: for assistance with Path syntax
 
-# Blacksmith theme: 'Viking Intro loop' by Alexander Nakarada
-# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+Thanks to @LearntoCodeGCSE for the Dungeon Crawler video upon which I based the 2D array navigation system.
 
-# Dungeon theme: 'Dragon Quest', 'Dragon Song', 'Medieval Metal', 'Cinematic Celtic Metal', by Alexander Nakarada
-# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+SOUND/MUSIC:
+Main theme: "Soul's Departure" Royalty Free Music by Darren Curtis
+Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
-# Chemist Theme: 'Might and Magic' by Alexander Nakarada
-# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+Blacksmith Theme: 'Viking Intro loop' by Alexander Nakarada
+Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
-# Town theme: 'Tavern Loop 1' by Alexander Nakarada
-# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+Dungeon Themes: 'Dragon Quest', 'Dragon Song', 'Medieval Metal', 'Cinematic Celtic Metal', by Alexander Nakarada
+Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
-# Boss battle theme: 'Dragon Castle' / Epic Orchestral Battle Music by Makai Symphony
-# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+Chemist Theme: 'Might and Magic' by Alexander Nakarada
+Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
-# Tavern Theme: 'The Medieval Banquet' by Silverman Sound is under a Creative Commons license (CC BY 3.0)
-# Music promoted by BreakingCopyright: http://bit.ly/Silvermansound_Medieval
+Fieldenberg Theme: 'Tavern Loop 1' by Alexander Nakarada
+Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
-# Pit theme 'Epic 39' by Jules Pitsker
-# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+Boss battle theme: 'Dragon Castle' / Epic Orchestral Battle Music by Makai Symphony
+Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
+Tavern Theme: 'The Medieval Banquet' by Silverman Sound is under a Creative Commons license (CC BY 3.0)
+Music promoted by BreakingCopyright: http://bit.ly/Silvermansound_Medieval
+
+Pit theme: 'Epic 39' by Jules Pitsker
+Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
+Hall of the Mountain King by Kevin MacLeod http://incompetech.com
+Creative Commons Attribution License 4.0 International (CC BY 4.0)
+Free Download / Stream: https://bit.ly/hall-of-the-mountain-king
+Music promoted by Audio Library https://youtu.be/2RDX5sVEfs4
+PC Boot up sounds: Eirikr / Freesound.org
+Creative Commons Attribution License 3.0 (CC BY 3.0)
+
+Floppy Disk Insert Sound: Joseph Sardin (BigSoundBank.com)
+Creative Commons CC0 1.0 Universal (CC0 1.0)
+
+Floppy Disk Drive R/W Sounds: Dennis Johansson (MrAuralization / Freesound.org)
+Creative Commons Attribution License 3.0 (CC BY 3.0)
+
+Gong: juskiddink / Freesound.org
+Creative Commons Attribution License 3.0 (CC BY 3.0)
+
+Clacky Keyboard: Denis McDonald (denismcdonald / Freesound.org)
+Creative Commons Attribution License 3.0 (CC BY 3.0)"""
 
 # import collections
 import math
@@ -247,6 +277,7 @@ def are_you_sure():
 
 
 def spinner(number_of_spins):
+    # silly little function for a spinning line.
     spin_cycle = itertools.cycle(['-', '/', '|', '\\'])
 
     for i in range(number_of_spins):
@@ -410,7 +441,7 @@ def convert_list_to_string_with_and(list1):
 def pause():
     # for cross-platform compatibility, I have tried to make this as best I can.
     # MS Windows users will have a slight convenience in the ability to hit any key,
-    # whereas GNU/Linux users must hit ENTER
+    # whereas Posix/GNU/Linux users must hit ENTER
     if os.name == 'nt':
         os.system('pause')
 
@@ -675,7 +706,6 @@ def sound_player(sound_file):
         except FileNotFoundError:
             print(f"{p} not found.")
             pause()
-            # pass
 
 
 def sound_player_loop(sound_file):
@@ -697,7 +727,7 @@ def sound_player_loop(sound_file):
 
 
 def gong():
-    # notice the gong is not looped
+    # notice the gong is not looped!
     sound_player('gong.wav')
 
 
@@ -2480,58 +2510,40 @@ class Player:
 
         if self.encounter < 11:  # regular monster
             monster = self.regular_monster_generator()
-        # put testing monster here:
+            # put testing monster here:
             # from monster_module import Doppelganger
             # monster = Doppelganger()
+            return monster
 
         elif self.encounter == 100:  # final boss
             monster = self.wicked_queen_generator()
-            gong()
-            sleep(4)
-            boss_battle_theme()
-            pause()
-            self.hud()
 
         elif self.encounter == 99:  # level exit boss fight
             monster = self.exit_boss_generator()
-            gong()
-            sleep(4)
-            boss_battle_theme()
-            pause()
-            self.hud()
 
         elif self.encounter == 98:  # undead king
             monster = self.king_monster_generator()
-            gong()
-            sleep(4)
-            mountain_king_theme()
-            pause()
-            self.hud()
 
         elif self.encounter == 97:  # undead prophet
             monster = self.undead_prophet_generator()
-            gong()
-            sleep(4)
-            boss_battle_theme()
-            pause()
-            self.hud()
 
         elif self.encounter == 96:  # legendary monster
             monster = self.legendary_monster_generator()
-            gong()
-            sleep(4)
-            boss_battle_theme()
-            pause()
-            self.hud()
 
         elif self.encounter == 95:  # elite
             monster = self.elite_monster_generator()
-            gong()
-            sleep(4)
-            boss_battle_theme()
-            pause()
-            self.hud()
 
+        gong()
+        sleep(4)
+
+        if self.encounter == 98:
+            mountain_king_theme()
+
+        else:
+            boss_battle_theme()
+
+        pause()
+        self.hud()
         return monster
 
     def wicked_queen_generator(self):
@@ -2689,7 +2701,7 @@ class Player:
         exit_boss.level = self.level
         exit_boss.number_of_hd = self.level
         exit_boss.dot_multiplier = self.dungeon.level
-        exit_boss.experience_award = 350 * self.level
+        exit_boss.experience_award = 450 * self.level
         exit_boss.weapon_bonus = self.wielded_weapon.damage_bonus
 
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed

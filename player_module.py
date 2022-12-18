@@ -3019,7 +3019,7 @@ class Player:
         # called from main loop if player chooses to (F)ight
         strength_bonus = 1
         if self.potion_of_strength_effect:
-            strength_bonus = 1.33  # round(self.strength * .5)
+            strength_bonus = 1.33
         if self.quantum_strength_effect:
             strength_bonus = 2
         self.hud()

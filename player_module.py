@@ -7346,13 +7346,13 @@ class Player:
                       f"\"Don't be a stranger, now, love! Ye are always welcome!\"")
                 sleep(1.25)
                 pause()
-                # town_theme()
                 return
 
             else:
                 continue
 
     def recover_quantum_energy(self):
+        # called from fountain_event() and tavern()
         if self.quantum_units < self.maximum_quantum_units:
             self.quantum_units = self.maximum_quantum_units
             print(f"Your Quantum Energy is restored!")
@@ -7385,7 +7385,6 @@ class Player:
         else:
             print(f"You have no vials of antidote!")
             sleep(1)
-            # pause()
             return False  # False means you do NOT use a turn
 
     def drink_elixir(self):
@@ -7417,7 +7416,7 @@ class Player:
     def drink_healing_potion(self):
         self.hud()
         if self.potions_of_healing > 0:
-            # if healing_potion in self.pack['Healing']:
+
             if self.hit_points >= self.maximum_hit_points:
                 print(f"You are already at maximum health!")
                 sleep(1)
@@ -7444,6 +7443,7 @@ class Player:
             return False  # False means you don't waste a turn
 
     def duplicate_item(self, item_type, possible_duplicate):
+        # check if an item is a duplicate of an item in player's pack:
         duplicate_item_name_lst = []
         inv_dict = Counter(item for item in self.pack[item_type])
         # print(inv_dict)  # for testing
@@ -7533,8 +7533,8 @@ class Player:
             print(f"A Ring of Protection + {self.ring_of_prot.protect} ")
         print(f"On your belt, you are carrying:")
         print(f"A coil of rope")  # like indiana jones and his whip.
-        if self.town_portals > 0 or self.potions_of_healing > 0 or \
-                self.potions_of_strength > 0 or self.elixirs > 0 or self.antidotes > 0:
+        belt = [self.town_portals, self.potions_of_healing, self.potions_of_strength, self.elixirs, self.antidotes]
+        if sum(belt) > 0:
             if self.potions_of_strength > 0:
                 print(f"{self.potions_of_strength} Potions of Strength")
             if self.potions_of_healing > 0:
@@ -7553,12 +7553,12 @@ class Player:
         for each_item in item_type_lst:
             if len(self.pack[each_item]) > 0:
                 current_items.append(each_item)
-                self.item_type_inventory(each_item)  # call the item_type_inventory for each item in inv.
+                self.item_type_inventory(each_item)  # call item_type_inventory() for each item in inv.
                 # print(current_items)  # for testing
         if not len(current_items):
             print(f"Nothing but cobwebs..")
             pause()
-            return  # False  # don't know if this false is needed.
+            return
         else:
             pause()
             return
@@ -7604,7 +7604,7 @@ class Player:
                     return
                 elif replace_weapon == 'n':
                     if not self.duplicate_item(found_item.item_type,
-                                               found_item):  # found_item not in self.pack[found_item.item_type]:
+                                               found_item):
                         (self.pack[found_item.item_type]).append(found_item)
                         print(f"You place the {found_item.name} on your back.")
                     else:
@@ -7645,7 +7645,6 @@ class Player:
                 elif replace_armor == 'n':
                     print(f"You choose not to wear the {found_item.name}.")  # remove after testing
                     if not self.duplicate_item(found_item.item_type, found_item):
-                        # if found_item not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(found_item)
                         print(f"You place the {found_item.name} in your pack.")
 
@@ -7653,6 +7652,7 @@ class Player:
                         print(f"However, you cannot carry any more armor of this type. You leave it.")
                     pause()
                     return
+
                 elif replace_armor not in ("y", "n"):
                     continue
         else:
@@ -7854,7 +7854,7 @@ class Player:
         if self.encounter < 21:  # regular monster
             if possible_treasure_chest >= treasure_chest_difficulty_class:
                 self.treasure_chest()
-                return
+                return  # return after treasure chest for regular monster
         else:  # boss. function then continues to give regular loot after treasure chest
             if possible_treasure_chest >= treasure_chest_difficulty_class:
                 self.treasure_chest()
@@ -8325,6 +8325,7 @@ class Player:
             return
 
     def altar_event(self):
+        # called from event_logic()
         altar_discovery = f"level {self.dungeon.level} altar"
         if altar_discovery not in self.discovered_interactives:
             rndm_occurrence_lst = [undead_prophet_returns, self.increase_random_ability, self.decrease_random_ability,
@@ -8526,8 +8527,7 @@ class Player:
                 pause()
                 return
         elif sum(belt_item_types_to_lose) > 0:
-            # elif self.potions_of_strength > 0 or self.potions_of_healing > 0
-            # or self.town_portals > 0 or self.elixirs > 0:
+
             item_string = ""
             # Define list of attributes you are allowed to change
             self_dict = self.__dict__  # create variable as actual copy of player dict attribute

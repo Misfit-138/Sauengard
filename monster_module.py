@@ -3318,7 +3318,7 @@ class DrowManipulator(Monster):
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
-        self.resistances = []
+        self.resistances = ["All"]
         self.quantum_energy = True
         self.difficulty_class = 7
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)
@@ -3371,6 +3371,88 @@ class DrowManipulator(Monster):
         self.poison_phrase = f"He attacks with a poisonous dagger!"
 
 
+class MindFlayer(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 7
+        self.name = "Mind FLayer"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 3000
+        self.gold = random.randint(1, 15)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 11
+        self.dexterity = 12
+        self.constitution = 12
+        self.intelligence = 19
+        self.wisdom = 17
+        self.charisma = 17
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = True
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(2, 6)
+        self.dot_turns = dice_roll(1, 4)
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = ["All"]
+        self.quantum_energy = True
+        self.difficulty_class = 7
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)
+        self.damage = 0
+        self.challenge_rating = 7
+        self.hit_dice = 10
+        self.number_of_hd = 5
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = 71
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 15
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 10  # attack bonus
+        self.attack_1_phrase = "Its tentacles stretch out toward you with impossible speed!"
+        self.attack_2 = 11
+        self.attack_2_phrase = "Its tentacles shoot forth, wrapping around your leg!"
+        self.attack_3 = 12
+        self.attack_3_phrase = "Its tentacles stretch out and wrap around your arm!"
+        self.attack_4 = 13
+        self.attack_4_phrase = "Its tentacles dart toward you, wrapping around you and squeezing with terrible malice!!"
+        self.attack_5 = 14
+        self.attack_5_phrase = "Its tentacles shoot out and wrap around your neck! You gasp for air!"
+        self.quantum_attack_1 = 15
+        self.quantum_attack_1_phrase = "A blast of Quantum Energies hit you, creating mental anguish beyond any pain" \
+                                       "you have ever known!"
+        self.quantum_attack_2 = 15
+        self.quantum_attack_2_phrase = "Terrible, nightmarish visions plague your mind as it wickedly reaches out " \
+                                       "toward you with clawed fingers.."
+        self.quantum_attack_3 = 15
+        self.quantum_attack_3_phrase = "It rises up, levitating on a Quantum platform and releases a wall of " \
+                                       "Quantum Energy!"
+        self.quantum_attack_4 = 16
+        self.quantum_attack_4_phrase = "It reaches a claw-like hand over its head. Suddenly, you feel yourself being " \
+                                       "lifted off the ground....and dropped!\nThe ground rushes toward you!"
+        self.quantum_attack_5 = 18
+        self.quantum_attack_5_phrase = "It points a bony finger at your arm. You lose control of it! " \
+                                       "You stand, helplessly striking at yourself!"
+        self.introduction = f"You have encountered a Mind Flayer; A hideous, tyrannical humanoid with a head " \
+                            f"resembling an octopus.\nEndowed with evil Quantum insights and innate understanding, " \
+                            f"Mind Flayers tunnel through realities in search of slaves\nfor their twisted purposes." \
+                            f"Any who resist them are reduced to helpless, mindless servants through " \
+                            f"wicked manipulations.."
+        self.paralyze_phrase = "Its tentacles shoot out and wrap around your head! You feel your motor skills diminish!"
+        self.paralyze_free_attack_phrase = "It tears at your flesh with pure evil and precision!"
+        self.poison_phrase = f"Its tentacles wrap around you, as a protruding, poisonous stinger approaches " \
+                             f"your face!"
+
+
 class WrathfulDefender(Monster):
 
     def __init__(self):
@@ -3383,7 +3465,7 @@ class WrathfulDefender(Monster):
         self.him_her_it = "it"
         self.experience_award = 3000
         self.gold = random.randint(2, 14)
-        self.weapon_bonus = 0
+        self.weapon_bonus = 5
         self.armor = 0
         self.shield = 0
         self.strength = 18
@@ -3525,7 +3607,7 @@ monster_dict = {
     4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain, Harpy, BugbearCaptain],
     5: [Ogre, ZombieOgre, DarkDwarf, Minotaur, Mummy],
     6: [Troll, HillGiant, Cyclops, MorbidAvenger, HobgoblinWarlord],
-    7: [Wyvern, DrowManipulator, WrathfulDefender]
+    7: [Wyvern, DrowManipulator, WrathfulDefender, MindFlayer]
 }
 # undead monsters:
 undead_monster_dict = {

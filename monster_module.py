@@ -3493,7 +3493,7 @@ class WrathfulDefender(Monster):
         self.number_of_hd = 4
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.hit_points = (random.randint(135, 145)) + self.constitution_modifier
+        self.hit_points = (random.randint(125, 135)) + self.constitution_modifier
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 16
@@ -3516,7 +3516,74 @@ class WrathfulDefender(Monster):
                             f"forever bound to a pointless mission: Attack the living."
         self.paralyze_phrase = "It slams its shield on the ground at your feet, sending shockwaves through you! You" \
                                "feel your body weakening..."
-        self.paralyze_free_attack_phrase = "In your pertrified state, it hacks at you mercilessly with evil malice!"
+        self.paralyze_free_attack_phrase = "In your petrified state, it hacks at you mercilessly with evil malice!"
+
+
+class BoltThrower(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 7
+        self.name = "Bolt Thrower"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 3000
+        self.gold = random.randint(5, 25)
+        self.weapon_bonus = 5
+        self.armor = 0
+        self.shield = 0
+        self.strength = 18
+        self.dexterity = 16
+        self.constitution = 18
+        self.intelligence = 12
+        self.wisdom = 11
+        self.charisma = 11
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(5, 8)
+        self.dot_turns = dice_roll(3, 5)
+        self.undead = False
+        self.immunities = ["Sleep", "Web", "Lightning"]
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = False
+        self.difficulty_class = 6
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 6
+        self.hit_dice = 12
+        self.number_of_hd = 4
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(135, 145)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 16
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 8  # attack bonus
+        self.attack_1_phrase = "It swings an arcing greataxe with great power and precision."
+        self.attack_2 = 8
+        self.attack_2_phrase = "It strikes at you with its heavy, electrified warhammer."
+        self.attack_3 = 12
+        self.attack_3_phrase = "It strikes in combination; an electrified greataxe in its left hand, followed by " \
+                               "its warhammer!"
+        self.attack_4 = 16
+        self.attack_4_phrase = "It cracks its Quantum whip, and the powerful arcflash surges through your very bones!"
+        self.attack_5 = 20
+        self.attack_5_phrase = "It circles its Quantum whip menacingly as it suddenly shoots forth, with " \
+                               "great speed and precision. You feel the heat and power of its arcflash!"
+        self.introduction = f"You have encountered a Bolt Thrower; A powerful race of warlords possessing both " \
+                            f"impressive physical\nstrength as well as expansive Quantum abilities. " \
+                            f"With thick, armored skin and standing some 8 feet tall,\na flattened cranium," \
+                            f"immense, muscled appendages, and armed with a deadly arsenal\nof weapons including a " \
+                            f"whip endowed with electrified Quantum weirdness,\nit fearlessly approaches you."
+        self.paralyze_phrase = "It encircles you with its whip!"
+        self.paralyze_free_attack_phrase = "In your helplessness, it hammers you mercilessly!"
 
 
 class WickedQueenJannbrielle(Monster):
@@ -3607,7 +3674,7 @@ monster_dict = {
     4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain, Harpy, BugbearCaptain],
     5: [Ogre, ZombieOgre, DarkDwarf, Minotaur, Mummy],
     6: [Troll, HillGiant, Cyclops, MorbidAvenger, HobgoblinWarlord],
-    7: [Wyvern, DrowManipulator, WrathfulDefender, MindFlayer]
+    7: [Wyvern, DrowManipulator, WrathfulDefender, MindFlayer, BoltThrower]
 }
 # undead monsters:
 undead_monster_dict = {

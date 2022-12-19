@@ -1714,6 +1714,24 @@ class Player:
         else:
             return False
 
+    def end_game_auto_save(self):  # future placeholder, for after player defeats final boss
+        self.dungeon_key = 1
+        self.dungeon = dungeon_dict[self.dungeon_key]
+        (self.x, self.y) = self.dungeon.staircase
+        self.coordinates = (self.x, self.y)
+        self.previous_x = self.x
+        self.previous_y = self.y
+        # self.position = 0
+        save_a_character = self.name + ".sav"
+        p = Path(__file__).with_name(save_a_character)
+        same_line_print(f"Saving {self.name}")
+        random_floppy_rw_sound()
+        dot_dot_dot(15)
+        with p.open('wb') as character_filename:
+            pickle.dump(self, character_filename)
+            same_line_print(f"{self.name} saved.\n")
+            sleep(2)
+
     def save_character(self):
         save_a_character = self.name + ".sav"
         p = Path(__file__).with_name(save_a_character)

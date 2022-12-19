@@ -9,7 +9,7 @@ a computer since about 1983. Back then, machines generally shipped with a BASIC 
 coded with. Many years later, I read Edsger Dijkstra's somewhat famous quote: 'It is practically impossible to teach
 good programming style to students that have had prior exposure to BASIC; As potential programmers they are mentally
 mutilated beyond hope of regeneration.'
-I am sure that in my case, this is humorous due to the truth it conveys. This is my first attempt at Python, as well as
+I am sure that in my case, this is humorous because it's true. This is my first attempt at Python, as well as
 Object-Oriented-Programming concepts. If you are a programmer, I am sure you will be shaking your head at all of the
 inefficiency, redundancy and amateur choices I have made. However, I am quite content to have simply been able to
 accomplish something I never thought possible, to learn a little something along the way, and to have some fun.
@@ -18,9 +18,10 @@ the productive time of day, when ability, desire, and motivation converge.
 
 Sauengard is inspired by games from the early microcomputer era, specifically, games which I played on the
 Commodore 64 and IBM PC, such as Infocom's Zork, Zork II, Zork III and dungeon games like Telengard,
-which was based on an earlier game called 'DND', which was ported from an earlier game called 'dnd'.
-(According to a 'dnd' author, 'DND' was outright plagiarized. For more: http://www.armory.com/~dlp/dnd1.html)
-The dungeon atmosphere and combat systems are similar to Telengard, (though a bit more sophisticated),
+which was based on an earlier game called 'DND' (uppercase), which was ported from an earlier game called
+'dnd' (lowercase). (According to a 'dnd' author, 'DND' was outright plagiarized.
+For more: http://www.armory.com/~dlp/dnd1.html)
+The dungeon loot and combat systems are similar to Telengard, (though a bit more sophisticated),
 but also draw from other fantasy games, like Eye Of the Beholder, and perhaps most affectionately, Milton Bradley's
 1981 'Dark Tower' electronic board game. (The name Sauengard is, of course, inspired by Telengard.)
 Most of the monsters are inspired by the ubiquitous RPG varieties, some have been created from imagination,
@@ -29,7 +30,7 @@ original monsters from Telengard as possible.
 Sauengard uses a system derived from the ever-popular d20 mechanic and is similar to the Infocom games in its
 navigation, descriptions, and low-key humor. Fans of retro computing will likely recognize some throwbacks and homages
 to these wonderful games from a bygone era of computing. I have tried to combine elements from my memories of these
-games to create a text-driven adventure that captures some of the experience of early gaming.
+games to create a text-driven adventure that captures the experience of early computer gaming.
 I coded this mainly for myself and my cousin Bill, with whom I spent many late evenings playing
 on my Commodore 64, but it is my hope that you enjoy it as well. If you have a problem or suggestion, or if you are
 enjoying Sauengard, please feel free to email me at:

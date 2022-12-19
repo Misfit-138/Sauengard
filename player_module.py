@@ -3175,8 +3175,8 @@ class Player:
                     ally.wielded_weapon.to_hit_bonus >= monster_armor_class:
                 damage_roll = dice_roll(ally.level, ally.hit_dice)
                 damage_to_opponent = \
-                    math.ceil((
-                                      damage_roll + ally.strength_modifier + ally.wielded_weapon.damage_bonus) * ally.strength_bonus)
+                    math.ceil((damage_roll + ally.strength_modifier + ally.wielded_weapon.damage_bonus)
+                              * ally.strength_bonus)
                 print(f"{ally.name} attacks again for {damage_to_opponent} points of damage!")
                 pause()
                 self.hud()

@@ -57,7 +57,6 @@ Creative Commons Attribution License 3.0 (CC BY 3.0)
 Clacky Keyboard: Denis McDonald (denismcdonald / Freesound.org)
 Creative Commons Attribution License 3.0 (CC BY 3.0)"""
 
-# import collections
 import math
 import pickle
 import random
@@ -704,8 +703,9 @@ def sound_player(sound_file):
                 if sound.readable():
                     winsound.PlaySound(str(p), winsound.SND_FILENAME | winsound.SND_ASYNC)
         except FileNotFoundError:
-            print(f"{p} not found.")
-            pause()
+            # pass  # restore after testing
+            print(f"{p} not found.")  # remove after testing
+            pause()  # remove after testing
 
 
 def sound_player_loop(sound_file):
@@ -721,9 +721,9 @@ def sound_player_loop(sound_file):
                 if sound_loop.readable():
                     winsound.PlaySound(str(p), winsound.SND_FILENAME | winsound.SND_LOOP | winsound.SND_ASYNC)
         except FileNotFoundError:
-            print(f"{p} not found.")
-            pause()
-            # pass
+            # pass  # restore after testing
+            print(f"{p} not found.")  # remove after testing
+            pause()  # remove after testing
 
 
 def gong():
@@ -7634,7 +7634,7 @@ class Player:
                     continue
         else:
             print(f"Wielded_weapon.damage_bonus already >= self.level * 2 and/or, to-hit == 3!!!")  # rm after testing
-            pause()
+            pause()  # remove after testing
             return
 
     def found_armor_substitution(self, found_item):
@@ -7718,7 +7718,7 @@ class Player:
                     continue
         else:
             print(f"Wielded shield >= found item...")  # remove after testing
-            pause()
+            pause()  # remove after testing
             return
 
     def found_boots_substitution(self, found_item):
@@ -8438,9 +8438,8 @@ class Player:
             print(f"You sit on the throne...")
             # self.discovered_interactives.append(throne_discovery)  # uncomment to only allow 1 interaction
             sleep(1.5)
-            # self.regenerate()  # testing
             return rndm_occurrence()
-            # return "King Boss"
+
         elif throne_action == 'p':
             gems_pried = f"level {self.dungeon.level} gems pried from throne"
             if gems_pried not in self.discovered_interactives:

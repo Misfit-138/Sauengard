@@ -2598,7 +2598,7 @@ class BugbearCaptain(Monster):
         self.attack_5 = 6
         self.attack_5_phrase = "It raises its morningstar overhead with both hands for a mighty blow.."
         self.introduction = f"You have encountered a Bugbear Captain; A battle-proven and fierce " \
-                            f"enemy, driven by its\nhatred for humankind.  It stands, with weapons at the ready," \
+                            f"enemy, driven by its\nhatred for humankind.  It stands, with weapons at the ready, " \
                             f"releasing a deep, slow snarl..."
 
 
@@ -2721,7 +2721,7 @@ class Minotaur(Monster):
         self.attack_4_phrase = "With a snort from its ringed nose, it raises its axe overhead for a mighty blow."
         self.attack_5 = 6
         self.attack_5_phrase = "It roars and swings its greataxe with murderous rage!"
-        self.introduction = f"You have encountered a Minotaur; a massive, improbable humanoid of incredible strength" \
+        self.introduction = f"You have encountered a Minotaur; a massive, improbable humanoid of incredible strength " \
                             f"and stature.\nWith the head of a bull atop a towering frame, it roars with fearsome " \
                             f"evil and stands to face you!"
 

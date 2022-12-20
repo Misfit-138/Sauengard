@@ -230,6 +230,7 @@ while True:
                                 if battle_choice == "e":
                                     if player_1.evade(monster):
                                         player_1.in_proximity_to_monster = False  # get out of battle loop and prox loop
+                                        player_1.dungeon_description()  # beta works so far
                                         break
 
                                 elif battle_choice == 'h':

@@ -1782,9 +1782,21 @@ class Player:
         print(f"Hit points: {self.hit_points}/{self.maximum_hit_points}")
         print(f"Quantum units: {self.quantum_units}/{self.maximum_quantum_units}")
         print(f"Cloak: {self.cloak.name} (Stealth: {self.stealth})")
+
         if self.potions_of_strength > 0:
-            number_of_potions_of_strength = self.potions_of_strength
-            print(f"Strength Potions: {number_of_potions_of_strength}")
+            print(f"Potions of Giant Strength: {self.potions_of_strength}")
+        if self.potions_of_healing > 0:
+            print(f"Potions of Healing: {self.potions_of_healing}")
+        if self.town_portals > 0:
+            print(f"Town Portal Scrolls: {self.town_portals}")
+        if self.elixirs > 0:
+            print(f"Elixirs: {self.elixirs}")
+        if self.antidotes > 0:
+            print(f"Vials of Antidote: {self.antidotes}")
+        if self.ring_of_reg.name != "No Ring of Regeneration":
+            print(f"Ring of Regeneration: +{self.ring_of_reg.regenerate}")
+        if self.ring_of_prot.name != "No Ring of Protection":
+            print(f"Ring of Protection: +{self.ring_of_prot.protect}")
         if self.potion_of_strength_effect and self.potion_of_strength_uses > -1:
             print(f"(STRENGTH POTION EFFECT)  ({self.potion_of_strength_uses}/{self.max_quantum_strength_uses})")
         if self.quantum_strength_effect and self.quantum_strength_uses > -1:
@@ -1796,22 +1808,7 @@ class Player:
             print(f"(POISONED)  Poison clarifying: ({self.poisoned_turns}/{self.dot_turns})")
         if self.necrotic:
             print(f"(NECROTIC)  Necrotic clarifying: ({self.necrotic_turns}/{self.dot_turns})")
-        if self.potions_of_healing > 0:
-            number_of_potions_of_healing = self.potions_of_healing
-            print(f"Healing Potions: {number_of_potions_of_healing}")
-        if self.antidotes > 0:
-            number_of_antidotes = self.antidotes
-            print(f"Vials of Antidote: {number_of_antidotes}")
-        if self.elixirs > 0:
-            number_of_elixirs = self.elixirs
-            print(f"Elixirs: {number_of_elixirs}")
-        if self.town_portals > 0:
-            number_of_portal_scrolls = self.town_portals
-            print(f"Town Portal Scrolls: {number_of_portal_scrolls}")
-        if self.ring_of_reg.name != "No Ring of Regeneration":
-            print(f"Ring of Regeneration: +{self.ring_of_reg.regenerate}")
-        if self.ring_of_prot.name != "No Ring of Protection":
-            print(f"Ring of Protection: +{self.ring_of_prot.protect}")
+
         print()
         return
 
@@ -3090,9 +3087,9 @@ class Player:
                 return 1
         elif self.extra_attack:  # self.level > 4
             print("You missed..")
-            sleep(2)
+            sleep(1)
             print("Extra Attack Skill chance to hit!")
-            sleep(2)
+            sleep(1)
             roll_d20 = dice_roll(1, 20)
             if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + \
                     self.wielded_weapon.to_hit_bonus >= monster_armor_class:
@@ -6239,6 +6236,8 @@ class Player:
             print(f"Enemy Dexterity Modifier: {monster.dexterity_modifier}")
             print(f"Enemy Total: {monster_total}")
             if evade_success >= monster_total or evade_success == 20:
+                print(f"You slip into the shadows..")
+                sleep(1)
                 print(f"Your stealth and dexterity have served you well!")
                 sleep(1)
                 print(f"The {monster.name} looks at {monster.his_her_its} surroundings, and departs,"
@@ -6330,9 +6329,10 @@ class Player:
 
             print(f"Your gold: {self.gold} GP")
             print(f"You currently carry the following quantum items:")
-            print(f"1: Potions of Healing - Quantity: {self.potions_of_healing}")
-            print(f"2: Scrolls of Town Portal - Quantity: {self.town_portals}")
-            print(f"3: Potions of Strength - Quantity: {self.potions_of_strength}")
+            print(f"1: Potions of Strength - Quantity: {self.potions_of_strength}")
+            print(f"2: Potions of Healing - Quantity: {self.potions_of_healing}")
+            print(f"3: Scrolls of Town Portal - Quantity: {self.town_portals}")
+
             print(f"4: Clarifying Elixirs - Quantity: {self.elixirs}")
             print(f"5: Poison Antidote Vials - Quantity: {self.antidotes}")
             print(f"Your gold: {self.gold} GP")
@@ -6342,6 +6342,14 @@ class Player:
                 return
 
             elif type_to_sell == '1':
+                your_item = "potions of strength"
+
+                if self.potions_of_strength < 1:
+                    print(f"You do not have any {your_item}..")
+                    sleep(1)
+                    continue
+
+            elif type_to_sell == '2':
                 your_item = "potions"
 
                 if self.potions_of_healing < 1:
@@ -6349,7 +6357,7 @@ class Player:
                     sleep(1)
                     continue
 
-            elif type_to_sell == '2':
+            elif type_to_sell == '3':
                 your_item = "scrolls of town portal"
 
                 if self.town_portals < 1:
@@ -6357,13 +6365,7 @@ class Player:
                     sleep(1)
                     continue
 
-            elif type_to_sell == '3':
-                your_item = "potions of strength"
 
-                if self.potions_of_strength < 1:
-                    print(f"You do not have any {your_item}..")
-                    sleep(1)
-                    continue
 
             elif type_to_sell == '4':
                 your_item = "clarifying elixirs"
@@ -6390,11 +6392,11 @@ class Player:
 
                 if type_to_sell == '1' and number_of_items_to_sell > 0:
 
-                    if self.potions_of_healing >= number_of_items_to_sell:
-                        self.potions_of_healing -= number_of_items_to_sell
-                        gold_recieved = (healing_potion.sell_price * number_of_items_to_sell)
-                        self.gold += gold_recieved
-                        print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
+                    if self.potions_of_strength >= number_of_items_to_sell:
+                        self.potions_of_strength -= number_of_items_to_sell
+                        gold_received = (strength_potion.sell_price * number_of_items_to_sell)
+                        self.gold += gold_received
+                        print(f"You sell {number_of_items_to_sell} {your_item} for {gold_received} GP.")
                         pause()
                         continue
 
@@ -6405,11 +6407,11 @@ class Player:
 
                 elif type_to_sell == '2' and number_of_items_to_sell > 0:
 
-                    if self.town_portals >= number_of_items_to_sell:
-                        self.town_portals -= number_of_items_to_sell
-                        gold_recieved = (scroll_of_town_portal.sell_price * number_of_items_to_sell)
-                        self.gold += gold_recieved
-                        print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
+                    if self.potions_of_healing >= number_of_items_to_sell:
+                        self.potions_of_healing -= number_of_items_to_sell
+                        gold_received = (healing_potion.sell_price * number_of_items_to_sell)
+                        self.gold += gold_received
+                        print(f"You sell {number_of_items_to_sell} {your_item} for {gold_received} GP.")
                         pause()
                         continue
 
@@ -6420,11 +6422,11 @@ class Player:
 
                 elif type_to_sell == '3' and number_of_items_to_sell > 0:
 
-                    if self.potions_of_strength >= number_of_items_to_sell:
-                        self.potions_of_strength -= number_of_items_to_sell
-                        gold_recieved = (strength_potion.sell_price * number_of_items_to_sell)
-                        self.gold += gold_recieved
-                        print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
+                    if self.town_portals >= number_of_items_to_sell:
+                        self.town_portals -= number_of_items_to_sell
+                        gold_received = (scroll_of_town_portal.sell_price * number_of_items_to_sell)
+                        self.gold += gold_received
+                        print(f"You sell {number_of_items_to_sell} {your_item} for {gold_received} GP.")
                         pause()
                         continue
 
@@ -6437,9 +6439,9 @@ class Player:
 
                     if self.elixirs >= number_of_items_to_sell:
                         self.elixirs -= number_of_items_to_sell
-                        gold_recieved = (elixir.sell_price * number_of_items_to_sell)
-                        self.gold += gold_recieved
-                        print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
+                        gold_received = (elixir.sell_price * number_of_items_to_sell)
+                        self.gold += gold_received
+                        print(f"You sell {number_of_items_to_sell} {your_item} for {gold_received} GP.")
                         pause()
                         continue
 
@@ -6452,9 +6454,9 @@ class Player:
 
                     if self.antidotes >= number_of_items_to_sell:
                         self.antidotes -= number_of_items_to_sell
-                        gold_recieved = (antidote.sell_price * number_of_items_to_sell)
-                        self.gold += gold_recieved
-                        print(f"You sell {number_of_items_to_sell} {your_item} for {gold_recieved} GP.")
+                        gold_received = (antidote.sell_price * number_of_items_to_sell)
+                        self.gold += gold_received
+                        print(f"You sell {number_of_items_to_sell} {your_item} for {gold_received} GP.")
                         pause()
                         continue
 
@@ -6479,9 +6481,9 @@ class Player:
         antidote = Antidote()
 
         chemist_dict = {
-            'Healing': [healing_potion],
-            'Potions of Strength': [strength_potion],
-            'Town Portal Implements': [scroll_of_town_portal],
+            'Potions of Giant Strength': [strength_potion],
+            'Potions of Healing': [healing_potion],
+            'Town Portal Scrolls': [scroll_of_town_portal],
             'Elixirs': [elixir],
             'Antidotes': [antidote]
         }
@@ -7336,7 +7338,15 @@ class Player:
                             self.hit_points = self.maximum_hit_points
                         self.recover_quantum_energy()
                         self.poisoned = False
+                        self.poisoned_turns = 0
                         self.necrotic = False
+                        self.necrotic_turns = 0
+                        self.potion_of_strength_effect = False
+                        self.potion_of_strength_uses = 0
+                        self.quantum_strength_effect = False
+                        self.quantum_strength_uses = 0
+                        self.protection_effect = False
+                        self.protection_effect_uses = 0
                         self.end_of_turn_calculation()
                         continue
 
@@ -9437,19 +9447,19 @@ class Player:
                         print(f"The {corridor_direction} exits each lead to corridors.")
                         dungeon_exit_direction = self.dungeon_level_exit_check()
                         print(f"The {dungeon_exit_direction} corridor leads to a staircase.."
-                              f"*IT IS THE EXIT OF {self.dungeon.name}!*")
+                              f"*** IT IS THE EXIT OF {self.dungeon.name}!!! ***")
                         #
                     else:
                         corridor_direction = self.dungeon_level_exit_check()
                         print(f"The {corridor_direction} corridor leads to a staircase.."
-                              f"*IT IS THE EXIT OF {self.dungeon.name}!*")
+                              f"*** IT IS THE EXIT OF {self.dungeon.name}!!! ***")
                         #
             else:  # you must be at an intersection. intersections are auto-described above.
                 # just check to see if player is proximal to the dungeon_level_exit:
                 if self.dungeon_level_exit_check():
                     corridor_direction = self.dungeon_level_exit_check()
                     print(f"The {corridor_direction} corridor leads to a staircase.."
-                          f"*IT IS THE EXIT OF {self.dungeon.name}!*")
+                          f"*** IT IS THE EXIT OF {self.dungeon.name}!!! ***")
                     #
         else:  # you must be at a dead end
             exits = convert_list_to_string(exits_list)

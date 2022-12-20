@@ -9447,19 +9447,19 @@ class Player:
                         print(f"The {corridor_direction} exits each lead to corridors.")
                         dungeon_exit_direction = self.dungeon_level_exit_check()
                         print(f"The {dungeon_exit_direction} corridor leads to a staircase.."
-                              f"*** IT IS THE EXIT OF {self.dungeon.name}!!! ***")
+                              f" ***** IT IS THE EXIT OF {self.dungeon.name}!!! *****")
                         #
                     else:
                         corridor_direction = self.dungeon_level_exit_check()
                         print(f"The {corridor_direction} corridor leads to a staircase.."
-                              f"*** IT IS THE EXIT OF {self.dungeon.name}!!! ***")
+                              f" ***** IT IS THE EXIT OF {self.dungeon.name}!!! *****")
                         #
             else:  # you must be at an intersection. intersections are auto-described above.
                 # just check to see if player is proximal to the dungeon_level_exit:
                 if self.dungeon_level_exit_check():
                     corridor_direction = self.dungeon_level_exit_check()
                     print(f"The {corridor_direction} corridor leads to a staircase.."
-                          f"*** IT IS THE EXIT OF {self.dungeon.name}!!! ***")
+                          f" ***** IT IS THE EXIT OF {self.dungeon.name}!!! *****")
                     #
         else:  # you must be at a dead end
             exits = convert_list_to_string(exits_list)

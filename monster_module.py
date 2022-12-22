@@ -3,29 +3,93 @@
 # This source code is licensed under the BSD-style license found in the
 # LICENSE.txt file in the root directory of this source tree.
 
-# Dark Sorrowful Cello "Soul's Departure" Royalty Free Music by Darren Curtis
-# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+"""
 
-# Blacksmith theme: 'Viking Intro loop' by Alexander Nakarada
-# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+Copyright 2022, JULES PITSKER  (pitsker@proton.me)
+All rights reserved.
 
-# Dungeon theme: 'Dragon Quest', 'Dragon Song', 'Medieval Metal', 'Cinematic Celtic Metal', by Alexander Nakarada
-# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
 
-# Chemist Theme: 'Might and Magic' by Alexander Nakarada
-# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
 
-# Town theme: 'Tavern Loop 1' by Alexander Nakarada
-# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
 
-# Boss battle theme: 'Dragon Castle' / Epic Orchestral Battle Music by Makai Symphony
-# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+3. All advertising materials mentioning features or use of this software must
+   display the following acknowledgement:
+     This product includes software developed by Jules Pitsker.
 
-# Tavern Theme: 'The Medieval Banquet' by Silverman Sound is under a Creative Commons license (CC BY 3.0)
-# Music promoted by BreakingCopyright: http://bit.ly/Silvermansound_Medieval
+4. Neither the name of the copyright holder nor the names of its
+   contributors may be used to endorse or promote products derived from
+   this software without specific prior written permission.
 
-# Pit theme 'Epic 39' by Jules Pitsker
-# Creative Commons Attribution License 4.0 International (CC BY 4.0)
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER "AS IS" AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
+EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
+ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Thanks to the following STACK OVERFLOW members:
+The Spider, Anentropic, The Thonnu and Optimal: for helping me get my footing during my first days of learning python
+Yarik0urWorld: for help with python list syntax
+Angus Nicolson: for self.__dict__ code snippet and explanation
+Liju and snakecharmerb: for explanation of hashable objects
+Pawel Pietraszko: for assistance with initializing new object instances every time player gets new item
+triplee: for assistance with Path syntax
+
+Thanks to @LearntoCodeGCSE for the Dungeon Crawler video upon which I based the 2D array navigation system.
+
+SOUND/MUSIC:
+Main theme: "Soul's Departure" Royalty Free Music by Darren Curtis
+Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
+Blacksmith Theme: 'Viking Intro loop' by Alexander Nakarada
+Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
+Dungeon Themes: 'Dragon Quest', 'Dragon Song', 'Medieval Metal', 'Cinematic Celtic Metal', by Alexander Nakarada
+Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
+Chemist Theme: 'Might and Magic' by Alexander Nakarada
+Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
+Fieldenberg Theme: 'Tavern Loop 1' by Alexander Nakarada
+Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
+Boss battle theme: 'Dragon Castle' / Epic Orchestral Battle Music by Makai Symphony
+Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
+Tavern Theme: 'The Medieval Banquet' by Silverman Sound is under a Creative Commons license (CC BY 3.0)
+Music promoted by BreakingCopyright: http://bit.ly/Silvermansound_Medieval
+
+Pit theme: 'Epic 39' by Jules Pitsker
+Creative Commons Attribution License 4.0 International (CC BY 4.0)
+
+Hall of the Mountain King by Kevin MacLeod http://incompetech.com
+Creative Commons Attribution License 4.0 International (CC BY 4.0)
+Free Download / Stream: https://bit.ly/hall-of-the-mountain-king
+Music promoted by Audio Library https://youtu.be/2RDX5sVEfs4
+PC Boot up sounds: Eirikr / Freesound.org
+Creative Commons Attribution License 3.0 (CC BY 3.0)
+
+Floppy Disk Insert Sound: Joseph Sardin (BigSoundBank.com)
+Creative Commons CC0 1.0 Universal (CC0 1.0)
+
+Floppy Disk Drive R/W Sounds: Dennis Johansson (MrAuralization / Freesound.org)
+Creative Commons Attribution License 3.0 (CC BY 3.0)
+
+Gong: juskiddink / Freesound.org
+Creative Commons Attribution License 3.0 (CC BY 3.0)
+
+Clacky Keyboard: Denis McDonald (denismcdonald / Freesound.org)
+Creative Commons Attribution License 3.0 (CC BY 3.0)"""
 
 # Telengard monsters:
 # "Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",

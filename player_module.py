@@ -2433,7 +2433,7 @@ class Player:
         # called from main loop
         self.encounter = dice_roll(1, 20)
         # print(f"Monster encounter roll: {monster_encounter}")
-        # self.encounter = 15  # this will make it so there are no monsters
+        # self.encounter = 15  # this will make it so there are no monsters at all except exit boss
 
     def monster_introduction(self, monster):
         # called from main loop

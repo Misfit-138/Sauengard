@@ -2411,7 +2411,7 @@ class HobgoblinCaptain(Monster):
         self.attack_5 = 5
         self.attack_5_phrase = "He raises his greatsword overhead with both hands for a mighty blow.."
         self.introduction = f"You have encountered a Hobgoblin Captain. Fierce, intelligent and disciplined, " \
-                            f"his heavy armor and\nweaponry are polished and well-maintained. His yellow " \
+                            f"and wearing heavy armor.\nWith weaponry polished and well-maintained, his yellow " \
                             f"teeth stretch into a surly grin behind his iron helm.\nNarrowing his eyes, " \
                             f"he approaches and stands before you unaffected and unafraid; ready for battle."
 

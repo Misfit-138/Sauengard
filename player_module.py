@@ -2389,10 +2389,12 @@ class Player:
 
         else:
             if monster_gold > 0:
-                print(f"You snarf {monster_gold} gold pieces.")
+                if monster_gold == 1:
+                    print(f"You snarf {monster_gold} gold piece.")
+                else:
+                    print(f"You snarf {monster_gold} gold pieces.")
                 sleep(1)
             print(f"You gain {exp_award} experience points.")
-            # print(f"You snarf {monster_gold} gold pieces and gain {exp_award} experience points")
             sleep(2)
             self.hud()
 
@@ -4410,14 +4412,19 @@ class Player:
                         for key, value in working_dict.items():
                             print(f"{key}: {value}")
                         q_to_cast = int(input(f"Number of Quantum Effect to cast (or 0 for HELP): "))
-                        # noinspection PyArgumentList
-                        quantum_function = (quantum_book[q_level][q_to_cast](monster))
 
+                        # quantum_function = quantum_book[q_level][q_to_cast]  # (monster)  # beta removed (monster)
+                        # and added to function calls below:
                         if q_to_cast == 0:  # if HELP, call function and return here
-                            quantum_function
+                            # noinspection PyArgumentList
+                            quantum_book[q_level][q_to_cast](monster)
+                            # pycharm is unhappy calling this method through a reference to the method buried in a dict
+                            # quantum_function(monster)  # beta used to be simply quantum_function
 
-                        else:  # if not HELP, return to main loop from function
-                            return quantum_function
+                        else:  # if not HELP, return damage to main loop from function
+                            # noinspection PyArgumentList
+                            return quantum_book[q_level][q_to_cast](monster)
+                            # return quantum_function(monster)
 
                     else:
                         if self.quantum_level < q_level:
@@ -7313,11 +7320,11 @@ class Player:
                      f"pit below {self.dungeon.name}!'\n"
                      f"'Care to spend some o' that loot?\', she adds with a wink.")
 
-        micro_boss_discovery = f"level {self.dungeon.level} micro boss"
+        """micro_boss_discovery = f"level {self.dungeon.level} micro boss"
         if micro_boss_discovery not in self.discovered_interactives:
             teletype(f"Lowering her tone, she goes on, \'I've also 'eard it said that there's an elite enemy\n"
                      f"down there, just waitin' for unsuspectin' adventurers in a dead ended corridor!'\n"
-                     f"'Take good care, now, and be wise!\'\n ")
+                     f"'Take good care, now, and be wise!\'\n ")"""
         pause()
 
     def talk_to_jenna(self):

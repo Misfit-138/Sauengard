@@ -2191,7 +2191,6 @@ class Doppelganger(Monster):
                                            "horrid claw!!"
 
 
-
 class Specter(Monster):
 
     def __init__(self):
@@ -2605,6 +2604,7 @@ class WhiteDragonWyrmling(Monster):
         self.introduction = f"You have encountered a White Dragon Wyrmling; a slow witted, evil, efficient hunter. " \
                             f"Confidently stepping forth,\nit roars viciously, undoubtedly preparing to have you " \
                             f"as a meal!"
+
 
 class BugbearCaptain(Monster):
 
@@ -4043,8 +4043,8 @@ class WickedQueenJannbrielle(Monster):
         self.paralyze_free_attack_phrase = "Up close and personal, the wicked queen looks deeply into your eyes " \
                                            "as she slowly and sadistically gores you with her terrible claws!"
 
-# monster dictionaries. keys correspond to difficulty/challenge level
 
+# monster dictionaries. keys correspond to difficulty/challenge level
 # regular monsters:
 monster_dict = {
     1: [Quasit, Kobold, Cultist, Goblin, WingedKobold],
@@ -4056,6 +4056,7 @@ monster_dict = {
     7: [Wyvern, DrowManipulator, MorbidDefender, MindFlayer, BoltThrower],
     8: [FrostGiant, YoungBlackDragon, YoungGreenDragon, MorbidKnight, Assassin]
 }
+
 # undead monsters:
 undead_monster_dict = {
     1: [Skeleton],

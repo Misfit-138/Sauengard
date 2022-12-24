@@ -182,6 +182,7 @@ def ibm_dos_screen():
     random_floppy_rw_sound()
     sleep(1)
 
+
 def unix_screen():
     # original devs of
     # UNIX,
@@ -348,6 +349,7 @@ def same_line_teletype(string):
         sys.stdout.write(each_character)
         sys.stdout.flush()
         sleep(0.07)
+
 
 def dot_dot_dot(number_of_dots):
     for i in range(number_of_dots):
@@ -3243,7 +3245,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + \
-                            self.wisdom_modifier + vulnerability_modifier + level_advantage
+                    self.wisdom_modifier + vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3322,7 +3324,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
-                            vulnerability_modifier + level_advantage
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3402,7 +3404,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
-                            vulnerability_modifier + level_advantage
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3548,7 +3550,7 @@ class Player:
                         if self.level > monster.level:
                             level_advantage = self.level - monster.level
                         player_dc = self.base_dc + self.proficiency_bonus + \
-                                    self.wisdom_modifier + vulnerability_modifier + level_advantage
+                            self.wisdom_modifier + vulnerability_modifier + level_advantage
                         print(f"Player base DC = {self.base_dc}\n"
                               f"Wisdom Modifier: {self.wisdom_modifier}\n"
                               f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3664,7 +3666,7 @@ class Player:
                             if self.level > monster.level:
                                 level_advantage = self.level - monster.level
                             player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
-                                        vulnerability_modifier + level_advantage
+                                vulnerability_modifier + level_advantage
                             print(f"Player base DC = {self.base_dc}\n"
                                   f"Wisdom Modifier: {self.wisdom_modifier}\n"
                                   f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3749,7 +3751,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
-                            vulnerability_modifier + level_advantage
+                    vulnerability_modifier + level_advantage
                 print(f"Player DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -3911,7 +3913,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.charisma_modifier + \
-                            vulnerability_modifier + level_advantage
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Charisma Modifier: {self.charisma_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -4005,7 +4007,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.intelligence_modifier + \
-                            vulnerability_modifier + level_advantage
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Intelligence Modifier: {self.intelligence_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -4464,7 +4466,7 @@ class Player:
                 critical_bonus = 2
             number_of_dice = 20 * critical_bonus
             damage_to_opponent = dice_roll(number_of_dice, 6) + (1 * number_of_dice) + \
-                                 dice_roll(number_of_dice, 6) + (1 * number_of_dice)  # 2nd attack=force damage
+                dice_roll(number_of_dice, 6) + (1 * number_of_dice)  # 2nd attack=force damage
             melee_bonus = dice_roll(self.vozzbozz.level, self.vozzbozz.hit_dice)
             total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
 
@@ -4547,7 +4549,7 @@ class Player:
             #
             number_of_dice = 15 * critical_bonus
             damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                                 dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
+                dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
             melee_bonus = dice_roll(self.vozzbozz.level, self.vozzbozz.hit_dice)
             total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
             if damage_to_opponent > 0:
@@ -4618,7 +4620,7 @@ class Player:
             #
             number_of_dice = 15 * critical_bonus
             damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                                 dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = crushing damage
+                dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = crushing damage
             melee_bonus = dice_roll(self.vozzbozz.level, self.vozzbozz.hit_dice)
             total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
             if damage_to_opponent > 0:
@@ -5100,7 +5102,7 @@ class Player:
                     #
                     number_of_dice = (15 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 8) + (1 * number_of_dice) + \
-                                         dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack=force damage
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack=force damage
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
                     if damage_to_opponent > 0:
@@ -5211,8 +5213,7 @@ class Player:
                     #
                     number_of_dice = (15 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                                         dice_roll(number_of_dice, 8) + (
-                                                     1 * number_of_dice)  # 2nd attack = force damage
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = force damage
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
                     if damage_to_opponent > 0:
@@ -5329,8 +5330,7 @@ class Player:
                     #
                     number_of_dice = (15 + self.proficiency_bonus) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 12) + (1 * number_of_dice) + \
-                                         dice_roll(number_of_dice, 8) + (
-                                                     1 * number_of_dice)  # 2nd attack = crushing damage
+                        dice_roll(number_of_dice, 8) + (1 * number_of_dice)  # 2nd attack = crushing damage
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
                     if damage_to_opponent > 0:
@@ -5654,7 +5654,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
-                            vulnerability_modifier + level_advantage
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Proficiency Bonus: {self.proficiency_bonus}")
@@ -5868,7 +5868,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
-                            vulnerability_modifier + level_advantage
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
                 print(f"Proficiency bonus: {self.proficiency_bonus}")
@@ -5979,7 +5979,7 @@ class Player:
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
                 player_dc = self.base_dc + self.proficiency_bonus + self.wisdom_modifier + \
-                            vulnerability_modifier + level_advantage
+                    vulnerability_modifier + level_advantage
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
                 print(f"Proficiency bonus: {self.proficiency_bonus}")
@@ -6405,8 +6405,6 @@ class Player:
                     print(f"You do not have any {your_item}..")
                     sleep(1)
                     continue
-
-
 
             elif type_to_sell == '4':
                 your_item = "clarifying elixirs"
@@ -8652,12 +8650,12 @@ class Player:
         sleep(1)
         drink = input(f"Do you wish to drink? ").lower()
         if drink == 'y':
-            rndm_occurrence_list = [nothing_happens, self.recover_quantum_energy, self.poison_ingestion,
-                                    self.increase_random_ability, self.lose_items, self.decrease_random_ability,
-                                    self.increase_lowest_ability, self.heal_event, nothing_happens,
-                                    self.decrease_lowest_ability]
-            rndm_occurrence = random.choice(rndm_occurrence_list)
-            rndm_occurrence()
+            random_occurrence_list = [nothing_happens, self.recover_quantum_energy, self.poison_ingestion,
+                                      self.increase_random_ability, self.lose_items, self.decrease_random_ability,
+                                      self.increase_lowest_ability, self.heal_event, nothing_happens,
+                                      self.decrease_lowest_ability]
+            random_occurrence = random.choice(random_occurrence_list)
+            random_occurrence()
         else:
             print("Ignore.")
             sleep(.25)
@@ -8671,18 +8669,16 @@ class Player:
         # self.x = random.randint(1, 18)
         # self.y = random.randint(1, 18)
         (self.x, self.y) = self.dungeon.teleporter_landing
-        self.coordinates = (self.x, self.y)  # beta
+        self.coordinates = (self.x, self.y)
         self.previous_x = self.x
         self.previous_y = self.y
         self.position = self.dungeon.grid[self.y][self.x]
-        # self.regenerate()  # testing
-        # self.position = 0
         pause()
         self.hud()
         return
 
     def pit_event(self):
-        # falling into pits lands you on the same dungeon level at the dungeon.pit_landing coordinates
+        # falling into pits lands you at the dungeon.pit_landing coordinates
         print(f"The ground here is slippery, and quite unsteady..")
         sleep(1.5)
         print(f"You see a pit..")

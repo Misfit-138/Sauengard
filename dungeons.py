@@ -394,9 +394,6 @@ class Dungeon3(Dungeon):
                      "The echo from the door above being locked behind you still echoes throughout the emptiness.\n" \
                      "This is the entrance of the deepest catacombs. The gloom and stench of filth surround you."
 
-# dungeon_dict = {1: dungeon_1,
-#                2: dungeon_2,
-#                3: dungeon_3}
 
 dungeon_dict = {1: Dungeon1(),
                 2: Dungeon2(),

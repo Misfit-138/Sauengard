@@ -188,14 +188,18 @@ def unix_screen():
     # UNIX,
     # 'dnd',
     # 'DND' and
-    # 'Dungeon' :)
-    # note that 'dnd' (Whisenhunt, Wood, Dirk Pellett, Flint Pellett, developed on the PLATO network)
-    # and 'DND' (Daniel Lawrence) are different games with an interesting, and contentious history.
+    # 'Dungeon',
+    # respectively, and, respectfully :)
+    # Note that 'dnd' (lowercase) (Whisenhunt, Wood, Dirk Pellett, Flint Pellett, developed on the PLATO network)
+    # and 'DND' (uppercase) (Daniel Lawrence) are different games with an interesting, and contentious history.
     # Lawrence later wrote 'Telengard', a game based on 'DND'. 'Telengard' was a commercial success.
     # Lawrence denied having ever played 'dnd' on PLATO.
-    # dnd maintainer and author, Dirk Pellett claims Lawrence outright plagiarized it.
-    user_list = ["dennis_ritchie", "ken_thompson", "gary_whisenhunt", "ray_wood", "daniel_lawrence",
-                 "don_daglow", "dirk_pellett", "flint_pellett"]
+    # dnd maintainer and author, Dirk Pellett, claims that Daniel Lawrence outright plagiarized it.
+    # For more: http://www.armory.com/~dlp/dnd1.html)
+    user_list = ["dennis_ritchie", "ken_thompson",
+                 "gary_whisenhunt", "ray_wood", "dirk_pellett", "flint_pellett",
+                 "daniel_lawrence",
+                 "don_daglow"]
     user = random.choice(user_list)
     cls()
     print("digital PDP 11/23 PLUS")
@@ -8635,7 +8639,7 @@ class Player:
 
     def fountain_event(self):
         # WHITE GREEN CLEAR RED BLACK
-        # telengard has these 5 random events:
+        # Telengard has these 5 random events:
         # heal 3 * dungeon level + 1 hit points
         # poison 3 * dungeon level + 1 hit points
         # drunk

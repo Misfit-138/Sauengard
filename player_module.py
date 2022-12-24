@@ -45,7 +45,7 @@ Liju and snakecharmerb: for explanation of hashable objects
 Pawel Pietraszko: for assistance with initializing new object instances every time player gets new item
 triplee: for assistance with Path syntax
 
-Thanks to @LearntoCodeGCSE for the Dungeon Crawler video upon which I based the 2D array navigation system.
+Thanks to @LearntoCodeGCSE for the 2D array video.
 
 SOUND/MUSIC CREDITS:
 Main theme: "Soul's Departure" Royalty Free Music by Darren Curtis
@@ -129,9 +129,10 @@ Why bother?	30'''
 
 def os_check():
     cls()
-    print()
+
     print("Welcome!\nPlease ensure terminal is in full screen mode.")
     sleep(1.25)
+    print()
     if os.name == 'nt':
         pc_powerup()
         sleep(5)

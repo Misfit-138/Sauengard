@@ -47,7 +47,7 @@ triplee: for assistance with Path syntax
 
 Thanks to @LearntoCodeGCSE for the Dungeon Crawler video upon which I based the 2D array navigation system.
 
-SOUND/MUSIC:
+SOUND/MUSIC CREDITS:
 Main theme: "Soul's Departure" Royalty Free Music by Darren Curtis
 Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
@@ -130,8 +130,8 @@ Why bother?	30'''
 def os_check():
     cls()
     print()
-    # print("Welcome!")
-
+    print("Welcome!\nPlease ensure terminal is in full screen mode.")
+    sleep(1.25)
     if os.name == 'nt':
         pc_powerup()
         sleep(5)
@@ -191,7 +191,7 @@ def unix_screen():
     # 'Dungeon',
     # respectively, and, respectfully :)
     # Note that 'dnd' (lowercase) (Whisenhunt, Wood, Dirk Pellett, Flint Pellett, developed on the PLATO network)
-    # and 'DND' (uppercase) (Daniel Lawrence) are different games with an interesting, and contentious history.
+    # and 'DND' (UPPERCASE) (Daniel Lawrence) are different games with an interesting, and contentious history.
     # Lawrence later wrote 'Telengard', a game based on 'DND'. 'Telengard' was a commercial success.
     # Lawrence denied having ever played 'dnd' on PLATO.
     # dnd maintainer and author, Dirk Pellett, claims that Daniel Lawrence outright plagiarized it.

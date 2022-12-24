@@ -2123,11 +2123,12 @@ class Doppelganger(Monster):
         super().__init__()
         forms = ["a silvery-haired, white-bearded fiend with spectacles wearing a slick, green coat and heavy boots",
                  "a black-bearded, silvery-haired, spectacled and slovenly fiend in a filthy undergarment",
-                 "an exact representation of you",
+                 "an exact replica of you",
                  "a tall, spectacled, smelly and lanky man with a lizard hanging from his nose by its teeth",
                  "a mirror-image of you",
                  "a silvery-haired, white-bearded fiend with spectacles wearing a dress coat",
-                 "an extremely short man with a gray wig, hat, and a long coat"]
+                 "an extremely short man with a gray wig, hat, and wearing a comically long coat with sleeves hanging "
+                 "far beyond his hands"]
         self.level = 3
         self.name = "Doppelganger"
         self.proper_name = "None"
@@ -3218,7 +3219,8 @@ class WrathfulAvenger(Monster):
         self.attack_4_phrase = "It feints to the side, then, switching hands, it swings its dagger with deadly speed."
         self.attack_5 = 10
         self.attack_5_phrase = "With incredible speed, it juts forward, stabbing mercilessly."
-        self.introduction = f"You have encountered a Wrathful Avenger; The unnatural, undead, quantum-infused remains " \
+        self.introduction = f"You have encountered a Wrathful Avenger; The unnatural, undead, quantum-infused " \
+                            f"remains " \
                             f"of a human victim of an egregious injustice-\nforever searching for its killer... " \
                             f"It seems to have found you first!"
         self.paralyze_phrase = "Its white, lifeless eyes begin to burn with bright fury! You feel your motor skills " \
@@ -3956,7 +3958,8 @@ class Assassin(Monster):
         self.attack_5_phrase = "With a whispering swing, his blade finds your soft flesh and cuts deep.."
         self.introduction = f"You have encountered an Assassin; An amoral killer for hire, schooled in all manner of " \
                             f"poisons and stealth.\nFrom his boots to his hood, his garb is so dark, light seems to " \
-                            f"simply fall into it. His movements are fluid,\nsmooth, and deadly quiet. His silhouette " \
+                            f"simply fall into it. His movements are fluid,\nsmooth, and deadly quiet. His " \
+                            f"silhouette " \
                             f"is so difficult to track, you conclude he must be manipulating reflections\nwith " \
                             f"Quantum weirdness!"
         self.poison_phrase = "Suddenly appearing behind you, he stabs at you with a poison blade!!"

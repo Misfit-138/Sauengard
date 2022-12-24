@@ -93,14 +93,12 @@ Creative Commons Attribution License 3.0 (CC BY 3.0)
 """
 
 from player_module import cls, town_theme, gong, sleep, pause, teletype, \
-    dungeon_command_choices, quit_game, game_start, os_check, loading_screen
+    dungeon_command_choices, quit_game, game_start, loading_screen
+
 # ibm_dos_screen, unix_screen, initial_loading_screen,
 
-os_check()
-# ibm_dos_screen()
-# initial_loading_screen()
-#
-# unix_screen()
+# os_check()
+
 
 while True:
 

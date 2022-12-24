@@ -1694,8 +1694,8 @@ class Player:
         self.boss_hint_2_event = False
         self.boss_hint_3 = False
         self.boss_hint_3_event = False
-        self.boss_hint_4 = False
-        self.boss_hint_4_event = False
+        # self.boss_hint_4 = False
+        # self.boss_hint_4_event = False
         # self.boss_hint_5 = False
         # self.boss_hint_5_event = False
         # self.boss_hint_6 = False
@@ -7165,7 +7165,8 @@ class Player:
         # hint_events move the story along by subtle hints to the player, revealed over time in the game, as
         # they progress.
         # hint_events take place in the tavern (so far). they correspond to boss_clues:
-        # hint_event_1 occurs after boss_clue_1, etc. the boss_clues occur after defeating the dungeon_exit boss
+        # hint_event_1 occurs after boss_clue_1,
+        # hint_event_2 after boss_clue_2, etc. the boss_clues occur after defeating the dungeon_exit boss
         # hint_event_1 is a meeting with vozzbozz, introduction to tor'bron the barbarian, and another hint
         # about the symbol of the wicked queen, which the player finds during boss_clue_1
         cls()
@@ -7266,7 +7267,7 @@ class Player:
         pause()
         cls()
         if self.armor.ac > 11:
-            print(f"The heavily-armored dwarf looks at you with seeming disinterest and simply says,\n"
+            print(f"The heavily-armored dwarf looks at you seemingly uninterested and simply says,\n"
                   f"\'That be some decent {self.armor.name.lower()} ye got there, lad\'. He takes a sip of his ale.")
         print(f"The dwarf slides out of the booth and motions that you should take his place. He then slides in next\n"
               f"to Vozzbozz and across from you.\n")
@@ -7284,15 +7285,19 @@ class Player:
         return
 
     def hint_event_logic(self):
+        # called from tavern()
         if self.boss_hint_1 and not self.boss_hint_1_event:
-            return self.hint_event_1()
+            self.hint_event_1()
+            return
         if self.boss_hint_2 and not self.boss_hint_2_event:
-            return self.hint_event_2()
+            self.hint_event_2()
+            return
         if self.boss_hint_3 and not self.boss_hint_3_event:
-            return self.hint_event_3()
-        if self.boss_hint_4 and not self.boss_hint_4_event:
+            self.hint_event_3()
+            return
+        # if self.boss_hint_4 and not self.boss_hint_4_event:
             # return self.hint_event_4()
-            print("hint 4 event")
+        #    print("hint 4 event")
         # if self.boss_hint_5 and not self.boss_hint_5_event:
         # return self.hint_event_5()
         # print("hint 5 event")
@@ -7335,7 +7340,7 @@ class Player:
             self.jennas_level_1_gab(opening_phrase)
 
     def tavern(self):
-
+        # called from town_navigation()
         self.hud()
         print(f"You have come upon the Slumbering Bear Inn- a handsome building with all the trimmings and character\n"
               f"one would expect of a tavern in a town such as this. Above the door hangs an angled sign\n"
@@ -7431,6 +7436,7 @@ class Player:
         return
 
     def drink_antidote(self):
+        # called from main loop
         if self.antidotes > 0:
             self.hud()
             if not self.poisoned:
@@ -7457,6 +7463,7 @@ class Player:
             return False  # False means you do NOT use a turn
 
     def drink_elixir(self):
+        # called from main loop
         if self.elixirs > 0:
             self.hud()
             if not self.necrotic:
@@ -7483,6 +7490,7 @@ class Player:
             return False  # False means you do NOT use a turn
 
     def drink_healing_potion(self):
+        # called from main loop
         self.hud()
         if self.potions_of_healing > 0:
 
@@ -9191,28 +9199,33 @@ class Player:
         self.boss_hint_3 = True
         return
 
-    def boss_clue_4(self):
-        self.hud()
-        print("You find a clue about the boss4")
-        pause()
-        self.hud()
-        self.boss_hint_4 = True
-        return
+    # def boss_clue_4(self):
+    #    self.hud()
+    #    print("You find a clue about the boss4")
+    #    pause()
+    #    self.hud()
+    #    self.boss_hint_4 = True
+    #    return
 
     def boss_hint_logic(self):
-        # called from main loop, after exit bosses are defeated
+        # called from victory_over_boss_logic (if self.encounter ==99),
+        # which is called from main loop, after exit bosses are defeated
         if not self.boss_hint_1:
-            return self.boss_clue_1()
+            self.boss_clue_1()
+            return
         if not self.boss_hint_2:
-            return self.boss_clue_2()
+            self.boss_clue_2()
+            return
         if not self.boss_hint_3:
-            return self.boss_clue_3()
-        if not self.boss_hint_4:
-            return self.boss_clue_4()
+            self.boss_clue_3()
+            return
+        # if not self.boss_hint_4:
+        #    self.boss_clue_4()
+        #   return
         # if not self.boss_hint_5:
         # return self.boss_clue_5()
         # if not self.boss_hint_6:
-        # eturn self.boss_clue_6()
+        # return self.boss_clue_6()
         return
 
     def wide_open_space_logic(self):

@@ -167,7 +167,6 @@ class Monster:
         self.hit_dice = 0  # tiny d4, small d6, medium d8, large d10, huge d12, gargantuan d20
         self.number_of_hd = self.level
         self.human_player_level = 0
-        self.difficulty_class = 0
         self.proficiency_bonus = 0  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 0
@@ -769,7 +768,6 @@ class Quasit(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 1
         self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 4  # tiny
@@ -832,7 +830,6 @@ class Kobold(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 1
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -896,7 +893,6 @@ class Cultist(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 1
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -957,7 +953,6 @@ class Goblin(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 1
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -1019,7 +1014,6 @@ class WingedKobold(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 1
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -1079,7 +1073,6 @@ class Gnoll(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 2
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
@@ -1140,7 +1133,6 @@ class Shadow(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = True
-        self.difficulty_class = 2
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
@@ -1224,7 +1216,6 @@ class ShadowKing(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = True
-        self.difficulty_class = 2
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
@@ -1310,7 +1301,6 @@ class Skeleton(Monster):
         self.resistances = []
         self.quantum_energy = False
         # self.human_player_level = human_player_level
-        self.difficulty_class = 2
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
@@ -1374,7 +1364,6 @@ class ZombieProphet(Monster):
         self.resistances = []
         self.quantum_energy = False
         # self.human_player_level = human_player_level
-        self.difficulty_class = 2
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
@@ -1436,7 +1425,6 @@ class SkeletonKing(Monster):
         self.resistances = []
         self.quantum_energy = False
         # self.human_player_level = human_player_level
-        self.difficulty_class = 2
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
@@ -1498,7 +1486,6 @@ class SkeletalProphet(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 2
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
@@ -1559,7 +1546,6 @@ class Drow(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = True
-        self.difficulty_class = 2
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
@@ -1636,7 +1622,6 @@ class Zombie(Monster):
         self.resistances = []
         self.quantum_energy = False
         # self.human_player_level = human_player_level
-        self.difficulty_class = 2
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
@@ -1697,7 +1682,6 @@ class Troglodyte(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 1
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -1759,7 +1743,6 @@ class Orc(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 1
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -1820,7 +1803,6 @@ class CultFanatic(Monster):
         self.vulnerabilities = []
         self.resistances = ["Charm", "Banish", "Fear"]
         self.quantum_energy = True
-        self.difficulty_class = 1
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -1899,7 +1881,6 @@ class Gargoyle(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 2
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
@@ -1963,7 +1944,6 @@ class Ghoul(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.human_player_level = 0
-        self.difficulty_class = 2
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
@@ -2027,7 +2007,6 @@ class Bugbear(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 1
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -2088,7 +2067,6 @@ class HalfOgre(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 1
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -2157,7 +2135,6 @@ class Doppelganger(Monster):
         self.vulnerabilities = ["Scorch", "Fireball", "Firestorm", "Immolation"]
         self.resistances = ["Hold Monster", "Banish"]
         self.quantum_energy = False
-        self.difficulty_class = 3
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 3
@@ -2224,7 +2201,6 @@ class Specter(Monster):
         self.resistances = []
         self.quantum_energy = True
         self.human_player_level = 0
-        self.difficulty_class = 2
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
@@ -2306,7 +2282,6 @@ class SpecterKing(Monster):
         self.resistances = []
         self.quantum_energy = True
         self.human_player_level = 0
-        self.difficulty_class = 2
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 2
@@ -2386,7 +2361,6 @@ class HobgoblinCaptain(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 1
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -2448,7 +2422,6 @@ class Harpy(Monster):
         self.vulnerabilities = []
         self.resistances = ["Fear", "Charm"]
         self.quantum_energy = False
-        self.difficulty_class = 4
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -2513,7 +2486,6 @@ class GreenDragonWyrmling(Monster):
         self.vulnerabilities = []
         self.resistances = ["Fear", "Charm"]
         self.quantum_energy = False
-        self.difficulty_class = 4
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -2577,7 +2549,6 @@ class WhiteDragonWyrmling(Monster):
         self.vulnerabilities = ["Immolation", "Fireball", "Fire Storm"]
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 4
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -2638,7 +2609,6 @@ class BugbearCaptain(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 4
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 4
@@ -2700,7 +2670,6 @@ class Ogre(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 1
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -2762,7 +2731,6 @@ class Minotaur(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 5
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 5
@@ -2824,7 +2792,6 @@ class DarkDwarf(Monster):
         self.vulnerabilities = []
         self.resistances = ["Charm", "Sleep"]
         self.quantum_energy = False
-        self.difficulty_class = 1
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -2888,7 +2855,6 @@ class Mummy(Monster):
         self.vulnerabilities = []
         self.resistances = ["Web", "Banish"]
         self.quantum_energy = False
-        self.difficulty_class = 5
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 5
@@ -2951,7 +2917,6 @@ class ZombieOgre(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 1
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -3013,7 +2978,6 @@ class Troll(Monster):
         self.vulnerabilities = ["Immolation", "Fireball", "Fire Storm"]
         self.resistances = ["All"]
         self.quantum_energy = False
-        self.difficulty_class = 6
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 1
@@ -3073,7 +3037,6 @@ class HillGiant(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 6
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 6
@@ -3134,7 +3097,6 @@ class Cyclops(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 6
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 6
@@ -3195,7 +3157,6 @@ class WrathfulAvenger(Monster):
         self.vulnerabilities = []
         self.resistances = ["Turn Undead"]
         self.quantum_energy = False
-        self.difficulty_class = 6
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 6
@@ -3261,7 +3222,6 @@ class HobgoblinWarlord(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 6
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 6
@@ -3323,7 +3283,6 @@ class Wyvern(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 6
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 7
@@ -3386,7 +3345,6 @@ class DrowManipulator(Monster):
         self.vulnerabilities = []
         self.resistances = ["All"]
         self.quantum_energy = True
-        self.difficulty_class = 7
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)
         self.damage = 0
         self.challenge_rating = 7
@@ -3469,7 +3427,6 @@ class MindFlayer(Monster):
         self.vulnerabilities = []
         self.resistances = ["All"]
         self.quantum_energy = True
-        self.difficulty_class = 7
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)
         self.damage = 0
         self.challenge_rating = 7
@@ -3551,7 +3508,6 @@ class MorbidDefender(Monster):
         self.vulnerabilities = []
         self.resistances = ["Turn Undead"]
         self.quantum_energy = False
-        self.difficulty_class = 6
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 6
@@ -3617,7 +3573,6 @@ class BoltThrower(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 6
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 6
@@ -3684,7 +3639,6 @@ class FrostGiant(Monster):
         self.vulnerabilities = ["Firestorm", "Fireball"]
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 8
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 8
@@ -3746,7 +3700,6 @@ class YoungBlackDragon(Monster):
         self.vulnerabilities = ["Ice Storm"]
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 8
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 8
@@ -3808,7 +3761,6 @@ class YoungGreenDragon(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 8
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 8
@@ -3870,7 +3822,6 @@ class MorbidKnight(Monster):
         self.vulnerabilities = []
         self.resistances = ["Turn Undead"]
         self.quantum_energy = False
-        self.difficulty_class = 8
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 8
@@ -3932,7 +3883,6 @@ class Assassin(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.difficulty_class = 8
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 8
@@ -3965,6 +3915,133 @@ class Assassin(Monster):
         self.poison_phrase = "Suddenly appearing behind you, he stabs at you with a poison blade!!"
 
 
+class FireGiant(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 9
+        self.name = "Fire Giant"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 5000
+        self.gold = random.randint(20, 35)
+        self.weapon_bonus = 6
+        self.armor = 0
+        self.shield = 0
+        self.strength = 25
+        self.dexterity = 9
+        self.constitution = 23
+        self.intelligence = 10
+        self.wisdom = 14
+        self.charisma = 13
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(5, 8)
+        self.dot_turns = dice_roll(3, 5)
+        self.undead = False
+        self.immunities = ["Sleep", "Web", "Hold Monster", "Firestorm", "Fireball", "Scorch", "Immolation"]
+        self.vulnerabilities = ["Ice Storm"]
+        self.resistances = []
+        self.quantum_energy = False
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 9
+        self.hit_dice = 12
+        self.number_of_hd = 6
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(155, 165)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 18
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 10  # attack bonus
+        self.attack_1_phrase = "It swings its greatsword with might and skill.."
+        self.attack_2 = 12
+        self.attack_2_phrase = "It strikes at you with a heavy, armored fist, followed by a greatsword swing!"
+        self.attack_3 = 14
+        self.attack_3_phrase = "It swings its sword with both hands for a mighty blow."
+        self.attack_4 = 18
+        self.attack_4_phrase = "It punches you square in the face, and follows with a mighty " \
+                               "sword blow!"
+        self.attack_5 = 24
+        self.attack_5_phrase = "It grabs you with a crushing, armored fist, and attacks with a mighty sword swing!"
+        self.introduction = f"You have encountered a Fire Giant; A prodigious humanoid from out of legend, " \
+                            f"now tunneled to this " \
+                            f"reality by Quantum improbability.\nFire Giants are battle-hardened " \
+                            f"mercenaries and raiders, known for merciless destruction and fighting skills.\n" \
+                            f"With flaming hair and eyes, it thunders toward you as its black, heavy plate mail " \
+                            f"creaks with ominous dread."
+
+
+class Widow(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 9
+        self.name = "Widow"
+        self.proper_name = "None"
+        self.he_she_it = "she"
+        self.his_her_its = "her"
+        self.him_her_it = "her"
+        self.experience_award = 5000
+        self.gold = random.randint(5, 35)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 18
+        self.dexterity = 16
+        self.constitution = 14
+        self.intelligence = 13
+        self.wisdom = 11
+        self.charisma = 16
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = True
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(6, 9)
+        self.dot_turns = dice_roll(3, 5)
+        self.undead = False
+        self.immunities = ["Sleep", "Web", "Hold Monster"]
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = False
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.damage = 0
+        self.challenge_rating = 9
+        self.hit_dice = 12
+        self.number_of_hd = 6
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(135, 155)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 16
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 10  # attack bonus
+        self.attack_1_phrase = "She swings her Drow blade with incredible speed.."
+        self.attack_2 = 12
+        self.attack_2_phrase = "Knocking you down with a leg, she stabs sadistically with her blade.."
+        self.attack_3 = 14
+        self.attack_3_phrase = "Towering above you, she pounces with all her might and then cuts with her Drow blade!"
+        self.attack_4 = 18
+        self.attack_4_phrase = "She holds you fast with 2 spidery legs as she hacks with her blade!"
+        self.attack_5 = 25
+        self.attack_5_phrase = "Calling out with a screeching howl, myriads of spiders are called forth and attack!"
+        self.introduction = f"You have encountered a Widow; An improbable life form from the cruel imagination of " \
+                            f"a Master Manipulator.\nWith the upper body of a beautiful human fused to that of a " \
+                            f"spider, her own tortured existence\nhas twisted her toward wild evil. Her movements " \
+                            f"are quick as lightning, and her light-footed crawling\nbelies her massive body. " \
+                            f"Her glistening fangs drip with poison as she approaches!"
+        self.poison_phrase = "Grabbing you in her lean, lovely arms, she attacks with poison fangs!!"
+
+
 class WickedQueenJannbrielle(Monster):
 
     def __init__(self):
@@ -3993,11 +4070,10 @@ class WickedQueenJannbrielle(Monster):
         self.dot_multiplier = dice_roll(6, 8)
         self.dot_turns = 5
         self.undead = True
-        self.immunities = ["All"]  # ["Turn Undead", "Web", "Hold Monster", "Banish"]
+        self.immunities = ["All"]
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = True
-        self.difficulty_class = 10
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.damage = 0
         self.challenge_rating = 20
@@ -4054,7 +4130,8 @@ monster_dict = {
     5: [Ogre, ZombieOgre, DarkDwarf, Minotaur, Mummy],
     6: [Troll, HillGiant, Cyclops, WrathfulAvenger, HobgoblinWarlord],
     7: [Wyvern, DrowManipulator, MorbidDefender, MindFlayer, BoltThrower],
-    8: [FrostGiant, YoungBlackDragon, YoungGreenDragon, MorbidKnight, Assassin]
+    8: [FrostGiant, YoungBlackDragon, YoungGreenDragon, MorbidKnight, Assassin],
+    9: [FireGiant, Widow]
 }
 
 # undead monsters:

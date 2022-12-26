@@ -268,7 +268,7 @@ while True:
                                         break
 
                             else:  # you died
-                                player_1.rndm_death_statement()
+                                player_1.random_death_statement()
                                 pause()
                                 player_is_dead = True
                                 break
@@ -487,7 +487,7 @@ while True:
                                                 break
 
                                     else:  # you died
-                                        player_1.rndm_death_statement()
+                                        player_1.random_death_statement()
                                         sleep(3)
                                         player_is_dead = True
                                         break

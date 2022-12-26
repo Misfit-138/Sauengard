@@ -449,14 +449,6 @@ def game_splash():
             return
 
 
-rndm_aroma_lst = ['agarwood', 'angelica root', 'anise', 'basil', 'bergamot', 'calamodin', 'calamus', 'camphor',
-                  'cardamom', 'cedar', 'camomile', 'cinnamon', 'citron', 'clary sage', 'clove', 'davana', 'eucalyptus',
-                  'frankincense', 'galbanum', 'hemlock', 'jasmine', 'lavender', 'lemongrass', 'mugwort oil',
-                  'pennyroyal', 'peppermint', 'sage', 'sandalwood', 'sassafras', 'garden mint', 'spikenard',
-                  'spruce oil', 'star anise oil', 'tea tree oil', 'tarragon oil', 'tsuga oil', 'valerian',
-                  'vanilla sweet grass', 'warionia', 'vetiver', 'wintergreen', 'yarrow oil']
-
-
 def convert_list_to_string(list1):
     # no brackets, no quotes, no commas
     return str(list1).replace('[', '').replace(']', '').replace("'", "").replace(",", "")
@@ -1649,7 +1641,7 @@ class Player:
         self.ring_of_prot = DefaultRingOfProtection()
         self.ring_of_reg = DefaultRingOfRegeneration()
         self.two_handed = False
-        self.extra_attack = 0
+        self.extra_attack = False
         self.armor_class = (self.armor.ac + self.armor.armor_bonus +
                             self.shield.ac + self.boots.ac + self.dexterity_modifier)
         self.stealth = self.cloak.stealth
@@ -1756,7 +1748,7 @@ class Player:
             return False
 
     def end_game_auto_save(self):  # future placeholder, for after player defeats final boss
-        self.dungeon_key = 1
+        self.dungeon_key = 1  # put player back at level 1.
         self.dungeon = dungeon_dict[self.dungeon_key]
         (self.x, self.y) = self.dungeon.staircase
         self.coordinates = (self.x, self.y)
@@ -2446,7 +2438,7 @@ class Player:
         # called from main loop
         if monster.name in self.discovered_monsters:
             self.hud()  # placing a hud() here erases the dungeon description; more appropriate
-            print(f"(TESTING) Discovered monsters: {self.discovered_monsters}")  # remove after testing
+            # print(f"(TESTING) Discovered monsters: {self.discovered_monsters}")  # remove after testing
             print(f"You have encountered {monster.a_an} {monster.name}. Challenge level: {monster.level}")
             # remove lvl after testing
             pause()
@@ -2553,13 +2545,13 @@ class Player:
         if self.encounter == 99:  # if dungeon level exit boss
             self.boss_hint_logic()
 
-    def rndm_death_statement(self):
+    def random_death_statement(self):
         # called from main loop
-        rndm_statements = ["You have succumbed to your injuries!",
-                           "Bravely you have fought. Bravely you have died. Rest in Peace."
-                           ]
+        random_statements = ["You have succumbed to your injuries!",
+                             "Bravely you have fought. Bravely you have died. Rest in Peace."
+                             ]
         print(f"{self.name} Level {self.level}")
-        print(random.choice(rndm_statements))
+        print(random.choice(random_statements))
         return
 
     def meta_monster_generator(self):
@@ -6317,6 +6309,13 @@ class Player:
     # INVENTORY AND ITEMS
 
     def chemist_main(self):
+        rndm_aroma_lst = ['agarwood', 'angelica root', 'anise', 'basil', 'bergamot', 'calamodin', 'calamus', 'camphor',
+                          'cardamom', 'cedar', 'camomile', 'cinnamon', 'citron', 'clary sage', 'clove', 'davana',
+                          'eucalyptus',
+                          'frankincense', 'galbanum', 'hemlock', 'jasmine', 'lavender', 'lemongrass', 'mugwort oil',
+                          'pennyroyal', 'peppermint', 'sage', 'sandalwood', 'sassafras', 'garden mint', 'spikenard',
+                          'spruce oil', 'star anise oil', 'tea tree oil', 'tarragon oil', 'tsuga oil', 'valerian',
+                          'vanilla sweet grass', 'warionia', 'vetiver', 'wintergreen', 'yarrow oil']
 
         while True:
             self.hud()

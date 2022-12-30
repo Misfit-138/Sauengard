@@ -167,13 +167,12 @@ class Monster:
         self.hit_dice = 0  # tiny d4, small d6, medium d8, large d10, huge d12, gargantuan d20
         self.number_of_hd = self.level
         self.human_player_level = 0
-        self.proficiency_bonus = 0  # 1 + round(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
         self.challenge_rating = 0
-        self.dexterity_modifier = 0
-        self.strength_modifier = 0
-        self.constitution_modifier = 0
-        self.wisdom_modifier = 0
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.multi_attack = False
         self.lesser_multi_attack = False
         self.attack_1 = 0
@@ -768,7 +767,6 @@ class Quasit(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 4  # tiny
         self.number_of_hd = 1
@@ -831,7 +829,6 @@ class Kobold(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 4  # small
         self.number_of_hd = 1
@@ -894,7 +891,6 @@ class Cultist(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 6  #
         self.number_of_hd = 1
@@ -954,7 +950,6 @@ class Goblin(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 6  # mm
         self.number_of_hd = 1
@@ -1015,7 +1010,6 @@ class WingedKobold(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 4  # mm
         self.number_of_hd = 1
@@ -1074,7 +1068,6 @@ class Gnoll(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 2
         self.hit_dice = 8
         self.number_of_hd = 1
@@ -1134,7 +1127,6 @@ class Shadow(Monster):
         self.resistances = []
         self.quantum_energy = True
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 2
         self.hit_dice = 6  # mm
         self.number_of_hd = 2
@@ -1217,7 +1209,6 @@ class ShadowKing(Monster):
         self.resistances = []
         self.quantum_energy = True
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 2
         self.hit_dice = 10  # mm
         self.number_of_hd = 2
@@ -1302,7 +1293,6 @@ class Skeleton(Monster):
         self.quantum_energy = False
         # self.human_player_level = human_player_level
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 2
         self.hit_dice = 6  # mm
         self.number_of_hd = 1  # mm
@@ -1365,7 +1355,6 @@ class ZombieProphet(Monster):
         self.quantum_energy = False
         # self.human_player_level = human_player_level
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 2
         self.hit_dice = 10  #
         self.number_of_hd = 1  #
@@ -1426,7 +1415,6 @@ class SkeletonKing(Monster):
         self.quantum_energy = False
         # self.human_player_level = human_player_level
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 2
         self.hit_dice = 10  #
         self.number_of_hd = 1  #
@@ -1487,7 +1475,6 @@ class SkeletalProphet(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 2
         self.hit_dice = 10  #
         self.number_of_hd = 1  #
@@ -1547,7 +1534,6 @@ class Drow(Monster):
         self.resistances = []
         self.quantum_energy = True
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 2
         self.hit_dice = 6  # mm
         self.number_of_hd = 1  # mm
@@ -1623,7 +1609,6 @@ class Zombie(Monster):
         self.quantum_energy = False
         # self.human_player_level = human_player_level
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 2
         self.hit_dice = 6  # mm
         self.number_of_hd = 1  # mm
@@ -1683,7 +1668,6 @@ class Troglodyte(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 4  # mm
         self.number_of_hd = 2  # mm says 1
@@ -1744,7 +1728,6 @@ class Orc(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 12  # MM says should be 1d12
         self.number_of_hd = 1  # mm
@@ -1804,7 +1787,6 @@ class CultFanatic(Monster):
         self.resistances = ["Charm", "Banish", "Fear"]
         self.quantum_energy = True
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 8  #
         self.number_of_hd = 1
@@ -1882,7 +1864,6 @@ class Gargoyle(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 2
         self.hit_dice = 6  #
         self.number_of_hd = 2
@@ -1945,7 +1926,6 @@ class Ghoul(Monster):
         self.quantum_energy = False
         self.human_player_level = 0
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 2
         self.hit_dice = 6  # mm
         self.number_of_hd = 2  # mm
@@ -2008,7 +1988,6 @@ class Bugbear(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 8
         self.number_of_hd = 2
@@ -2068,7 +2047,6 @@ class HalfOgre(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 10
         self.number_of_hd = 2
@@ -2136,7 +2114,6 @@ class Doppelganger(Monster):
         self.resistances = ["Hold Monster", "Banish"]
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 3
         self.hit_dice = 8
         self.number_of_hd = 2
@@ -2202,7 +2179,6 @@ class Specter(Monster):
         self.quantum_energy = True
         self.human_player_level = 0
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 2
         self.hit_dice = 6  # mm
         self.number_of_hd = 3  # mm
@@ -2283,7 +2259,6 @@ class SpecterKing(Monster):
         self.quantum_energy = True
         self.human_player_level = 0
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 2
         self.hit_dice = 8  #
         self.number_of_hd = 3  #
@@ -2362,7 +2337,6 @@ class HobgoblinCaptain(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 8
         self.number_of_hd = 2
@@ -2423,7 +2397,6 @@ class Harpy(Monster):
         self.resistances = ["Fear", "Charm"]
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 10
         self.number_of_hd = 1
@@ -2487,7 +2460,6 @@ class GreenDragonWyrmling(Monster):
         self.resistances = ["Fear", "Charm"]
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 10
         self.number_of_hd = 1
@@ -2550,7 +2522,6 @@ class WhiteDragonWyrmling(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 10
         self.number_of_hd = 1
@@ -2610,7 +2581,6 @@ class BugbearCaptain(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 4
         self.hit_dice = 10
         self.number_of_hd = 3
@@ -2671,7 +2641,6 @@ class Ogre(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 10
         self.number_of_hd = 3
@@ -2732,7 +2701,6 @@ class Minotaur(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 5
         self.hit_dice = 10
         self.number_of_hd = 3
@@ -2793,7 +2761,6 @@ class DarkDwarf(Monster):
         self.resistances = ["Charm", "Sleep"]
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 10
         self.number_of_hd = 3
@@ -2856,7 +2823,6 @@ class Mummy(Monster):
         self.resistances = ["Web", "Banish"]
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 5
         self.hit_dice = 8
         self.number_of_hd = 3
@@ -2918,7 +2884,6 @@ class ZombieOgre(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 8
         self.number_of_hd = 3
@@ -2979,7 +2944,6 @@ class Troll(Monster):
         self.resistances = ["All"]
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 1
         self.hit_dice = 10
         self.number_of_hd = 3
@@ -3038,7 +3002,6 @@ class HillGiant(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 6
         self.hit_dice = 10
         self.number_of_hd = 3
@@ -3098,7 +3061,6 @@ class Cyclops(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 6
         self.hit_dice = 10
         self.number_of_hd = 3
@@ -3158,7 +3120,6 @@ class WrathfulAvenger(Monster):
         self.resistances = ["Turn Undead"]
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 6
         self.hit_dice = 10
         self.number_of_hd = 3
@@ -3223,7 +3184,6 @@ class HobgoblinWarlord(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 6
         self.hit_dice = 10
         self.number_of_hd = 3
@@ -3284,7 +3244,6 @@ class Wyvern(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 7
         self.hit_dice = 10
         self.number_of_hd = 3
@@ -3346,7 +3305,6 @@ class DrowManipulator(Monster):
         self.resistances = ["All"]
         self.quantum_energy = True
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)
-        self.damage = 0
         self.challenge_rating = 7
         self.hit_dice = 10
         self.number_of_hd = 5
@@ -3428,7 +3386,6 @@ class MindFlayer(Monster):
         self.resistances = ["All"]
         self.quantum_energy = True
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)
-        self.damage = 0
         self.challenge_rating = 7
         self.hit_dice = 10
         self.number_of_hd = 5
@@ -3509,7 +3466,6 @@ class MorbidDefender(Monster):
         self.resistances = ["Turn Undead"]
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 6
         self.hit_dice = 12
         self.number_of_hd = 4
@@ -3574,7 +3530,6 @@ class BoltThrower(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 6
         self.hit_dice = 12
         self.number_of_hd = 4
@@ -3640,7 +3595,6 @@ class FrostGiant(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 8
         self.hit_dice = 12
         self.number_of_hd = 5
@@ -3701,7 +3655,6 @@ class YoungBlackDragon(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 8
         self.hit_dice = 10
         self.number_of_hd = 6
@@ -3762,7 +3715,6 @@ class YoungGreenDragon(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 8
         self.hit_dice = 10
         self.number_of_hd = 6
@@ -3823,7 +3775,6 @@ class MorbidKnight(Monster):
         self.resistances = ["Turn Undead"]
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 8
         self.hit_dice = 10
         self.number_of_hd = 6
@@ -3861,6 +3812,7 @@ class Assassin(Monster):
         self.he_she_it = "he"
         self.his_her_its = "his"
         self.him_her_it = "him"
+        self.a_an = "an"
         self.experience_award = 4000
         self.gold = random.randint(25, 35)
         self.weapon_bonus = 5
@@ -3884,7 +3836,6 @@ class Assassin(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 8
         self.hit_dice = 12
         self.number_of_hd = 3
@@ -3948,7 +3899,6 @@ class FireGiant(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 9
         self.hit_dice = 12
         self.number_of_hd = 6
@@ -4012,7 +3962,6 @@ class Widow(Monster):
         self.resistances = []
         self.quantum_energy = False
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 9
         self.hit_dice = 12
         self.number_of_hd = 6
@@ -4040,6 +3989,130 @@ class Widow(Monster):
                             f"are quick as lightning, and her light-footed crawling\nbelies her massive body. " \
                             f"Her glistening fangs drip with poison as she approaches!"
         self.poison_phrase = "Grabbing you in her lean, lovely arms, she attacks with poison fangs!!"
+
+
+class YoungBlueDragon(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 8
+        self.name = "Young Blue Dragon"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 5000
+        self.gold = random.randint(20, 35)
+        self.weapon_bonus = 5
+        self.armor = 0
+        self.shield = 0
+        self.strength = 21
+        self.dexterity = 10
+        self.constitution = 19
+        self.intelligence = 14
+        self.wisdom = 13
+        self.charisma = 17
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(6, 9)
+        self.dot_turns = dice_roll(3, 5)
+        self.undead = False
+        self.immunities = ["Sleep", "Web", "Hold Monster", "Lightning"]
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = False
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.challenge_rating = 9
+        self.hit_dice = 12
+        self.number_of_hd = 6
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(145, 155)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 18
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 12  # attack bonus
+        self.attack_1_phrase = "It swings its spiked and scaly tail.."
+        self.attack_2 = 14
+        self.attack_2_phrase = "It bites and claws at you with terrible speed and power!"
+        self.attack_3 = 16
+        self.attack_3_phrase = "It roars hatefully, swings its jagged tail, then bites with its razor-sharp teeth!"
+        self.attack_4 = 18
+        self.attack_4_phrase = "With a bellowing roar, it bites and strikes at you with its front claws!"
+        self.attack_5 = 35
+        self.attack_5_phrase = "Drawing a deep breath, it releases a storm of electrical energy from deep within!"
+        self.introduction = f"You have encountered a Young Blue Dragon; An electrified beast crackling with " \
+                            f"Quantum energy.\nArcing blue currents dance upon its scales as it snorts dismissively " \
+                            f"and approaches."
+
+
+class Wraith(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 5
+        self.name = "Wraith"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.a_an = "a"
+        self.experience_award = 5000
+        self.gold = random.randint(5, 12)
+        self.weapon_bonus = 7
+        self.armor = 0
+        self.shield = 0
+        self.strength = 16
+        self.dexterity = 14
+        self.constitution = 15
+        self.intelligence = 19
+        self.wisdom = 17
+        self.charisma = 17
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = True
+        self.dot_multiplier = dice_roll(7, 9)
+        self.dot_turns = dice_roll(5, 7)
+        self.undead = True
+        self.immunities = ["Turn Undead", "Hold Monster"]
+        self.vulnerabilities = []
+        self.resistances = ["Web", "Banish"]
+        self.quantum_energy = False
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.challenge_rating = 9
+        self.hit_dice = 10
+        self.number_of_hd = 6
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = 120
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 16
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 10  # attack bonus
+        self.attack_1_phrase = "It swings its greatsword with deadly malice."
+        self.attack_2 = 12
+        self.attack_2_phrase = "It swings its greatsword with unexpected speed."
+        self.attack_3 = 14
+        self.attack_3_phrase = "It hacks at you repeatedly with its greatsword."
+        self.attack_4 = 16
+        self.attack_4_phrase = "It strikes at you with blinding speed in a skillful combination."
+        self.attack_5 = 20
+        self.attack_5_phrase = "It raises its greatsword overhead, strikes with great strength, and continues " \
+                               "hacking with merciless malice!"
+        self.introduction = f"A black mist coalesces before you; You have encountered a Wraith. Floating before you " \
+                            f"in a field of Quantum weirdness, \nand hidden from your mind's full comprehension, " \
+                            f"your eyes strain to see its true form; A crowned, skull-ish head, gaping bony arms,\n" \
+                            f"grand, kingly armor, and a long, deadly sword gripped within fleshless fingers. You " \
+                            f"feel the air around you surge with energy."
+        self.paralyze_phrase = "It clutches your arm with an ironclad grip!"
+        self.paralyze_free_attack_phrase = "You look on, completely helpless as it gores you mercilessly!"
 
 
 class WickedQueenJannbrielle(Monster):
@@ -4075,7 +4148,6 @@ class WickedQueenJannbrielle(Monster):
         self.resistances = []
         self.quantum_energy = True
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.damage = 0
         self.challenge_rating = 20
         self.hit_dice = 10
         self.number_of_hd = 3
@@ -4131,7 +4203,7 @@ monster_dict = {
     6: [Troll, HillGiant, Cyclops, WrathfulAvenger, HobgoblinWarlord],
     7: [Wyvern, DrowManipulator, MorbidDefender, MindFlayer, BoltThrower],
     8: [FrostGiant, YoungBlackDragon, YoungGreenDragon, MorbidKnight, Assassin],
-    9: [FireGiant, Widow]
+    9: [FireGiant, Widow, YoungBlueDragon, Wraith]
 }
 
 # undead monsters:

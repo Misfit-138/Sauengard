@@ -129,9 +129,7 @@ Why bother?	30'''
 
 def os_check():
     cls()
-
     print("Welcome!\nPlease ensure terminal is in full screen mode.")
-    sleep(1.25)
     print()
     if os.name == 'nt':
         pc_powerup()

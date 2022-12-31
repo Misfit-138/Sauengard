@@ -853,7 +853,7 @@ class BroadSword(Weapon):
         self.to_hit_bonus = 1
         self.sell_price = 5
         self.buy_price = 25
-        self.minimum_level = 1
+        self.minimum_level = 2
         self.a_an = "a"
 
 
@@ -864,7 +864,7 @@ class GreatSword(Weapon):
         self.item_type = "Weapons"
         self.damage_bonus = 3
         self.to_hit_bonus = 1
-        self.sell_price = 15
+        self.sell_price = 150
         self.buy_price = 500
         self.minimum_level = 4
         self.a_an = "a"
@@ -930,7 +930,7 @@ class BattleAxe(Weapon):
         self.damage_bonus = 3
         self.to_hit_bonus = 0
         self.sell_price = 5
-        self.buy_price = 15
+        self.buy_price = 50
         self.minimum_level = 3
         self.a_an = "a"
 

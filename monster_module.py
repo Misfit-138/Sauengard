@@ -4062,7 +4062,7 @@ class Wraith(Monster):
         self.him_her_it = "it"
         self.a_an = "a"
         self.experience_award = 5000
-        self.gold = random.randint(5, 12)
+        self.gold = random.randint(1, 4)
         self.weapon_bonus = 7
         self.armor = 0
         self.shield = 0
@@ -4089,7 +4089,7 @@ class Wraith(Monster):
         self.number_of_hd = 6
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.hit_points = 120
+        self.hit_points = (random.randint(125, 145)) + self.constitution_modifier
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 16
@@ -4106,13 +4106,79 @@ class Wraith(Monster):
         self.attack_5 = 20
         self.attack_5_phrase = "It raises its greatsword overhead, strikes with great strength, and continues " \
                                "hacking with merciless malice!"
-        self.introduction = f"A black mist coalesces before you; You have encountered a Wraith. Floating before you " \
-                            f"in a field of Quantum weirdness, \nand hidden from your mind's full comprehension, " \
-                            f"your eyes strain to see its true form; A crowned, skull-ish head, gaping bony arms,\n" \
+        self.introduction = f"A black mist coalesces in front of you; You have encountered a Wraith. Floating " \
+                            f"before you in a field of Quantum weirdness, \nand hidden from your mind's full " \
+                            f"comprehension, your eyes strain to see its true form; A crowned, skull-ish head, " \
+                            f"gaping bony arms,\n" \
                             f"grand, kingly armor, and a long, deadly sword gripped within fleshless fingers. You " \
                             f"feel the air around you surge with energy."
         self.paralyze_phrase = "It clutches your arm with an ironclad grip!"
         self.paralyze_free_attack_phrase = "You look on, completely helpless as it gores you mercilessly!"
+
+
+class Necrophagist(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 5
+        self.name = "Necrophagist"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.a_an = "a"
+        self.experience_award = 5000
+        self.gold = random.randint(5, 12)
+        self.weapon_bonus = 7
+        self.armor = 0
+        self.shield = 0
+        self.strength = 16
+        self.dexterity = 14
+        self.constitution = 15
+        self.intelligence = 11
+        self.wisdom = 12
+        self.charisma = 12
+        self.can_paralyze = True
+        self.paralyze_turns = 2
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(7, 9)
+        self.dot_turns = dice_roll(5, 7)
+        self.undead = True
+        self.immunities = ["Turn Undead", "Hold Monster"]
+        self.vulnerabilities = []
+        self.resistances = ["Web"]
+        self.quantum_energy = False
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.challenge_rating = 9
+        self.hit_dice = 8
+        self.number_of_hd = 6
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = 135
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 16
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 10  # attack bonus
+        self.attack_1_phrase = "It swings its claw-like and bony hands wildly."
+        self.attack_2 = 12
+        self.attack_2_phrase = "It swings its claw-like and bony hands with unexpected speed."
+        self.attack_3 = 14
+        self.attack_3_phrase = "It strikes repeatedly and mercilessly."
+        self.attack_4 = 16
+        self.attack_4_phrase = "It swings a combination of wild, tumultuous blows!"
+        self.attack_5 = 35
+        self.attack_5_phrase = "It spins around...\nThe casket roped to its back bursts open! An explosion of\n" \
+                               "filth, bones and jagged fragmentation rush at you!"
+        self.introduction = f"You come upon a huge, foul, putrefying wretch with a rotting coffin strapped upon " \
+                            f"its back. " \
+                            f"Covered with malignance and with stark,\nstaring eyes, it senses you and approaches. " \
+                            f"You have encountered a Necrophagist; A Quantum-cursed and undead human\n" \
+                            f"forever to roam among the dead, in search of carrion."
+        self.paralyze_phrase = "It looks upon you with a morbid gaze. You feel your resolve weakening!"
+        self.paralyze_free_attack_phrase = "Stiff and motionless, you dig for the courage to endure its savage attack!"
 
 
 class WickedQueenJannbrielle(Monster):
@@ -4203,7 +4269,7 @@ monster_dict = {
     6: [Troll, HillGiant, Cyclops, WrathfulAvenger, HobgoblinWarlord],
     7: [Wyvern, DrowManipulator, MorbidDefender, MindFlayer, BoltThrower],
     8: [FrostGiant, YoungBlackDragon, YoungGreenDragon, MorbidKnight, Assassin],
-    9: [FireGiant, Widow, YoungBlueDragon, Wraith]
+    9: [FireGiant, Widow, YoungBlueDragon, Wraith, Necrophagist]
 }
 
 # undead monsters:

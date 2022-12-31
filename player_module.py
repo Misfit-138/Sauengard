@@ -1640,7 +1640,6 @@ class Player:
         self.cloak = CanvasCloak()
         self.ring_of_prot = DefaultRingOfProtection()
         self.ring_of_reg = DefaultRingOfRegeneration()
-        self.two_handed = False
         self.extra_attack = False
         self.armor_class = (self.armor.ac + self.armor.armor_bonus +
                             self.shield.ac + self.boots.ac + self.dexterity_modifier)
@@ -1679,14 +1678,14 @@ class Player:
         self.previous_y = 0
         self.in_a_pit = False
         self.vanquished_foes = []
-        self.sikira_ally = False
-        self.torbron_ally = False
-        self.magnus_ally = False
-        self.vozzbozz_ally = False
         self.sikira = SiKira()
         self.torbron = TorBron()
         self.magnus = Magnus()
         self.vozzbozz = VozzBozz()
+        self.sikira_ally = False
+        self.torbron_ally = False
+        self.magnus_ally = False
+        self.vozzbozz_ally = False
         self.boss_hint_1 = False
         self.boss_hint_1_event = False
         self.boss_hint_2 = False
@@ -1709,14 +1708,9 @@ class Player:
             'Shields': [],
             'Boots': [],
             'Weapons': [],
-            'Cloaks': [],
-            # 'Rings of Regeneration': [],  # beta
-            # 'Rings of Protection': []    # beta
-            # 'Town Portal Implements': []  # [scroll_of_town_portal]
+            'Cloaks': []
 
         }
-
-    # COMMENTED OUT RINGS FROM PACK 10/11/2022
 
     def dungeon_theme(self):
         if os.name == 'nt':

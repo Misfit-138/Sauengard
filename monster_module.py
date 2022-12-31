@@ -2737,7 +2737,6 @@ class DarkDwarf(Monster):
         self.he_she_it = "he"
         self.his_her_its = "his"
         self.him_her_it = "him"
-        self.a_an = "a"
         self.experience_award = 750
         self.gold = random.randint(5, 12)
         self.weapon_bonus = 0
@@ -2799,7 +2798,6 @@ class Mummy(Monster):
         self.he_she_it = "it"
         self.his_her_its = "its"
         self.him_her_it = "it"
-        self.a_an = "a"
         self.experience_award = 700
         self.gold = random.randint(5, 12)
         self.weapon_bonus = 0
@@ -4060,7 +4058,6 @@ class Wraith(Monster):
         self.he_she_it = "it"
         self.his_her_its = "its"
         self.him_her_it = "it"
-        self.a_an = "a"
         self.experience_award = 5000
         self.gold = random.randint(1, 4)
         self.weapon_bonus = 7
@@ -4126,7 +4123,6 @@ class Necrophagist(Monster):
         self.he_she_it = "it"
         self.his_her_its = "its"
         self.him_her_it = "it"
-        self.a_an = "a"
         self.experience_award = 5000
         self.gold = random.randint(5, 12)
         self.weapon_bonus = 7

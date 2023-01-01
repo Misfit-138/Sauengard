@@ -4162,18 +4162,18 @@ class Necrophagist(Monster):
         self.attack_2 = 12
         self.attack_2_phrase = "It swings its claw-like and bony hands with unexpected speed."
         self.attack_3 = 14
-        self.attack_3_phrase = "It strikes repeatedly and mercilessly."
+        self.attack_3_phrase = "It strikes at you repeatedly and mercilessly."
         self.attack_4 = 16
         self.attack_4_phrase = "It swings a combination of wild, tumultuous blows!"
         self.attack_5 = 35
         self.attack_5_phrase = "It spins around...\nThe casket roped to its back bursts open! An explosion of\n" \
                                "filth, bones and jagged fragmentation rush at you!"
-        self.introduction = f"You come upon a huge, foul, putrefying wretch with a rotting coffin strapped upon " \
-                            f"its back. " \
-                            f"Covered with malignance and with stark,\nstaring eyes, it senses you and approaches. " \
-                            f"You have encountered a Necrophagist; A Quantum-cursed and undead human\n" \
-                            f"forever to roam among the dead, in search of carrion."
-        self.paralyze_phrase = "It looks upon you with a morbid gaze. You feel your resolve weakening!"
+        self.introduction = f"You come upon a foul, putrefying humanoid wretch with a rotting coffin strapped upon " \
+                            f"its back.\nWith pale gray flesh covered in malignancy, and with stark, staring eyes," \
+                            f" it senses you and approaches.\n" \
+                            f"You have encountered a Necrophagist;\nA Quantum-undead human" \
+                            f"forever cursed to roam among the graves, in search of carrion."
+        self.paralyze_phrase = "It looks upon you with a terrifying, morbid gaze! You feel your resolve weakening!"
         self.paralyze_free_attack_phrase = "Stiff and motionless, you dig for the courage to endure its savage attack!"
 
 

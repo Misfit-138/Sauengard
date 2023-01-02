@@ -1188,7 +1188,7 @@ class ShadowKing(Monster):
         self.him_her_it = "him"
         self.experience_award = 100
         self.gold = random.randint(5, 10)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
-        self.weapon_bonus = 0
+        self.weapon_bonus = 5
         self.armor = 0
         self.shield = 0
         self.strength = random.randint(7, 8)
@@ -1333,7 +1333,7 @@ class ZombieProphet(Monster):
         self.him_her_it = "him"
         self.experience_award = 200
         self.gold = random.randint(6, 15)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
-        self.weapon_bonus = 0
+        self.weapon_bonus = 4
         self.armor = 0
         self.shield = 0
         self.strength = 16
@@ -1393,7 +1393,7 @@ class SkeletonKing(Monster):
         self.him_her_it = "him"
         self.experience_award = 200
         self.gold = random.randint(6, 22)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
-        self.weapon_bonus = 2
+        self.weapon_bonus = 5
         self.armor = 0
         self.shield = 0
         self.strength = 16
@@ -1454,7 +1454,7 @@ class SkeletalProphet(Monster):
         self.him_her_it = "him"
         self.experience_award = 200
         self.gold = random.randint(6, 22)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
-        self.weapon_bonus = 2
+        self.weapon_bonus = 5
         self.armor = 0
         self.shield = 0
         self.strength = 16
@@ -1513,7 +1513,7 @@ class Drow(Monster):
         self.him_her_it = "it"
         self.experience_award = 100
         self.gold = random.randint(5, 12)  # self.level * 300 * round(random.uniform(1, 2))
-        self.weapon_bonus = 0
+        self.weapon_bonus = 1
         self.armor = 0
         self.shield = 0
         self.strength = random.randint(9, 11)
@@ -1707,7 +1707,7 @@ class Orc(Monster):
         self.a_an = "an"
         self.experience_award = 100
         self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
-        self.weapon_bonus = 0
+        self.weapon_bonus = 1
         self.armor = 0
         self.shield = 0
         self.strength = random.randint(14, 16)
@@ -1967,7 +1967,7 @@ class Bugbear(Monster):
         self.him_her_it = "it"
         self.experience_award = 200
         self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
-        self.weapon_bonus = 0
+        self.weapon_bonus = 3
         self.armor = 0
         self.shield = 0
         self.strength = random.randint(14, 16)
@@ -2026,7 +2026,7 @@ class HalfOgre(Monster):
         self.him_her_it = "it"
         self.experience_award = 200
         self.gold = random.randint(5, 12)
-        self.weapon_bonus = 0
+        self.weapon_bonus = 3
         self.armor = 0
         self.shield = 0
         self.strength = random.randint(16, 18)
@@ -2142,7 +2142,7 @@ class Doppelganger(Monster):
                             f"is full of razor-sharp teeth.\nIt begins to smile in hideous delight."
         self.paralyze_phrase = "It thrusts forward, clutching your arm within its iron grip!!"
         self.paralyze_free_attack_phrase = "Completely petrified, you stand helpless as it slices at you with a " \
-                                           "horrid claw!!"
+                                           "horrid claw\nand spits shards of broken glass into your frozen face!!"
 
 
 class Specter(Monster):
@@ -2237,7 +2237,7 @@ class SpecterKing(Monster):
         self.him_her_it = "him"
         self.experience_award = 500
         self.gold = random.randint(6, 16)
-        self.weapon_bonus = 0
+        self.weapon_bonus = 5
         self.armor = 0
         self.shield = 0
         self.strength = 16
@@ -2560,7 +2560,7 @@ class BugbearCaptain(Monster):
         self.him_her_it = "it"
         self.experience_award = 700
         self.gold = random.randint(3, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
-        self.weapon_bonus = 0
+        self.weapon_bonus = 3
         self.armor = 0
         self.shield = 0
         self.strength = 17
@@ -2620,7 +2620,7 @@ class Ogre(Monster):
         self.a_an = "an"
         self.experience_award = 650
         self.gold = random.randint(5, 12)
-        self.weapon_bonus = 0
+        self.weapon_bonus = 4
         self.armor = 0
         self.shield = 0
         self.strength = 19
@@ -2680,7 +2680,7 @@ class Minotaur(Monster):
         self.a_an = "an"
         self.experience_award = 750
         self.gold = random.randint(3, 11)
-        self.weapon_bonus = 0
+        self.weapon_bonus = 4
         self.armor = 0
         self.shield = 0
         self.strength = 18
@@ -2739,7 +2739,7 @@ class DarkDwarf(Monster):
         self.him_her_it = "him"
         self.experience_award = 750
         self.gold = random.randint(5, 12)
-        self.weapon_bonus = 0
+        self.weapon_bonus = 4
         self.armor = 0
         self.shield = 0
         self.strength = 14
@@ -2861,7 +2861,7 @@ class ZombieOgre(Monster):
         self.him_her_it = "it"
         self.experience_award = 750
         self.gold = random.randint(5, 12)
-        self.weapon_bonus = 0
+        self.weapon_bonus = 4
         self.armor = 0
         self.shield = 0
         self.strength = 19
@@ -2921,7 +2921,7 @@ class Troll(Monster):
         self.him_her_it = "it"
         self.experience_award = 2000
         self.gold = random.randint(5, 10)
-        self.weapon_bonus = 0
+        self.weapon_bonus = 5
         self.armor = 0
         self.shield = 0
         self.strength = 18
@@ -2979,7 +2979,7 @@ class HillGiant(Monster):
         self.him_her_it = "it"
         self.experience_award = 2000
         self.gold = random.randint(2, 12)
-        self.weapon_bonus = 0
+        self.weapon_bonus = 5
         self.armor = 0
         self.shield = 0
         self.strength = 21
@@ -3038,7 +3038,7 @@ class Cyclops(Monster):
         self.him_her_it = "it"
         self.experience_award = 2300
         self.gold = random.randint(2, 12)
-        self.weapon_bonus = 0
+        self.weapon_bonus = 5
         self.armor = 0
         self.shield = 0
         self.strength = 22
@@ -3097,7 +3097,7 @@ class WrathfulAvenger(Monster):
         self.him_her_it = "it"
         self.experience_award = 2300
         self.gold = random.randint(1, 10)
-        self.weapon_bonus = 0
+        self.weapon_bonus = 5
         self.armor = 0
         self.shield = 0
         self.strength = 18
@@ -3161,7 +3161,7 @@ class HobgoblinWarlord(Monster):
         self.him_her_it = "it"
         self.experience_award = 2300
         self.gold = random.randint(1, 10)
-        self.weapon_bonus = 0
+        self.weapon_bonus = 5
         self.armor = 0
         self.shield = 0
         self.strength = 16
@@ -3282,7 +3282,7 @@ class DrowManipulator(Monster):
         self.him_her_it = "him"
         self.experience_award = 3000
         self.gold = random.randint(1, 15)
-        self.weapon_bonus = 0
+        self.weapon_bonus = 5
         self.armor = 0
         self.shield = 0
         self.strength = 9
@@ -3632,7 +3632,7 @@ class YoungBlackDragon(Monster):
         self.him_her_it = "it"
         self.experience_award = 4000
         self.gold = random.randint(10, 35)
-        self.weapon_bonus = 5
+        self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
         self.strength = 20
@@ -3692,7 +3692,7 @@ class YoungGreenDragon(Monster):
         self.him_her_it = "it"
         self.experience_award = 4000
         self.gold = random.randint(10, 35)
-        self.weapon_bonus = 5
+        self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
         self.strength = 20
@@ -3813,7 +3813,7 @@ class Assassin(Monster):
         self.a_an = "an"
         self.experience_award = 4000
         self.gold = random.randint(25, 35)
-        self.weapon_bonus = 5
+        self.weapon_bonus = 6
         self.armor = 0
         self.shield = 0
         self.strength = 11
@@ -3993,7 +3993,7 @@ class YoungBlueDragon(Monster):
 
     def __init__(self):
         super().__init__()
-        self.level = 8
+        self.level = 9
         self.name = "Young Blue Dragon"
         self.proper_name = "None"
         self.he_she_it = "it"
@@ -4001,7 +4001,7 @@ class YoungBlueDragon(Monster):
         self.him_her_it = "it"
         self.experience_award = 5000
         self.gold = random.randint(20, 35)
-        self.weapon_bonus = 5
+        self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
         self.strength = 21
@@ -4052,7 +4052,7 @@ class Wraith(Monster):
 
     def __init__(self):
         super().__init__()
-        self.level = 5
+        self.level = 9
         self.name = "Wraith"
         self.proper_name = "None"
         self.he_she_it = "it"
@@ -4117,7 +4117,7 @@ class Necrophagist(Monster):
 
     def __init__(self):
         super().__init__()
-        self.level = 5
+        self.level = 9
         self.name = "Necrophagist"
         self.proper_name = "None"
         self.he_she_it = "it"
@@ -4125,7 +4125,7 @@ class Necrophagist(Monster):
         self.him_her_it = "it"
         self.experience_award = 5000
         self.gold = random.randint(5, 12)
-        self.weapon_bonus = 7
+        self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
         self.strength = 16
@@ -4175,6 +4175,326 @@ class Necrophagist(Monster):
                             f"forever cursed to roam among the graves, in search of carrion."
         self.paralyze_phrase = "It looks upon you with a terrifying, morbid gaze! You feel your resolve weakening!"
         self.paralyze_free_attack_phrase = "Stiff and motionless, you dig for the courage to endure its savage attack!"
+
+
+class YoungRedDragon(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 10
+        self.name = "Young Red Dragon"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 6000
+        self.gold = random.randint(25, 35)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 23
+        self.dexterity = 10
+        self.constitution = 21
+        self.intelligence = 14
+        self.wisdom = 11
+        self.charisma = 19
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(6, 9)
+        self.dot_turns = dice_roll(3, 5)
+        self.undead = False
+        self.immunities = ["Sleep", "Web", "Hold Monster", "Firestorm", "Fireball", "Scorch", "Immolation"]
+        self.vulnerabilities = ["Ice Storm"]
+        self.resistances = []
+        self.quantum_energy = False
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.challenge_rating = 10
+        self.hit_dice = 12
+        self.number_of_hd = 6
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(165, 175)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 18
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 12  # attack bonus
+        self.attack_1_phrase = "It whips its heavy, spiked tail.."
+        self.attack_2 = 14
+        self.attack_2_phrase = "It bites and claws at you with terrible speed and power!"
+        self.attack_3 = 16
+        self.attack_3_phrase = "It roars hatefully, swings its huge tail, then bites with its razor-sharp teeth!"
+        self.attack_4 = 18
+        self.attack_4_phrase = "With a bellowing roar, it bites and strikes at you with both of its front claws!"
+        self.attack_5 = 45
+        self.attack_5_phrase = "Drawing a deep breath, it releases a column of hot flames from deep within!!"
+        self.introduction = f"You have encountered a Young Red Dragon; A dangerous, deadly and proud beast from " \
+                            f"out of Quantum improbability.\nHot smoke leaks from its nostrils, and the ground " \
+                            f"shakes as it approaches."
+
+
+class MorbidBehemoth(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 10
+        self.name = "Morbid Behemoth"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 6000
+        self.gold = random.randint(1, 5)
+        self.weapon_bonus = 5
+        self.armor = 0
+        self.shield = 0
+        self.strength = 19
+        self.dexterity = 18
+        self.constitution = 16
+        self.intelligence = 16
+        self.wisdom = 11
+        self.charisma = 13
+        self.can_paralyze = True
+        self.paralyze_turns = 2
+        self.can_poison = False
+        self.necrotic = True
+        self.dot_multiplier = dice_roll(6, 9)
+        self.dot_turns = dice_roll(3, 5)
+        self.undead = True
+        self.immunities = ["Web", "Hold Monster"]
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = False
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.challenge_rating = 10
+        self.hit_dice = 8
+        self.number_of_hd = 6
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(115, 125)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 18
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 8  # attack bonus
+        self.attack_1_phrase = "It slams you with a heavy fist.."
+        self.attack_2 = 10
+        self.attack_2_phrase = "It strikes in a flurry of heavy hands.."
+        self.attack_3 = 11
+        self.attack_3_phrase = "It slams the ground at your feet, knocking you off balance, and pounds you with a\n" \
+                               "heavy fist!"
+        self.attack_4 = 12
+        self.attack_4_phrase = "It raises its intertwined hands overhead and slams you with great speed and power!"
+        self.attack_5 = 35
+        self.attack_5_phrase = "Grabbing you in its unyielding grip, it pummels you relentlessly with a hammering " \
+                               "fist!!"
+        self.introduction = f"You have encountered a Morbid Behemoth; An immense, hateful creature of Quantum origin " \
+                            f"in life, and now,\nundead and mindless by the will of a Master Manipulator. Covered " \
+                            f"with sludge, silt and swamp-ish slime, its trunk dangles and swings as it approaches.\n" \
+                            f"From behind muddy, hanging seaweed, two green and glowing eyes focus upon you!"
+        self.paralyze_phrase = f"It grabs you within its thick, heavy, root-wrapped arms!"
+        self.paralyze_free_attack_phrase = "From deep within, you burn with agony as it squeezes you with " \
+                                           "unrelenting, wild power!!"
+
+
+class ChaosMonster(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 10
+        self.name = "Chaos Monster"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 6000
+        self.gold = random.randint(25, 35)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 18
+        self.dexterity = 16
+        self.constitution = 18
+        self.intelligence = 18
+        self.wisdom = 18
+        self.charisma = 16
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(6, 9)
+        self.dot_turns = dice_roll(3, 5)
+        self.undead = False
+        self.immunities = ["Sleep", "Web", "Hold Monster"]
+        self.vulnerabilities = ["Fear"]
+        self.resistances = []
+        self.quantum_energy = False
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.challenge_rating = 10
+        self.hit_dice = 12
+        self.number_of_hd = 6
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(135, 155)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 18
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 12  # attack bonus
+        self.attack_1_phrase = "It whips at you with materialized weaponry from outstretched arms.."
+        self.attack_2 = 14
+        self.attack_2_phrase = "A volly of sharp stone, sand and ice shoot at you from its now blackened, empty form!"
+        self.attack_3 = 16
+        self.attack_3_phrase = "Dozens of appendages form spontaneously and strike at you from every conceivable " \
+                               "angle!!"
+        self.attack_4 = 18
+        self.attack_4_phrase = "Chains, spikes and living steel burst forth from 12 fingered hands and shoot toward " \
+                               "you with serpentine weirdness!"
+        self.attack_5 = 25
+        self.attack_5_phrase = "Stretching into a twisted and elongated trail of negative energy, it encircles you " \
+                               "with searing heat and light\nthat crush and burn you from within!!"
+        self.introduction = f"You see a vaguely humanoid silhouette of ever-changing dark, random patterns and " \
+                            f"colors.\nYou have encountered a Chaos Monster. Its large stature and limbs churn " \
+                            f"continually with shape-shifting confusion\nwhich covers every inch of its form. " \
+                            f"Its arms grow long, and then shorten, a tail appears and becomes nonexistent.\n" \
+                            f"An impossibly large and completely disproportional, gaping mouth of jagged, chromatic " \
+                            f"teeth chomp menacingly, and then morph\ninto nothingness. It approaches in haphazard, " \
+                            f"unpredictable zig-zags and leaps. The air is alight\nwith Quantum weirdness.."
+        self.paralyze_phrase = f"Dark, twisted energy wraps around you in a rapid, boiling froth!!"
+        self.paralyze_free_attack_phrase = "Terrible tentacles and trails of Quantum weaponry penetrate your flesh " \
+                                           "as you stare, helplessly mesmerized and moribund!"
+
+
+class Leviathan(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 10
+        self.name = "Leviathan"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 6000
+        self.gold = random.randint(1, 5)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 19
+        self.dexterity = 18
+        self.constitution = 16
+        self.intelligence = 16
+        self.wisdom = 19
+        self.charisma = 18
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = True
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(6, 9)
+        self.dot_turns = dice_roll(3, 5)
+        self.undead = False
+        self.immunities = ["Sleep", "Web", "Hold Monster", "Vortex", "Charm"]
+        self.vulnerabilities = ["Scorch", "Fireball", "Firestorm", "Immolation"]
+        self.resistances = ["Banish"]
+        self.quantum_energy = False
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.challenge_rating = 10
+        self.hit_dice = 10
+        self.number_of_hd = 8
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(135, 155)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 18
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 12  # attack bonus
+        self.attack_1_phrase = "It whips at you with a chattering tail.."
+        self.attack_2 = 14
+        self.attack_2_phrase = "It bites with clamping jaws and dripping fangs!"
+        self.attack_3 = 16
+        self.attack_3_phrase = "Whipping at you with its deadly tail, it turns and bites at you with a hideous hiss.."
+        self.attack_4 = 18
+        self.attack_4_phrase = "It bites, whips and finally, gores you with its gleaming horns in a " \
+                               "flurry of fierce attacks!"
+        self.attack_5 = 25
+        self.attack_5_phrase = "Twisting around you in a swirl of scales and spikes, it collapses inward upon you. " \
+                               "You hear your armor creak and groan\nas it squeezes and constricts " \
+                               "from every direction!"
+        self.introduction = f"You have encountered a Leviathan; A large, serpentine and destructive creature " \
+                            f"of ruination.\nCovered in armor-like scales and spikes, it coils up and " \
+                            f"slithers toward you. Glowing yellow eyes, dripping\nfangs and stupendous horns endow " \
+                            f"its crowned head as it looks down at your tiny, insignificant form.."
+        self.poison_phrase = "It hisses, rises up and spits a vile venom!!"
+
+
+class Gojira(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 10
+        self.name = "Gojira"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 6000
+        self.gold = random.randint(1, 3)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 21
+        self.dexterity = 9
+        self.constitution = 15
+        self.intelligence = 16
+        self.wisdom = 14
+        self.charisma = 13
+        self.can_paralyze = False
+        self.paralyze_turns = 2
+        self.can_poison = True
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(5, 7)
+        self.dot_turns = dice_roll(3, 5)
+        self.undead = False
+        self.immunities = ["Sleep", "Web", "Hold Monster", "Charm"]
+        self.vulnerabilities = ["Scorch", "Fireball", "Firestorm", "Immolation"]
+        self.resistances = ["Vortex"]
+        self.quantum_energy = False
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
+        self.challenge_rating = 10
+        self.hit_dice = 10
+        self.number_of_hd = 8
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_points = (random.randint(125, 135)) + self.constitution_modifier
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.armor_class = 18
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 8  # attack bonus
+        self.attack_1_phrase = "It whips at you with a slithering tentacle.."
+        self.attack_2 = 9
+        self.attack_2_phrase = "It whips at you you with 2 tentacles.."
+        self.attack_3 = 10
+        self.attack_3_phrase = "It thrusts forward and bites with seemingly endless rows of ravenous teeth!"
+        self.attack_4 = 14
+        self.attack_4_phrase = "It strikes with whipping tentacles and bites with its horrendous teeth!"
+        self.attack_5 = 25
+        self.attack_5_phrase = "It whips at you with innumerable tentacles and holds you immobile as it bites " \
+                               "ferociously!"
+        self.introduction = f"You have encountered a Gojira; A looming, amphibious and hideous beast that roams " \
+                            f"both land and sea.\nWith 8 lifeless and black eyes, and nerve sensor-pods covering its " \
+                            f"slimy skin, it slithers toward you\nupon many tentacles, sensing every inch of you and " \
+                            f"your movements before ever you saw it.\nYou hear and see its many rows of teeth " \
+                            f"chomping in anticipation of its next meal.."
+        self.poison_phrase = "It strikes with venomous tentacles!!"
 
 
 class WickedQueenJannbrielle(Monster):
@@ -4265,7 +4585,8 @@ monster_dict = {
     6: [Troll, HillGiant, Cyclops, WrathfulAvenger, HobgoblinWarlord],
     7: [Wyvern, DrowManipulator, MorbidDefender, MindFlayer, BoltThrower],
     8: [FrostGiant, YoungBlackDragon, YoungGreenDragon, MorbidKnight, Assassin],
-    9: [FireGiant, Widow, YoungBlueDragon, Wraith, Necrophagist]
+    9: [FireGiant, Widow, YoungBlueDragon, Wraith, Necrophagist],
+    10: [YoungRedDragon, MorbidBehemoth, ChaosMonster, Leviathan, Gojira]
 }
 
 # undead monsters:

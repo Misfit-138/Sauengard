@@ -22,7 +22,7 @@ modification, are permitted provided that the following conditions are met:
    display the following acknowledgement:
      This product includes software developed by Jules Pitsker.
 
-4. Neither the name of the copyright holder nor the names of its
+4. Neither the name of the copyright holder nor the names of his
    contributors may be used to endorse or promote products derived from
    this software without specific prior written permission.
 
@@ -2306,7 +2306,7 @@ class Player:
             print(f"You are now level {self.level}.")
             sleep(2)
             self.dungeon_theme()
-            self.calculate_proficiency_bonus()  # according to DnD 5e
+            self.calculate_proficiency_bonus()
             gain_hit_points1 = (dice_roll(1, self.hit_dice) + self.constitution_modifier) * level_multiplier  # method 1
             gain_hit_points2 = (6 + self.constitution_modifier) * level_multiplier  # hp increase method 2
             hit_point_list = [gain_hit_points1, gain_hit_points2]

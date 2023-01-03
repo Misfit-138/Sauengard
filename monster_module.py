@@ -22,7 +22,7 @@ modification, are permitted provided that the following conditions are met:
    display the following acknowledgement:
      This product includes software developed by Jules Pitsker.
 
-4. Neither the name of the copyright holder nor the names of its
+4. Neither the name of the copyright holder nor the names of his
    contributors may be used to endorse or promote products derived from
    this software without specific prior written permission.
 
@@ -108,7 +108,7 @@ def sleep(seconds):
 
 def dice_roll(no_of_dice, no_of_sides):
     dice_rolls = []  # create list for multiple die rolls
-    for dice in range(no_of_dice):  # (1 hit die per level according to DnD 5E rules)
+    for dice in range(no_of_dice):
         dice_rolls.append(random.randint(1, no_of_sides))
     your_roll_sum = sum(dice_rolls)
     return your_roll_sum
@@ -133,11 +133,11 @@ class Monster:
 
     def __init__(self):
         self.monster = "Super class"
-        self.name = ""
-        self.proper_name = ""
-        self.he_she_it = ""
-        self.his_her_its = ""
-        self.him_her_it = ""
+        self.name = "Generic Monster"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
         self.a_an = "a"
         self.level = 0
         self.experience_award = 0
@@ -164,11 +164,9 @@ class Monster:
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.hit_dice = 0  # tiny d4, small d6, medium d8, large d10, huge d12, gargantuan d20
-        self.number_of_hd = self.level
-        self.human_player_level = 0
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 0
+        self.hit_dice = 0
+        self.number_of_hd = 0
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -280,9 +278,9 @@ class Monster:
             damage_to_opponent = round(damage_roll + self.strength_modifier + attack_bonus + self.weapon_bonus)
 
             if roll_d20 == 20 and damage_to_opponent < 1:
-                damage_to_opponent = 1  # a natural 20 always hits
+                damage_to_opponent = 1  # 20 always hits
 
-            if damage_to_opponent > 0:  # # at this point the player is the opponent!
+            if damage_to_opponent > 0:  # # at this point the human player is the opponent!
                 print(f"{attack_phrase}")
                 sleep(1.5)
                 print(hit_statement)
@@ -425,7 +423,7 @@ class Monster:
                         paralyze_damage = self.level
                     player_1.reduce_health(paralyze_damage)
                     if turns == 1:
-                        print(f"{self.he_she_it.capitalize()} strikes at you for {paralyze_damage} points of damage!!")
+                        print(f"You suffer {paralyze_damage} points of damage!!")
                     else:
                         print(f"{self.he_she_it.capitalize()} strikes again for {paralyze_damage} points of damage!!")
                     pause()
@@ -433,7 +431,8 @@ class Monster:
                 return True
 
             else:
-                print(f"You ignore {self.his_her_its} wiles and break free from {self.his_her_its} grip!")
+                # print(f"You ignore {self.his_her_its} wiles and break free from {self.his_her_its} grip!")
+                print(f"You break free from {self.his_her_its} grip!")
                 pause()
                 player_1.hud()
                 return False
@@ -443,9 +442,7 @@ class Monster:
     def poison_attack(self, player_1):
         player_saving_throw = dice_roll(1, 20)
         difficulty_class = (player_saving_throw + player_1.constitution_modifier)
-        # (player_1.constitution + player_1.constitution_modifier)
         roll_d20 = dice_roll(1, 20)  # attack roll
-        # print(f"The {self.name} hisses in evil glee..")
         print(self.poison_phrase)
         print(f"Attack roll: {roll_d20}")
         sleep(1)
@@ -551,7 +548,9 @@ class Monster:
     def meta_monster_function(self, player_1):
         melee_or_quantum = dice_roll(1, 20)
 
-        # if monster has quantum energy and player is not poisoned or necrotic
+        # if monster has quantum energy,
+        # and rolls more than 10,
+        # and human player is not poisoned or necrotic:
         if self.quantum_energy and melee_or_quantum > 10 and not player_1.poisoned \
                 and not player_1.necrotic:
 
@@ -576,8 +575,7 @@ class Monster:
                 self.necrotic_attack(player_1)
                 player_1.end_of_turn_calculation()
 
-        else:
-            # if it has neither, then melee attack
+        else:  # then melee attack:
             damage_to_player = self.melee(player_1)
             player_1.reduce_health(damage_to_player)
             player_1.end_of_turn_calculation()
@@ -756,6 +754,11 @@ class Quasit(Monster):
         self.intelligence = random.randint(6, 8)
         self.wisdom = random.randint(9, 10)
         self.charisma = random.randint(9, 11)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -767,15 +770,9 @@ class Quasit(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.challenge_rating = 1
         self.hit_dice = 4  # tiny
         self.number_of_hd = 1
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = self.level * (random.randint(5, 6)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 12)
         self.multi_attack = False
         self.lesser_multi_attack = False
@@ -817,6 +814,11 @@ class Kobold(Monster):
         self.intelligence = random.randint(7, 8)
         self.wisdom = random.randint(7, 8)
         self.charisma = random.randint(7, 8)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -828,15 +830,9 @@ class Kobold(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
         self.hit_dice = 4  # small
         self.number_of_hd = 1
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = self.level * (random.randint(5, 6)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 12)
         self.multi_attack = False
         self.lesser_multi_attack = False
@@ -879,6 +875,11 @@ class Cultist(Monster):
         self.intelligence = random.randint(9, 11)
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(9, 11)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -890,15 +891,9 @@ class Cultist(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
         self.hit_dice = 6  #
         self.number_of_hd = 1
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = random.randint(8, 10) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 12)
         self.multi_attack = False
         self.lesser_multi_attack = False
@@ -939,6 +934,11 @@ class Goblin(Monster):
         self.intelligence = random.randint(9, 11)
         self.wisdom = random.randint(7, 9)
         self.charisma = random.randint(7, 9)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -949,15 +949,9 @@ class Goblin(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
-        self.hit_dice = 6  # mm
+        self.hit_dice = 6
         self.number_of_hd = 1
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = self.level * (random.randint(5, 6)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
         self.multi_attack = False
         self.lesser_multi_attack = True
@@ -998,6 +992,11 @@ class WingedKobold(Monster):
         self.intelligence = random.randint(8, 10)
         self.wisdom = random.randint(6, 8)
         self.charisma = random.randint(6, 8)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -1009,15 +1008,9 @@ class WingedKobold(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
-        self.hit_dice = 4  # mm
+        self.hit_dice = 4
         self.number_of_hd = 1
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = self.level * (random.randint(5, 6)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
         self.multi_attack = False
         self.lesser_multi_attack = False
@@ -1057,6 +1050,11 @@ class Gnoll(Monster):
         self.intelligence = 6
         self.wisdom = 10
         self.charisma = 7
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -1067,15 +1065,9 @@ class Gnoll(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 2
         self.hit_dice = 8
         self.number_of_hd = 1
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(18, 21)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 15
         self.multi_attack = False
         self.lesser_multi_attack = True
@@ -1115,6 +1107,11 @@ class Shadow(Monster):
         self.intelligence = random.randint(5, 7)
         self.wisdom = random.randint(9, 11)
         self.charisma = random.randint(7, 8)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = False
@@ -1126,15 +1123,9 @@ class Shadow(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = True
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 2
-        self.hit_dice = 6  # mm
+        self.hit_dice = 6
         self.number_of_hd = 2
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = random.randint(15, 17)
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -1197,6 +1188,11 @@ class ShadowKing(Monster):
         self.intelligence = random.randint(5, 7)
         self.wisdom = random.randint(12, 13)
         self.charisma = random.randint(7, 8)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = False
@@ -1208,15 +1204,9 @@ class ShadowKing(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = True
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 2
-        self.hit_dice = 10  # mm
+        self.hit_dice = 10
         self.number_of_hd = 2
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = random.randint(15, 17)
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 15
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -1280,6 +1270,11 @@ class Skeleton(Monster):
         self.intelligence = random.randint(5, 7)
         self.wisdom = random.randint(7, 9)
         self.charisma = random.randint(5, 6)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -1291,16 +1286,9 @@ class Skeleton(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        # self.human_player_level = human_player_level
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 2
-        self.hit_dice = 6  # mm
-        self.number_of_hd = 1  # mm
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_dice = 6
+        self.number_of_hd = 1
         self.hit_points = random.randint(11, 13) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
         self.multi_attack = False
         self.lesser_multi_attack = True
@@ -1342,6 +1330,11 @@ class ZombieProphet(Monster):
         self.intelligence = 12
         self.wisdom = 13
         self.charisma = 10
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -1353,16 +1346,9 @@ class ZombieProphet(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        # self.human_player_level = human_player_level
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 2
         self.hit_dice = 10  #
         self.number_of_hd = 1  #
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = random.randint(15, 19) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 15
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -1402,6 +1388,11 @@ class SkeletonKing(Monster):
         self.intelligence = 13
         self.wisdom = 12
         self.charisma = 10
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -1413,16 +1404,9 @@ class SkeletonKing(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        # self.human_player_level = human_player_level
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 2
         self.hit_dice = 10  #
         self.number_of_hd = 1  #
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = random.randint(17, 22) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 15
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -1463,6 +1447,11 @@ class SkeletalProphet(Monster):
         self.intelligence = 13
         self.wisdom = 13
         self.charisma = 10
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -1474,15 +1463,9 @@ class SkeletalProphet(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 2
         self.hit_dice = 10  #
         self.number_of_hd = 1  #
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = random.randint(17, 22) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 15
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -1522,6 +1505,11 @@ class Drow(Monster):
         self.intelligence = random.randint(10, 12)
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(12, 13)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = True
@@ -1533,15 +1521,9 @@ class Drow(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = True
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 2
-        self.hit_dice = 6  # mm
-        self.number_of_hd = 1  # mm
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_dice = 6
+        self.number_of_hd = 1
         self.hit_points = random.randint(12, 14) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
         self.multi_attack = False
         self.lesser_multi_attack = True
@@ -1596,6 +1578,11 @@ class Zombie(Monster):
         self.intelligence = random.randint(3, 4)
         self.wisdom = random.randint(6, 7)
         self.charisma = random.randint(5, 6)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -1607,16 +1594,9 @@ class Zombie(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        # self.human_player_level = human_player_level
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 2
-        self.hit_dice = 6  # mm
-        self.number_of_hd = 1  # mm
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_dice = 6
+        self.number_of_hd = 1
         self.hit_points = random.randint(22, 25) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(8, 9)
         self.multi_attack = False
         self.lesser_multi_attack = True
@@ -1656,6 +1636,11 @@ class Troglodyte(Monster):
         self.intelligence = random.randint(6, 7)
         self.wisdom = random.randint(9, 11)
         self.charisma = random.randint(5, 7)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -1667,15 +1652,9 @@ class Troglodyte(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
-        self.hit_dice = 4  # mm
-        self.number_of_hd = 2  # mm says 1
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_dice = 4
+        self.number_of_hd = 2
         self.hit_points = random.randint(12, 14)
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
         self.multi_attack = False
         self.lesser_multi_attack = True
@@ -1716,6 +1695,11 @@ class Orc(Monster):
         self.intelligence = random.randint(6, 8)
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(9, 11)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -1727,15 +1711,9 @@ class Orc(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
-        self.hit_dice = 12  # MM says should be 1d12
-        self.number_of_hd = 1  # mm
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_dice = 12
+        self.number_of_hd = 1
         self.hit_points = (random.randint(11, 13)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 12)
         self.multi_attack = False
         self.lesser_multi_attack = True
@@ -1775,6 +1753,11 @@ class CultFanatic(Monster):
         self.intelligence = random.randint(9, 11)
         self.wisdom = random.randint(12, 13)
         self.charisma = 14
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = False
@@ -1786,15 +1769,9 @@ class CultFanatic(Monster):
         self.vulnerabilities = []
         self.resistances = ["Charm", "Banish", "Fear"]
         self.quantum_energy = True
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
         self.hit_dice = 8  #
         self.number_of_hd = 1
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = random.randint(25, 32) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(12, 14)
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -1852,6 +1829,11 @@ class Gargoyle(Monster):
         self.intelligence = 6
         self.wisdom = 11
         self.charisma = 7
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -1863,15 +1845,9 @@ class Gargoyle(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 2
         self.hit_dice = 6  #
         self.number_of_hd = 2
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = 52
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 15
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -1913,6 +1889,11 @@ class Ghoul(Monster):
         self.intelligence = random.randint(5, 10)
         self.wisdom = random.randint(7, 9)
         self.charisma = random.randint(1, 5)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = False
@@ -1924,16 +1905,9 @@ class Ghoul(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.human_player_level = 0
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 2
-        self.hit_dice = 6  # mm
-        self.number_of_hd = 2  # mm
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_dice = 6
+        self.number_of_hd = 2
         self.hit_points = random.randint(20, 24) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 12)
         self.multi_attack = False
         self.lesser_multi_attack = True
@@ -1976,6 +1950,11 @@ class Bugbear(Monster):
         self.intelligence = random.randint(8, 9)
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(8, 10)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -1987,15 +1966,9 @@ class Bugbear(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
         self.hit_dice = 8
         self.number_of_hd = 2
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(25, 28)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(15, 16)
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2035,6 +2008,11 @@ class HalfOgre(Monster):
         self.intelligence = random.randint(6, 8)
         self.wisdom = random.randint(8, 10)
         self.charisma = random.randint(9, 11)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -2046,15 +2024,9 @@ class HalfOgre(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
         self.hit_dice = 10
         self.number_of_hd = 2
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(28, 32)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 13
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2102,6 +2074,11 @@ class Doppelganger(Monster):
         self.intelligence = 11
         self.wisdom = 12
         self.charisma = 14
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = False
@@ -2113,15 +2090,9 @@ class Doppelganger(Monster):
         self.vulnerabilities = ["Scorch", "Fireball", "Firestorm", "Immolation"]
         self.resistances = ["Hold Monster", "Banish"]
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 3
         self.hit_dice = 8
         self.number_of_hd = 2
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = 52
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 14
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2166,6 +2137,11 @@ class Specter(Monster):
         self.intelligence = random.randint(9, 11)
         self.wisdom = random.randint(9, 11)
         self.charisma = random.randint(10, 12)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = False
@@ -2177,16 +2153,9 @@ class Specter(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = True
-        self.human_player_level = 0
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 2
-        self.hit_dice = 6  # mm
-        self.number_of_hd = 3  # mm
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.hit_dice = 6
+        self.number_of_hd = 3
         self.hit_points = random.randint(20, 24) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 13)
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2246,6 +2215,11 @@ class SpecterKing(Monster):
         self.intelligence = random.randint(12, 13)
         self.wisdom = random.randint(12, 13)
         self.charisma = random.randint(10, 12)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = False
@@ -2257,16 +2231,9 @@ class SpecterKing(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = True
-        self.human_player_level = 0
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 2
         self.hit_dice = 8  #
         self.number_of_hd = 3  #
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = random.randint(25, 34) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 15
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2325,6 +2292,11 @@ class HobgoblinCaptain(Monster):
         self.intelligence = 12
         self.wisdom = 10
         self.charisma = 13
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -2336,15 +2308,9 @@ class HobgoblinCaptain(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
         self.hit_dice = 8
         self.number_of_hd = 2
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(36, 49)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(17, 17)
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2385,6 +2351,11 @@ class Harpy(Monster):
         self.intelligence = 7
         self.wisdom = 10
         self.charisma = 13
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = False
@@ -2396,15 +2367,9 @@ class Harpy(Monster):
         self.vulnerabilities = []
         self.resistances = ["Fear", "Charm"]
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
         self.hit_dice = 10
         self.number_of_hd = 1
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(36, 40)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(11, 13)
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2448,6 +2413,11 @@ class GreenDragonWyrmling(Monster):
         self.intelligence = 14
         self.wisdom = 11
         self.charisma = 13
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = True
@@ -2459,15 +2429,9 @@ class GreenDragonWyrmling(Monster):
         self.vulnerabilities = []
         self.resistances = ["Fear", "Charm"]
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
         self.hit_dice = 10
         self.number_of_hd = 1
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(36, 40)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(15, 16)
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2510,6 +2474,11 @@ class WhiteDragonWyrmling(Monster):
         self.intelligence = random.randint(5, 6)
         self.wisdom = random.randint(10, 11)
         self.charisma = random.randint(10, 11)
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -2521,15 +2490,9 @@ class WhiteDragonWyrmling(Monster):
         self.vulnerabilities = ["Immolation", "Fireball", "Fire Storm"]
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
         self.hit_dice = 10
         self.number_of_hd = 1
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(30, 32)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(15, 16)
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2569,6 +2532,11 @@ class BugbearCaptain(Monster):
         self.intelligence = 11
         self.wisdom = 12
         self.charisma = 11
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -2580,15 +2548,9 @@ class BugbearCaptain(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 4
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = 65 + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 17
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2629,6 +2591,11 @@ class Ogre(Monster):
         self.intelligence = 5
         self.wisdom = 7
         self.charisma = 7
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -2640,15 +2607,9 @@ class Ogre(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(58, 62)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 11
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2689,6 +2650,11 @@ class Minotaur(Monster):
         self.intelligence = 6
         self.wisdom = 16
         self.charisma = 9
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -2700,15 +2666,9 @@ class Minotaur(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 5
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(70, 75)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 14
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2748,6 +2708,11 @@ class DarkDwarf(Monster):
         self.intelligence = 11
         self.wisdom = 11
         self.charisma = 9
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -2759,15 +2724,9 @@ class DarkDwarf(Monster):
         self.vulnerabilities = []
         self.resistances = ["Charm", "Sleep"]
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = 70
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 16
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2809,6 +2768,11 @@ class Mummy(Monster):
         self.intelligence = 6
         self.wisdom = 10
         self.charisma = 12
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = False
@@ -2820,15 +2784,9 @@ class Mummy(Monster):
         self.vulnerabilities = []
         self.resistances = ["Web", "Banish"]
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 5
         self.hit_dice = 8
         self.number_of_hd = 3
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = 70
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 11
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2870,6 +2828,11 @@ class ZombieOgre(Monster):
         self.intelligence = 3
         self.wisdom = 6
         self.charisma = 5
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -2881,15 +2844,9 @@ class ZombieOgre(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
         self.hit_dice = 8
         self.number_of_hd = 3
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(80, 84)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 10
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2930,6 +2887,11 @@ class Troll(Monster):
         self.intelligence = 7
         self.wisdom = 9
         self.charisma = 7
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -2941,15 +2903,9 @@ class Troll(Monster):
         self.vulnerabilities = ["Immolation", "Fireball", "Fire Storm"]
         self.resistances = ["All"]
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 1
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(80, 85)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = random.randint(15, 16)
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2988,6 +2944,11 @@ class HillGiant(Monster):
         self.intelligence = 5
         self.wisdom = 9
         self.charisma = 6
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -2999,15 +2960,9 @@ class HillGiant(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 6
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(100, 105)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 13
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3047,6 +3002,11 @@ class Cyclops(Monster):
         self.intelligence = 8
         self.wisdom = 6
         self.charisma = 10
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -3058,15 +3018,9 @@ class Cyclops(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 6
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(100, 105)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 13
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3106,6 +3060,11 @@ class WrathfulAvenger(Monster):
         self.intelligence = 13
         self.wisdom = 16
         self.charisma = 18
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = False
@@ -3117,15 +3076,9 @@ class WrathfulAvenger(Monster):
         self.vulnerabilities = []
         self.resistances = ["Turn Undead"]
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 6
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(120, 135)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 13
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3170,6 +3123,11 @@ class HobgoblinWarlord(Monster):
         self.intelligence = 14
         self.wisdom = 11
         self.charisma = 15
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -3181,16 +3139,10 @@ class HobgoblinWarlord(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 6
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(90, 105)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
-        self.armor_class = 20
+        self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 5  # attack bonus
@@ -3230,6 +3182,11 @@ class Wyvern(Monster):
         self.intelligence = 5
         self.wisdom = 12
         self.charisma = 6
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = True
@@ -3241,15 +3198,9 @@ class Wyvern(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 7
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(105, 115)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 13
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3291,6 +3242,11 @@ class DrowManipulator(Monster):
         self.intelligence = 17
         self.wisdom = 13
         self.charisma = 17
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = True
@@ -3302,15 +3258,9 @@ class DrowManipulator(Monster):
         self.vulnerabilities = []
         self.resistances = ["All"]
         self.quantum_energy = True
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)
-        self.challenge_rating = 7
         self.hit_dice = 10
         self.number_of_hd = 5
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = 45
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 15
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3372,6 +3322,11 @@ class MindFlayer(Monster):
         self.intelligence = 19
         self.wisdom = 17
         self.charisma = 17
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = True
@@ -3383,15 +3338,9 @@ class MindFlayer(Monster):
         self.vulnerabilities = []
         self.resistances = ["All"]
         self.quantum_energy = True
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)
-        self.challenge_rating = 7
         self.hit_dice = 10
         self.number_of_hd = 5
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = 71
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 15
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3452,6 +3401,11 @@ class MorbidDefender(Monster):
         self.intelligence = 13
         self.wisdom = 16
         self.charisma = 18
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = False
@@ -3463,15 +3417,9 @@ class MorbidDefender(Monster):
         self.vulnerabilities = []
         self.resistances = ["Turn Undead"]
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 6
         self.hit_dice = 12
         self.number_of_hd = 4
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(125, 135)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 16
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3516,6 +3464,11 @@ class BoltThrower(Monster):
         self.intelligence = 12
         self.wisdom = 11
         self.charisma = 11
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = False
@@ -3527,15 +3480,9 @@ class BoltThrower(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 6
         self.hit_dice = 12
         self.number_of_hd = 4
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(135, 145)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 16
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3581,6 +3528,11 @@ class FrostGiant(Monster):
         self.intelligence = 9
         self.wisdom = 10
         self.charisma = 12
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -3592,15 +3544,9 @@ class FrostGiant(Monster):
         self.vulnerabilities = ["Firestorm", "Fireball"]
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 8
         self.hit_dice = 12
         self.number_of_hd = 5
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(135, 145)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 15
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3641,6 +3587,11 @@ class YoungBlackDragon(Monster):
         self.intelligence = 12
         self.wisdom = 11
         self.charisma = 15
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -3652,15 +3603,9 @@ class YoungBlackDragon(Monster):
         self.vulnerabilities = ["Ice Storm"]
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 8
         self.hit_dice = 10
         self.number_of_hd = 6
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(135, 145)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3701,6 +3646,11 @@ class YoungGreenDragon(Monster):
         self.intelligence = 16
         self.wisdom = 13
         self.charisma = 15
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = True
@@ -3712,15 +3662,9 @@ class YoungGreenDragon(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 8
         self.hit_dice = 10
         self.number_of_hd = 6
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(135, 145)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3761,6 +3705,11 @@ class MorbidKnight(Monster):
         self.intelligence = 14
         self.wisdom = 14
         self.charisma = 15
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -3772,15 +3721,9 @@ class MorbidKnight(Monster):
         self.vulnerabilities = []
         self.resistances = ["Turn Undead"]
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 8
         self.hit_dice = 10
         self.number_of_hd = 6
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(90, 100)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3822,6 +3765,11 @@ class Assassin(Monster):
         self.intelligence = 13
         self.wisdom = 11
         self.charisma = 10
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = True
@@ -3833,15 +3781,9 @@ class Assassin(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 8
         self.hit_dice = 12
         self.number_of_hd = 3
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(60, 75)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 20  # super high armor, hard to hit, low damage, low hitpoints
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3885,6 +3827,11 @@ class FireGiant(Monster):
         self.intelligence = 10
         self.wisdom = 14
         self.charisma = 13
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -3896,15 +3843,9 @@ class FireGiant(Monster):
         self.vulnerabilities = ["Ice Storm"]
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 9
         self.hit_dice = 12
         self.number_of_hd = 6
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(155, 165)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3948,6 +3889,11 @@ class Widow(Monster):
         self.intelligence = 13
         self.wisdom = 11
         self.charisma = 16
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = True
@@ -3959,16 +3905,10 @@ class Widow(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 9
         self.hit_dice = 12
         self.number_of_hd = 6
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(135, 155)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
-        self.armor_class = 16
+        self.armor_class = 17
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 10  # attack bonus
@@ -4010,6 +3950,11 @@ class YoungBlueDragon(Monster):
         self.intelligence = 14
         self.wisdom = 13
         self.charisma = 17
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -4021,15 +3966,9 @@ class YoungBlueDragon(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 9
         self.hit_dice = 12
         self.number_of_hd = 6
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(145, 155)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4069,6 +4008,11 @@ class Wraith(Monster):
         self.intelligence = 19
         self.wisdom = 17
         self.charisma = 17
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = False
@@ -4080,16 +4024,10 @@ class Wraith(Monster):
         self.vulnerabilities = []
         self.resistances = ["Web", "Banish"]
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 9
         self.hit_dice = 10
         self.number_of_hd = 6
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(125, 145)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
-        self.armor_class = 16
+        self.armor_class = 17
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 10  # attack bonus
@@ -4134,6 +4072,11 @@ class Necrophagist(Monster):
         self.intelligence = 11
         self.wisdom = 12
         self.charisma = 12
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 2
         self.can_poison = False
@@ -4145,23 +4088,17 @@ class Necrophagist(Monster):
         self.vulnerabilities = []
         self.resistances = ["Web"]
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 9
         self.hit_dice = 8
         self.number_of_hd = 6
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = 135
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 16
         self.multi_attack = True
         self.lesser_multi_attack = False
-        self.attack_1 = 10  # attack bonus
+        self.attack_1 = 8  # attack bonus
         self.attack_1_phrase = "It swings its claw-like and bony hands wildly."
-        self.attack_2 = 12
+        self.attack_2 = 10
         self.attack_2_phrase = "It swings its claw-like and bony hands with unexpected speed."
-        self.attack_3 = 14
+        self.attack_3 = 11
         self.attack_3_phrase = "It strikes at you repeatedly and mercilessly."
         self.attack_4 = 16
         self.attack_4_phrase = "It swings a combination of wild, tumultuous blows!"
@@ -4198,6 +4135,11 @@ class YoungRedDragon(Monster):
         self.intelligence = 14
         self.wisdom = 11
         self.charisma = 19
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = False
@@ -4209,15 +4151,9 @@ class YoungRedDragon(Monster):
         self.vulnerabilities = ["Ice Storm"]
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 10
         self.hit_dice = 12
         self.number_of_hd = 6
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(165, 175)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4257,6 +4193,11 @@ class MorbidBehemoth(Monster):
         self.intelligence = 16
         self.wisdom = 11
         self.charisma = 13
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 2
         self.can_poison = False
@@ -4268,15 +4209,9 @@ class MorbidBehemoth(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 10
         self.hit_dice = 8
         self.number_of_hd = 6
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(115, 125)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4322,6 +4257,11 @@ class ChaosMonster(Monster):
         self.intelligence = 18
         self.wisdom = 18
         self.charisma = 16
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 1
         self.can_poison = False
@@ -4333,23 +4273,17 @@ class ChaosMonster(Monster):
         self.vulnerabilities = ["Fear"]
         self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 10
         self.hit_dice = 12
         self.number_of_hd = 6
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(135, 155)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
-        self.attack_1 = 12  # attack bonus
+        self.attack_1 = 11  # attack bonus
         self.attack_1_phrase = "It whips at you with materialized weaponry from outstretched arms.."
-        self.attack_2 = 14
+        self.attack_2 = 12
         self.attack_2_phrase = "A volly of sharp stone, sand and ice shoot at you from its now blackened, empty form!"
-        self.attack_3 = 16
+        self.attack_3 = 14
         self.attack_3_phrase = "Dozens of appendages form spontaneously and strike at you from every conceivable " \
                                "angle!!"
         self.attack_4 = 18
@@ -4391,6 +4325,11 @@ class Leviathan(Monster):
         self.intelligence = 16
         self.wisdom = 19
         self.charisma = 18
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = True
@@ -4402,23 +4341,17 @@ class Leviathan(Monster):
         self.vulnerabilities = ["Scorch", "Fireball", "Firestorm", "Immolation"]
         self.resistances = ["Banish"]
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 10
         self.hit_dice = 10
         self.number_of_hd = 8
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(135, 155)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
-        self.attack_1 = 12  # attack bonus
+        self.attack_1 = 11  # attack bonus
         self.attack_1_phrase = "It whips at you with a chattering tail.."
-        self.attack_2 = 14
+        self.attack_2 = 12
         self.attack_2_phrase = "It bites with clamping jaws and dripping fangs!"
-        self.attack_3 = 16
+        self.attack_3 = 13
         self.attack_3_phrase = "Whipping at you with its deadly tail, it turns and bites at you with a hideous hiss.."
         self.attack_4 = 18
         self.attack_4_phrase = "It bites, whips and finally, gores you with its gleaming horns in a " \
@@ -4455,6 +4388,11 @@ class Gojira(Monster):
         self.intelligence = 16
         self.wisdom = 14
         self.charisma = 13
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
         self.paralyze_turns = 2
         self.can_poison = True
@@ -4462,19 +4400,13 @@ class Gojira(Monster):
         self.dot_multiplier = dice_roll(5, 7)
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
-        self.immunities = ["Sleep", "Web", "Hold Monster", "Charm"]
+        self.immunities = ["Sleep", "Web", "Hold Monster", "Charm", "Vortex"]
         self.vulnerabilities = ["Scorch", "Fireball", "Firestorm", "Immolation"]
-        self.resistances = ["Vortex"]
+        self.resistances = []
         self.quantum_energy = False
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 10
         self.hit_dice = 10
         self.number_of_hd = 8
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = (random.randint(125, 135)) + self.constitution_modifier
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4497,6 +4429,142 @@ class Gojira(Monster):
         self.poison_phrase = "It strikes with venomous tentacles!!"
 
 
+class CorpseGrinder(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 11
+        self.name = "Corpsegrinder"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 7200
+        self.gold = random.randint(15, 25)
+        self.weapon_bonus = 7
+        self.armor = 0
+        self.shield = 0
+        self.strength = 22
+        self.dexterity = 18
+        self.constitution = 21
+        self.intelligence = 12
+        self.wisdom = 12
+        self.charisma = 13
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(5, 8)
+        self.dot_turns = dice_roll(3, 5)
+        self.undead = False
+        self.immunities = ["Sleep", "Web", "Hold Monster", "Charm"]
+        self.vulnerabilities = []
+        self.resistances = ["Firestorm", "Fireball", "Scorch", "Immolation", "Lightning"]
+        self.quantum_energy = False
+        self.hit_dice = 12
+        self.number_of_hd = 7
+        self.hit_points = (random.randint(165, 175)) + self.constitution_modifier
+        self.armor_class = 19
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 10  # attack bonus
+        self.attack_1_phrase = "It swings an arcing Quantum Axe with great power and precision."
+        self.attack_2 = 11
+        self.attack_2_phrase = "It thrusts toward you with a heavy, trident spear."
+        self.attack_3 = 12
+        self.attack_3_phrase = "It strikes in combination; an electrified Quantum Axe in its right hand, followed by " \
+                               "its Warhammer in the left!"
+        self.attack_4 = 16
+        self.attack_4_phrase = "It whips its Quantum chain, and the powerful arcflash rocks your internals with " \
+                               "deadly concussive force!"
+        self.attack_5 = 30
+        self.attack_5_phrase = "It circles its Quantum chain menacingly as it suddenly shoots forth, with " \
+                               "great speed and precision. You feel the heat and power of its arcflash!"
+        self.introduction = f"You have encountered a Corpsegrinder; An other-dimensional, barbaric race of immense " \
+                            f"size, strength and skill,\nsimilar to their cousins, the Bolt Throwers." \
+                            f"Named for their pure savagery, and unlike Bolt Throwers,\n Corpsegrinders have very " \
+                            f"little regard for any sort of hierarchical or social structure or code.\n" \
+                            f"Mayhem, chaos and victory are their only pursuits.\n" \
+                            f"With a thick, naturally camouflaged exoskeleton and standing some 8 feet tall,\n" \
+                            f"an other-worldly helm, and a deadly arsenal of weapons including a sadistic, spiked " \
+                            f"chain endowed\n" \
+                            f"with electrified Quantum weirdness, it rushes toward you in an unpredictable, " \
+                            f"serpentine pattern."
+        self.paralyze_phrase = "It encircles you with its Quantum-electrified chain!"
+        self.paralyze_free_attack_phrase = "In your helplessness, it slams, gores and cuts you with reckless " \
+                                           "abandon. Drunk on violence,\nit jumps in the air, landing with a thud. " \
+                                           "Steadying itself with hands on bent knees, it thrashes its head wildly!"
+
+
+class BoltThrowerCaptain(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 11
+        self.name = "Bolt Thrower Captain"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.experience_award = 7200
+        self.gold = random.randint(15, 25)
+        self.weapon_bonus = 7
+        self.armor = 0
+        self.shield = 0
+        self.strength = 20
+        self.dexterity = 17
+        self.constitution = 19
+        self.intelligence = 16
+        self.wisdom = 16
+        self.charisma = 16
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(5, 8)
+        self.dot_turns = dice_roll(3, 5)
+        self.undead = False
+        self.immunities = ["Sleep", "Web", "Hold Monster", "Charm"]
+        self.vulnerabilities = []
+        self.resistances = ["Firestorm", "Fireball", "Scorch", "Immolation", "Lightning"]
+        self.quantum_energy = False
+        self.hit_dice = 12
+        self.number_of_hd = 7
+        self.hit_points = (random.randint(165, 175)) + self.constitution_modifier
+        self.armor_class = 20
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 8  # attack bonus
+        self.attack_1_phrase = "He swings an arcing Quantum Axe with great power and precision."
+        self.attack_2 = 8
+        self.attack_2_phrase = "He strikes at you with his heavy, electrified Warhammer."
+        self.attack_3 = 10
+        self.attack_3_phrase = "He strikes in combination; an electrified Quantum Axe in his left hand, followed by " \
+                               "his Warhammer!"
+        self.attack_4 = 16
+        self.attack_4_phrase = "He cracks his Quantum Whip, and the powerful arcflash surges through your very " \
+                               "bones, knocking you off your feet!"
+        self.attack_5 = 33
+        self.attack_5_phrase = "He circles his Quantum Whip menacingly as it suddenly shoots forth, with " \
+                               "great speed and precision. You feel the heat and power of the arcflash\n" \
+                               "deep within!"
+        self.introduction = f"You have encountered a Bolt Thrower Captain; An intelligent, competent and disciplined " \
+                            f"warrior race holding to a strict code of rank, strength and skill.\nHis stoic, " \
+                            f"unaffected eyes stare at your from within a glorious helm of remarkable craftsmanship. "
+        self.paralyze_phrase = "He encircles you with his whip!"
+        self.paralyze_free_attack_phrase = "In your helplessness, he strikes skillfully with his arcing weaponry!"
+
+
 class WickedQueenJannbrielle(Monster):
 
     def __init__(self):
@@ -4513,11 +4581,16 @@ class WickedQueenJannbrielle(Monster):
         self.armor = 0
         self.shield = 0
         self.strength = 30
-        self.dexterity = 16
+        self.dexterity = 17
         self.constitution = 29
         self.intelligence = 18
         self.wisdom = 18
         self.charisma = 30
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = True
         self.paralyze_turns = 2
         self.can_poison = True
@@ -4529,16 +4602,10 @@ class WickedQueenJannbrielle(Monster):
         self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = True
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # 1 + (total level/4)Rounded up
-        self.challenge_rating = 20
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.hit_points = 1750  # dice_roll(35, 20) + 30
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
-        self.armor_class = 20
+        self.armor_class = 22
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 12  # attack bonus
@@ -4586,7 +4653,8 @@ monster_dict = {
     7: [Wyvern, DrowManipulator, MorbidDefender, MindFlayer, BoltThrower],
     8: [FrostGiant, YoungBlackDragon, YoungGreenDragon, MorbidKnight, Assassin],
     9: [FireGiant, Widow, YoungBlueDragon, Wraith, Necrophagist],
-    10: [YoungRedDragon, MorbidBehemoth, ChaosMonster, Leviathan, Gojira]
+    10: [YoungRedDragon, MorbidBehemoth, ChaosMonster, Leviathan, Gojira],
+    11: [CorpseGrinder, BoltThrowerCaptain]
 }
 
 # undead monsters:

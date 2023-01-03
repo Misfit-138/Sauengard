@@ -22,7 +22,7 @@ modification, are permitted provided that the following conditions are met:
    display the following acknowledgement:
      This product includes software developed by Jules Pitsker.
 
-4. Neither the name of the copyright holder nor the names of its
+4. Neither the name of the copyright holder nor the names of his
    contributors may be used to endorse or promote products derived from
    this software without specific prior written permission.
 

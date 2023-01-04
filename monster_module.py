@@ -197,6 +197,7 @@ class Monster:
         self.paralyze_phrase = ""
         self.paralyze_free_attack_phrase = ""
         self.poison_phrase = ""
+        self.necrotic_phrase = ""
 
     def reduce_health(self, damage):
         self.hit_points -= damage
@@ -483,8 +484,10 @@ class Monster:
 
     def necrotic_attack(self, player_1):
         roll_d20 = dice_roll(1, 20)  # attack roll
-        print(f"The {self.name} attempts to harness {self.his_her_its} innate understanding of quantum necrosis..")
-        print(f"Attack roll---> {roll_d20}")
+        print(f"{self.necrotic_phrase}")
+        print(f"{self.name} Attack roll: {roll_d20}")
+        print(f"{self.name} Wisdom Modifier: {self.wisdom_modifier}")
+        print(f"Total: {roll_d20 + self.wisdom_modifier}")
         sleep(1)
 
         if roll_d20 == 1:
@@ -501,7 +504,7 @@ class Monster:
                   f"Your Constitution Modifier: {player_1.constitution_modifier}\n")
             print(f"Your Total: {difficulty_class}")
 
-            if roll_d20 == 20 or roll_d20 >= difficulty_class:
+            if roll_d20 == 20 or (roll_d20 + self.wisdom_modifier) >= difficulty_class:
                 player_1.dot_multiplier = self.dot_multiplier
                 player_1.dot_turns = self.dot_turns
                 rndm_necrotic_phrases = ["You feel morbid dread and withering overcoming you..",
@@ -1105,7 +1108,7 @@ class Shadow(Monster):
         self.dexterity = random.randint(13, 15)
         self.constitution = random.randint(12, 14)
         self.intelligence = random.randint(5, 7)
-        self.wisdom = random.randint(9, 11)
+        self.wisdom = 10
         self.charisma = random.randint(7, 8)
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
@@ -1165,6 +1168,8 @@ class Shadow(Monster):
                                "feel your motor skills quivering.."
         self.paralyze_free_attack_phrase = "As you stand frozen and defenseless, the Shadow silently places\n" \
                                            "its hands upon you..a sickening visceral emptiness fills you!"
+        self.necrotic_phrase = "The Shadow reaches out toward you with groping hands, from which extends a black " \
+                               "cloud of dark Quantum energy.."
 
 
 class ShadowKing(Monster):
@@ -1186,7 +1191,7 @@ class ShadowKing(Monster):
         self.dexterity = random.randint(13, 15)
         self.constitution = random.randint(12, 14)
         self.intelligence = random.randint(5, 7)
-        self.wisdom = random.randint(12, 13)
+        self.wisdom = 14
         self.charisma = random.randint(7, 8)
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
@@ -1247,6 +1252,8 @@ class ShadowKing(Monster):
         self.paralyze_phrase = "Rising menacingly and with both clawed, shadowy hands, he reaches out, and you\n" \
                                "feel your motor skills quivering.."
         self.paralyze_free_attack_phrase = "You feel your life force weakening as he drains you mercilessly!"
+        self.necrotic_phrase = "The King reaches out toward you with groping hands, from which extends a black " \
+                               "cloud of dark Quantum energy.."
 
 
 class Skeleton(Monster):
@@ -1513,7 +1520,7 @@ class Drow(Monster):
         self.can_paralyze = False
         self.paralyze_turns = 1
         self.can_poison = True
-        self.necrotic = True
+        self.necrotic = False
         self.dot_multiplier = 1
         self.dot_turns = dice_roll(1, 6)
         self.undead = False
@@ -2135,7 +2142,7 @@ class Specter(Monster):
         self.dexterity = random.randint(12, 16)
         self.constitution = random.randint(10, 12)
         self.intelligence = random.randint(9, 11)
-        self.wisdom = random.randint(9, 11)
+        self.wisdom = 12
         self.charisma = random.randint(10, 12)
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
@@ -2192,6 +2199,8 @@ class Specter(Monster):
         self.paralyze_phrase = "It places a cold, yet immaterial hand upon you!!"
         self.paralyze_free_attack_phrase = "Completely helpless, you feel your strength failing as it unnaturally " \
                                            "drains you!!"
+        self.necrotic_phrase = "With pulsing energy, it reaches out to you, as a dark mist is released from its " \
+                               "extended hand.."
 
 
 class SpecterKing(Monster):
@@ -2213,7 +2222,7 @@ class SpecterKing(Monster):
         self.dexterity = random.randint(15, 16)
         self.constitution = random.randint(15, 16)
         self.intelligence = random.randint(12, 13)
-        self.wisdom = random.randint(12, 13)
+        self.wisdom = 14
         self.charisma = random.randint(10, 12)
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
@@ -2269,6 +2278,8 @@ class SpecterKing(Monster):
                             f"approaches, his countenance twisted in insane thirst for your life-energy.."
         self.paralyze_phrase = "With unnatural speed and silent swiftness, it places a cold, immaterial hand upon you.."
         self.paralyze_free_attack_phrase = "You feel agony crawling deep within you as you stand helpless and still!!"
+        self.necrotic_phrase = "With pulsing energy, he reaches out to you, as a dark mist is released from his " \
+                               "extended hand.."
 
 
 class HobgoblinCaptain(Monster):
@@ -2766,7 +2777,7 @@ class Mummy(Monster):
         self.dexterity = 8
         self.constitution = 15
         self.intelligence = 6
-        self.wisdom = 10
+        self.wisdom = 12
         self.charisma = 12
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
@@ -2805,6 +2816,7 @@ class Mummy(Monster):
                             f"crackling Quantum energy."
         self.paralyze_phrase = "It latches onto your arm with an iron grip!"
         self.paralyze_free_attack_phrase = "You stare in complete helplessness as it gores you mercilessly!"
+        self.necrotic_phrase = self.paralyze_phrase
 
 
 class ZombieOgre(Monster):
@@ -4049,6 +4061,7 @@ class Wraith(Monster):
                             f"feel the air around you surge with energy."
         self.paralyze_phrase = "It clutches your arm with an ironclad grip!"
         self.paralyze_free_attack_phrase = "You look on, completely helpless as it gores you mercilessly!"
+        self.necrotic_phrase = "With slow, methodical mania, it stabs at you with a necrotic blade.."
 
 
 class Necrophagist(Monster):
@@ -4191,7 +4204,7 @@ class MorbidBehemoth(Monster):
         self.dexterity = 18
         self.constitution = 16
         self.intelligence = 16
-        self.wisdom = 11
+        self.wisdom = 16
         self.charisma = 13
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
@@ -4234,6 +4247,7 @@ class MorbidBehemoth(Monster):
         self.paralyze_phrase = f"It grabs you within its thick, heavy, root-wrapped arms!"
         self.paralyze_free_attack_phrase = "From deep within, you burn with agony as it squeezes you with " \
                                            "unrelenting, wild power!!"
+        self.necrotic_phrase = "With burning energy and groping limbs, it pulls you into its crushing grip.."
 
 
 class ChaosMonster(Monster):
@@ -4565,6 +4579,133 @@ class BoltThrowerCaptain(Monster):
         self.paralyze_free_attack_phrase = "In your helplessness, he strikes skillfully with his arcing weaponry!"
 
 
+class Apocryphage(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 11
+        self.name = "Apocryphage"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.a_an = "an"
+        self.experience_award = 7000
+        self.gold = random.randint(10, 30)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 8
+        self.dexterity = 20
+        self.constitution = 8
+        self.intelligence = 15
+        self.wisdom = 20
+        self.charisma = 20
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = True
+        self.dot_multiplier = dice_roll(18, 22)
+        self.dot_turns = dice_roll(5, 7)
+        self.undead = False
+        self.immunities = ["Sleep", "Web", "Hold Monster", "Charm"]
+        self.vulnerabilities = ["Fear"]
+        self.resistances = []
+        self.quantum_energy = False
+        self.hit_dice = 10
+        self.number_of_hd = 4
+        self.hit_points = 81
+        self.armor_class = 18
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 8  # attack bonus
+        self.attack_1_phrase = "He swings his nasty dagger wildly.."
+        self.attack_2 = 10
+        self.attack_2_phrase = "He swings his nasty dagger with unexpected speed.."
+        self.attack_3 = 10
+        self.attack_3_phrase = "Jumping forward, he cuts you with his nasty knife.."
+        self.attack_4 = 12
+        self.attack_4_phrase = "With lightning speed, he lurches forward and cuts at you with a howl!"
+        self.attack_5 = 14
+        self.attack_5_phrase = "He leaps forward, unleashing a scream and a flurry of blows from his blade!!"
+        self.introduction = f"You have encountered an Apocryphage; A human student of foul arts and forbidden " \
+                            f"scrolls.\nTall, awkward, sallow, and with ill-fitting black clothes and a rumpled " \
+                            f"hat, he grasps a Fallen Blade\ntightly and rolls up his sleeves. His emaciated flesh " \
+                            f"tells of a sedentary existence of study, to the\nexclusion of all else."
+        self.necrotic_phrase = f"Grabbing his deadly Fallen Blade from his belt and chuckling softly, he swiftly" \
+                               f" stabs at you with a long, skinny arm.."
+
+
+class MorbidAssassin(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 11
+        self.name = "Morbid Assassin"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.experience_award = 7000
+        self.gold = random.randint(35, 45)
+        self.weapon_bonus = 6
+        self.armor = 0
+        self.shield = 0
+        self.strength = 14
+        self.dexterity = 18
+        self.constitution = 16
+        self.intelligence = 13
+        self.wisdom = 18
+        self.charisma = 8
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = True
+        self.necrotic = True
+        self.dot_multiplier = dice_roll(16, 20)
+        self.dot_turns = dice_roll(3, 5)
+        self.undead = True
+        self.immunities = ["Web", "Hold Monster"]
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = False
+        self.hit_dice = 6
+        self.number_of_hd = 8
+        self.hit_points = (random.randint(85, 95)) + self.constitution_modifier
+        self.armor_class = 21  # super high armor, hard to hit, low damage, low hitpoints
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 14  # attack bonus
+        self.attack_1_phrase = "His dark, shadowy form swings with a blade from the shadows.."
+        self.attack_2 = 14
+        self.attack_2_phrase = "With perfect, quiet precision, he swings from the darkness.."
+        self.attack_3 = 15
+        self.attack_3_phrase = "Blinking out of existence for an instant, he appears in your blind spot, " \
+                               "and cuts deeply with his long, nasty dagger.."
+        self.attack_4 = 18
+        self.attack_4_phrase = "He cuts you with his gleaming blade and retreats into the shadows.."
+        self.attack_5 = 30
+        self.attack_5_phrase = "With a whispering swing, his blade finds your soft flesh and cuts deep.."
+        self.introduction = f"You have encountered a Morbid Assassin; An amoral killer for hire in life, and now " \
+                            f"undead through the weirdness\nof a Master Manipulator's evil will. The light simply " \
+                            f"falls into him. His movements resemble nothing more than black, humanoid smoke.\n" \
+                            f"He approaches you in pure silence and stands still long enough for you to see his true " \
+                            f"form- dark garb,\ncriss-crossed leather belts full of knives and vials, black boots, " \
+                            f"skegg beard, and an aristocratic smugness that has followed him beyond natural life."
+        self.poison_phrase = "Suddenly appearing behind you, he stabs at you with a poison blade!!"
+        self.necrotic_phrase = f"He retrieves a black, shimmering blade with a green, glowing edge from his belt and " \
+                               f"attacks.."
+
+
 class WickedQueenJannbrielle(Monster):
 
     def __init__(self):
@@ -4584,7 +4725,7 @@ class WickedQueenJannbrielle(Monster):
         self.dexterity = 17
         self.constitution = 29
         self.intelligence = 18
-        self.wisdom = 18
+        self.wisdom = 20
         self.charisma = 30
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
@@ -4618,27 +4759,32 @@ class WickedQueenJannbrielle(Monster):
         self.attack_4_phrase = "Producing a long, black blade, she strikes with a frenzied rage!"
         self.attack_5 = 20
         self.attack_5_phrase = "The queen leaps into the air and releases a crippling scream of fell hatred and malice!"
-        self.quantum_attack_1 = 15
+        self.quantum_attack_1 = 25
         self.quantum_attack_1_phrase = "The queen smiles, licks her lips with a forked tongue and attacks with a\n" \
-                                       "wall of quantum energy!"
-        self.quantum_attack_2 = 16
+                                       "wall of quantum energy that forms an army of attacking Necrophagists!"
+        self.quantum_attack_2 = 25
         self.quantum_attack_2_phrase = "The queen unleashes a storm of dark, dancing liquid quantum energy\n" \
-                                       "from both of her outstretched hands!"
-        self.quantum_attack_3 = 18
+                                       "from both of her outstretched hands that morphs into an attacking\n" \
+                                       "Morbid Behemoth!"
+        self.quantum_attack_3 = 25
         self.quantum_attack_3_phrase = "Placing both hands together, she releases a black torrent of\n" \
-                                       "quantum energy!"
-        self.quantum_attack_4 = 20
+                                       "Quantum energy that splits open the ground, from which crawls out\n" \
+                                       "an ethereal army of attacking Morbid Knights!"
+        self.quantum_attack_4 = 25
         self.quantum_attack_4_phrase = "From beautiful hands that elongate into claws, she attacks with evil " \
                                        "Quantum Forces\n" \
-                                       "that form a dark mist of terror!"
-        self.quantum_attack_5 = 25
+                                       "that form a dark mist of terror that invades your mind!"
+        self.quantum_attack_5 = 45
         self.quantum_attack_5_phrase = "The queen releases Quantum Forces which wildly entangle\n" \
-                                       "you in a maelstrom of malice!"
+                                       "you in a maelstrom of malice which crushes with impossible gravity!"
         self.introduction = f"\'I am your doom. Your life beckons to be taken!\', says the undead queen, with a hiss!"
         self.poison_phrase = f"The queen attacks with her venomous fangs!"
         self.paralyze_phrase = f"The irresistible beauty of the undead queen begins to weaken you.."
         self.paralyze_free_attack_phrase = "Up close and personal, the wicked queen looks deeply into your eyes " \
                                            "as she slowly and sadistically gores you with her terrible claws!"
+        self.necrotic_phrase = "She places her forefingers to her head briefly, and then, with closed eyes, " \
+                               "exhales a cool,\nwhite mist that begins to encircle you\n..you feel a shivering cold " \
+                               "overcoming you.."
 
 
 # monster dictionaries. keys correspond to difficulty/challenge level
@@ -4654,7 +4800,7 @@ monster_dict = {
     8: [FrostGiant, YoungBlackDragon, YoungGreenDragon, MorbidKnight, Assassin],
     9: [FireGiant, Widow, YoungBlueDragon, Wraith, Necrophagist],
     10: [YoungRedDragon, MorbidBehemoth, ChaosMonster, Leviathan, Gojira],
-    11: [CorpseGrinder, BoltThrowerCaptain]
+    11: [CorpseGrinder, BoltThrowerCaptain, Apocryphage, MorbidAssassin]
 }
 
 # undead monsters:

@@ -441,11 +441,15 @@ class Monster:
             return False
 
     def poison_attack(self, player_1):
+        # added intelligence modifier to monster roll
         player_saving_throw = dice_roll(1, 20)
         difficulty_class = (player_saving_throw + player_1.constitution_modifier)
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(self.poison_phrase)
-        print(f"Attack roll: {roll_d20}")
+        print(f"{self.name} Attack roll: {roll_d20}")
+        print(f"{self.name} Intelligence Modifier: {math.floor((self.intelligence - 10) / 2)}")
+        monster_poison_total = roll_d20 + math.floor((self.intelligence - 10) / 2)
+        print(f"Total: {monster_poison_total}")
         sleep(1)
 
         if roll_d20 == 1:
@@ -459,7 +463,7 @@ class Monster:
                   f"Your Constitution Modifier: {player_1.constitution_modifier}\n")
             print(f"Your Total: {difficulty_class}")
 
-            if roll_d20 == 20 or roll_d20 >= difficulty_class:  # self.constitution + self.constitution_modifier:
+            if roll_d20 == 20 or monster_poison_total >= difficulty_class:
                 player_1.dot_multiplier = self.dot_multiplier
                 player_1.dot_turns = self.dot_turns
                 rndm_poisoned_phrases = ["You feel a disturbing weakness overcoming you..",
@@ -483,6 +487,7 @@ class Monster:
                 return False
 
     def necrotic_attack(self, player_1):
+        # added wisdom modifier to monster roll
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"{self.necrotic_phrase}")
         print(f"{self.name} Attack roll: {roll_d20}")
@@ -1509,7 +1514,7 @@ class Drow(Monster):
         self.strength = random.randint(9, 11)
         self.dexterity = random.randint(13, 14)
         self.constitution = random.randint(9, 11)
-        self.intelligence = random.randint(10, 12)
+        self.intelligence = 11
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(12, 13)
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
@@ -3191,7 +3196,7 @@ class Wyvern(Monster):
         self.strength = 19
         self.dexterity = 10
         self.constitution = 16
-        self.intelligence = 5
+        self.intelligence = 10
         self.wisdom = 12
         self.charisma = 6
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
@@ -3898,7 +3903,7 @@ class Widow(Monster):
         self.strength = 18
         self.dexterity = 16
         self.constitution = 14
-        self.intelligence = 13
+        self.intelligence = 16
         self.wisdom = 11
         self.charisma = 16
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
@@ -4659,7 +4664,7 @@ class MorbidAssassin(Monster):
         self.strength = 14
         self.dexterity = 18
         self.constitution = 16
-        self.intelligence = 13
+        self.intelligence = 14
         self.wisdom = 18
         self.charisma = 8
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
@@ -4724,7 +4729,7 @@ class WickedQueenJannbrielle(Monster):
         self.strength = 30
         self.dexterity = 17
         self.constitution = 29
-        self.intelligence = 18
+        self.intelligence = 20
         self.wisdom = 20
         self.charisma = 30
         self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up

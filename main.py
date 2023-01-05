@@ -47,6 +47,8 @@ triplee: for assistance with Path syntax
 
 Thanks to @LearntoCodeGCSE for the 2D array video.
 
+ACKNOWLEDGEMENTS
+
 SOUND/MUSIC:
 Main theme: "Soul's Departure" Royalty Free Music by Darren Curtis
 Creative Commons Attribution License 4.0 International (CC BY 4.0)

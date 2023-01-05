@@ -2798,7 +2798,7 @@ class Mummy(Monster):
         self.undead = True
         self.immunities = []
         self.vulnerabilities = []
-        self.resistances = ["Web", "Banish"]
+        self.resistances = ["Web"]
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 3
@@ -2918,7 +2918,7 @@ class Troll(Monster):
         self.undead = False
         self.immunities = []
         self.vulnerabilities = ["Immolation", "Fireball", "Fire Storm"]
-        self.resistances = ["All"]
+        self.resistances = []
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 3
@@ -3273,7 +3273,7 @@ class DrowManipulator(Monster):
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
-        self.resistances = ["All"]
+        self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = True
         self.hit_dice = 10
         self.number_of_hd = 5
@@ -3353,7 +3353,7 @@ class MindFlayer(Monster):
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
-        self.resistances = ["All"]
+        self.resistances = ["Sleep", "Web", "Charm", "Scorch", "Quantum Missile", "Lightning"]
         self.quantum_energy = True
         self.hit_dice = 10
         self.number_of_hd = 5
@@ -3379,7 +3379,7 @@ class MindFlayer(Monster):
                                        "toward you with clawed fingers.."
         self.quantum_attack_3 = 15
         self.quantum_attack_3_phrase = "It rises up, levitating on a Quantum platform and releases a wall of " \
-                                       "Quantum Energy!"
+                                       "Quantum Energy\nwhich transforms into a mad rush of ghoulish fiends!!"
         self.quantum_attack_4 = 16
         self.quantum_attack_4_phrase = "It reaches a claw-like hand over its head. Suddenly, you feel yourself being " \
                                        "lifted off the ground....and dropped!\nThe ground rushes toward you!"
@@ -3557,9 +3557,9 @@ class FrostGiant(Monster):
         self.dot_multiplier = dice_roll(5, 8)
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
-        self.immunities = ["Sleep", "Web", "Hold Monster", "Ice Storm"]
+        self.immunities = ["Ice Storm"]
         self.vulnerabilities = ["Firestorm", "Fireball"]
-        self.resistances = []
+        self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 12
         self.number_of_hd = 5
@@ -3616,9 +3616,9 @@ class YoungBlackDragon(Monster):
         self.dot_multiplier = dice_roll(5, 8)
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
-        self.immunities = ["Sleep", "Web", "Hold Monster"]
+        self.immunities = []
         self.vulnerabilities = ["Ice Storm"]
-        self.resistances = []
+        self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 6
@@ -3675,9 +3675,9 @@ class YoungGreenDragon(Monster):
         self.dot_multiplier = dice_roll(6, 9)
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
-        self.immunities = ["Sleep", "Web", "Hold Monster"]
+        self.immunities = []
         self.vulnerabilities = []
-        self.resistances = []
+        self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 6
@@ -3734,9 +3734,9 @@ class MorbidKnight(Monster):
         self.dot_multiplier = dice_roll(5, 8)
         self.dot_turns = dice_roll(3, 5)
         self.undead = True
-        self.immunities = ["Sleep", "Web", "Hold Monster"]
+        self.immunities = []
         self.vulnerabilities = []
-        self.resistances = ["Turn Undead"]
+        self.resistances = ["Turn Undead", "Web"]
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 6
@@ -3794,9 +3794,9 @@ class Assassin(Monster):
         self.dot_multiplier = dice_roll(6, 9)
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
-        self.immunities = ["Sleep", "Web", "Hold Monster"]
+        self.immunities = []
         self.vulnerabilities = []
-        self.resistances = []
+        self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 12
         self.number_of_hd = 3
@@ -3856,9 +3856,9 @@ class FireGiant(Monster):
         self.dot_multiplier = dice_roll(5, 8)
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
-        self.immunities = ["Sleep", "Web", "Hold Monster", "Firestorm", "Fireball", "Scorch", "Immolation"]
+        self.immunities = ["Firestorm", "Fireball", "Scorch", "Immolation"]
         self.vulnerabilities = ["Ice Storm"]
-        self.resistances = []
+        self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 12
         self.number_of_hd = 6
@@ -3918,9 +3918,9 @@ class Widow(Monster):
         self.dot_multiplier = dice_roll(6, 9)
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
-        self.immunities = ["Sleep", "Web", "Hold Monster"]
+        self.immunities = ["Web"]
         self.vulnerabilities = []
-        self.resistances = []
+        self.resistances = ["Sleep", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 12
         self.number_of_hd = 6
@@ -3979,9 +3979,9 @@ class YoungBlueDragon(Monster):
         self.dot_multiplier = dice_roll(6, 9)
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
-        self.immunities = ["Sleep", "Web", "Hold Monster", "Lightning"]
+        self.immunities = ["Lightning"]
         self.vulnerabilities = []
-        self.resistances = []
+        self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 12
         self.number_of_hd = 6
@@ -4037,7 +4037,7 @@ class Wraith(Monster):
         self.dot_multiplier = dice_roll(7, 9)
         self.dot_turns = dice_roll(5, 7)
         self.undead = True
-        self.immunities = ["Turn Undead", "Hold Monster"]
+        self.immunities = ["Turn Undead"]
         self.vulnerabilities = []
         self.resistances = ["Web", "Banish"]
         self.quantum_energy = False
@@ -4102,9 +4102,9 @@ class Necrophagist(Monster):
         self.dot_multiplier = dice_roll(7, 9)
         self.dot_turns = dice_roll(5, 7)
         self.undead = True
-        self.immunities = ["Turn Undead", "Hold Monster"]
+        self.immunities = ["Turn Undead"]
         self.vulnerabilities = []
-        self.resistances = ["Web"]
+        self.resistances = ["Web", "Hold Monster"]
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 6
@@ -4165,9 +4165,9 @@ class YoungRedDragon(Monster):
         self.dot_multiplier = dice_roll(6, 9)
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
-        self.immunities = ["Sleep", "Web", "Hold Monster", "Firestorm", "Fireball", "Scorch", "Immolation"]
+        self.immunities = ["Firestorm", "Fireball", "Scorch", "Immolation"]
         self.vulnerabilities = ["Ice Storm"]
-        self.resistances = []
+        self.resistances = ["Sleep", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 12
         self.number_of_hd = 6
@@ -4223,9 +4223,9 @@ class MorbidBehemoth(Monster):
         self.dot_multiplier = dice_roll(6, 9)
         self.dot_turns = dice_roll(3, 5)
         self.undead = True
-        self.immunities = ["Web", "Hold Monster"]
+        self.immunities = ["Hold Monster", "Turn Undead"]
         self.vulnerabilities = []
-        self.resistances = []
+        self.resistances = ["Firestorm", "Fireball", "Scorch", "Immolation"]
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 6
@@ -4356,9 +4356,9 @@ class Leviathan(Monster):
         self.dot_multiplier = dice_roll(6, 9)
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
-        self.immunities = ["Sleep", "Web", "Hold Monster", "Vortex", "Charm"]
+        self.immunities = []
         self.vulnerabilities = ["Scorch", "Fireball", "Firestorm", "Immolation"]
-        self.resistances = ["Banish"]
+        self.resistances = ["Sleep", "Web", "Vortex", "Charm", "Banish"]
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 8
@@ -4419,9 +4419,9 @@ class Gojira(Monster):
         self.dot_multiplier = dice_roll(5, 7)
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
-        self.immunities = ["Sleep", "Web", "Hold Monster", "Charm", "Vortex"]
+        self.immunities = ["Vortex"]
         self.vulnerabilities = ["Scorch", "Fireball", "Firestorm", "Immolation"]
-        self.resistances = []
+        self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 8
@@ -4481,9 +4481,9 @@ class CorpseGrinder(Monster):
         self.dot_multiplier = dice_roll(5, 8)
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
-        self.immunities = ["Sleep", "Web", "Hold Monster", "Charm"]
+        self.immunities = ["Lightning"]
         self.vulnerabilities = []
-        self.resistances = ["Firestorm", "Fireball", "Scorch", "Immolation", "Lightning"]
+        self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 12
         self.number_of_hd = 7
@@ -4553,9 +4553,9 @@ class BoltThrowerCaptain(Monster):
         self.dot_multiplier = dice_roll(5, 8)
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
-        self.immunities = ["Sleep", "Web", "Hold Monster", "Charm"]
+        self.immunities = ["Lightning"]
         self.vulnerabilities = []
-        self.resistances = ["Firestorm", "Fireball", "Scorch", "Immolation", "Lightning"]
+        self.resistances = ["Fireball", "Scorch", "Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 12
         self.number_of_hd = 7
@@ -4618,9 +4618,9 @@ class Apocryphage(Monster):
         self.dot_multiplier = dice_roll(18, 22)
         self.dot_turns = dice_roll(5, 7)
         self.undead = False
-        self.immunities = ["Sleep", "Web", "Hold Monster", "Charm"]
+        self.immunities = []
         self.vulnerabilities = ["Fear"]
-        self.resistances = []
+        self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 4
@@ -4638,10 +4638,14 @@ class Apocryphage(Monster):
         self.attack_4_phrase = "With lightning speed, he lurches forward and cuts at you with a howl!"
         self.attack_5 = 14
         self.attack_5_phrase = "He leaps forward, unleashing a scream and a flurry of blows from his blade!!"
-        self.introduction = f"You have encountered an Apocryphage; A human student of foul arts and forbidden " \
-                            f"scrolls.\nTall, awkward, sallow, and with ill-fitting black clothes and a rumpled " \
+        self.introduction = f"You have encountered an Apocryphage; A once-human student of Quantum Necrotic arts and " \
+                            f"forbidden " \
+                            f"scrolls,\nnow changed by evil knowledge into something...different. Tall, awkward, " \
+                            f"sallow,\nand with ill-fitting black clothes and a rumpled " \
                             f"hat, he grasps a Fallen Blade\ntightly and rolls up his sleeves. His emaciated flesh " \
-                            f"tells of a sedentary existence of study, to the\nexclusion of all else."
+                            f"tells of a sedentary existence of study\nand rumination, to the exclusion of all else. " \
+                            f"Gazing from behind matted, filthy locks and gaunt flesh, he approaches\n" \
+                            f"you with lugubrious curiosity."
         self.necrotic_phrase = f"Grabbing his deadly Fallen Blade from his belt and chuckling softly, he swiftly" \
                                f" stabs at you with a long, skinny arm.."
 
@@ -4681,7 +4685,7 @@ class MorbidAssassin(Monster):
         self.undead = True
         self.immunities = ["Web", "Hold Monster"]
         self.vulnerabilities = []
-        self.resistances = []
+        self.resistances = ["Turn Undead"]
         self.quantum_energy = False
         self.hit_dice = 6
         self.number_of_hd = 8
@@ -4698,7 +4702,7 @@ class MorbidAssassin(Monster):
                                "and cuts deeply with his long, nasty dagger.."
         self.attack_4 = 18
         self.attack_4_phrase = "He cuts you with his gleaming blade and retreats into the shadows.."
-        self.attack_5 = 30
+        self.attack_5 = 20
         self.attack_5_phrase = "With a whispering swing, his blade finds your soft flesh and cuts deep.."
         self.introduction = f"You have encountered a Morbid Assassin; An amoral killer for hire in life, and now " \
                             f"undead through the weirdness\nof a Master Manipulator's evil will. The light simply " \
@@ -4709,6 +4713,84 @@ class MorbidAssassin(Monster):
         self.poison_phrase = "Suddenly appearing behind you, he stabs at you with a poison blade!!"
         self.necrotic_phrase = f"He retrieves a black, shimmering blade with a green, glowing edge from his belt and " \
                                f"attacks.."
+
+
+class TorinManipulator(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 11
+        self.name = "Torin Manipulator"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.experience_award = 7000
+        self.gold = random.randint(1, 15)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 11
+        self.dexterity = 12
+        self.constitution = 12
+        self.intelligence = 19
+        self.wisdom = 19
+        self.charisma = 17
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = True
+        self.dot_multiplier = dice_roll(10, 16)
+        self.dot_turns = dice_roll(4, 7)
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = ["Sleep", "Web", "Charm", "Hold Monster", "Lightning", "Fear"]
+        self.quantum_energy = True
+        self.hit_dice = 10
+        self.number_of_hd = 5
+        self.hit_points = 101
+        self.armor_class = 17
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 10  # attack bonus
+        self.attack_1_phrase = "He deftly swings his gleaming staff!"
+        self.attack_2 = 11
+        self.attack_2_phrase = "He swings his staff with a time-slowing effect! You are unable to dodge.."
+        self.attack_3 = 12
+        self.attack_3_phrase = "He cuts at you with a long, shining, steel dagger!"
+        self.attack_4 = 13
+        self.attack_4_phrase = "He slices and swings in a deadly combination!!"
+        self.attack_5 = 14
+        self.attack_5_phrase = "He slams the ground with his staff, sending crippling shock-waves through you!"
+        self.quantum_attack_1 = 15
+        self.quantum_attack_1_phrase = "With a flick of his wrist, a cone of fire is unleashed and rushes at you " \
+                                       "with roaring, searing heat!"
+        self.quantum_attack_2 = 15
+        self.quantum_attack_2_phrase = "A storm of ice and hail encircles you within a frigid wind of weirdness!"
+        self.quantum_attack_3 = 18
+        self.quantum_attack_3_phrase = "Weird, arcing lightning courses through his body, illuminating his skeleton " \
+                                       "for a brief moment, before shooting toward you!"
+        self.quantum_attack_4 = 20
+        self.quantum_attack_4_phrase = "Pounding the ground with a fist, you are knocked off your feet, as a torrent " \
+                                       "of hot flames approaches!"
+        self.quantum_attack_5 = 35
+        self.quantum_attack_5_phrase = "Clapping his hands with a thundering arcflash, a jagged bolt of white-hot " \
+                                       "lightning reaches out to you!"
+        self.introduction = f"You have encountered a Torin Manipulator; A human formally schooled in the weird arts " \
+                            f"by an evil Master,\nwho bends their students to their own sadistic ends. " \
+                            f"In the hierarchy of Weirdness, the Torin fall\ninto the middle ranks, and are quite " \
+                            f"competent with Quantum Necrosis. His eyes glow with a reddish tinge,\n" \
+                            f"illuminating a face that has been twisted by the greedy gain of power.."
+        self.paralyze_phrase = "'HALT!', he calls out to you with a powerful voice...\n..your limbs begin to freeze up!"
+        self.paralyze_free_attack_phrase = "Spinning his staff to an attack position, he patiently swings at you " \
+                                           "as you stand, halted and helpless!"
+        self.necrotic_phrase = f"Closing his eyes for concentration, he attempts to harness Quantum necrotic forces!"
 
 
 class WickedQueenJannbrielle(Monster):
@@ -4805,7 +4887,7 @@ monster_dict = {
     8: [FrostGiant, YoungBlackDragon, YoungGreenDragon, MorbidKnight, Assassin],
     9: [FireGiant, Widow, YoungBlueDragon, Wraith, Necrophagist],
     10: [YoungRedDragon, MorbidBehemoth, ChaosMonster, Leviathan, Gojira],
-    11: [CorpseGrinder, BoltThrowerCaptain, Apocryphage, MorbidAssassin]
+    11: [CorpseGrinder, BoltThrowerCaptain, Apocryphage, MorbidAssassin, TorinManipulator]
 }
 
 # undead monsters:

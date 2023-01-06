@@ -4795,6 +4795,72 @@ class TorinManipulator(Monster):
         self.necrotic_phrase = f"Closing his eyes for concentration, he attempts to harness Quantum necrotic forces!"
 
 
+class DiamondKing(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 12
+        self.name = "Diamond King"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.experience_award = 8400
+        self.gold = random.randint(5, 45)
+        self.weapon_bonus = 6
+        self.armor = 0
+        self.shield = 0
+        self.strength = 14
+        self.dexterity = 18
+        self.constitution = 16
+        self.intelligence = 20
+        self.wisdom = 17
+        self.charisma = 18
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = True
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(12, 18)
+        self.dot_turns = dice_roll(3, 5)
+        self.undead = True
+        self.immunities = ["Web", "Hold Monster"]
+        self.vulnerabilities = ["Fireball", "Firestorm"]
+        self.resistances = ["Turn Undead", "Banish"]
+        self.quantum_energy = False
+        self.hit_dice = 8
+        self.number_of_hd = 8
+        self.hit_points = 155
+        self.armor_class = 18
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 14  # attack bonus
+        self.attack_1_phrase = "Bending physical laws, he swirls around you in a blur, swinging hard, heavy fists.."
+        self.attack_2 = 14
+        self.attack_2_phrase = "Smearing the light around his form, he strikes at you from the side.."
+        self.attack_3 = 20
+        self.attack_3_phrase = "Vanishing in a black, befogged *puff*, he appears behind you and strikes mightily.."
+        self.attack_4 = 25
+        self.attack_4_phrase = "Feinting to the side in dark murkiness, he strikes your head with a mighty blow.."
+        self.attack_5 = 30
+        self.attack_5_phrase = "Collapsing into a dark smudge, he instantly appears, sinking his fangs into your " \
+                               "flesh!!"
+        self.introduction = f"You have encountered a Diamond King; An undead human initiate of a self-proclaimed " \
+                            f"high-born order which\nregards all other life forms as laboriously tedious and " \
+                            f"inferior. With rock-hard and snow-white skin,\nand deep, dark markings surrounding " \
+                            f"his red eyes, he approaches with a stately manner, regarding you with a measured " \
+                            f"curiosity. He stands\nbefore you in his splendid black garb, complete with a cape " \
+                            f"and red cravat. He smiles to reveal a mouth full of lustrous fangs.."
+        self.paralyze_phrase = f"He gazes upon you with narrowed, glowing eyes! You feel your muscles start to freeze!"
+        self.paralyze_free_attack_phrase = "With a gaping hiss, he silently approaches and sinks his fangs deep!"
+        self.poison_phrase = f"In one fluid motion, he retrieves a vial from his belt, crushes it and throws " \
+                             f"the the contents and glass at you.."
+
+
 class WickedQueenJannbrielle(Monster):
 
     def __init__(self):
@@ -4889,7 +4955,8 @@ monster_dict = {
     8: [FrostGiant, YoungBlackDragon, YoungGreenDragon, MorbidKnight, Assassin],
     9: [FireGiant, Widow, YoungBlueDragon, Wraith, Necrophagist],
     10: [YoungRedDragon, MorbidBehemoth, ChaosMonster, Leviathan, Gojira],
-    11: [CorpseGrinder, BoltThrowerCaptain, Apocryphage, MorbidAssassin, TorinManipulator]
+    11: [CorpseGrinder, BoltThrowerCaptain, Apocryphage, MorbidAssassin, TorinManipulator],
+    12: [DiamondKing]
 }
 
 # undead monsters:

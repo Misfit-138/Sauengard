@@ -4855,7 +4855,8 @@ class DiamondKing(Monster):
                             f"his red eyes, he approaches with a stately manner, regarding you with a measured " \
                             f"curiosity. He stands\nbefore you in his splendid black garb, complete with a cape " \
                             f"and red cravat. He smiles to reveal a mouth full of lustrous fangs.."
-        self.paralyze_phrase = f"He gazes upon you with narrowed, glowing eyes! You feel your muscles start to freeze!"
+        self.paralyze_phrase = f"He gazes upon you with narrowed, glowing eyes! You feel your muscles start to " \
+                               f"freeze.."
         self.paralyze_free_attack_phrase = "With a gaping hiss, he silently approaches and sinks his fangs deep!"
         self.poison_phrase = f"In one fluid motion, he retrieves a vial from his belt, crushes it and throws " \
                              f"the the contents and glass at you.."

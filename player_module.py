@@ -1611,13 +1611,13 @@ class Player:
         self.maximum_quantum_units = 2
         self.quantum_units = self.maximum_quantum_units
         self.encounter = 0
-        self.experience = 0
+        self.experience = 23000
         self.base_dc = 8
         self.gold = 0
-        self.wielded_weapon = ShortSword()
-        self.armor = PaddedArmor()
-        self.shield = NoShield()
-        self.boots = LeatherBoots()
+        self.wielded_weapon = GreatAxe()
+        self.armor = ScaleMail()
+        self.shield = KiteShield()
+        self.boots = ElvenBoots()
         # self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = strength
         self.strength_modifier = math.floor((self.strength - 10) / 2)
@@ -1633,7 +1633,7 @@ class Player:
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.hit_dice = 10
         self.proficiency_bonus = 2
-        self.maximum_hit_points = 10 + self.constitution_modifier
+        self.maximum_hit_points = 65  # 10 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
         self.is_paralyzed = False
@@ -4427,6 +4427,7 @@ class Player:
 
                         if self.quantum_units < q_level:
                             print(f"You do not have enough Quantum Energy Units!")
+                            sleep(1)
                             continue
 
                 except (ValueError, KeyError):
@@ -8943,9 +8944,10 @@ class Player:
             pause()
             self.hud()
             print(f"\'Forgive me, friend!\', you manage to respond. \'It was meant with deep respect! It is how\n"
-                  f"elf-kind enjoy being greeted where I am from!..\'")
-            print(f"\'I AM NOT ELF!\', she asserts, directly into your face. Your disarmed look speaks to your\n"
-                  f"confusion, and she responds, \'I AM DROW! And I have no need of your assistance, nor of\n"
+                  f"Elf-kind enjoy being greeted where I am from!..\'")
+            print(f"\'I AM NOT OF-THE-LIGHT!\', she asserts, directly into your face. "
+                  f"Your disarmed look speaks to your\n"
+                  f"confusion, and she responds, \'And I have no need of your assistance, nor of\n"
                   f"your life!\' You feel her blade move within a hair's breadth of your throat.")
             pause()
             self.hud()
@@ -8956,25 +8958,28 @@ class Player:
             pause()
             self.hud()
             print(f"Her face and mood again shift, and she removes her blade and begins to smile! It is then that you\n"
-                  f"begin to notice the signs you missed earlier; Her teeth, black and smooth as raven's claws,\n"
-                  f"tiny fangs, deep red eyes and her unusually petite, yet athletic build. But how could a Drow have\n"
-                  f"such purely white complexion, you wonder silently...Are they not grey-skinned?")
+                  f"begin to notice the signs you missed earlier; Her teeth- black and smooth as raven's claws,\n"
+                  f"tiny fangs, deep red eyes and her unusually petite, yet athletic build. But how could a Dark "
+                  f"Elf have\n"
+                  f"such a pale complexion, you wonder silently...Are they not grey-skinned?")
             pause()
             self.hud()
             print(f"\'Well. {self.name} of Tinbar, well met!\', she says with an evil chuckle. \'I am Si'Kira,\n"
-                  f"Child of the Moon Forest. My people too, have all been slain. I also seek to destroy the\n"
+                  f"Child of the Waning Moon. My people too, have all been slain. I also seek to destroy the\n"
                   f"wicked Queen Jannbrielle.\'. She sheathes her blade, and her long silver hair glistens gorgeously\n"
-                  f"in the darkness, as does her wondrous armor.")
+                  f"in the darkness, as does her wondrous weaponry and armor.")
             pause()
             self.hud()
             print(f"\'Queen Jannbrielle..\', you repeat thoughtfully. Si'Kira looks at you as you say the name.\n"
                   f"\'I have met allies above who dare not even utter that word, and at last I learn it...\'\n"
-                  f"\'Thank you for finally revealing the name of our common enemy, my good Drow!\' you say with\n"
+                  f"\'Thank you for finally revealing the name of our common enemy, my good Elf-of-the-darkness!\' "
+                  f"you say with\n"
                   f"a hint of humor.")
             pause()
             self.hud()
             print(f"Si'Kira laughs gleefully again. \'This is most interesting!\', she says, with sincere intrigue\n"
-                  f"in her voice. \'How odd that our paths cross in such a way..and in such a place! I shall\n"
+                  f"in her voice, and visible excitement in her eyes. \'How odd that our paths cross in such a "
+                  f"way..and in such a place! I shall\n"
                   f"\'be accompanying you, {self.name} of Tinbar! For good or ill, we are bound in purpose and\n"
                   f"outcome.\'")
             pause()
@@ -8983,8 +8988,8 @@ class Player:
                   f"\'Aye. It does.\', says Si'Kira, plainly.")
             pause()
             self.hud()
-            print(f"You cannot help but wish that you had a voice in the matter; Drow are notoriously wicked, and\n"
-                  f"very clever, but you trust your instincts and move on, together.")
+            print(f"You cannot help but wish that you had a voice in the matter; Dark Elves are notoriously "
+                  f"duplicitous, and\nvery clever, but you trust your instincts and move on, together.")
             self.sikira_ally = True
             pause()
         else:

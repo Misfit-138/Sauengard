@@ -2139,7 +2139,7 @@ class Player:
 
         if self.experience >= 34000 < 48000:
             self.level = 8
-            self.quantum_level = 3
+            self.quantum_level = 4
             self.maximum_quantum_units = 10
 
         if self.experience >= 48000 < 64000:
@@ -2149,12 +2149,12 @@ class Player:
 
         if self.experience >= 64000 < 85000:
             self.level = 10
-            self.quantum_level = 4
+            self.quantum_level = 5
             self.maximum_quantum_units = 12
 
         if self.experience >= 85000 < 100000:
             self.level = 11
-            self.quantum_level = 4
+            self.quantum_level = 5
             self.maximum_quantum_units = 12
 
         if self.experience >= 100000 < 120000:
@@ -2215,9 +2215,7 @@ class Player:
 
     def asi(self):
         # called from level_up()
-        # Ability Score Improvement at levels 4, 8, 12, 16, and 19.
-        # Fighters gain additional ASIs at the 6th and 14th levels
-        # so, 4, 6, 8, 12, 14, 16, 19 for our purposes, since player is most like a fighter
+        # Ability Score Improvement at levels 4, 6, 8, 12, 14, 16, 19
         # also, if player goes up more than one level, by gaining a large amount of experience, asi is available
 
         while True:
@@ -2280,19 +2278,53 @@ class Player:
                     sleep(1)
                     continue
 
+    def asi_level_check(self, before_level):
+        # have this method called from level_up() below, to simplify that method
+        # Ability Score Improvement at levels 4, 6, 8, 12, 14, 16, 19
+        # ASI logic
+        # This logic also works for players going up more than one level,
+        # e.g. vanquishing a monster with very high experience reward
+        # Logic works by creating 2 lists and comparing whether the player's current level, or any levels between
+        # their last level and current level are ASI eligible. Ranges are initially counterintuitive in python;
+        # they do not include the last number in range, so I added +1 to end_range
+        # Also, for the current purposes, I added +1 to start_range as well, since we don't want to award ASI
+        # based on the previous experience level, only on current level and any eligible levels between.
+        range_1 = range((before_level + 1), (self.level + 1), 1)  # enumerate levels between, inc. after_level by 1
+        all_levels_between = list(range_1)  # create a list containing levels between, including after_level
+        asi_levels = [4, 6, 8, 12, 14, 16, 19]
+
+        # check if any levels between are ASI levels by comparing elements from both lists
+        # number_of_asi_awards = sum of all_levels_between elements which exist in asi_levels
+        number_of_asi_awards = sum(el in all_levels_between for el in asi_levels)
+        # remove after testing:
+        # print(f"Range between the before and after levels: {range_1}")  # remove after testing
+        # print(f"Levels between last and current (including current): {all_levels_between}")  # rem after testing
+        # print(f"ASI levels: {asi_levels}")  # remove after testing
+        # print(f"Number of ASI awards: {number_of_asi_awards}")  # remove after testing
+        # pause()  # remove after testing
+
+        if number_of_asi_awards > 0:
+            return True
+        else:
+            return False
+
     def level_up(self, exp_award, monster_gold):
         # called from main loop after victory
         self.gold += monster_gold
+
         before_level = self.level
         before_quantum_level = self.quantum_level
         before_proficiency_bonus = self.proficiency_bonus
+
         self.experience += exp_award
         self.calculate_current_level()
         self.calculate_proficiency_bonus()
+
         after_proficiency_bonus = self.proficiency_bonus
         after_level = self.level
         level_multiplier = (after_level - before_level)  # in case player goes up more than 1 level
         after_quantum_level = self.quantum_level
+
         if after_level > before_level:
             if monster_gold > 0:
                 print(f"You snarf {monster_gold} gold pieces.")
@@ -2330,6 +2362,7 @@ class Player:
             range_1 = range((before_level + 1), (after_level + 1), 1)  # enumerate lvls between, inc. after_level by 1
             all_levels_between = list(range_1)  # create a list containing levels between, including after_level
             asi_levels = [4, 6, 8, 12, 14, 16, 19]
+
             # check if any levels between are ASI levels by comparing elements from both lists
             # number_of_asi_awards = sum of all_levels_between elements which exist in asi_levels
             number_of_asi_awards = sum(el in all_levels_between for el in asi_levels)
@@ -2337,13 +2370,7 @@ class Player:
             if number_of_asi_awards > 0:
                 asi_level_check = True
 
-            # remove after testing:
-            # print(f"Range between the before and after levels: {range_1}")  # remove after testing
-            # print(f"Levels between last and current (including current): {all_levels_between}")  # rem after testing
-            # print(f"ASI levels: {asi_levels}")  # remove after testing
-            # print(f"Number of ASI awards: {number_of_asi_awards}")  # remove after testing
-            # pause()  # remove after testing
-
+            # CHANGE THE FOLLOWING LINE TO CALL asi_level_check(before_level)
             if asi_level_check:
                 if self.asi_eligibility():  # ensure player has at least 1 ability score < 20
                     if number_of_asi_awards > 1:

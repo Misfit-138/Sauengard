@@ -3859,7 +3859,7 @@ class FireGiant(Monster):
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
         self.immunities = ["Firestorm", "Fireball", "Scorch", "Immolation"]
-        self.vulnerabilities = ["Ice Storm", "Fear", "Phantasm"]
+        self.vulnerabilities = ["Ice Storm", "Fear", "Phantasm", "Vortex"]
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 10
@@ -4806,7 +4806,7 @@ class DiamondKing(Monster):
         self.he_she_it = "he"
         self.his_her_its = "his"
         self.him_her_it = "him"
-        self.experience_award = 8400
+        self.experience_award = 8500
         self.gold = random.randint(5, 45)
         self.weapon_bonus = 6
         self.armor = 0
@@ -4872,7 +4872,7 @@ class QueenWasp(Monster):
         self.he_she_it = "she"
         self.his_her_its = "her"
         self.him_her_it = "her"
-        self.experience_award = 8200
+        self.experience_award = 8500
         self.gold = random.randint(15, 25)
         self.weapon_bonus = 7
         self.armor = 0
@@ -4889,7 +4889,7 @@ class QueenWasp(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
-        self.paralyze_turns = 1
+        self.paralyze_turns = 0
         self.can_poison = True
         self.necrotic = False
         self.dot_multiplier = 5
@@ -4918,11 +4918,133 @@ class QueenWasp(Monster):
         self.attack_5_phrase = "Grabbing you in her lovely human arms, she draws you in and bites with abhorrent " \
                                "fangs!"
         self.introduction = f"You have encountered a Queen Wasp; The cruel, Quantum-Anthropomorphic outcome of an " \
-                            f"unfortunate human female.\nWith a lovely torso fused to a giant-wasp lower body, " \
+                            f"unfortunate, banished human female.\nWith a lovely torso fused to a giant-wasp's " \
+                            f"lower body, " \
                             f"she scampers toward you with unnerving and creepy\nswiftness. Brandishing a Dark-Elven " \
-                            f"blade, she looks upon you with a wicked smile."
+                            f"blade, she looks upon you with a vile grin."
         self.poison_phrase = "Grabbing you in her lovely human arms, she slams you down and attacks with her poison " \
                              "stinger!"
+
+
+class FireGiantCaptain(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 12
+        self.name = "Fire Giant Captain"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 8500
+        self.gold = random.randint(20, 35)
+        self.weapon_bonus = 7
+        self.armor = 0
+        self.shield = 0
+        self.strength = 25
+        self.dexterity = 9
+        self.constitution = 23
+        self.intelligence = 12
+        self.wisdom = 14
+        self.charisma = 14
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = False
+        self.paralyze_turns = 0
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 0
+        self.dot_turns = 0
+        self.undead = False
+        self.immunities = ["Firestorm", "Fireball", "Scorch", "Immolation"]
+        self.vulnerabilities = ["Ice Storm", "Vortex"]
+        self.resistances = ["Sleep", "Web", "Charm"]
+        self.quantum_energy = False
+        self.hit_dice = 8
+        self.number_of_hd = 7
+        self.hit_points = 165
+        self.armor_class = 18
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 8  # attack bonus
+        self.attack_1_phrase = "It swings its greatsword with might and skill.."
+        self.attack_2 = 10
+        self.attack_2_phrase = "It strikes at you with a heavy, armored fist, followed by a greatsword swing!"
+        self.attack_3 = 10
+        self.attack_3_phrase = "It swings its sword with both hands for a mighty blow."
+        self.attack_4 = 14
+        self.attack_4_phrase = "It punches you square in the face, and follows with a mighty " \
+                               "sword blow!"
+        self.attack_5 = 16
+        self.attack_5_phrase = "It grabs you with a crushing, armored fist, and attacks with a mighty sword swing!"
+        self.introduction = f"You have encountered a Fire Giant Captain; A battle-hardened " \
+                            f"and disciplined warrior,\nknown for merciless and flawless fighting skills. " \
+                            f"With flaming hair and eyes, it thunders toward you as its black, heavy plate mail " \
+                            f"creaks with ominous dread."
+
+
+class DarkDwarfCaptain(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 11
+        self.name = "Dark Dwarf Captain"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.experience_award = 8500
+        self.gold = random.randint(50, 75)
+        self.weapon_bonus = 8
+        self.armor = 0
+        self.shield = 0
+        self.strength = 16
+        self.dexterity = 12
+        self.constitution = 18
+        self.intelligence = 12
+        self.wisdom = 14
+        self.charisma = 10
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = False
+        self.paralyze_turns = 0
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 0
+        self.dot_turns = 0
+        self.undead = False
+        self.immunities = ["Fear", "Phantasm"]
+        self.vulnerabilities = []
+        self.resistances = ["Web", "Sleep"]
+        self.quantum_energy = False
+        self.hit_dice = 8
+        self.number_of_hd = 8
+        self.hit_points = 165
+        self.armor_class = 20
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 9  # attack bonus
+        self.attack_1_phrase = "He swings his Quantum Axe with great might and skill."
+        self.attack_2 = 10
+        self.attack_2_phrase = "He strikes at you with his heavy axe in a twisted rage."
+        self.attack_3 = 12
+        self.attack_3_phrase = "He strikes in combination; an axe in his left hand, followed by " \
+                               "a Great Sword in his right!"
+        self.attack_4 = 16
+        self.attack_4_phrase = "He thrusts forward, bashing you with his shield, knocking you off your feet, and " \
+                               "following up with a blow from his axe!"
+        self.attack_5 = 25
+        self.attack_5_phrase = "With a bellowing war cry, he attacks in a storm of Dark Dwarven weaponry!"
+        self.introduction = f"You have encountered a Dark Dwarf Captain; A pragmatic and lethal leader of deadly " \
+                            f"soldiers.\nShaped by a culture and creed of insular tribalism, and forever governed by " \
+                            f"a hatred for nearly all\nother species, he carefully approaches you, wielding " \
+                            f"incredible weapons and wearing heavy,\nblack armor."
 
 
 class WickedQueenJannbrielle(Monster):
@@ -5020,7 +5142,7 @@ monster_dict = {
     9: [FireGiant, Widow, YoungBlueDragon, Wraith, Necrophagist],
     10: [YoungRedDragon, MorbidBehemoth, ChaosMonster, Leviathan, Gojira],
     11: [CorpseGrinder, BoltThrowerCaptain, Apocryphage, MorbidAssassin, TorinManipulator],
-    12: [DiamondKing, QueenWasp]
+    12: [DiamondKing, QueenWasp, FireGiantCaptain, DarkDwarfCaptain]
 }
 
 # undead monsters:

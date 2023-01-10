@@ -3219,7 +3219,7 @@ class Wyvern(Monster):
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.hit_points = (random.randint(105, 115)) + self.constitution_modifier
+        self.hit_points = 110
         self.armor_class = 13
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3279,7 +3279,7 @@ class DarkElfManipulator(Monster):
         self.quantum_energy = True
         self.hit_dice = 10
         self.number_of_hd = 5
-        self.hit_points = 45
+        self.hit_points = 65
         self.armor_class = 15
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3436,7 +3436,7 @@ class MorbidDefender(Monster):
         self.vulnerabilities = []
         self.resistances = ["Turn Undead"]
         self.quantum_energy = False
-        self.hit_dice = 12
+        self.hit_dice = 10
         self.number_of_hd = 4
         self.hit_points = 120
         self.armor_class = 16
@@ -3496,7 +3496,7 @@ class BoltThrower(Monster):
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
         self.immunities = ["Sleep", "Web", "Lightning"]
-        self.vulnerabilities = []
+        self.vulnerabilities = ["Fireball", "Firestorm"]
         self.resistances = []
         self.quantum_energy = False
         self.hit_dice = 12
@@ -3619,7 +3619,7 @@ class YoungBlackDragon(Monster):
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
         self.immunities = []
-        self.vulnerabilities = ["Ice Storm"]
+        self.vulnerabilities = ["Ice Storm", "Lightning"]
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 10
@@ -3678,7 +3678,7 @@ class YoungGreenDragon(Monster):
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
         self.immunities = []
-        self.vulnerabilities = []
+        self.vulnerabilities = ["Fireball", "Firestorm"]
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 10
@@ -3730,11 +3730,11 @@ class MorbidKnight(Monster):
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
         self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
         self.can_paralyze = False
-        self.paralyze_turns = 1
+        self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = dice_roll(5, 8)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = 0
+        self.dot_turns = 0
         self.undead = True
         self.immunities = []
         self.vulnerabilities = []
@@ -3797,7 +3797,7 @@ class Assassin(Monster):
         self.dot_turns = dice_roll(2, 5)
         self.undead = False
         self.immunities = []
-        self.vulnerabilities = []
+        self.vulnerabilities = ["Phantasm", "Fear"]
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 10
@@ -3859,7 +3859,7 @@ class FireGiant(Monster):
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
         self.immunities = ["Firestorm", "Fireball", "Scorch", "Immolation"]
-        self.vulnerabilities = ["Ice Storm"]
+        self.vulnerabilities = ["Ice Storm", "Fear", "Phantasm"]
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 10
@@ -3983,7 +3983,7 @@ class YoungBlueDragon(Monster):
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
         self.immunities = ["Lightning"]
-        self.vulnerabilities = []
+        self.vulnerabilities = ["Fireball" "Firestorm"]
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -4041,7 +4041,7 @@ class Wraith(Monster):
         self.dot_turns = dice_roll(3, 5)
         self.undead = True
         self.immunities = ["Turn Undead"]
-        self.vulnerabilities = []
+        self.vulnerabilities = ["Firestorm"]
         self.resistances = ["Web", "Banish"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -4106,7 +4106,7 @@ class Necrophagist(Monster):
         self.dot_turns = 5
         self.undead = True
         self.immunities = ["Turn Undead"]
-        self.vulnerabilities = []
+        self.vulnerabilities = ["Banish"]
         self.resistances = ["Web", "Hold Monster"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -4169,7 +4169,7 @@ class YoungRedDragon(Monster):
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
         self.immunities = ["Firestorm", "Fireball", "Scorch", "Immolation"]
-        self.vulnerabilities = ["Ice Storm"]
+        self.vulnerabilities = ["Ice Storm", "Vortex"]
         self.resistances = ["Sleep", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -4228,7 +4228,7 @@ class MorbidBehemoth(Monster):
         self.undead = True
         self.immunities = ["Hold Monster", "Turn Undead"]
         self.vulnerabilities = []
-        self.resistances = ["Firestorm", "Fireball", "Scorch", "Immolation"]
+        self.resistances = ["Firestorm", "Fireball", "Scorch", "Immolation", "Vortex"]
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 6
@@ -4297,7 +4297,7 @@ class ChaosMonster(Monster):
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 6
-        self.hit_points = (random.randint(135, 155)) + self.constitution_modifier
+        self.hit_points = 135
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4360,7 +4360,7 @@ class Leviathan(Monster):
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
         self.immunities = []
-        self.vulnerabilities = ["Scorch", "Fireball", "Firestorm", "Immolation"]
+        self.vulnerabilities = ["Fireball", "Firestorm"]
         self.resistances = ["Sleep", "Web", "Vortex", "Charm", "Banish"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -4428,7 +4428,7 @@ class Gojira(Monster):
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 7
-        self.hit_points = (random.randint(125, 135)) + self.constitution_modifier
+        self.hit_points = (random.randint(125, 135))
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4490,7 +4490,7 @@ class CorpseGrinder(Monster):
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 7
-        self.hit_points = (random.randint(165, 175)) + self.constitution_modifier
+        self.hit_points = 165
         self.armor_class = 19
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4562,7 +4562,7 @@ class BoltThrowerCaptain(Monster):
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 7
-        self.hit_points = (random.randint(165, 175)) + self.constitution_modifier
+        self.hit_points = 165
         self.armor_class = 20
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4844,7 +4844,7 @@ class DiamondKing(Monster):
         self.attack_2 = 10
         self.attack_2_phrase = "Smearing the light around his form, he strikes at you from the side.."
         self.attack_3 = 12
-        self.attack_3_phrase = "Vanishing in a black, befogged *puff*, he appears behind you and strikes mightily.."
+        self.attack_3_phrase = "Vanishing in a black, befogged *PUFF*, he appears behind you and strikes mightily.."
         self.attack_4 = 15
         self.attack_4_phrase = "Feinting to the side in dark murkiness, he strikes your head with a mighty blow.."
         self.attack_5 = 20
@@ -4860,6 +4860,69 @@ class DiamondKing(Monster):
                                f"freeze.."
         self.paralyze_free_attack_phrase = "With a gaping hiss, he silently approaches and sinks his fangs deep!"
         self.poison_phrase = f"In a blurred motion of time-bending mist, he attacks with toxic fangs!"
+
+
+class QueenWasp(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 12
+        self.name = "Queen Wasp"
+        self.proper_name = "None"
+        self.he_she_it = "she"
+        self.his_her_its = "her"
+        self.him_her_it = "her"
+        self.experience_award = 8200
+        self.gold = random.randint(15, 25)
+        self.weapon_bonus = 7
+        self.armor = 0
+        self.shield = 0
+        self.strength = 20
+        self.dexterity = 10
+        self.constitution = 21
+        self.intelligence = 12
+        self.wisdom = 12
+        self.charisma = 18
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = True
+        self.necrotic = False
+        self.dot_multiplier = 5
+        self.dot_turns = 5
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = ["Sleep", "Web", "Charm"]
+        self.quantum_energy = False
+        self.hit_dice = 8
+        self.number_of_hd = 7
+        self.hit_points = 135
+        self.armor_class = 18
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 10  # attack bonus
+        self.attack_1_phrase = "She swings her Dark-Elven blade.."
+        self.attack_2 = 11
+        self.attack_2_phrase = "She strikes with a combination of blows from her Dark-Elven blade.."
+        self.attack_3 = 12
+        self.attack_3_phrase = "With her insect legs, she swats at you as though *you* were a mere insect!!"
+        self.attack_4 = 16
+        self.attack_4_phrase = "She strikes in combination! First with her blade, and then a crushing blow from " \
+                               "her wretched legs!"
+        self.attack_5 = 20
+        self.attack_5_phrase = "Grabbing you in her lovely human arms, she draws you in and bites with abhorrent " \
+                               "fangs!"
+        self.introduction = f"You have encountered a Queen Wasp; The cruel, Quantum-Anthropomorphic outcome of an " \
+                            f"unfortunate human female.\nWith a lovely torso fused to a giant-wasp lower body, " \
+                            f"she scampers toward you with unnerving and creepy\nswiftness. Brandishing a Dark-Elven " \
+                            f"blade, she looks upon you with a wicked smile."
+        self.poison_phrase = "Grabbing you in her lovely human arms, she slams you down and attacks with her poison " \
+                             "stinger!"
 
 
 class WickedQueenJannbrielle(Monster):
@@ -4957,7 +5020,7 @@ monster_dict = {
     9: [FireGiant, Widow, YoungBlueDragon, Wraith, Necrophagist],
     10: [YoungRedDragon, MorbidBehemoth, ChaosMonster, Leviathan, Gojira],
     11: [CorpseGrinder, BoltThrowerCaptain, Apocryphage, MorbidAssassin, TorinManipulator],
-    12: [DiamondKing]
+    12: [DiamondKing, QueenWasp]
 }
 
 # undead monsters:

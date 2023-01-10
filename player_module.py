@@ -3228,10 +3228,10 @@ class Player:
             if "Turn Undead" not in monster.immunities and "All" not in monster.immunities and monster.undead:
                 vulnerability_modifier = 0
                 if "Turn Undead" in monster.vulnerabilities:
-                    vulnerability_modifier = 5
+                    vulnerability_modifier = self.proficiency_bonus
                 resistance_modifier = 0
                 if "Turn Undead" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
@@ -3305,10 +3305,10 @@ class Player:
             if "Banish" not in monster.immunities and "All" not in monster.immunities:
                 vulnerability_modifier = 0
                 if "Banish" in monster.vulnerabilities:
-                    vulnerability_modifier = 5
+                    vulnerability_modifier = self.proficiency_bonus
                 resistance_modifier = 0
                 if "Banish" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 if vulnerability_modifier != 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 level_advantage = 0
@@ -3387,10 +3387,10 @@ class Player:
             if "Fear" not in monster.immunities and "All" not in monster.immunities and not monster.undead:
                 vulnerability_modifier = 0
                 if "Fear" in monster.vulnerabilities:
-                    vulnerability_modifier = 5
+                    vulnerability_modifier = self.proficiency_bonus
                 resistance_modifier = 0
                 if "Fear" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
@@ -3511,10 +3511,10 @@ class Player:
             if "Flesh to Stone" not in monster.immunities and "All" not in monster.immunities:
                 self.quantum_units -= quantum_unit_cost
                 if "Flesh to Stone" in monster.vulnerabilities:
-                    vulnerability_modifier = 5
+                    vulnerability_modifier = self.proficiency_bonus
                 resistance_modifier = 0
                 if "Flesh to Stone" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 print(f"Before the {monster.name} even realizes what is happening, its flesh ripples into a stone "
                       f"replica of its normal state!")
                 sleep(1)
@@ -3619,7 +3619,7 @@ class Player:
             if "Gravity Well" not in monster.immunities and "All" not in monster.immunities:
                 self.quantum_units -= quantum_unit_cost
                 if "Gravity Well" in monster.vulnerabilities:
-                    vulnerability_modifier = 5
+                    vulnerability_modifier = self.proficiency_bonus
 
                 print(f"Focusing the Quantum Weirdness on the ground beneath the {monster.name}, "
                       f"a growing void of crushing gravity opens between worlds!!")
@@ -3728,10 +3728,10 @@ class Player:
             if "Hold Monster" not in monster.immunities and "All" not in monster.immunities:
                 vulnerability_modifier = 0
                 if "Hold Monster" in monster.vulnerabilities:
-                    vulnerability_modifier = 5
+                    vulnerability_modifier = self.proficiency_bonus
                 resistance_modifier = 0
                 if "Hold Monster" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 # turn_roll = dice_roll(1, 20)
                 # player_total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
                 # The difficulty class ("DC") of the saving throw should be based on the caster:
@@ -3814,10 +3814,10 @@ class Player:
             if "Web" not in monster.immunities and "All" not in monster.immunities:
                 vulnerability_modifier = 0
                 if "Web" in monster.vulnerabilities:
-                    vulnerability_modifier = 5
+                    vulnerability_modifier = self.proficiency_bonus
                 resistance_modifier = 0
                 if "Web" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 # turn_roll = dice_roll(1, 20)
                 player_total = (self.base_dc + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
                 # print(f"Quantum Ability Check: {turn_roll}")
@@ -3890,10 +3890,10 @@ class Player:
             if "Charm" not in monster.immunities and "All" not in monster.immunities and not monster.undead:
                 vulnerability_modifier = 0
                 if "Charm" in monster.vulnerabilities:
-                    vulnerability_modifier = 5
+                    vulnerability_modifier = self.proficiency_bonus
                 resistance_modifier = 0
                 if "Charm" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 # turn_roll = dice_roll(1, 20)
                 # total = (turn_roll + self.charisma_modifier + self.proficiency_bonus + vulnerability_modifier)
                 # print(f"Quantum Ability Check: {turn_roll}\nCharisma Modifier: {self.charisma_modifier}\n"
@@ -3986,10 +3986,10 @@ class Player:
             if "Sleep" not in monster.immunities and "All" not in monster.immunities and not monster.undead:
                 vulnerability_modifier = 0
                 if "Sleep" in monster.vulnerabilities:
-                    vulnerability_modifier = 5
+                    vulnerability_modifier = self.proficiency_bonus
                 resistance_modifier = 0
                 if "Sleep" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 # turn_roll = dice_roll(1, 20)
                 # total = (turn_roll + self.intelligence_modifier + self.proficiency_bonus + vulnerability_modifier)
                 # print(f"Quantum Ability Check: {turn_roll}\nIntelligence Modifier: {self.intelligence_modifier}\n"
@@ -4727,7 +4727,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Disintegrate" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Disintegrate.")
                 sleep(1)
@@ -4836,7 +4836,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Fireball" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Fireball.")
                 sleep(1)
@@ -4940,7 +4940,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Finger of Death" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Finger of Death.")
                 sleep(1)
@@ -5044,7 +5044,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Meteor Swarm" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Meteor Swarm.")
                 sleep(1)
@@ -5158,7 +5158,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Skeletal Remains" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Skeletal Remains.")
                 sleep(1)
@@ -5275,7 +5275,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Negative Energy Plague" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Negative Energy Plague.")
                 sleep(1)
@@ -5391,7 +5391,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Ice Storm" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Ice Storm.")
                 sleep(1)
@@ -5503,7 +5503,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Fire Storm" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Fire Storm.")
                 sleep(1)
@@ -5614,10 +5614,10 @@ class Player:
                 vulnerable = False
                 if "Phantasm" in monster.vulnerabilities:
                     vulnerable = True
-                    vulnerability_modifier = 5
+                    vulnerability_modifier = self.proficiency_bonus
                 resistance_modifier = 0
                 if "Phantasm" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Phantasm.")
                 sleep(1)
@@ -5731,7 +5731,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Lightning" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Lightning.")
                 sleep(1)
@@ -5829,7 +5829,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Immolation" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Immolation.")
                 sleep(1)
@@ -5855,7 +5855,7 @@ class Player:
                     hit_statement = f"Success!"
                 vulnerability_modifier = 0
                 if vulnerable:
-                    vulnerability_modifier = 5
+                    vulnerability_modifier = self.proficiency_bonus
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
@@ -5941,7 +5941,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Vortex" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Vortex.")
                 sleep(1)
@@ -5966,7 +5966,7 @@ class Player:
                     hit_statement = f"Success!"
                 vulnerability_modifier = 0
                 if vulnerable:
-                    vulnerability_modifier = 5
+                    vulnerability_modifier = self.proficiency_bonus
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
@@ -6053,7 +6053,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Quantum Missile" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Quantum Missile.")
                 sleep(1)
@@ -6155,7 +6155,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Scorch" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = 3
+                    resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Scorch.")
                 sleep(1)

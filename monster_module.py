@@ -3390,7 +3390,7 @@ class MindFlayer(Monster):
                                        "You stand, helplessly striking at yourself!"
         self.introduction = f"You have encountered a Mind Flayer; A hideous, tyrannical humanoid with a head " \
                             f"resembling an octopus.\nEndowed with evil Quantum insights and innate understanding, " \
-                            f"Mind Flayers tunnel through realities in search of slaves\nfor their twisted purposes." \
+                            f"Mind Flayers tunnel through realities in search of slaves\nfor their twisted purposes. " \
                             f"Any who resist them are reduced to helpless, mindless servants through " \
                             f"wicked manipulations.."
         self.paralyze_phrase = "Its tentacles shoot out and wrap around your head! You feel your motor skills diminish!"
@@ -3519,7 +3519,7 @@ class BoltThrower(Monster):
                                "great speed and precision. You feel the heat and power of its arcflash!"
         self.introduction = f"You have encountered a Bolt Thrower; A powerful race of warriors possessing both " \
                             f"impressive physical\nstrength as well as expansive Quantum abilities. " \
-                            f"With thick, armored skin and standing some 8 feet tall,\na flattened cranium," \
+                            f"With thick, armored skin and standing some 8 feet tall,\na flattened cranium, " \
                             f"immense, muscled appendages, and armed with a deadly arsenal of weapons including\n" \
                             f"a whip endowed with electrified Quantum weirdness, it fearlessly approaches you."
         self.paralyze_phrase = "It encircles you with its whip!"
@@ -3942,7 +3942,7 @@ class Widow(Monster):
         self.attack_5 = 15
         self.attack_5_phrase = "Calling out with a screeching howl, myriads of spiders are called forth and attack!"
         self.introduction = f"You have encountered a Widow; An improbable life form from the cruel imagination of " \
-                            f"a Master Manipulator.\nWith the upper body of a beautiful human fused to that of a " \
+                            f"a Quantum Mentor.\nWith the upper body of a beautiful human fused to that of a " \
                             f"spider, her own tortured existence\nhas twisted her toward wild evil. Her movements " \
                             f"are quick as lightning, and her light-footed crawling\nbelies her massive body. " \
                             f"Her glistening fangs drip with poison as she approaches!"
@@ -4249,7 +4249,7 @@ class MorbidBehemoth(Monster):
         self.attack_5_phrase = "Grabbing you in its unyielding grip, it pummels you relentlessly with a hammering " \
                                "fist!!"
         self.introduction = f"You have encountered a Morbid Behemoth; An immense, hateful creature of Quantum origin " \
-                            f"in life, and now,\nundead and mindless by the will of a Master Manipulator. Covered " \
+                            f"in life, and now,\nundead and mindless by the will of a Quantum Mentor. Covered " \
                             f"with sludge, silt and swamp-ish slime, its trunk dangles and swings as it approaches.\n" \
                             f"From behind muddy, hanging seaweed, two green and glowing eyes focus upon you!"
         self.paralyze_phrase = f"It grabs you within its thick, heavy, root-wrapped arms!"
@@ -4708,7 +4708,7 @@ class MorbidAssassin(Monster):
         self.attack_5 = 14
         self.attack_5_phrase = "With a whispering swing, his blade finds your soft flesh and cuts deep.."
         self.introduction = f"You have encountered a Morbid Assassin; An amoral killer for hire in life, and now " \
-                            f"undead through the weirdness\nof a Master Manipulator's evil will. The light simply " \
+                            f"undead through the weirdness\nof a Quantum Mentor's evil will. The light simply " \
                             f"falls into him. His movements resemble nothing more than black, humanoid smoke.\n" \
                             f"He approaches you in pure silence and stands still long enough for you to see his true " \
                             f"form- dark garb,\ncriss-crossed leather belts full of knives and vials, black boots, " \
@@ -4786,7 +4786,7 @@ class TorinManipulator(Monster):
         self.quantum_attack_5_phrase = "Clapping his hands with a thundering arcflash, a jagged bolt of white-hot " \
                                        "lightning shoots toward you!"
         self.introduction = f"You have encountered a Torin Manipulator; A human formally schooled in the Weird Arts " \
-                            f"by an evil Master,\nwho bends their students to their own sadistic ends. " \
+                            f"by an Quantum Mentor,\nwho bends their students to their own sadistic ends. " \
                             f"In the hierarchy of Weirdness, the Torin fall\ninto the middle ranks, and are quite " \
                             f"competent with Quantum Necrosis. His eyes glow with a reddish tinge,\n" \
                             f"illuminating a face that has been twisted by the greedy gain of power.."
@@ -4986,12 +4986,12 @@ class FireGiantCaptain(Monster):
                             f"creaks with ominous dread."
 
 
-class DarkDwarfCaptain(Monster):
+class DarkDwarfWarlord(Monster):
 
     def __init__(self):
         super().__init__()
-        self.level = 11
-        self.name = "Dark Dwarf Captain"
+        self.level = 12
+        self.name = "Dark Dwarf Warlord"
         self.proper_name = "None"
         self.he_she_it = "he"
         self.his_her_its = "his"
@@ -5040,11 +5040,71 @@ class DarkDwarfCaptain(Monster):
         self.attack_4_phrase = "He thrusts forward, bashing you with his shield, knocking you off your feet, and " \
                                "following up with a blow from his axe!"
         self.attack_5 = 25
-        self.attack_5_phrase = "With a bellowing war cry, he attacks in a storm of Dark Dwarven weaponry!"
-        self.introduction = f"You have encountered a Dark Dwarf Captain; A pragmatic and lethal leader of deadly " \
+        self.attack_5_phrase = "With a bellowing war cry, he attacks in a storm of Dark weaponry!"
+        self.introduction = f"You have encountered a Dark Dwarf Warlord; A pragmatic and lethal leader of deadly " \
                             f"soldiers.\nShaped by a culture and creed of insular tribalism, and forever governed by " \
                             f"a hatred for nearly all\nother species, he carefully approaches you, wielding " \
                             f"incredible weapons and wearing heavy,\nblack armor."
+
+
+class MorbidVastator(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 12
+        self.name = "Morbid Vastator"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.experience_award = 8500
+        self.gold = random.randint(5, 25)
+        self.weapon_bonus = 7
+        self.armor = 0
+        self.shield = 0
+        self.strength = 20
+        self.dexterity = 12
+        self.constitution = 18
+        self.intelligence = 12
+        self.wisdom = 14
+        self.charisma = 10
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = False
+        self.paralyze_turns = 0
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 0
+        self.dot_turns = 0
+        self.undead = True
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = ["Web", "Hold Monster", "Turn Undead"]
+        self.quantum_energy = False
+        self.hit_dice = 10
+        self.number_of_hd = 7
+        self.hit_points = 150
+        self.armor_class = 19
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 8  # attack bonus
+        self.attack_1_phrase = "He swings his Quantum Sword with amazing acumen."
+        self.attack_2 = 10
+        self.attack_2_phrase = "He stabs at you with his heavy sword in a blur of strength and speed."
+        self.attack_3 = 12
+        self.attack_3_phrase = "He strikes in combination; his sword in his left hand, followed by " \
+                               "an axe in his right!"
+        self.attack_4 = 14
+        self.attack_4_phrase = "He thrusts forward, knocking you off your feet, and " \
+                               "follows up with a crushing blow from his shield-edge!!"
+        self.attack_5 = 25
+        self.attack_5_phrase = "He strikes with a long, heavy spear which pierces your armor!"
+        self.introduction = f"You have encountered a Morbid Vastator; A Sauengard Warlord from out of time, now " \
+                            f"'undead' through powerful\nQuantum Manipulation. A seasoned soldier in life, now " \
+                            f"made more deadly and formidable by a most evil\nMentor."
 
 
 class WickedQueenJannbrielle(Monster):
@@ -5114,7 +5174,7 @@ class WickedQueenJannbrielle(Monster):
         self.quantum_attack_4 = 25
         self.quantum_attack_4_phrase = "From beautiful hands that elongate into claws, she attacks with evil " \
                                        "Quantum Forces\n" \
-                                       "that form a dark mist of terror that invades your mind!"
+                                       "that form a dark mist of terror, invading your mind!"
         self.quantum_attack_5 = 45
         self.quantum_attack_5_phrase = "The queen releases Quantum Forces which wildly entangle\n" \
                                        "you in a maelstrom of malice which crushes with impossible gravity!"
@@ -5142,7 +5202,7 @@ monster_dict = {
     9: [FireGiant, Widow, YoungBlueDragon, Wraith, Necrophagist],
     10: [YoungRedDragon, MorbidBehemoth, ChaosMonster, Leviathan, Gojira],
     11: [CorpseGrinder, BoltThrowerCaptain, Apocryphage, MorbidAssassin, TorinManipulator],
-    12: [DiamondKing, QueenWasp, FireGiantCaptain, DarkDwarfCaptain]
+    12: [DiamondKing, QueenWasp, FireGiantCaptain, DarkDwarfWarlord, MorbidVastator]
 }
 
 # undead monsters:

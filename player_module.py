@@ -2278,36 +2278,6 @@ class Player:
                     sleep(1)
                     continue
 
-    def asi_level_check(self, before_level):
-        # have this method called from level_up() below, to simplify that method
-        # Ability Score Improvement at levels 4, 6, 8, 12, 14, 16, 19
-        # ASI logic
-        # This logic also works for players going up more than one level,
-        # e.g. vanquishing a monster with very high experience reward
-        # Logic works by creating 2 lists and comparing whether the player's current level, or any levels between
-        # their last level and current level are ASI eligible. Ranges are initially counterintuitive in python;
-        # they do not include the last number in range, so I added +1 to end_range
-        # Also, for the current purposes, I added +1 to start_range as well, since we don't want to award ASI
-        # based on the previous experience level, only on current level and any eligible levels between.
-        range_1 = range((before_level + 1), (self.level + 1), 1)  # enumerate levels between, inc. after_level by 1
-        all_levels_between = list(range_1)  # create a list containing levels between, including after_level
-        asi_levels = [4, 6, 8, 12, 14, 16, 19]
-
-        # check if any levels between are ASI levels by comparing elements from both lists
-        # number_of_asi_awards = sum of all_levels_between elements which exist in asi_levels
-        number_of_asi_awards = sum(el in all_levels_between for el in asi_levels)
-        # remove after testing:
-        # print(f"Range between the before and after levels: {range_1}")  # remove after testing
-        # print(f"Levels between last and current (including current): {all_levels_between}")  # rem after testing
-        # print(f"ASI levels: {asi_levels}")  # remove after testing
-        # print(f"Number of ASI awards: {number_of_asi_awards}")  # remove after testing
-        # pause()  # remove after testing
-
-        if number_of_asi_awards > 0:
-            return True
-        else:
-            return False
-
     def level_up(self, exp_award, monster_gold):
         # called from main loop after victory
         self.gold += monster_gold

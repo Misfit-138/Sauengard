@@ -2761,7 +2761,7 @@ class DarkDwarf(Monster):
         self.introduction = f"You have encountered a Dark Dwarf; A race of Dwarves who were cast out and forced " \
                             f"to delve more deeply\ninto the subterranean realms, eventually embracing the darkness " \
                             f"and shunning all outsiders.\nTheir shame turned to evil and their isolation to " \
-                            f"rage. They call themselves the Duergar, \nand though they still resemble their" \
+                            f"rage. They call themselves the Tenebris, \nand though they still resemble their" \
                             f" Dwarven cousins in stature, all else about them appears gray, evil and without light."
 
 
@@ -3012,7 +3012,7 @@ class Cyclops(Monster):
         self.him_her_it = "it"
         self.experience_award = 2300
         self.gold = random.randint(2, 12)
-        self.weapon_bonus = 5
+        self.weapon_bonus = 4
         self.armor = 0
         self.shield = 0
         self.strength = 22
@@ -3070,7 +3070,7 @@ class WrathfulAvenger(Monster):
         self.him_her_it = "it"
         self.experience_award = 2300
         self.gold = random.randint(1, 10)
-        self.weapon_bonus = 5
+        self.weapon_bonus = 4
         self.armor = 0
         self.shield = 0
         self.strength = 18
@@ -3252,7 +3252,7 @@ class DarkElfManipulator(Monster):
         self.him_her_it = "him"
         self.experience_award = 3000
         self.gold = random.randint(1, 15)
-        self.weapon_bonus = 5
+        self.weapon_bonus = 4
         self.armor = 0
         self.shield = 0
         self.strength = 9
@@ -3457,7 +3457,7 @@ class MorbidDefender(Monster):
                             f"an oath to preserve and protect\nthe peace and prosperity of Sauengard. Now infused " \
                             f"with Quantum Energy by some evil Manipulator, the Defender roams the dungeons,\n" \
                             f"forever bound to a pointless mission: Attack the living."
-        self.paralyze_phrase = "It slams its shield on the ground at your feet, sending shockwaves through you! You " \
+        self.paralyze_phrase = "It slams its shield on the ground at your feet, sending shock-waves through you! You " \
                                "feel your body weakening..."
         self.paralyze_free_attack_phrase = "In your petrified state, it hacks at you mercilessly with evil malice!"
 
@@ -4019,7 +4019,7 @@ class Wraith(Monster):
         self.him_her_it = "it"
         self.experience_award = 5000
         self.gold = random.randint(1, 4)
-        self.weapon_bonus = 7
+        self.weapon_bonus = 6
         self.armor = 0
         self.shield = 0
         self.strength = 16
@@ -4205,7 +4205,7 @@ class MorbidBehemoth(Monster):
         self.him_her_it = "it"
         self.experience_award = 6000
         self.gold = random.randint(1, 5)
-        self.weapon_bonus = 5
+        self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
         self.strength = 19
@@ -4600,7 +4600,7 @@ class Apocryphage(Monster):
         self.a_an = "an"
         self.experience_award = 7000
         self.gold = random.randint(10, 30)
-        self.weapon_bonus = 0
+        self.weapon_bonus = 3
         self.armor = 0
         self.shield = 0
         self.strength = 8
@@ -4808,7 +4808,7 @@ class DiamondKing(Monster):
         self.him_her_it = "him"
         self.experience_award = 8500
         self.gold = random.randint(5, 45)
-        self.weapon_bonus = 6
+        self.weapon_bonus = 0
         self.armor = 0
         self.shield = 0
         self.strength = 14
@@ -4874,7 +4874,7 @@ class QueenWasp(Monster):
         self.him_her_it = "her"
         self.experience_award = 8500
         self.gold = random.randint(15, 25)
-        self.weapon_bonus = 7
+        self.weapon_bonus = 6
         self.armor = 0
         self.shield = 0
         self.strength = 20
@@ -5042,9 +5042,9 @@ class DarkDwarfWarlord(Monster):
         self.attack_5 = 25
         self.attack_5_phrase = "With a bellowing war cry, he attacks in a storm of Dark weaponry!"
         self.introduction = f"You have encountered a Dark Dwarf Warlord; A pragmatic and lethal leader of deadly " \
-                            f"soldiers.\nShaped by a culture and creed of insular tribalism, and forever governed by " \
-                            f"a hatred for nearly all\nother species, he carefully approaches you, wielding " \
-                            f"incredible weapons and wearing heavy,\nblack armor."
+                            f"Tenebris soldiers.\nShaped by a culture and creed of insular tribalism, and forever " \
+                            f"governed by a hatred for nearly all\nother species, he carefully approaches you, " \
+                            f"wielding incredible weapons and wearing heavy,\nblack armor."
 
 
 class MorbidVastator(Monster):
@@ -5105,6 +5105,65 @@ class MorbidVastator(Monster):
         self.introduction = f"You have encountered a Morbid Vastator; A Sauengard Warlord from out of time, now " \
                             f"'undead' through powerful\nQuantum Manipulation. A seasoned soldier in life, now " \
                             f"made more deadly and formidable by a most evil\nMentor."
+
+
+class MorbidTroll(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 13
+        self.name = "Morbid Troll"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 10000
+        self.gold = random.randint(20, 35)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 22
+        self.dexterity = 15
+        self.constitution = 20
+        self.intelligence = 9
+        self.wisdom = 10
+        self.charisma = 4
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = False
+        self.paralyze_turns = 0
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 0
+        self.dot_turns = 0
+        self.undead = True
+        self.immunities = []
+        self.vulnerabilities = ["Firestorm", "Fireball"]
+        self.resistances = ["Web", "Turn Undead"]
+        self.quantum_energy = False
+        self.hit_dice = 8
+        self.number_of_hd = 9
+        self.hit_points = 175
+        self.armor_class = 15
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 10  # attack bonus
+        self.attack_1_phrase = "It swings a heavy fist with great and fear-inspiring force.."
+        self.attack_2 = 12
+        self.attack_2_phrase = "It strikes at you with a combination of heavy fists!"
+        self.attack_3 = 13
+        self.attack_3_phrase = "With both hands intertwined, it delivers a heavy strike from above."
+        self.attack_4 = 14
+        self.attack_4_phrase = "Slamming you with a heavy fist, it follows with another volly of powerful blows!"
+        self.attack_5 = 20
+        self.attack_5_phrase = "It grabs you with a crushing fist, and ruthlessly pounds you with the other!"
+        self.introduction = f"You have encountered a Morbid Troll; Undead by Quantum Weirdness and more dangerous " \
+                            f"in its new state\nof unnatural existence than in life, its pale, blind eyes see you " \
+                            f"with an impossible clarity of purpose.\nIts huge frame towers above as it " \
+                            f"languishes toward you with a dreary and dreadful lilt."
 
 
 class WickedQueenJannbrielle(Monster):
@@ -5202,7 +5261,8 @@ monster_dict = {
     9: [FireGiant, Widow, YoungBlueDragon, Wraith, Necrophagist],
     10: [YoungRedDragon, MorbidBehemoth, ChaosMonster, Leviathan, Gojira],
     11: [CorpseGrinder, BoltThrowerCaptain, Apocryphage, MorbidAssassin, TorinManipulator],
-    12: [DiamondKing, QueenWasp, FireGiantCaptain, DarkDwarfWarlord, MorbidVastator]
+    12: [DiamondKing, QueenWasp, FireGiantCaptain, DarkDwarfWarlord, MorbidVastator],
+    13: [MorbidTroll]
 }
 
 # undead monsters:

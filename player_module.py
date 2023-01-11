@@ -3734,7 +3734,7 @@ class Player:
                 # The difficulty class ("DC") of the saving throw should be based on the caster:
                 # 8 + proficiency bonus + casting ability modifier.
                 # The GM rolls a d20 on behalf of the monster, adds the appropriate saving modifier based on
-                # the monster's stats, and compares to the spellcaster's save DC.
+                # the monster's stats, and compares to the quantum manipulator's save DC.
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level

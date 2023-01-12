@@ -3050,7 +3050,7 @@ class Player:
         else:
             monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier
         print(f"Your initiative: {player_initiative}\n{monster.name} initiative: {monster_initiative}")
-        pause()
+        pause()  # remove after testing
         if player_initiative >= monster_initiative:
             return True
         else:
@@ -7640,13 +7640,13 @@ class Player:
             if found_item.name == self.wielded_weapon.name:
                 if self.wielded_weapon.damage_bonus < (self.level * 2):
                     self.wielded_weapon.damage_bonus += 1  # = found_item.damage_bonus + 1
-                    print(f"Quantum wierdness fills the air...\nYour {self.wielded_weapon.name} "
+                    print(f"Quantum weirdness fills the air...\nYour {self.wielded_weapon.name} "
                           f"damage bonus is enhanced to + {self.wielded_weapon.damage_bonus}!")
                     pause()
                     return
                 elif self.wielded_weapon.to_hit_bonus < 3:
                     self.wielded_weapon.to_hit_bonus += 1  # = found_item.damage_bonus + 1
-                    print(f"Quantum wierdness fills the air...\nYour {self.wielded_weapon.name} "
+                    print(f"Quantum weirdness fills the air...\nYour {self.wielded_weapon.name} "
                           f"to-hit bonus is enhanced to + {self.wielded_weapon.to_hit_bonus}!")
                     pause()
                     return
@@ -7820,7 +7820,7 @@ class Player:
                 # found_item.stealth += 1
                 self.cloak.stealth += 1
                 self.calculate_stealth()
-                print(f"Quantum wierdness fills the air...\nYour {self.cloak.name} is enhanced to stealth +"
+                print(f"Quantum weirdness fills the air...\nYour {self.cloak.name} is enhanced to stealth +"
                       f" {self.cloak.stealth}!")
 
                 pause()
@@ -7865,7 +7865,7 @@ class Player:
         if self.ring_of_reg.name == "No Ring of Regeneration":
             # self.ring_of_regeneration and default class object has 0 regenerate
             self.ring_of_reg = found_item
-            print(f"Quantum wierdness fills the air...")
+            print(f"Quantum weirdness fills the air...")
             print(f"A Ring of Regeneration + {self.ring_of_reg.regenerate} appears on your finger!")
             sleep(1)
             print(f"It becomes permanently affixed..fused to your flesh and bone!")
@@ -7873,16 +7873,16 @@ class Player:
             pause()
             return
 
-        elif self.ring_of_reg.regenerate < math.ceil(self.maximum_hit_points * .17):
+        elif self.ring_of_reg.regenerate < math.ceil(self.maximum_hit_points * .15):
             # old_ring = self.ring_of_reg
             self.ring_of_reg.regenerate = (self.ring_of_reg.regenerate + 1)
-            print(f"Quantum wierdness fills the air...")
+            print(f"Quantum weirdness fills the air...")
             print(f"Your {self.ring_of_reg.name} is enhanced to + {self.ring_of_reg.regenerate} !")
             pause()
             return
 
         else:
-            print("Ring of reg already equal to or more than 17% of max hit points")  # remove after testing
+            print("Ring of reg already equal to or more than 15% of max hit points")  # remove after testing
             pause()  # remove after testing
             return
 
@@ -7891,7 +7891,7 @@ class Player:
         if self.ring_of_prot.name == "No Ring of Protection":  # default ring is transparent placeholder
             self.ring_of_prot = found_item
             # (self.pack[found_item.item_type]).append(found_item) you can't sell rings. new rule
-            print(f"Quantum wierdness fills the air...")
+            print(f"Quantum weirdness fills the air...")
             print(f"A Ring of Protection + {self.ring_of_prot.protect} appears on your finger!")
             sleep(1)
             print(f"Tunneling through realities, it permanently fuses to flesh and bone!")
@@ -7900,7 +7900,7 @@ class Player:
 
         elif self.ring_of_prot.protect < math.ceil(self.wisdom * .20):
             self.ring_of_prot.protect += 1
-            print(f"Quantum wierdness fills the air...")
+            print(f"Quantum weirdness fills the air...")
             print(f"Your {self.ring_of_prot.name} is enhanced to + {self.ring_of_prot.protect} !")
             pause()
             return
@@ -10342,7 +10342,7 @@ and self.elixirs > 0:
 """            if found_item.name == 'Full Plate Armor' and found_item.name == self.armor.name:
                 found_item.ac += 1
                 print(
-                    f"Quantum wierdness fills the air...\nYour {self.armor.name} is enhanced 
+                    f"Quantum weirdness fills the air...\nYour {self.armor.name} is enhanced 
                     to armor class {found_item.ac}!")
                 self.armor.ac = found_item.ac
                 self.calculate_armor_class()

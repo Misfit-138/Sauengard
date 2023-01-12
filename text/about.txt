@@ -27,10 +27,10 @@ but also draw from other fantasy games, like Eye Of the Beholder, and perhaps mo
 Most of the monsters are inspired by the ubiquitous RPG varieties, some have been created from imagination,
 but all have been customized to strike a balance between challenging and fun. I have tried to include as many of the
 original monsters from Telengard as possible.
-Sauengard uses a system derived from the ever-popular d20 mechanic and is similar to the Infocom games in its
-navigation, descriptions, and low-key humor. Fans of retro computing will likely recognize some throwbacks and homages
-to these wonderful games from a bygone era of computing. I have tried to combine elements from my memories of these
-games to create a text-driven adventure that captures the experience of early computer gaming.
+Sauengard is similar to the Infocom games in its navigation, descriptions, and low-key humor.
+Fans of retro computing will likely recognize some throwbacks and homages to these wonderful games from a bygone era
+of computing. I have tried to combine elements from my memories of old games to create a text-driven adventure that
+captures the experience of early computer gaming.
 I coded this mainly for myself and my cousin Bill, with whom I spent many late evenings playing
 on my Commodore 64, but it is my hope that you enjoy it as well. If you have a problem or suggestion, or if you are
 enjoying Sauengard, please feel free to email me at:

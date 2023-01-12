@@ -3581,7 +3581,7 @@ class FrostGiant(Monster):
         self.attack_5_phrase = "It grabs you with a crushing fist, and attacks with a mighty axe blow!"
         self.introduction = f"You have encountered a Frost Giant; A huge humanoid out of myths, now brought to this " \
                             f"reality by Quantum improbability.\nBuilt of hard, frozen flesh for battle, " \
-                            f"wielding an enormous greataxe, and towering above you at some 12 feet in height,\n" \
+                            f"wielding an enormous greataxe, and towering above\nyou at some 12 feet in height, " \
                             f"its footsteps shake you to the core as it approaches."
 
 
@@ -5166,6 +5166,70 @@ class MorbidTroll(Monster):
                             f"languishes toward you with a dreary and dreadful lilt."
 
 
+class SheStalker(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 13
+        self.name = "She-Stalker"
+        self.proper_name = "None"
+        self.he_she_it = "she"
+        self.his_her_its = "her"
+        self.him_her_it = "her"
+        self.experience_award = 10000
+        self.gold = random.randint(10, 30)
+        self.weapon_bonus = 6
+        self.armor = 0
+        self.shield = 0
+        self.strength = 8
+        self.dexterity = 20
+        self.constitution = 9
+        self.intelligence = 15
+        self.wisdom = 18
+        self.charisma = 20
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = True
+        self.dot_multiplier = dice_roll(8, 9)
+        self.dot_turns = 5
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = ["Fear"]
+        self.resistances = ["Sleep", "Web", "Charm"]
+        self.quantum_energy = False
+        self.hit_dice = 8
+        self.number_of_hd = 9
+        self.hit_points = 120
+        self.armor_class = 18
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 11  # attack bonus
+        self.attack_1_phrase = "She swings a nasty, shining dagger wildly.."
+        self.attack_2 = 12
+        self.attack_2_phrase = "She claws at you with wild rage.."
+        self.attack_3 = 13
+        self.attack_3_phrase = "She leaps forward, biting with her dripping fangs!"
+        self.attack_4 = 14
+        self.attack_4_phrase = "Flapping her black wings, she rises up and darts down upon you, with fangs glimmering!"
+        self.attack_5 = 25
+        self.attack_5_phrase = "She leaps upon you, stabbing with a nasty blade and biting with abandon!!"
+        self.introduction = f"You have encountered a She-Stalker; A statuesque female humanoid brought to being " \
+                            f"by an evil Quantum Mentor\nfor dark, alluring schemes and purposes. High black " \
+                            f"boots, large, leathery wings and a mouthful\nof fangs adorn her natural beauty with " \
+                            f"unnatural weirdness. She approaches with a vivacious and fell smile.."
+        self.paralyze_phrase = f"Her lovely, impish beauty begins to transfix you.."
+        self.paralyze_free_attack_phrase = "Taking full advantage of your frozen flesh, she strikes at you " \
+                                           "with swiftness and skill!"
+        self.necrotic_phrase = f"Grabbing a deadly Fallen Blade and with a wry smile, she swiftly " \
+                               f"strikes at you!!"
+
+
 class WickedQueenJannbrielle(Monster):
 
     def __init__(self):
@@ -5262,7 +5326,7 @@ monster_dict = {
     10: [YoungRedDragon, MorbidBehemoth, ChaosMonster, Leviathan, Gojira],
     11: [CorpseGrinder, BoltThrowerCaptain, Apocryphage, MorbidAssassin, TorinManipulator],
     12: [DiamondKing, QueenWasp, FireGiantCaptain, DarkDwarfWarlord, MorbidVastator],
-    13: [MorbidTroll]
+    13: [MorbidTroll, SheStalker]
 }
 
 # undead monsters:

@@ -1,41 +1,33 @@
 # Sauengard © Copyright 2022 by Jules Pitsker
 # All rights reserved.
-# This source code is licensed under the BSD-style license found in the
+# This source code is licensed under the license found in the
 # LICENSE.txt file in the root directory of this source tree.
 
 """
-
 Copyright 2022, JULES PITSKER  (pitsker@proton.me)
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-1. Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the following disclaimer.
+1. The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-2. Redistributions in binary form must reproduce the above copyright notice,
-   this list of conditions and the following disclaimer in the documentation
-   and/or other materials provided with the distribution.
+2. The following acknowledgement shall be included in all copies or substantial
+portions of the Software:
+This product includes software developed by Jules Pitsker.
 
-3. All advertising materials mentioning features or use of this software must
-   display the following acknowledgement:
-     This product includes software developed by Jules Pitsker.
-
-4. Neither the name of the copyright holder nor the names of his
-   contributors may be used to endorse or promote products derived from
-   this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER "AS IS" AND ANY EXPRESS OR
-IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
-EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
-OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
-WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 Thanks to the following STACK OVERFLOW members:
 The Spider, Anentropic, The Thonnu and Optimal: for helping me get my footing during my first days of learning python
@@ -3825,6 +3817,64 @@ class Assassin(Monster):
         self.poison_phrase = "Suddenly appearing behind you, he stabs at you with a poison blade!!"
 
 
+class DarkDwarfVeteran(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 9
+        self.name = "Dark Dwarf Veteran"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.experience_award = 5000
+        self.gold = random.randint(25, 35)
+        self.weapon_bonus = 6
+        self.armor = 0
+        self.shield = 0
+        self.strength = 16
+        self.dexterity = 14
+        self.constitution = 17
+        self.intelligence = 12
+        self.wisdom = 12
+        self.charisma = 10
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 1
+        self.dot_turns = 1
+        self.undead = False
+        self.immunities = ["Fear", "Phantasm"]
+        self.vulnerabilities = []
+        self.resistances = ["Charm", "Sleep"]
+        self.quantum_energy = False
+        self.hit_dice = 8
+        self.number_of_hd = 5
+        self.hit_points = 140
+        self.armor_class = 18
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 6  # attack bonus
+        self.attack_1_phrase = "He swings his war-axe with a grunt.."
+        self.attack_2 = 7
+        self.attack_2_phrase = "He swings his war-hammer with blinding speed!"
+        self.attack_3 = 8
+        self.attack_3_phrase = "He readies his javelin for a stout thrust."
+        self.attack_4 = 9
+        self.attack_4_phrase = "He bellows with malice and rage as he swings his war-axe!"
+        self.attack_5 = 12
+        self.attack_5_phrase = "He raises his war-axe overhead with both hands for a mighty blow.."
+        self.introduction = f"You have encountered a Dark Dwarf Veteran; A battle-tested and grim Dark-Dwarven " \
+                            f"soldier. Fearless and formidable,\nhe approaches with a full complement of black armor " \
+                            f"and exquisite weaponry."
+
+
 class FireGiant(Monster):
 
     def __init__(self):
@@ -4758,7 +4808,7 @@ class TorinManipulator(Monster):
         self.hit_dice = 8
         self.number_of_hd = 7
         self.hit_points = 101
-        self.armor_class = 17
+        self.armor_class = 16
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 10  # attack bonus
@@ -4786,7 +4836,7 @@ class TorinManipulator(Monster):
         self.quantum_attack_5_phrase = "Clapping his hands with a thundering arcflash, a jagged bolt of white-hot " \
                                        "lightning shoots toward you!"
         self.introduction = f"You have encountered a Torin Manipulator; A human formally schooled in the Weird Arts " \
-                            f"by an Quantum Mentor,\nwho bends their students to their own sadistic ends. " \
+                            f"by a Quantum Mentor,\nwho bends their students to their own sadistic ends. " \
                             f"In the hierarchy of Weirdness, the Torin fall\ninto the middle ranks, and are quite " \
                             f"competent with Quantum Necrosis. His eyes glow with a reddish tinge,\n" \
                             f"illuminating a face that has been twisted by the greedy gain of power.."
@@ -4796,12 +4846,12 @@ class TorinManipulator(Monster):
         self.necrotic_phrase = f"Closing his eyes for concentration, he attempts to harness Quantum necrotic forces!"
 
 
-class DiamondKing(Monster):
+class DiamondKingInitiate(Monster):
 
     def __init__(self):
         super().__init__()
         self.level = 12
-        self.name = "Diamond King"
+        self.name = "Diamond King Initiate"
         self.proper_name = "None"
         self.he_she_it = "he"
         self.his_her_its = "his"
@@ -4850,7 +4900,8 @@ class DiamondKing(Monster):
         self.attack_5 = 20
         self.attack_5_phrase = "Collapsing into a dark smudge, he instantly appears, sinking his fangs into your " \
                                "flesh!!"
-        self.introduction = f"You have encountered a Diamond King; An undead human initiate of a self-proclaimed " \
+        self.introduction = f"You have encountered a member of the Diamond Kings; An undead human initiate of a " \
+                            f"self-proclaimed " \
                             f"high-born order which\nregards all other life forms as laboriously tedious and " \
                             f"inferior. With rock-hard, snow-white skin,\nand deep, dark markings surrounding " \
                             f"his red eyes, he approaches with a stately manner, regarding you with a measured " \
@@ -5230,6 +5281,231 @@ class SheStalker(Monster):
                                f"strikes at you!!"
 
 
+class AbsconditusManipulator(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 13
+        self.name = "Absconditus Manipulator"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.a_an = "an"
+        self.experience_award = 10000
+        self.gold = random.randint(1, 15)
+        self.weapon_bonus = 4
+        self.armor = 0
+        self.shield = 0
+        self.strength = 11
+        self.dexterity = 12
+        self.constitution = 12
+        self.intelligence = 19
+        self.wisdom = 19
+        self.charisma = 18
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = True
+        self.dot_multiplier = dice_roll(6, 7)
+        self.dot_turns = dice_roll(4, 5)
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = ["Sleep", "Web", "Charm", "Hold Monster", "Lightning", "Fear"]
+        self.quantum_energy = True
+        self.hit_dice = 8
+        self.number_of_hd = 8
+        self.hit_points = 130
+        self.armor_class = 16
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 10  # attack bonus
+        self.attack_1_phrase = "He deftly swings his gleaming staff!"
+        self.attack_2 = 11
+        self.attack_2_phrase = "He swings his staff with a time-slowing effect! You are unable to dodge.."
+        self.attack_3 = 12
+        self.attack_3_phrase = "He cuts at you with a long, shining, steel dagger!"
+        self.attack_4 = 13
+        self.attack_4_phrase = "He slices and swings in a deadly combination!!"
+        self.attack_5 = 15
+        self.attack_5_phrase = "He slams the ground with his staff, sending crippling shock-waves through you!"
+        self.quantum_attack_1 = 16
+        self.quantum_attack_1_phrase = "With a flick of his wrist, a cone of fire is unleashed and rushes at you " \
+                                       "with roaring, searing heat!"
+        self.quantum_attack_2 = 16
+        self.quantum_attack_2_phrase = "A storm of ice and hail encircles you within a frigid wind of weirdness!"
+        self.quantum_attack_3 = 19
+        self.quantum_attack_3_phrase = "Weird, arcing lightning courses through his body, illuminating his skeleton " \
+                                       "for a brief moment, before shooting toward you!"
+        self.quantum_attack_4 = 22
+        self.quantum_attack_4_phrase = "Pounding the ground with a fist, you are knocked off your feet, as a torrent " \
+                                       "of hot flames approaches!"
+        self.quantum_attack_5 = 40
+        self.quantum_attack_5_phrase = "Clapping his hands with a thundering arcflash, a jagged bolt of white-hot " \
+                                       "lightning shoots toward you!"
+        self.introduction = f"You have encountered an Absconditus Manipulator; A human formally schooled in the " \
+                            f"Weird Arts " \
+                            f"by a Quantum Mentor,\nwho bends their students to their own sadistic ends. " \
+                            f"In the hierarchy of Weirdness, the Absconditus fall\ninto the middle ranks, and are " \
+                            f"quite adept at Quantum Necrosis. His eyes glow with a reddish tinge,\n" \
+                            f"illuminating a face that has been twisted by the greedy gain of power.."
+        self.paralyze_phrase = "'HALT!', he calls out to you with a powerful voice...\n..your limbs begin to freeze up!"
+        self.paralyze_free_attack_phrase = "Spinning his staff to an attack position, he patiently swings at you " \
+                                           "as you stand, halted and helpless!"
+        self.necrotic_phrase = f"Closing his eyes for concentration, he attempts to harness Quantum necrotic forces!"
+
+
+class AltiorManipulator(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 14
+        self.name = "Altior Manipulator"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.a_an = "an"
+        self.experience_award = 10000
+        self.gold = random.randint(1, 15)
+        self.weapon_bonus = 5
+        self.armor = 0
+        self.shield = 0
+        self.strength = 11
+        self.dexterity = 12
+        self.constitution = 12
+        self.intelligence = 19
+        self.wisdom = 19
+        self.charisma = 18
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = True
+        self.dot_multiplier = dice_roll(7, 8)
+        self.dot_turns = dice_roll(4, 5)
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = ["Sleep", "Web", "Charm", "Hold Monster", "Lightning", "Phantasm", "Fireball", "Firestorm",
+                            "Immolation"]
+        self.quantum_energy = True
+        self.hit_dice = 9
+        self.number_of_hd = 8
+        self.hit_points = 140
+        self.armor_class = 17
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 10  # attack bonus
+        self.attack_1_phrase = "He deftly swings his gleaming staff!"
+        self.attack_2 = 11
+        self.attack_2_phrase = "He swings his staff with a time-slowing effect! You are unable to dodge.."
+        self.attack_3 = 12
+        self.attack_3_phrase = "He cuts at you with a long, shining, steel dagger!"
+        self.attack_4 = 13
+        self.attack_4_phrase = "He slices and swings in a deadly combination!!"
+        self.attack_5 = 15
+        self.attack_5_phrase = "He slams the ground with his staff, sending crippling shock-waves through you!"
+        self.quantum_attack_1 = 16
+        self.quantum_attack_1_phrase = "With a flick of his wrist, a cone of fire is unleashed and rushes at you " \
+                                       "with roaring, searing heat!"
+        self.quantum_attack_2 = 16
+        self.quantum_attack_2_phrase = "A storm of ice and hail encircles you within a frigid wind of weirdness!"
+        self.quantum_attack_3 = 19
+        self.quantum_attack_3_phrase = "Weird, arcing lightning courses through his body, illuminating his skeleton " \
+                                       "for a brief moment, before shooting toward you!"
+        self.quantum_attack_4 = 22
+        self.quantum_attack_4_phrase = "Pounding the ground with a fist, you are knocked off your feet, as a torrent " \
+                                       "of hot flames approaches!"
+        self.quantum_attack_5 = 40
+        self.quantum_attack_5_phrase = "Clapping his hands with a thundering arcflash, a jagged bolt of white-hot " \
+                                       "lightning shoots toward you!"
+        self.introduction = f"You have encountered an Altior Manipulator; A human formally schooled in the " \
+                            f"Weird Arts by an evil Quantum Mentor.\n" \
+                            f"In the hierarchy of Weirdness, the Altior are the highest\nrank of Manipulators, " \
+                            f"but still below the Quantum Mentors who teach them. Like the Torin and Absconditus,\n" \
+                            f"the Altior are obsessed with Quantum Necrosis, but also adept at paralyzing effects.."
+        self.paralyze_phrase = "'HALT!', he calls out to you with a powerful voice...\n..your limbs begin to freeze up!"
+        self.paralyze_free_attack_phrase = "Spinning his staff to an attack position, he patiently swings at you " \
+                                           "as you stand, halted and helpless!"
+        self.necrotic_phrase = f"Closing his eyes for concentration, he attempts to harness Quantum necrotic forces!"
+
+
+class DiamondKingPatrician(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 14
+        self.name = "Diamond King Patrician"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.experience_award = 10000
+        self.gold = random.randint(15, 45)
+        self.weapon_bonus = 0
+        self.armor = 0
+        self.shield = 0
+        self.strength = 16
+        self.dexterity = 18
+        self.constitution = 16
+        self.intelligence = 20
+        self.wisdom = 17
+        self.charisma = 19
+        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = True
+        self.necrotic = False
+        self.dot_multiplier = dice_roll(7, 8)
+        self.dot_turns = dice_roll(3, 5)
+        self.undead = True
+        self.immunities = ["Web", "Hold Monster"]
+        self.vulnerabilities = ["Firestorm"]
+        self.resistances = ["Turn Undead", "Banish", "Lightning", "Immolation"]
+        self.quantum_energy = False
+        self.hit_dice = 9
+        self.number_of_hd = 8
+        self.hit_points = 165
+        self.armor_class = 18
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 10  # attack bonus
+        self.attack_1_phrase = "He swirls around you in a blur of speed, swinging at you with hard, heavy fists.."
+        self.attack_2 = 11
+        self.attack_2_phrase = "Absorbing all light around his form, he strikes at you from the shadows.."
+        self.attack_3 = 12
+        self.attack_3_phrase = "Vanishing in a black fog of vapor, he appears behind you and strikes stealthily.."
+        self.attack_4 = 16
+        self.attack_4_phrase = "Spinning like a tornado of dark murkiness, he strikes at you repeatedly with his " \
+                               "impossibly hard fists.."
+        self.attack_5 = 22
+        self.attack_5_phrase = "Collapsing into a dark shadow, he reappears, sinking his fangs into your " \
+                               "flesh!!"
+        self.introduction = f"You have encountered a Diamond King Patrician; A vested member of the " \
+                            f"self-proclaimed high-born order.\nHis deep-set, smouldering eyes focus upon you behind " \
+                            f"lustrous locks of long, dark hair.\nEvery vestige of his black garb and form bristles " \
+                            f"with Weirdness as he approaches you in silence and solemnity."
+        self.paralyze_phrase = f"He gazes upon you with narrowed, burning eyes! You feel your muscles start to " \
+                               f"freeze.."
+        self.paralyze_free_attack_phrase = "With a gaping hiss, he silently approaches and sinks his fangs deep!"
+        self.poison_phrase = f"In a blurred motion of time-bending mist, he attacks with his poisonous fangs!"
+
+
 class WickedQueenJannbrielle(Monster):
 
     def __init__(self):
@@ -5322,11 +5598,12 @@ monster_dict = {
     6: [Troll, HillGiant, Cyclops, WrathfulAvenger, HobgoblinWarlord],
     7: [Wyvern, DarkElfManipulator, MorbidDefender, MindFlayer, BoltThrower],
     8: [FrostGiant, YoungBlackDragon, YoungGreenDragon, MorbidKnight, Assassin],
-    9: [FireGiant, Widow, YoungBlueDragon, Wraith, Necrophagist],
+    9: [FireGiant, Widow, YoungBlueDragon, Wraith, Necrophagist, DarkDwarfVeteran],
     10: [YoungRedDragon, MorbidBehemoth, ChaosMonster, Leviathan, Gojira],
     11: [CorpseGrinder, BoltThrowerCaptain, Apocryphage, MorbidAssassin, TorinManipulator],
-    12: [DiamondKing, QueenWasp, FireGiantCaptain, DarkDwarfWarlord, MorbidVastator],
-    13: [MorbidTroll, SheStalker]
+    12: [DiamondKingInitiate, QueenWasp, FireGiantCaptain, DarkDwarfWarlord, MorbidVastator],
+    13: [MorbidTroll, SheStalker, AbsconditusManipulator],
+    14: [AltiorManipulator, DiamondKingPatrician]
 }
 
 # undead monsters:

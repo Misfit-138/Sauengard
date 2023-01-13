@@ -32,16 +32,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Thanks to the following STACK OVERFLOW members:
-The Spider, Anentropic, The Thonnu and Optimal: for helping me get my footing during my first days of learning python
-Yarik0urWorld: for help with python list syntax
-Angus Nicolson: for self.__dict__ code snippet and explanation
-Liju and snakecharmerb: for explanation of hashable objects
-Pawel Pietraszko: for assistance with initializing new object instances every time player gets new item
-triplee: for assistance with Path syntax
-
-Thanks to @LearntoCodeGCSE for the 2D array video.
-
 ACKNOWLEDGEMENTS according to Creative Commons licenses:
 https://creativecommons.org/licenses/by/4.0/
 

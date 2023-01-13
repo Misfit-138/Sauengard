@@ -4,7 +4,6 @@
 # LICENSE.txt file in the root directory of this source tree.
 
 """
-
 Copyright 2022, JULES PITSKER  (pitsker@proton.me)
 All rights reserved.
 
@@ -19,8 +18,11 @@ furnished to do so, subject to the following conditions:
 copies or substantial portions of the Software.
 
 2. The following acknowledgement shall be included in all copies or substantial
-portions of the Software.:
+portions of the Software:
 This product includes software developed by Jules Pitsker.
+
+3. If using software included in the ACKNOWLEDGEMENTS section below, acknowledgements shall
+be attributed to corresponding authors listed therein.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -40,7 +42,8 @@ triplee: for assistance with Path syntax
 
 Thanks to @LearntoCodeGCSE for the 2D array video.
 
-ACKNOWLEDGEMENTS
+ACKNOWLEDGEMENTS according to Creative Commons licenses:
+https://creativecommons.org/licenses/by/4.0/
 
 SOUND/MUSIC:
 Main theme: "Soul's Departure" Royalty Free Music by Darren Curtis
@@ -67,7 +70,7 @@ Music promoted by BreakingCopyright: http://bit.ly/Silvermansound_Medieval
 Pit theme: 'Epic 39' by Jules Pitsker
 Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
-Hall of the Mountain King by Kevin MacLeod http://incompetech.com
+Undead king theme: Hall of the Mountain King by Kevin MacLeod http://incompetech.com
 Creative Commons Attribution License 4.0 International (CC BY 4.0)
 Free Download / Stream: https://bit.ly/hall-of-the-mountain-king
 Music promoted by Audio Library https://youtu.be/2RDX5sVEfs4

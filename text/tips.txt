@@ -26,14 +26,14 @@ to master, though a few require Intelligence as well.
 
 A Paladin? A Fighter? A 'Quantum Manipulator'? What am I?
 
-Sauengard allows players access to the Standard Array, often used in RPGs to streamline character creation. This system
+Sauengard allows players access to a set pool of stats from which ability stats may be customized. This system
 allows for a reasonable compromise between what is fair, possible, and fun, when creating a player character. It is
 the player who will ultimately decide how to build and level up their character, allowing for great customization and
 enjoyment. At the beginning of the game, your homeland, friends and culture are destroyed. It is up to you to build
 an optimal character in order to overcome the challenges ahead. Will you choose a tank-like fighter, relying heavily
 on your melee skills, or, opt for a more Quantum-Centric Manipulator, or, a balanced compromise? Make no mistake,
-success relies heavily on Quantum Manipulation as well as physical attacks. Certain monsters will be immune to Quantum
-effects, so do not underestimate the usefulness of steel! At levels 4, 6, 8, 12, 14, 16, and 19, you will have access
-to an Ability Score Improvement system, which facilitates increasing ability scores according to your preferences,
+success relies heavily on Quantum Manipulation as well as physical attacks. Certain monsters will be resistent or immune
+to Quantum effects, so do not underestimate the usefulness of steel! At levels 4, 6, 8, 12, 14, 16, and 19, you will
+have access to an ability augmentation system, which facilitates increasing ability stats according to your preferences,
 for customizing and improving your character even further.
 

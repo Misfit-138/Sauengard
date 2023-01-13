@@ -259,7 +259,7 @@ class Monster:
         monster_total = roll_d20 + self.dexterity_modifier + self.proficiency_bonus  # test out pro bonus
         # print(f"{self.name} Attack bonus: {attack_bonus}")
         print(f"{self.name} Dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
-        print(f"{self.name} Proficiency Bonus: {self.proficiency_bonus}")  # testing out pro bonus
+        print(f"{self.name} Evil Bonus: {self.proficiency_bonus}")  # testing out pro bonus
         print(f"{self.name} Total: {monster_total}")
         print(f"Your armor class: {player_1.armor_class}")
 
@@ -325,7 +325,7 @@ class Monster:
         roll_d20 = dice_roll(1, 20)
         print(f"The {self.name} attacks you with Quantum Energy!\n"
               f"({self.he_she_it.capitalize()} rolls {roll_d20})\n"
-              f"Proficiency Bonus: {self.proficiency_bonus}\n"
+              f"Evil Bonus: {self.proficiency_bonus}\n"
               f"Wisdom modifier: {self.wisdom_modifier}\n"
               f"{self.name} Total: {roll_d20 + self.wisdom_modifier + self.proficiency_bonus}")
 
@@ -341,7 +341,7 @@ class Monster:
         else:
             critical_bonus = 1
             hit_statement = ""
-        print(f"Your Saving Throw: {human_player_roll_d20} + wisdom modifier: ({player_1.wisdom_modifier})")
+        print(f"Your Protection Roll: {human_player_roll_d20} + wisdom modifier: ({player_1.wisdom_modifier})")
 
         if player_1.ring_of_prot.protect > 0:
             print(f"Your Ring of Protection Modifier: {player_1.ring_of_prot.protect}")
@@ -390,7 +390,7 @@ class Monster:
             print(f"Paralyze roll: {paralyze_chance} + monster wisdom modifier: {self.wisdom_modifier}")  # testing
             paralyze_total = paralyze_chance + self.wisdom_modifier
             print(f"Monster Total: {paralyze_total}")
-            print(f"Your Saving Throw: {human_player_roll_d20} ")  # remove after testing
+            print(f"Your Protection Roll: {human_player_roll_d20} ")  # remove after testing
 
             if player_1.ring_of_prot.protect > 0:
                 print(f"Your Ring of Protection Modifier: {player_1.ring_of_prot.protect}")
@@ -448,7 +448,7 @@ class Monster:
             player_1.hud()
             return False
         else:
-            print(f"Your Saving Throw: {player_saving_throw}\n"
+            print(f"Your Protection Roll: {player_saving_throw}\n"
                   f"Your Constitution Modifier: {player_1.constitution_modifier}\n")
             print(f"Your Total: {difficulty_class}")
 
@@ -494,7 +494,7 @@ class Monster:
         else:
             player_saving_throw = (dice_roll(1, 20))
             difficulty_class = (player_saving_throw + player_1.constitution_modifier)
-            print(f"Your Saving Throw: {player_saving_throw}\n"
+            print(f"Your Protection Roll: {player_saving_throw}\n"
                   f"Your Constitution Modifier: {player_1.constitution_modifier}\n")
             print(f"Your Total: {difficulty_class}")
 
@@ -613,7 +613,7 @@ class Monster:
         monster_total = roll_d20 + self.dexterity_modifier + self.proficiency_bonus  # test out pro bonus
         # print(f"{self.name} Attack bonus: {attack_bonus}")
         print(f"{self.name} Dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
-        print(f"{self.name} Proficiency Bonus: {self.proficiency_bonus}")  # testing out pro bonus
+        print(f"{self.name} Evil Bonus: {self.proficiency_bonus}")  # testing out pro bonus
         print(f"{self.name} Total: {monster_total}")
         print(f"{npc.name}'s armor class: {npc.armor_class}")
 
@@ -680,7 +680,7 @@ class Monster:
         roll_d20 = dice_roll(1, 20)
         print(f"The {self.name} attacks {npc.name} with Quantum Energy!\n"
               f"({self.he_she_it.capitalize()} rolls {roll_d20})\n"
-              f"Proficiency Bonus: {self.proficiency_bonus}\n"
+              f"Evil Bonus: {self.proficiency_bonus}\n"
               f"Wisdom modifier: {self.wisdom_modifier}\n"
               f"{self.name} Total: {roll_d20 + self.wisdom_modifier + self.proficiency_bonus}")
 
@@ -695,7 +695,7 @@ class Monster:
         else:
             critical_bonus = 1
             hit_statement = f"The weird energies are unleashed upon {npc.name}.."
-        print(f"{npc.name} Saving Throw: {npc_roll_d20} + wisdom modifier: ({npc.wisdom_modifier})")
+        print(f"{npc.name} Protection Roll: {npc_roll_d20} + wisdom modifier: ({npc.wisdom_modifier})")
 
         if npc.protect > 0:
             print(f"Protection Modifier: {npc.protect}")

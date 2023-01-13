@@ -534,7 +534,7 @@ def character_generator():
                                     "better chance of favorable outcomes when encountering certain monsters.\n"
                                     "Charisma can mean the difference between great fortune and death."}
 
-    standard_array = f"Ability Score    	Ability Modifier\n" \
+    standard_array = f"Ability Value    	Ability Modifier\n" \
                      f"15	                            +3\n14	                            " \
                      f"+2\n13	                            +1\n12	                            +1\n10" \
                      f"	                            +0\n8	                            -1\n"
@@ -567,11 +567,11 @@ def character_generator():
 
     cls()
     # print(f"{player_name}:")
-    print(f"Standard ability scores (Recommended if unsure)")
+    print(f"Default Stats (Recommended if unsure)")
 
     for key, value in stats.items():
         print(key.capitalize(), ":", value)
-    default_choice = input(f"[ENTER] to use the above default ability scores or (C)ustomize? ([ENTER]/C): ").lower()
+    default_choice = input(f"[ENTER] to use the above default stats or (C)ustomize? ([ENTER]/C): ").lower()
 
     if default_choice != 'c':
         player_1 = Player(name=player_name, **stats)
@@ -579,13 +579,13 @@ def character_generator():
         return player_1
 
     cls()
-    print(f"Customization involves assigning scores from The Standard Array.\n"
-          f"The Standard Array is a set pool of six numbers: 15, 14, 13, 12, 10, 8\n"
+    print(f"Customization involves assigning your own ability values.\n"
+          f"The stats are picked from a set pool of six numbers: 15, 14, 13, 12, 10, 8\n"
           f"Each number will be matched with one of the six character abilities.\n"
-          f"Note that each ability score has a corresponding ability modifier, which\n"
+          f"Note that each ability value has a corresponding modifier, which\n"
           f"acts as a bonus, (or, as a penalty, in the case of a negative modifier),\n"
           f"and will become more important as you progress.\n"
-          f"Abilities and ability modifiers increase as you level up.\n")
+          f"Abilities and modifiers increase as you level up.\n")
     print(standard_array)
     pause()
     score_list = [15, 14, 13, 12, 10, 8]
@@ -685,21 +685,21 @@ def game_start():
                 return player_1
 
 
-def asi_intro():
+def augmentation_intro():
     cls()
-    print(f"                                  *Ability Score Improvement*")
+    print(f"                                  *Ability Augmentation*")
     print()
     print(
-        f"You may choose to improve a single ability score, such as strength, and increase it by 2 points.\n"
+        f"You may choose to improve a single ability, such as strength, and increase it by 2 points.\n"
         f"\n"
         f"                           *OR*\n"
         f"\n"
-        f"You may choose to improve two ability scores, such as charisma and constitution, by 1 point each.\n"
+        f"You may choose to improve two abilities, such as charisma and constitution, by 1 point each.\n"
         f"\n"
         f"NOTES: \n"
         f"* Ability *modifiers* improve with each ascending even-numbered score, therefore, if unsure,\n"
-        f"  it is generally recommended to apply 1 point to odd-numbered ability scores and apply \n"
-        f"2 points to even-numbered scores.\n"
+        f"  it is generally recommended to apply 1 point to odd-numbered ability values and apply \n"
+        f"2 points to even-numbered values.\n"
         f"* When your Constitution modifier increases by 1, your hit point maximum increases by 1 for each\n"
         f"  level you have attained.\n"
         f"                         *The maximum score for any ability is 20*"
@@ -2032,7 +2032,7 @@ class Player:
         return self.protection_effect
 
     def calculate_modifiers(self):
-        # called from ability score improvement asi(), increase_random_ability(), decrease_random_ability(),
+        # called from augmentation_system(), increase_random_ability(), decrease_random_ability(),
         # level_up(), increase_lowest_ability() and decrease_lowest_ability()
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2192,7 +2192,7 @@ class Player:
         return
 
     # LEVEL AND EXPERIENCE
-    def asi_eligibility(self):
+    def augment_eligibility(self):
         if self.strength < 20 or self.dexterity < 20 or self.constitution < 20 or self.intelligence < 20 \
                 or self.wisdom < 20 or self.charisma < 20:
             return True
@@ -2200,10 +2200,11 @@ class Player:
             print(f"All abilities at maximum!")  # remove after testing
             return False
 
-    def asi(self):
+    def augmentation_system(self):
         # called from level_up()
-        # Ability Score Improvement at levels 4, 6, 8, 12, 14, 16, 19
-        # also, if player goes up more than one level, by gaining a large amount of experience, asi is available
+        # Ability augmentation at levels 4, 6, 8, 10, 12, 14, 16, 18
+        # also, if player goes up more than one level, by gaining a large amount of experience,
+        # augmentation is available
 
         while True:
             self.hud()
@@ -2233,7 +2234,7 @@ class Player:
                     sleep(1.25)
                     return
 
-                print(f"Ability Score Improvement\n"
+                print(f"Ability Augmentation\n"
                       f"Player level: {self.level}")
                 print(f"Points to distribute: {points}")
                 # create a subset ability dictionary from the ability list by indexing, and then print out
@@ -2307,36 +2308,36 @@ class Player:
             print(f"You gain {gain_hit_points} hit points")
             sleep(2.5)
 
-            # Ability Score Improvement at levels 4, 6, 8, 12, 14, 16, 19
-            # ASI logic
+            # Ability augmentation at levels 4, 6, 8, 10, 12, 14, 16, 18
+            # augmentation logic
             # This logic also works for players going up more than one level,
             # e.g. vanquishing a monster with very high experience reward
             # Logic works by creating 2 lists and comparing whether the player's current level, or any levels between
-            # their last level and current level are ASI eligible. Ranges are initially counterintuitive in python;
+            # their last level and current level are augmentation eligible.
+            # Ranges are initially counterintuitive in python;
             # they do not include the last number in range, so I added +1 to end_range
-            # Also, for the current purposes, I added +1 to start_range as well, since we don't want to award ASI
+            # Also, for the current purposes, I added +1 to start_range as well, since we don't want to award augments
             # based on the previous experience level, only on current level and any eligible levels between.
-            range_1 = range((before_level + 1), (after_level + 1), 1)  # enumerate lvls between, inc. after_level by 1
+            range_1 = range((before_level + 1), (after_level + 1), 1)  # enumerate levels between, inc. after_level by 1
             all_levels_between = list(range_1)  # create a list containing levels between, including after_level
-            asi_levels = [4, 6, 8, 12, 14, 16, 19]
+            augment_levels = [4, 6, 8, 10, 12, 14, 16, 18]
 
-            # check if any levels between are ASI levels by comparing elements from both lists
-            # number_of_asi_awards = sum of all_levels_between elements which exist in asi_levels
-            number_of_asi_awards = sum(el in all_levels_between for el in asi_levels)
-            asi_level_check = False
-            if number_of_asi_awards > 0:
-                asi_level_check = True
+            # check if any levels between are augmentation levels by comparing elements from both lists
+            # number_of_augment_awards = sum of all_levels_between elements which exist in augment_levels
+            number_of_augment_awards = sum(el in all_levels_between for el in augment_levels)
+            augment_level_check = False
+            if number_of_augment_awards > 0:
+                augment_level_check = True
 
-            # CHANGE THE FOLLOWING LINE TO CALL asi_level_check(before_level)
-            if asi_level_check:
-                if self.asi_eligibility():  # ensure player has at least 1 ability score < 20
-                    if number_of_asi_awards > 1:
-                        print(f"You have earned {number_of_asi_awards} ability score improvements!")
+            if augment_level_check:
+                if self.augment_eligibility():  # ensure player has at least 1 ability value < 20
+                    if number_of_augment_awards > 1:
+                        print(f"You have earned {number_of_augment_awards} ability augments!")
                         pause()
 
-                    asi_intro()
-                    for i in range(number_of_asi_awards):
-                        self.asi()
+                    augmentation_intro()
+                    for i in range(number_of_augment_awards):
+                        self.augmentation_system()
 
                     print(f"You savor the empowering abilities you have gained..\n"
                           f"And yet, the dungeon horde grows more powerful with you!")
@@ -2352,7 +2353,7 @@ class Player:
                 self.hud()
 
             if after_proficiency_bonus > before_proficiency_bonus:
-                print(f"Your proficiency bonus increases from {before_proficiency_bonus} to {after_proficiency_bonus}!")
+                print(f"Your acumen increases from {before_proficiency_bonus} to {after_proficiency_bonus}!")
                 pause()
                 self.hud()
 
@@ -2980,7 +2981,7 @@ class Player:
             else:
                 print(f"You are unconscious and moribund!")
             sleep(1)
-            print(f"Death saving throw!")
+            print(f"Death resistance throw!")
             sleep(1)
             successes = 0
             fails = 0
@@ -2992,7 +2993,7 @@ class Player:
                     self.hit_points = 1
                     return False  # player is NOT dead
                 if fails >= 3:
-                    print(f"Death saving throw failed!")
+                    print(f"Death protection roll failed!")
                     sleep(1)
                     return True  # player IS dead
                 death_save = dice_roll(1, 20)
@@ -3069,9 +3070,9 @@ class Player:
         else:
             critical_bonus = 1
             hit_statement = "You hit!"
-        print(f"Dexterity modifier {self.dexterity_modifier}\nProficiency bonus {self.proficiency_bonus}")
+        print(f"Dexterity modifier: {self.dexterity_modifier}\nAcumen: {self.proficiency_bonus}")
         if self.wielded_weapon.to_hit_bonus > 0:
-            print(f"Weapon to-hit bonus {self.wielded_weapon.to_hit_bonus}")
+            print(f"Weapon to-hit bonus: {self.wielded_weapon.to_hit_bonus}")
         roll_total = roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus
         print(f"Your Total Attack Roll: {roll_total}")
         print(f"Monster armor class {monster_armor_class}")
@@ -3088,7 +3089,7 @@ class Player:
                 if self.wielded_weapon.damage_bonus > 0:
                     print(f"Weapon bonus: {self.wielded_weapon.damage_bonus}")
                 if strength_bonus > 1:
-                    print(f"* Strength Bonus: {strength_bonus}")
+                    print(f"x Strength Bonus Multiplier: {strength_bonus}")
                 print(f"Your Damage Total: {damage_to_opponent}")
                 print(f"You do {damage_to_opponent} points of damage!")
                 pause()
@@ -3146,7 +3147,7 @@ class Player:
         else:
             critical_bonus = 1
             hit_statement = f"{ally.name} HITS!"
-        print(f"Dexterity modifier {ally.dexterity_modifier}\nProficiency bonus {ally.proficiency_bonus}")
+        print(f"Dexterity modifier: {ally.dexterity_modifier}\nAcumen: {ally.proficiency_bonus}")
         if ally.wielded_weapon.to_hit_bonus > 0:
             print(f"Weapon to-hit bonus {ally.wielded_weapon.to_hit_bonus}")
         roll_total = roll_d20 + ally.proficiency_bonus + ally.dexterity_modifier + ally.wielded_weapon.to_hit_bonus
@@ -3165,7 +3166,7 @@ class Player:
                 if ally.wielded_weapon.damage_bonus > 0:
                     print(f"Weapon bonus: {ally.wielded_weapon.damage_bonus}")
                 if ally.strength_bonus > 1:
-                    print(f"* Strength Bonus: {ally.strength_bonus}")
+                    print(f"x Strength Bonus Multiplier: {ally.strength_bonus}")
                 print(f"{ally.name} Total Damage: {damage_to_opponent}")
                 print(f"{ally.name} does {damage_to_opponent} points of damage!")
                 pause()
@@ -3203,7 +3204,7 @@ class Player:
             return 0
 
     def turn_undead(self, monster):
-        # monster must make wisdom saving throw or be turned away
+        # monster must make wisdom protection roll or be turned away
         quantum_unit_cost = 1
         if self.in_proximity_to_monster:
             print(f"Turn Undead")
@@ -3223,7 +3224,7 @@ class Player:
                     self.wisdom_modifier + vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
-                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                      f"Acumen: {self.proficiency_bonus}")
                 if vulnerability_modifier != 0:
                     print(f"Monster Vulnerability modifier: {vulnerability_modifier}")
                 if level_advantage > 0:
@@ -3232,7 +3233,7 @@ class Player:
                 print(f"Total: {player_dc}")
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
-                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Protection Roll: {monster_roll}")
                 # monster_mod = math.floor((monster.wisdom - 10) / 2)
                 print(f"{monster.name} Wisdom Modifier: {monster.wisdom_modifier}")
                 if resistance_modifier != 0:
@@ -3280,7 +3281,7 @@ class Player:
             return
 
     def banish(self, monster):
-        # monster must make a successful charisma saving throw or be banished from existence on this plane
+        # monster must make a successful charisma protection roll or be banished from existence on this plane
         quantum_unit_cost = 4
         if self.in_proximity_to_monster:
             print(f"Banish")
@@ -3302,7 +3303,7 @@ class Player:
                     vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
-                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                      f"Acumen: {self.proficiency_bonus}")
                 if vulnerability_modifier != 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 if level_advantage > 0:
@@ -3311,7 +3312,7 @@ class Player:
                 print(f"Total: {player_dc}")
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
-                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Protection Roll: {monster_roll}")
                 monster_charisma_modifier = math.floor((monster.charisma - 10) / 2)
                 print(f"{monster.name} Charisma Modifier: {monster_charisma_modifier}")
                 if resistance_modifier != 0:
@@ -3382,7 +3383,7 @@ class Player:
                     vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
-                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                      f"Acumen: {self.proficiency_bonus}")
                 if vulnerability_modifier != 0:
                     print(f"Monster Vulnerability modifier: {vulnerability_modifier}")
                 if level_advantage > 0:
@@ -3391,7 +3392,7 @@ class Player:
                 print(f"Total: {player_dc}")
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
-                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Protection Roll: {monster_roll}")
                 # monster_mod = math.floor((monster.wisdom - 10) / 2)
                 print(f"{monster.name} Wisdom Modifier: {monster.wisdom_modifier}")
                 if resistance_modifier != 0:
@@ -3483,7 +3484,7 @@ class Player:
 
     def flesh_to_stone(self, monster):
         # like sleep and charm, but always successful.
-        # player has 1 free crit, thereafter monster must pass Constitution saving throw
+        # player has 1 free crit, thereafter monster must pass Constitution protection roll
         # 2 failed saves after initial attack = permanent petrification for monster.
         # player gets exp reward, but no gold or loot
         quantum_unit_cost = 4
@@ -3528,7 +3529,7 @@ class Player:
                             self.wisdom_modifier + vulnerability_modifier + level_advantage
                         print(f"Player base DC = {self.base_dc}\n"
                               f"Wisdom Modifier: {self.wisdom_modifier}\n"
-                              f"Proficiency Bonus: {self.proficiency_bonus}")
+                              f"Acumen: {self.proficiency_bonus}")
                         if vulnerability_modifier != 0:
                             print(f"+ Monster Vulnerability Modifier: {vulnerability_modifier}")
                         if level_advantage > 0:
@@ -3538,7 +3539,7 @@ class Player:
                         sleep(1)
                         monster_saving_throw = dice_roll(1, 20)
                         monster_total = monster_saving_throw + monster.constitution_modifier + resistance_modifier
-                        print(f"Monster saving throw: {monster_saving_throw}")
+                        print(f"Monster Protection Roll: {monster_saving_throw}")
                         sleep(1)
                         print(f"Monster Constitution Modifier: {monster.constitution_modifier}")
                         if resistance_modifier != 0:
@@ -3592,7 +3593,7 @@ class Player:
     def gravity_well(self, monster):
         # like sleep and charm, but always successful.
         # initial damage is rolled and then player has 1 free crit,
-        # thereafter monster must pass strength saving throw
+        # thereafter monster must pass strength protection roll.
         # player gets exp reward, but no gold or loot
         quantum_unit_cost = 5
         vulnerability_modifier = 0
@@ -3644,7 +3645,7 @@ class Player:
                                 vulnerability_modifier + level_advantage
                             print(f"Player base DC = {self.base_dc}\n"
                                   f"Wisdom Modifier: {self.wisdom_modifier}\n"
-                                  f"Proficiency Bonus: {self.proficiency_bonus}")
+                                  f"Acumen: {self.proficiency_bonus}")
                             if vulnerability_modifier != 0:
                                 print(f"+ Monster Vulnerability Modifier: {vulnerability_modifier}")
                             if level_advantage > 0:
@@ -3654,7 +3655,7 @@ class Player:
                             sleep(1)
                             monster_saving_throw = dice_roll(1, 20)
                             monster_total = monster_saving_throw + monster.strength_modifier
-                            print(f"Monster saving throw: {monster_saving_throw}")
+                            print(f"Monster Protection Roll: {monster_saving_throw}")
                             sleep(1)
                             print(f"Monster Strength Modifier: {monster.strength_modifier}")
                             sleep(1)
@@ -3718,8 +3719,8 @@ class Player:
                     resistance_modifier = monster.proficiency_bonus
                 # turn_roll = dice_roll(1, 20)
                 # player_total = (turn_roll + self.wisdom_modifier + self.proficiency_bonus + vulnerability_modifier)
-                # The difficulty class ("DC") of the saving throw should be based on the caster:
-                # 8 + proficiency bonus + casting ability modifier.
+                # The difficulty class ("DC") of the Protection Roll should be based on the quantum manipulator:
+                # 8 + acumen + casting ability modifier.
                 # The GM rolls a d20 on behalf of the monster, adds the appropriate saving modifier based on
                 # the monster's stats, and compares to the quantum manipulator's save DC.
                 level_advantage = 0
@@ -3729,7 +3730,7 @@ class Player:
                     vulnerability_modifier + level_advantage
                 print(f"Player DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
-                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                      f"Acumen: {self.proficiency_bonus}")
                 if vulnerability_modifier != 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 if level_advantage > 0:
@@ -3738,7 +3739,7 @@ class Player:
                 print(f"Total: {player_dc}")
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
-                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Protection Roll: {monster_roll}")
                 print(f"{monster.name} Strength Modifier: {monster.strength_modifier}")
                 if resistance_modifier != 0:
                     print(f"Monster Resistance Modifier: {resistance_modifier}")
@@ -3807,14 +3808,14 @@ class Player:
                 # print(f"Quantum Ability Check: {turn_roll}")
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom Modifier: {self.wisdom_modifier}\n"
-                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                      f"Acumen: {self.proficiency_bonus}")
                 if vulnerability_modifier != 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 sleep(1)
                 print(f"Total: {player_total}")
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
-                print(f"Monster Dexterity Saving Throw: {monster_roll}")
+                print(f"Monster Dexterity Protection Roll: {monster_roll}")
                 print(f"{monster.name} Dexterity Modifier: {monster.dexterity_modifier}")
                 if resistance_modifier != 0:
                     print(f"Monster Resistance Modifier: {resistance_modifier}")
@@ -3881,7 +3882,7 @@ class Player:
                 # turn_roll = dice_roll(1, 20)
                 # total = (turn_roll + self.charisma_modifier + self.proficiency_bonus + vulnerability_modifier)
                 # print(f"Quantum Ability Check: {turn_roll}\nCharisma Modifier: {self.charisma_modifier}\n"
-                #      f"Proficiency Bonus: {self.proficiency_bonus}")
+                #      f"Acumen: {self.proficiency_bonus}")
                 if vulnerability_modifier > 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 level_advantage = 0
@@ -3891,7 +3892,7 @@ class Player:
                     vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Charisma Modifier: {self.charisma_modifier}\n"
-                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                      f"Acumen: {self.proficiency_bonus}")
                 if vulnerability_modifier != 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 if level_advantage > 0:
@@ -3900,7 +3901,7 @@ class Player:
                 print(f"Total: {player_dc}")
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
-                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Protection Roll: {monster_roll}")
                 print(f"{monster.name} Wisdom Modifier: {monster.wisdom_modifier}")
                 if resistance_modifier != 0:
                     print(f"Monster Resistance Modifier: {resistance_modifier}")
@@ -3977,7 +3978,7 @@ class Player:
                 # turn_roll = dice_roll(1, 20)
                 # total = (turn_roll + self.intelligence_modifier + self.proficiency_bonus + vulnerability_modifier)
                 # print(f"Quantum Ability Check: {turn_roll}\nIntelligence Modifier: {self.intelligence_modifier}\n"
-                #      f"Proficiency Bonus: {self.proficiency_bonus}")
+                #      f"Acumen: {self.proficiency_bonus}")
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
@@ -3985,7 +3986,7 @@ class Player:
                     vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Intelligence Modifier: {self.intelligence_modifier}\n"
-                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                      f"Acumen: {self.proficiency_bonus}")
                 if vulnerability_modifier > 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 if level_advantage > 0:
@@ -4235,7 +4236,8 @@ class Player:
               f"shooting at your enemy at moderate speed. Success based on Player Wisdom vs Enemy Dexterity.")
         print()
         print(f"Flesh to Stone: 95% chance to petrify monster, after which player has 1 free crit, thereafter enemy\n"
-              f"must pass Constitution saving throw. 2 failed saves after initial attack = permanent petrification.\n"
+              f"must pass Constitution protection roll. 2 failed saves after initial attack = permanent "
+              f"petrification.\n"
               f"Player gets exp reward, but no gold or loot.")
         print()
         print(f"Fear: Strike terror into the hearts of the living with Quantum Weirdness, sending them retreating.\n"
@@ -4271,8 +4273,9 @@ class Player:
               f"Success based on Player Wisdom vs Enemy Dexterity.")
         print()
         print(f"Gravity Well: 100% chance to successfully incapacitate your enemy in an impossible Quantum Gravity\n"
-              f"Singularity which causes initial crushing damage. Player has 1 free crit. Target must make strength\n"
-              f"saving throw. Upon failed save, enemy remains trapped and player gets additional free crit.\n"
+              f"Singularity which causes initial crushing damage. Player has 1 free crit. Target must make successful "
+              f"strength\n"
+              f"protection roll. Upon failed save, enemy remains trapped and player gets additional free crit.\n"
               f"Enemy and all items are lost to the crushing gravity. Player gets exp reward, but no gold or loot\n"
               f"unless enemy item is protected by quantum weirdness.")
         print()
@@ -4290,7 +4293,7 @@ class Player:
         print(f"QUANTUM MASTER EFFECTS")
         print()
         print(f"Quantum Word Kill: Through impossibly, unimaginably small probabilities, the Master utters a single\n"
-              f"word. If the enemy has less than 100 Hit Points, death results instantly. No saving throw,\n"
+              f"word. If the enemy has less than 100 Hit Points, death results instantly. No protection roll,\n"
               f"no defense possible.")
         print()
         print(f"Meteor Swarm: The Master pulls celestial matter from the heavens into the atmosphere above the enemy,\n"
@@ -4427,13 +4430,13 @@ class Player:
         player_total = self.vozzbozz.base_dc + self.vozzbozz.wisdom_modifier + self.vozzbozz.proficiency_bonus
         print(f"Player base DC: {self.vozzbozz.base_dc}")
         print(f"Wisdom modifier: {self.vozzbozz.wisdom_modifier}")
-        print(f"Proficiency bonus: {self.vozzbozz.proficiency_bonus}")
+        print(f"Acumen: {self.vozzbozz.proficiency_bonus}")
         print(f"Total: {player_total}")
         sleep(1)
         monster_roll = dice_roll(1, 20)
         monster_mod = monster.dexterity_modifier
         monster_total = monster_roll + monster_mod
-        print(f"Monster Saving Throw: {monster_roll}")
+        print(f"Monster Protection Roll: {monster_roll}")
         print(f"Monster Dexterity Modifier: {monster_mod}")
         print(f"Monster Total: {monster_total}")
         if player_total >= monster_total:
@@ -4509,7 +4512,7 @@ class Player:
     def vozzbozz_skeletal_remains(self, monster):
         print(f"Player Base DC: {self.vozzbozz.base_dc}")
         print(f"Wisdom modifier: {self.vozzbozz.wisdom_modifier}")
-        print(f"Proficiency bonus: {self.vozzbozz.proficiency_bonus}")
+        print(f"Acumen: {self.vozzbozz.proficiency_bonus}")
         player_total = self.vozzbozz.base_dc + self.vozzbozz.wisdom_modifier + self.vozzbozz.proficiency_bonus
         print(f"Total: {player_total}")
         critical_bonus = 1
@@ -4518,7 +4521,7 @@ class Player:
         monster_roll = dice_roll(1, 20)
         monster_mod = monster.constitution_modifier
         monster_total = monster_roll + monster_mod
-        print(f"Monster Saving Throw: {monster_roll}")
+        print(f"Monster Protection Roll: {monster_roll}")
         print(f"Monster Constitution Modifier: {monster_mod}")
         print(f"Monster Total: {monster_total}")
         if player_total >= monster_total:
@@ -4578,14 +4581,14 @@ class Player:
     def vozzbozz_negative_energy_plague(self, monster):
         print(f"Player Base DC: {self.vozzbozz.base_dc}")
         print(f"Wisdom modifier: {self.vozzbozz.wisdom_modifier}")
-        print(f"Proficiency bonus: {self.vozzbozz.proficiency_bonus}")
+        print(f"Acumen: {self.vozzbozz.proficiency_bonus}")
         player_total = self.vozzbozz.base_dc + self.vozzbozz.wisdom_modifier + self.vozzbozz.proficiency_bonus
         print(f"Total: {player_total}")
         sleep(1)
         monster_roll = dice_roll(1, 20)
         monster_mod = round((monster.intelligence - 10) / 2)
         monster_total = monster_roll + monster_mod
-        print(f"Monster Saving Throw: {monster_roll}")
+        print(f"Monster Protection Roll: {monster_roll}")
         print(f"Monster Intelligence Modifier: {monster_mod}")
 
         print(f"Monster Total: {monster_total}")
@@ -4697,7 +4700,7 @@ class Player:
 
     def disintegrate(self, monster):
         # A thin green ray springs from your pointing finger to a target that you can see within range.
-        # A creature targeted by this spell must make a Dexterity saving throw.
+        # A creature targeted by this spell must make a Dexterity protection roll.
         # On a failed save, the target takes 10d10 damage.
         # The target is disintegrated if this damage leaves it with 0 hit points.
         # A disintegrated creature and everything it is wearing and carrying, except magic items,
@@ -4740,7 +4743,7 @@ class Player:
                     hit_statement = f"Success!"
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
-                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                print(f"Acumen: {self.proficiency_bonus}")
                 if level_advantage > 0:
                     print(f"Level Advantage: {level_advantage}")
                 print(f"Total: {player_total}")
@@ -4748,7 +4751,7 @@ class Player:
                 monster_roll = dice_roll(1, 20)
                 monster_mod = monster.dexterity_modifier
                 monster_total = monster_roll + monster_mod + resistance_modifier
-                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Protection Roll: {monster_roll}")
                 print(f"Monster Dexterity Modifier: {monster_mod}")
                 if resistance_modifier != 0:
                     print(f"Monster Resistance Modifier: {resistance_modifier}")
@@ -4811,7 +4814,7 @@ class Player:
 
     def fireball(self, monster):
         # everything but a natural 1 hits.
-        # on a successful dexterity saving throw, monster takes 50% damage.
+        # on a successful dexterity protection roll, monster takes 50% damage.
         quantum_unit_cost = 4
         if self.in_proximity_to_monster:
             if "Fireball" not in monster.immunities and "All" not in monster.immunities:
@@ -4848,13 +4851,13 @@ class Player:
                     hit_statement = f"Success!"
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
-                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                print(f"Acumen: {self.proficiency_bonus}")
                 print(f"Total: {player_total}")
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
                 monster_mod = monster.dexterity_modifier
                 monster_total = monster_roll + monster_mod + resistance_modifier
-                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Protection Roll: {monster_roll}")
                 print(f"Monster Dexterity Modifier: {monster_mod}")
                 if resistance_modifier != 0:
                     print(f"Monster Resistance Modifier: {resistance_modifier}")
@@ -4915,7 +4918,7 @@ class Player:
 
     def finger_of_death(self, monster):
         # everything but a natural 1 hits.
-        # on a successful constitution saving throw, monster takes 50% damage.
+        # on a successful constitution protection roll, monster takes 50% damage.
         quantum_unit_cost = 4
         if self.in_proximity_to_monster:
             if "Finger of Death" not in monster.immunities and "All" not in monster.immunities:
@@ -4949,13 +4952,13 @@ class Player:
                     hit_statement = f"Success!"
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
-                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                print(f"Acumen: {self.proficiency_bonus}")
                 print(f"Total: {player_total}")
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
                 monster_mod = monster.constitution_modifier
                 monster_total = monster_roll + monster_mod + resistance_modifier
-                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Protection Roll: {monster_roll}")
                 print(f"Monster Constitution Modifier: {monster_mod}")
                 if resistance_modifier != 0:
                     print(f"Monster Resistance Modifier: {resistance_modifier}")
@@ -5019,7 +5022,7 @@ class Player:
 
     def meteor_swarm(self, monster):
         # everything but a natural 1 hits.
-        # on a successful dexterity saving throw, monster takes 50% damage.
+        # on a successful dexterity protection roll, monster takes 50% damage.
         quantum_unit_cost = 6
         if self.in_proximity_to_monster:
             if "Meteor Swarm" not in monster.immunities and "All" not in monster.immunities:
@@ -5060,7 +5063,7 @@ class Player:
                     hit_statement = f"Success!"
                 print(f"Player base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
-                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                print(f"Acumen: {self.proficiency_bonus}")
                 if level_advantage > 0:
                     print(f"Level Advantage: {level_advantage}")
                 print(f"Total: {player_total}")
@@ -5069,7 +5072,7 @@ class Player:
                 monster_mod = monster.dexterity_modifier
                 monster_total = monster_roll + monster_mod + resistance_modifier
 
-                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Protection Roll: {monster_roll}")
                 print(f"Monster Dexterity Modifier: {monster_mod}")
                 if resistance_modifier != 0:
                     print(f"Monster Resistance Modifier: {resistance_modifier}")
@@ -5133,7 +5136,7 @@ class Player:
 
     def skeletal_remains(self, monster):
         # everything but a natural 1 hits.
-        # on a successful dexterity saving throw, monster takes 50% damage.
+        # on a successful dexterity protection roll, monster takes 50% damage.
         quantum_unit_cost = 6
         if self.in_proximity_to_monster:
             if "Skeletal Remains" not in monster.immunities and "All" not in monster.immunities:
@@ -5172,7 +5175,7 @@ class Player:
                     hit_statement = f"Success!"
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
-                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                print(f"Acumen: {self.proficiency_bonus}")
                 if level_advantage > 0:
                     print(f"Level Advantage: {level_advantage}")
                 print(f"Total: {player_total}")
@@ -5180,7 +5183,7 @@ class Player:
                 monster_roll = dice_roll(1, 20)
                 monster_mod = monster.constitution_modifier
                 monster_total = monster_roll + monster_mod + resistance_modifier
-                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Protection Roll: {monster_roll}")
                 print(f"Monster Constitution Modifier: {monster_mod}")
                 if resistance_modifier != 0:
                     print(f"Monster Resistance Modifier: {resistance_modifier}")
@@ -5250,7 +5253,7 @@ class Player:
 
     def negative_energy_plague(self, monster):
         # everything but a natural 1 hits.
-        # on a successful intelligence saving throw, monster takes 50% damage.
+        # on a successful intelligence protection roll, monster takes 50% damage.
         quantum_unit_cost = 6
         if self.in_proximity_to_monster:
             if "Negative Energy Plague" not in monster.immunities and "All" not in monster.immunities:
@@ -5289,7 +5292,7 @@ class Player:
                     hit_statement = f"Success!"
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
-                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                print(f"Acumen: {self.proficiency_bonus}")
                 if level_advantage > 0:
                     print(f"Level Advantage: {level_advantage}")
                 print(f"Total: {player_total}")
@@ -5297,7 +5300,7 @@ class Player:
                 monster_roll = dice_roll(1, 20)
                 monster_mod = round((monster.intelligence - 10) / 2)
                 monster_total = monster_roll + monster_mod + resistance_modifier
-                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Protection Roll: {monster_roll}")
                 print(f"Monster Intelligence Modifier: {monster_mod}")
                 if resistance_modifier != 0:
                     print(f"Monster Resistance Modifier: {resistance_modifier}")
@@ -5366,7 +5369,7 @@ class Player:
 
     def ice_storm(self, monster):
         # everything but a natural 1 hits.
-        # on a successful constitution saving throw, monster takes 50% damage.
+        # on a successful constitution protection Roll, monster takes 50% damage.
         quantum_unit_cost = 5
         if self.in_proximity_to_monster:
             if "Ice Storm" not in monster.immunities and "All" not in monster.immunities:
@@ -5406,7 +5409,7 @@ class Player:
                     hit_statement = f"Success!"
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
-                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                print(f"Acumen: {self.proficiency_bonus}")
                 if level_advantage > 0:
                     print(f"Level Advantage: {level_advantage}")
                 print(f"Total: {player_total}")
@@ -5414,7 +5417,7 @@ class Player:
                 monster_roll = dice_roll(1, 20)
                 monster_mod = monster.constitution_modifier
                 monster_total = monster_roll + monster_mod + resistance_modifier
-                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Protection Roll: {monster_roll}")
                 print(f"Monster Constitution Modifier: {monster_mod}")
                 if resistance_modifier != 0:
                     print(f"Monster Resistance Modifier: {resistance_modifier}")
@@ -5478,7 +5481,7 @@ class Player:
 
     def fire_storm(self, monster):
         # everything but a natural 1 hits.
-        # on a successful dexterity saving throw, monster takes 50% damage.
+        # on a successful dexterity protection Roll, monster takes 50% damage.
         quantum_unit_cost = 5
         if self.in_proximity_to_monster:
             if "Fire Storm" not in monster.immunities and "All" not in monster.immunities:
@@ -5518,7 +5521,7 @@ class Player:
                     hit_statement = f"Success!"
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
-                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                print(f"Acumen: {self.proficiency_bonus}")
                 if level_advantage > 0:
                     print(f"Level Advantage: {level_advantage}")
                 print(f"Total: {player_total}")
@@ -5526,7 +5529,7 @@ class Player:
                 monster_roll = dice_roll(1, 20)
                 monster_mod = monster.dexterity_modifier
                 monster_total = monster_roll + monster_mod + resistance_modifier
-                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Protection Roll: {monster_roll}")
                 print(f"Monster Dexterity Modifier: {monster_mod}")
                 if resistance_modifier != 0:
                     print(f"Monster Resistance Modifier: {resistance_modifier}")
@@ -5633,7 +5636,7 @@ class Player:
                     vulnerability_modifier + level_advantage
                 print(f"Player Base DC = {self.base_dc}\n"
                       f"Wisdom Modifier: {self.wisdom_modifier}\n"
-                      f"Proficiency Bonus: {self.proficiency_bonus}")
+                      f"Acumen: {self.proficiency_bonus}")
                 if vulnerable:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 if level_advantage > 0:
@@ -5644,7 +5647,7 @@ class Player:
                 monster_roll = dice_roll(1, 20)
                 monster_mod = math.floor((monster.intelligence - 10) / 2)
                 monster_total = monster_roll + monster_mod + resistance_modifier
-                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Protection Roll: {monster_roll}")
                 print(f"Monster Intelligence Modifier: {monster_mod}")
                 if resistance_modifier != 0:
                     print(f"Monster Resistance Modifier: {resistance_modifier}")
@@ -5741,7 +5744,7 @@ class Player:
                     hit_statement = f"Success!"
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
-                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                print(f"Acumen: {self.proficiency_bonus}")
                 print(f"Total: {player_total}")
                 sleep(1)
                 print(f"Monster armor class: {monster.armor_class}")
@@ -5847,7 +5850,7 @@ class Player:
                     vulnerability_modifier + level_advantage
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
-                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                print(f"Acumen: {self.proficiency_bonus}")
                 if vulnerability_modifier > 0:
                     print(f"Vulnerability Modifier: {vulnerability_modifier}")
                 if level_advantage > 0:
@@ -5856,7 +5859,7 @@ class Player:
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
                 monster_total = monster_roll + monster.dexterity_modifier + resistance_modifier
-                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Protection Roll: {monster_roll}")
                 print(f"Monster Dexterity Modifier: {monster.dexterity_modifier}")
                 if resistance_modifier != 0:
                     print(f"Monster Resistance Modifier: {resistance_modifier}")
@@ -5958,7 +5961,7 @@ class Player:
                     vulnerability_modifier + level_advantage
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
-                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                print(f"Acumen: {self.proficiency_bonus}")
                 if vulnerability_modifier > 0:
                     print(f"Vulnerability Modifier: {vulnerability_modifier}")
                 if level_advantage > 0:
@@ -5967,7 +5970,7 @@ class Player:
                 sleep(1)
                 monster_roll = dice_roll(1, 20)
                 monster_total = monster_roll + monster.strength_modifier + resistance_modifier
-                print(f"Monster Saving Throw: {monster_roll}")
+                print(f"Monster Protection Roll: {monster_roll}")
                 print(f"Monster Strength Modifier: {monster.strength_modifier}")
                 if resistance_modifier != 0:
                     print(f"Monster Resistance Modifier: {resistance_modifier}")
@@ -6063,7 +6066,7 @@ class Player:
                     hit_statement = f"Success!"
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
-                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                print(f"Acumen: {self.proficiency_bonus}")
 
                 print(f"Total: {player_total}")
                 sleep(1)
@@ -6164,7 +6167,7 @@ class Player:
                     hit_statement = "Rays of scorching flame are summoned by Quantum Weirdness and hit your enemy!"
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
-                print(f"Proficiency bonus: {self.proficiency_bonus}")
+                print(f"Acumen: {self.proficiency_bonus}")
 
                 print(f"Total: {player_total}")
                 sleep(1)
@@ -6245,7 +6248,7 @@ class Player:
             print(f"Dexterity Modifier: {self.dexterity_modifier}")
             print(f"Stealth bonus: {self.stealth}")
             if self.level > 3:
-                print(f"Proficiency Bonus: {self.proficiency_bonus}")
+                print(f"Acumen: {self.proficiency_bonus}")
 
             print(f"Total: {evade_success}")
             sleep(1)
@@ -8768,7 +8771,7 @@ class Player:
     def elevator_event(self):
         # elevators bring you 'up' from pits to main dungeon level: self.dungeon.elevator_landing
         # self.in_a_pit will be false at end of function
-        # player must pass intelligence saving throw
+        # player must pass intelligence protection roll
         print(f"You feel a slight whirring..")
         sleep(1)
         difficulty_class = 9
@@ -9659,7 +9662,7 @@ You are proficient with the following items, in addition to any Proficiencies pr
 Armor: Light Armor, Medium Armor, Heavy Armor, Shields
 Weapons: simple Weapons, martial Weapons
 Tools: none
-Saving Throws: Strength, Constitution
+protection rolls: Strength, Constitution
 Skills: Choose two Skills from Acrobatics, Animal Handling, Athletics, History, 
 Insight, Intimidation, Perception, and Survival
 
@@ -9737,7 +9740,7 @@ At 3rd Level, you choose an archetype that you strive to emulate in your Combat 
 such as Champion. The archetype you choose grants you features at 3rd Level 
 and again at 7th, 10th, 15th, and 18th level.
 
-Ability Score Improvement
+Ability Augmentation
 When you reach 4th Level, and again at 6th, 8th, 12th, 14th, 16th, and 19th level, 
 you can increase one ability score of your choice by 2, or you can increase two Ability Scores of your choice by 1. 
 As normal, you can’t increase an ability score above 20 using this feature.
@@ -9749,7 +9752,7 @@ The number of attacks increases to three when you reach 11th level in this class
 and to four when you reach 20th level in this class.
 
 Indomitable
-Beginning at 9th level, you can Reroll a saving throw that you fail.
+Beginning at 9th level, you can Reroll a protection roll that you fail.
 If you do so, you must use the new roll, and you can't use this feature again until you finish a Long Rest.
 
 You can use this feature twice between long rests starting at 13th level 
@@ -10472,7 +10475,7 @@ sleep(1)
 print(f"Total: {player_total}")
 sleep(1)
 monster_roll = dice_roll(1, 20)
-print(f"Monster Saving Throw: {monster_roll}")
+print(f"Monster protection roll: {monster_roll}")
 print(f"{monster.name} Constitution Modifier: {monster.constitution_modifier}")
 monster_total = monster_roll + monster.constitution_modifier
 print(f"Monster Total: {monster_total}")
@@ -10963,18 +10966,18 @@ return 0"""
                     break
                 elif confirm_quit == 'y':"""
 """cls()
-            print(f"                                  *Ability Score Improvement*")
+            print(f"                                  *Ability Augmentation*")
             print()
             print(
-                f"You may choose to improve a single ability score, such as strength, and increase it by 2 points.\n"
+                f"You may choose to improve a single ability, such as strength, and increase it by 2 points.\n"
                 f"\n"
                 f"                           *OR*\n"
                 f"\n"
-                f"You may choose to improve two ability scores, such as charisma and constitution, by 1 point each.\n"
+                f"You may choose to improve two abilities, such as charisma and constitution, by 1 point each.\n"
                 f"\n"
                 f"NOTES: \n"
                 f"* Ability *modifiers* improve with each ascending even-numbered score, therefore, if unsure,\n"
-                f"  it is generally recommended to apply 1 point to odd-numbered ability scores and apply \n"
+                f"  it is generally recommended to apply 1 point to odd-numbered ability values and apply \n"
                 f"2 points to even-numbered scores.\n"
                 f"* When your Constitution modifier increases by 1, your hit point maximum increases by 1 for each\n"
                 f"  level you have attained.\n"

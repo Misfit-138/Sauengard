@@ -3307,12 +3307,12 @@ class DarkElfManipulator(Monster):
         self.poison_phrase = f"He attacks with a poisonous dagger!"
 
 
-class MindFlayer(Monster):
+class Reptoranicus(Monster):
 
     def __init__(self):
         super().__init__()
         self.level = 7
-        self.name = "Mind FLayer"
+        self.name = "Reptoranicus"
         self.proper_name = "None"
         self.he_she_it = "it"
         self.his_her_its = "its"
@@ -3375,11 +3375,12 @@ class MindFlayer(Monster):
         self.quantum_attack_5 = 14
         self.quantum_attack_5_phrase = "It points a bony finger at your arm. You lose control of it! " \
                                        "You stand, helplessly striking at yourself!"
-        self.introduction = f"You have encountered a Mind Flayer; A hideous, tyrannical humanoid with a head " \
-                            f"resembling an octopus.\nEndowed with evil Quantum insights and innate understanding, " \
-                            f"Mind Flayers tunnel through realities in search of slaves\nfor their twisted purposes. " \
-                            f"Any who resist them are reduced to helpless, mindless servants through " \
-                            f"wicked manipulations.."
+        self.introduction = f"You have encountered a Reptoranicus; A hideous, tyrannical reptilian-humanoid covered " \
+                            f"with Quantum-entangled tentacles.\nEndowed with evil Quantum insights and innate " \
+                            f"understanding, " \
+                            f"they tunnel through realities in search of victims\nfor their wicked schemes. " \
+                            f"Those who succumb to their mind-enfeebling Weirdness are reduced to helpless " \
+                            f"slaves through unnatural manipulations.."
         self.paralyze_phrase = "Its tentacles shoot out and wrap around your head! You feel your motor skills diminish!"
         self.paralyze_free_attack_phrase = "It tears at your flesh with pure evil and precision!"
         self.poison_phrase = f"Its tentacles wrap around you, as a protruding, poisonous stinger approaches " \
@@ -5591,7 +5592,7 @@ monster_dict = {
     4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain, Harpy, BugbearCaptain],
     5: [Ogre, ZombieOgre, DarkDwarf, Minotaur, Mummy],
     6: [Troll, HillGiant, Cyclops, WrathfulAvenger, HobgoblinWarlord],
-    7: [Wyvern, DarkElfManipulator, MorbidDefender, MindFlayer, BoltThrower],
+    7: [Wyvern, DarkElfManipulator, MorbidDefender, Reptoranicus, BoltThrower],
     8: [FrostGiant, YoungBlackDragon, YoungGreenDragon, MorbidKnight, Assassin],
     9: [FireGiant, Widow, YoungBlueDragon, Wraith, Necrophagist, DarkDwarfVeteran],
     10: [YoungRedDragon, MorbidBehemoth, ChaosMonster, Leviathan, Gojira],

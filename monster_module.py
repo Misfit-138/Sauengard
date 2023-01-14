@@ -3211,7 +3211,7 @@ class Wyvern(Monster):
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 5  # attack bonus
-        self.attack_1_phrase = "It swings its deadly claws great power."
+        self.attack_1_phrase = "It swings its deadly claws with great power."
         self.attack_2 = 7
         self.attack_2_phrase = "It thrusts forward with ravenous jaws!"
         self.attack_3 = 8

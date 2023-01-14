@@ -579,13 +579,13 @@ def character_generator():
         return player_1
 
     cls()
-    print(f"Customization involves assigning your own ability values.\n"
+    print(f"Customization involves assigning your own attribute values.\n"
           f"The stats are picked from a set pool of six numbers: 15, 14, 13, 12, 10, 8\n"
-          f"Each number will be matched with one of the six character abilities.\n"
-          f"Note that each ability value has a corresponding modifier, which\n"
+          f"Each number will be matched with one of the six character attributes.\n"
+          f"Note that each attribute value has a corresponding modifier, which\n"
           f"acts as a bonus, (or, as a penalty, in the case of a negative modifier),\n"
           f"and will become more important as you progress.\n"
-          f"Abilities and modifiers increase as you level up.\n")
+          f"Attributes and modifiers increase as you level up.\n")
     print(standard_array)
     pause()
     score_list = [15, 14, 13, 12, 10, 8]
@@ -687,22 +687,22 @@ def game_start():
 
 def augmentation_intro():
     cls()
-    print(f"                                  *Ability Augmentation*")
+    print(f"                                  *Attribute Augmentation*")
     print()
     print(
-        f"You may choose to improve a single ability, such as strength, and increase it by 2 points.\n"
+        f"You may choose to improve a single attribute, such as strength, and increase it by 2 points.\n"
         f"\n"
         f"                           *OR*\n"
         f"\n"
-        f"You may choose to improve two abilities, such as charisma and constitution, by 1 point each.\n"
+        f"You may choose to improve two attributes, such as charisma and constitution, by 1 point each.\n"
         f"\n"
         f"NOTES: \n"
-        f"* Ability *modifiers* improve with each ascending even-numbered score, therefore, if unsure,\n"
-        f"  it is generally recommended to apply 1 point to odd-numbered ability values and apply \n"
+        f"* Attribute *modifiers* improve with each ascending even-numbered score, therefore, if unsure,\n"
+        f"  it is generally recommended to apply 1 point to odd-numbered attribute values and apply \n"
         f"2 points to even-numbered values.\n"
         f"* When your Constitution modifier increases by 1, your hit point maximum increases by 1 for each\n"
         f"  level you have attained.\n"
-        f"                         *The maximum score for any ability is 20*"
+        f"                         *The maximum score for any attribute is 20*"
         f"\n")
     pause()
 
@@ -2197,12 +2197,12 @@ class Player:
                 or self.wisdom < 20 or self.charisma < 20:
             return True
         else:
-            print(f"All abilities at maximum!")  # remove after testing
+            print(f"All attributes at maximum!")  # remove after testing
             return False
 
     def augmentation_system(self):
         # called from level_up()
-        # Ability augmentation at levels 4, 6, 8, 10, 12, 14, 16, 18
+        # Attribute augmentation at levels 4, 6, 8, 10, 12, 14, 16, 18
         # also, if player goes up more than one level, by gaining a large amount of experience,
         # augmentation is available
 
@@ -2216,45 +2216,45 @@ class Player:
                 if tries > 1:
                     return
 
-                ability_dict = self.__dict__  # create variable as actual copy of player dict attribute
-                ability_lst = []  # list to be populated with all abilities < 20
+                attribute_dict = self.__dict__  # create variable as actual copy of player dict attribute
+                attribute_lst = []  # list to be populated with all attributes < 20
                 # the working dict and 'for' loop just takes the place of many 'if:' statements
                 working_dict = {'strength': self.strength, 'dexterity': self.dexterity,
                                 'constitution': self.constitution, 'intelligence': self.intelligence,
                                 'wisdom': self.wisdom, 'charisma': self.charisma}
 
-                # add all abilities < 20 in working dict to ability_lst to define attributes you are allowed to change:
+                # add all attributes < 20 in working dict to ability_lst to define attributes you are allowed to change:
                 for key, value in working_dict.items():
                     if value < 20:
-                        ability_lst.append(key)
+                        attribute_lst.append(key)
 
                 # this code is reachable if stats are maxed out, and level_up() calls it:
-                if not len(ability_lst):  # if ability list is empty, all stats at 20; no more improvements allowed
-                    print(f"All of your abilities are at the maximum level!")
+                if not len(attribute_lst):  # if ability list is empty, all stats at 20; no more improvements allowed
+                    print(f"All of your attributes are at the maximum level!")
                     sleep(1.25)
                     return
 
-                print(f"Ability Augmentation\n"
+                print(f"Attribute Augmentation\n"
                       f"Player level: {self.level}")
                 print(f"Points to distribute: {points}")
                 # create a subset ability dictionary from the ability list by indexing, and then print out
-                ability_dict_subset_too = {}
-                for ability in ability_lst:
-                    if len(ability_lst):
-                        ability_dict_subset_too[ability_lst.index(ability)] = ability
-                for key, value in ability_dict_subset_too.items():
+                attribute_dict_subset_too = {}
+                for attribute in attribute_lst:
+                    if len(attribute_lst):
+                        attribute_dict_subset_too[attribute_lst.index(attribute)] = attribute
+                for key, value in attribute_dict_subset_too.items():
                     print(key + 1, ':', value.capitalize())  # add 1 to key since indexing begins at 0
 
                 try:
-                    ability_index = int(input(f"Enter the ability to improve.\n"
-                                              f"(THIS IS PERMANENT!) : "))
-                    ability_index -= 1  # indexing begins at zero...
-                    ability_to_improve = (ability_dict_subset_too[ability_index])
-                    old_score = ability_dict[ability_to_improve]
-                    ability_dict[ability_to_improve] += 1
+                    attribute_index = int(input(f"Enter the attribute to improve.\n"
+                                                f"(THIS IS PERMANENT!) : "))
+                    attribute_index -= 1  # indexing begins at zero...
+                    attribute_to_improve = (attribute_dict_subset_too[attribute_index])
+                    old_score = attribute_dict[attribute_to_improve]
+                    attribute_dict[attribute_to_improve] += 1
                     print(
-                        f"Your {ability_to_improve} has been increased from {old_score} "
-                        f"to {ability_dict[ability_to_improve]}!")
+                        f"Your {attribute_to_improve} has been increased from {old_score} "
+                        f"to {attribute_dict[attribute_to_improve]}!")
                     self.calculate_modifiers()
                     tries += 1
                     points -= 1
@@ -2308,7 +2308,7 @@ class Player:
             print(f"You gain {gain_hit_points} hit points")
             sleep(2.5)
 
-            # Ability augmentation at levels 4, 6, 8, 10, 12, 14, 16, 18
+            # Attribute augmentation at levels 4, 6, 8, 10, 12, 14, 16, 18
             # augmentation logic
             # This logic also works for players going up more than one level,
             # e.g. vanquishing a monster with very high experience reward
@@ -2318,12 +2318,13 @@ class Player:
             # they do not include the last number in range, so I added +1 to end_range
             # Also, for the current purposes, I added +1 to start_range as well, since we don't want to award augments
             # based on the previous experience level, only on current level and any eligible levels between.
+
             range_1 = range((before_level + 1), (after_level + 1), 1)  # enumerate levels between, inc. after_level by 1
             all_levels_between = list(range_1)  # create a list containing levels between, including after_level
             augment_levels = [4, 6, 8, 10, 12, 14, 16, 18]
 
             # check if any levels between are augmentation levels by comparing elements from both lists
-            # number_of_augment_awards = sum of all_levels_between elements which exist in augment_levels
+            # number_of_augment_awards = sum of all_levels_between elements which exist in augment_levels:
             number_of_augment_awards = sum(el in all_levels_between for el in augment_levels)
             augment_level_check = False
             if number_of_augment_awards > 0:
@@ -2339,7 +2340,7 @@ class Player:
                     for i in range(number_of_augment_awards):
                         self.augmentation_system()
 
-                    print(f"You savor the empowering abilities you have gained..\n"
+                    print(f"You savor the empowering augmentation you have gained..\n"
                           f"And yet, the dungeon horde grows more powerful with you!")
                     pause()
                     self.hud()
@@ -2348,7 +2349,7 @@ class Player:
 
             if 5 in all_levels_between:  # players gain extra attack skill at level 5 # if self.level == 5:
                 self.extra_attack = True
-                print("You gain the Extra Attack skill!!")  # this works in melee loop if level > 4, change to a boolean
+                print("You gain the Extra Attack ability!!")  # works in melee loop if level > 4, change to a boolean
                 pause()
                 self.hud()
 
@@ -3044,8 +3045,18 @@ class Player:
         else:
             return False
 
-    def melee(self, monster_name, monster_armor_class):
+    def melee(self, monster):
         # called from main loop if player chooses to (F)ight
+        miss_list = [f"Your aim is good but {monster.he_she_it} deftly moves aside.",
+                     f"{monster.he_she_it.capitalize()} nimbly steps aside!",
+                     f"{monster.he_she_it.capitalize()} deflects your blow!",
+                     f"{monster.he_she_it.capitalize()} dodges your blow!",
+                     f"{monster.his_her_its.capitalize()} armor absorbs the damage!"]
+        hit_list = ["You land a stabbing blow!", "You successfully land a cutting blow!",
+                    f"You manage to wound {monster.he_she_it}!", f"You wound {monster.he_she_it}!",
+                    f"You slash {monster.him_her_it}!", f"You manage to stab {monster.him_her_it}!",
+                    f"You successfully cut {monster.him_her_it}!",
+                    f"Your {self.wielded_weapon.name} lands and wounds {monster.him_her_it}!"]
         strength_bonus = 1
         if self.potion_of_strength_effect:
             strength_bonus = 1.33
@@ -3053,13 +3064,13 @@ class Player:
             strength_bonus = 2
         self.hud()
         roll_d20 = dice_roll(1, 20)  # attack roll
-        print(f"You strike at the {monster_name}..")
+        print(f"You strike at the {monster.name}..")
         print(f"Melee Attack Roll: {roll_d20}")
         sleep(1)
         if roll_d20 == 1:
             print("You awkwardly strike.")
             sleep(1)
-            print(f"You miss..")
+            print(f"Your aim is poor; you fail to land a blow..")
             pause()
             self.hud()
             return 0
@@ -3069,15 +3080,15 @@ class Player:
 
         else:
             critical_bonus = 1
-            hit_statement = "You hit!"
+            hit_statement = random.choice(hit_list)
         print(f"Dexterity modifier: {self.dexterity_modifier}\nAcumen: {self.proficiency_bonus}")
         if self.wielded_weapon.to_hit_bonus > 0:
             print(f"Weapon to-hit bonus: {self.wielded_weapon.to_hit_bonus}")
         roll_total = roll_d20 + self.proficiency_bonus + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus
         print(f"Your Total Attack Roll: {roll_total}")
-        print(f"Monster armor class {monster_armor_class}")
+        print(f"Monster armor class {monster.armor_class}")
         if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + \
-                self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster_armor_class:
+                self.dexterity_modifier + self.wielded_weapon.to_hit_bonus >= monster.armor_class:
             damage_roll = dice_roll((self.level * critical_bonus), self.hit_dice)
             damage_to_opponent = math.ceil(
                 (damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus) * strength_bonus)
@@ -3091,7 +3102,7 @@ class Player:
                 if strength_bonus > 1:
                     print(f"x Strength Bonus Multiplier: {strength_bonus}")
                 print(f"Your Damage Total: {damage_to_opponent}")
-                print(f"You do {damage_to_opponent} points of damage!")
+                print(f"You inflict {damage_to_opponent} points of damage!")
                 pause()
                 self.hud()
                 return damage_to_opponent
@@ -3100,28 +3111,32 @@ class Player:
                 sleep(1)
                 return 1
         elif self.extra_attack:  # self.level > 4
-            print("You missed..")
+            print(random.choice(miss_list))
+            # print("You missed..")
             sleep(1)
-            print("Extra Attack Skill chance to hit!")
+            print("Extra chance to hit!")
             sleep(1)
             roll_d20 = dice_roll(1, 20)
             if roll_d20 == 20 or roll_d20 + self.proficiency_bonus + self.dexterity_modifier + \
-                    self.wielded_weapon.to_hit_bonus >= monster_armor_class:
+                    self.wielded_weapon.to_hit_bonus >= monster.armor_class:
                 damage_roll = dice_roll(self.level, self.hit_dice)
                 damage_to_opponent = \
                     math.ceil((damage_roll + self.strength_modifier + self.wielded_weapon.damage_bonus)
                               * strength_bonus)
-                print(f"You attack again for {damage_to_opponent} points of damage!")
+                print(random.choice(hit_list))
+                print(f"You inflict {damage_to_opponent} points of damage!")
                 pause()
                 self.hud()
                 return damage_to_opponent
             else:
-                print("You miss again.")
+                print(random.choice(miss_list))
+                # print("You miss again..")
                 pause()
                 self.hud()
                 return 0
         else:
-            print(f"You missed...")
+            print(random.choice(miss_list))
+            # print(f"You missed...")
             pause()
             self.hud()
             return 0
@@ -10967,7 +10982,7 @@ return 0"""
                     break
                 elif confirm_quit == 'y':"""
 """cls()
-            print(f"                                  *Ability Augmentation*")
+            print(f"                                  *Attribute Augmentation*")
             print()
             print(
                 f"You may choose to improve a single ability, such as strength, and increase it by 2 points.\n"

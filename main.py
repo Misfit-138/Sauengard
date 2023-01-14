@@ -408,7 +408,7 @@ while True:
                             # FIGHT: player chooses melee:
                             elif battle_choice == "f":
                                 print(f"Fight.")
-                                damage_to_monster = player_1.melee(monster.name, monster.armor_class)
+                                damage_to_monster = player_1.melee(monster)
                                 monster.reduce_health(damage_to_monster)
 
                                 # in the future, check_dead function can encompass the following if--else statements.

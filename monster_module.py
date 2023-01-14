@@ -3378,8 +3378,9 @@ class Reptoranicus(Monster):
         self.introduction = f"You have encountered a Reptoranicus; A hideous, tyrannical reptilian-humanoid covered " \
                             f"with Quantum-entangled tentacles.\nEndowed with evil Quantum insights and innate " \
                             f"understanding, " \
-                            f"they tunnel through realities in search of victims\nfor their wicked schemes. " \
-                            f"Those who succumb to their mind-enfeebling Weirdness are reduced to helpless " \
+                            f"these foul Manipulators tunnel through realities in search of victims\n" \
+                            f"for untold wicked schemes. " \
+                            f"Those who succumb to their mind-enfeebling Weirdness are reduced to helpless\n" \
                             f"slaves through unnatural manipulations.."
         self.paralyze_phrase = "Its tentacles shoot out and wrap around your head! You feel your motor skills diminish!"
         self.paralyze_free_attack_phrase = "It tears at your flesh with pure evil and precision!"
@@ -3457,9 +3458,9 @@ class BoltThrower(Monster):
         self.level = 7
         self.name = "Bolt Thrower"
         self.proper_name = "None"
-        self.he_she_it = "it"
-        self.his_her_its = "its"
-        self.him_her_it = "it"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
         self.experience_award = 3000
         self.gold = random.randint(5, 25)
         self.weapon_bonus = 5
@@ -3494,24 +3495,24 @@ class BoltThrower(Monster):
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 5  # attack bonus
-        self.attack_1_phrase = "It swings an arcing greataxe with great power and precision."
+        self.attack_1_phrase = "He swings an arcing greataxe with great power and precision."
         self.attack_2 = 6
-        self.attack_2_phrase = "It strikes at you with its heavy, electrified warhammer."
+        self.attack_2_phrase = "He strikes at you with a heavy, electrified warhammer."
         self.attack_3 = 7
-        self.attack_3_phrase = "It strikes in combination; an electrified greataxe in its left hand, followed by " \
-                               "its warhammer!"
+        self.attack_3_phrase = "He strikes in combination; an electrified greataxe in his left hand, followed by " \
+                               "his warhammer!"
         self.attack_4 = 8
-        self.attack_4_phrase = "It cracks its Quantum whip, and the powerful arcflash surges through your very bones!"
+        self.attack_4_phrase = "He cracks his Quantum whip, and the powerful arcflash surges through your very bones!"
         self.attack_5 = 14
-        self.attack_5_phrase = "It circles its Quantum whip menacingly as it suddenly shoots forth, with " \
+        self.attack_5_phrase = "He circles his Quantum whip menacingly as he suddenly shoots forth, with " \
                                "great speed and precision. You feel the heat and power of its arcflash!"
         self.introduction = f"You have encountered a Bolt Thrower; A powerful race of warriors possessing both " \
                             f"impressive physical\nstrength as well as expansive Quantum abilities. " \
                             f"With thick, armored skin and standing some 8 feet tall,\na flattened cranium, " \
                             f"immense, muscled appendages, and armed with a deadly arsenal of weapons including\n" \
-                            f"a whip endowed with electrified Quantum weirdness, it fearlessly approaches you."
-        self.paralyze_phrase = "It encircles you with its whip!"
-        self.paralyze_free_attack_phrase = "In your helplessness, it hammers you mercilessly!"
+                            f"a whip endowed with electrified Quantum weirdness, he fearlessly approaches you."
+        self.paralyze_phrase = "He encircles you with his whip!"
+        self.paralyze_free_attack_phrase = "In your helplessness, he hammers you mercilessly!"
 
 
 class FrostGiant(Monster):

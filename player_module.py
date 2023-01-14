@@ -3482,23 +3482,23 @@ class Player:
             pause()
             return 0
 
-    def flesh_to_stone(self, monster):
+    def quantum_petrifaction(self, monster):
         # like sleep and charm, but always successful.
         # player has 1 free crit, thereafter monster must pass Constitution protection roll
-        # 2 failed saves after initial attack = permanent petrification for monster.
+        # 2 failed rolls after initial attack = permanent petrifaction for monster.
         # player gets exp reward, but no gold or loot
         quantum_unit_cost = 4
         vulnerability_modifier = 0
         if self.in_proximity_to_monster:
-            print(f"Flesh to Stone")
+            print(f"Quantum Petrifaction")
             sleep(1)
             self.hud()
-            if "Flesh to Stone" not in monster.immunities and "All" not in monster.immunities:
+            if "Quantum Petrifaction" not in monster.immunities and "All" not in monster.immunities:
                 self.quantum_units -= quantum_unit_cost
-                if "Flesh to Stone" in monster.vulnerabilities:
+                if "Quantum Petrifaction" in monster.vulnerabilities:
                     vulnerability_modifier = self.proficiency_bonus
                 resistance_modifier = 0
-                if "Flesh to Stone" in monster.resistances or "All" in monster.resistances:
+                if "Quantum Petrifaction" in monster.resistances or "All" in monster.resistances:
                     resistance_modifier = monster.proficiency_bonus
                 print(f"Before the {monster.name} even realizes what is happening, its flesh ripples into a stone "
                       f"replica of its normal state!")
@@ -3508,9 +3508,9 @@ class Player:
                 print(f"You raise your {self.wielded_weapon.name} and swing mightily..")
                 sleep(1.5)
                 damage_modifier = 2
-                if "Flesh to Stone" in monster.vulnerabilities:
+                if "Quantum Petrifaction" in monster.vulnerabilities:
                     damage_modifier = 3
-                # if "Flesh to Stone" in monster.resistances or "All" in monster.resistances:
+                # if "Quantum Petrifaction" in monster.resistances or "All" in monster.resistances:
                 #    damage_modifier = 1
                 total_fails = 0
                 while True:
@@ -3575,10 +3575,10 @@ class Player:
                         return 0  # no damage sent to main
             else:
                 if monster.proper_name != "None":
-                    print(f"{monster.proper_name} is immune to the Flesh to Stone Effect!")
+                    print(f"{monster.proper_name} is immune to the Quantum Petrifaction Effect!")
                     sleep(1)
                 else:
-                    print(f"The {monster.name} is immune to the Flesh to Stone Effect!!")
+                    print(f"The {monster.name} is immune to the Quantum Petrifaction Effect!!")
                     sleep(1)
                 self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
@@ -3586,7 +3586,7 @@ class Player:
                 pause()
                 return 0
         else:
-            print(f"Flesh to Stone is a Battle Effect only!")
+            print(f"Quantum Petrifaction is a Battle Effect only!")
             sleep(1)
             return
 
@@ -4111,7 +4111,7 @@ class Player:
         return 0
 
     def protection_from_evil(self, monster):
-        # everything but a natural 1 will succeed
+        # everything but a 1 roll will succeed
         if monster is None:
             print(f"Protection from Evil")
         else:
@@ -4152,19 +4152,20 @@ class Player:
             print("HELP (BATTLE)")
         print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
         print()
-        print(f"Quantum Missile: Multiple glowing projectiles, corresponding to your Quantum knowledge and randomness"
-              f"\nare launched at your enemy. Success based on Player Wisdom vs Enemy AC.")
+        print(f"Quantum Missile: Multiple glowing projectiles, corresponding to your Quantum Knowledge and randomness"
+              f"\nare derived from other realities and launched at your enemy. "
+              f"Success based on Player Wisdom vs Enemy AC.")
         print()
-        print(f"Quantum Sleep: Your knowledge of Quantum weirdness allows you to attempt to lull your enemy into a\n"
+        print(f"Quantum Sleep: Your knowledge of Quantum Weirdness allows you to attempt to lull your enemy into a\n"
               f"dream-like and utterly vulnerable state. Initial success based on Player Intelligence vs Enemy Wisdom\n"
               f"Final success depends on Enemy AC.")
         print()
-        print(f"Heal Wounds: Quantum actions at a subatomic level repair physical wounds, ignoring necrosis and "
+        print(f"Heal Wounds: Quantum Actions at a subatomic level repair physical wounds, ignoring necrosis and "
               f"poison.\nEffectiveness based on Quantum Knowledge Level.")
         print()
-        print(f"Protection from Evil: Through Quantum probabilities, reduce the chances of successful enemy Quantum\n"
+        print(f"Protection from Evil: Through Quantum Probabilities, reduce the chances of successful enemy Quantum\n"
               f"attacks and paralyzing effects. Effectiveness depends on Quantum Knowledge Level. Duration depends on\n"
-              f"Constitution Modifier.")
+              f"player Constitution.")
         print()
         print(f"Turn Undead: Attempt to strike panic into the Undead by turning the very improbable forces responsible"
               f"\nfor their weird existence against them. Success based on Player Wisdom vs Enemy Wisdom")
@@ -4232,11 +4233,13 @@ class Player:
             print("HELP (BATTLE)")
         print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
         print()
-        print(f"Fireball: Through Spooky Action at a Distance, a Fireball forms, seemingly from out of your hands,\n"
-              f"shooting at your enemy at moderate speed. Success based on Player Wisdom vs Enemy Dexterity.")
+        print(f"Quantum Firewall: Through Spooky Action at a Distance, a wall of fire forms, seemingly from out of "
+              f"your hands,\n"
+              f"looming toward your enemy at great speed. Success based on Player Wisdom vs Enemy Dexterity.")
         print()
-        print(f"Flesh to Stone: 95% chance to petrify monster, after which player has 1 free crit, thereafter enemy\n"
-              f"must pass Constitution protection roll. 2 failed saves after initial attack = permanent "
+        print(f"Quantum Petrifaction: 100% chance to petrify monster, after which, player has 1 free crit, "
+              f"thereafter, enemy\n"
+              f"must pass Constitution protection roll. 2 failed rolls after initial attack = permanent "
               f"petrification.\n"
               f"Player gets exp reward, but no gold or loot.")
         print()
@@ -4260,16 +4263,16 @@ class Player:
             print("HELP (BATTLE)")
         print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
         print()
-        print(f"Disintegrate: A thin green ray springs from your pointing finger to your target.\n"
-              f"On a failed save, the target takes devastating damage.The target is disintegrated if this damage\n"
-              f"leaves it with 0 hit points. A disintegrated enemy and everything it is wearing and carrying, except\n"
-              f"items protected by Quantum Weirdness, are reduced to a pile of fine gray dust. Player receives exp\n"
+        print(f"Disentangle: Quantum Energy shoots from your hands toward your enemy.\n"
+              f"On a failed roll, the enemy takes massive damage. All Quantum Particles within the enemy, across\n"
+              f"all realities are disentangled, if hit points reach 0. A disentangled enemy and its entire\n"
+              f"inventory, are gone forever; In fact, they never existed. Player receives experience\n"
               f"reward but no Gold or Loot. Success based on Player Wisdom vs Enemy Dexterity.")
         print()
-        print(f"Ice Storm: A powerful squall of frozen death hurls toward your enemy causing overwhelming cold and\n"
+        print(f"Ice Storm: A Quantum squall of frozen death hurls toward your enemy causing overwhelming cold and\n"
               f"force damage. Success based on Player Wisdom vs Enemy Constitution.")
         print()
-        print(f"Firestorm: Ice Storm counterpart, but encompassed of seething flame, causing high burn damage.\n"
+        print(f"Firestorm: Ice Storm's counterpart, encompassed of seething flame, causing high burn damage.\n"
               f"Success based on Player Wisdom vs Enemy Dexterity.")
         print()
         print(f"Gravity Well: 100% chance to successfully incapacitate your enemy in an impossible Quantum Gravity\n"
@@ -4290,22 +4293,22 @@ class Player:
             print("HELP (BATTLE)")
         print(f"Exp Level: {self.level}  Quantum Knowledge Level: {self.quantum_level}")
         print()
-        print(f"QUANTUM MASTER EFFECTS")
+        print(f"QUANTUM MASTER EFFECTS:")
         print()
-        print(f"Quantum Word Kill: Through impossibly, unimaginably small probabilities, the Master utters a single\n"
-              f"word. If the enemy has less than 100 Hit Points, death results instantly. No protection roll,\n"
+        print(f"Quantum Spoken Word: Through impossibly, unimaginably small probabilities, the Master utters a single\n"
+              f"word. If the enemy has less than 125 Hit Points, death results instantly. No protection roll,\n"
               f"no defense possible.")
         print()
-        print(f"Meteor Swarm: The Master pulls celestial matter from the heavens into the atmosphere above the enemy,\n"
-              f"with amplified and compensatory gravity, for a devastating attack yielding extremely high force and\n"
-              f"crushing damage. Success based on Player Wisdom vs Enemy Dexterity.")
+        print(f"Quantum Mooncrusher: The Quantum Master rends otherworldly, crushed moon matter into existence and,\n"
+              f"with amplified and compensatory gravity, propels it upon an enemy for a devastating attack yielding\n"
+              f"extremely high force and crushing damage. Success based on Player Wisdom vs Enemy Dexterity.")
         print()
         print(f"Skeletal Remains: The Master pulls finite Quantum Energies from the ground, impossibly re-animating\n"
               f"fallen skeletal warriors lost to time and sending them forth as a stampeding army, resulting in\n"
               f"extreme force, bludgeoning, and melee damage. Success based on Player Wisdom vs Enemy Dexterity.")
         print()
         print(f"Negative Energy Plague: The Quantum Master harnesses Dark Energy and re-focuses it to form a\n"
-              f"plague of mental agony causing severe damage to all living and undead creatures. Success based on\n"
+              f"plague of mental agony causing severe damage to all creatures- living and undead. Success based on\n"
               f"Player Wisdom vs Enemy Intelligence.")
         print()
         pause()
@@ -4321,7 +4324,7 @@ class Player:
                                           5: "Turn Undead"},
                                       2: {1: "Web",
                                           2: "Purify",
-                                          3: "Strength",
+                                          3: "Quantum Strength",
                                           4: "Scorch",
                                           5: "Charm"},
                                       3: {1: "Lightning",
@@ -4329,17 +4332,17 @@ class Player:
                                           3: "Phantasm",
                                           4: "Immolation",
                                           5: "Vortex"},
-                                      4: {1: "Fireball",
-                                          2: "Flesh to Stone",
+                                      4: {1: "Firewall",
+                                          2: "Quantum Petrifaction",
                                           3: "Fear",
                                           4: "Finger of Death",
                                           5: "Banish"},
-                                      5: {1: "Disintegrate",
+                                      5: {1: "Quantum Disentangle",
                                           2: "Ice Storm",
                                           3: "Firestorm",
                                           4: "Gravity Well"},
-                                      6: {1: "Quantum Word Kill",
-                                          2: "Meteor Swarm",
+                                      6: {1: "Quantum Spoken Word",
+                                          2: "Quantum Mooncrusher",
                                           3: "Skeletal Remains",
                                           4: "Negative Energy Plague"}
 
@@ -4363,18 +4366,19 @@ class Player:
                                 4: self.immolation,
                                 5: self.vortex},
                             4: {0: self.quantum_help4,
-                                1: self.fireball,
-                                2: self.flesh_to_stone,
+                                1: self.firewall,
+                                2: self.quantum_petrifaction,
                                 3: self.fear,
                                 4: self.finger_of_death,
                                 5: self.banish},
                             5: {0: self.quantum_help5,
-                                1: self.disintegrate,
+                                1: self.quantum_disentangle,
                                 2: self.ice_storm,
                                 3: self.fire_storm,
                                 4: self.gravity_well},
-                            6: {1: self.quantum_word_kill,
-                                2: self.meteor_swarm,
+                            6: {0: self.quantum_help6,
+                                1: self.quantum_spoken_word,
+                                2: self.moon_crusher,
                                 3: self.skeletal_remains,
                                 4: self.negative_energy_plague}
                             }
@@ -4395,13 +4399,13 @@ class Player:
 
                         # quantum_function = quantum_book[q_level][q_to_cast]  # (monster)  # beta removed (monster)
                         # and added to function calls below:
-                        if q_to_cast == 0:  # if HELP, call function and return here
+                        if q_to_cast == 0:  # if HELP, call function, which will return here and loop continues
                             # noinspection PyArgumentList
                             quantum_book[q_level][q_to_cast](monster)
                             # pycharm is unhappy calling this method through a reference to the method buried in a dict
                             # quantum_function(monster)  # beta used to be simply quantum_function
 
-                        else:  # if not HELP, return damage to main loop from function
+                        else:  # if not HELP, return the damage from function to the main loop
                             # noinspection PyArgumentList
                             return quantum_book[q_level][q_to_cast](monster)
                             # return quantum_function(monster)
@@ -4426,9 +4430,9 @@ class Player:
             pause()
             return None  # creates condition for a continue statement in main loop so a turn is not wasted
 
-    def vozzbozz_meteor_swarm(self, monster):
+    def vozzbozz_moon_crusher(self, monster):
         player_total = self.vozzbozz.base_dc + self.vozzbozz.wisdom_modifier + self.vozzbozz.proficiency_bonus
-        print(f"Player base DC: {self.vozzbozz.base_dc}")
+        print(f"Vozzbozz base DC: {self.vozzbozz.base_dc}")
         print(f"Wisdom modifier: {self.vozzbozz.wisdom_modifier}")
         print(f"Acumen: {self.vozzbozz.proficiency_bonus}")
         print(f"Total: {player_total}")
@@ -4455,7 +4459,7 @@ class Player:
             pause()
             self.hud()
             print(f"With a world-shaking and awe-inspiring eruption, "
-                  f"a swarm of burning meteors materializes above and falls upon your enemy!!")
+                  f"a sky-filling blanket of flaming moon-matter materializes above and falls upon your enemy!!")
             print(f"{number_of_dice}d8 + {number_of_dice}d8 force damage + 1 per die rolled: "
                   f"{damage_to_opponent}")
             print(f"{self.vozzbozz.level}d{self.vozzbozz.hit_dice} Damage Bonus: {melee_bonus}")
@@ -4479,8 +4483,7 @@ class Player:
                 print(f"His focus is momentarily disrupted by the {monster.name}!")
                 pause()
                 self.hud()
-                print(f"With a world-shaking and awe-inspiring eruption, "
-                      f"a swarm of burning meteors materializes above and falls upon your enemy!!")
+                print(f"Other-worldly moon matter materializes above and falls upon your enemy..")
                 print(f"{number_of_dice}d8 + {number_of_dice}d8 force damage + 1 per die rolled: "
                       f"{damage_to_opponent}")
                 print(f"{self.vozzbozz.level}d{self.vozzbozz.hit_dice} Damage Bonus: {melee_bonus}")
@@ -4492,11 +4495,11 @@ class Player:
                 return total_damage_to_opponent
 
     def vozzbozz_word_kill(self, monster):
-        # if monster < 100 hp, it dies
+        # if monster < 125 hp, it dies
         print(f"Vozzbozz smiles for an instant, then his face is drained of its humanity..")
         sleep(1)
         self.hud()
-        if monster.hit_points < 100:
+        if monster.hit_points < 125:
             print(f"He cries out in a world-shaking voice..")
             sleep(1)
             print(f"SUPPLICIUM!!")
@@ -4505,12 +4508,12 @@ class Player:
             pause()
             return monster.hit_points
         else:
-            print(f"The {monster.name} has too much life energy to succumb to the quantum word kill effect!")
+            print(f"The {monster.name} has too much life energy to succumb to the Quantum Spoken Word effect!")
             pause()
             return 0
 
     def vozzbozz_skeletal_remains(self, monster):
-        print(f"Player Base DC: {self.vozzbozz.base_dc}")
+        print(f"Vozzbozz Base DC: {self.vozzbozz.base_dc}")
         print(f"Wisdom modifier: {self.vozzbozz.wisdom_modifier}")
         print(f"Acumen: {self.vozzbozz.proficiency_bonus}")
         player_total = self.vozzbozz.base_dc + self.vozzbozz.wisdom_modifier + self.vozzbozz.proficiency_bonus
@@ -4579,7 +4582,7 @@ class Player:
             return total_damage_to_opponent
 
     def vozzbozz_negative_energy_plague(self, monster):
-        print(f"Player Base DC: {self.vozzbozz.base_dc}")
+        print(f"Vozzbozz Base DC: {self.vozzbozz.base_dc}")
         print(f"Wisdom modifier: {self.vozzbozz.wisdom_modifier}")
         print(f"Acumen: {self.vozzbozz.proficiency_bonus}")
         player_total = self.vozzbozz.base_dc + self.vozzbozz.wisdom_modifier + self.vozzbozz.proficiency_bonus
@@ -4655,22 +4658,22 @@ class Player:
         if monster.hit_points < 100:
             return self.vozzbozz_word_kill(monster)
         else:
-            rndm_effect_lst = [self.vozzbozz_meteor_swarm, self.vozzbozz_skeletal_remains,
+            rndm_effect_lst = [self.vozzbozz_moon_crusher, self.vozzbozz_skeletal_remains,
                                self.vozzbozz_negative_energy_plague]
             rndm_effect = random.choice(rndm_effect_lst)
             return rndm_effect(monster)
 
-    def quantum_word_kill(self, monster):
-        # everything but a natural 1 hits.
-        # if monster < 100 hp, it dies
+    def quantum_spoken_word(self, monster):
+        # everything but a 1 roll will succeed
+        # if monster < 125 hp, it dies
         quantum_unit_cost = 6
         if self.in_proximity_to_monster:
-            if "Quantum Word Kill" not in monster.immunities and "All" not in monster.immunities:
+            if "Quantum Spoken Word" not in monster.immunities and "All" not in monster.immunities:
                 vulnerable = False
-                if "Quantum Word Kill" in monster.vulnerabilities:
+                if "Quantum Spoken Word" in monster.vulnerabilities:
                     vulnerable = True
                 self.quantum_units -= quantum_unit_cost
-                print(f"Quantum Word Kill.")
+                print(f"Quantum Spoken Word.")
                 sleep(1)
                 self.hud()
                 roll_d20 = dice_roll(1, 20)  # attack roll
@@ -4685,7 +4688,7 @@ class Player:
                     self.hud()
                     return 0
                 else:
-                    if monster.hit_points < 100:
+                    if monster.hit_points < 125:
                         print(f"SUPPLICIUM!!")
                         sleep(1.5)
                         return monster.hit_points
@@ -4694,29 +4697,27 @@ class Player:
                         pause()
                         return 0
         else:
-            print(f"Quantum Word Kill is a Battle Effect only..")
+            print(f"Quantum Spoken Word is a Battle Effect only..")
             sleep(1)
             return
 
-    def disintegrate(self, monster):
-        # A thin green ray springs from your pointing finger to a target that you can see within range.
+    def quantum_disentangle(self, monster):
+        # Quantum weirdness shoots to your enemy.
         # A creature targeted by this spell must make a Dexterity protection roll.
         # On a failed save, the target takes 10d10 damage.
-        # The target is disintegrated if this damage leaves it with 0 hit points.
-        # A disintegrated creature and everything it is wearing and carrying, except magic items,
-        # are reduced to a pile of fine gray dust.
-        #
+        # The target is disentangled if this damage leaves it with 0 hit points.
+
         quantum_unit_cost = 5
         if self.in_proximity_to_monster:
-            if "Disintegrate" not in monster.immunities and "All" not in monster.immunities:
+            if "Quantum Disentangle" not in monster.immunities and "All" not in monster.immunities:
                 vulnerable = False
-                if "Disintegrate" in monster.vulnerabilities:
+                if "Quantum Disentangle" in monster.vulnerabilities:
                     vulnerable = True
                 resistance_modifier = 0
-                if "Disintegrate" in monster.resistances or "All" in monster.resistances:
+                if "Quantum Disentangle" in monster.resistances or "All" in monster.resistances:
                     resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
-                print(f"Disintegrate.")
+                print(f"Quantum Disentangle.")
                 sleep(1)
                 self.hud()
                 roll_d20 = dice_roll(1, 20)  # attack roll
@@ -4763,7 +4764,7 @@ class Player:
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
-                        print(f"A thin, green ray springs from your hand and speeds toward your enemy!")
+                        print(f"Quantum Weirdness released from your hand shoots toward your enemy!")
                         sleep(1)
                         print(f"{number_of_dice}d10 roll + 40 force damage: {damage_to_opponent}")
                         print(f"The {monster.name} suffers {damage_to_opponent} points of damage!")
@@ -4774,9 +4775,9 @@ class Player:
                             return 0  # damage already returned to reduce_health function
                         else:
                             if monster.proper_name != "None":
-                                print(f"{monster.proper_name} is completely reduced to a pile of fine gray dust!!")
+                                print(f"{monster.proper_name} has been disentangled from all existence!!")
                             else:
-                                print(f"The {monster.name} is completely reduced to a pile of fine, gray dust!!")
+                                print(f"The {monster.name} has been disentangled from all existence!!")
                             sleep(1.5)
                             monster.gold = 0
 
@@ -4784,11 +4785,11 @@ class Player:
                             # pause()
                             return 0
                     else:
-                        print(f"For all of its fear-inspiring appearance, it fails to land any damage!")  # 0 damage
+                        print(f"It fails to land any damage!")  # 0 damage
                         sleep(1)
                         return 0
                 else:
-                    print(f"A thin, green ray springs from your hand and speeds toward your enemy!")
+                    print(f"Quantum Weirdness released from your hand shoots toward your enemy!")
                     sleep(1)
                     print(f"The {monster.name} dodges!")
                     sleep(1)
@@ -4797,10 +4798,10 @@ class Player:
                     return 0
             else:
                 if monster.proper_name != "None":
-                    print(f"{monster.proper_name} is immune to Disintegrate!!")
+                    print(f"{monster.proper_name} is immune to Quantum Disentangle!!")
                     sleep(1)
                 else:
-                    print(f"The {monster.name} is immune to Disintegrate!")
+                    print(f"The {monster.name} is immune to Quantum Disentangle!")
                     sleep(1)
                 self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
@@ -4808,30 +4809,30 @@ class Player:
                 pause()
                 return 0
         else:
-            print(f"Disintegrate is a Battle Effect only..")
+            print(f"Quantum Disentangle is a Battle Effect only..")
             sleep(1)
             return
 
-    def fireball(self, monster):
-        # everything but a natural 1 hits.
+    def firewall(self, monster):
+        # everything but a 1 roll will succeed
         # on a successful dexterity protection roll, monster takes 50% damage.
         quantum_unit_cost = 4
         if self.in_proximity_to_monster:
-            if "Fireball" not in monster.immunities and "All" not in monster.immunities:
+            if "Firewall" not in monster.immunities and "All" not in monster.immunities:
                 vulnerable = False
-                if "Fireball" in monster.vulnerabilities:
+                if "Firewall" in monster.vulnerabilities:
                     vulnerable = True
                 resistance_modifier = 0
-                if "Fireball" in monster.resistances or "All" in monster.resistances:
+                if "Firewall" in monster.resistances or "All" in monster.resistances:
                     resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
-                print(f"Fireball.")
+                print(f"Quantum Firewall.")
                 sleep(1)
                 self.hud()
                 roll_d20 = dice_roll(1, 20)  # attack roll
                 player_total = (self.base_dc + self.wisdom_modifier + self.proficiency_bonus)
                 print(f"Clearing your mind, you attempt to harness the weird energies "
-                      f"to create the Fireball..")
+                      f"to create the Firewall..")
                 sleep(1)
                 print(f"Quantum Ability Check: {roll_d20}")
                 sleep(1)
@@ -4872,10 +4873,10 @@ class Player:
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
-                        print(f"A red-hot orb of dreadful flames forms from your hand and speeds toward your enemy!")
+                        print(f"A red-hot wall of dreadful flames forms from your hand and speeds toward your enemy!")
                         print(f"{number_of_dice}d8 roll + 1 per die: {damage_to_opponent}")
                         print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
-                        print(f"The flaming ball of fire explodes on target and inflicts "
+                        print(f"The flaming wall of fire envelopes the target and inflicts "
                               f"{total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
@@ -4891,7 +4892,7 @@ class Player:
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
-                    print(f"The Fireball takes form but does not inflict damage to its fullest potential..")
+                    print(f"The Firewall takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
                     print(f"{number_of_dice}d8 roll + 1 per die rolled / 2 = {damage_to_opponent} (ROUNDED)")
                     print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
@@ -4901,10 +4902,10 @@ class Player:
                     return total_damage_to_opponent
             else:
                 if monster.proper_name != "None":
-                    print(f"{monster.proper_name} is immune to Fireball!!")
+                    print(f"{monster.proper_name} is immune to Firewall!!")
                     sleep(1)
                 else:
-                    print(f"The {monster.name} is immune to Fireball!")
+                    print(f"The {monster.name} is immune to Firewall!")
                     sleep(1)
                 self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
@@ -4912,12 +4913,12 @@ class Player:
                 pause()
                 return 0
         else:
-            print(f"Fireball is a Battle Effect only..")
+            print(f"Firewall is a Battle Effect only..")
             sleep(1)
             return
 
     def finger_of_death(self, monster):
-        # everything but a natural 1 hits.
+        # everything but a 1 roll will succeed
         # on a successful constitution protection roll, monster takes 50% damage.
         quantum_unit_cost = 4
         if self.in_proximity_to_monster:
@@ -5020,20 +5021,20 @@ class Player:
             sleep(1)
             return
 
-    def meteor_swarm(self, monster):
-        # everything but a natural 1 hits.
+    def moon_crusher(self, monster):
+        # everything but a 1 roll will succeed
         # on a successful dexterity protection roll, monster takes 50% damage.
         quantum_unit_cost = 6
         if self.in_proximity_to_monster:
-            if "Meteor Swarm" not in monster.immunities and "All" not in monster.immunities:
+            if "Quantum Mooncrusher" not in monster.immunities and "All" not in monster.immunities:
                 vulnerable = False
-                if "Meteor Swarm" in monster.vulnerabilities:
+                if "Quantum Mooncrusher" in monster.vulnerabilities:
                     vulnerable = True
                 resistance_modifier = 0
-                if "Meteor Swarm" in monster.resistances or "All" in monster.resistances:
+                if "Quantum Mooncrusher" in monster.resistances or "All" in monster.resistances:
                     resistance_modifier = monster.proficiency_bonus
                 self.quantum_units -= quantum_unit_cost
-                print(f"Meteor Swarm.")
+                print(f"Quantum Mooncrusher.")
                 sleep(1)
                 self.hud()
                 level_advantage = 0
@@ -5043,7 +5044,7 @@ class Player:
                 player_total = (self.base_dc + self.wisdom_modifier + self.proficiency_bonus + level_advantage)
                 print(
                     f"Clearing your mind, you attempt to harness the weird Quantum Energies "
-                    f"to create the Meteor Swarm..")
+                    f"to rend the Mooncrusher..")
                 sleep(1)
                 print(f"Quantum Ability Check: {roll_d20}")
                 sleep(1)
@@ -5109,7 +5110,7 @@ class Player:
                     # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
                     print("Your attempt to harness the Quantum weirdness lacks focus..")
                     sleep(1)
-                    print(f"The Meteor Swarm takes form but does not inflict damage to its fullest potential..")
+                    print(f"The Mooncrusher takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
                     print(f"{number_of_dice}d8 roll + 1 per die rolled = {damage_to_opponent}")
                     print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
@@ -5119,10 +5120,10 @@ class Player:
                     return total_damage_to_opponent
             else:
                 if monster.proper_name != "None":
-                    print(f"{monster.proper_name} is immune to Meteor Swarm!!")
+                    print(f"{monster.proper_name} is immune to Quantum Mooncrusher!!")
                     sleep(1)
                 else:
-                    print(f"The {monster.name} is immune to Meteor Swarm!")
+                    print(f"The {monster.name} is immune to Quantum Mooncrusher!")
                     sleep(1)
                 self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
@@ -5130,12 +5131,12 @@ class Player:
                 pause()
                 return 0
         else:
-            print(f"Meteor Swarm is a Battle Effect only..")
+            print(f"Quantum Mooncrusher is a Battle Effect only..")
             sleep(1)
             return
 
     def skeletal_remains(self, monster):
-        # everything but a natural 1 hits.
+        # everything but a 1 roll will succeed.
         # on a successful dexterity protection roll, monster takes 50% damage.
         quantum_unit_cost = 6
         if self.in_proximity_to_monster:
@@ -5252,7 +5253,7 @@ class Player:
             return
 
     def negative_energy_plague(self, monster):
-        # everything but a natural 1 hits.
+        # everything but a 1 roll will succeed
         # on a successful intelligence protection roll, monster takes 50% damage.
         quantum_unit_cost = 6
         if self.in_proximity_to_monster:
@@ -5368,7 +5369,7 @@ class Player:
             return
 
     def ice_storm(self, monster):
-        # everything but a natural 1 hits.
+        # everything but a 1 roll will succeed
         # on a successful constitution protection Roll, monster takes 50% damage.
         quantum_unit_cost = 5
         if self.in_proximity_to_monster:
@@ -5480,7 +5481,7 @@ class Player:
             return
 
     def fire_storm(self, monster):
-        # everything but a natural 1 hits.
+        # everything but a 1 roll will succeed
         # on a successful dexterity protection Roll, monster takes 50% damage.
         quantum_unit_cost = 5
         if self.in_proximity_to_monster:
@@ -6087,7 +6088,7 @@ class Player:
                         print(f"{number_of_dice} glowing projectiles materialize from nothingness and "
                               f"hit their target!")
                         # print(f"(Quantum Missile = 3d4(dice) + 1 die for every level)")
-                        print(f"{number_of_dice}d4 roll + 1 force damage per missile: {damage_to_opponent}\n"
+                        print(f"{number_of_dice}d4 roll + 1 force damage per projectile: {damage_to_opponent}\n"
                               f"{self.level}d{self.hit_dice} damage bonus: {melee_bonus}\n"
                               f"Total: {total_damage_to_opponent}")
                         print(f"They do {total_damage_to_opponent} points of damage!")
@@ -10500,7 +10501,7 @@ return 0"""
 
 """print("Your focus has failed..")
                     sleep(1)
-                    print(f"The Fireball is forced into existence through Quantum Weirdness..")
+                    print(f"The Firewall is forced into existence through Quantum Weirdness..")
                     sleep(1)
                     print(f"..and is extinguished in a puff of smoke!")
                     pause()

@@ -2088,7 +2088,7 @@ class Doppelganger(Monster):
         self.dot_turns = 1
         self.undead = False
         self.immunities = ["Charm", "Sleep", "Web", "Phantasm"]
-        self.vulnerabilities = ["Scorch", "Fireball", "Firestorm", "Immolation"]
+        self.vulnerabilities = ["Scorch", "Firewall", "Firestorm", "Immolation"]
         self.resistances = ["Hold Monster", "Banish"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -2492,7 +2492,7 @@ class WhiteDragonWyrmling(Monster):
         self.dot_turns = 1
         self.undead = False
         self.immunities = ["Ice Storm"]
-        self.vulnerabilities = ["Immolation", "Fireball", "Fire Storm"]
+        self.vulnerabilities = ["Immolation", "Firewall", "Fire Storm"]
         self.resistances = []
         self.quantum_energy = False
         self.hit_dice = 10
@@ -2906,7 +2906,7 @@ class Troll(Monster):
         self.dot_turns = 0
         self.undead = False
         self.immunities = []
-        self.vulnerabilities = ["Immolation", "Fireball", "Fire Storm"]
+        self.vulnerabilities = ["Immolation", "Firewall", "Fire Storm"]
         self.resistances = []
         self.quantum_energy = False
         self.hit_dice = 10
@@ -3484,7 +3484,7 @@ class BoltThrower(Monster):
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
         self.immunities = ["Sleep", "Web", "Lightning"]
-        self.vulnerabilities = ["Fireball", "Firestorm"]
+        self.vulnerabilities = ["Firewall", "Firestorm"]
         self.resistances = []
         self.quantum_energy = False
         self.hit_dice = 12
@@ -3548,7 +3548,7 @@ class FrostGiant(Monster):
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
         self.immunities = ["Ice Storm"]
-        self.vulnerabilities = ["Firestorm", "Fireball"]
+        self.vulnerabilities = ["Firestorm", "Firewall"]
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 10
@@ -3666,7 +3666,7 @@ class YoungGreenDragon(Monster):
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
         self.immunities = []
-        self.vulnerabilities = ["Fireball", "Firestorm"]
+        self.vulnerabilities = ["Firewall", "Firestorm"]
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 10
@@ -3904,7 +3904,7 @@ class FireGiant(Monster):
         self.dot_multiplier = dice_roll(5, 8)
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
-        self.immunities = ["Firestorm", "Fireball", "Scorch", "Immolation"]
+        self.immunities = ["Firestorm", "Firewall", "Scorch", "Immolation"]
         self.vulnerabilities = ["Ice Storm", "Fear", "Phantasm", "Vortex"]
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
@@ -4029,7 +4029,7 @@ class YoungBlueDragon(Monster):
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
         self.immunities = ["Lightning"]
-        self.vulnerabilities = ["Fireball" "Firestorm"]
+        self.vulnerabilities = ["Firewall" "Firestorm"]
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -4214,7 +4214,7 @@ class YoungRedDragon(Monster):
         self.dot_multiplier = dice_roll(6, 9)
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
-        self.immunities = ["Firestorm", "Fireball", "Scorch", "Immolation"]
+        self.immunities = ["Firestorm", "Firewall", "Scorch", "Immolation"]
         self.vulnerabilities = ["Ice Storm", "Vortex"]
         self.resistances = ["Sleep", "Charm"]
         self.quantum_energy = False
@@ -4274,7 +4274,7 @@ class MorbidBehemoth(Monster):
         self.undead = True
         self.immunities = ["Hold Monster", "Turn Undead"]
         self.vulnerabilities = []
-        self.resistances = ["Firestorm", "Fireball", "Scorch", "Immolation", "Vortex"]
+        self.resistances = ["Firestorm", "Firewall", "Scorch", "Immolation", "Vortex"]
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 6
@@ -4406,7 +4406,7 @@ class Leviathan(Monster):
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
         self.immunities = []
-        self.vulnerabilities = ["Fireball", "Firestorm"]
+        self.vulnerabilities = ["Firewall", "Firestorm"]
         self.resistances = ["Sleep", "Web", "Vortex", "Charm", "Banish"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -4469,7 +4469,7 @@ class Gojira(Monster):
         self.dot_turns = dice_roll(3, 5)
         self.undead = False
         self.immunities = ["Vortex"]
-        self.vulnerabilities = ["Scorch", "Fireball", "Firestorm", "Immolation"]
+        self.vulnerabilities = ["Scorch", "Firewall", "Firestorm", "Immolation"]
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -4604,7 +4604,7 @@ class BoltThrowerCaptain(Monster):
         self.undead = False
         self.immunities = ["Lightning"]
         self.vulnerabilities = []
-        self.resistances = ["Fireball", "Scorch", "Sleep", "Web", "Charm"]
+        self.resistances = ["Firewall", "Scorch", "Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 7
@@ -4876,7 +4876,7 @@ class DiamondKingInitiate(Monster):
         self.dot_turns = dice_roll(3, 5)
         self.undead = True
         self.immunities = ["Web", "Hold Monster"]
-        self.vulnerabilities = ["Fireball", "Firestorm"]
+        self.vulnerabilities = ["Firewall", "Firestorm"]
         self.resistances = ["Turn Undead", "Banish"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -5006,7 +5006,7 @@ class FireGiantCaptain(Monster):
         self.dot_multiplier = 0
         self.dot_turns = 0
         self.undead = False
-        self.immunities = ["Firestorm", "Fireball", "Scorch", "Immolation"]
+        self.immunities = ["Firestorm", "Firewall", "Scorch", "Immolation"]
         self.vulnerabilities = ["Ice Storm", "Vortex"]
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
@@ -5188,7 +5188,7 @@ class MorbidTroll(Monster):
         self.dot_turns = 0
         self.undead = True
         self.immunities = []
-        self.vulnerabilities = ["Firestorm", "Fireball"]
+        self.vulnerabilities = ["Firestorm", "Firewall"]
         self.resistances = ["Web", "Turn Undead"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -5393,7 +5393,7 @@ class AltiorManipulator(Monster):
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
-        self.resistances = ["Sleep", "Web", "Charm", "Hold Monster", "Lightning", "Phantasm", "Fireball", "Firestorm",
+        self.resistances = ["Sleep", "Web", "Charm", "Hold Monster", "Lightning", "Phantasm", "Firewall", "Firestorm",
                             "Immolation"]
         self.quantum_energy = True
         self.hit_dice = 9

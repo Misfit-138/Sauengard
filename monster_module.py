@@ -132,9 +132,8 @@ class Monster:
         self.experience_award = 0
         self.gold = 0
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
         self.armor_class = 0
+        self.armor_name = "armor"
         self.strength = 0
         self.dexterity = 0
         self.constitution = 0
@@ -155,7 +154,7 @@ class Monster:
         self.quantum_energy = False
         self.hit_dice = 0
         self.number_of_hd = 0
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -256,10 +255,10 @@ class Monster:
             critical_bonus = 1
             hit_statement = ""
 
-        monster_total = roll_d20 + self.dexterity_modifier + self.proficiency_bonus  # test out pro bonus
+        monster_total = roll_d20 + self.dexterity_modifier + self.evil_bonus  # test out evil bonus
         # print(f"{self.name} Attack bonus: {attack_bonus}")
         print(f"{self.name} Dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
-        print(f"{self.name} Evil Bonus: {self.proficiency_bonus}")  # testing out pro bonus
+        print(f"{self.name} Evil Bonus: {self.evil_bonus}")  # testing out evil bonus
         print(f"{self.name} Total: {monster_total}")
         print(f"Your armor class: {player_1.armor_class}")
 
@@ -325,9 +324,9 @@ class Monster:
         roll_d20 = dice_roll(1, 20)
         print(f"The {self.name} attacks you with Quantum Energy!\n"
               f"({self.he_she_it.capitalize()} rolls {roll_d20})\n"
-              f"Evil Bonus: {self.proficiency_bonus}\n"
+              f"Evil Bonus: {self.evil_bonus}\n"
               f"Wisdom modifier: {self.wisdom_modifier}\n"
-              f"{self.name} Total: {roll_d20 + self.wisdom_modifier + self.proficiency_bonus}")
+              f"{self.name} Total: {roll_d20 + self.wisdom_modifier + self.evil_bonus}")
 
         if roll_d20 == 1:
             print(f"..{self.his_her_its} attempts to procure the universal forces fail miserably.")
@@ -351,7 +350,7 @@ class Monster:
         human_total = human_player_roll_d20 + player_1.wisdom_modifier + player_1.ring_of_prot.protect \
             + player_1.temp_protection_effect
         print(f"Your Total: {human_total}")
-        monster_total = roll_d20 + self.wisdom_modifier + self.proficiency_bonus  # test out pro bonus
+        monster_total = roll_d20 + self.wisdom_modifier + self.evil_bonus  # test out evil bonus
 
         if monster_total >= human_total:
             damage_roll = dice_roll(self.number_of_hd * critical_bonus, self.hit_dice)
@@ -610,10 +609,10 @@ class Monster:
             critical_bonus = 1
             hit_statement = ""
 
-        monster_total = roll_d20 + self.dexterity_modifier + self.proficiency_bonus  # test out pro bonus
+        monster_total = roll_d20 + self.dexterity_modifier + self.evil_bonus  # test out evil bonus
         # print(f"{self.name} Attack bonus: {attack_bonus}")
         print(f"{self.name} Dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
-        print(f"{self.name} Evil Bonus: {self.proficiency_bonus}")  # testing out pro bonus
+        print(f"{self.name} Evil Bonus: {self.evil_bonus}")  # testing out evil bonus
         print(f"{self.name} Total: {monster_total}")
         print(f"{npc.name}'s armor class: {npc.armor_class}")
 
@@ -680,9 +679,9 @@ class Monster:
         roll_d20 = dice_roll(1, 20)
         print(f"The {self.name} attacks {npc.name} with Quantum Energy!\n"
               f"({self.he_she_it.capitalize()} rolls {roll_d20})\n"
-              f"Evil Bonus: {self.proficiency_bonus}\n"
+              f"Evil Bonus: {self.evil_bonus}\n"
               f"Wisdom modifier: {self.wisdom_modifier}\n"
-              f"{self.name} Total: {roll_d20 + self.wisdom_modifier + self.proficiency_bonus}")
+              f"{self.name} Total: {roll_d20 + self.wisdom_modifier + self.evil_bonus}")
 
         if roll_d20 == 1:
             print(f"..{self.his_her_its} attempts to procure the universal forces fail miserably.")
@@ -700,7 +699,7 @@ class Monster:
         if npc.protect > 0:
             print(f"Protection Modifier: {npc.protect}")
         print(f"{npc.name} Total: {npc_roll_d20 + npc.wisdom_modifier + npc.protect}")
-        monster_total = roll_d20 + self.wisdom_modifier + self.proficiency_bonus  # pro bonus
+        monster_total = roll_d20 + self.wisdom_modifier + self.evil_bonus  # evil bonus
 
         if monster_total >= (npc_roll_d20 + npc.wisdom_modifier + npc.protect):
             damage_roll = dice_roll(self.number_of_hd * critical_bonus, self.hit_dice)
@@ -730,12 +729,12 @@ class Monster:
             return 0
 
 
-class Quasit(Monster):
+class Gnoll(Monster):
 
     def __init__(self):
         super().__init__()
         self.level = 1
-        self.name = "Quasit"
+        self.name = "Gnoll"
         self.proper_name = "None"
         self.he_she_it = "it"
         self.his_her_its = "its"
@@ -743,15 +742,14 @@ class Quasit(Monster):
         self.experience_award = 25
         self.gold = random.randint(0, 1)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "chainmail shirt"
         self.strength = random.randint(4, 6)
         self.dexterity = random.randint(16, 17)
         self.constitution = random.randint(8, 10)
         self.intelligence = random.randint(6, 8)
         self.wisdom = random.randint(9, 10)
         self.charisma = random.randint(9, 11)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -774,20 +772,19 @@ class Quasit(Monster):
         self.multi_attack = False
         self.lesser_multi_attack = False
         self.attack_1 = 0  # attack bonus
-        self.attack_1_phrase = "It polymorphs into toad form.."
-        self.attack_2 = 0
-        self.attack_2_phrase = "It polymorphs into centipede form and rears up.."
-        self.attack_3 = 1
-        self.attack_3_phrase = "It polymorphs into bat form and darts at you with gaping jaws!."
+        self.attack_1_phrase = "It thrusts forward, jaws gaping.."
+        self.attack_2 = 2
+        self.attack_2_phrase = "It pounces, ready to bite!"
+        self.attack_3 = 2
+        self.attack_3_phrase = "It strikes with gnarled and hairy claws.."
         self.attack_4 = 3
-        self.attack_4_phrase = "Croaking in disturbing malice, it swings its horrid claws.."
+        self.attack_4_phrase = "It grabs a jagged dagger from its belt and strikes.."
         self.attack_5 = 3
-        self.attack_5_phrase = "With blinding speed, it kicks with its hind claws.."
-        self.introduction = f"You have encountered a {self.name}.\n" \
-                            f"Its large, lidless eyes stare blankly at you as it quickly readjusts its pointed ears\n" \
-                            f"with a continual twitching. Its long, serpentine tail wags with its sinews and scales\n" \
-                            f"as it lets out a high pitched, fiendish and wretched cry. The air around it " \
-                            f"becomes hazy.."
+        self.attack_5_phrase = "It strikes forward with its bloodied spear!"
+        self.introduction = f"You have encountered a Gnoll; A sawed-off, unnatural humanoid dungeon lurker, driven\n" \
+                            f"by basic instincts of necessity.\nLike its Kobold cousins, it skulks about, in search " \
+                            f"of food and supplies which can be procured by any means.\nIt stands before you, in an " \
+                            f"ill-fitting shirt of chain mail."
 
 
 class Kobold(Monster):
@@ -803,15 +800,14 @@ class Kobold(Monster):
         self.experience_award = 25
         self.gold = random.randint(1, 3)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "scaly flesh"
         self.strength = random.randint(6, 8)
         self.dexterity = random.randint(14, 15)
         self.constitution = random.randint(8, 10)
         self.intelligence = random.randint(7, 8)
         self.wisdom = random.randint(7, 8)
         self.charisma = random.randint(7, 8)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -864,15 +860,14 @@ class Cultist(Monster):
         self.experience_award = 50
         self.gold = random.randint(2, 8)  # self.level * 373 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "padded armor"
         self.strength = random.randint(10, 12)
         self.dexterity = random.randint(11, 13)
         self.constitution = random.randint(9, 11)
         self.intelligence = random.randint(9, 11)
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(9, 11)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -923,15 +918,13 @@ class Goblin(Monster):
         self.experience_award = self.level * 50
         self.gold = random.randint(2, 10)  # self.level * 200 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
         self.strength = random.randint(7, 9)
         self.dexterity = random.randint(13, 15)
         self.constitution = random.randint(9, 11)
         self.intelligence = random.randint(9, 11)
         self.wisdom = random.randint(7, 9)
         self.charisma = random.randint(7, 9)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -981,15 +974,14 @@ class WingedKobold(Monster):
         self.experience_award = 50
         self.gold = random.randint(1, 5)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "jagged scales"
         self.strength = random.randint(6, 8)
         self.dexterity = random.randint(15, 17)
         self.constitution = random.randint(8, 10)
         self.intelligence = random.randint(8, 10)
         self.wisdom = random.randint(6, 8)
         self.charisma = random.randint(6, 8)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -1021,66 +1013,9 @@ class WingedKobold(Monster):
         self.attack_4_phrase = "Feinting with its weapon hand, it kicks at you with its horrid claws.."
         self.attack_5 = 3
         self.attack_5_phrase = "It readies its spear and lunges with a growling grunt.."
-        self.introduction = f"You have encountered a {self.name}. Standing three feet tall, with short ivory horns\n" \
-                            f"and a frail body covered with mottled, brick-red scales, it grabs its dagger and\n" \
-                            f"spreads its leathery, bat-like wings."
-
-
-class Gnoll(Monster):
-
-    def __init__(self):
-        super().__init__()
-        self.level = 2
-        self.name = "Gnoll"
-        self.proper_name = "None"
-        self.he_she_it = "it"
-        self.his_her_its = "its"
-        self.him_her_it = "it"
-        self.experience_award = 100
-        self.gold = random.randint(1, 7)  # self.level * 200 * round(random.uniform(1, 2))
-        self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
-        self.strength = 14
-        self.dexterity = 12
-        self.constitution = random.randint(9, 11)
-        self.intelligence = 6
-        self.wisdom = 10
-        self.charisma = 7
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
-        self.strength_modifier = math.floor((self.strength - 10) / 2)
-        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
-        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
-        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
-        self.can_paralyze = False
-        self.paralyze_turns = 1
-        self.can_poison = False
-        self.necrotic = False
-        self.dot_multiplier = 1
-        self.undead = False
-        self.immunities = []
-        self.vulnerabilities = []
-        self.resistances = []
-        self.quantum_energy = False
-        self.hit_dice = 8
-        self.number_of_hd = 1
-        self.hit_points = (random.randint(18, 21)) + self.constitution_modifier
-        self.armor_class = 15
-        self.multi_attack = False
-        self.lesser_multi_attack = True
-        self.attack_1 = 0  # attack bonus
-        self.attack_1_phrase = "It thrusts forward, jaws gaping.."
-        self.attack_2 = 2
-        self.attack_2_phrase = "It pounces, ready to bite!"
-        self.attack_3 = 2
-        self.attack_3_phrase = "It strikes with gnarled and hairy claws.."
-        self.attack_4 = 3
-        self.attack_4_phrase = "It grabs a jagged dagger from its belt and strikes.."
-        self.attack_5 = 3
-        self.attack_5_phrase = "It strikes forward with its bloodied spear!"
-        self.introduction = f"You have encountered a {self.name}. A wild, unthinking unnatural humanoid driven\n" \
-                            f"by basic instincts of necessity. Like its Kobold cousins, it lurks about, in search\n" \
-                            f"of food and supplies which can be procured by any means.."
+        self.introduction = f"You have encountered a {self.name}. A sinister runt, with short ivory horns\n" \
+                            f"and a frail body covered with jagged scales, it grabs its dagger and\n" \
+                            f"spreads its fleshy wings."
 
 
 class Shadow(Monster):
@@ -1096,15 +1031,14 @@ class Shadow(Monster):
         self.experience_award = 100
         self.gold = random.randint(0, 1)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural armor"
         self.strength = random.randint(5, 6)
         self.dexterity = random.randint(13, 15)
         self.constitution = random.randint(12, 14)
         self.intelligence = random.randint(5, 7)
         self.wisdom = 10
         self.charisma = random.randint(7, 8)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -1179,15 +1113,14 @@ class ShadowKing(Monster):
         self.experience_award = 100
         self.gold = random.randint(5, 10)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 5
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural armor"
         self.strength = random.randint(7, 8)
         self.dexterity = random.randint(13, 15)
         self.constitution = random.randint(12, 14)
         self.intelligence = random.randint(5, 7)
         self.wisdom = 14
         self.charisma = random.randint(7, 8)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -1263,15 +1196,13 @@ class Skeleton(Monster):
         self.experience_award = 100
         self.gold = random.randint(0, 5)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
         self.strength = random.randint(9, 11)
         self.dexterity = random.randint(13, 15)
         self.constitution = random.randint(14, 16)
         self.intelligence = random.randint(5, 7)
         self.wisdom = random.randint(7, 9)
         self.charisma = random.randint(5, 6)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -1323,15 +1254,14 @@ class ZombieProphet(Monster):
         self.experience_award = 200
         self.gold = random.randint(6, 15)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 4
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural armor"
         self.strength = 16
         self.dexterity = 16
         self.constitution = 16
         self.intelligence = 12
         self.wisdom = 13
         self.charisma = 10
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -1381,15 +1311,14 @@ class SkeletonKing(Monster):
         self.experience_award = 200
         self.gold = random.randint(6, 22)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 5
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "ancient armor"
         self.strength = 16
         self.dexterity = 16
         self.constitution = 16
         self.intelligence = 13
         self.wisdom = 12
         self.charisma = 10
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -1440,15 +1369,14 @@ class SkeletalProphet(Monster):
         self.experience_award = 200
         self.gold = random.randint(6, 22)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 5
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "ancient armor"
         self.strength = 16
         self.dexterity = 16
         self.constitution = 16
         self.intelligence = 13
         self.wisdom = 13
         self.charisma = 10
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -1498,15 +1426,14 @@ class DarkElfUnderling(Monster):
         self.experience_award = 100
         self.gold = random.randint(5, 12)  # self.level * 300 * round(random.uniform(1, 2))
         self.weapon_bonus = 1
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "dark armor"
         self.strength = random.randint(9, 11)
         self.dexterity = random.randint(13, 14)
         self.constitution = random.randint(9, 11)
         self.intelligence = 11
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(12, 13)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -1571,15 +1498,14 @@ class Zombie(Monster):
         self.experience_award = 100
         self.gold = random.randint(1, 5)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural armor"
         self.strength = random.randint(12, 14)
         self.dexterity = random.randint(6, 8)
         self.constitution = random.randint(15, 17)
         self.intelligence = random.randint(3, 4)
         self.wisdom = random.randint(6, 7)
         self.charisma = random.randint(5, 6)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -1629,15 +1555,13 @@ class Troglodyte(Monster):
         self.experience_award = 200
         self.gold = random.randint(2, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 2
-        self.armor = 0
-        self.shield = 0
         self.strength = random.randint(13, 15)
         self.dexterity = random.randint(9, 11)
         self.constitution = random.randint(13, 15)
         self.intelligence = random.randint(6, 7)
         self.wisdom = random.randint(9, 11)
         self.charisma = random.randint(5, 7)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -1688,15 +1612,13 @@ class Orc(Monster):
         self.experience_award = 100
         self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 1
-        self.armor = 0
-        self.shield = 0
         self.strength = random.randint(14, 16)
         self.dexterity = random.randint(11, 14)
         self.constitution = random.randint(14, 16)
         self.intelligence = random.randint(6, 8)
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(9, 11)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -1746,15 +1668,14 @@ class CultFanatic(Monster):
         self.experience_award = 450
         self.gold = random.randint(2, 8)  # self.level * 373 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "chain mail shirt"
         self.strength = random.randint(10, 12)
         self.dexterity = random.randint(13, 15)
         self.constitution = random.randint(11, 13)
         self.intelligence = random.randint(9, 11)
         self.wisdom = random.randint(12, 13)
         self.charisma = 14
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -1822,15 +1743,14 @@ class Gargoyle(Monster):
         self.experience_award = 450
         self.gold = random.randint(1, 5)  # self.level * 373 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural, stone flesh"
         self.strength = 15
         self.dexterity = 11
         self.constitution = 16
         self.intelligence = 6
         self.wisdom = 11
         self.charisma = 7
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -1882,15 +1802,14 @@ class Ghoul(Monster):
         self.experience_award = 200
         self.gold = random.randint(0, 5)  # self.level * 103 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnaturally thick skin"
         self.strength = random.randint(11, 12)
         self.dexterity = random.randint(14, 16)
         self.constitution = random.randint(12, 13)
         self.intelligence = random.randint(5, 10)
         self.wisdom = random.randint(7, 9)
         self.charisma = random.randint(1, 5)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -1943,15 +1862,14 @@ class Bugbear(Monster):
         self.experience_award = 200
         self.gold = random.randint(5, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 3
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "scale mail"
         self.strength = random.randint(14, 16)
         self.dexterity = random.randint(13, 14)
         self.constitution = random.randint(12, 14)
         self.intelligence = random.randint(8, 9)
         self.wisdom = random.randint(10, 12)
         self.charisma = random.randint(8, 10)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2001,15 +1919,14 @@ class HalfOgre(Monster):
         self.experience_award = 200
         self.gold = random.randint(5, 12)
         self.weapon_bonus = 3
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "thick flesh"
         self.strength = random.randint(16, 18)
         self.dexterity = random.randint(9, 11)
         self.constitution = random.randint(13, 15)
         self.intelligence = random.randint(6, 8)
         self.wisdom = random.randint(8, 10)
         self.charisma = random.randint(9, 11)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2067,15 +1984,14 @@ class Doppelganger(Monster):
         self.experience_award = 700
         self.gold = random.randint(1, 5)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural armor"
         self.strength = 11
         self.dexterity = 18
         self.constitution = 14
         self.intelligence = 11
         self.wisdom = 12
         self.charisma = 14
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2130,15 +2046,14 @@ class Specter(Monster):
         self.experience_award = 250
         self.gold = random.randint(0, 1)  # self.level * 103 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural armor"
         self.strength = random.randint(11, 12)
         self.dexterity = random.randint(12, 16)
         self.constitution = random.randint(10, 12)
         self.intelligence = random.randint(9, 11)
         self.wisdom = 12
         self.charisma = random.randint(10, 12)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2210,15 +2125,14 @@ class SpecterKing(Monster):
         self.experience_award = 500
         self.gold = random.randint(6, 16)
         self.weapon_bonus = 5
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural, ancient armor"
         self.strength = 16
         self.dexterity = random.randint(15, 16)
         self.constitution = random.randint(15, 16)
         self.intelligence = random.randint(12, 13)
         self.wisdom = 14
         self.charisma = random.randint(10, 12)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2289,15 +2203,14 @@ class HobgoblinCaptain(Monster):
         self.experience_award = 700
         self.gold = random.randint(7, 15)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 2
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "chain mail"
         self.strength = random.randint(15, 15)
         self.dexterity = 14
         self.constitution = 14
         self.intelligence = 12
         self.wisdom = 10
         self.charisma = 13
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2348,15 +2261,14 @@ class Harpy(Monster):
         self.experience_award = 450
         self.gold = random.randint(1, 5)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural flesh"
         self.strength = random.randint(11, 13)
         self.dexterity = 13
         self.constitution = random.randint(11, 13)
         self.intelligence = 7
         self.wisdom = 10
         self.charisma = 13
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2410,15 +2322,14 @@ class GreenDragonWyrmling(Monster):
         self.experience_award = 450
         self.gold = random.randint(15, 25)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "jagged, green scales"
         self.strength = random.randint(14, 16)
         self.dexterity = 12
         self.constitution = random.randint(13, 15)
         self.intelligence = 14
         self.wisdom = 11
         self.charisma = 13
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2471,15 +2382,14 @@ class WhiteDragonWyrmling(Monster):
         self.experience_award = 450
         self.gold = random.randint(15, 25)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "sharp, white scales"
         self.strength = random.randint(13, 15)
         self.dexterity = random.randint(9, 11)
         self.constitution = random.randint(13, 15)
         self.intelligence = random.randint(5, 6)
         self.wisdom = random.randint(10, 11)
         self.charisma = random.randint(10, 11)
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2529,15 +2439,14 @@ class BugbearCaptain(Monster):
         self.experience_award = 700
         self.gold = random.randint(3, 12)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 3
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "breastplate"
         self.strength = 17
         self.dexterity = 14
         self.constitution = 14
         self.intelligence = 11
         self.wisdom = 12
         self.charisma = 11
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2588,15 +2497,14 @@ class Ogre(Monster):
         self.experience_award = 650
         self.gold = random.randint(5, 12)
         self.weapon_bonus = 4
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "thick skin"
         self.strength = 19
         self.dexterity = 8
         self.constitution = 16
         self.intelligence = 5
         self.wisdom = 7
         self.charisma = 7
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2647,15 +2555,14 @@ class Minotaur(Monster):
         self.experience_award = 750
         self.gold = random.randint(3, 11)
         self.weapon_bonus = 4
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "thick flesh"
         self.strength = 18
         self.dexterity = 11
         self.constitution = 16
         self.intelligence = 6
         self.wisdom = 16
         self.charisma = 9
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2705,15 +2612,14 @@ class DarkDwarf(Monster):
         self.experience_award = 750
         self.gold = random.randint(5, 12)
         self.weapon_bonus = 4
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "dark plate armor"
         self.strength = 14
         self.dexterity = 11
         self.constitution = 15
         self.intelligence = 11
         self.wisdom = 11
         self.charisma = 9
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2765,15 +2671,14 @@ class Mummy(Monster):
         self.experience_award = 700
         self.gold = random.randint(5, 12)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural armor"
         self.strength = 16
         self.dexterity = 8
         self.constitution = 15
         self.intelligence = 6
         self.wisdom = 12
         self.charisma = 12
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2826,15 +2731,14 @@ class ZombieOgre(Monster):
         self.experience_award = 750
         self.gold = random.randint(5, 12)
         self.weapon_bonus = 4
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnaturally thick skin"
         self.strength = 19
         self.dexterity = 6
         self.constitution = 18
         self.intelligence = 3
         self.wisdom = 6
         self.charisma = 5
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2885,15 +2789,14 @@ class Troll(Monster):
         self.experience_award = 2000
         self.gold = random.randint(5, 10)
         self.weapon_bonus = 5
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "thick, scaly skin"
         self.strength = 18
         self.dexterity = 13
         self.constitution = 20
         self.intelligence = 7
         self.wisdom = 9
         self.charisma = 7
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -2942,15 +2845,14 @@ class HillGiant(Monster):
         self.experience_award = 2000
         self.gold = random.randint(2, 12)
         self.weapon_bonus = 5
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "thick skin"
         self.strength = 21
         self.dexterity = 8
         self.constitution = 19
         self.intelligence = 5
         self.wisdom = 9
         self.charisma = 6
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -3000,15 +2902,14 @@ class Cyclops(Monster):
         self.experience_award = 2300
         self.gold = random.randint(2, 12)
         self.weapon_bonus = 4
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "thick skin"
         self.strength = 22
         self.dexterity = 11
         self.constitution = 20
         self.intelligence = 8
         self.wisdom = 6
         self.charisma = 10
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -3058,15 +2959,14 @@ class WrathfulAvenger(Monster):
         self.experience_award = 2300
         self.gold = random.randint(1, 10)
         self.weapon_bonus = 4
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural splint mail"
         self.strength = 18
         self.dexterity = 14
         self.constitution = 18
         self.intelligence = 13
         self.wisdom = 16
         self.charisma = 18
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -3121,15 +3021,14 @@ class HobgoblinWarlord(Monster):
         self.experience_award = 2300
         self.gold = random.randint(1, 10)
         self.weapon_bonus = 5
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "plate mail"
         self.strength = 16
         self.dexterity = 14
         self.constitution = 16
         self.intelligence = 14
         self.wisdom = 11
         self.charisma = 15
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -3180,15 +3079,14 @@ class Wyvern(Monster):
         self.experience_award = 2800
         self.gold = random.randint(1, 5)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "spike-covered flesh"
         self.strength = 19
         self.dexterity = 10
         self.constitution = 16
         self.intelligence = 10
         self.wisdom = 12
         self.charisma = 6
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -3241,6 +3139,7 @@ class DarkElfManipulator(Monster):
         self.gold = random.randint(1, 15)
         self.weapon_bonus = 4
         self.armor = 0
+        self.armor_name = "Quantum armor"
         self.shield = 0
         self.strength = 9
         self.dexterity = 14
@@ -3248,7 +3147,7 @@ class DarkElfManipulator(Monster):
         self.intelligence = 17
         self.wisdom = 13
         self.charisma = 17
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -3320,15 +3219,14 @@ class Reptoranicus(Monster):
         self.experience_award = 3000
         self.gold = random.randint(1, 15)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "Quantum armor"
         self.strength = 11
         self.dexterity = 12
         self.constitution = 12
         self.intelligence = 19
         self.wisdom = 17
         self.charisma = 17
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -3401,15 +3299,14 @@ class MorbidDefender(Monster):
         self.experience_award = 3000
         self.gold = random.randint(2, 14)
         self.weapon_bonus = 5
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "ancient breastplate"
         self.strength = 18
         self.dexterity = 16
         self.constitution = 18
         self.intelligence = 13
         self.wisdom = 16
         self.charisma = 18
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -3464,15 +3361,14 @@ class BoltThrower(Monster):
         self.experience_award = 3000
         self.gold = random.randint(5, 25)
         self.weapon_bonus = 5
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "hard exoskeleton"
         self.strength = 18
         self.dexterity = 16
         self.constitution = 18
         self.intelligence = 12
         self.wisdom = 11
         self.charisma = 11
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -3528,15 +3424,14 @@ class FrostGiant(Monster):
         self.experience_award = 4000
         self.gold = random.randint(10, 35)
         self.weapon_bonus = 5
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "icy blue armor"
         self.strength = 23
         self.dexterity = 9
         self.constitution = 21
         self.intelligence = 9
         self.wisdom = 10
         self.charisma = 12
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -3587,15 +3482,14 @@ class YoungBlackDragon(Monster):
         self.experience_award = 4000
         self.gold = random.randint(10, 35)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "thick, black scales"
         self.strength = 20
         self.dexterity = 14
         self.constitution = 17
         self.intelligence = 12
         self.wisdom = 11
         self.charisma = 15
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -3646,15 +3540,14 @@ class YoungGreenDragon(Monster):
         self.experience_award = 4000
         self.gold = random.randint(10, 35)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "green, scaly skin"
         self.strength = 20
         self.dexterity = 12
         self.constitution = 17
         self.intelligence = 16
         self.wisdom = 13
         self.charisma = 15
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -3705,15 +3598,14 @@ class MorbidKnight(Monster):
         self.experience_award = 4000
         self.gold = random.randint(10, 35)
         self.weapon_bonus = 7
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "ancient plate mail"
         self.strength = 16
         self.dexterity = 14
         self.constitution = 15
         self.intelligence = 14
         self.wisdom = 14
         self.charisma = 15
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -3765,15 +3657,14 @@ class Assassin(Monster):
         self.experience_award = 4000
         self.gold = random.randint(25, 35)
         self.weapon_bonus = 6
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "Quantum chainmail shirt"
         self.strength = 11
         self.dexterity = 16
         self.constitution = 14
         self.intelligence = 13
         self.wisdom = 11
         self.charisma = 10
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -3827,15 +3718,14 @@ class DarkDwarfVeteran(Monster):
         self.experience_award = 5000
         self.gold = random.randint(25, 35)
         self.weapon_bonus = 6
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "Tenebris plate mail"
         self.strength = 16
         self.dexterity = 14
         self.constitution = 17
         self.intelligence = 12
         self.wisdom = 12
         self.charisma = 10
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -3885,15 +3775,14 @@ class FireGiant(Monster):
         self.experience_award = 5000
         self.gold = random.randint(20, 35)
         self.weapon_bonus = 6
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "heavy armor"
         self.strength = 25
         self.dexterity = 9
         self.constitution = 23
         self.intelligence = 10
         self.wisdom = 14
         self.charisma = 13
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -3947,15 +3836,14 @@ class Widow(Monster):
         self.experience_award = 5000
         self.gold = random.randint(5, 35)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "hard exoskeleton"
         self.strength = 18
         self.dexterity = 16
         self.constitution = 14
         self.intelligence = 16
         self.wisdom = 11
         self.charisma = 16
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -4009,15 +3897,14 @@ class YoungBlueDragon(Monster):
         self.experience_award = 5000
         self.gold = random.randint(20, 35)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "blue, scaly skin"
         self.strength = 21
         self.dexterity = 10
         self.constitution = 19
         self.intelligence = 14
         self.wisdom = 13
         self.charisma = 17
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -4067,15 +3954,14 @@ class Wraith(Monster):
         self.experience_award = 5000
         self.gold = random.randint(1, 4)
         self.weapon_bonus = 6
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural Quantum armor"
         self.strength = 16
         self.dexterity = 14
         self.constitution = 15
         self.intelligence = 19
         self.wisdom = 17
         self.charisma = 17
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -4132,15 +4018,14 @@ class Necrophagist(Monster):
         self.experience_award = 5000
         self.gold = random.randint(5, 12)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnaturally thick flesh"
         self.strength = 16
         self.dexterity = 14
         self.constitution = 15
         self.intelligence = 11
         self.wisdom = 12
         self.charisma = 12
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -4195,15 +4080,14 @@ class YoungRedDragon(Monster):
         self.experience_award = 6000
         self.gold = random.randint(25, 35)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "thick, red scales"
         self.strength = 23
         self.dexterity = 10
         self.constitution = 21
         self.intelligence = 14
         self.wisdom = 11
         self.charisma = 19
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -4253,15 +4137,14 @@ class MorbidBehemoth(Monster):
         self.experience_award = 6000
         self.gold = random.randint(1, 5)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural flesh"
         self.strength = 19
         self.dexterity = 18
         self.constitution = 16
         self.intelligence = 16
         self.wisdom = 16
         self.charisma = 13
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -4318,15 +4201,14 @@ class ChaosMonster(Monster):
         self.experience_award = 6000
         self.gold = random.randint(25, 35)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural flesh"
         self.strength = 18
         self.dexterity = 16
         self.constitution = 18
         self.intelligence = 18
         self.wisdom = 18
         self.charisma = 16
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -4386,15 +4268,14 @@ class Leviathan(Monster):
         self.experience_award = 6000
         self.gold = random.randint(1, 5)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "thick, heavy scales"
         self.strength = 19
         self.dexterity = 18
         self.constitution = 16
         self.intelligence = 16
         self.wisdom = 19
         self.charisma = 18
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -4449,15 +4330,14 @@ class Gojira(Monster):
         self.experience_award = 6000
         self.gold = random.randint(1, 3)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "slimy skin"
         self.strength = 21
         self.dexterity = 9
         self.constitution = 15
         self.intelligence = 16
         self.wisdom = 14
         self.charisma = 13
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -4511,15 +4391,14 @@ class CorpseGrinder(Monster):
         self.experience_award = 7200
         self.gold = random.randint(15, 25)
         self.weapon_bonus = 7
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "hard exoskeleton"
         self.strength = 22
         self.dexterity = 18
         self.constitution = 21
         self.intelligence = 12
         self.wisdom = 12
         self.charisma = 13
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -4583,15 +4462,14 @@ class BoltThrowerCaptain(Monster):
         self.experience_award = 7200
         self.gold = random.randint(15, 25)
         self.weapon_bonus = 7
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "hard exoskeleton"
         self.strength = 20
         self.dexterity = 17
         self.constitution = 19
         self.intelligence = 16
         self.wisdom = 16
         self.charisma = 16
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -4648,15 +4526,14 @@ class Apocryphage(Monster):
         self.experience_award = 7000
         self.gold = random.randint(10, 30)
         self.weapon_bonus = 3
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "Quantum chainmail shirt"
         self.strength = 8
         self.dexterity = 20
         self.constitution = 8
         self.intelligence = 15
         self.wisdom = 20
         self.charisma = 20
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -4713,15 +4590,14 @@ class MorbidAssassin(Monster):
         self.experience_award = 7000
         self.gold = random.randint(35, 45)
         self.weapon_bonus = 6
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural Quantum chainmail shirt"
         self.strength = 14
         self.dexterity = 18
         self.constitution = 16
         self.intelligence = 14
         self.wisdom = 18
         self.charisma = 8
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -4778,15 +4654,14 @@ class TorinManipulator(Monster):
         self.experience_award = 7000
         self.gold = random.randint(1, 15)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural Quantum chainmail shirt"
         self.strength = 11
         self.dexterity = 12
         self.constitution = 12
         self.intelligence = 19
         self.wisdom = 19
         self.charisma = 17
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -4856,15 +4731,14 @@ class DiamondKingInitiate(Monster):
         self.experience_award = 8500
         self.gold = random.randint(5, 45)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "impossibly hard skin"
         self.strength = 14
         self.dexterity = 18
         self.constitution = 16
         self.intelligence = 20
         self.wisdom = 17
         self.charisma = 18
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -4923,15 +4797,14 @@ class QueenWasp(Monster):
         self.experience_award = 8500
         self.gold = random.randint(15, 25)
         self.weapon_bonus = 6
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "natural exoskeletal armor"
         self.strength = 20
         self.dexterity = 10
         self.constitution = 21
         self.intelligence = 12
         self.wisdom = 12
         self.charisma = 18
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -4987,15 +4860,14 @@ class FireGiantCaptain(Monster):
         self.experience_award = 8500
         self.gold = random.randint(20, 35)
         self.weapon_bonus = 7
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "thick, heavy armor"
         self.strength = 25
         self.dexterity = 9
         self.constitution = 23
         self.intelligence = 12
         self.wisdom = 14
         self.charisma = 14
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -5047,15 +4919,14 @@ class DarkDwarfWarlord(Monster):
         self.experience_award = 8500
         self.gold = random.randint(50, 75)
         self.weapon_bonus = 8
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "Tenebris plate mail"
         self.strength = 16
         self.dexterity = 12
         self.constitution = 18
         self.intelligence = 12
         self.wisdom = 14
         self.charisma = 10
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -5108,15 +4979,14 @@ class MorbidVastator(Monster):
         self.experience_award = 8500
         self.gold = random.randint(5, 25)
         self.weapon_bonus = 7
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "ancient plate mail"
         self.strength = 20
         self.dexterity = 12
         self.constitution = 18
         self.intelligence = 12
         self.wisdom = 14
         self.charisma = 10
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -5168,15 +5038,14 @@ class MorbidTroll(Monster):
         self.experience_award = 10000
         self.gold = random.randint(20, 35)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural armor"
         self.strength = 22
         self.dexterity = 15
         self.constitution = 20
         self.intelligence = 9
         self.wisdom = 10
         self.charisma = 4
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -5227,15 +5096,14 @@ class SheStalker(Monster):
         self.experience_award = 10000
         self.gold = random.randint(10, 30)
         self.weapon_bonus = 6
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnatural armor"
         self.strength = 8
         self.dexterity = 20
         self.constitution = 9
         self.intelligence = 15
         self.wisdom = 18
         self.charisma = 20
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -5292,15 +5160,14 @@ class AbsconditusManipulator(Monster):
         self.experience_award = 10000
         self.gold = random.randint(1, 15)
         self.weapon_bonus = 4
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "Quantum chainmail shirt"
         self.strength = 11
         self.dexterity = 12
         self.constitution = 12
         self.intelligence = 19
         self.wisdom = 19
         self.charisma = 18
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -5372,15 +5239,14 @@ class AltiorManipulator(Monster):
         self.experience_award = 10000
         self.gold = random.randint(1, 15)
         self.weapon_bonus = 5
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "Quantum chainmail shirt"  # "unnatural Quantum field armor"
         self.strength = 11
         self.dexterity = 12
         self.constitution = 12
         self.intelligence = 19
         self.wisdom = 19
         self.charisma = 18
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -5451,15 +5317,14 @@ class DiamondKingPatrician(Monster):
         self.experience_award = 10000
         self.gold = random.randint(15, 45)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnaturally hard skin"
         self.strength = 16
         self.dexterity = 18
         self.constitution = 16
         self.intelligence = 20
         self.wisdom = 17
         self.charisma = 19
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -5516,15 +5381,14 @@ class WickedQueenJannbrielle(Monster):
         self.experience_award = 64000
         self.gold = random.randint(150, 2500)
         self.weapon_bonus = 0
-        self.armor = 0
-        self.shield = 0
+        self.armor_name = "unnaturally hard, alabaster flesh"
         self.strength = 30
         self.dexterity = 17
         self.constitution = 29
         self.intelligence = 20
         self.wisdom = 20
         self.charisma = 30
-        self.proficiency_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -5587,8 +5451,8 @@ class WickedQueenJannbrielle(Monster):
 # monster dictionaries. keys correspond to difficulty/challenge level
 # regular monsters:
 monster_dict = {
-    1: [Quasit, Kobold, Cultist, Goblin, WingedKobold],
-    2: [Skeleton, Gnoll, Shadow, DarkElfUnderling, Troglodyte, Orc, Zombie, Ghoul],
+    1: [Gnoll, Kobold, Cultist, Goblin, WingedKobold],
+    2: [Skeleton, Shadow, DarkElfUnderling, Troglodyte, Orc, Zombie, Ghoul],
     3: [Specter, Bugbear, CultFanatic, HalfOgre, Gargoyle, Doppelganger],
     4: [WhiteDragonWyrmling, GreenDragonWyrmling, HobgoblinCaptain, Harpy, BugbearCaptain],
     5: [Ogre, ZombieOgre, DarkDwarf, Minotaur, Mummy],

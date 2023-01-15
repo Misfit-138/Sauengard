@@ -507,37 +507,35 @@ def dungeon_command_choices():
 
 def character_generator():
     cls()
-    explanation_dict = {"Strength": "Strength is a measure of a character's physical power. A character high\n"
-                                    "in Strength can lift heavier loads, break objects with brute force, and\n"
-                                    "do more damage with melee weapons.",
-                        "Dexterity": "Dexterity is a measure of a character’s nimbleness, agility, muscular "
-                                     "coordination, and balance.\nIt is also an essential component of your Armor "
-                                     "Class; Your Dexterity Modifier is added directly to your AC.",
-                        "Constitution": "Constitution encompasses the character's physique, toughness, health and\n"
-                                        "resistance to poison and necrosis. The higher a character's constitution,\n"
-                                        "the more hit points the character will have.",
-                        "Intelligence": "Intelligence determines how well your character learns and reasons. It is\n"
-                                        "important for certain quantum effects, your ability to recall lore, \n"
-                                        "languages, and runes, as well as your ability to investigate your \n"
+    explanation_dict = {"Strength": "Strength is a measure of one's physical force. A character high\n"
+                                    "in Strength can do more damage with melee weapons.\nAlso essential for "
+                                    "lifting heavy objects when interacting with certain dungeon features.",
+                        "Dexterity": "Dexterity is a measure of a character’s speed, swiftness, and "
+                                     "coordination.\nIt is also an essential component of stealth attempts and "
+                                     "your Armor Class.",
+                        "Constitution": "Constitution defines one's general stoutness and resistence to evil "
+                                        "effects, like poison and Quantum necrosis.\n"
+                                        "Constitution is also proportional to one's hit points.",
+                        "Intelligence": "Intelligence determines how well your character learns and discerns. It is\n"
+                                        "important for certain quantum effects, your ability to recall \n"
+                                        "languages and read runes, as well as your ability to investigate your \n"
                                         "surroundings.",
-                        "Wisdom": "Wisdom enables sound judgment and action based on intelligence and understanding; "
+                        "Wisdom": "Wisdom represents action based on intelligence and understanding; "
                                   "the ability\n"
-                                  "to practically apply one's knowledge successfully, to solve problems, avoid or "
+                                  "to practically apply one's knowledge successfully, solve problems, avoid or "
                                   "avert\n"
-                                  "dangers, attain certain goals, or counsel others in doing so. It is the opposite\n"
-                                  "of foolishness, stupidity, and madness. Wisdom is absolutely critical for "
+                                  "dangers, and attain goals. Wisdom is absolutely critical for "
                                   "harnessing\n"
                                   "many Quantum effects, as well as avoiding many Quantum attacks.",
-                        "Charisma": "Charisma measures one's ability to interact effectively with others. It includes\n"
-                                    "such factors as confidence, persuasion and attraction, and it can represent a\n"
-                                    "charming or magnetic personality. Players with high charisma will have a\n"
+                        "Charisma": "Charisma measures one's personal attraction and social skills. A character with "
+                                    "high charisma will have a\n"
                                     "better chance of favorable outcomes when encountering certain monsters.\n"
                                     "Charisma can mean the difference between great fortune and death."}
 
-    standard_array = f"Ability Value    	Ability Modifier\n" \
-                     f"15	                            +3\n14	                            " \
-                     f"+2\n13	                            +1\n12	                            +1\n10" \
-                     f"	                            +0\n8	                            -1\n"
+    default_stats = f"Attribute Value    	Attribute Modifier\n" \
+                    f"15	                            +3\n14	                            " \
+                    f"+2\n13	                            +1\n12	                            +1\n10" \
+                    f"	                            +0\n9	                            -1\n"
 
     stats = {
         "strength": 15,
@@ -545,7 +543,7 @@ def character_generator():
         "constitution": 13,
         "intelligence": 10,
         "wisdom": 12,
-        "charisma": 8,
+        "charisma": 9,
     }
 
     while True:
@@ -580,21 +578,21 @@ def character_generator():
 
     cls()
     print(f"Customization involves assigning your own attribute values.\n"
-          f"The stats are picked from a set pool of six numbers: 15, 14, 13, 12, 10, 8\n"
+          f"The stats are picked from a set pool of six values: 15, 14, 13, 12, 10, 9\n"
           f"Each number will be matched with one of the six character attributes.\n"
           f"Note that each attribute value has a corresponding modifier, which\n"
           f"acts as a bonus, (or, as a penalty, in the case of a negative modifier),\n"
           f"and will become more important as you progress.\n"
           f"Attributes and modifiers increase as you level up.\n")
-    print(standard_array)
+    print(default_stats)
     pause()
-    score_list = [15, 14, 13, 12, 10, 8]
+    score_list = [15, 14, 13, 12, 10, 9]
 
     while len(score_list):
 
         for key in stats:
             cls()
-            print(standard_array)
+            print(default_stats)
             human_key = key.capitalize()
             print(f"{human_key}:")
             print(explanation_dict[human_key])
@@ -611,7 +609,7 @@ def character_generator():
                     score_list.remove(score)
 
                 else:
-                    score_list = [15, 14, 13, 12, 10, 8]  # re-set list
+                    score_list = [15, 14, 13, 12, 10, 9]  # re-set list
                     print(f"Valid scores are listed above.")
                     sleep(0.5)
                     print(f"Starting over.")
@@ -620,7 +618,7 @@ def character_generator():
 
             except ValueError:
                 print(f"Invalid entry..")
-                score_list = [15, 14, 13, 12, 10, 8]  # re-set list
+                score_list = [15, 14, 13, 12, 10, 9]  # re-set list
                 sleep(0.5)
                 print(f"Starting over.")
                 sleep(0.5)
@@ -1619,8 +1617,8 @@ class Player:
         self.charisma = charisma
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.hit_dice = 10
-        self.acumen = 2
-        self.maximum_hit_points = 65  # 10 + self.constitution_modifier
+        self.acumen = 1
+        self.maximum_hit_points = 10 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
         self.is_paralyzed = False
@@ -2059,15 +2057,18 @@ class Player:
         self.max_quantum_strength_uses = self.quantum_level + self.strength_modifier
         return
 
-    def calculate_proficiency_bonus(self):
+    def calculate_acumen(self):
         # called from level_up()
-        if self.level <= 4:
+        if self.level == 1:
+            self.acumen = 1
+
+        if self.level > 1 < 4:
             self.acumen = 2
 
-        if self.level > 4 < 9:
+        if self.level > 3 < 7:
             self.acumen = 3
 
-        if self.level > 8 < 13:
+        if self.level > 6 < 13:
             self.acumen = 4
 
         if self.level > 12 < 17:
@@ -2272,13 +2273,13 @@ class Player:
 
         before_level = self.level
         before_quantum_level = self.quantum_level
-        before_proficiency_bonus = self.acumen
+        before_acumen = self.acumen
 
         self.experience += exp_award
         self.calculate_current_level()
-        self.calculate_proficiency_bonus()
+        self.calculate_acumen()
 
-        after_proficiency_bonus = self.acumen
+        after_acumen = self.acumen
         after_level = self.level
         level_multiplier = (after_level - before_level)  # in case player goes up more than 1 level
         after_quantum_level = self.quantum_level
@@ -2298,7 +2299,7 @@ class Player:
             print(f"You are now level {self.level}.")
             sleep(2)
             self.dungeon_theme()
-            self.calculate_proficiency_bonus()
+            self.calculate_acumen()
             gain_hit_points1 = (dice_roll(1, self.hit_dice) + self.constitution_modifier) * level_multiplier  # method 1
             gain_hit_points2 = (6 + self.constitution_modifier) * level_multiplier  # hp increase method 2
             hit_point_list = [gain_hit_points1, gain_hit_points2]
@@ -2353,8 +2354,8 @@ class Player:
                 pause()
                 self.hud()
 
-            if after_proficiency_bonus > before_proficiency_bonus:
-                print(f"Your acumen increases from {before_proficiency_bonus} to {after_proficiency_bonus}!")
+            if after_acumen > before_acumen:
+                print(f"Your acumen increases from {before_acumen} to {after_acumen}!")
                 pause()
                 self.hud()
 
@@ -3035,7 +3036,7 @@ class Player:
         else:
             player_initiative = dice_roll(1, 20) + self.dexterity_modifier
         if monster.level > 6:  # beta testing
-            monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier + monster.proficiency_bonus
+            monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier + monster.evil_bonus
         else:
             monster_initiative = dice_roll(1, 20) + monster.dexterity_modifier
         print(f"Your initiative: {player_initiative}\n{monster.name} initiative: {monster_initiative}")
@@ -3047,15 +3048,18 @@ class Player:
 
     def melee(self, monster):
         # called from main loop if player chooses to (F)ight
-        miss_list = [f"Your aim is good but {monster.he_she_it} deftly moves aside.",
-                     f"{monster.he_she_it.capitalize()} nimbly steps aside!",
+        one_roll = ["You awkwardly strike, and lose your footing..",
+                    "Off balance and late, you manage a pitiful attempt and fail.",
+                    "Your aim is poor; you miserably fail to land a blow..",
+                    "Distracted and unfocused, you lose your concentration and miss.."]
+        miss_list = [f"Your {self.wielded_weapon.name} bounces off {monster.his_her_its} {monster.armor_name}!",
+                     f"{monster.he_she_it.capitalize()} nimbly moves aside!",
                      f"{monster.he_she_it.capitalize()} deflects your blow!",
                      f"{monster.he_she_it.capitalize()} dodges your blow!",
-                     f"{monster.his_her_its.capitalize()} armor absorbs the damage!"]
+                     f"{monster.his_her_its.capitalize()} {monster.armor_name} absorbs the damage!"]
         hit_list = ["You land a stabbing blow!", "You successfully land a cutting blow!",
                     f"You manage to wound {monster.he_she_it}!", f"You wound {monster.he_she_it}!",
                     f"You slash {monster.him_her_it}!", f"You manage to stab {monster.him_her_it}!",
-                    f"You successfully cut {monster.him_her_it}!",
                     f"Your {self.wielded_weapon.name} lands and wounds {monster.him_her_it}!"]
         strength_bonus = 1
         if self.potion_of_strength_effect:
@@ -3068,9 +3072,8 @@ class Player:
         print(f"Melee Attack Roll: {roll_d20}")
         sleep(1)
         if roll_d20 == 1:
-            print("You awkwardly strike.")
+            print(random.choice(one_roll))
             sleep(1)
-            print(f"Your aim is poor; you fail to land a blow..")
             pause()
             self.hud()
             return 0
@@ -3231,7 +3234,7 @@ class Player:
                     vulnerability_modifier = self.acumen
                 resistance_modifier = 0
                 if "Turn Undead" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
@@ -3308,7 +3311,7 @@ class Player:
                     vulnerability_modifier = self.acumen
                 resistance_modifier = 0
                 if "Banish" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 if vulnerability_modifier != 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
                 level_advantage = 0
@@ -3390,7 +3393,7 @@ class Player:
                     vulnerability_modifier = self.acumen
                 resistance_modifier = 0
                 if "Fear" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 level_advantage = 0
                 if self.level > monster.level:
                     level_advantage = self.level - monster.level
@@ -3514,7 +3517,7 @@ class Player:
                     vulnerability_modifier = self.acumen
                 resistance_modifier = 0
                 if "Quantum Petrifaction" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 print(f"Before the {monster.name} even realizes what is happening, its flesh ripples into a stone "
                       f"replica of its normal state!")
                 sleep(1)
@@ -3731,7 +3734,7 @@ class Player:
                     vulnerability_modifier = self.acumen
                 resistance_modifier = 0
                 if "Hold Monster" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 # turn_roll = dice_roll(1, 20)
                 # player_total = (turn_roll + self.wisdom_modifier + self.acumen + vulnerability_modifier)
                 # The difficulty class ("DC") of the Protection Roll should be based on the quantum manipulator:
@@ -3817,10 +3820,10 @@ class Player:
                     vulnerability_modifier = self.acumen
                 resistance_modifier = 0
                 if "Web" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 # turn_roll = dice_roll(1, 20)
                 player_total = (self.base_dc + self.wisdom_modifier + self.acumen + vulnerability_modifier)
-                # print(f"Quantum Ability Check: {turn_roll}")
+                # print(f"Quantum Check: {turn_roll}")
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom Modifier: {self.wisdom_modifier}\n"
                       f"Acumen: {self.acumen}")
@@ -3893,10 +3896,10 @@ class Player:
                     vulnerability_modifier = self.acumen
                 resistance_modifier = 0
                 if "Charm" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 # turn_roll = dice_roll(1, 20)
                 # total = (turn_roll + self.charisma_modifier + self.acumen + vulnerability_modifier)
-                # print(f"Quantum Ability Check: {turn_roll}\nCharisma Modifier: {self.charisma_modifier}\n"
+                # print(f"Quantum Check: {turn_roll}\nCharisma Modifier: {self.charisma_modifier}\n"
                 #      f"Acumen: {self.acumen}")
                 if vulnerability_modifier > 0:
                     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
@@ -3989,10 +3992,10 @@ class Player:
                     vulnerability_modifier = self.acumen
                 resistance_modifier = 0
                 if "Sleep" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 # turn_roll = dice_roll(1, 20)
                 # total = (turn_roll + self.intelligence_modifier + self.acumen + vulnerability_modifier)
-                # print(f"Quantum Ability Check: {turn_roll}\nIntelligence Modifier: {self.intelligence_modifier}\n"
+                # print(f"Quantum Check: {turn_roll}\nIntelligence Modifier: {self.intelligence_modifier}\n"
                 #      f"Acumen: {self.acumen}")
                 level_advantage = 0
                 if self.level > monster.level:
@@ -4695,7 +4698,7 @@ class Player:
                 # player_total = (roll_d20 + self.wisdom_modifier + self.acumen)
                 print(f"Clearing your mind, you attempt to harness the weird energies...")
                 sleep(1)
-                print(f"Quantum Ability Check: {roll_d20}")
+                print(f"Quantum Check: {roll_d20}")
                 sleep(1)
                 if roll_d20 == 1 and not vulnerable:
                     print("Your focus has failed..")
@@ -4730,7 +4733,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Quantum Disentangle" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Quantum Disentangle.")
                 sleep(1)
@@ -4743,7 +4746,7 @@ class Player:
                 print(
                     f"Clearing your mind, you attempt to harness the weird energies..")
                 sleep(1)
-                print(f"Quantum Ability Check: {roll_d20}")
+                print(f"Quantum Check: {roll_d20}")
                 sleep(1)
                 if roll_d20 == 1:
                     print("Your focus has failed..")
@@ -4839,7 +4842,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Firewall" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Quantum Firewall.")
                 sleep(1)
@@ -4849,7 +4852,7 @@ class Player:
                 print(f"Clearing your mind, you attempt to harness the weird energies "
                       f"to create the Firewall..")
                 sleep(1)
-                print(f"Quantum Ability Check: {roll_d20}")
+                print(f"Quantum Check: {roll_d20}")
                 sleep(1)
                 if roll_d20 == 1:
                     print(f"A tiny burning cinder, no larger than a grain of sand "
@@ -4943,7 +4946,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Finger of Death" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Finger of Death.")
                 sleep(1)
@@ -4953,7 +4956,7 @@ class Player:
                 print(
                     f"Clearing your mind, you attempt to harness the weird energies...... ")
                 sleep(1)
-                print(f"Quantum Ability Check: {roll_d20}")
+                print(f"Quantum Check: {roll_d20}")
                 sleep(1)
                 if roll_d20 == 1:
                     print("Your focus has failed..")
@@ -5047,7 +5050,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Quantum Mooncrusher" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Quantum Mooncrusher.")
                 sleep(1)
@@ -5061,7 +5064,7 @@ class Player:
                     f"Clearing your mind, you attempt to harness the weird Quantum Energies "
                     f"to rend the Mooncrusher..")
                 sleep(1)
-                print(f"Quantum Ability Check: {roll_d20}")
+                print(f"Quantum Check: {roll_d20}")
                 sleep(1)
                 if roll_d20 == 1:
                     print(f"A tiny burning cinder, no larger than a grain of sand "
@@ -5161,7 +5164,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Skeletal Remains" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Skeletal Remains.")
                 sleep(1)
@@ -5174,7 +5177,7 @@ class Player:
                 print(f"Clearing your mind, you attempt to harness the weird energies "
                       f"to create the Skeletal Remains..")
                 sleep(1)
-                print(f"Quantum Ability Check: {roll_d20}")
+                print(f"Quantum Check: {roll_d20}")
                 sleep(1)
                 if roll_d20 == 1:
                     print(f"A tiny jawbone pops into existence and is hurled upon your enemy..")
@@ -5278,7 +5281,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Negative Energy Plague" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Negative Energy Plague.")
                 sleep(1)
@@ -5291,7 +5294,7 @@ class Player:
                 print(f"Clearing your mind, you attempt to harness the weird energies "
                       f"to create the Negative Energy Plague..")
                 sleep(1)
-                print(f"Quantum Ability Check: {roll_d20}")
+                print(f"Quantum Check: {roll_d20}")
                 sleep(1)
                 if roll_d20 == 1:
                     # print(f"A tiny jawbone pops into existence and is hurled upon your enemy..")
@@ -5394,7 +5397,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Ice Storm" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Ice Storm.")
                 sleep(1)
@@ -5408,7 +5411,7 @@ class Player:
                     f"Clearing your mind, you attempt to harness the weird energies "
                     f"to create the Ice Storm..")
                 sleep(1)
-                print(f"Quantum Ability Check: {roll_d20}")
+                print(f"Quantum Check: {roll_d20}")
                 sleep(1)
                 if roll_d20 == 1:
                     print(f"A single snowflake pops into existence and falls on your enemy..")
@@ -5506,7 +5509,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Fire Storm" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Fire Storm.")
                 sleep(1)
@@ -5520,7 +5523,7 @@ class Player:
                     f"Clearing your mind, you attempt to harness the weird energies "
                     f"to create the Fire Storm..")
                 sleep(1)
-                print(f"Quantum Ability Check: {roll_d20}")
+                print(f"Quantum Check: {roll_d20}")
                 sleep(1)
                 if roll_d20 == 1:
                     print(f"A single glowing ember pops into existence and falls on your enemy..")
@@ -5620,7 +5623,7 @@ class Player:
                     vulnerability_modifier = self.acumen
                 resistance_modifier = 0
                 if "Phantasm" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Phantasm.")
                 sleep(1)
@@ -5630,7 +5633,7 @@ class Player:
                 print(f"Focusing your innate understanding, you attempt to harness the weird energies "
                       f"to create the illusion..")
                 sleep(1)
-                print(f"Quantum Ability Check: {roll_d20}")  # anything but a natural 1 is success
+                print(f"Quantum Check: {roll_d20}")  # anything but a natural 1 is success
                 sleep(1)
                 if roll_d20 == 1:
                     print(f"The Phantasm pops into existence as a cloudy blur, and promptly vanishes..")
@@ -5734,7 +5737,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Lightning" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Lightning.")
                 sleep(1)
@@ -5742,7 +5745,7 @@ class Player:
                 roll_d20 = dice_roll(1, 20)  # attack roll
                 player_total = (self.base_dc + self.wisdom_modifier + self.acumen)
                 print(f"Focusing your innate understanding, you attempt to harness the weird energies..")
-                print(f"Quantum Ability Check: {roll_d20}")
+                print(f"Quantum Check: {roll_d20}")
                 sleep(1)
                 if roll_d20 == 1:
                     print("Your focus has failed..")
@@ -5832,7 +5835,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Immolation" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Immolation.")
                 sleep(1)
@@ -5840,7 +5843,7 @@ class Player:
                 roll_d20 = dice_roll(1, 20)  # attack roll
                 # player_total = (roll_d20 + self.wisdom_modifier + self.acumen)
                 print(f"Focusing your innate understanding, you attempt to harness the weird energies..")
-                print(f"Quantum Ability Check: {roll_d20}")
+                print(f"Quantum Check: {roll_d20}")
                 sleep(1)
                 if roll_d20 == 1:
                     print("Your focus has failed..")
@@ -5944,7 +5947,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Vortex" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Vortex.")
                 sleep(1)
@@ -5952,7 +5955,7 @@ class Player:
                 roll_d20 = dice_roll(1, 20)  # attack roll
                 # player_total = (roll_d20 + self.wisdom_modifier + self.acumen)
                 print(f"Focusing your innate understanding, you attempt to harness the weird energies..")
-                print(f"Quantum Ability Check: {roll_d20}")
+                print(f"Quantum Check: {roll_d20}")
                 sleep(1)
                 if roll_d20 == 1:
                     print("Your focus has failed..")
@@ -6056,7 +6059,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Quantum Missile" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Quantum Missile.")
                 sleep(1)
@@ -6065,7 +6068,7 @@ class Player:
                 player_total = (self.base_dc + self.wisdom_modifier + self.acumen)
                 print(f"Focusing your innate understanding, you attempt to aim the "
                       f"Quantum Missile at the {monster.name}..")
-                print(f"Quantum Ability Check: {roll_d20}")
+                print(f"Quantum Check: {roll_d20}")
                 sleep(1)
                 if roll_d20 == 1:
                     print("Your focus has failed..")
@@ -6158,7 +6161,7 @@ class Player:
                     vulnerable = True
                 resistance_modifier = 0
                 if "Scorch" in monster.resistances or "All" in monster.resistances:
-                    resistance_modifier = monster.proficiency_bonus
+                    resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Scorch.")
                 sleep(1)
@@ -6166,7 +6169,7 @@ class Player:
                 roll_d20 = dice_roll(1, 20)  # attack roll
                 player_total = (self.base_dc + self.wisdom_modifier + self.acumen)
                 print(f"Focusing your innate understanding, you attempt to Scorch the {monster.name}..")
-                print(f"Quantum Ability Check: {roll_d20}")
+                print(f"Quantum Check: {roll_d20}")
                 sleep(1)
                 if roll_d20 == 1:
                     print("Your focus has failed..")
@@ -8160,7 +8163,7 @@ class Player:
                 self.hud()
             quantum_roll = dice_roll(1, 20)
             total = quantum_roll + self.wisdom_modifier
-            print(f"Quantum Ability Check Roll: {quantum_roll}")
+            print(f"Quantum Check Roll: {quantum_roll}")
             sleep(.5)
             print(f"Wisdom Modifier: {self.wisdom_modifier}")
             sleep(.5)
@@ -10483,8 +10486,8 @@ and self.elixirs > 0:
 
 """turn_roll = dice_roll(1, 20)
 player_total = (turn_roll + self.wisdom_modifier + self.acumen + vulnerability_modifier)
-print(f"Quantum Ability Check: {turn_roll} + Wisdom Modifier: {self.wisdom_modifier}\n"
-      f"Proficiency Bonus: {self.acumen}")
+print(f"Quantum Check: {turn_roll} + Wisdom Modifier: {self.wisdom_modifier}\n"
+      f"Acumen Bonus: {self.acumen}")
 if vulnerability_modifier > 0:
     print(f"Monster Vulnerability Modifier: {vulnerability_modifier}")
 sleep(1)

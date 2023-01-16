@@ -82,8 +82,7 @@ Creative Commons Attribution License 3.0 (CC BY 3.0)
 """
 
 from player_module import cls, town_theme, gong, sleep, pause, teletype, \
-    dungeon_command_choices, quit_game, game_start, loading_screen, os_check
-
+    dungeon_command_choices, quit_game, game_start, loading_screen, os_check, check_if_end_game
 
 os_check()
 
@@ -116,10 +115,10 @@ while True:
             navigation_list = ['w', 'a', 's', 'd', 'ne', 'nw', 'se', 'sw', 'l', 'map', 'm', 'i', 'stay']
 
             # DUNGEON NAVIGATION LOOP:
-            player_is_dead = False
+            game_over = False
             while player_1.in_dungeon:
 
-                if player_is_dead:
+                if game_over:
 
                     if player_1.choose_to_play_again():
                         break
@@ -211,19 +210,19 @@ while True:
                 # as well as after turning/banishing, and player victory, etc.,
                 player_1.end_of_turn_calculation()
                 if player_1.check_dead():  # player can die of necrosis/poison/event damage after calculations
-                    player_is_dead = True
+                    game_over = True
                     continue
                 # LASTLY, dungeon_description()
                 player_1.dungeon_description()  # this seems to work best when put LAST
 
                 if player_1.encounter < 11 or player_1.encounter > 20:  # < 11 = normal monster. > 20 = boss
                     player_1.in_proximity_to_monster = True
-                    player_is_dead = False
+                    game_over = False
 
                     # IN PROXIMITY TO MONSTER LOOP *contains battle loop within it*
                     while player_1.in_proximity_to_monster:
 
-                        if player_is_dead:
+                        if game_over:
                             break
 
                         if not player_1.in_proximity_to_monster:
@@ -253,13 +252,13 @@ while True:
 
                                     else:
                                         print("You are dead and paralyzed!")
-                                        player_is_dead = True
+                                        game_over = True
                                         break
 
                             else:  # you died
                                 player_1.random_death_statement()
                                 pause()
-                                player_is_dead = True
+                                game_over = True
                                 break
 
                             # at this point, monster still has initiative
@@ -319,7 +318,7 @@ while True:
                                         player_1.npc_calculation()
 
                                         if player_1.check_dead():  # you can die from poison or necrosis,
-                                            player_is_dead = True  # right after victory, following calculations
+                                            game_over = True  # right after victory, following calculations
                                             break
 
                                         if player_1.encounter > 20:  # if victory over a boss by quantum 'turning':
@@ -337,16 +336,19 @@ while True:
                                     # then monster will die instantly and player gets loot
                                     monster.reduce_health(damage_to_monster)
                                     if monster.check_dead():
+
                                         player_1.hud()
                                         player_1.victory_statements(monster)
+
                                         # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
                                         player_1.end_of_turn_calculation()
                                         # allies heal and no longer retreat:
                                         player_1.npc_calculation()
                                         pause()
 
-                                        if player_1.check_dead():  # you can die from poison or necrosis,
-                                            player_is_dead = True  # right after victory, following calculations
+                                        if player_1.check_dead():
+                                            # you can die from poison or necrosis,
+                                            game_over = True  # right after victory, following calculations
                                             player_1.in_proximity_to_monster = False
                                             break
 
@@ -354,6 +356,13 @@ while True:
                                         player_1.in_proximity_to_monster = False
                                         player_1.loot()
                                         player_1.victory_over_boss_logic()
+
+                                        if check_if_end_game(monster):  # beta
+                                            player_1.end_game_routine()  # add monster parameter to routine and offload
+                                            game_over = True
+                                            player_1.in_proximity_to_monster = False
+                                            break
+
                                         player_1.dungeon_description()
                                         break
 
@@ -365,7 +374,7 @@ while True:
                                     pause()
 
                                     if player_1.check_dead():  # player can die of poison/necrosis
-                                        player_is_dead = True
+                                        game_over = True
                                         player_1.in_proximity_to_monster = False
                                         break
 
@@ -393,13 +402,13 @@ while True:
 
                                         else:
                                             print("You are dead and paralyzed!")
-                                            player_is_dead = True
+                                            game_over = True
                                             break
 
                                 else:
                                     print(f"You died!")
                                     sleep(3)
-                                    player_is_dead = True
+                                    game_over = True
                                     break
 
                                 # if player has npc allies, monster attacks them
@@ -414,6 +423,7 @@ while True:
                                 # in the future, check_dead function can encompass the following if--else statements.
                                 # just pass encounter parameter
                                 if monster.check_dead():
+
                                     player_1.hud()
                                     player_1.victory_statements(monster)
                                     pause()
@@ -423,7 +433,7 @@ while True:
                                     player_1.npc_calculation()
 
                                     if player_1.check_dead():
-                                        player_is_dead = True
+                                        game_over = True
                                         player_1.in_proximity_to_monster = False
                                         break
 
@@ -431,6 +441,13 @@ while True:
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot()
                                     player_1.victory_over_boss_logic()
+
+                                    if check_if_end_game(monster):  # beta
+                                        player_1.end_game_routine()  # add monster parameter to routine and offload
+                                        game_over = True
+                                        player_1.in_proximity_to_monster = False
+                                        break
+
                                     player_1.dungeon_description()
                                     break
 
@@ -443,7 +460,7 @@ while True:
                                     pause()
 
                                     if player_1.check_dead():
-                                        player_is_dead = True
+                                        game_over = True
                                         player_1.in_proximity_to_monster = False
                                         break
 
@@ -472,13 +489,13 @@ while True:
 
                                             else:
                                                 print("You are dead and paralyzed!")
-                                                player_is_dead = True
+                                                game_over = True
                                                 break
 
                                     else:  # you died
                                         player_1.random_death_statement()
                                         sleep(3)
-                                        player_is_dead = True
+                                        game_over = True
                                         break
 
                                     player_1.hud()

@@ -278,6 +278,13 @@ def loading_screen():
     dot_dot_dot(20)
 
 
+def check_if_end_game(monster):
+    if monster.proper_name == "Queen Jannbrielle the Wicked":
+        return True
+    else:
+        return False
+
+
 def quit_game():
     cls()
     teletype("Quit game..")
@@ -1726,19 +1733,38 @@ class Player:
         else:
             return False
 
-    def end_game_auto_save(self):  # future placeholder, for after player defeats final boss
+# def check_if_end_game(self, monster):
+#
+#       if monster.proper_name == "Queen Jannbrielle the Wicked":
+#            return True
+#       else:
+#            return False
+
+    def end_game_routine(self):  # future placeholder, for after player defeats final boss
+
+        if self.poisoned or self.necrotic:
+            self.poisoned = False
+            self.poisoned_turns = 0
+            self.necrotic = False
+            self.necrotic_turns = 0
+
+        if self.hit_points < self.maximum_hit_points:
+            self.hit_points = self.maximum_hit_points
+
         self.dungeon_key = 1  # put player back at level 1.
         self.dungeon = dungeon_dict[self.dungeon_key]
         (self.x, self.y) = self.dungeon.staircase
         self.coordinates = (self.x, self.y)
         self.previous_x = self.x
         self.previous_y = self.y
-        # self.position = 0
+        self.position = 0  # self.dungeon.grid[self.y][self.x]
+
         save_a_character = self.name + ".sav"
         p = Path(__file__).with_name(save_a_character)
         same_line_print(f"Saving {self.name}")
         random_floppy_rw_sound()
         dot_dot_dot(15)
+
         with p.open('wb') as character_filename:
             pickle.dump(self, character_filename)
             same_line_print(f"{self.name} saved.\n")
@@ -2382,16 +2408,30 @@ class Player:
 
     def choose_to_play_again(self):
         cls()
-        print_txt_file('grim_reaper.txt')
         gong()
-        teletype(f"\n                 "
-                 f"Another adventurer has fallen prey to the Sauengard Dungeon!")
-        sleep(4.5)
-        random_floppy_rw_sound()
-        sleep(1)
-        self.in_proximity_to_monster = False
-        self.in_dungeon = False
-        self.in_town = False
+        if self.hit_points < 1:
+            print_txt_file('grim_reaper.txt')
+            teletype(f"\n                 "
+                     f"Another adventurer has fallen prey to the Sauengard Dungeon!")
+            sleep(4.5)
+            random_floppy_rw_sound()
+            sleep(1)
+            self.in_proximity_to_monster = False
+            self.in_dungeon = False
+            self.in_town = False
+        else:
+            mountain_king_theme()
+            print(f"Congratulations!\nYou have defeated Wicked Queen Jannbrielle and restored peace to the realm.\n")
+            pause()
+            cls()
+            teletype_txt_file('credits.txt')
+            pause()
+            cls()
+            teletype_txt_file('credits2.txt')
+            pause()
+            cls()
+            teletype_txt_file('credits3.txt')
+            pause()
         while True:
             cls()
             try_again = input("Do you wish to play again (y/n)? ").lower()
@@ -2581,7 +2621,7 @@ class Player:
         # called from meta_monster_generator() if encounter == 100
         wicked_queen = WickedQueenJannbrielle()  # monster_dict([4][0])()
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
-        print(f"The Queen stands, approaches the party and readies herself for battle!")
+        print(f"The Queen stands, approaches the party and flashes her forked tongue before smiling in evil glee!")
         return wicked_queen
 
     def legendary_monster_generator(self):
@@ -3058,8 +3098,8 @@ class Player:
                      f"{monster.he_she_it.capitalize()} dodges your blow!",
                      f"{monster.his_her_its.capitalize()} {monster.armor_name} absorbs the damage!"]
         hit_list = ["You land a stabbing blow!", "You successfully land a cutting blow!",
-                    f"You manage to wound {monster.he_she_it}!", f"You wound {monster.he_she_it}!",
-                    f"You slash {monster.him_her_it}!", f"You manage to stab {monster.him_her_it}!",
+                    f"You manage to wound {monster.him_her_it}!", f"You wound {monster.him_her_it}!",
+                    f"You slash {monster.him_her_it}!", f"You land a blow and wound {monster.him_her_it}!",
                     f"Your {self.wielded_weapon.name} lands and wounds {monster.him_her_it}!"]
         strength_bonus = 1
         if self.potion_of_strength_effect:
@@ -4096,11 +4136,11 @@ class Player:
         pause()
         return 0
 
-    def quantum_heal_wounds(self, monster):
+    def quantum_medicine(self, monster):
         if monster is None:
-            print(f"Quantum Heal")
+            print(f"Quantum Medicine")
         else:
-            print(f"Quantum Heal (BATTLE)")
+            print(f"Quantum Medicine (BATTLE)")
         sleep(1)
         self.hud()
         # perhaps use this math for higher healing effect:
@@ -4178,7 +4218,7 @@ class Player:
               f"dream-like and utterly vulnerable state. Initial success based on Player Intelligence vs Enemy Wisdom\n"
               f"Final success depends on Enemy AC.")
         print()
-        print(f"Heal Wounds: Quantum Actions at a subatomic level repair physical wounds, ignoring necrosis and "
+        print(f"Quantum Medicine: Quantum Actions at a subatomic level repair physical wounds, ignoring necrosis and "
               f"poison.\nEffectiveness based on Quantum Knowledge Level.")
         print()
         print(f"Protection from Evil: Through Quantum Probabilities, reduce the chances of successful enemy Quantum\n"
@@ -4298,7 +4338,7 @@ class Player:
               f"strength\n"
               f"protection roll. Upon failed save, enemy remains trapped and player gets additional free crit.\n"
               f"Enemy and all items are lost to the crushing gravity. Player gets exp reward, but no gold or loot\n"
-              f"unless enemy item is protected by quantum weirdness.")
+              f"unless enemy item is protected by Quantum Weirdness.")
         print()
         pause()
         return None
@@ -4368,7 +4408,7 @@ class Player:
             quantum_book = {1: {0: self.quantum_help1,
                                 1: self.quantum_missile,
                                 2: self.quantum_sleep,
-                                3: self.quantum_heal_wounds,
+                                3: self.quantum_medicine,
                                 4: self.protection_from_evil,
                                 5: self.turn_undead},
                             2: {0: self.quantum_help2,
@@ -4908,7 +4948,7 @@ class Player:
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
-                    print("Your attempt to harness the Quantum weirdness lacks focus..")
+                    print("Your attempt to harness the Quantum Weirdness lacks focus..")
                     sleep(1)
                     print(f"The Firewall takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
@@ -5009,7 +5049,7 @@ class Player:
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (4 * number_of_dice)) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
-                    print("Your attempt to harness the Quantum weirdness lacks focus..")
+                    print("Your attempt to harness the Quantum Weirdness lacks focus..")
                     sleep(1)
                     print(f"Your hands throb with red-hot Quantum Energy..")
                     sleep(1)
@@ -5126,7 +5166,7 @@ class Player:
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
                     # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
-                    print("Your attempt to harness the Quantum weirdness lacks focus..")
+                    print("Your attempt to harness the Quantum Weirdness lacks focus..")
                     sleep(1)
                     print(f"The Mooncrusher takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
@@ -5243,7 +5283,7 @@ class Player:
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
                     # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
-                    print("Your attempt to harness the Quantum weirdness lacks focus..")
+                    print("Your attempt to harness the Quantum Weirdness lacks focus..")
                     sleep(1)
                     print(f"The skeletal horde takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
@@ -5358,7 +5398,7 @@ class Player:
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
                     # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
-                    print("Your attempt to harness the Quantum weirdness lacks focus..")
+                    print("Your attempt to harness the Quantum Weirdness lacks focus..")
                     sleep(1)
                     print(f"The plague takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
@@ -5470,7 +5510,7 @@ class Player:
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
                     # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
-                    print("Your attempt to harness the Quantum weirdness lacks focus..")
+                    print("Your attempt to harness the Quantum Weirdness lacks focus..")
                     sleep(1)
                     print(f"The storm does not inflict damage to its fullest potential..")
                     sleep(1)
@@ -5583,7 +5623,7 @@ class Player:
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
                     # damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
-                    print("Your attempt to harness the Quantum weirdness lacks focus..")
+                    print("Your attempt to harness the Quantum Weirdness lacks focus..")
                     sleep(1)
                     print(f"The storm does not inflict damage to its fullest potential..")
                     sleep(1)
@@ -5697,7 +5737,7 @@ class Player:
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 8) + (1 * number_of_dice)) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
-                    print("Your attempt to harness the Quantum weirdness lacks focus..")
+                    print("Your attempt to harness the Quantum Weirdness lacks focus..")
                     sleep(1)
                     print(f"The Phantasmal illusion takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
@@ -5789,7 +5829,7 @@ class Player:
                         self.hud()
                         return total_damage_to_opponent
                     else:
-                        print(f"Through its own weirdness, the {monster.name} manages to "
+                        print(f"Through its own Weirdness, the {monster.name} manages to "
                               f"avoid damage from the weird energy!")  # 0 dmg
                         sleep(1)
                         return 0
@@ -5798,7 +5838,7 @@ class Player:
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 6) + (1 * number_of_dice)) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
-                    print("Your attempt to harness the Quantum weirdness lacks focus..")
+                    print("Your attempt to harness the Quantum Weirdness lacks focus..")
                     sleep(1)
                     print(f"The lightning takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
@@ -5901,7 +5941,7 @@ class Player:
                         self.hud()
                         return total_damage_to_opponent
                     else:
-                        print(f"Through its own weirdness, the {monster.name} manages to "
+                        print(f"Through its own Weirdness, the {monster.name} manages to "
                               f"avoid damage from the weird energy!")  # 0 dmg
                         sleep(1)
                         return 0
@@ -5910,7 +5950,7 @@ class Player:
                     damage_to_opponent = math.ceil(dice_roll(number_of_dice, 6) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
-                    print("Your attempt to harness the Quantum weirdness lacks focus..")
+                    print("Your attempt to harness the Quantum Weirdness lacks focus..")
                     sleep(1)
                     print(f"The trail of fire takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
@@ -6013,7 +6053,7 @@ class Player:
                         self.hud()
                         return total_damage_to_opponent
                     else:
-                        print(f"Through its own weirdness, the {monster.name} manages to "
+                        print(f"Through its own Weirdness, the {monster.name} manages to "
                               f"avoid damage from the weird energy!")  # 0 dmg
                         sleep(1)
                         return 0
@@ -6022,7 +6062,7 @@ class Player:
                     damage_to_opponent = math.ceil(dice_roll(number_of_dice, 6) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
-                    print("Your attempt to harness the Quantum weirdness lacks focus..")
+                    print("Your attempt to harness the Quantum Weirdness lacks focus..")
                     sleep(1)
                     print(f"The twister takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
@@ -6122,7 +6162,7 @@ class Player:
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 4) + (1 * number_of_dice)) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
-                    print("Your attempt to harness the Quantum weirdness lacks focus..")
+                    print("Your attempt to harness the Quantum Weirdness lacks focus..")
                     sleep(1)
                     print(f"The glowing projectiles take form but do not inflict damage to their fullest potential..")
                     sleep(1)
@@ -6223,7 +6263,7 @@ class Player:
                     damage_to_opponent = math.ceil((dice_roll(number_of_dice, 6) + (1 * number_of_dice)) / 2)
                     melee_bonus = dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
-                    print("Your attempt to harness the Quantum weirdness lacks focus..")
+                    print("Your attempt to harness the Quantum Weirdness lacks focus..")
                     sleep(1)
                     print(f"The scorching rays take form but do not inflict damage to their fullest potential..")
                     sleep(1)
@@ -7649,13 +7689,13 @@ class Player:
             if found_item.name == self.wielded_weapon.name:
                 if self.wielded_weapon.damage_bonus < (self.level * 2):
                     self.wielded_weapon.damage_bonus += 1  # = found_item.damage_bonus + 1
-                    print(f"Quantum weirdness fills the air...\nYour {self.wielded_weapon.name} "
+                    print(f"Quantum Weirdness fills the air...\nYour {self.wielded_weapon.name} "
                           f"damage bonus is enhanced to + {self.wielded_weapon.damage_bonus}!")
                     pause()
                     return
                 elif self.wielded_weapon.to_hit_bonus < 3:
                     self.wielded_weapon.to_hit_bonus += 1  # = found_item.damage_bonus + 1
-                    print(f"Quantum weirdness fills the air...\nYour {self.wielded_weapon.name} "
+                    print(f"Quantum Weirdness fills the air...\nYour {self.wielded_weapon.name} "
                           f"to-hit bonus is enhanced to + {self.wielded_weapon.to_hit_bonus}!")
                     pause()
                     return
@@ -7829,7 +7869,7 @@ class Player:
                 # found_item.stealth += 1
                 self.cloak.stealth += 1
                 self.calculate_stealth()
-                print(f"Quantum weirdness fills the air...\nYour {self.cloak.name} is enhanced to stealth +"
+                print(f"Quantum Weirdness fills the air...\nYour {self.cloak.name} is enhanced to stealth +"
                       f" {self.cloak.stealth}!")
 
                 pause()
@@ -7874,7 +7914,7 @@ class Player:
         if self.ring_of_reg.name == "No Ring of Regeneration":
             # self.ring_of_regeneration and default class object has 0 regenerate
             self.ring_of_reg = found_item
-            print(f"Quantum weirdness fills the air...")
+            print(f"Quantum Weirdness fills the air...")
             print(f"A Ring of Regeneration + {self.ring_of_reg.regenerate} appears on your finger!")
             sleep(1)
             print(f"It becomes permanently affixed..fused to your flesh and bone!")
@@ -7885,7 +7925,7 @@ class Player:
         elif self.ring_of_reg.regenerate < math.ceil(self.maximum_hit_points * .15):
             # old_ring = self.ring_of_reg
             self.ring_of_reg.regenerate = (self.ring_of_reg.regenerate + 1)
-            print(f"Quantum weirdness fills the air...")
+            print(f"Quantum Weirdness fills the air...")
             print(f"Your {self.ring_of_reg.name} is enhanced to + {self.ring_of_reg.regenerate} !")
             pause()
             return
@@ -7900,7 +7940,7 @@ class Player:
         if self.ring_of_prot.name == "No Ring of Protection":  # default ring is transparent placeholder
             self.ring_of_prot = found_item
             # (self.pack[found_item.item_type]).append(found_item) you can't sell rings. new rule
-            print(f"Quantum weirdness fills the air...")
+            print(f"Quantum Weirdness fills the air...")
             print(f"A Ring of Protection + {self.ring_of_prot.protect} appears on your finger!")
             sleep(1)
             print(f"Tunneling through realities, it permanently fuses to flesh and bone!")
@@ -7909,7 +7949,7 @@ class Player:
 
         elif self.ring_of_prot.protect < math.ceil(self.wisdom * .20):
             self.ring_of_prot.protect += 1
-            print(f"Quantum weirdness fills the air...")
+            print(f"Quantum Weirdness fills the air...")
             print(f"Your {self.ring_of_prot.name} is enhanced to + {self.ring_of_prot.protect} !")
             pause()
             return
@@ -8370,17 +8410,11 @@ class Player:
         if wicked_queen_discovery not in self.discovered_interactives:
             self.discovered_interactives.append(wicked_queen_discovery)
             cls()
+            sad_cello_theme()
             print_txt_file('queen_splash.txt')
             pause()
             cls()
-            print(f"She smiles and flashes a forked tongue between gleaming fangs. Her impossibly smooth, milky-white"
-                  f"\nskin shimmers beneath the torchlight. On her head sits a crown of many skulls. Her raven-black\n"
-                  f"hair shines gloriously. Every muscle, vein, and bone of her lovely flesh draw you to her."
-                  f"\nYou cannot help but stare at her regal face, with her strong jawline, black, pouting lips"
-                  f" and eyes of\n"
-                  f"deep obsidian. \'How could such beauty exist?', you find yourself marveling aloud!\n"
-                  f"The undead queen hears you and looks straight at you with pure, wicked pride, her head held high."
-                  f"\n")
+            teletype_txt_file('queen_confrontation.txt')
             pause()
             return "Wicked Queen"
         else:

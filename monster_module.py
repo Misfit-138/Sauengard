@@ -435,10 +435,6 @@ class Monster:
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(self.poison_phrase)
         print(f"{self.name} Attack roll: {roll_d20}")
-        print(f"{self.name} Intelligence Modifier: {math.floor((self.intelligence - 10) / 2)}")
-        monster_poison_total = roll_d20 + math.floor((self.intelligence - 10) / 2)
-        print(f"Total: {monster_poison_total}")
-        sleep(1)
 
         if roll_d20 == 1:
             print(f"You easily dodge {self.his_her_its} poison attack!")
@@ -447,6 +443,10 @@ class Monster:
             player_1.hud()
             return False
         else:
+            print(f"{self.name} Intelligence Modifier: {math.floor((self.intelligence - 10) / 2)}")
+            monster_poison_total = roll_d20 + math.floor((self.intelligence - 10) / 2)
+            print(f"Total: {monster_poison_total}")
+            sleep(1)
             print(f"Your Protection Roll: {player_saving_throw}\n"
                   f"Your Constitution Modifier: {player_1.constitution_modifier}\n")
             print(f"Your Total: {difficulty_class}")
@@ -479,9 +479,6 @@ class Monster:
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(f"{self.necrotic_phrase}")
         print(f"{self.name} Attack roll: {roll_d20}")
-        print(f"{self.name} Wisdom Modifier: {self.wisdom_modifier}")
-        print(f"Total: {roll_d20 + self.wisdom_modifier}")
-        sleep(1)
 
         if roll_d20 == 1:
             print(f"You dodge {self.his_her_its} deadly necrotic attack!")
@@ -491,6 +488,10 @@ class Monster:
             return False
 
         else:
+
+            print(f"{self.name} Wisdom Modifier: {self.wisdom_modifier}")
+            print(f"Total: {roll_d20 + self.wisdom_modifier}")
+            sleep(1)
             player_saving_throw = (dice_roll(1, 20))
             difficulty_class = (player_saving_throw + player_1.constitution_modifier)
             print(f"Your Protection Roll: {player_saving_throw}\n"
@@ -781,7 +782,7 @@ class Gnoll(Monster):
         self.attack_4_phrase = "It grabs a jagged dagger from its belt and strikes.."
         self.attack_5 = 3
         self.attack_5_phrase = "It strikes forward with its bloodied spear!"
-        self.introduction = f"You have encountered a Gnoll; A sawed-off, unnatural humanoid dungeon lurker, driven\n" \
+        self.introduction = f"You have encountered a Gnoll; A sawed-off, unnatural humanoid dungeon lurker, driven " \
                             f"by basic instincts of necessity.\nLike its Kobold cousins, it skulks about, in search " \
                             f"of food and supplies which can be procured by any means.\nIt stands before you, in an " \
                             f"ill-fitting shirt of chain mail."
@@ -3341,7 +3342,7 @@ class MorbidDefender(Monster):
                                "sword strike!"
         self.introduction = f"You have encountered a Morbid Defender; An undead soldier who swore, ages ago, " \
                             f"an oath to preserve and protect\nthe peace and prosperity of Sauengard. Now infused " \
-                            f"with Quantum Energy by some evil Manipulator, the Defender roams the dungeons,\n" \
+                            f"with Quantum Energy by an Evil Quantum Mentor,\nthe Defender roams the dungeons, " \
                             f"forever bound to a pointless mission: Attack the living."
         self.paralyze_phrase = "It slams its shield on the ground at your feet, sending shock-waves through you! You " \
                                "feel your body weakening..."
@@ -3406,7 +3407,7 @@ class BoltThrower(Monster):
                             f"impressive physical\nstrength as well as expansive Quantum abilities. " \
                             f"With thick, armored skin and standing some 8 feet tall,\na flattened cranium, " \
                             f"immense, muscled appendages, and armed with a deadly arsenal of weapons including\n" \
-                            f"a whip endowed with electrified Quantum weirdness, he fearlessly approaches you."
+                            f"a whip endowed with electrified Quantum Weirdness, he fearlessly approaches you."
         self.paralyze_phrase = "He encircles you with his whip!"
         self.paralyze_free_attack_phrase = "In your helplessness, he hammers you mercilessly!"
 
@@ -3701,7 +3702,7 @@ class Assassin(Monster):
                             f"simply fall into it. His movements are fluid,\nsmooth, and deadly quiet. His " \
                             f"silhouette " \
                             f"is so difficult to track, you conclude he must be manipulating reflections\nwith " \
-                            f"Quantum weirdness!"
+                            f"Quantum Weirdness!"
         self.poison_phrase = "Suddenly appearing behind you, he stabs at you with a poison blade!!"
 
 
@@ -3995,7 +3996,7 @@ class Wraith(Monster):
         self.attack_5_phrase = "It raises its greatsword overhead, strikes with great strength, and continues " \
                                "hacking with merciless malice!"
         self.introduction = f"A black mist coalesces in front of you; You have encountered a Wraith. Floating " \
-                            f"before you in a field of Quantum weirdness, \nand hidden from your mind's full " \
+                            f"before you in a field of Quantum Weirdness, \nand hidden from your mind's full " \
                             f"comprehension, your eyes strain to see its true form; A crowned, skull-ish head, " \
                             f"gaping bony arms,\n" \
                             f"grand, kingly armor, and a long, deadly sword gripped within fleshless fingers. You " \
@@ -4239,7 +4240,7 @@ class ChaosMonster(Monster):
                                "angle!!"
         self.attack_4 = 11
         self.attack_4_phrase = "Chains, spikes and living steel burst forth from 12 fingered hands and shoot toward " \
-                               "you with serpentine weirdness!"
+                               "you with serpentine Weirdness!"
         self.attack_5 = 15
         self.attack_5_phrase = "Stretching into a twisted and elongated trail of negative energy, it encircles you " \
                                "with searing heat and light\nthat crush and burn you from within!!"
@@ -4249,7 +4250,7 @@ class ChaosMonster(Monster):
                             f"Its arms grow long, and then shorten, a tail appears and becomes nonexistent.\n" \
                             f"An impossibly large and completely disproportional, gaping mouth of jagged, chromatic " \
                             f"teeth chomp menacingly, and then morph\ninto nothingness. It approaches in haphazard, " \
-                            f"unpredictable zig-zags and leaps. The air is alight\nwith Quantum weirdness.."
+                            f"unpredictable zig-zags and leaps. The air is alight\nwith Quantum Weirdness.."
         self.paralyze_phrase = f"Dark, twisted energy wraps around you in a rapid, boiling froth!!"
         self.paralyze_free_attack_phrase = "Terrible tentacles and trails of Quantum weaponry penetrate your flesh " \
                                            "as you stare, helplessly mesmerized and moribund!"
@@ -4441,7 +4442,7 @@ class CorpseGrinder(Monster):
                             f"With a thick, naturally camouflaged exoskeleton and standing some 8 feet tall,\n" \
                             f"an other-worldly helm, and a deadly arsenal of weapons including a sadistic, spiked " \
                             f"chain endowed\n" \
-                            f"with electrified Quantum weirdness, it rushes toward you in an unpredictable, " \
+                            f"with electrified Quantum Weirdness, it rushes toward you in an unpredictable, " \
                             f"serpentine pattern."
         self.paralyze_phrase = "It encircles you with its Quantum-electrified chain!"
         self.paralyze_free_attack_phrase = "In your helplessness, it slams, gores and cuts you with reckless " \
@@ -4631,7 +4632,7 @@ class MorbidAssassin(Monster):
         self.attack_5 = 14
         self.attack_5_phrase = "With a whispering swing, his blade finds your soft flesh and cuts deep.."
         self.introduction = f"You have encountered a Morbid Assassin; An amoral killer for hire in life, and now " \
-                            f"undead through the weirdness\nof a Quantum Mentor's evil will. The light simply " \
+                            f"undead through the Weirdness\nof a Quantum Mentor's evil will. The light simply " \
                             f"falls into him. His movements resemble nothing more than black, humanoid smoke.\n" \
                             f"He approaches you in pure silence and stands still long enough for you to see his true " \
                             f"form- dark garb,\ncriss-crossed leather belts full of knives and vials, black boots, " \
@@ -4697,7 +4698,7 @@ class TorinManipulator(Monster):
         self.quantum_attack_1_phrase = "With a flick of his wrist, a cone of fire is unleashed and rushes at you " \
                                        "with roaring, searing heat!"
         self.quantum_attack_2 = 15
-        self.quantum_attack_2_phrase = "A storm of ice and hail encircles you within a frigid wind of weirdness!"
+        self.quantum_attack_2_phrase = "A storm of ice and hail encircles you within a frigid wind of Weirdness!"
         self.quantum_attack_3 = 18
         self.quantum_attack_3_phrase = "Weird, arcing lightning courses through his body, illuminating his skeleton " \
                                        "for a brief moment, before shooting toward you!"
@@ -5138,7 +5139,7 @@ class SheStalker(Monster):
         self.introduction = f"You have encountered a She-Stalker; A statuesque female humanoid brought to being " \
                             f"by an evil Quantum Mentor\nfor dark, alluring schemes and purposes. High black " \
                             f"boots, large, leathery wings and a mouthful\nof fangs adorn her natural beauty with " \
-                            f"unnatural weirdness. She approaches with a vivacious and fell smile.."
+                            f"unnatural Weirdness. She approaches with a vivacious and fell smile.."
         self.paralyze_phrase = f"Her lovely, impish beauty begins to transfix you.."
         self.paralyze_free_attack_phrase = "Taking full advantage of your frozen flesh, she strikes at you " \
                                            "with swiftness and skill!"
@@ -5203,7 +5204,7 @@ class AbsconditusManipulator(Monster):
         self.quantum_attack_1_phrase = "With a flick of his wrist, a cone of fire is unleashed and rushes at you " \
                                        "with roaring, searing heat!"
         self.quantum_attack_2 = 16
-        self.quantum_attack_2_phrase = "A storm of ice and hail encircles you within a frigid wind of weirdness!"
+        self.quantum_attack_2_phrase = "A storm of ice and hail encircles you within a frigid wind of Weirdness!"
         self.quantum_attack_3 = 19
         self.quantum_attack_3_phrase = "Weird, arcing lightning courses through his body, illuminating his skeleton " \
                                        "for a brief moment, before shooting toward you!"
@@ -5283,7 +5284,7 @@ class AltiorManipulator(Monster):
         self.quantum_attack_1_phrase = "With a flick of his wrist, a cone of fire is unleashed and rushes at you " \
                                        "with roaring, searing heat!"
         self.quantum_attack_2 = 16
-        self.quantum_attack_2_phrase = "A storm of ice and hail encircles you within a frigid wind of weirdness!"
+        self.quantum_attack_2_phrase = "A storm of ice and hail encircles you within a frigid wind of Weirdness!"
         self.quantum_attack_3 = 19
         self.quantum_attack_3_phrase = "Weird, arcing lightning courses through his body, illuminating his skeleton " \
                                        "for a brief moment, before shooting toward you!"
@@ -5438,14 +5439,15 @@ class WickedQueenJannbrielle(Monster):
         self.quantum_attack_5 = 45
         self.quantum_attack_5_phrase = "The queen releases Quantum Forces which wildly entangle\n" \
                                        "you in a maelstrom of malice which crushes with impossible gravity!"
-        self.introduction = f"\'I am your doom. Your life beckons to be taken!\', says the undead queen, with a hiss!"
+        self.introduction = f"\'I am your doom. Your life-energy beckons to be taken!\', " \
+                            f"says the undead queen, with a hiss!"
         self.poison_phrase = f"The queen attacks with her venomous fangs!"
         self.paralyze_phrase = f"The irresistible beauty of the undead queen begins to weaken you.."
         self.paralyze_free_attack_phrase = "Up close and personal, the wicked queen looks deeply into your eyes " \
                                            "as she slowly and sadistically gores you with her terrible claws!"
         self.necrotic_phrase = "She places her forefingers to her head briefly, and then, with closed eyes, " \
-                               "exhales a cool,\nwhite mist that begins to encircle you\n..you feel a shivering cold " \
-                               "overcoming you.."
+                               "exhales a cool,\nwhite mist that begins to encircle you." \
+                               "\n..you feel a shivering cold overcoming you.."
 
 
 # monster dictionaries. keys correspond to difficulty/challenge level

@@ -345,10 +345,10 @@ class Monster:
         if player_1.ring_of_prot.protect > 0:
             print(f"Your Ring of Protection Modifier: {player_1.ring_of_prot.protect}")
 
-        if player_1.temp_protection_effect:
-            print(f"+ Quantum Protection effect: {player_1.temp_protection_effect} ")
+        if player_1.protection_effect:
+            print(f"+ Quantum Protection effect: {player_1.protection_effect_value} ")
         human_total = human_player_roll_d20 + player_1.wisdom_modifier + player_1.ring_of_prot.protect \
-            + player_1.temp_protection_effect
+            + player_1.protection_effect_value
         print(f"Your Total: {human_total}")
         monster_total = roll_d20 + self.wisdom_modifier + self.evil_bonus  # test out evil bonus
 
@@ -385,7 +385,7 @@ class Monster:
             sleep(1.25)
             paralyze_chance = dice_roll(1, 20)
             human_player_roll_d20 = dice_roll(1, 20)
-            player_total = (human_player_roll_d20 + player_1.ring_of_prot.protect + player_1.temp_protection_effect)
+            player_total = (human_player_roll_d20 + player_1.ring_of_prot.protect + player_1.protection_effect_value)
             print(f"Paralyze roll: {paralyze_chance} + monster wisdom modifier: {self.wisdom_modifier}")  # testing
             paralyze_total = paralyze_chance + self.wisdom_modifier
             print(f"Monster Total: {paralyze_total}")
@@ -395,7 +395,7 @@ class Monster:
                 print(f"Your Ring of Protection Modifier: {player_1.ring_of_prot.protect}")
 
             if player_1.protection_effect:
-                print(f"Protection from Evil Effect: {player_1.temp_protection_effect}")
+                print(f"Protection from Evil Effect: {player_1.protection_effect_value}")
             print(f"Your Total: {player_total}")
 
             if (paralyze_chance + self.wisdom_modifier) >= player_total:
@@ -406,7 +406,7 @@ class Monster:
                 turns = 0
                 for i in range(self.paralyze_turns):  # this seems too brutal if paralyze_turns is anything but 1!!!
                     paralyze_damage = (dice_roll((self.number_of_hd * 2), self.hit_dice) -
-                                       (player_1.ring_of_prot.protect + player_1.temp_protection_effect))
+                                       (player_1.ring_of_prot.protect + player_1.protection_effect_value))
                     turns += 1
                     if paralyze_damage < 1:
                         paralyze_damage = self.level
@@ -5407,7 +5407,7 @@ class WickedQueenJannbrielle(Monster):
         self.quantum_energy = True
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.hit_points = 1  # 1750  # dice_roll(35, 20) + 30
+        self.hit_points = 600  # 1750  # dice_roll(35, 20) + 30
         self.armor_class = 1  # 22
         self.multi_attack = True
         self.lesser_multi_attack = False

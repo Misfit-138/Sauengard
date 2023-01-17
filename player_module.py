@@ -278,7 +278,7 @@ def loading_screen():
     dot_dot_dot(20)
 
 
-def check_if_end_game(monster):
+def end_game_check(monster):
     if monster.proper_name == "Queen Jannbrielle the Wicked":
         return True
     else:
@@ -1598,9 +1598,9 @@ class Player:
 
     def __init__(self, name, strength, dexterity, constitution, intelligence, wisdom, charisma):
         self.name = name
-        self.level = 1
-        self.quantum_level = 1
-        self.maximum_quantum_units = 2
+        self.level = 7
+        self.quantum_level = 3
+        self.maximum_quantum_units = 6
         self.quantum_units = self.maximum_quantum_units
         self.encounter = 0
         self.experience = 23000
@@ -1758,7 +1758,7 @@ class Player:
         self.previous_x = self.x
         self.previous_y = self.y
         self.position = 0  # self.dungeon.grid[self.y][self.x]
-
+        self.hud()
         save_a_character = self.name + ".sav"
         p = Path(__file__).with_name(save_a_character)
         same_line_print(f"Saving {self.name}")
@@ -2407,6 +2407,7 @@ class Player:
     # BATTLE AND PROXIMITY TO MONSTER OCCURRENCES
 
     def choose_to_play_again(self):
+        # called from main loop if game_over variable is True
         cls()
         gong()
         if self.hit_points < 1:
@@ -2431,6 +2432,9 @@ class Player:
             pause()
             cls()
             teletype_txt_file('credits3.txt')
+            pause()
+            cls()
+            print(f"\n        Sauengard Copyright 2022, JULES PITSKER  (pitsker@proton.me)\nAll rights reserved\n")
             pause()
         while True:
             cls()
@@ -2621,7 +2625,7 @@ class Player:
         # called from meta_monster_generator() if encounter == 100
         wicked_queen = WickedQueenJannbrielle()  # monster_dict([4][0])()
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
-        print(f"The Queen stands, approaches the party and flashes her forked tongue before smiling in evil glee!")
+        print(f"The Queen stands, approaches and smiles wickedly!")
         return wicked_queen
 
     def legendary_monster_generator(self):
@@ -3035,7 +3039,7 @@ class Player:
                     self.hit_points = 1
                     return False  # player is NOT dead
                 if fails >= 3:
-                    print(f"Death protection roll failed!")
+                    print(f"Death resistence has failed!")
                     sleep(1)
                     return True  # player IS dead
                 death_save = dice_roll(1, 20)

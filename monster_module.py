@@ -5407,8 +5407,8 @@ class WickedQueenJannbrielle(Monster):
         self.quantum_energy = True
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.hit_points = 1750  # dice_roll(35, 20) + 30
-        self.armor_class = 22
+        self.hit_points = 1  # 1750  # dice_roll(35, 20) + 30
+        self.armor_class = 1  # 22
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 12  # attack bonus

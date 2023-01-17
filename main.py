@@ -82,7 +82,7 @@ Creative Commons Attribution License 3.0 (CC BY 3.0)
 """
 
 from player_module import cls, town_theme, gong, sleep, pause, teletype, \
-    dungeon_command_choices, quit_game, game_start, loading_screen, os_check, check_if_end_game
+    dungeon_command_choices, quit_game, game_start, loading_screen, os_check, end_game_check
 
 os_check()
 
@@ -336,28 +336,25 @@ while True:
                                     # then monster will die instantly and player gets loot
                                     monster.reduce_health(damage_to_monster)
                                     if monster.check_dead():
-
+                                        # CALCULATE REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
+                                        player_1.end_of_turn_calculation()
+                                        if not end_game_check(monster):  # allow player to live if end boss defeated
+                                            # player can die of poison/necrosis after monster hp are reduced to 0:
+                                            if player_1.check_dead():  #
+                                                game_over = True
+                                                player_1.in_proximity_to_monster = False
+                                                break
                                         player_1.hud()
                                         player_1.victory_statements(monster)
-
-                                        # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
-                                        player_1.end_of_turn_calculation()
-                                        # allies heal and no longer retreat:
-                                        player_1.npc_calculation()
                                         pause()
-
-                                        if player_1.check_dead():
-                                            # you can die from poison or necrosis,
-                                            game_over = True  # right after victory, following calculations
-                                            player_1.in_proximity_to_monster = False
-                                            break
-
+                                        # npc allies heal and no longer retreat:
+                                        player_1.npc_calculation()
                                         player_1.level_up(monster.experience_award, monster.gold)
                                         player_1.in_proximity_to_monster = False
                                         player_1.loot()
                                         player_1.victory_over_boss_logic()
 
-                                        if check_if_end_game(monster):  # beta
+                                        if end_game_check(monster):  # beta
                                             player_1.end_game_routine()  # add monster parameter to routine and offload
                                             game_over = True
                                             player_1.in_proximity_to_monster = False
@@ -370,19 +367,24 @@ while True:
                                 # npc allies attack monster:
                                 if player_1.npc_attack_logic(monster):  # if npc ally defeats monster
                                     player_1.end_of_turn_calculation()
-                                    player_1.npc_calculation()  # allies heal and no longer retreat
                                     pause()
-
-                                    if player_1.check_dead():  # player can die of poison/necrosis
-                                        game_over = True
-                                        player_1.in_proximity_to_monster = False
-                                        break
-
+                                    if not end_game_check(monster):  # allow player to live if end boss defeated
+                                        if player_1.check_dead():
+                                            game_over = True
+                                            player_1.in_proximity_to_monster = False
+                                            break
+                                    # allies heal and no longer retreat:
+                                    player_1.npc_calculation()
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot()
                                     player_1.victory_over_boss_logic()
-                                    player_1.dungeon_description()
+                                    if end_game_check(monster):  # beta
+                                        player_1.end_game_routine()  # add monster parameter to routine and offload
+                                        game_over = True
+                                        player_1.in_proximity_to_monster = False
+                                        break
+                                    player_1.dungeon_description()  # beta works so far
                                     break
 
                                 # ****MONSTER TURN AFTER YOU SWIG POTION, fail to evade, or cast quantum attack******
@@ -420,29 +422,27 @@ while True:
                                 damage_to_monster = player_1.melee(monster)
                                 monster.reduce_health(damage_to_monster)
 
-                                # in the future, check_dead function can encompass the following if--else statements.
-                                # just pass encounter parameter
                                 if monster.check_dead():
+                                    # CALCULATE REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
+                                    player_1.end_of_turn_calculation()
+                                    if not end_game_check(monster):   # allow player to live if end boss defeated
+                                        # player can die of poison/necrosis after monster hit points are reduced to 0:
+                                        if player_1.check_dead():  #
+                                            game_over = True
+                                            player_1.in_proximity_to_monster = False
+                                            break
 
                                     player_1.hud()
                                     player_1.victory_statements(monster)
                                     pause()
-                                    # CALCULATE REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
-                                    player_1.end_of_turn_calculation()
                                     # npc allies heal and no longer retreat:
                                     player_1.npc_calculation()
-
-                                    if player_1.check_dead():
-                                        game_over = True
-                                        player_1.in_proximity_to_monster = False
-                                        break
-
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot()
                                     player_1.victory_over_boss_logic()
 
-                                    if check_if_end_game(monster):  # beta
+                                    if end_game_check(monster):  # beta
                                         player_1.end_game_routine()  # add monster parameter to routine and offload
                                         game_over = True
                                         player_1.in_proximity_to_monster = False
@@ -455,19 +455,23 @@ while True:
                                 # npc allies attack monster
                                 if player_1.npc_attack_logic(monster):  # if npc ally defeats monster
                                     player_1.end_of_turn_calculation()
+                                    pause()
+                                    if not end_game_check(monster):  # allow player to live if end boss defeated
+                                        if player_1.check_dead():
+                                            game_over = True
+                                            player_1.in_proximity_to_monster = False
+                                            break
                                     # allies heal and no longer retreat:
                                     player_1.npc_calculation()
-                                    pause()
-
-                                    if player_1.check_dead():
-                                        game_over = True
-                                        player_1.in_proximity_to_monster = False
-                                        break
-
                                     player_1.level_up(monster.experience_award, monster.gold)
                                     player_1.in_proximity_to_monster = False
                                     player_1.loot()
                                     player_1.victory_over_boss_logic()
+                                    if end_game_check(monster):  # beta
+                                        player_1.end_game_routine()  # add monster parameter to routine and offload
+                                        game_over = True
+                                        player_1.in_proximity_to_monster = False
+                                        break
                                     player_1.dungeon_description()  # beta works so far
                                     break
 

@@ -1740,7 +1740,7 @@ class Player:
 #       else:
 #            return False
 
-    def end_game_routine(self):  # future placeholder, for after player defeats final boss
+    def end_game_routine(self):  # player defeats final boss
 
         if self.poisoned or self.necrotic:
             self.poisoned = False
@@ -1759,7 +1759,8 @@ class Player:
         self.previous_y = self.y
         self.position = 0  # self.dungeon.grid[self.y][self.x]
         self.hud()
-        save_a_character = self.name + ".sav"
+
+        """save_a_character = self.name + ".sav"
         p = Path(__file__).with_name(save_a_character)
         same_line_print(f"Saving {self.name}")
         random_floppy_rw_sound()
@@ -1768,7 +1769,7 @@ class Player:
         with p.open('wb') as character_filename:
             pickle.dump(self, character_filename)
             same_line_print(f"{self.name} saved.\n")
-            sleep(2)
+            sleep(2)"""
 
     def save_character(self):
         save_a_character = self.name + ".sav"
@@ -2424,6 +2425,18 @@ class Player:
             mountain_king_theme()
             print(f"Congratulations!\nYou have defeated Wicked Queen Jannbrielle and restored peace to the realm.\n")
             pause()
+
+            save_a_character = self.name + ".sav"
+            p = Path(__file__).with_name(save_a_character)
+            same_line_print(f"Saving {self.name}")
+            random_floppy_rw_sound()
+            dot_dot_dot(15)
+
+            with p.open('wb') as character_filename:
+                pickle.dump(self, character_filename)
+                same_line_print(f"{self.name} saved.\n")
+                sleep(2)
+
             cls()
             teletype_txt_file('credits.txt')
             pause()

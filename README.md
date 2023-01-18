@@ -1,6 +1,6 @@
 SAUENGARD © 2022 by JULES PITSKER  (pitsker@proton.me)
 
-![alt text](https://github.com/Misfit-138/Sauengard/blob/master/text/splash_art.txt?raw=true)
+![alt text](https://github.com/Misfit-138/Sauengard/blob/master/text/splash_art.txt)
 
 # Sauengard
 

@@ -2843,7 +2843,7 @@ class Player:
 
     def monster_likes_you(self, monster):
         # called from main loop after encounter with regular monster
-        if dice_roll(1, 20) > 19 and monster.intelligence > 12 and monster.charisma > 14 and self.charisma > 10:
+        if dice_roll(1, 20) > 19 and monster.intelligence > 12 and monster.charisma > 14 and self.charisma > 11:
             print(f"The {monster.name} likes you!")
             sleep(1)
             upgradeable = True

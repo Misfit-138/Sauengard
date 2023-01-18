@@ -32,8 +32,7 @@ $ python3 /path/to/main.py
 ```
 ## License
 
-[![BSD](https://img.shields.io/badge/BSD-4--Clause-blue)](https://spdx.org/licenses/BSD-4-Clause.html)
-- This source code is licensed under the BSD-style license found in the
+- This source code is licensed under the MIT-style license found in the
 LICENSE file in the root directory of this source tree.
 - Copyright © 2022 Jules Pitsker 
 - pitsker@proton.me

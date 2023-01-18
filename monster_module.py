@@ -935,6 +935,7 @@ class Goblin(Monster):
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
@@ -1820,7 +1821,7 @@ class Ghoul(Monster):
         self.can_poison = False
         self.necrotic = False
         self.dot_multiplier = 1
-        self.dot_turns = dice_roll(1, 6)
+        self.dot_turns = 1
         self.undead = True
         self.immunities = []
         self.vulnerabilities = []
@@ -2278,8 +2279,8 @@ class Harpy(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = dice_roll(1, 6)
-        self.dot_turns = dice_roll(1, 6)
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
@@ -2339,8 +2340,8 @@ class GreenDragonWyrmling(Monster):
         self.paralyze_turns = 1
         self.can_poison = True
         self.necrotic = False
-        self.dot_multiplier = dice_roll(1, 6)
-        self.dot_turns = dice_roll(1, 6)
+        self.dot_multiplier = random.randint(3, 5)
+        self.dot_turns = random.randint(2, 4)
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
@@ -2688,8 +2689,8 @@ class Mummy(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = True
-        self.dot_multiplier = dice_roll(2, 3)
-        self.dot_turns = 5
+        self.dot_multiplier = random.randint(3, 6)
+        self.dot_turns = random.randint(3, 5)
         self.undead = True
         self.immunities = []
         self.vulnerabilities = []
@@ -2806,8 +2807,8 @@ class Troll(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = 0
-        self.dot_turns = 0
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = []
         self.vulnerabilities = ["Immolation", "Firewall", "Fire Storm"]
@@ -2862,8 +2863,8 @@ class HillGiant(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = 0
-        self.dot_turns = 0
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
@@ -2919,8 +2920,8 @@ class Cyclops(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = 0
-        self.dot_turns = 0
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
@@ -2976,8 +2977,8 @@ class WrathfulAvenger(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = dice_roll(4, 6)
-        self.dot_turns = dice_roll(4, 6)
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = True
         self.immunities = []
         self.vulnerabilities = []
@@ -3038,8 +3039,8 @@ class HobgoblinWarlord(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = 0
-        self.dot_turns = 0
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
@@ -3096,8 +3097,8 @@ class Wyvern(Monster):
         self.paralyze_turns = 1
         self.can_poison = True
         self.necrotic = False
-        self.dot_multiplier = dice_roll(7, 6)
-        self.dot_turns = dice_roll(1, 2)
+        self.dot_multiplier = random.randint(4, 6)
+        self.dot_turns = random.randint(4, 5)
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
@@ -3157,8 +3158,8 @@ class DarkElfManipulator(Monster):
         self.paralyze_turns = 1
         self.can_poison = True
         self.necrotic = False
-        self.dot_multiplier = dice_roll(2, 6)
-        self.dot_turns = dice_roll(1, 3)
+        self.dot_multiplier = random.randint(2, 6)
+        self.dot_turns = random.randint(1, 3)
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
@@ -3236,8 +3237,8 @@ class Reptoranicus(Monster):
         self.paralyze_turns = 1
         self.can_poison = True
         self.necrotic = False
-        self.dot_multiplier = dice_roll(2, 6)
-        self.dot_turns = dice_roll(1, 4)
+        self.dot_multiplier = random.randint(2, 6)
+        self.dot_turns = random.randint(1, 5)
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
@@ -3316,8 +3317,8 @@ class MorbidDefender(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = dice_roll(5, 8)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = True
         self.immunities = []
         self.vulnerabilities = []
@@ -3378,8 +3379,8 @@ class BoltThrower(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = dice_roll(5, 8)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = ["Sleep", "Web", "Lightning"]
         self.vulnerabilities = ["Firewall", "Firestorm"]
@@ -3441,8 +3442,8 @@ class FrostGiant(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = dice_roll(5, 8)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = ["Ice Storm"]
         self.vulnerabilities = ["Firestorm", "Firewall"]
@@ -3499,8 +3500,8 @@ class YoungBlackDragon(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = dice_roll(5, 8)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = []
         self.vulnerabilities = ["Ice Storm", "Lightning"]
@@ -3557,8 +3558,8 @@ class YoungGreenDragon(Monster):
         self.paralyze_turns = 1
         self.can_poison = True
         self.necrotic = False
-        self.dot_multiplier = dice_roll(6, 9)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = random.randint(5, 8)
+        self.dot_turns = random.randint(3, 5)
         self.undead = False
         self.immunities = []
         self.vulnerabilities = ["Firewall", "Firestorm"]
@@ -3615,8 +3616,8 @@ class MorbidKnight(Monster):
         self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = 0
-        self.dot_turns = 0
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = True
         self.immunities = []
         self.vulnerabilities = []
@@ -3674,11 +3675,11 @@ class Assassin(Monster):
         self.paralyze_turns = 1
         self.can_poison = True
         self.necrotic = False
-        self.dot_multiplier = dice_roll(5, 8)
-        self.dot_turns = dice_roll(2, 5)
+        self.dot_multiplier = random.randint(5, 7)
+        self.dot_turns = random.randint(4, 5)
         self.undead = False
         self.immunities = []
-        self.vulnerabilities = ["Phantasm", "Fear"]
+        self.vulnerabilities = []
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 10
@@ -3699,10 +3700,11 @@ class Assassin(Monster):
         self.attack_5_phrase = "With a whispering swing, his blade finds your soft flesh and cuts deep.."
         self.introduction = f"You have encountered an Assassin; An amoral killer for hire, schooled in all manner of " \
                             f"poisons and stealth.\nFrom his boots to his hood, his garb is so dark, light seems to " \
-                            f"simply fall into it. His movements are fluid,\nsmooth, and deadly quiet. His " \
-                            f"silhouette " \
-                            f"is so difficult to track, you conclude he must be manipulating reflections\nwith " \
-                            f"Quantum Weirdness!"
+                            f"simply fall into it. On his face he wears\nthe only element of discernible color; " \
+                            f"a smooth, white mask with exaggerated human features and \nan ear-wide grin " \
+                            f"of sinister delight that contradicts his stoic eyes. His movements are fluid,\n" \
+                            f"smooth, and deadly quiet. His silhouette is so difficult to track, you conclude he " \
+                            f"must be manipulating reflections\nwith Quantum Weirdness!"
         self.poison_phrase = "Suddenly appearing behind you, he stabs at you with a poison blade!!"
 
 
@@ -3792,8 +3794,8 @@ class FireGiant(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = dice_roll(5, 8)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = ["Firestorm", "Firewall", "Scorch", "Immolation"]
         self.vulnerabilities = ["Ice Storm", "Fear", "Phantasm", "Vortex"]
@@ -3853,8 +3855,8 @@ class Widow(Monster):
         self.paralyze_turns = 1
         self.can_poison = True
         self.necrotic = False
-        self.dot_multiplier = dice_roll(5, 8)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = random.randint(5, 6)
+        self.dot_turns = random.randint(3, 5)
         self.undead = False
         self.immunities = ["Web"]
         self.vulnerabilities = []
@@ -3914,8 +3916,8 @@ class YoungBlueDragon(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = dice_roll(6, 9)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = ["Lightning"]
         self.vulnerabilities = ["Firewall" "Firestorm"]
@@ -3971,8 +3973,8 @@ class Wraith(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = True
-        self.dot_multiplier = dice_roll(5, 7)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = random.randint(5, 6)
+        self.dot_turns = random.randint(4, 5)
         self.undead = True
         self.immunities = ["Turn Undead"]
         self.vulnerabilities = ["Firestorm"]
@@ -4035,8 +4037,8 @@ class Necrophagist(Monster):
         self.paralyze_turns = 2
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = 5
-        self.dot_turns = 5
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = True
         self.immunities = ["Turn Undead"]
         self.vulnerabilities = ["Banish"]
@@ -4097,8 +4099,8 @@ class YoungRedDragon(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = dice_roll(6, 9)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = ["Firestorm", "Firewall", "Scorch", "Immolation"]
         self.vulnerabilities = ["Ice Storm", "Vortex"]
@@ -4218,8 +4220,8 @@ class ChaosMonster(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = dice_roll(5, 6)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = ["Sleep", "Web", "Hold Monster"]
         self.vulnerabilities = ["Fear"]
@@ -4285,8 +4287,8 @@ class Leviathan(Monster):
         self.paralyze_turns = 1
         self.can_poison = True
         self.necrotic = False
-        self.dot_multiplier = dice_roll(6, 9)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = random.randint(5, 6)
+        self.dot_turns = random.randint(4, 5)
         self.undead = False
         self.immunities = []
         self.vulnerabilities = ["Firewall", "Firestorm"]
@@ -4347,11 +4349,11 @@ class Gojira(Monster):
         self.paralyze_turns = 2
         self.can_poison = True
         self.necrotic = False
-        self.dot_multiplier = dice_roll(5, 7)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = random.randint(4, 6)
+        self.dot_turns = random.randint(4, 5)
         self.undead = False
         self.immunities = ["Vortex"]
-        self.vulnerabilities = ["Scorch", "Firewall", "Firestorm", "Immolation"]
+        self.vulnerabilities = []
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -4408,8 +4410,8 @@ class CorpseGrinder(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = dice_roll(5, 8)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = ["Lightning"]
         self.vulnerabilities = []
@@ -4479,8 +4481,8 @@ class BoltThrowerCaptain(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = dice_roll(5, 8)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = ["Lightning"]
         self.vulnerabilities = []
@@ -4543,8 +4545,8 @@ class Apocryphage(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = True
-        self.dot_multiplier = dice_roll(8, 9)
-        self.dot_turns = 5
+        self.dot_multiplier = random.randint(4, 6)
+        self.dot_turns = random.randint(4, 5)
         self.undead = False
         self.immunities = []
         self.vulnerabilities = ["Fear"]
@@ -4607,8 +4609,8 @@ class MorbidAssassin(Monster):
         self.paralyze_turns = 1
         self.can_poison = True
         self.necrotic = True
-        self.dot_multiplier = dice_roll(6, 8)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = random.randint(5, 6)
+        self.dot_turns = random.randint(4, 5)
         self.undead = True
         self.immunities = ["Web", "Hold Monster"]
         self.vulnerabilities = []
@@ -4633,10 +4635,12 @@ class MorbidAssassin(Monster):
         self.attack_5_phrase = "With a whispering swing, his blade finds your soft flesh and cuts deep.."
         self.introduction = f"You have encountered a Morbid Assassin; An amoral killer for hire in life, and now " \
                             f"undead through the Weirdness\nof a Quantum Mentor's evil will. The light simply " \
-                            f"falls into him. His movements resemble nothing more than black, humanoid smoke.\n" \
+                            f"falls into him. His movements resemble the shifts of mere black, humanoid smoke.\n" \
                             f"He approaches you in pure silence and stands still long enough for you to see his true " \
                             f"form- dark garb,\ncriss-crossed leather belts full of knives and vials, black boots, " \
-                            f"skegg beard, and an aristocratic smugness that has followed him beyond natural life."
+                            f"skegg beard, and an aristocratic smugness\nthat has followed him beyond natural life. " \
+                            f"Concealing his entire face is a smooth, white mask of grotesque features\nand an " \
+                            f"unsettling, animated grin."
         self.poison_phrase = "Suddenly appearing behind you, he stabs at you with a poison blade!!"
         self.necrotic_phrase = f"He retrieves a black, shimmering blade with a green, glowing edge from his belt and " \
                                f"attacks.."
@@ -4671,8 +4675,8 @@ class TorinManipulator(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = True
-        self.dot_multiplier = dice_roll(6, 7)
-        self.dot_turns = dice_roll(4, 5)
+        self.dot_multiplier = random.randint(5, 6)
+        self.dot_turns = random.randint(4, 5)
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
@@ -4748,8 +4752,8 @@ class DiamondKingInitiate(Monster):
         self.paralyze_turns = 1
         self.can_poison = True
         self.necrotic = False
-        self.dot_multiplier = dice_roll(7, 8)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = random.randint(5, 6)
+        self.dot_turns = random.randint(4, 5)
         self.undead = True
         self.immunities = ["Web", "Hold Monster"]
         self.vulnerabilities = ["Firewall", "Firestorm"]
@@ -4877,8 +4881,8 @@ class FireGiantCaptain(Monster):
         self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = 0
-        self.dot_turns = 0
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = ["Firestorm", "Firewall", "Scorch", "Immolation"]
         self.vulnerabilities = ["Ice Storm", "Vortex"]
@@ -4936,8 +4940,8 @@ class DarkDwarfWarlord(Monster):
         self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = 0
-        self.dot_turns = 0
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = False
         self.immunities = ["Fear", "Phantasm"]
         self.vulnerabilities = []
@@ -4996,8 +5000,8 @@ class MorbidVastator(Monster):
         self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = 0
-        self.dot_turns = 0
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = True
         self.immunities = []
         self.vulnerabilities = []
@@ -5055,8 +5059,8 @@ class MorbidTroll(Monster):
         self.paralyze_turns = 0
         self.can_poison = False
         self.necrotic = False
-        self.dot_multiplier = 0
-        self.dot_turns = 0
+        self.dot_multiplier = 1
+        self.dot_turns = 1
         self.undead = True
         self.immunities = []
         self.vulnerabilities = ["Firestorm", "Firewall"]
@@ -5113,7 +5117,7 @@ class SheStalker(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = True
-        self.dot_multiplier = dice_roll(8, 9)
+        self.dot_multiplier = random.randint(3, 6)
         self.dot_turns = 5
         self.undead = False
         self.immunities = []
@@ -5177,8 +5181,8 @@ class AbsconditusManipulator(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = True
-        self.dot_multiplier = dice_roll(6, 7)
-        self.dot_turns = dice_roll(4, 5)
+        self.dot_multiplier = 6
+        self.dot_turns = random.randint(3, 5)
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
@@ -5256,8 +5260,8 @@ class AltiorManipulator(Monster):
         self.paralyze_turns = 1
         self.can_poison = False
         self.necrotic = True
-        self.dot_multiplier = dice_roll(7, 8)
-        self.dot_turns = dice_roll(4, 5)
+        self.dot_multiplier = random.randint(6, 7)
+        self.dot_turns = random.randint(4, 5)
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
@@ -5334,8 +5338,8 @@ class DiamondKingPatrician(Monster):
         self.paralyze_turns = 1
         self.can_poison = True
         self.necrotic = False
-        self.dot_multiplier = dice_roll(7, 8)
-        self.dot_turns = dice_roll(3, 5)
+        self.dot_multiplier = 6
+        self.dot_turns = 6
         self.undead = True
         self.immunities = ["Web", "Hold Monster"]
         self.vulnerabilities = ["Firestorm"]
@@ -5398,7 +5402,7 @@ class WickedQueenJannbrielle(Monster):
         self.paralyze_turns = 2
         self.can_poison = True
         self.necrotic = True
-        self.dot_multiplier = dice_roll(6, 8)
+        self.dot_multiplier = 8
         self.dot_turns = 5
         self.undead = True
         self.immunities = ["All"]

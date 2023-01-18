@@ -1618,7 +1618,7 @@ class Player:
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.hit_dice = 10
         self.acumen = 1
-        self.maximum_hit_points = 10 + self.constitution_modifier
+        self.maximum_hit_points = 1000 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
         self.is_paralyzed = False
@@ -1667,10 +1667,10 @@ class Player:
         self.torbron = TorBron()
         self.magnus = Magnus()
         self.vozzbozz = VozzBozz()
-        self.sikira_ally = True
-        self.torbron_ally = True
-        self.magnus_ally = True
-        self.vozzbozz_ally = True
+        self.sikira_ally = False
+        self.torbron_ally = False
+        self.magnus_ally = False
+        self.vozzbozz_ally = False
         self.boss_hint_1 = False
         self.boss_hint_1_event = False
         self.boss_hint_2 = False
@@ -2650,7 +2650,7 @@ class Player:
         # called from meta_monster_generator() if encounter == 100
         wicked_queen = WickedQueenJannbrielle()  # monster_dict([4][0])()
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
-        print(f"The Queen stands from the grotesque throne, her eyes burning with murderous intent!")
+        print(f"The Queen rises from the grotesque throne, her eyes burning with murderous intent!")
         return wicked_queen
 
     def legendary_monster_generator(self):

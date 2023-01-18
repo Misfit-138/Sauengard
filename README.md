@@ -23,14 +23,16 @@ should be quite simple.
 
 ## Installation:
 
-- Prerequisites: Python v3
+- Prerequisites: 
+- Windows: Python v3. import keyboard, import winsound modules
+- GNU/Linux: Python v3. from termios import tcflush, TCIFLUSH
 - Download the files to a folder and run with
 ```
 C:\ py /path/to/main.py
 ```
 or
 ```
-$ python3 /path/to/main.py
+$ python3 ./path/to/main.py
 ```
 ## License
 

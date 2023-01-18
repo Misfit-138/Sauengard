@@ -2006,7 +2006,7 @@ class Doppelganger(Monster):
         self.dot_turns = 1
         self.undead = False
         self.immunities = ["Charm", "Sleep", "Web", "Phantasm"]
-        self.vulnerabilities = ["Scorch", "Firewall", "Firestorm", "Immolation"]
+        self.vulnerabilities = []
         self.resistances = ["Hold Monster", "Banish"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -2404,13 +2404,13 @@ class WhiteDragonWyrmling(Monster):
         self.dot_turns = 1
         self.undead = False
         self.immunities = ["Ice Storm"]
-        self.vulnerabilities = ["Immolation", "Firewall", "Fire Storm"]
+        self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 1
-        self.hit_points = (random.randint(30, 32)) + self.constitution_modifier
-        self.armor_class = random.randint(15, 16)
+        self.hit_points = 30
+        self.armor_class = 15
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 5  # attack bonus
@@ -2466,7 +2466,7 @@ class BugbearCaptain(Monster):
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.hit_points = 65 + self.constitution_modifier
+        self.hit_points = 65
         self.armor_class = 17
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2524,7 +2524,7 @@ class Ogre(Monster):
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.hit_points = (random.randint(58, 62)) + self.constitution_modifier
+        self.hit_points = 58
         self.armor_class = 11
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2582,7 +2582,7 @@ class Minotaur(Monster):
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.hit_points = (random.randint(70, 75)) + self.constitution_modifier
+        self.hit_points = 70
         self.armor_class = 14
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2758,7 +2758,7 @@ class ZombieOgre(Monster):
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 3
-        self.hit_points = (random.randint(80, 84)) + self.constitution_modifier
+        self.hit_points = 90
         self.armor_class = 10
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2811,13 +2811,13 @@ class Troll(Monster):
         self.dot_turns = 1
         self.undead = False
         self.immunities = []
-        self.vulnerabilities = ["Immolation", "Firewall", "Fire Storm"]
+        self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.hit_points = (random.randint(80, 85)) + self.constitution_modifier
-        self.armor_class = random.randint(15, 16)
+        self.hit_points = 80
+        self.armor_class = 15
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 5  # attack bonus
@@ -2872,7 +2872,7 @@ class HillGiant(Monster):
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.hit_points = (random.randint(100, 105)) + self.constitution_modifier
+        self.hit_points = 80
         self.armor_class = 13
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2929,7 +2929,7 @@ class Cyclops(Monster):
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.hit_points = (random.randint(100, 105)) + self.constitution_modifier
+        self.hit_points = 85
         self.armor_class = 13
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -2986,7 +2986,7 @@ class WrathfulAvenger(Monster):
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.hit_points = (random.randint(120, 135)) + self.constitution_modifier
+        self.hit_points = 70
         self.armor_class = 13
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3048,7 +3048,7 @@ class HobgoblinWarlord(Monster):
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.hit_points = (random.randint(90, 105)) + self.constitution_modifier
+        self.hit_points = 75
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3106,7 +3106,7 @@ class Wyvern(Monster):
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.hit_points = 110
+        self.hit_points = 80
         self.armor_class = 13
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3242,7 +3242,7 @@ class Reptoranicus(Monster):
         self.undead = False
         self.immunities = []
         self.vulnerabilities = []
-        self.resistances = ["Sleep", "Web", "Charm", "Scorch", "Quantum Missile", "Lightning"]
+        self.resistances = ["Sleep", "Web", "Charm", "Blaze", "Quantum Missile", "Lightning"]
         self.quantum_energy = True
         self.hit_dice = 10
         self.number_of_hd = 5
@@ -3326,7 +3326,7 @@ class MorbidDefender(Monster):
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 4
-        self.hit_points = 120
+        self.hit_points = 100
         self.armor_class = 16
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3383,12 +3383,12 @@ class BoltThrower(Monster):
         self.dot_turns = 1
         self.undead = False
         self.immunities = ["Sleep", "Web", "Lightning"]
-        self.vulnerabilities = ["Firewall", "Firestorm"]
+        self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
         self.hit_dice = 12
         self.number_of_hd = 4
-        self.hit_points = (random.randint(135, 145)) + self.constitution_modifier
+        self.hit_points = 100
         self.armor_class = 16
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3446,12 +3446,12 @@ class FrostGiant(Monster):
         self.dot_turns = 1
         self.undead = False
         self.immunities = ["Ice Storm"]
-        self.vulnerabilities = ["Firestorm", "Firewall"]
+        self.vulnerabilities = []
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 5
-        self.hit_points = (random.randint(135, 145)) + self.constitution_modifier
+        self.hit_points = 110
         self.armor_class = 15
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3504,12 +3504,12 @@ class YoungBlackDragon(Monster):
         self.dot_turns = 1
         self.undead = False
         self.immunities = []
-        self.vulnerabilities = ["Ice Storm", "Lightning"]
+        self.vulnerabilities = []
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 6
-        self.hit_points = (random.randint(135, 145)) + self.constitution_modifier
+        self.hit_points = 120
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3562,12 +3562,12 @@ class YoungGreenDragon(Monster):
         self.dot_turns = random.randint(3, 5)
         self.undead = False
         self.immunities = []
-        self.vulnerabilities = ["Firewall", "Firestorm"]
+        self.vulnerabilities = []
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 6
-        self.hit_points = (random.randint(135, 145)) + self.constitution_modifier
+        self.hit_points = 120
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3625,7 +3625,7 @@ class MorbidKnight(Monster):
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 6
-        self.hit_points = (random.randint(90, 100)) + self.constitution_modifier
+        self.hit_points = 90
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3684,8 +3684,8 @@ class Assassin(Monster):
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 3
-        self.hit_points = (random.randint(60, 75)) + self.constitution_modifier
-        self.armor_class = 20  # super high armor, hard to hit, low damage, low hitpoints
+        self.hit_points = 70
+        self.armor_class = 21  # super high armor, hard to hit, low damage, low hitpoints
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 8  # attack bonus
@@ -3746,7 +3746,7 @@ class DarkDwarfVeteran(Monster):
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 5
-        self.hit_points = 140
+        self.hit_points = 115
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3797,13 +3797,13 @@ class FireGiant(Monster):
         self.dot_multiplier = 1
         self.dot_turns = 1
         self.undead = False
-        self.immunities = ["Firestorm", "Firewall", "Scorch", "Immolation"]
-        self.vulnerabilities = ["Ice Storm", "Fear", "Phantasm", "Vortex"]
+        self.immunities = ["Firestorm", "Firewall", "Blaze", "Immolation"]
+        self.vulnerabilities = []
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 10
         self.number_of_hd = 5
-        self.hit_points = (random.randint(155, 165)) + self.constitution_modifier
+        self.hit_points = 120
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3864,7 +3864,7 @@ class Widow(Monster):
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 6
-        self.hit_points = (random.randint(135, 155)) + self.constitution_modifier
+        self.hit_points = 135
         self.armor_class = 17
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3920,12 +3920,12 @@ class YoungBlueDragon(Monster):
         self.dot_turns = 1
         self.undead = False
         self.immunities = ["Lightning"]
-        self.vulnerabilities = ["Firewall" "Firestorm"]
+        self.vulnerabilities = []
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 6
-        self.hit_points = (random.randint(145, 155)) + self.constitution_modifier
+        self.hit_points = 135
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -3977,12 +3977,12 @@ class Wraith(Monster):
         self.dot_turns = random.randint(4, 5)
         self.undead = True
         self.immunities = ["Turn Undead"]
-        self.vulnerabilities = ["Firestorm"]
+        self.vulnerabilities = []
         self.resistances = ["Web", "Banish"]
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 6
-        self.hit_points = (random.randint(125, 145)) + self.constitution_modifier
+        self.hit_points = 125
         self.armor_class = 17
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4046,7 +4046,7 @@ class Necrophagist(Monster):
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 6
-        self.hit_points = 135
+        self.hit_points = 105
         self.armor_class = 16
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4102,13 +4102,13 @@ class YoungRedDragon(Monster):
         self.dot_multiplier = 1
         self.dot_turns = 1
         self.undead = False
-        self.immunities = ["Firestorm", "Firewall", "Scorch", "Immolation"]
-        self.vulnerabilities = ["Ice Storm", "Vortex"]
+        self.immunities = ["Firestorm", "Firewall", "Blaze", "Immolation"]
+        self.vulnerabilities = []
         self.resistances = ["Sleep", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 6
-        self.hit_points = (random.randint(165, 175)) + self.constitution_modifier
+        self.hit_points = 145
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4161,11 +4161,11 @@ class MorbidBehemoth(Monster):
         self.undead = True
         self.immunities = ["Hold Monster", "Turn Undead"]
         self.vulnerabilities = []
-        self.resistances = ["Firestorm", "Firewall", "Scorch", "Immolation", "Vortex"]
+        self.resistances = ["Firestorm", "Firewall", "Blaze", "Immolation", "Vortex"]
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 6
-        self.hit_points = (random.randint(115, 125)) + self.constitution_modifier
+        self.hit_points = 115
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4224,7 +4224,7 @@ class ChaosMonster(Monster):
         self.dot_turns = 1
         self.undead = False
         self.immunities = ["Sleep", "Web", "Hold Monster"]
-        self.vulnerabilities = ["Fear"]
+        self.vulnerabilities = []
         self.resistances = []
         self.quantum_energy = False
         self.hit_dice = 10
@@ -4291,12 +4291,12 @@ class Leviathan(Monster):
         self.dot_turns = random.randint(4, 5)
         self.undead = False
         self.immunities = []
-        self.vulnerabilities = ["Firewall", "Firestorm"]
+        self.vulnerabilities = ["Firestorm"]
         self.resistances = ["Sleep", "Web", "Vortex", "Charm", "Banish"]
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 7
-        self.hit_points = (random.randint(135, 155)) + self.constitution_modifier
+        self.hit_points = 135
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4358,7 +4358,7 @@ class Gojira(Monster):
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 7
-        self.hit_points = (random.randint(125, 135))
+        self.hit_points = 125
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4419,7 +4419,7 @@ class CorpseGrinder(Monster):
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 7
-        self.hit_points = 165
+        self.hit_points = 120
         self.armor_class = 19
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4486,11 +4486,11 @@ class BoltThrowerCaptain(Monster):
         self.undead = False
         self.immunities = ["Lightning"]
         self.vulnerabilities = []
-        self.resistances = ["Firewall", "Scorch", "Sleep", "Web", "Charm"]
+        self.resistances = ["Firewall", "Blaze", "Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 7
-        self.hit_points = 165
+        self.hit_points = 115
         self.armor_class = 20
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4618,7 +4618,7 @@ class MorbidAssassin(Monster):
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 8
-        self.hit_points = (random.randint(85, 95)) + self.constitution_modifier
+        self.hit_points = 90
         self.armor_class = 21  # super high armor, hard to hit, low damage, low hitpoints
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -4756,7 +4756,7 @@ class DiamondKingInitiate(Monster):
         self.dot_turns = random.randint(4, 5)
         self.undead = True
         self.immunities = ["Web", "Hold Monster"]
-        self.vulnerabilities = ["Firewall", "Firestorm"]
+        self.vulnerabilities = []
         self.resistances = ["Turn Undead", "Banish"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -4884,8 +4884,8 @@ class FireGiantCaptain(Monster):
         self.dot_multiplier = 1
         self.dot_turns = 1
         self.undead = False
-        self.immunities = ["Firestorm", "Firewall", "Scorch", "Immolation"]
-        self.vulnerabilities = ["Ice Storm", "Vortex"]
+        self.immunities = ["Firestorm", "Firewall", "Blaze", "Immolation"]
+        self.vulnerabilities = ["Ice Storm"]
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -5063,7 +5063,7 @@ class MorbidTroll(Monster):
         self.dot_turns = 1
         self.undead = True
         self.immunities = []
-        self.vulnerabilities = ["Firestorm", "Firewall"]
+        self.vulnerabilities = []
         self.resistances = ["Web", "Turn Undead"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -5121,7 +5121,7 @@ class SheStalker(Monster):
         self.dot_turns = 5
         self.undead = False
         self.immunities = []
-        self.vulnerabilities = ["Fear"]
+        self.vulnerabilities = []
         self.resistances = ["Sleep", "Web", "Charm"]
         self.quantum_energy = False
         self.hit_dice = 8
@@ -5190,7 +5190,7 @@ class AbsconditusManipulator(Monster):
         self.quantum_energy = True
         self.hit_dice = 8
         self.number_of_hd = 8
-        self.hit_points = 130
+        self.hit_points = 125
         self.armor_class = 16
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -5228,6 +5228,70 @@ class AbsconditusManipulator(Monster):
         self.paralyze_free_attack_phrase = "Spinning his staff to an attack position, he patiently swings at you " \
                                            "as you stand, halted and helpless!"
         self.necrotic_phrase = f"Closing his eyes for concentration, he attempts to harness Quantum necrotic forces!"
+
+
+class BoltThrowerChampion(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 13
+        self.name = "Bolt Thrower Champion"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.experience_award = 10000
+        self.gold = random.randint(15, 25)
+        self.weapon_bonus = 9
+        self.armor_name = "hard exoskeleton"
+        self.strength = 21
+        self.dexterity = 17
+        self.constitution = 19
+        self.intelligence = 16
+        self.wisdom = 16
+        self.charisma = 16
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 1
+        self.dot_turns = 1
+        self.undead = False
+        self.immunities = ["Lightning"]
+        self.vulnerabilities = []
+        self.resistances = ["Firewall", "Blaze", "Sleep", "Web", "Charm", "Fear"]
+        self.quantum_energy = False
+        self.hit_dice = 8
+        self.number_of_hd = 8
+        self.hit_points = 125
+        self.armor_class = 21
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 8  # attack bonus
+        self.attack_1_phrase = "He swings an arcing Quantum Axe with great power and precision."
+        self.attack_2 = 8
+        self.attack_2_phrase = "He strikes at you with his heavy, electrified Warhammer."
+        self.attack_3 = 10
+        self.attack_3_phrase = "He strikes in combination; an electrified Quantum Axe in his left hand, followed by " \
+                               "his Warhammer!"
+        self.attack_4 = 16
+        self.attack_4_phrase = "He cracks his Quantum Whip, and the powerful arcflash surges through your very " \
+                               "bones, knocking you off your feet!"
+        self.attack_5 = 23
+        self.attack_5_phrase = "He circles his Quantum Whip menacingly as it suddenly shoots forth, with " \
+                               "great speed and precision. You feel the heat and power of the arcflash\n" \
+                               "deep within!"
+        self.introduction = f"You have encountered a Bolt Thrower Champion; A hardened standard-bearer amongst a " \
+                            f"race of warriors.\nSharpened senses, skills, weaponry combined with the lifelong " \
+                            f"study of war have honed his abilities\nbeyond the upper limits of probability. " \
+                            f"He approaches with pragmatic caution and readiness."
+        self.paralyze_phrase = "He encircles you with his whip!"
+        self.paralyze_free_attack_phrase = "In your helplessness, he strikes skillfully with his arcing weaponry!"
 
 
 class AltiorManipulator(Monster):
@@ -5274,9 +5338,9 @@ class AltiorManipulator(Monster):
         self.armor_class = 17
         self.multi_attack = True
         self.lesser_multi_attack = False
-        self.attack_1 = 10  # attack bonus
+        self.attack_1 = 8  # attack bonus
         self.attack_1_phrase = "He deftly swings his gleaming staff!"
-        self.attack_2 = 11
+        self.attack_2 = 10
         self.attack_2_phrase = "He swings his staff with a time-slowing effect! You are unable to dodge.."
         self.attack_3 = 12
         self.attack_3_phrase = "He cuts at you with a long, shining, steel dagger!"
@@ -5342,12 +5406,12 @@ class DiamondKingPatrician(Monster):
         self.dot_turns = 6
         self.undead = True
         self.immunities = ["Web", "Hold Monster"]
-        self.vulnerabilities = ["Firestorm"]
+        self.vulnerabilities = []
         self.resistances = ["Turn Undead", "Banish", "Lightning", "Immolation"]
         self.quantum_energy = False
         self.hit_dice = 9
         self.number_of_hd = 8
-        self.hit_points = 165
+        self.hit_points = 150
         self.armor_class = 18
         self.multi_attack = True
         self.lesser_multi_attack = False
@@ -5469,7 +5533,7 @@ monster_dict = {
     10: [YoungRedDragon, MorbidBehemoth, ChaosMonster, Leviathan, Gojira],
     11: [CorpseGrinder, BoltThrowerCaptain, Apocryphage, MorbidAssassin, TorinManipulator],
     12: [DiamondKingInitiate, QueenWasp, FireGiantCaptain, DarkDwarfWarlord, MorbidVastator],
-    13: [MorbidTroll, SheStalker, AbsconditusManipulator],
+    13: [MorbidTroll, SheStalker, AbsconditusManipulator, BoltThrowerChampion],
     14: [AltiorManipulator, DiamondKingPatrician]
 }
 

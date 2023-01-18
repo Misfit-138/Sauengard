@@ -1618,7 +1618,7 @@ class Player:
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.hit_dice = 10
         self.acumen = 1
-        self.maximum_hit_points = 1000 + self.constitution_modifier
+        self.maximum_hit_points = 60  # 10 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
         self.is_paralyzed = False
@@ -3580,15 +3580,15 @@ class Player:
             print(f"Quantum Petrifaction")
             sleep(1)
             self.hud()
-            if "Quantum Petrifaction" not in monster.immunities and "All" not in monster.immunities:
+            if "Petrifaction" not in monster.immunities and "All" not in monster.immunities:
                 self.quantum_units -= quantum_unit_cost
-                if "Quantum Petrifaction" in monster.vulnerabilities:
+                if "Petrifaction" in monster.vulnerabilities:
                     vulnerability_modifier = self.acumen
                 resistance_modifier = 0
-                if "Quantum Petrifaction" in monster.resistances or "All" in monster.resistances:
+                if "Petrifaction" in monster.resistances or "All" in monster.resistances:
                     resistance_modifier = monster.evil_bonus
-                print(f"Before the {monster.name} even realizes what is happening, its flesh ripples into a stone "
-                      f"replica of its normal state!")
+                print(f"Before {monster.he_she_it} even realizes what is happening, {monster.his_her_its} "
+                      f"flesh ripples into a stone replica of {monster.his_her_its} normal state!")
                 sleep(1)
                 input(f"Press (ENTER) to attack: ")
                 self.hud()
@@ -4271,13 +4271,14 @@ class Player:
         print(f"Web: Through improbabilities, shoot a giant web at your enemy, incapacitating them. Initial success\n"
               f"based on Player Wisdom vs Enemy Dexterity. Final success depends on Enemy AC.")
         print()
-        print(f"Quantum Purify: Works only when poisoned or necrotic, but once engaged, purifies the flesh from these\n"
+        print(f"Quantum Purify: Works only when poisoned or necrotic, but once engaged, Quantum Weirdness at the "
+              f"molecular level purifies the flesh from these\n"
               f"effects and also increases Hit Points.")
         print()
         print(f"Quantum Strength: Harnessing Quantum Energies, your Strength and melee damage are increased\n"
               f"for a maximum duration based on your Quantum Knowledge level and Strength Modifier.")
         print()
-        print(f"Quantum Scorch: Rays of intense flame strike your enemy. Success based on Player Wisdom vs Enemy AC.")
+        print(f"Quantum Blaze: Rays of intense flame strike your enemy. Success based on Player Wisdom vs Enemy AC.")
         print()
         print(f"Quantum Charm: Use your powers of persuasion to lull your enemy into a vulnerable sleep. Initial\n"
               f"success based on Player Charisma vs Enemy Wisdom. Final success depends on Enemy AC.")
@@ -4444,7 +4445,7 @@ class Player:
                                 1: self.quantum_web,
                                 2: self.quantum_purify,
                                 3: self.quantum_strength,
-                                4: self.quantum_scorch,
+                                4: self.quantum_blaze,
                                 5: self.quantum_charm},
                             3: {0: self.quantum_help3,
                                 1: self.quantum_lightning,
@@ -4755,12 +4756,12 @@ class Player:
         # if monster < 125 hp, it dies
         quantum_unit_cost = 6
         if self.in_proximity_to_monster:
-            if "Quantum Spoken Word" not in monster.immunities and "All" not in monster.immunities:
+            if "Spoken Word" not in monster.immunities and "All" not in monster.immunities:
                 vulnerable = False
-                if "Quantum Spoken Word" in monster.vulnerabilities:
+                if "Spoken Word" in monster.vulnerabilities:
                     vulnerable = True
                 self.quantum_units -= quantum_unit_cost
-                print(f"Quantum Spoken Word.")
+                print(f"Spoken Word.")
                 sleep(1)
                 self.hud()
                 roll_d20 = dice_roll(1, 20)  # attack roll
@@ -4796,12 +4797,12 @@ class Player:
 
         quantum_unit_cost = 5
         if self.in_proximity_to_monster:
-            if "Quantum Disentangle" not in monster.immunities and "All" not in monster.immunities:
+            if "Disentangle" not in monster.immunities and "All" not in monster.immunities:
                 vulnerable = False
-                if "Quantum Disentangle" in monster.vulnerabilities:
+                if "Disentangle" in monster.vulnerabilities:
                     vulnerable = True
                 resistance_modifier = 0
-                if "Quantum Disentangle" in monster.resistances or "All" in monster.resistances:
+                if "Disentangle" in monster.resistances or "All" in monster.resistances:
                     resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Quantum Disentangle.")
@@ -5116,12 +5117,12 @@ class Player:
         # on a successful dexterity protection roll, monster takes 50% damage.
         quantum_unit_cost = 6
         if self.in_proximity_to_monster:
-            if "Quantum Mooncrusher" not in monster.immunities and "All" not in monster.immunities:
+            if "Mooncrusher" not in monster.immunities and "All" not in monster.immunities:
                 vulnerable = False
-                if "Quantum Mooncrusher" in monster.vulnerabilities:
+                if "Mooncrusher" in monster.vulnerabilities:
                     vulnerable = True
                 resistance_modifier = 0
-                if "Quantum Mooncrusher" in monster.resistances or "All" in monster.resistances:
+                if "Mooncrusher" in monster.resistances or "All" in monster.resistances:
                     resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
                 print(f"Quantum Mooncrusher.")
@@ -5817,7 +5818,7 @@ class Player:
                 if "Lightning" in monster.resistances or "All" in monster.resistances:
                     resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
-                print(f"Lightning.")
+                print(f"Quantum Lightning.")
                 sleep(1)
                 self.hud()
                 roll_d20 = dice_roll(1, 20)  # attack roll
@@ -5854,15 +5855,15 @@ class Player:
                     #
                     number_of_dice = (3 + self.acumen) * critical_bonus
                     damage_to_opponent = dice_roll(number_of_dice, 6) + (1 * number_of_dice)
-                    melee_bonus = self.acumen * 3  # dice_roll(self.level, self.hit_dice)
+                    melee_bonus = self.acumen * 4  # dice_roll(self.level, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
                         print(f"{number_of_dice} bolts of Quantum Lightning materialize from nothingness and "
                               f"hit their target!")
-                        print(f"{number_of_dice}d6 roll + 1 arc damage per bolt: {damage_to_opponent}")
-                        print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
+                        print(f"{number_of_dice}d6 roll + 1 damage per bolt: {damage_to_opponent}")
+                        print(f"{self.level}d{self.hit_dice} Arcflash Damage: {melee_bonus}")
                         print(f"They do {total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
@@ -5882,17 +5883,17 @@ class Player:
                     print(f"The lightning takes form but does not inflict damage to its fullest potential..")
                     sleep(1)
                     print(f"{number_of_dice}d6 roll + 1 per die rolled / 2 = {damage_to_opponent} (ROUNDED)")
-                    print(f"{self.level}d{self.hit_dice} Damage Bonus: {melee_bonus}")
+                    print(f"{self.level}d{self.hit_dice} Arcflash Bonus: {melee_bonus}")
                     print(f"It inflicts {total_damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
                     return total_damage_to_opponent
             else:
                 if monster.proper_name != "None":
-                    print(f"{monster.proper_name} is immune to Lightning!!")
+                    print(f"{monster.proper_name} is immune to Quantum Lightning!!")
                     sleep(1)
                 else:
-                    print(f"The {monster.name} is immune to Lightning attacks!!")
+                    print(f"The {monster.name} is immune to Quantum Lightning attacks!!")
                     sleep(1)
                 self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
@@ -5900,7 +5901,7 @@ class Player:
                 pause()
                 return 0
         else:
-            print(f"Lightning is a Battle Effect only..")
+            print(f"Quantum Lightning is a Battle Effect only..")
             sleep(1)
             return
 
@@ -6002,10 +6003,10 @@ class Player:
                     return total_damage_to_opponent
             else:
                 if monster.proper_name != "None":
-                    print(f"{monster.proper_name} is immune to Immolation Effects!!")
+                    print(f"{monster.proper_name} is immune to Quantum Immolation Effects!!")
                     sleep(1)
                 else:
-                    print(f"The {monster.name} is immune to Immolation attacks!!")
+                    print(f"The {monster.name} is immune to Quantum Immolation attacks!!")
                     sleep(1)
                 self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
@@ -6233,24 +6234,24 @@ class Player:
             sleep(1)
             return
 
-    def quantum_scorch(self, monster):
-        # scorch is player's wisdom vs monster AC
+    def quantum_blaze(self, monster):
+        # blaze is player's wisdom vs monster AC
         quantum_unit_cost = 2
         if self.in_proximity_to_monster:
-            if "Scorch" not in monster.immunities and "All" not in monster.immunities:
+            if "Blaze" not in monster.immunities and "All" not in monster.immunities:
                 vulnerable = False
-                if "Scorch" in monster.vulnerabilities:
+                if "Blaze" in monster.vulnerabilities:
                     vulnerable = True
                 resistance_modifier = 0
-                if "Scorch" in monster.resistances or "All" in monster.resistances:
+                if "Blaze" in monster.resistances or "All" in monster.resistances:
                     resistance_modifier = monster.evil_bonus
                 self.quantum_units -= quantum_unit_cost
-                print(f"Scorch.")
+                print(f"Quantum Blaze.")
                 sleep(1)
                 self.hud()
                 roll_d20 = dice_roll(1, 20)  # attack roll
                 player_total = (self.base_dc + self.wisdom_modifier + self.acumen)
-                print(f"Focusing your innate understanding, you attempt to Scorch the {monster.name}..")
+                print(f"Focusing your innate understanding, you attempt to grasp the weirdness..")
                 print(f"Quantum Check: {roll_d20}")
                 sleep(1.5)
                 self.hud()
@@ -6266,7 +6267,8 @@ class Player:
                     hit_statement = "CRITICAL!!"
                 else:
                     critical_bonus = 1
-                    hit_statement = "Rays of scorching flame are summoned by Quantum Weirdness and hit your enemy!"
+                    hit_statement = "Blazing rays of scorching flame are summoned by Quantum Weirdness and strike " \
+                                    "your enemy!"
                 print(f"Player Base DC: {self.base_dc}")
                 print(f"Wisdom modifier: {self.wisdom_modifier}")
                 print(f"Acumen: {self.acumen}")
@@ -6288,17 +6290,17 @@ class Player:
                     if damage_to_opponent > 0:
                         print(hit_statement)
                         sleep(1)
-                        print(f"Scorch = 3d6(dice) + 1 die for every level")
+                        print(f"Quantum Blaze = 3d6(dice) + 1 die for every level")
                         print(f"{number_of_dice}d6 roll "
                               f"({number_of_dice} rays + 1 force damage per ray): {damage_to_opponent}\n"
                               f"{self.level}d{self.hit_dice} bonus: {melee_bonus}\n"
                               f"Total: {total_damage_to_opponent}")
-                        print(f"They do {total_damage_to_opponent} points of damage!")
+                        print(f"They inflict {total_damage_to_opponent} points of damage!")
                         pause()
                         self.hud()
                         return total_damage_to_opponent
                     else:
-                        print(f"It dodges the scorching rays!")  # zero damage result
+                        print(f"{monster.he_she_it.capitalize()} dodges the blazing rays!")  # zero damage result
                         sleep(1)
                         return 0
                 else:
@@ -6308,22 +6310,22 @@ class Player:
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
                     print("Your attempt to harness the Quantum Weirdness lacks focus..")
                     sleep(1)
-                    print(f"The scorching rays take form but do not inflict damage to their fullest potential..")
+                    print(f"The blazing rays take form but do not inflict damage to their fullest potential..")
                     sleep(1)
                     print(f"{number_of_dice}d6 roll + 1 per die rolled / 2: {damage_to_opponent}\n"
                           f"{self.level}d{self.hit_dice} bonus: {melee_bonus}\n"
                           f"Total: {total_damage_to_opponent} (ROUNDED)")
-                    print(f"They do {total_damage_to_opponent} points of damage..")
+                    print(f"They inflict {total_damage_to_opponent} points of damage..")
                     pause()
                     self.hud()
                     return total_damage_to_opponent
 
             else:
                 if monster.proper_name != "None":
-                    print(f"{monster.proper_name} is immune to Scorch!!")
+                    print(f"{monster.proper_name} is immune to Quantum Blaze!!")
                     sleep(1)
                 else:
-                    print(f"The {monster.name} is immune to Scorch!!")
+                    print(f"The {monster.name} is immune to Quantum Blaze!!")
                     sleep(1)
                 self.quantum_units -= quantum_unit_cost
                 print(f"You have wasted Quantum Energy!")
@@ -6331,7 +6333,7 @@ class Player:
                 pause()
                 return 0
         else:
-            print(f"Scorch is a Battle Effect only..")
+            print(f"Quantum Blaze is a Battle Effect only..")
             sleep(1)
             return
 
@@ -9045,6 +9047,9 @@ class Player:
                   f"tiny fangs, deep red eyes and her unusually petite, yet athletic build. But how could a Dark "
                   f"Elf have\n"
                   f"such a pale complexion, you wonder silently...Are they not grey-skinned?")
+            pause()
+            cls()
+            print_txt_file('sikira.txt')
             pause()
             self.hud()
             print(f"\'Well. {self.name} of Tinbar, well met!\', she says with an evil chuckle. \'I am Si'Kira,\n"

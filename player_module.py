@@ -2755,8 +2755,8 @@ class Player:
                               'Forendilus']
         rndm_epithets = ['of the Evil Wisdom', 'the Lesser', 'the Elder', 'the Fierce', 'of the Eleven Elders',
                          'of the Twelve', 'of the Fell Elders', 'the Mad', 'the Blasphemous',
-                         'of the Elders', 'the Fallen', 'the Insane', 'the Mad Magistrate',
-                         'the Grand King-Priest', 'of the Seven Mages', 'the Bloodsoaked',
+                         'of the Eleven Elders', 'the Fallen', 'the Insane', 'the Mad Magistrate',
+                         'the Grand King-Priest', 'of the Seven Minds', 'the Bloodsoaked',
                          'the Accursed', 'the Abandoned', 'the Absolutionist', 'the Avenger', 'of the Seven Horns',
                          'the Blackhearted', 'the Blind', 'the Bloodthirsty', 'the Cruel',
                          'the Damned', 'the Foul', 'the Foulest', 'the Feared', 'the Fear-Inspiring'

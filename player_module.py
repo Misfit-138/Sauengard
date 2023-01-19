@@ -6266,7 +6266,7 @@ class Player:
                 if roll_d20 == 20 or player_total >= monster_total:
                     # number_of_dice = (3 + (self.level - 1)) * critical_bonus  #consider changing to self.quantum_level
                     number_of_dice = (1 + self.acumen) * critical_bonus
-                    quantum_die = 4
+                    quantum_die = 6
                     damage_to_opponent = (dice_roll(number_of_dice, quantum_die) + (1 * number_of_dice))
                     melee_bonus = dice_roll(self.acumen, self.hit_dice)
                     total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
@@ -6289,15 +6289,15 @@ class Player:
                         return 0
                 else:
                     number_of_dice = (1 + self.acumen) * critical_bonus
-                    damage_to_opponent = math.ceil((dice_roll(number_of_dice, 4) + (1 * number_of_dice)) / 2)
-                    melee_bonus = dice_roll(self.acumen, self.hit_dice)
-                    total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
+                    quantum_die = 6
+                    damage_to_opponent = math.ceil((dice_roll(number_of_dice, quantum_die) + (1 * number_of_dice)))
+                    # melee_bonus = dice_roll(self.acumen, self.hit_dice)
+                    total_damage_to_opponent = math.ceil(damage_to_opponent)
                     print("Your attempt to harness the Quantum Weirdness lacks focus..")
                     sleep(1)
                     print(f"The glowing projectiles take form but do not inflict damage to their fullest potential..")
                     sleep(1)
-                    print(f"{number_of_dice}d4 roll + 1 per die rolled / 2: {damage_to_opponent}\n"
-                          f"{self.acumen}d{self.hit_dice} Damage bonus: {melee_bonus}\n"
+                    print(f"{number_of_dice}d{quantum_die} roll + 1 per die rolled: {damage_to_opponent}\n"
                           f"Total: {total_damage_to_opponent} (ROUNDED)")
                     print(f"They do {total_damage_to_opponent} points of damage..")
                     pause()
@@ -6393,15 +6393,15 @@ class Player:
                         return 0
                 else:
                     number_of_dice = (1 + self.acumen) * critical_bonus
-                    damage_to_opponent = math.ceil((dice_roll(number_of_dice, 6) + (1 * number_of_dice)) / 2)
-                    melee_bonus = dice_roll(self.acumen, self.hit_dice)
-                    total_damage_to_opponent = math.ceil(damage_to_opponent + melee_bonus)
+                    quantum_hit_die = 6
+                    damage_to_opponent = math.ceil((dice_roll(number_of_dice, quantum_hit_die) + (1 * number_of_dice)))
+                    # melee_bonus = dice_roll(self.acumen, self.hit_dice)
+                    total_damage_to_opponent = math.ceil(damage_to_opponent)
                     print("Your attempt to harness the Quantum Weirdness lacks focus..")
                     sleep(1)
                     print(f"The blazing rays take form but do not inflict damage to their fullest potential..")
                     sleep(1)
-                    print(f"{number_of_dice}d6 roll + 1 per die rolled / 2: {damage_to_opponent}\n"
-                          f"{self.level}d{self.hit_dice} bonus: {melee_bonus}\n"
+                    print(f"{number_of_dice}d{quantum_hit_die} roll + 1 per die rolled: {damage_to_opponent}\n"
                           f"Total: {total_damage_to_opponent} (ROUNDED)")
                     print(f"They inflict {total_damage_to_opponent} points of damage..")
                     pause()

@@ -1591,18 +1591,18 @@ class Player:
 
     def __init__(self, name, strength, dexterity, constitution, intelligence, wisdom, charisma):
         self.name = name
-        self.level = 7
-        self.quantum_level = 3
-        self.maximum_quantum_units = 6
+        self.level = 1
+        self.quantum_level = 1
+        self.maximum_quantum_units = 2
         self.quantum_units = self.maximum_quantum_units
         self.encounter = 0
-        self.experience = 23000
+        self.experience = 0
         self.base_dc = 8
         self.gold = 0
-        self.wielded_weapon = GreatAxe()
-        self.armor = ScaleMail()
-        self.shield = KiteShield()
-        self.boots = ElvenBoots()
+        self.wielded_weapon = ShortSword()
+        self.armor = PaddedArmor()
+        self.shield = NoShield()
+        self.boots = LeatherBoots()
         # self.armor_bonus = self.armor.armor_bonus + self.shield.ac + self.boots.ac
         self.strength = strength
         self.strength_modifier = math.floor((self.strength - 10) / 2)
@@ -1617,15 +1617,15 @@ class Player:
         self.charisma = charisma
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.hit_dice = 10
-        self.acumen = 2
-        self.maximum_hit_points = 60  # 10 + self.constitution_modifier
+        self.acumen = 1
+        self.maximum_hit_points = 10 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
         self.is_paralyzed = False
         self.cloak = CanvasCloak()
         self.ring_of_prot = DefaultRingOfProtection()
         self.ring_of_reg = DefaultRingOfRegeneration()
-        self.extra_attack = True
+        self.extra_attack = False
         self.armor_class = (self.armor.ac + self.armor.armor_bonus +
                             self.shield.ac + self.boots.ac + self.dexterity_modifier)
         self.stealth = self.cloak.stealth
@@ -1667,7 +1667,7 @@ class Player:
         self.torbron = TorBron()
         self.magnus = Magnus()
         self.vozzbozz = VozzBozz()
-        self.sikira_ally = True
+        self.sikira_ally = False
         self.torbron_ally = False
         self.magnus_ally = False
         self.vozzbozz_ally = False

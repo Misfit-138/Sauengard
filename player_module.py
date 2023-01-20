@@ -303,7 +303,7 @@ def are_you_sure():
 
 
 def spinner(number_of_spins):
-    # silly little function for a spinning line.
+    # silly little function for a progress spinner.
     spin_cycle = itertools.cycle(['-', '/', '|', '\\'])
 
     for i in range(number_of_spins):
@@ -1716,6 +1716,7 @@ class Player:
         return
 
     def restart(self):
+        # called from self.town_navigation()
         print("Restart..")
         sleep(.5)
         if are_you_sure():
@@ -1727,21 +1728,17 @@ class Player:
         else:
             return False
 
-# def check_if_end_game(self, monster):
-#
-#       if monster.proper_name == "Queen Jannbrielle the Wicked":
-#            return True
-#       else:
-#            return False
-
     def end_game_check(self, monster):
+        # called from main loop
         if monster.proper_name == "Queen Jannbrielle the Wicked":
             self.game_complete = True
             return True
         else:
             return False
 
-    def end_game_routine(self):  # player defeats final boss
+    def end_game_character_condition_resets(self):  # player defeats final boss
+        # called from main loop
+
         # reset calculations
         self.poisoned = False
         self.poisoned_turns = 0
@@ -1757,7 +1754,7 @@ class Player:
 
         # reset to full health:
         self.hit_points = self.maximum_hit_points
-
+        # reset to full quantum units:
         self.quantum_units = self.maximum_quantum_units
 
         # put player back at level 1:
@@ -1770,7 +1767,14 @@ class Player:
         self.position = 0  # self.dungeon.grid[self.y][self.x]
         self.hud()
 
-        """save_a_character = self.name + ".sav"
+    def end_game_routine(self):
+        # called from self.choose_to_play_again()
+        self.game_complete = False  # reset condition for replay
+        mountain_king_theme()
+        teletype(f"Congratulations!\nYou have defeated Wicked Queen Jannbrielle and restored peace to the realm.\n")
+        pause()
+
+        save_a_character = self.name + ".sav"
         p = Path(__file__).with_name(save_a_character)
         same_line_print(f"Saving {self.name}")
         random_floppy_rw_sound()
@@ -1779,9 +1783,40 @@ class Player:
         with p.open('wb') as character_filename:
             pickle.dump(self, character_filename)
             same_line_print(f"{self.name} saved.\n")
-            sleep(2)"""
+            sleep(2)
+
+        cls()
+        teletype_txt_file('credits.txt')
+        pause()
+        cls()
+        teletype_txt_file('credits2.txt')
+        pause()
+        cls()
+        teletype_txt_file('credits3.txt')
+        pause()
+        cls()
+        print(f"\n        Sauengard Copyright 2022, JULES PITSKER  (pitsker@proton.me)\nAll rights reserved\n")
+        pause()
+
+        while True:
+            cls()
+            try_again = input("Do you wish to play again (y/n)? ").lower()
+            if try_again == "y":
+                sleep(1.5)
+                cls()
+                self.in_proximity_to_monster = False
+                self.in_dungeon = False
+                self.in_town = False
+                # player_is_dead = False
+                return True  # return to self.choose_to_play_again() and main loop, which will break and reset game
+            if try_again == "n":
+                print(f"Farewell.")
+                sleep(1.5)
+                cls()
+                sys.exit()
 
     def save_character(self):
+        # called from self.town_navigation()
         save_a_character = self.name + ".sav"
         p = Path(__file__).with_name(save_a_character)
 
@@ -2380,8 +2415,7 @@ class Player:
                     if not self.game_complete:
                         print(f"You savor the empowering augmentation you have gained..\n"
                               f"And yet, the dungeon horde grows more powerful with you!")
-
-                    pause()
+                        pause()
                     self.hud()
 
             self.calculate_modifiers()
@@ -2433,9 +2467,11 @@ class Player:
             self.in_dungeon = False
             self.in_town = False
         else:
-            self.game_complete = False  # reset condition for replay
+            if self.end_game_routine():  # game is completed and player chooses to play again
+                return True
+            '''self.game_complete = False  # reset condition for replay
             mountain_king_theme()
-            print(f"Congratulations!\nYou have defeated Wicked Queen Jannbrielle and restored peace to the realm.\n")
+            teletype(f"Congratulations!\nYou have defeated Wicked Queen Jannbrielle and restored peace to the realm.\n")
             pause()
 
             save_a_character = self.name + ".sav"
@@ -2476,7 +2512,7 @@ class Player:
                 print(f"Farewell.")
                 sleep(1.5)
                 cls()
-                sys.exit()
+                sys.exit()'''
 
     def encounter_logic(self):
         # called from main loop
@@ -5648,7 +5684,7 @@ class Player:
 
     def fire_storm(self, monster):
         # everything but a 1 roll will succeed
-        # on a successful dexterity protection Roll, monster takes 50% damage.
+        # on a successful dexterity protection Roll, monster takes reduced damage.
         quantum_unit_cost = 5
         if self.in_proximity_to_monster:
             if "Fire Storm" not in monster.immunities and "All" not in monster.immunities:
@@ -9206,6 +9242,7 @@ class Player:
         # NAVIGATION
 
     def town_navigation(self):
+        # called from main loop
         if self.town_portal_exists:  # or self.loaded_game:
             town_functions = input("(The Town of Fieldenberg)\n(Quit) to desktop, (S)ave, (R)estart game (I)nventory, "
                                    "(B)lacksmith, (C)hemist , (T)avern, or re-(E)nter dungeon --> ").lower()

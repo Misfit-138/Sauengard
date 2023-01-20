@@ -165,7 +165,7 @@ class Dungeon1(Dungeon):
         self.pit_landing = (1, 14)  # always 1, 14
         self.elite_monster = (99, 99)  # 4, 10
         self.legendary_monster = (99, 99)
-        self.wicked_queen = (99, 99)
+        self.wicked_queen = (6, 17)
         self.exit = (10, 0)
         # S = STAIRCASE C = CORRIDOR, P = PIT-opening, L = PIT LANDING ^ = ELEVATOR V = ELEVATOR LANDING . = OPEN AREA
         self.grid = [

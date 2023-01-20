@@ -84,7 +84,7 @@ Creative Commons Attribution License 3.0 (CC BY 3.0)
 from player_module import cls, town_theme, gong, sleep, pause, teletype, \
     dungeon_command_choices, quit_game, game_start, loading_screen, os_check
 
-os_check()
+# os_check()
 
 
 while True:
@@ -309,7 +309,7 @@ while True:
                                         continue  # should not waste a turn
 
                                     # If monster is successfully turned, stone-petrified, fearful,
-                                    # disintegrated, lost to gravity well or banished, etc., experience is gained,
+                                    # disentangled, lost to gravity well or banished, etc., experience is gained,
                                     # but player gets no gold or loot:
                                     if not player_1.in_proximity_to_monster:
                                         # CALCULATE REGENERATION/POTION OF STR/POISON/NECROSIS/PROT EFFECT:
@@ -358,7 +358,7 @@ while True:
                                         player_1.victory_over_boss_logic()
 
                                         if player_1.end_game_check(monster):  # beta
-                                            player_1.end_game_routine()
+                                            player_1.end_game_character_condition_resets()
                                             game_over = True
                                             player_1.in_proximity_to_monster = False
                                             break
@@ -386,7 +386,7 @@ while True:
                                     player_1.loot()
                                     player_1.victory_over_boss_logic()
                                     if player_1.end_game_check(monster):  # beta
-                                        player_1.end_game_routine()
+                                        player_1.end_game_character_condition_resets()
                                         game_over = True
                                         player_1.in_proximity_to_monster = False
                                         break
@@ -450,7 +450,7 @@ while True:
                                     player_1.victory_over_boss_logic()
 
                                     if player_1.end_game_check(monster):  # beta
-                                        player_1.end_game_routine()
+                                        player_1.end_game_character_condition_resets()
                                         game_over = True
                                         player_1.in_proximity_to_monster = False
                                         break
@@ -477,7 +477,7 @@ while True:
                                     player_1.victory_over_boss_logic()
 
                                     if player_1.end_game_check(monster):  # beta
-                                        player_1.end_game_routine()
+                                        player_1.end_game_character_condition_resets()
                                         game_over = True
                                         player_1.in_proximity_to_monster = False
                                         break

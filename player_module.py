@@ -648,7 +648,7 @@ def game_start():
             random_floppy_rw_sound()
             sleep(2)
             if p.is_file():
-                with p.open('rb') as saved_player:
+                with p.open('rb') as saved_player:  # 'rb'
                     same_line_print(f"{player_name} found")
                     player_1 = pickle.load(saved_player)
                     dot_dot_dot(5)
@@ -1780,7 +1780,7 @@ class Player:
         random_floppy_rw_sound()
         dot_dot_dot(15)
 
-        with p.open('wb') as character_filename:
+        with p.open('wb') as character_filename:  # 'wb'
             pickle.dump(self, character_filename)
             same_line_print(f"{self.name} saved.\n")
             sleep(2)
@@ -1835,7 +1835,7 @@ class Player:
         same_line_print(f"Saving {self.name}")
         random_floppy_rw_sound()
         dot_dot_dot(15)
-        with p.open('wb') as character_filename:
+        with p.open('wb') as character_filename:  # 'wb'
             pickle.dump(self, character_filename)
             same_line_print(f"{self.name} saved.\n")
             sleep(2)

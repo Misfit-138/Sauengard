@@ -2696,13 +2696,9 @@ class Player:
             monster.hit_points += self.vozzbozz.hit_points
             monster.experience_award = round(monster.experience_award * 1.25)
 
-        # if self. sikira_ally or self.torbron_ally or self.magnus_ally or self.vozzbozz_ally:
-        #    if monster.number_of_hd < self.level:
-        #        monster.number_of_hd = self.level
-            # if monster.hit_dice < self.hit_dice:
-            #    monster.hit_dice = self.hit_dice
+        if self. sikira_ally or self.torbron_ally or self.magnus_ally or self.vozzbozz_ally:
+            monster.name = f"{monster.name} Dreadnought"
 
-        monster.name = f"{monster.name} Dreadnought"
         return monster
 
     def wicked_queen_generator(self):

@@ -744,13 +744,13 @@ class Gnoll(Monster):
         self.gold = random.randint(0, 1)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor_name = "chainmail shirt"
-        self.strength = random.randint(4, 6)
-        self.dexterity = random.randint(16, 17)
-        self.constitution = random.randint(8, 10)
-        self.intelligence = random.randint(6, 8)
-        self.wisdom = random.randint(9, 10)
-        self.charisma = random.randint(9, 11)
-        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength = 5
+        self.dexterity = 16
+        self.constitution = 8
+        self.intelligence = 6
+        self.wisdom = 9
+        self.charisma = 9
+        self.evil_bonus = 1
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -785,7 +785,9 @@ class Gnoll(Monster):
         self.introduction = f"You have encountered a Gnoll; A sawed-off, unnatural humanoid dungeon lurker, driven " \
                             f"by basic instincts of necessity.\nLike its Kobold cousins, it skulks about, in search " \
                             f"of food and supplies which can be procured by any means.\nIt stands before you, in an " \
-                            f"ill-fitting shirt of chain mail."
+                            f"ill-fitting shirt of chain mail. With its large, protruding muzzle and almond-shaped\n" \
+                            f"eyes, you cannot help but be reminded of a mallard duck, but one with " \
+                            f"much more murderous intent."
 
 
 class Kobold(Monster):
@@ -798,17 +800,17 @@ class Kobold(Monster):
         self.he_she_it = "it"
         self.his_her_its = "its"
         self.him_her_it = "it"
-        self.experience_award = 25
+        self.experience_award = 30
         self.gold = random.randint(1, 3)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor_name = "scaly flesh"
-        self.strength = random.randint(6, 8)
-        self.dexterity = random.randint(14, 15)
-        self.constitution = random.randint(8, 10)
-        self.intelligence = random.randint(7, 8)
-        self.wisdom = random.randint(7, 8)
-        self.charisma = random.randint(7, 8)
-        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength = 7
+        self.dexterity = 14
+        self.constitution = 10
+        self.intelligence = 8
+        self.wisdom = 8
+        self.charisma = 8
+        self.evil_bonus = 1
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -840,7 +842,7 @@ class Kobold(Monster):
         self.attack_4_phrase = "With blinding speed, it kicks with its horrid claws.."
         self.attack_5 = 3
         self.attack_5_phrase = "It whips its tail!"
-        self.introduction = f"You have encountered a {self.name}. A short, reptilian creature with orange eyes\n" \
+        self.introduction = f"You have encountered a {self.name}. A short, scaly creature with greenish eyes\n" \
                             f"and skin. Its ragged tunic looks more like a robe on its tiny frame; you have no " \
                             f"doubt\n" \
                             f"it was stolen from an unwary adventurer. Its tail stands up as it retrieves a dagger\n" \
@@ -977,9 +979,9 @@ class WingedKobold(Monster):
         self.gold = random.randint(1, 5)  # self.level * 273 * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor_name = "jagged scales"
-        self.strength = random.randint(6, 8)
-        self.dexterity = random.randint(15, 17)
-        self.constitution = random.randint(8, 10)
+        self.strength = 8
+        self.dexterity = 16
+        self.constitution = 9
         self.intelligence = random.randint(8, 10)
         self.wisdom = random.randint(6, 8)
         self.charisma = random.randint(6, 8)
@@ -1034,7 +1036,7 @@ class Shadow(Monster):
         self.gold = random.randint(0, 1)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 0
         self.armor_name = "unnatural armor"
-        self.strength = random.randint(5, 6)
+        self.strength = 7
         self.dexterity = random.randint(13, 15)
         self.constitution = random.randint(12, 14)
         self.intelligence = random.randint(5, 7)
@@ -1102,12 +1104,12 @@ class Shadow(Monster):
                                "cloud of dark Quantum energy.."
 
 
-class ShadowKing(Monster):
+class MorbidKing(Monster):
 
     def __init__(self):
         super().__init__()
         self.level = 2
-        self.name = "Shadow King"
+        self.name = "Morbid King"
         self.proper_name = "None"
         self.he_she_it = "he"
         self.his_her_its = "his"
@@ -1116,13 +1118,13 @@ class ShadowKing(Monster):
         self.gold = random.randint(5, 10)  # 200 + round(random.uniform(1, 100)) * round(random.uniform(1, 2))
         self.weapon_bonus = 5
         self.armor_name = "unnatural armor"
-        self.strength = random.randint(7, 8)
-        self.dexterity = random.randint(13, 15)
-        self.constitution = random.randint(12, 14)
-        self.intelligence = random.randint(5, 7)
+        self.strength = 15
+        self.dexterity = 15
+        self.constitution = 15
+        self.intelligence = 15
         self.wisdom = 14
-        self.charisma = random.randint(7, 8)
-        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.charisma = 10
+        self.evil_bonus = 3
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -5546,4 +5548,4 @@ undead_monster_dict = {
 }
 # boss lists
 undead_prophet_list = [ZombieProphet(), SkeletalProphet()]
-king_boss_list = [SkeletonKing(), ShadowKing(), SpecterKing()]
+king_boss_list = [SkeletonKing(), MorbidKing(), SpecterKing()]

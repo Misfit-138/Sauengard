@@ -153,10 +153,9 @@ class Dungeon1(Dungeon):
         self.staircase = (6, 18)
         self.treasure_chest = (3, 16)
         self.quantum_treasure_chest = (99, 99)
-        self.encounter_sikira = (99, 99)
-        self.altar = (99, 99)
+        self.altar = (6, 7)
         self.throne = (99, 99)
-        self.fountain = (99, 99)
+        self.fountain = (10, 5)
         self.teleporter = (99, 99)
         self.teleporter_landing = (99, 99)
         self.elevator = (4, 18)
@@ -165,9 +164,12 @@ class Dungeon1(Dungeon):
         self.pit_landing = (1, 14)  # always 1, 14
         self.elite_monster = (99, 99)  # 4, 10
         self.legendary_monster = (99, 99)
-        self.wicked_queen = (6, 17)
+        # self.encounter_sikira = (99, 99)
+        # self.wicked_queen = (99, 99)
         self.exit = (10, 0)
+        # following are just for human-readable purposes. program ignores all values except "*", which represent walls
         # S = STAIRCASE C = CORRIDOR, P = PIT-opening, L = PIT LANDING ^ = ELEVATOR V = ELEVATOR LANDING . = OPEN AREA
+        # F = FOUNTAIN
         self.grid = [
             # 0    1    2    3    4    5    6    7    8    9   10    11   12   13   14   15   16   17   18   19
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "E", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 0
@@ -175,16 +177,16 @@ class Dungeon1(Dungeon):
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", ".", ".", "*", "*", "*", "*", "*", "*", "*", "*"],  # 2
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", ".", ".", "*", "*", "*", "*", "*", "*", "*", "*"],  # 3
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "C", "*", "*", "*", "*", "*", "*", "*", "*"],  # 4
-            ["*", "*", "*", "*", "*", "C", "C", "C", "V", "C", "C", "C", "*", "*", "*", "*", "*", "*", "*", "*"],  # 5
+            ["*", "*", "*", "*", "*", "C", "C", "C", "V", "C", "F", "C", "*", "*", "*", "*", "*", "*", "*", "*"],  # 5
             ["*", "*", "*", "*", "*", "C", "*", "*", "*", "*", "C", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 6
-            ["*", "*", "*", "*", "*", "C", "C", "C", "*", "*", "P", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 7
-            ["*", "*", "*", "*", "*", "*", "*", "C", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 8
+            ["*", "*", "*", "*", "*", "C", ".", ".", "*", "*", "P", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 7
+            ["*", "*", "*", "*", "*", "*", ".", ".", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 8
             ["*", "*", "*", "*", "*", "*", "*", "C", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 9
             ["*", "*", "*", "*", "*", "*", "*", "C", "C", "C", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 10
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "C", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 11
             ["*", "*", "*", "*", "*", "*", ".", ".", "C", "C", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 12
             ["*", "*", "*", "*", "*", "*", ".", ".", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 13
-            ["*", "L", "C", ".", ".", "*", ".", ".", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 14
+            ["*", "L", "C", ".", ".", "*", "*", "C", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 14
             ["*", "C", "*", ".", ".", "*", "*", "C", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 15
             ["*", "C", "*", ".", ".", "*", "C", "C", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 16
             ["*", "C", "*", "*", ".", "*", "C", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 17
@@ -228,37 +230,41 @@ class Dungeon2(Dungeon):
         self.name = "The Abandoned Dwarf Tunnels"
         self.casual_name = "the abandoned tunnels"
         self.level = 2
-        self.barrier_name = "a wall of cut stone"
-        self.barrier_name_plural = "walls of cut stone"
+        self.barrier_name = "a wall of volcanic rock"
+        self.barrier_name_plural = "walls of cut volcanic rock"
         self.pit_barrier_name = "a wall of moist earth"
-        self.pit_barrier_name_plural = "walls of moist earth"
-        self.corridor_phrase = f"This is a corridor of {self.casual_name}."
+        self.pit_barrier_name_plural = "walls of foul, moist earth"
+        self.corridor_phrase = f"This is a corridor of Dwarven masonry."  # of {self.casual_name}
         self.corridor_name = f"a tunneled corridor"
         self.pit_description_phrase = f"Slime covers the ground beneath your feet, and a putrid mist fills the air."
         self.pit_corridor_phrase = "You are in a narrow passage."
         self.pit_corridor_name = "a cramped passage"
         self.intersection_name = "a domed chamber"
         self.pit_intersection_name = "a large, open cavity"
-        self.large_atrium_phrase = "You are standing in a large, vaulted atrium."
-        self.one_walled_atrium_phrase = "You are standing in an atrium."
+        self.large_atrium_phrase = "You are standing in a large, vaulted atrium built by the Dwarves long ago.\n"
+        self.one_walled_atrium_phrase = "You are standing in an atrium built by the Dwarves long ago."
         self.pit_large_atrium_phrase = "You are standing in a large cavity opening."
         self.pit_one_walled_atrium_phrase = "You are standing in a cavity opening."
         self.staircase = (7, 12)
-        self.treasure_chest = (2, 14)
-        self.quantum_treasure_chest = (1, 2)
-        self.altar = (1, 2)
-        self.throne = (2, 3)
-        self.fountain = (3, 3)
-        self.teleporter = (4, 3)
-        self.teleporter_landing = (1, 3)
-        self.elevator = (4, 18)
-        self.elevator_landing = (5, 5)
-        self.pit = (1, 4)
+        self.treasure_chest = (18, 6)
+        self.quantum_treasure_chest = (18, 11)
+        self.altar = (12, 10)
+        self.throne = (3, 9)
+        self.fountain = (3, 10)
+        self.teleporter = (99, 99)
+        self.teleporter_landing = (99, 99)
+        self.elevator = (99, 99)
+        self.elevator_landing = (8, 6)
+        self.pit = (10, 7)
         self.pit_landing = (1, 14)
-        self.elite_monster = (99, 99)  # 4, 10
+        self.elite_monster = (14, 11)  # 4, 10
         self.legendary_monster = (99, 99)
+        self.encounter_sikira = (99, 99)
         self.wicked_queen = (99, 99)
-        self.exit = (10, 0)
+        self.exit = (19, 8)
+        # following are just for human-readable purposes. program ignores all values except "*", which represent walls
+        # S = STAIRCASE C = CORRIDOR, P = PIT-opening, L = PIT LANDING ^ = ELEVATOR V = ELEVATOR LANDING . = OPEN AREA
+        # F = FOUNTAIN
         self.grid = [
             # 0    1    2    3    4    5    6    7    8    9   10    11   12   13   14   15   16   17   18   19
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 0
@@ -311,30 +317,44 @@ class Dungeon2(Dungeon):
 class Dungeon3(Dungeon):
     def __init__(self):
         super().__init__()
-        self.name = "The Deep Catacombs"
+        self.name = "The Deep Realms"
         self.level = 3
-        self.barrier_name = "wall of slick, black stone"
-        self.barrier_name_plural = "walls of slick, black stone"
-        self.treasure_chest = (2, 14)
-        self.quantum_treasure_chest = (1, 2)
-        self.altar = (1, 2)
-        self.throne = (2, 3)
-        self.throne2 = (2, 4)
-        self.fountain = (3, 3)
-        self.fountain2 = (3, 4)
-        self.teleporter = (4, 3)
-        self.teleporter2 = (4, 4)
-        self.teleporter_landing = (1, 3)
-        self.staircase = (1, 3)  # same as start...get rid of start?
-        self.elevator = (5, 4)
-        self.elevator_landing = (5, 5)
-        self.pit = (1, 4)
-        self.pit2 = (1, 5)
-        self.pit_landing = (1, 6)
-        # self.start = (7, 1)
+        self.barrier_name = "a wall of limestone"
+        self.barrier_name_plural = "walls of eroded limestone"
+        self.pit_barrier_name = "a wall of moist earth"
+        self.pit_barrier_name_plural = "walls of moist earth"
+        self.corridor_phrase = f"This is a passage of eroded, shiny limestone.\n"  # of {self.casual_name}
+        self.corridor_name = f"a tunnel formed by the dissolution of limestone"
+        self.pit_description_phrase = f"The ground is covered in running water and streamed with colorful minerals."
+        self.pit_corridor_phrase = "You are in a round, jagged tunnel with shallow water at your feet."
+        self.pit_corridor_name = "a cramped passage"
+        self.intersection_name = "a domed chamber"
+        self.pit_intersection_name = "a large, open cavity"
+        self.large_atrium_phrase = "You are standing in a vast, naturally-formed cavity spotted with pools of\n" \
+                                   "water and stalactites.\n"
+        self.one_walled_atrium_phrase = "You are standing in a cramped, naturally-formed cavity."
+        self.pit_large_atrium_phrase = "You are standing in a large, open cavity."
+        self.pit_one_walled_atrium_phrase = "You are standing in a cavity formed of clay and rock."
+        self.staircase = (1, 3)
+        self.treasure_chest = (3, 16)
+        self.quantum_treasure_chest = (1, 18)
+        self.altar = (11, 18)
+        self.throne = (13, 12)
+        self.fountain = (16, 3)
+        self.teleporter = (99, 99)
+        self.teleporter_landing = (99, 99)
+        self.elevator = (1, 17)
+        self.elevator_landing = (5, 3)
+        self.pit = (7, 1)
+        self.pit_landing = (1, 14)  # always 1, 14
+        self.elite_monster = (4, 10)  # 4, 10
+        self.legendary_monster = (11, 1)
+        self.encounter_sikira = (11, 5)
+        self.wicked_queen = (99, 99)
         self.exit = (19, 3)
-        # self.starting_x = 7
-        # self.starting_y = 1
+        # following are just for human-readable purposes. program ignores all values except "*", which represent walls
+        # S = STAIRCASE C = CORRIDOR, P = PIT-opening, L = PIT LANDING ^ = ELEVATOR V = ELEVATOR LANDING . = OPEN AREA
+        # F = FOUNTAIN
         self.grid = [
             # 0    1    2    3    4    5    6    7    8    9   10    11   12   13   14   15   16   17   18   19
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 0
@@ -351,11 +371,11 @@ class Dungeon3(Dungeon):
             ["*", "*", "*", "*", "*", "C", "*", "*", "C", "*", "*", "C", "*", "*", "*", "*", "*", "*", "C", "*"],  # 11
             ["*", "*", "*", "*", "*", "C", "C", "*", "C", "C", "*", "C", "C", ".", ".", "*", "*", ".", ".", "*"],  # 12
             ["*", "*", "*", "*", "*", "*", "C", "*", "*", "C", "*", "*", "*", ".", ".", "*", "*", ".", ".", "*"],  # 13
-            ["*", "C", "C", ".", ".", "*", "C", "*", "*", "C", "*", "C", "C", ".", ".", "*", "*", ".", ".", "*"],  # 14
-            ["*", "C", "*", ".", ".", "*", "C", "*", ".", ".", "*", "C", "*", "*", "C", "*", "*", ".", ".", "*"],  # 15
-            ["*", "C", "*", ".", ".", "*", "C", "*", ".", ".", "*", "C", "*", "*", "C", "*", "*", ".", ".", "*"],  # 16
-            ["*", "C", "*", "*", "C", "*", "C", "*", "*", "C", "*", "C", "*", "*", "C", "*", "*", ".", ".", "*"],  # 17
-            ["*", "C", "C", "C", "L", "*", "C", "C", "C", "C", "C", "C", "C", "C", "C", "*", ".", ".", ".", "*"],  # 18
+            ["*", "L", "*", "*", "*", "*", "C", "*", "*", "C", "*", "C", "C", ".", ".", "*", "*", ".", ".", "*"],  # 14
+            ["*", "C", "C", "C", "C", "*", "C", "*", ".", ".", "*", "C", "*", "*", "C", "*", "*", ".", ".", "*"],  # 15
+            ["*", "*", "*", "*", "C", "*", "C", "*", ".", ".", "*", "C", "*", "*", "C", "*", "*", ".", ".", "*"],  # 16
+            ["*", "^", "*", "*", "C", "*", "C", "*", "*", "C", "*", "C", "*", "*", "C", "*", "*", ".", ".", "*"],  # 17
+            ["*", "C", "C", "C", "C", "*", "C", "C", "C", "C", "C", "C", "C", "C", "C", "*", ".", ".", ".", "*"],  # 18
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"]]  # 19
         self.player_grid = [
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
@@ -381,7 +401,7 @@ class Dungeon3(Dungeon):
         # the intro is similar to the staircase description. however, the intro is more of an active description
         self.intro = "You find yourself at the bottom of a deep, spiral staircase..\n" \
                      "The echo from the door above being locked behind you still echoes throughout the emptiness.\n" \
-                     "This is the entrance of the deepest catacombs. The gloom and stench of filth surround you."
+                     "This is the entrance of the deepest catacombs. Murk and disturbing shadows surround you."
 
 
 dungeon_dict = {1: Dungeon1(),

@@ -84,7 +84,7 @@ Creative Commons Attribution License 3.0 (CC BY 3.0)
 from player_module import cls, town_theme, gong, sleep, pause, teletype, \
     dungeon_command_choices, quit_game, game_start, loading_screen, os_check
 
-# os_check()  # restore after testing
+# os_check()
 
 
 while True:

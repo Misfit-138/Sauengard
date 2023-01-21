@@ -1650,7 +1650,7 @@ class Player:
         self.necrotic_turns = 0
         self.dot_multiplier = 1
         self.dot_turns = 1
-        self.current_dungeon_level = 1
+        # self.current_dungeon_level = 1
         self.dungeon_key = 1
         self.dungeon = dungeon_dict[self.dungeon_key]
         self.discovered_interactives = []
@@ -2702,7 +2702,7 @@ class Player:
             # if monster.hit_dice < self.hit_dice:
             #    monster.hit_dice = self.hit_dice
 
-        monster.name = f"Elite {monster.name}"
+        monster.name = f"{monster.name} Dreadnought"
         return monster
 
     def wicked_queen_generator(self):
@@ -8641,7 +8641,7 @@ class Player:
                 difficulty_class = 14
                 remove_gold_roll = dice_roll(1, 20)
                 if remove_gold_roll + self.intelligence_modifier > difficulty_class:
-                    gold_value = (random.randint(1, 5) * self.dungeon.level)
+                    gold_value = (random.randint(7, 10) * self.dungeon.level) * self.acumen
                     print(f"The sculpture comes out, though not without difficulty or damage.")
                     sleep(1)
                     print(f"It is worth {gold_value} GP!")
@@ -8711,7 +8711,7 @@ class Player:
                 difficulty_class = 12
                 pry_roll = dice_roll(1, 20)
                 if pry_roll > difficulty_class:
-                    gem_value = (random.randint(1, 15) * self.dungeon.level)
+                    gem_value = (random.randint(7, 15) * self.dungeon.level) * self.acumen
                     print(f"They pop out into your greedy hands!")
                     sleep(1.5)
                     print(f"They are worth {gem_value} GP!")

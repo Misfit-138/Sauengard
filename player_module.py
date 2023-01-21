@@ -2683,7 +2683,7 @@ class Player:
         return monster
 
     def monster_booster(self, monster):
-        # called from monster generators.
+        # called from monster_generators
         if self.sikira_ally:
             monster.hit_points += self.sikira.hit_points
             monster.experience_award = round(monster.experience_award * 1.25)

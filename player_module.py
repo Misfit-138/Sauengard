@@ -9842,7 +9842,7 @@ class Player:
         self.previous_y = self.y
 
     def dungeon_description(self):
-        # meta-function called from navigation() and main loop
+        # meta-function called from navigation() and main loop.
         self.hud()
         north_south = ""
         east_west = ""

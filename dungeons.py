@@ -119,6 +119,7 @@ class Dungeon:
         self.pit_landing = (0, 0)
         self.elite_monster = (0, 0)  # 4, 10
         self.legendary_monster = (0, 0)
+        self.encounter_deaf_one_1 = (0, 0)
         self.wicked_queen = (0, 0)
         self.exit = (0, 0)
         self.grid = []
@@ -164,6 +165,7 @@ class Dungeon1(Dungeon):
         self.pit_landing = (1, 14)  # always 1, 14
         self.elite_monster = (99, 99)  # 4, 10
         self.legendary_monster = (99, 99)
+        self.encounter_deaf_one_1 = (6, 17)
         # self.encounter_sikira = (99, 99)
         # self.wicked_queen = (99, 99)
         self.exit = (10, 0)

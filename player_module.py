@@ -7570,8 +7570,12 @@ class Player:
                 print(f"The barroom is bustling as always, but Jenna, the barkeep, notices you and calls over,\n"
                       f"very matter-of-factly, \"What do ye be needin' love?\"")
 
-            inn_choice = input(f"(R)oom for the evening - 10 GP\n(T)alk to Jenna\n(E)xit the inn\n"
+            inn_choice = input(f"(R)oom for the evening - 10 GP\n(E)xit the inn\n"
                                f"--> ").lower()
+
+            if self.dungeon.level == 1:
+                inn_choice = input(f"(R)oom for the evening - 10 GP\n(T)alk to Jenna\n(E)xit the inn\n"
+                                   f"--> ").lower()
 
             if inn_choice == 'r':
 
@@ -8970,6 +8974,13 @@ class Player:
         print(f"High above you is a wide, gaping hole leading up to "
               f"{self.dungeon.name}.")
 
+    def deaf_one_fog_remnant_description(self):
+        # called from dungeon_description()
+        # a description of the area where deaf one was, if he has been discovered on current dungeon level
+        deaf_one_discovery = f"level {self.dungeon.level} deaf_one"
+        if deaf_one_discovery in self.discovered_interactives:
+            print(f"There is a lingering remnant of fog and a marshy smell here.")
+
     def elevator_landing_description(self):
         # called from dungeon_description()
         # this is a 'description' of the elevator landing.
@@ -9112,12 +9123,69 @@ class Player:
         else:  # player has no NPC allies
             return
 
+    def encounter_deaf_one_event1(self):
+        # called from event_logic()
+        deaf_one_discovery = f"level {self.dungeon.level} deaf_one"
+        random_orientation_lst = ["north", "south", "east", "west"]
+        random_orientation = random.choice(random_orientation_lst)
+        if deaf_one_discovery not in self.discovered_interactives:
+            self.discovered_interactives.append(deaf_one_discovery)
+            self.hud()
+            teletype(f"From the {random_orientation}, a seemingly autonomous, marshy, and knee-deep fog stretches "
+                     f"toward you from out of the mire\nas a dark, humanoid silhouette begins to emerge. "
+                     f"With elongated, troll-like nose and ears, and deep-set eyes shrouded in black,\n"
+                     f"the whites of which shine with a luminescence as brilliant as any moon you have ever beheld. "
+                     f"\nHis garb is a mere patchwork of cloth strip wrappings, as though he were once "
+                     f"mummified. His exposed flesh is gray and lifeless,\nand his long, dark hair is a dreaded tangle."
+                     f" Drawing your {self.wielded_weapon.name}, you attack!\n")
+            pause()
+            self.hud()
+            teletype(f"Your weapon strikes his left arm and splinters into shards of white-hot steel! Unaffected and "
+                     f"dismissive, he opens his palm,\nand your {self.wielded_weapon.name} re-appears, completely "
+                     f"restored! He hands it to you with a nod.\n")
+            pause()
+            self.hud()
+            teletype(f"'Be at ease, {self.name}.', he says in a smooth, even tone. 'I am not an enemy, and I cannot "
+                     f"be harmed by such weapons.'\n'Who are you?', you insist.\nHe regards your question for a brief "
+                     f"moment before saying, 'You may call me Deaf One'.\n'Deaf One?', You blurt out, almost "
+                     f"involuntarily.\nWith a nod, he answers in a subdued, faraway voice, 'Though hearing, I hear "
+                     f"in vain..'\nStill on your guard, yet feeling powerless in contrast to his obvious "
+                     f"invulnerability, you begin to explain your quest.\n'Yes, I know why you are here.', "
+                     f"he interrupts, plainly. "
+                     f"'I am here', he pauses, 'to guide you. The exit of this dungeon is guarded\nby an enemy you "
+                     f"are not yet prepared to face.'\n")
+            pause()
+            self.hud()
+            teletype(f"Thinking back to your training, you recall Gorndam's words and warnings about physical power "
+                     f"and its limitations in the face\nof mighty foes.\n'Your teacher was correct', Deaf one states "
+                     f"with inexplicable context and knowledge, 'you must pursue and hone your innane\n"
+                     f"understanding of the Quantum nature of our world.'\n")
+            pause()
+            self.hud()
+            teletype(f"'Is it not too late for training, now that I am here?', you ask.\nPatiently, he responds, "
+                     f"'I will ask you to simply ponder this question. Ask yourself if Uncertainty is essentially\n"
+                     f"ontological, or, epistemological.'\n'Ontological..?', you begin.\n'Yes, is "
+                     f"Quantum Uncertainty simply a feature of our reality, rather than a relection\nof the "
+                     f"limitations of our knowledge, or is it epistemological; fundamentally due to our own "
+                     f"Uncertainty of Quantum Nature?'\n")
+            pause()
+            self.hud()
+            teletype(f"'That is quite a concept to ponder..', you respond, rather incredulously.\n"
+                     f"'Indeed.', he says, 'This question is at the heart of your advancement. It is the concept "
+                     f"which will either\nfacilitate or prevent your comprehension of Weirdness.'\n'It is the principle"
+                     f" which must be embraced, and never understood.', he concludes."
+                     f"\nBefore you can respond with the myriad of "
+                     f"questions in your mind, the marshy fog envelopes Deaf One,\nand his form becomes "
+                     f"obscured with its whisperings until he is simply gone, along with the cold, creeping mist.\n")
+            pause()
+
     def encounter_sikira_event(self):
         # called from event_logic()
         ally_discovery = f"level {self.dungeon.level} ally"
         rndm_orientation_lst = ["left", "right", "rear"]
         rndm_orientation = random.choice(rndm_orientation_lst)
         if ally_discovery not in self.discovered_interactives:
+            self.discovered_interactives.append(ally_discovery)
             # this is really an unnecessary check, but I decided to include it
             # just in case I forget to make level 21 monsters.
             if self.level < 20:
@@ -9219,6 +9287,7 @@ class Player:
         self.coordinates = (self.x, self.y)
         event_dict = {self.dungeon.quantum_treasure_chest: self.quantum_treasure_chest_event,
                       self.dungeon.encounter_sikira: self.encounter_sikira_event,
+                      self.dungeon.encounter_deaf_one_1: self.encounter_deaf_one_event1,
                       self.dungeon.treasure_chest: self.treasure_chest_event,
                       self.dungeon.altar: self.altar_event,
                       self.dungeon.throne: self.throne_event,
@@ -9803,7 +9872,8 @@ class Player:
             self.teleporter_landing_description()
         if self.coordinates == self.dungeon.pit_landing:
             self.pit_landing_description()
-
+        if self.coordinates == self.dungeon.encounter_deaf_one_1:
+            self.deaf_one_fog_remnant_description()
         # self.coordinates = (self.x, self.y)  # commented out. seems to be unnecessary at this point in program.
 
         # print out dungeon level and coordinates before returning

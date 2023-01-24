@@ -1758,6 +1758,7 @@ class Player:
         self.quantum_units = self.maximum_quantum_units
 
         # put player back at level 1:
+        self.town_portal_exists = True  # transport player back to town. on replay, player will re-enter portal
         self.dungeon_key = 1
         self.dungeon = dungeon_dict[self.dungeon_key]
         (self.x, self.y) = self.dungeon.staircase
@@ -7317,15 +7318,19 @@ class Player:
 
     def use_scroll_of_town_portal(self):
         if self.town_portals < 1:
-            print(f"You have no scrolls!")
+            self.hud()
+            print(f"You have no scrolls of town portal!")
             sleep(1.25)
+            self.hud()
             return False
         else:
             self.hud()
             self.town_portals -= 1
             random_floppy_rw_sound()
-            print(f"The quantum portal appears before you; a seemingly impossible tunneling between distant places..")
-            sleep(3.0)
+            same_line_print(f"The quantum portal appears before you; a seemingly impossible tunneling between distant "
+                            f"places..")
+            dot_dot_dot(15)
+            sleep(1.5)
             return True
 
     def poison_ingestion(self):
@@ -7367,8 +7372,9 @@ class Player:
             pause()
             return self.potion_of_strength_effect
         else:
-            print(f"You have no potions!")
-            pause()
+            print(f"You have no potions of giant strength!")
+            sleep(1)
+            self.hud()
             return False
 
     def hint_event_1(self):
@@ -7656,6 +7662,7 @@ class Player:
             if not self.poisoned:
                 print(f"You are not poisoned!")
                 sleep(1)
+                self.hud()
                 return False  # false means you do NOT use a turn
             else:
                 print(f"You retrieve the amber vial from your belt and eagerly drain its contents into your mouth...")
@@ -7674,6 +7681,7 @@ class Player:
         else:
             print(f"You have no vials of antidote!")
             sleep(1)
+            self.hud()
             return False  # False means you do NOT use a turn
 
     def drink_elixir(self):
@@ -7683,6 +7691,7 @@ class Player:
             if not self.necrotic:
                 print(f"Your flesh is not corrupted!")
                 sleep(1)
+                self.hud()
                 return False  # false means you do NOT use a turn
             else:
                 print(f"You retrieve the emerald vial from your belt and eagerly drain its contents into your mouth...")
@@ -7700,6 +7709,7 @@ class Player:
         else:
             print(f"You have no elixirs!")
             sleep(1)
+            self.hud()
             # pause()
             return False  # False means you do NOT use a turn
 
@@ -7711,6 +7721,7 @@ class Player:
             if self.hit_points >= self.maximum_hit_points:
                 print(f"You are already at maximum health!")
                 sleep(1)
+                self.hud()
                 return False  # False means you don't waste a turn
             else:
                 print(f"You retrieve the vial from your belt and eagerly drain its contents into your mouth...")
@@ -7729,8 +7740,9 @@ class Player:
                 pause()
                 return True  # True means you use up a turn
         else:
-            print("You have no potions!")
-            pause()
+            print("You have no potions of healing!")
+            sleep(1)
+            self.hud()
             return False  # False means you don't waste a turn
 
     def duplicate_item(self, item_type, possible_duplicate):
@@ -8962,7 +8974,7 @@ class Player:
         if self.dungeon.level > 1:
             previous_place = f"dungeon level {self.dungeon.level - 1}"
         else:
-            previous_place = f"the town of Fieldenberg"
+            previous_place = f"the Dark Mountain entrance"
         print(f"The stairs lead up to {previous_place}. However, there is no returning;\n"
               f"The door has been locked and barricaded. You must continue onward!")
 
@@ -9355,8 +9367,11 @@ class Player:
                 same_line_print(f"You re-enter the portal.")
 
             else:
-                same_line_print("You make your descent.")
+                sad_cello_theme()
+                teletype_txt_file('first_descent.txt')
+                pause()
             random_floppy_rw_sound()
+            loading_screen()
             dot_dot_dot(15)
             return 'e'
 

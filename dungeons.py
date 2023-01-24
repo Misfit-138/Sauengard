@@ -216,14 +216,14 @@ class Dungeon1(Dungeon):
             [".", ".", ".", ".", ".", ".", "S", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."],
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]]
         # the intro is similar to the staircase description. however, the intro is called first and is more active
-        self.intro = "You descend the crumbling steps of a deep, spiral staircase, finding yourself in a dense,\n" \
-                     "dark atmosphere more oppressive than any you have ever known. Taking a moment to adjust to the " \
-                     "thick gloom,\n" \
-                     "you hear a disturbance from above, as the great door is slammed and barred shut!\n" \
-                     "As the echoes throughout the emptiness linger, you hear the muffled scraping of a mighty " \
-                     "chain\n" \
-                     "being quickly wrestled into place, and finally, locked and released with a thud.\n" \
-                     "Blackness and the stench of filth surround you.  BEWARE . . .\n"
+        self.intro = "Pressing onward, you soon come to a domed, circular chamber, with a large, spiral " \
+                     "staircase at the center.\n" \
+                     "You descend the steep, crumbling steps, finding yourself in a dense, " \
+                     "dark atmosphere more oppressive\nthan any you have ever known. Taking a moment to adjust to " \
+                     "the thick gloom, you hear a disturbance\nfrom above, as the great doors are slammed and " \
+                     "barred shut! As the echoes throughout the emptiness linger,\nyou hear the muffled scraping of " \
+                     "a mighty chain being quickly wrestled into place, and finally,\nlocked and released with a" \
+                     " thud. Blackness and the stench of filth surround you.\n\nBEWARE . . .\n\n"
 
 
 class Dungeon2(Dungeon):

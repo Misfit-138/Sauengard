@@ -7327,7 +7327,7 @@ class Player:
             self.hud()
             self.town_portals -= 1
             random_floppy_rw_sound()
-            same_line_print(f"The quantum portal appears before you; a seemingly impossible tunneling between distant "
+            same_line_print(f"The quantum portal appears before you; an impossible tunneling between distant "
                             f"places..")
             dot_dot_dot(15)
             sleep(1.5)

@@ -7490,6 +7490,13 @@ class Player:
               f"in his smooth tone. Off to your left, Vozzbozz sits in his regular booth, across from a proud-looking\n"
               f"and rather stout dwarf.")
         sleep(1)
+        if self.sikira_ally:
+            print(f"'Your friends await you.', says Si'Kira in disinterest.\n"
+                  f"'Join us, will you?', you ask, invitingly, as you gesture to the booth.\n"
+                  f"Shaking her head and striding toward the bar she says, 'I choose my own friends.'")
+            pause()
+            cls()
+
         print(f"You approach the booth, and as you arrive, Lazarus deftly glides to Vozzbozz' shoulder.")
         pause()
         cls()
@@ -7508,6 +7515,31 @@ class Player:
         teletype_txt_file('hint_event_3.txt')
         pause()
         cls()
+        if self.sikira_ally:
+            teletype(f"'The Dark She-Elf makes five..', interjects the bird.\n"
+                     f"Magnus briefly looks at Lazarus, and you suddenly deduce it has been the raven who has been "
+                     f"eavesdropping in the dungeon\ndepths below and reporting on your victories all this time.\n"
+                     f"Motioning to Si'Kira, he says, 'Ye think yer friend there will lend her sword?'" 
+                     f"With a smirk, you respond immediately, 'Without a doubt.'")
+
+        teletype(f"Magnus looks at you gravely. 'We will be meeting with Tor'Bron topside, and then joining"
+                 f"you. Very soon.'\n"
+                 f"'Well then, until we meet again..', you say, draining your mug.\n"
+                 f"'Until then!', your companions say in unison as they drink. You rise to your feet and "
+                 f"approach the bar.")
+        pause()
+        cls
+        if self.sikira_ally:
+            print(f"With a tall mug in a smooth, slender hand, Si'Kira remarks, 'That was quick. I have not yet "
+                  f"finished my ale!'\nYou ignore the pressing urgency which weighs on you and respond, 'Please, "
+                  f"take your time. In fact, I will join you.'\nJenna glides over and slams a mug on the bar. "
+                  f"You regard your beautiful companion for a moment,\nand try to ignore the hint of suspicion "
+                  f"surrounding her. Thus far she has been a worthy ally,\nbut you remain unsure about completely "
+                  f"trusting her.\n"
+                  f"She notices you staring, and her prepossessing red eyes light up. You share a drink, and a smile,\n"
+                  f"and forget, for a little while.")
+            pause()
+            cls()
         self.boss_hint_3_event = True
         return
 

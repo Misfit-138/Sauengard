@@ -7528,7 +7528,7 @@ class Player:
                  f"'Until then!', your companions say in unison as they drink. You rise to your feet and "
                  f"approach the bar.")
         pause()
-        cls
+        cls()
         if self.sikira_ally:
             print(f"With a tall mug in a smooth, slender hand, Si'Kira remarks, 'That was quick. I have not yet "
                   f"finished my ale!'\nYou ignore the pressing urgency which weighs on you and respond, 'Please, "

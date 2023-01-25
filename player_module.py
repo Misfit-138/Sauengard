@@ -7430,7 +7430,14 @@ class Player:
               f"her chin in that general direction.\nAt the very same booth as last time, sits the hulking barbarian, "
               f"Tor'bron.")
         sleep(2)
-        print(f"You cautiously approach...")
+
+        if self.sikira_ally:
+            print(f"Both you and Si'Kira turn to behold him. With a curt slap on the back, Si'Kira says, 'Good "
+                  f"luck, {self.name}! From the looks of him, you'll need it!'\nShe leaves your side and makes for "
+                  f"the bar.")
+            pause()
+            cls()
+        print(f"You cautiously approach him...")
         sleep(1)
         pause()
         cls()

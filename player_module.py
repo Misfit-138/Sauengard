@@ -801,6 +801,10 @@ def tavern_theme():
     sound_player_loop('silvermansound_the medieval_banquet.wav')
 
 
+def queen_confrontation_theme():
+    sound_player_loop('queen_confrontation.wav')
+
+
 class Weapon:
 
     def __init__(self):
@@ -8593,7 +8597,7 @@ class Player:
         if wicked_queen_discovery not in self.discovered_interactives:
             self.discovered_interactives.append(wicked_queen_discovery)
             cls()
-            sad_cello_theme()
+            queen_confrontation_theme()
             print_txt_file('queen_splash.txt')
             pause()
             cls()

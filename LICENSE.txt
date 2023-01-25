@@ -17,8 +17,7 @@ This product includes software developed by Jules Pitsker.
 
 3. Acknowledgements shall be included in any/all copies or substantial
 portions of Software included in the ACKNOWLEDGEMENTS section below and
-be attributed to corresponding authors listed therein according to their respective
-CREATIVE COMMONS software licenses.
+be attributed to corresponding authors listed therein.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -28,8 +27,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-ACKNOWLEDGEMENTS according to Creative Commons licenses:
-https://creativecommons.org/licenses/by/4.0/
+ACKNOWLEDGEMENTS
 
 SOUND/MUSIC:
 Main theme: "Soul's Departure" Royalty Free Music by Darren Curtis
@@ -75,3 +73,9 @@ Creative Commons Attribution License 3.0 (CC BY 3.0)
 
 Clacky Keyboard: Denis McDonald (denismcdonald / Freesound.org)
 Creative Commons Attribution License 3.0 (CC BY 3.0)
+
+Queen Confrontation Theme: "Shadow"
+Album: "The Net" 2020 Argsound
+Author: Artem Grebenshchikov
+Link: https://youtu.be/k-DJUohjcKo
+Free for Any non-commercial use

@@ -785,6 +785,10 @@ def mountain_king_theme():
     sound_player_loop('mountain_king.wav')
 
 
+def final_victory_theme():
+    sound_player_loop('final_victory.wav')
+
+
 def pit_theme():
     sound_player_loop('creepy_dungeon_theme_loop.wav')
 
@@ -1775,19 +1779,26 @@ class Player:
     def end_game_routine(self):
         # called from self.choose_to_play_again()
         self.game_complete = False  # reset condition for replay
-        mountain_king_theme()
+        final_victory_theme()
+        cls()
+        teletype_txt_file('end_game.txt')
+        pause()
+        cls()
+        teletype_txt_file('end_game2.txt')
+        pause()
+        cls()
         teletype(f"Congratulations!\nYou have defeated Wicked Queen Jannbrielle and restored peace to the realm.\n")
         pause()
 
         save_a_character = self.name + ".sav"
         p = Path(__file__).with_name(save_a_character)
-        same_line_print(f"Saving {self.name}")
-        random_floppy_rw_sound()
-        dot_dot_dot(15)
+        # same_line_print(f"Saving {self.name}")
+        # random_floppy_rw_sound()
+        # dot_dot_dot(15)
 
         with p.open('wb') as character_filename:  # 'wb'
             pickle.dump(self, character_filename)
-            same_line_print(f"{self.name} saved.\n")
+            print(f"Well done, {self.name}.\n")
             sleep(2)
 
         cls()
@@ -7321,6 +7332,7 @@ class Player:
             return
 
     def use_scroll_of_town_portal(self):
+        # called from main loop
         if self.town_portals < 1:
             self.hud()
             print(f"You have no scrolls of town portal!")

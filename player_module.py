@@ -785,10 +785,6 @@ def mountain_king_theme():
     sound_player_loop('mountain_king.wav')
 
 
-def final_victory_theme():
-    sound_player_loop('final_victory.wav')
-
-
 def pit_theme():
     sound_player_loop('creepy_dungeon_theme_loop.wav')
 
@@ -807,6 +803,10 @@ def tavern_theme():
 
 def queen_confrontation_theme():
     sound_player_loop('queen_confrontation.wav')
+
+
+def final_victory_theme():
+    sound_player_loop('final_victory.wav')
 
 
 class Weapon:

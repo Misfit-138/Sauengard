@@ -494,7 +494,10 @@ class Dungeon4(Dungeon):
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]]
         # the intro is similar to the staircase description. however, the intro is more of an active description
         self.intro = "You enter a torchlit, long hallway of solid granite which stretches far into the distance.\n" \
-                     ""
+                     "The stone walls and echoes create strange acoustic effects from even the most innocuous sounds-" \
+                     "footsteps, the clank of armor,\neven your breathing. At the extreme end of the tunnel, to the " \
+                     "east, you see a dimly glowing circle, which is probably\nthe entrance to a chamber or room of " \
+                     "some sort.\n"
 
 
 dungeon_dict = {1: Dungeon1(),

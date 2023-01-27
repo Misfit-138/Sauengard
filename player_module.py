@@ -672,11 +672,12 @@ def game_start():
             while accept_stats != 'y':
                 player_1 = character_generator()
                 player_1.hud()
+                # print(f"Dungeon Key {player_1.dungeon_key}")
                 accept_stats = input(f"Accept character and continue? (y/n)? ").lower()
 
             if accept_stats == "y":
-                player_1.dungeon_key = 1
-                player_1.dungeon = dungeon_dict[player_1.dungeon_key]
+                # player_1.dungeon_key = 1  # unneeded
+                # player_1.dungeon = dungeon_dict[player_1.dungeon_key]  # should be unneeded
                 (player_1.x, player_1.y) = player_1.dungeon.staircase
                 player_1.position = 0
                 player_1.hud()
@@ -1607,6 +1608,7 @@ class Player:
         self.experience = 0
         self.base_dc = 8
         self.gold = 0
+        self.monsters_on = False
         self.wielded_weapon = ShortSword()
         self.armor = PaddedArmor()
         self.shield = NoShield()
@@ -1659,7 +1661,7 @@ class Player:
         self.dot_multiplier = 1
         self.dot_turns = 1
         # self.current_dungeon_level = 1
-        self.dungeon_key = 1
+        self.dungeon_key = 4
         self.dungeon = dungeon_dict[self.dungeon_key]
         self.discovered_interactives = []
         self.discovered_monsters = []
@@ -1675,10 +1677,10 @@ class Player:
         self.torbron = TorBron()
         self.magnus = Magnus()
         self.vozzbozz = VozzBozz()
-        self.sikira_ally = False
-        self.torbron_ally = False
-        self.magnus_ally = False
-        self.vozzbozz_ally = False
+        self.sikira_ally = True
+        self.torbron_ally = True
+        self.magnus_ally = True
+        self.vozzbozz_ally = True
         self.boss_hint_1 = False
         self.boss_hint_1_event = False
         self.boss_hint_2 = False
@@ -1811,7 +1813,7 @@ class Player:
         teletype_txt_file('credits3.txt')
         pause()
         cls()
-        print(f"\n        Sauengard Copyright 2022, JULES PITSKER  (pitsker@proton.me)\nAll rights reserved\n")
+        print(f"\nSauengard Copyright 2022, JULES PITSKER  (pitsker@proton.me)\nAll rights reserved\n")
         pause()
 
         while True:
@@ -2532,7 +2534,10 @@ class Player:
 
     def encounter_logic(self):
         # called from main loop
-        self.encounter = dice_roll(1, 20)
+        if self.monsters_on:
+            self.encounter = dice_roll(1, 20)
+        else:
+            self.encounter = 15
         # print(f"Monster encounter roll: {monster_encounter}")
         # self.encounter = 15  # this will make it so there are no monsters at all except exit boss
 
@@ -9245,6 +9250,42 @@ class Player:
                      f"questions in your mind, the marshy fog envelopes Deaf One,\nand his form becomes "
                      f"obscured with its whisperings until he is simply gone, along with the cold, creeping mist.\n")
             pause()
+
+    def encounter_deaf_one_event2(self):
+        # called from event_logic()
+        deaf_one_discovery = f"level {self.dungeon.level} deaf_one"
+        random_orientation_lst = ["north", "south", "east", "west"]
+        random_orientation = random.choice(random_orientation_lst)
+        if deaf_one_discovery not in self.discovered_interactives:
+            self.discovered_interactives.append(deaf_one_discovery)
+            self.hud()
+            teletype(f"From the {random_orientation}, a seemingly autonomous, marshy, and knee-deep fog stretches "
+                     f"toward you from out of the mire.\nDeaf One emerges from the mist and approaches you!")
+            pause()
+            self.hud()
+            allies = []
+            if self.sikira_ally:
+                allies.append("Si'Kira")
+            if self.magnus_ally:
+                allies.append("Magnus")
+            if self.torbron_ally:
+                allies.append("Tor'bron")
+            if self.vozzbozz_ally:
+                allies.append("Vozzbozz")
+
+            if len(allies):
+                if len(allies) > 1:
+                    teletype(f"With nearly perfectly synchronized actions, your allies ready themselves toward the "
+                             f"perceived threat,\nas Deaf One remains perfectly still, relaxed, and disaffected.\n"
+                             f"'Peace, my friends! Peace!', you cry out, while gesturing to the party to calm "
+                             f"themselves.\n'He is not an enemy!'\nDeaf One nods and you detect the hint of a smile "
+                             f"forming on his gray flesh.")
+
+            teletype(f"'Quite a journey it has been for you, {self.name}.', he begins in his smooth, even tone, "
+                     f"his voice filling your mind, and the space around you.\n'Your adversary awaits at the end of "
+                     f"this artery, to the east.', he warns.")
+            pause()
+            self.hud()
 
     def encounter_sikira_event(self):
         # called from event_logic()

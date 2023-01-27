@@ -9235,9 +9235,9 @@ class Player:
             pause()
             self.hud()
             teletype(f"'Is it not too late for training, now that I am here?', you ask.\nPatiently, he responds, "
-                     f"'I will ask you to simply ponder this question. Ask yourself if Uncertainty is essentially\n"
-                     f"ontological, or, epistemological.'\n'Ontological..?', you begin.\n'Yes, is "
-                     f"Quantum Uncertainty simply a feature of our reality, rather than a relection\nof the "
+                     f"'I will ask you to simply ponder this question. Ask yourself, is Uncertainty essentially\n"
+                     f"ontological, or, epistemological?'\n'Ontological..?', you begin.\n'Yes, is "
+                     f"Quantum Uncertainty simply a feature of our reality, rather than a reflection\nof the "
                      f"limitations of our knowledge, or is it epistemological; fundamentally due to our own "
                      f"Uncertainty of Quantum Nature?'\n")
             pause()
@@ -9258,11 +9258,11 @@ class Player:
         random_orientation = random.choice(random_orientation_lst)
         if deaf_one_discovery not in self.discovered_interactives:
             self.discovered_interactives.append(deaf_one_discovery)
-            self.hud()
+            cls()
             teletype(f"From the {random_orientation}, a seemingly autonomous, marshy, and knee-deep fog stretches "
-                     f"toward you from out of the mire.\nDeaf One emerges from the mist and approaches you!")
+                     f"toward you.\nFrom out of the mire, Deaf One emerges and approaches you!\n")
             pause()
-            self.hud()
+            cls()
             allies = []
             if self.sikira_ally:
                 allies.append("Si'Kira")
@@ -9278,14 +9278,27 @@ class Player:
                     teletype(f"With nearly perfectly synchronized actions, your allies ready themselves toward the "
                              f"perceived threat,\nas Deaf One remains perfectly still, relaxed, and disaffected.\n"
                              f"'Peace, my friends! Peace!', you cry out, while gesturing to the party to calm "
-                             f"themselves.\n'He is not an enemy!'\nDeaf One nods and you detect the hint of a smile "
+                             f"themselves.\n'He is not an enemy!'\nDeaf One nods, and you detect the hint of a smile "
                              f"forming on his gray flesh.")
 
             teletype(f"'Quite a journey it has been for you, {self.name}.', he begins in his smooth, even tone, "
                      f"his voice filling your mind, and the space around you.\n'Your adversary awaits at the end of "
-                     f"this artery, to the east.', he warns.")
+                     f"this artery, to the east.', he says.\nThen, with genuine curiosity, he adds, "
+                     f"'I have watched your progress with satisfaction. Have you pondered my question?'\n"
+                     f"'I have', you say plainly.\n'And?' he queries.\n"
+                     f"'And, the answer is; Yes. Quantum Uncertainty is either a feature of our reality, or a "
+                     f"refection of the limitations of our knowledge.'\nA wide, toothy grin grows over his undying "
+                     f"face. 'That is a good answer..', he says with sincerity.\nThen, his smile fades and is "
+                     f"replaced with solemnity. '..but not the only answer!'\nHe smiles again and turns to leave.\n"
+                     f"'Wait!' you call out impulsively. 'Will we ever meet again?', you ask.\n'Yes.', he says, "
+                     f"pausing to turn over his shoulder. '*That* I can say with certainty.', he adds, with a cryptic "
+                     f"narrowing of his eyes.\n")
             pause()
-            self.hud()
+            cls()
+            teletype(f"The marshy fog begins to envelope Deaf One, until his form becomes obscured and he is simply "
+                     f"gone, along with the cold, creeping mist.\n")
+            pause()
+            cls()
 
     def encounter_sikira_event(self):
         # called from event_logic()
@@ -9396,6 +9409,7 @@ class Player:
         event_dict = {self.dungeon.quantum_treasure_chest: self.quantum_treasure_chest_event,
                       self.dungeon.encounter_sikira: self.encounter_sikira_event,
                       self.dungeon.encounter_deaf_one_1: self.encounter_deaf_one_event1,
+                      self.dungeon.encounter_deaf_one_2: self.encounter_deaf_one_event2,
                       self.dungeon.treasure_chest: self.treasure_chest_event,
                       self.dungeon.altar: self.altar_event,
                       self.dungeon.throne: self.throne_event,
@@ -9984,6 +9998,8 @@ class Player:
         if self.coordinates == self.dungeon.pit_landing:
             self.pit_landing_description()
         if self.coordinates == self.dungeon.encounter_deaf_one_1:
+            self.deaf_one_fog_remnant_description()
+        if self.coordinates == self.dungeon.encounter_deaf_one_2:
             self.deaf_one_fog_remnant_description()
         # self.coordinates = (self.x, self.y)  # commented out. seems to be unnecessary at this point in program.
 

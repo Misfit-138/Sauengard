@@ -165,7 +165,7 @@ class Dungeon1(Dungeon):
         self.pit_landing = (1, 14)  # always 1, 14
         self.elite_monster = (99, 99)  # 4, 10
         self.legendary_monster = (99, 99)
-        self.encounter_deaf_one_1 = (99, 99)
+        self.encounter_deaf_one_1 = (7, 14)
         # self.encounter_sikira = (99, 99)
         self.wicked_queen = (6, 17)
         self.exit = (10, 0)
@@ -429,6 +429,7 @@ class Dungeon4(Dungeon):
         self.pit_large_atrium_phrase = "You are standing in a large cavity."
         self.pit_one_walled_atrium_phrase = "You are standing in a cavity."
         self.staircase = (1, 4)
+        self.encounter_deaf_one_2 = (2, 4)
         self.treasure_chest = (99, 99)
         self.quantum_treasure_chest = (99, 99)
         self.altar = (99, 99)
@@ -495,8 +496,8 @@ class Dungeon4(Dungeon):
         # the intro is similar to the staircase description. however, the intro is more of an active description
         self.intro = "You enter a torchlit, long hallway of solid granite which stretches far into the distance.\n" \
                      "The stone walls and echoes create strange acoustic effects from even the most innocuous sounds-" \
-                     "footsteps, the clank of armor,\neven your breathing. At the extreme end of the tunnel, to the " \
-                     "east, you see a dimly glowing circle, which is probably\nthe entrance to a chamber or room of " \
+                     " footsteps, the clank of armor,\neven your breathing. At the extreme end of the tunnel, to the " \
+                     "east, you see a dimly glowing circle, which appears\nto be an entrance to a chamber or room of " \
                      "some sort.\n"
 
 

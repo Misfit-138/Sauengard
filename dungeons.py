@@ -108,6 +108,7 @@ class Dungeon:
         self.treasure_chest = (0, 0)
         self.quantum_treasure_chest = (0, 0)
         self.encounter_sikira = (0, 0)
+        self.encounter_the_party = (0, 0)
         self.altar = (0, 0)
         self.throne = (0, 0)
         self.fountain = (0, 0)
@@ -120,6 +121,7 @@ class Dungeon:
         self.elite_monster = (0, 0)  # 4, 10
         self.legendary_monster = (0, 0)
         self.encounter_deaf_one_1 = (0, 0)
+        self.encounter_deaf_one_2 = (0, 0)
         self.wicked_queen = (0, 0)
         self.exit = (0, 0)
         self.grid = []
@@ -429,7 +431,8 @@ class Dungeon4(Dungeon):
         self.pit_large_atrium_phrase = "You are standing in a large cavity."
         self.pit_one_walled_atrium_phrase = "You are standing in a cavity."
         self.staircase = (1, 4)
-        self.encounter_deaf_one_2 = (2, 4)
+        self.encounter_deaf_one_2 = (10, 4)
+        self.encounter_the_party = (4, 4)
         self.treasure_chest = (99, 99)
         self.quantum_treasure_chest = (99, 99)
         self.altar = (99, 99)
@@ -441,11 +444,11 @@ class Dungeon4(Dungeon):
         self.elevator_landing = (99, 99)
         self.pit = (99, 99)
         self.pit_landing = (99, 99)  # always 1, 14
-        self.elite_monster = (99, 99)  # 4, 10
-        self.legendary_monster = (99, 99)
+        self.elite_monster = (6, 4)  # 4, 10
+        self.legendary_monster = (8, 4)
         self.encounter_deaf_one_1 = (99, 99)
         self.encounter_sikira = (99, 99)
-        self.wicked_queen = (8, 4)
+        self.wicked_queen = (12, 4)
         self.exit = (99, 99)
         # following are just for human-readable purposes. program ignores all values except "*", which represent walls
         # S = STAIRCASE C = CORRIDOR, P = PIT-opening, L = PIT LANDING ^ = ELEVATOR V = ELEVATOR LANDING . = OPEN AREA
@@ -456,7 +459,7 @@ class Dungeon4(Dungeon):
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 1
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 2
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 3
-            ["*", "S", "C", "C", "C", "C", "C", "C", "C", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 4
+            ["*", "S", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "*", "*", "*", "*", "*", "*", "*"],  # 4
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 5
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 6
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 7

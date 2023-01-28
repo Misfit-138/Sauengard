@@ -1678,9 +1678,9 @@ class Player:
         self.magnus = Magnus()
         self.vozzbozz = VozzBozz()
         self.sikira_ally = True
-        self.torbron_ally = True
-        self.magnus_ally = True
-        self.vozzbozz_ally = True
+        self.torbron_ally = False
+        self.magnus_ally = False
+        self.vozzbozz_ally = False
         self.boss_hint_1 = False
         self.boss_hint_1_event = False
         self.boss_hint_2 = False
@@ -1747,7 +1747,14 @@ class Player:
             return False
 
     def end_game_character_condition_resets(self):  # player defeats final boss
-        # called from main loop
+        # called from main loop.
+        # reset character conditions before saving character with end_game_routine()
+
+        # remove allies
+        self.torbron_ally = False
+        self.magnus_ally = False
+        self.vozzbozz_ally = False
+        self.sikira_ally = False
 
         # reset calculations
         self.poisoned = False
@@ -1862,7 +1869,14 @@ class Player:
 
     def hud(self):
         cls()
-        print(f"Name: {self.name}")
+        print(f"{self.name}")
+        allies = "None"
+        if self.sikira_ally:
+            allies = f"Si'Kira"
+        if self.torbron_ally and self.magnus_ally and self.vozzbozz_ally and self.sikira_ally:
+            allies = f"Tor'Bron, Magnus, Vozzbozz and Si'Kira"
+        if allies != "None":
+            print(f"Allies: {allies}")
         print(f"Level: {self.level} ({self.level}d{self.hit_dice})")
         print(f"Experience: {self.experience}")
         print(f"Gold: {self.gold}")
@@ -2720,8 +2734,11 @@ class Player:
             monster.experience_award = round(monster.experience_award * 1.25)
 
         if self. sikira_ally or self.torbron_ally or self.magnus_ally or self.vozzbozz_ally:
-            monster.name = f"{monster.name} Dreadnought"
-
+            if monster.proper_name == "None":
+                monster.name = f"{monster.name} Dreadnought"
+            else:
+                monster.name = f"{monster.name} Dreadnought"
+                monster.proper_name = f"{monster.proper_name} Dreadnought"
         return monster
 
     def wicked_queen_generator(self):
@@ -2762,8 +2779,8 @@ class Player:
         boss_monster.resistances = ["All"]
         boss_monster.weapon_bonus = math.ceil(self.acumen * 2.5)
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
-        print(f"Before you stands {boss_monster.proper_name}!")
         checked_monster = self.monster_booster(boss_monster)  # beta
+        print(f"Before you stands {checked_monster.proper_name}!")
         return checked_monster  # beta
         # return boss_monster
 
@@ -2799,8 +2816,8 @@ class Player:
         boss_monster.experience_award = 350 * self.level
         boss_monster.weapon_bonus = math.ceil(self.level * 1.5)
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
-        print(f"Before you stands {boss_monster.proper_name}!")
         checked_monster = self.monster_booster(boss_monster)  # beta
+        print(f"Before you stands {checked_monster.proper_name}!")
         return checked_monster  # beta
         #  return boss_monster
 
@@ -2855,10 +2872,9 @@ class Player:
         undead_prophet.weapon_bonus = self.wielded_weapon.damage_bonus
         undead_prophet.dot_multiplier = self.acumen
         undead_prophet.experience_award = 350 * self.level
-
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
-        print(f"The undead prophet, {name} {epithet} returns!")
         checked_monster = self.monster_booster(undead_prophet)  # beta
+        print(f"The undead prophet, {checked_monster.proper_name} returns!")
         return checked_monster  # beta
         #  return undead_prophet
 
@@ -2888,12 +2904,12 @@ class Player:
         exit_boss.dot_multiplier = self.dungeon.level
         exit_boss.experience_award = 450 * self.level
         exit_boss.weapon_bonus = self.wielded_weapon.damage_bonus
-
+        checked_monster = self.monster_booster(exit_boss)
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
         print(f"In the archway to the staircase leading down to {self.dungeon.name} "
-              f"stands {exit_boss.proper_name}!\n"
+              f"stands {checked_monster.proper_name}!\n"
               f"Without fear, without thought, the guardian looks upon you and readies itself for battle...")
-        checked_monster = self.monster_booster(exit_boss)
+
         return checked_monster
         #  return exit_boss
 
@@ -2925,8 +2941,8 @@ class Player:
         king_monster.dot_multiplier = self.dungeon.level
         king_monster.experience_award = 350 * self.level
         self.hud()  # this clears the screen at a convenient point, so that the automatic description is removed
-        print(f"The undead King {king_monster.proper_name} returns!")
         checked_monster = self.monster_booster(king_monster)  # beta
+        print(f"The undead King {checked_monster.proper_name} returns!")
         return checked_monster  # beta
         #  return king_monster
 
@@ -7554,7 +7570,7 @@ class Player:
                   f"surrounding her. Thus far she has been a worthy ally,\nbut you remain unsure about completely "
                   f"trusting her.\n"
                   f"She notices you staring, and her prepossessing red eyes light up. You share a drink, and a smile,\n"
-                  f"and forget, for a little while.")
+                  f"and forget, for a little while..")
             pause()
             cls()
         self.boss_hint_3_event = True
@@ -9300,6 +9316,26 @@ class Player:
             pause()
             cls()
 
+    def encounter_the_party_event(self):
+        # called from event_logic()
+        party_discovery = f"level {self.dungeon.level} party_encounter"
+        if party_discovery not in self.discovered_interactives:
+            cls()
+            self.discovered_interactives.append(party_discovery)
+            self.torbron_ally = True
+            self.magnus_ally = True
+            self.vozzbozz_ally = True
+            teletype(f"Due east, you see a group of 3 adventurers whom you immediately recognize. 'My friends!' "
+                     f"you cry aloud.\n"
+                     f"Tor'Bron, Magnus and Vozzbozz approach, and against the ominous backdrop and setting, "
+                     f"you find new respect for their imposing appearance.\n'Well met, {self.name}.', states Vozzbozz "
+                     f"plainly. 'And I speak for us all when I say you are a welcome ally, Si'Kira!', he adds.\n")
+            pause()
+            cls()
+            teletype_txt_file('encounter_the_party.txt')
+            pause()
+            cls()
+
     def encounter_sikira_event(self):
         # called from event_logic()
         ally_discovery = f"level {self.dungeon.level} ally"
@@ -9410,6 +9446,7 @@ class Player:
                       self.dungeon.encounter_sikira: self.encounter_sikira_event,
                       self.dungeon.encounter_deaf_one_1: self.encounter_deaf_one_event1,
                       self.dungeon.encounter_deaf_one_2: self.encounter_deaf_one_event2,
+                      self.dungeon.encounter_the_party: self.encounter_the_party_event,
                       self.dungeon.treasure_chest: self.treasure_chest_event,
                       self.dungeon.altar: self.altar_event,
                       self.dungeon.throne: self.throne_event,

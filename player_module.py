@@ -1628,7 +1628,7 @@ class Player:
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.hit_dice = 10
         self.acumen = 1
-        self.maximum_hit_points = 10 + self.constitution_modifier
+        self.maximum_hit_points = 11 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
         self.is_paralyzed = False

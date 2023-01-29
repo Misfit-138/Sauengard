@@ -7649,9 +7649,15 @@ class Player:
     def talk_to_jenna(self):
         cls()
         opening_phrase = "\'Feelin' chatty, love?\', queries Jenna in a coy tone."
-
+        random_jenna_business = ["I'm a bit busy, here, love.", "I hear there's always loot to be found in the "
+                                 "dungeons. Ye can sell what ye don't need, here in town!", "The Sauengard dungeons "
+                                 "were once part of a magnificent kingdom many years ago; Before it became overrun "
+                                 "by fiends, brigands and the undead."]
         if self.dungeon.level == 1:
             self.jennas_level_1_gab(opening_phrase)
+        else:
+            teletype(random.choice(random_jenna_business))
+            pause()
 
     def tavern(self):
         # called from town_navigation()
@@ -7674,12 +7680,8 @@ class Player:
                 print(f"The barroom is bustling as always, but Jenna, the barkeep, notices you and calls over,\n"
                       f"very matter-of-factly, \"What do ye be needin' love?\"")
 
-            inn_choice = input(f"(R)oom for the evening - 10 GP\n(E)xit the inn\n"
+            inn_choice = input(f"(R)oom for the evening - 10 GP\n(T)alk to Jenna\n(E)xit the inn\n"
                                f"--> ").lower()
-
-            if self.dungeon.level == 1:
-                inn_choice = input(f"(R)oom for the evening - 10 GP\n(T)alk to Jenna\n(E)xit the inn\n"
-                                   f"--> ").lower()
 
             if inn_choice == 'r':
 

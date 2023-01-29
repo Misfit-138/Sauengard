@@ -314,7 +314,7 @@ class Dungeon2(Dungeon):
             [".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", ".", "."]]
         # the intro is similar to the staircase description. however, the intro is more of an active description
         self.intro = f"The door above closes solidly. You find yourself in a deeper level of the dungeons.\n" \
-                     f"This is the realm abandoned by the Dark Dwarves many ages ago.\n" \
+                     f"This is a series of tunnels dug by the Dark Dwarves many ages ago for King Justin III.\n" \
                      f"Thick, oppressive gloom and disturbing sounds fill the air.\n"
 
 

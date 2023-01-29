@@ -132,6 +132,7 @@ class Monster:
         self.experience_award = 0
         self.gold = 0
         self.weapon_bonus = 0
+        self.to_hit_bonus = 0
         self.armor_class = 0
         self.armor_name = "armor"
         self.strength = 0
@@ -248,16 +249,19 @@ class Monster:
             pause()
             return 0
 
-        if roll_d20 == 20:
+        if roll_d20 == 20 or \
+                (roll_d20 + self.dexterity_modifier + self.to_hit_bonus + self.evil_bonus) - player_1.armor_class >= 10:
             critical_bonus = 2
             hit_statement = "CRITICAL HIT!!"
         else:
             critical_bonus = 1
             hit_statement = ""
 
-        monster_total = roll_d20 + self.dexterity_modifier + self.evil_bonus  # test out evil bonus
+        monster_total = roll_d20 + self.dexterity_modifier + self.to_hit_bonus + self.evil_bonus  # test evil/to_hit
         # print(f"{self.name} Attack bonus: {attack_bonus}")
         print(f"{self.name} Dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
+        if self.to_hit_bonus > 0:
+            print(f"{self.name} To-hit Bonus: {self.to_hit_bonus}")
         print(f"{self.name} Evil Bonus: {self.evil_bonus}")  # testing out evil bonus
         print(f"{self.name} Total: {monster_total}")
         print(f"Your armor class: {player_1.armor_class}")
@@ -430,11 +434,14 @@ class Monster:
 
     def poison_attack(self, player_1):
         # added intelligence modifier to monster roll
+        critical_modifier = 1
         player_saving_throw = dice_roll(1, 20)
         difficulty_class = (player_saving_throw + player_1.constitution_modifier)
         roll_d20 = dice_roll(1, 20)  # attack roll
         print(self.poison_phrase)
         print(f"{self.name} Attack roll: {roll_d20}")
+        if roll_d20 == 20:
+            critical_modifier = 2
 
         if roll_d20 == 1:
             print(f"You easily dodge {self.his_her_its} poison attack!")
@@ -452,13 +459,15 @@ class Monster:
             print(f"Your Total: {difficulty_class}")
 
             if roll_d20 == 20 or monster_poison_total >= difficulty_class:
-                player_1.dot_multiplier = self.dot_multiplier
+                if critical_modifier == 2:
+                    print(f"CRITICAL!!")
+                player_1.dot_multiplier = self.dot_multiplier * critical_modifier
                 player_1.dot_turns = self.dot_turns
-                rndm_poisoned_phrases = ["You feel a disturbing weakness overcoming you..",
-                                         "An unnerving frailty spreads throughout your body...",
-                                         "Pain and tenderness courses through your body.."
-                                         ]
-                poisoned_phrase = random.choice(rndm_poisoned_phrases)
+                random_poisoned_phrases = ["You feel a disturbing weakness overcoming you..",
+                                           "An unnerving frailty spreads throughout your body...",
+                                           "Pain and tenderness courses through your body.."
+                                           ]
+                poisoned_phrase = random.choice(random_poisoned_phrases)
                 print(f"{poisoned_phrase}")
                 sleep(1.5)
                 print(f"You have been poisoned!")
@@ -476,7 +485,10 @@ class Monster:
 
     def necrotic_attack(self, player_1):
         # added wisdom modifier to monster roll
+        critical_modifier = 1
         roll_d20 = dice_roll(1, 20)  # attack roll
+        if roll_d20 == 20:
+            critical_modifier = 2
         print(f"{self.necrotic_phrase}")
         print(f"{self.name} Attack roll: {roll_d20}")
 
@@ -499,13 +511,15 @@ class Monster:
             print(f"Your Total: {difficulty_class}")
 
             if roll_d20 == 20 or (roll_d20 + self.wisdom_modifier) >= difficulty_class:
-                player_1.dot_multiplier = self.dot_multiplier
+                if critical_modifier == 2:
+                    print(f"CRITICAL!!")
+                player_1.dot_multiplier = self.dot_multiplier * critical_modifier
                 player_1.dot_turns = self.dot_turns
-                rndm_necrotic_phrases = ["You feel morbid dread and withering overcoming you..",
-                                         "An unnerving pain, planted like a seed, germinates within you...",
-                                         "Agony creeps into your very veins..."
-                                         ]
-                necrotic_phrase = random.choice(rndm_necrotic_phrases)
+                random_necrotic_phrases = ["You feel morbid dread and withering overcoming you..",
+                                           "An unnerving pain, planted like a seed, germinates within you...",
+                                           "Agony creeps into your very veins..."
+                                           ]
+                necrotic_phrase = random.choice(random_necrotic_phrases)
                 print(f"{necrotic_phrase}")
                 sleep(1.5)
                 print(f"Necrotic forces ravage through your body!")
@@ -603,16 +617,19 @@ class Monster:
             pause()
             return 0
 
-        if roll_d20 == 20:
+        if roll_d20 == 20 or \
+                (roll_d20 + self.dexterity_modifier + self.to_hit_bonus + self.evil_bonus) - npc.armor_class >= 10:
             critical_bonus = 2
             hit_statement = "CRITICAL HIT!!"
         else:
             critical_bonus = 1
             hit_statement = ""
 
-        monster_total = roll_d20 + self.dexterity_modifier + self.evil_bonus  # test out evil bonus
+        monster_total = roll_d20 + self.dexterity_modifier + self.to_hit_bonus + self.evil_bonus  # test evil/to_hit
         # print(f"{self.name} Attack bonus: {attack_bonus}")
         print(f"{self.name} Dexterity modifier {self.dexterity_modifier}")  # MONSTER DEX MODIFIER
+        if self.to_hit_bonus > 0:
+            print(f"{self.name} To-hit Bonus: {self.to_hit_bonus}")
         print(f"{self.name} Evil Bonus: {self.evil_bonus}")  # testing out evil bonus
         print(f"{self.name} Total: {monster_total}")
         print(f"{npc.name}'s armor class: {npc.armor_class}")
@@ -5459,7 +5476,7 @@ class WickedQueenJannbrielle(Monster):
         self.intelligence = 20
         self.wisdom = 20
         self.charisma = 30
-        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.evil_bonus = 6  # 1 + math.ceil(self.level / 4)  # Rounded up
         self.strength_modifier = math.floor((self.strength - 10) / 2)
         self.constitution_modifier = math.floor((self.constitution - 10) / 2)
         self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
@@ -5476,9 +5493,9 @@ class WickedQueenJannbrielle(Monster):
         self.resistances = []
         self.quantum_energy = True
         self.hit_dice = 10
-        self.number_of_hd = 3
-        self.hit_points = 1  # 1750  # dice_roll(35, 20) + 30
-        self.armor_class = 1  # 22
+        self.number_of_hd = 4
+        self.hit_points = 1750  # dice_roll(35, 20) + 30
+        self.armor_class = 24
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 12  # attack bonus

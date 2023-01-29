@@ -169,7 +169,7 @@ class Dungeon1(Dungeon):
         self.legendary_monster = (99, 99)
         self.encounter_deaf_one_1 = (7, 14)
         # self.encounter_sikira = (99, 99)
-        self.wicked_queen = (6, 17)
+        self.wicked_queen = (99, 99)
         self.exit = (10, 0)
         # following are just for human-readable purposes. program ignores all values except "*", which represent walls
         # S = STAIRCASE C = CORRIDOR, P = PIT-opening, L = PIT LANDING ^ = ELEVATOR V = ELEVATOR LANDING . = OPEN AREA

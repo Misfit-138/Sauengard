@@ -1608,7 +1608,7 @@ class Player:
         self.experience = 0
         self.base_dc = 8
         self.gold = 0
-        self.monsters_on = False
+        self.monsters_on = True  # diagnostic
         self.wielded_weapon = ShortSword()
         self.armor = PaddedArmor()
         self.shield = NoShield()
@@ -1661,7 +1661,7 @@ class Player:
         self.dot_multiplier = 1
         self.dot_turns = 1
         # self.current_dungeon_level = 1
-        self.dungeon_key = 4
+        self.dungeon_key = 1
         self.dungeon = dungeon_dict[self.dungeon_key]
         self.discovered_interactives = []
         self.discovered_monsters = []
@@ -1677,7 +1677,7 @@ class Player:
         self.torbron = TorBron()
         self.magnus = Magnus()
         self.vozzbozz = VozzBozz()
-        self.sikira_ally = True
+        self.sikira_ally = False
         self.torbron_ally = False
         self.magnus_ally = False
         self.vozzbozz_ally = False
@@ -1823,7 +1823,7 @@ class Player:
         print(f"\nSauengard Copyright 2022, JULES PITSKER  (pitsker@proton.me)\nAll rights reserved\n")
         pause()
 
-        while True:
+        '''while True:
             cls()
             try_again = input("Do you wish to play again (y/n)? ").lower()
             if try_again == "y":
@@ -1838,7 +1838,7 @@ class Player:
                 print(f"Farewell.")
                 sleep(1.5)
                 cls()
-                sys.exit()
+                sys.exit()'''
 
     def save_character(self):
         # called from self.town_navigation()
@@ -2484,6 +2484,24 @@ class Player:
 
     # BATTLE AND PROXIMITY TO MONSTER OCCURRENCES
 
+    def try_again_sub_function(self):
+        while True:
+            cls()
+            try_again = input("Do you wish to play again (y/n)? ").lower()
+            if try_again == "y":
+                sleep(1.5)
+                cls()
+                self.in_proximity_to_monster = False
+                self.in_dungeon = False
+                self.in_town = False
+                # player_is_dead = False
+                return True
+            if try_again == "n":
+                print(f"Farewell.")
+                sleep(1.5)
+                cls()
+                sys.exit()
+
     def choose_to_play_again(self):
         # called from main loop if game_over variable is True
         cls()
@@ -2495,11 +2513,14 @@ class Player:
             sleep(4.5)
             random_floppy_rw_sound()
             sleep(1)
-            self.in_proximity_to_monster = False
+            if self.try_again_sub_function():
+                return True
+            '''self.in_proximity_to_monster = False
             self.in_dungeon = False
-            self.in_town = False
+            self.in_town = False'''
         else:
-            if self.end_game_routine():  # game is completed and player chooses to play again
+            self.end_game_routine()  # game is completed
+            if self.try_again_sub_function():  # if player chooses to play again
                 return True
             '''self.game_complete = False  # reset condition for replay
             mountain_king_theme()
@@ -2551,9 +2572,7 @@ class Player:
         if self.monsters_on:
             self.encounter = dice_roll(1, 20)
         else:
-            self.encounter = 15
-        # print(f"Monster encounter roll: {monster_encounter}")
-        # self.encounter = 15  # this will make it so there are no monsters at all except exit boss
+            self.encounter = 15  # this will make it so there are no monsters at all except bosses
 
     def monster_introduction(self, monster):
         # called from main loop
@@ -3251,7 +3270,9 @@ class Player:
             pause()
             self.hud()
             return 0
-        if roll_d20 == 20:
+        if roll_d20 == 20 or \
+                (roll_d20 + self.acumen + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus) \
+                - monster.armor_class >= 10:
             critical_bonus = 2
             hit_statement = "CRITICAL HIT!!"
 
@@ -3333,7 +3354,8 @@ class Player:
             pause()
             self.hud()
             return 0
-        if roll_d20 == 20:
+        if roll_d20 == 20 or (roll_d20 + self.acumen + self.dexterity_modifier + self.wielded_weapon.to_hit_bonus) \
+                - monster_armor_class >= 10:
             critical_bonus = 2
             hit_statement = "CRITICAL HIT!!"
         else:

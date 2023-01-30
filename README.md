@@ -40,7 +40,9 @@ $ python3 ./path/to/main.py
 ```
 ## License
 
-- This source code is licensed under the MIT-style license found in the
-LICENSE file in the root directory of this source tree.
-- Copyright © 2022 Jules Pitsker 
-- pitsker@proton.me
+This source code is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 
+International Public License found in the LICENSE file in the root directory of this source tree.
+
+Copyright © 2022 Jules Pitsker 
+
+pitsker@proton.me

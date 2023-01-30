@@ -122,6 +122,7 @@ class Dungeon:
         self.legendary_monster = (0, 0)
         self.encounter_deaf_one_1 = (0, 0)
         self.encounter_deaf_one_2 = (0, 0)
+        self.deaf_one_portal = (0, 0)
         self.wicked_queen = (0, 0)
         self.exit = (0, 0)
         self.grid = []
@@ -339,7 +340,7 @@ class Dungeon3(Dungeon):
         self.one_walled_atrium_phrase = "You are standing in a cramped, naturally-formed cavity."
         self.pit_large_atrium_phrase = "You are standing in a large, open cavity."
         self.pit_one_walled_atrium_phrase = "You are standing in a cavity formed of clay and rock."
-        self.staircase = (1, 3)
+        self.staircase = (18, 3)  # testing (1, 3)
         self.treasure_chest = (4, 15)
         self.quantum_treasure_chest = (1, 18)
         self.altar = (11, 18)
@@ -405,7 +406,7 @@ class Dungeon3(Dungeon):
         # the intro is similar to the staircase description. however, the intro is more of an active description
         self.intro = "You find yourself at the bottom of a deep, spiral staircase..\n" \
                      "The echo from the door above being locked behind you still echoes throughout the emptiness.\n" \
-                     "This is the entrance of the deep realms. Murk and disturbing shadows surround you."
+                     "This is the entrance of the deep realms. Murk and disturbing shadows surround you.\n"
 
 
 class Dungeon4(Dungeon):
@@ -430,11 +431,11 @@ class Dungeon4(Dungeon):
         self.one_walled_atrium_phrase = "You are standing in an atrium."
         self.pit_large_atrium_phrase = "You are standing in a large cavity."
         self.pit_one_walled_atrium_phrase = "You are standing in a cavity."
+
         self.staircase = (1, 4)
-        self.encounter_deaf_one_2 = (10, 4)
-        self.encounter_the_party = (4, 4)
-        self.treasure_chest = (99, 99)
-        self.quantum_treasure_chest = (99, 99)
+        self.encounter_the_party = (7, 4)
+        self.treasure_chest = (4, 4)
+        self.quantum_treasure_chest = (9, 4)
         self.altar = (99, 99)
         self.throne = (99, 99)
         self.fountain = (99, 99)
@@ -444,11 +445,13 @@ class Dungeon4(Dungeon):
         self.elevator_landing = (99, 99)
         self.pit = (99, 99)
         self.pit_landing = (99, 99)  # always 1, 14
-        self.elite_monster = (6, 4)  # 4, 10
-        self.legendary_monster = (8, 4)
+        self.elite_monster = (11, 4)  # 4, 10
+        self.legendary_monster = (14, 4)
         self.encounter_deaf_one_1 = (99, 99)
+        self.encounter_deaf_one_2 = (15, 4)
+        self.deaf_one_portal = (2, 4)
         self.encounter_sikira = (99, 99)
-        self.wicked_queen = (12, 4)
+        self.wicked_queen = (17, 4)
         self.exit = (99, 99)
         # following are just for human-readable purposes. program ignores all values except "*", which represent walls
         # S = STAIRCASE C = CORRIDOR, P = PIT-opening, L = PIT LANDING ^ = ELEVATOR V = ELEVATOR LANDING . = OPEN AREA
@@ -459,7 +462,7 @@ class Dungeon4(Dungeon):
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 1
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 2
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 3
-            ["*", "S", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "*", "*", "*", "*", "*", "*", "*"],  # 4
+            ["*", "S", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "C", "*", "*"],  # 4
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 5
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 6
             ["*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*", "*"],  # 7

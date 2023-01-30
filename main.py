@@ -200,11 +200,13 @@ while True:
                 # ENCOUNTER LOGIC IS DETERMINED *BEFORE* event_logic(), BUT CAN BE RE-ASSIGNED BASED ON
                 # RETURNED VALUES FROM event_logic()
                 player_1.encounter_logic()
-                # player_1.encounter = 96  should make no monsters at all
+
                 # EVENT LOGIC IS DETERMINED BEFORE end_of_turn_calculation() AND player_1.check_dead(),
                 # IN CASE PLAYER SUFFERS DAMAGE, ETC.
                 event = player_1.event_logic()  # trigger any events corresponding to self.coordinates
                 player_1.check_for_boss(event)  # check if event should trigger a boss encounter
+                if event == "DeafOnePortal":  # by conditionals, player will be placed at tavern for final hint event
+                    break
                 # META CALCULATION FUNCTION FOR REGENERATION/POTION OF STRENGTH/POISON/NECROSIS/PROTECTION EFFECT:
                 # this is also called after monster melee, necro, poison and quantum attack
                 # as well as after turning/banishing, and player victory, etc.,

@@ -1610,6 +1610,7 @@ class Player:
         self.gold = 0
         self.monsters_on = True  # diagnostic
         self.wielded_weapon = ShortSword()
+        self.wielded_weapon.damage_bonus = 2000
         self.armor = PaddedArmor()
         self.shield = NoShield()
         self.boots = LeatherBoots()
@@ -1661,7 +1662,7 @@ class Player:
         self.dot_multiplier = 1
         self.dot_turns = 1
         # self.current_dungeon_level = 1
-        self.dungeon_key = 1
+        self.dungeon_key = 3
         self.dungeon = dungeon_dict[self.dungeon_key]
         self.discovered_interactives = []
         self.discovered_monsters = []
@@ -1681,10 +1682,10 @@ class Player:
         self.torbron_ally = False
         self.magnus_ally = False
         self.vozzbozz_ally = False
-        self.boss_hint_1 = False
-        self.boss_hint_1_event = False
-        self.boss_hint_2 = False
-        self.boss_hint_2_event = False
+        self.boss_hint_1 = True
+        self.boss_hint_1_event = True
+        self.boss_hint_2 = True
+        self.boss_hint_2_event = True
         self.boss_hint_3 = False
         self.boss_hint_3_event = False
         # self.boss_hint_4 = False
@@ -1775,6 +1776,7 @@ class Player:
         self.quantum_units = self.maximum_quantum_units
 
         # put player back at level 1:
+        self.monsters_on = True
         self.town_portal_exists = True  # transport player back to town. on replay, player will re-enter portal
         self.dungeon_key = 1
         self.dungeon = dungeon_dict[self.dungeon_key]
@@ -2572,7 +2574,7 @@ class Player:
         if self.monsters_on:
             self.encounter = dice_roll(1, 20)
         else:
-            self.encounter = 15  # this will make it so there are no monsters at all except bosses
+            self.encounter = 15  # this will make it so there are no monsters at all except bosses (for testing, etc)
 
     def monster_introduction(self, monster):
         # called from main loop
@@ -7545,8 +7547,8 @@ class Player:
               f"in his smooth tone. Off to your left, Vozzbozz sits in his regular booth, across from a proud-looking\n"
               f"and rather stout dwarf.")
         sleep(1)
-        if self.sikira_ally:
-            print(f"'Your friends await you.', says Si'Kira in disinterest.\n"
+        if self.sikira_ally:  # this conditional is actually unnecessary, since Sikira is encountered before this point
+            print(f"'Your friends await you.', says Si'Kira with disinterest.\n"  # disinterested means neutral 
                   f"'Join us, will you?', you ask, invitingly, as you gesture to the booth.\n"
                   f"Shaking her head and striding toward the bar she says, 'I choose my own friends.'")
             pause()
@@ -7570,21 +7572,22 @@ class Player:
         teletype_txt_file('hint_event_3.txt')
         pause()
         cls()
-        if self.sikira_ally:
+        if self.sikira_ally:  # this conditional is actually unnecessary, since Sikira is encountered before this point
+            # it just feels right to include it
             teletype(f"'The Dark She-Elf makes five..', interjects the bird.\n"
                      f"Magnus briefly looks at Lazarus, and you suddenly deduce it has been the raven who has been "
                      f"eavesdropping in the dungeon\ndepths below and reporting on your victories all this time.\n"
                      f"Motioning to Si'Kira, he says, 'Ye think yer friend there will lend her sword?'" 
-                     f"With a smirk, you respond immediately, 'Without a doubt.'")
+                     f"With a smirk, you respond immediately, 'Without a doubt.'\n")
 
-        teletype(f"Magnus looks at you gravely. 'We will be meeting with Tor'Bron topside, and then joining"
-                 f"you. Very soon.'\n"
+        teletype(f"Magnus looks at you gravely. 'We will be meeting with Tor'Bron outside, and then joining "
+                 f"you in the depths presently!'\n"
                  f"'Well then, until we meet again..', you say, draining your mug.\n"
                  f"'Until then!', your companions say in unison as they drink. You rise to your feet and "
-                 f"approach the bar.")
+                 f"approach the bar.\n")
         pause()
         cls()
-        if self.sikira_ally:
+        if self.sikira_ally:  # same as above
             print(f"With a tall mug in a smooth, slender hand, Si'Kira remarks, 'That was quick. I have not yet "
                   f"finished my ale!'\nYou ignore the pressing urgency which weighs on you and respond, 'Please, "
                   f"take your time. In fact, I will join you.'\nJenna glides over and slams a mug on the bar. "
@@ -7592,7 +7595,7 @@ class Player:
                   f"surrounding her. Thus far she has been a worthy ally,\nbut you remain unsure about completely "
                   f"trusting her.\n"
                   f"She notices you staring, and her prepossessing red eyes light up. You share a drink, and a smile,\n"
-                  f"and forget, for a little while..")
+                  f"and forget, for a little while..\n")
             pause()
             cls()
         self.boss_hint_3_event = True
@@ -7609,15 +7612,6 @@ class Player:
         if self.boss_hint_3 and not self.boss_hint_3_event:
             self.hint_event_3()
             return
-        # if self.boss_hint_4 and not self.boss_hint_4_event:
-            # return self.hint_event_4()
-        #    print("hint 4 event")
-        # if self.boss_hint_5 and not self.boss_hint_5_event:
-        # return self.hint_event_5()
-        # print("hint 5 event")
-        # if self.boss_hint_6 and not self.boss_hint_6_event:
-        # return self.hint_event_6()
-        # print("hint 6 event")
 
     def jennas_level_1_gab(self, opening_phrase):
         if self.town_portal_exists:
@@ -7646,13 +7640,15 @@ class Player:
                      f"'Take good care, now, and be wise!\'\n ")"""
         pause()
 
-    def talk_to_jenna(self):
+    def talk_to_jenna(self):  # expand these statements for immersive realism
         cls()
         opening_phrase = "\'Feelin' chatty, love?\', queries Jenna in a coy tone."
-        random_jenna_business = ["I'm a bit busy, here, love.", "I hear there's always loot to be found in the "
-                                 "dungeons. Ye can sell what ye don't need, here in town!", "The Sauengard dungeons "
+        random_jenna_business = ["I'm a bit busy, here, love..\n", "There's always loot to be found in the "
+                                 "dungeons. Ye can sell what ye don't need, here in town!\n", "The Sauengard dungeons "
                                  "were once part of a magnificent kingdom many years ago; Before it became overrun "
-                                 "by fiends, brigands and the undead."]
+                                 "by fiends, brigands and the undead.\n", "Working on yer Charisma will give ye a "
+                                 "better chance for positive outcomes in the dungeon!\n", "Gaining Constitution will"
+                                 "help ye resist poison and necrosis. It also will gain ye hit points!\n"]
         if self.dungeon.level == 1:
             self.jennas_level_1_gab(opening_phrase)
         else:
@@ -9454,6 +9450,22 @@ class Player:
         else:
             return
 
+    def deaf_one_portal_event(self):
+        if not self.boss_hint_3_event:
+            cls()
+            teletype(f"A portal opens before you, different from any you have seen; Larger, more vibrant, and "
+                     f"pulsating with incredible power\nthat you feel within your bones. Within the Weird "
+                     f"opening, you see Deaf One, silently standing in front\nof the Slumbering Bear Inn! "
+                     f"He beckons you with a gesture to join him. Instinctively, you step through to find\n"
+                     f"him vanished in an instant..")
+            pause()
+            town_theme()
+            # self.monsters_on = False  # beta. this will make it so no regular monsters in long hallway level
+            self.in_town = True
+            self.in_dungeon = False
+            self.town_portal_exists = True
+            return "DeafOnePortal"
+
     def event_logic(self):
         # interactive events, items etc.
         # the event dictionary *key* is a tuple corresponding to
@@ -9470,6 +9482,7 @@ class Player:
                       self.dungeon.encounter_sikira: self.encounter_sikira_event,
                       self.dungeon.encounter_deaf_one_1: self.encounter_deaf_one_event1,
                       self.dungeon.encounter_deaf_one_2: self.encounter_deaf_one_event2,
+                      self.dungeon.deaf_one_portal: self.deaf_one_portal_event,
                       self.dungeon.encounter_the_party: self.encounter_the_party_event,
                       self.dungeon.treasure_chest: self.treasure_chest_event,
                       self.dungeon.altar: self.altar_event,
@@ -9493,6 +9506,10 @@ class Player:
 
     def town_navigation(self):
         # called from main loop
+        if self.boss_hint_3 and not self.boss_hint_3_event:  # if player defeats level 3 exit boss and has not yet
+            tavern_theme()  # visited tavern, then player automatically placed at tavern
+            self.tavern()
+            town_theme()
         if self.town_portal_exists:  # or self.loaded_game:
             town_functions = input("(The Town of Fieldenberg)\n(Quit) to desktop, (S)ave, (R)estart game (I)nventory, "
                                    "(B)lacksmith, (C)hemist , (T)avern, or re-(E)nter dungeon --> ").lower()

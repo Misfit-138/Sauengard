@@ -122,7 +122,7 @@ class Dungeon:
         self.legendary_monster = (0, 0)
         self.encounter_deaf_one_1 = (0, 0)
         self.encounter_deaf_one_2 = (0, 0)
-        self.deaf_one_portal = (0, 0)
+        self.deaf_one_portal_dungeon_level4 = (0, 0)
         self.wicked_queen = (0, 0)
         self.exit = (0, 0)
         self.grid = []
@@ -449,7 +449,7 @@ class Dungeon4(Dungeon):
         self.legendary_monster = (14, 4)
         self.encounter_deaf_one_1 = (99, 99)
         self.encounter_deaf_one_2 = (15, 4)
-        self.deaf_one_portal = (2, 4)
+        self.deaf_one_portal_dungeon_level4 = (2, 4)
         self.encounter_sikira = (99, 99)
         self.wicked_queen = (17, 4)
         self.exit = (99, 99)

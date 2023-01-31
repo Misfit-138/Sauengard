@@ -1688,6 +1688,7 @@ class Player:
         self.boss_hint_2_event = True
         self.boss_hint_3 = False
         self.boss_hint_3_event = False
+        self.forced_portal = False
         # self.boss_hint_4 = False
         # self.boss_hint_4_event = False
         # self.boss_hint_5 = False
@@ -9450,11 +9451,14 @@ class Player:
         else:
             return
 
-    def deaf_one_portal_event(self):
+    def deaf_one_portal_dungeon_level4_event(self):
+        # on dungeon level 4, force player to tavern to trigger boss_hint_3_event if not done so already
+        # because, otherwise the party members will just show up without explanation
         if not self.boss_hint_3_event:
+            self.forced_portal = True
             cls()
-            teletype(f"A portal opens before you, different from any you have seen; Larger, more vibrant, and "
-                     f"pulsating with incredible power\nthat you feel within your bones. Within the Weird "
+            teletype(f"A portal opens before you; Strange, vibrant, and "
+                     f"pulsating with incredible power\nthat you feel in your bones. Within the Weird "
                      f"opening, you see Deaf One, silently standing in front\nof the Slumbering Bear Inn! "
                      f"He beckons you with a gesture to join him. Instinctively, you step through to find\n"
                      f"him vanished in an instant..")
@@ -9482,7 +9486,7 @@ class Player:
                       self.dungeon.encounter_sikira: self.encounter_sikira_event,
                       self.dungeon.encounter_deaf_one_1: self.encounter_deaf_one_event1,
                       self.dungeon.encounter_deaf_one_2: self.encounter_deaf_one_event2,
-                      self.dungeon.deaf_one_portal: self.deaf_one_portal_event,
+                      self.dungeon.deaf_one_portal_dungeon_level4: self.deaf_one_portal_dungeon_level4_event,
                       self.dungeon.encounter_the_party: self.encounter_the_party_event,
                       self.dungeon.treasure_chest: self.treasure_chest_event,
                       self.dungeon.altar: self.altar_event,
@@ -9506,7 +9510,9 @@ class Player:
 
     def town_navigation(self):
         # called from main loop
-        if self.boss_hint_3 and not self.boss_hint_3_event:  # if player defeats level 3 exit boss and has not yet
+        if self.forced_portal:
+            # if self.boss_hint_3 and not self.boss_hint_3_event:  # if player defeats level 3 exit boss and has not yet
+            self.forced_portal = False  # reset forced portal condition
             tavern_theme()  # visited tavern, then player automatically placed at tavern
             self.tavern()
             town_theme()

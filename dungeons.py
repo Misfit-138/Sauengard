@@ -122,6 +122,8 @@ class Dungeon:
         self.legendary_monster = (0, 0)
         self.encounter_deaf_one_1 = (0, 0)
         self.encounter_deaf_one_2 = (0, 0)
+        self.deaf_one_portal_dungeon_level2 = (0, 0)
+        self.deaf_one_portal_dungeon_level3 = (0, 0)
         self.deaf_one_portal_dungeon_level4 = (0, 0)
         self.wicked_queen = (0, 0)
         self.exit = (0, 0)
@@ -246,7 +248,7 @@ class Dungeon2(Dungeon):
         self.pit_corridor_name = "a cramped passage"
         self.intersection_name = "a domed chamber"
         self.pit_intersection_name = "a large, open cavity"
-        self.large_atrium_phrase = "You are standing in a large, vaulted atrium built by the Dwarves long ago.\n"
+        self.large_atrium_phrase = "You are standing in a large, vaulted atrium built by the Dwarves long ago."
         self.one_walled_atrium_phrase = "You are standing in an atrium built by the Dwarves long ago."
         self.pit_large_atrium_phrase = "You are standing in a large cavity opening."
         self.pit_one_walled_atrium_phrase = "You are standing in a cavity opening."
@@ -265,6 +267,7 @@ class Dungeon2(Dungeon):
         self.elite_monster = (14, 11)  # 4, 10
         self.legendary_monster = (99, 99)
         self.encounter_sikira = (99, 99)
+        self.deaf_one_portal_dungeon_level2 = (17, 8)
         self.wicked_queen = (99, 99)
         self.exit = (19, 8)
         # following are just for human-readable purposes. program ignores all values except "*", which represent walls
@@ -328,19 +331,18 @@ class Dungeon3(Dungeon):
         self.barrier_name_plural = "walls of eroded limestone"
         self.pit_barrier_name = "a wall of moist earth"
         self.pit_barrier_name_plural = "walls of moist earth"
-        self.corridor_phrase = f"This is a passage of eroded, shiny limestone.\n"  # of {self.casual_name}
+        self.corridor_phrase = f"This is a naturally formed passage."  # of {self.casual_name}
         self.corridor_name = f"a tunnel formed by the dissolution of limestone"
         self.pit_description_phrase = f"The ground is covered in running water and streamed with colorful minerals."
         self.pit_corridor_phrase = "You are in a round, jagged tunnel with shallow water at your feet."
         self.pit_corridor_name = "a cramped passage"
         self.intersection_name = "a domed chamber"
         self.pit_intersection_name = "a large, open cavity"
-        self.large_atrium_phrase = "You are standing in a vast, naturally-formed cavity spotted with pools of\n" \
-                                   "water and stalactites.\n"
+        self.large_atrium_phrase = "You are standing in a vast, naturally-formed cavity."
         self.one_walled_atrium_phrase = "You are standing in a cramped, naturally-formed cavity."
         self.pit_large_atrium_phrase = "You are standing in a large, open cavity."
         self.pit_one_walled_atrium_phrase = "You are standing in a cavity formed of clay and rock."
-        self.staircase = (18, 3)  # testing (1, 3)
+        self.staircase = (18, 1)  # testing (1, 3)
         self.treasure_chest = (4, 15)
         self.quantum_treasure_chest = (1, 18)
         self.altar = (11, 18)
@@ -355,6 +357,7 @@ class Dungeon3(Dungeon):
         self.elite_monster = (4, 10)  # 4, 10
         self.legendary_monster = (11, 1)
         self.encounter_sikira = (11, 5)
+        self.deaf_one_portal_dungeon_level3 = (18, 2)  # force a portal back to tavern if not done so already
         self.wicked_queen = (99, 99)
         self.exit = (19, 3)
         # following are just for human-readable purposes. program ignores all values except "*", which represent walls
@@ -431,9 +434,7 @@ class Dungeon4(Dungeon):
         self.one_walled_atrium_phrase = "You are standing in an atrium."
         self.pit_large_atrium_phrase = "You are standing in a large cavity."
         self.pit_one_walled_atrium_phrase = "You are standing in a cavity."
-
         self.staircase = (1, 4)
-        self.encounter_the_party = (7, 4)
         self.treasure_chest = (4, 4)
         self.quantum_treasure_chest = (9, 4)
         self.altar = (99, 99)
@@ -447,12 +448,12 @@ class Dungeon4(Dungeon):
         self.pit_landing = (99, 99)  # always 1, 14
         self.elite_monster = (11, 4)  # 4, 10
         self.legendary_monster = (14, 4)
-        self.encounter_deaf_one_1 = (99, 99)
         self.encounter_deaf_one_2 = (15, 4)
+        self.encounter_the_party = (7, 4)
         self.deaf_one_portal_dungeon_level4 = (2, 4)
         self.encounter_sikira = (99, 99)
         self.wicked_queen = (17, 4)
-        self.exit = (99, 99)
+        self.exit = (99, 99)  # create event to take player back to level 1 for re-playability
         # following are just for human-readable purposes. program ignores all values except "*", which represent walls
         # S = STAIRCASE C = CORRIDOR, P = PIT-opening, L = PIT LANDING ^ = ELEVATOR V = ELEVATOR LANDING . = OPEN AREA
         # F = FOUNTAIN

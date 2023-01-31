@@ -859,7 +859,7 @@ class GreatSword(Weapon):
         self.name = "Great Sword"
         self.item_type = "Weapons"
         self.damage_bonus = 3
-        self.to_hit_bonus = 1
+        self.to_hit_bonus = 2
         self.sell_price = 150
         self.buy_price = 500
         self.minimum_level = 4
@@ -872,11 +872,24 @@ class ElvishGreatSword(Weapon):
         self.name = "Elvish Great Sword"
         self.item_type = "Weapons"
         self.damage_bonus = 10
-        self.to_hit_bonus = 3
+        self.to_hit_bonus = 4
         self.sell_price = 2500
         self.buy_price = 5000
         self.minimum_level = 10
         self.a_an = "an"
+
+
+class WeirdSword(Weapon):
+    def __init__(self):
+        super().__init__()
+        self.name = "Weird Sword"
+        self.item_type = "Weapons"
+        self.damage_bonus = 15  # 5
+        self.to_hit_bonus = 7
+        self.sell_price = 6000
+        self.buy_price = 55000
+        self.minimum_level = 1
+        self.a_an = "a"
 
 
 class QuantumSword(Weapon):
@@ -885,7 +898,7 @@ class QuantumSword(Weapon):
         self.name = "Quantum Sword"
         self.item_type = "Weapons"
         self.damage_bonus = 12  # 5
-        self.to_hit_bonus = 4
+        self.to_hit_bonus = 5
         self.sell_price = 5000
         self.buy_price = 8000
         self.minimum_level = 12
@@ -898,7 +911,7 @@ class QuantumAxe(Weapon):
         self.name = "Quantum Axe"
         self.item_type = "Weapons"
         self.damage_bonus = 15  # 5
-        self.to_hit_bonus = 4
+        self.to_hit_bonus = 5
         self.sell_price = 5000
         self.buy_price = 8000
         self.minimum_level = 12  # 3
@@ -950,7 +963,7 @@ class ElvishGreatAxe(Weapon):
         self.name = "Elvish Great Axe"
         self.item_type = "Weapons"
         self.damage_bonus = 12
-        self.to_hit_bonus = 2
+        self.to_hit_bonus = 4
         self.sell_price = 2750
         self.buy_price = 6000
         self.minimum_level = 12
@@ -1610,7 +1623,7 @@ class Player:
         self.gold = 0
         self.monsters_on = True  # diagnostic
         self.wielded_weapon = ShortSword()
-        self.wielded_weapon.damage_bonus = 2000
+        self.wielded_weapon.damage_bonus = 0
         self.armor = PaddedArmor()
         self.shield = NoShield()
         self.boots = LeatherBoots()
@@ -1662,7 +1675,7 @@ class Player:
         self.dot_multiplier = 1
         self.dot_turns = 1
         # self.current_dungeon_level = 1
-        self.dungeon_key = 3
+        self.dungeon_key = 1
         self.dungeon = dungeon_dict[self.dungeon_key]
         self.discovered_interactives = []
         self.discovered_monsters = []
@@ -1682,10 +1695,10 @@ class Player:
         self.torbron_ally = False
         self.magnus_ally = False
         self.vozzbozz_ally = False
-        self.boss_hint_1 = True
-        self.boss_hint_1_event = True
-        self.boss_hint_2 = True
-        self.boss_hint_2_event = True
+        self.boss_hint_1 = False
+        self.boss_hint_1_event = False
+        self.boss_hint_2 = False
+        self.boss_hint_2_event = False
         self.boss_hint_3 = False
         self.boss_hint_3_event = False
         self.forced_portal = False
@@ -1751,6 +1764,9 @@ class Player:
     def end_game_character_condition_resets(self):  # player defeats final boss
         # called from main loop.
         # reset character conditions before saving character with end_game_routine()
+
+        # give player weird sword as reward for game completion
+        self.wielded_weapon = WeirdSword()
 
         # remove allies
         self.torbron_ally = False
@@ -7366,7 +7382,7 @@ class Player:
             liquidate_lst.append(key.sell_price)
         total = sum(liquidate_lst)
         print(f"Total: {total}")
-        confirm_liquidate = input(f"Sell everything in your dungeoneer's pack for {total} GP? ").lower()
+        confirm_liquidate = input(f"Sell everything in your pack for {total} GP? ").lower()  # dungeoneer's pack
         if confirm_liquidate == 'y':
             for each_category in item_type_lst:
                 (self.pack[each_category]).clear()
@@ -7443,7 +7459,7 @@ class Player:
         # hint_events move the story along by subtle hints to the player, revealed over time in the game, as
         # they progress.
         # hint_events take place in the tavern (so far). they correspond to boss_clues:
-        # hint_event_1 occurs after boss_clue_1,
+        # hint_event_1 occurs after boss_clue_1, (which occurs after victory over dungeon exit boss lvl 1)
         # hint_event_2 after boss_clue_2, etc. the boss_clues occur after defeating the dungeon_exit boss
         # hint_event_1 is a meeting with vozzbozz, introduction to tor'bron the barbarian, and another hint
         # about the symbol of the wicked queen, which the player finds during boss_clue_1
@@ -7578,7 +7594,7 @@ class Player:
             teletype(f"'The Dark She-Elf makes five..', interjects the bird.\n"
                      f"Magnus briefly looks at Lazarus, and you suddenly deduce it has been the raven who has been "
                      f"eavesdropping in the dungeon\ndepths below and reporting on your victories all this time.\n"
-                     f"Motioning to Si'Kira, he says, 'Ye think yer friend there will lend her sword?'" 
+                     f"Motioning to Si'Kira, he says, 'Ye think yer friend there will lend her sword?'\n" 
                      f"With a smirk, you respond immediately, 'Without a doubt.'\n")
 
         teletype(f"Magnus looks at you gravely. 'We will be meeting with Tor'Bron outside, and then joining "
@@ -7947,7 +7963,7 @@ class Player:
                 print(f"{self.antidotes} Vials of Antidote")
 
         item_type_lst = ['Weapons', 'Armor', 'Shields', 'Boots', 'Cloaks']
-        print(f"Your dungeoneer's pack contains:")
+        print(f"Your pack contains:")  # dungeoneer's pack
 
         current_items = []
         for each_item in item_type_lst:
@@ -8118,7 +8134,7 @@ class Player:
                     if not self.duplicate_item(old_boots.item_type,
                                                old_boots):  # old_boots not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(old_boots)
-                        print(f"You place the {old_boots.name} in your dungeoneer's pack..")
+                        print(f"You place the {old_boots.name} in your pack..")  # dungeoneer's pack
 
                     else:
                         print(f"You drop your {old_boots.name}.")
@@ -8129,7 +8145,7 @@ class Player:
                     if not self.duplicate_item(found_item.item_type,
                                                found_item):  # found_item not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(found_item)
-                        print(f"You place them in your dungeoneer's pack.")
+                        print(f"You place them in your pack.")  # dungeoneer's pack
 
                     else:
                         print(f"However, you cannot carry any more boots like this. You leave them.")
@@ -8167,7 +8183,7 @@ class Player:
                     if not self.duplicate_item(old_cloak.item_type,
                                                old_cloak):  # old_cloak not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(old_cloak)
-                        print(f"You roll up the {old_cloak.name} and place it in your dungeoneer's pack..")
+                        print(f"You roll up the {old_cloak.name} and place it in your pack..")  # dungeoneer's pack
                     else:
                         print(f"You drop your {old_cloak.name}.")
                     pause()
@@ -8177,7 +8193,7 @@ class Player:
                     if not self.duplicate_item(found_item.item_type,
                                                found_item):  # found_item not in self.pack[found_item.item_type]:
                         (self.pack[found_item.item_type]).append(found_item)
-                        print(f"You place the {found_item.name} in your dungeoneer's pack.")
+                        print(f"You place the {found_item.name} in your pack.")  # dungeoneer's pack
                     else:
                         print(f"You cannot carry any more cloaks like this. You leave it.")  # can't carry any more
                     pause()
@@ -8916,7 +8932,7 @@ class Player:
                 lost_item = (self.pack[item_type].pop(random.randint(0, len(self.pack[item_type]) - 1)))
                 print(f"Your load feels lighter..")
                 sleep(1)
-                print(f"The {lost_item.name} from your dungeoneer's pack is gone!")  # from your {item_type}")
+                print(f"The {lost_item.name} from your pack is gone!")  # from your {item_type}")  # dungeoneer's pack
                 pause()
                 return
         elif sum(belt_item_types_to_lose) > 0:
@@ -9451,33 +9467,54 @@ class Player:
         else:
             return
 
+    def deaf_one_forced_portal_conditionals(self):
+        # called from self.deaf_one_portal_dungeon_levelX_event() methods below
+        # sets conditions checked elsewhere
+        self.forced_portal = True  # checked in town_navigation()
+        cls()
+        teletype(f"A portal opens before you; Strange, vibrant, and "
+                 f"pulsating with incredible power\nthat you feel in your bones. Within the Weird "
+                 f"opening, you see Deaf One, silently standing in front\nof the Slumbering Bear Inn! "
+                 f"He beckons you with a gesture to join him. Instinctively, you step through to find\n"
+                 f"him vanished in an instant..\n")
+        pause()
+        town_theme()
+        self.in_town = True  # checked in main loop, helps break out of dungeon loops
+        self.in_dungeon = False  # checked in main loop to break out of dungeon loops
+        self.town_portal_exists = True  # checked to ensure proper prompt to enter or re-enter dungeon
+
+    def deaf_one_portal_dungeon_level2_event(self):
+        # called from self.event_logic()
+        # on dungeon level 2, force player to tavern to trigger boss_hint_1_event if not done so already
+        # to move story along
+        if not self.boss_hint_1_event:
+            self.deaf_one_forced_portal_conditionals()
+            return "DeafOnePortal"
+
+    def deaf_one_portal_dungeon_level3_event(self):
+        # called from self.event_logic()
+        # on dungeon level 3, force player to tavern to trigger boss_hint_2_event if not done so already
+        # to move story along
+        if not self.boss_hint_2_event:
+            self.deaf_one_forced_portal_conditionals()
+            return "DeafOnePortal"
+
     def deaf_one_portal_dungeon_level4_event(self):
+        # called from self.event_logic()
         # on dungeon level 4, force player to tavern to trigger boss_hint_3_event if not done so already
         # because, otherwise the party members will just show up without explanation
         if not self.boss_hint_3_event:
-            self.forced_portal = True
-            cls()
-            teletype(f"A portal opens before you; Strange, vibrant, and "
-                     f"pulsating with incredible power\nthat you feel in your bones. Within the Weird "
-                     f"opening, you see Deaf One, silently standing in front\nof the Slumbering Bear Inn! "
-                     f"He beckons you with a gesture to join him. Instinctively, you step through to find\n"
-                     f"him vanished in an instant..")
-            pause()
-            town_theme()
-            # self.monsters_on = False  # beta. this will make it so no regular monsters in long hallway level
-            self.in_town = True
-            self.in_dungeon = False
-            self.town_portal_exists = True
+            self.deaf_one_forced_portal_conditionals()
             return "DeafOnePortal"
 
     def event_logic(self):
         # interactive events, items etc.
-        # the event dictionary *key* is a tuple corresponding to
+        # the event dictionary *key* is a tuple trigger corresponding to
         # dungeon x y coordinates of an event or item e.g. (2, 3)
-        # the event dictionary *value* is the corresponding player function.
+        # the event dictionary *value* is the corresponding player function/event.
         # if the player's coordinates exist as a key in event_dict,
         # the dictionary value is given the variable 'event_function'
-        # finally, the proper function is called and any
+        # finally, the proper function (method) is called and any
         # function values are returned to the main program
         # using 'return event_function()'
         # monster_encounter = dice_roll(1, 20)
@@ -9486,6 +9523,8 @@ class Player:
                       self.dungeon.encounter_sikira: self.encounter_sikira_event,
                       self.dungeon.encounter_deaf_one_1: self.encounter_deaf_one_event1,
                       self.dungeon.encounter_deaf_one_2: self.encounter_deaf_one_event2,
+                      self.dungeon.deaf_one_portal_dungeon_level2: self.deaf_one_portal_dungeon_level2_event,
+                      self.dungeon.deaf_one_portal_dungeon_level3: self.deaf_one_portal_dungeon_level3_event,
                       self.dungeon.deaf_one_portal_dungeon_level4: self.deaf_one_portal_dungeon_level4_event,
                       self.dungeon.encounter_the_party: self.encounter_the_party_event,
                       self.dungeon.treasure_chest: self.treasure_chest_event,

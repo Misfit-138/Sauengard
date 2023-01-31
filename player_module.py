@@ -9486,7 +9486,7 @@ class Player:
     def deaf_one_portal_dungeon_level2_event(self):
         # called from self.event_logic()
         # on dungeon level 2, force player to tavern to trigger boss_hint_1_event if not done so already
-        # to move story along
+        # to move story along.
         if not self.boss_hint_1_event:
             self.deaf_one_forced_portal_conditionals()
             return "DeafOnePortal"

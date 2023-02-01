@@ -8290,7 +8290,7 @@ class Player:
                 # rndm_item_index = random.randrange(len(loot_dict[key]))
                 # found_item = loot_dict[key][rndm_item_index]
                 found_item = random.choice(loot_dict[key])()  # Calling class __init__ method
-                print(found_item)  # REMOVE AFTER TESTING *****************************************************
+                # print(found_item)  # REMOVE AFTER TESTING *****************************************************
 
                 if self.level >= found_item.minimum_level:
                     if found_item.item_type == 'Armor':
@@ -8393,7 +8393,7 @@ class Player:
                 # rndm_item_index = random.randrange(len(loot_dict[key]))
                 # found_item = loot_dict[key][rndm_item_index]
                 found_item = random.choice(loot_dict[key])()  # Calling class __init__ method
-                print(found_item)  # REMOVE AFTER TESTING *****************************************************
+                # print(found_item)  # REMOVE AFTER TESTING *****************************************************
                 if self.level >= found_item.minimum_level:
                     if found_item.item_type == 'Armor':
                         self.found_armor_substitution(found_item)
@@ -8529,7 +8529,7 @@ class Player:
                         # rndm_item_index = random.randrange(len(loot_dict[key]))
                         # found_item = loot_dict[key][rndm_item_index]
                         found_item = random.choice(loot_dict[key])()  # Calling class __init__ method
-                        print(found_item)  # REMOVE AFTER TESTING ****************************************************
+                        # print(found_item)  # REMOVE AFTER TESTING ****************************************************
                         if found_item.minimum_level - self.level <= 2:
                             if found_item.item_type == 'Armor':
                                 self.found_armor_substitution(found_item)
@@ -9472,14 +9472,14 @@ class Player:
         # sets conditions checked elsewhere
         self.forced_portal = True  # checked in town_navigation()
         cls()
-        teletype(f"A portal opens before you; Strange, vibrant, and "
+        teletype(f"A portal opens before you; Strange, erratic, and "
                  f"pulsating with incredible power\nthat you feel in your bones. Within the Weird "
                  f"opening, you see Deaf One, silently standing in front\nof the Slumbering Bear Inn! "
                  f"He beckons you with a gesture to join him. Instinctively, you step through to find\n"
                  f"him vanished in an instant..\n")
         pause()
         town_theme()
-        self.in_town = True  # checked in main loop, helps break out of dungeon loops
+        self.in_town = True  # checked in main loop, to break out of dungeon loops and remain in town loop
         self.in_dungeon = False  # checked in main loop to break out of dungeon loops
         self.town_portal_exists = True  # checked to ensure proper prompt to enter or re-enter dungeon
 

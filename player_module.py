@@ -684,6 +684,16 @@ def game_start():
                 return player_1
 
 
+def npc_ally_hud_sub_function(npc):
+    # called from self.hud()
+    npc_ally_hud_hit_points = npc.hit_points
+    npc_readiness = "(OK)"
+    if npc.hit_points < 1:
+        npc_ally_hud_hit_points = 1
+        npc_readiness = "(RETREATING)"
+    print(f"{npc.name}  HP: {npc_ally_hud_hit_points} {npc_readiness}")
+
+
 def augmentation_intro():
     cls()
     print(f"                                  *Attribute Augmentation*")
@@ -1516,8 +1526,8 @@ class SiKira:
         self.acumen = 1 + math.ceil(self.level / 4)
         self.maximum_hit_points = 70 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points
-        self.armor_class = (self.armor.ac + self.armor.armor_bonus +
-                            self.shield.ac + self.boots.ac + self.dexterity_modifier)
+        self.armor_class = (self.armor.ac + self.armor.armor_bonus + self.shield.ac + self.boots.ac
+                            + self.dexterity_modifier)
         self.protect = 3
         self.retreating = False
         self.retreat_counter = 0
@@ -1691,7 +1701,7 @@ class Player:
         self.torbron = TorBron()
         self.magnus = Magnus()
         self.vozzbozz = VozzBozz()
-        self.sikira_ally = False
+        self.sikira_ally = True
         self.torbron_ally = False
         self.magnus_ally = False
         self.vozzbozz_ally = False
@@ -1889,13 +1899,7 @@ class Player:
     def hud(self):
         cls()
         print(f"{self.name}")
-        allies = "None"
-        if self.sikira_ally:
-            allies = f"Si'Kira"
-        if self.torbron_ally and self.magnus_ally and self.vozzbozz_ally and self.sikira_ally:
-            allies = f"Tor'Bron, Magnus, Vozzbozz and Si'Kira"
-        if allies != "None":
-            print(f"Allies: {allies}")
+
         print(f"Level: {self.level} ({self.level}d{self.hit_dice})")
         print(f"Experience: {self.experience}")
         print(f"Gold: {self.gold}")
@@ -1943,7 +1947,15 @@ class Player:
             print(f"(POISONED)  Poison clarifying: ({self.poisoned_turns}/{self.dot_turns})")
         if self.necrotic:
             print(f"(NECROTIC)  Necrotic clarifying: ({self.necrotic_turns}/{self.dot_turns})")
-
+        if self.sikira_ally:
+            print(f"ALLIES:")
+            npc_ally_hud_sub_function(self.sikira)
+            if self.torbron_ally:
+                npc_ally_hud_sub_function(self.torbron)
+            if self.magnus_ally:
+                npc_ally_hud_sub_function(self.magnus)
+            if self.vozzbozz_ally:
+                npc_ally_hud_sub_function(self.vozzbozz)
         print()
         return
 
@@ -3431,7 +3443,7 @@ class Player:
                 self.hud()
                 return 0
         else:
-            print(f"{ally.name}missed...")
+            print(f"{ally.name} missed...")
             pause()
             self.hud()
             return 0
@@ -4324,10 +4336,8 @@ class Player:
         quantum_unit_cost = 1
         # number_of_dice = (3 + self.level + self.quantum_level)  # consider changing to self.quantum_level
         # heal = dice_roll(number_of_dice, 6) + number_of_dice + self.quantum_level
-        if self.quantum_level < 3:
-            heal = math.ceil(self.maximum_hit_points * .75)
-        else:
-            heal = math.ceil(self.maximum_hit_points * .90)
+        heal = math.ceil(self.maximum_hit_points * .75)
+
         if self.hit_points < self.maximum_hit_points:
             print(f"You feel restorative powers welling up within you..")
             sleep(1)
@@ -4339,6 +4349,74 @@ class Player:
             self.quantum_units -= quantum_unit_cost
         else:
             print(f"You are at maximum health!")
+            sleep(1)
+        pause()
+        return 0
+
+    def quantum_medicine_enhanced_npc_subfunction(self, npc):
+        # called from quantum_medicine_enhanced() for each npc ally, if wounded
+        if npc.hit_points < npc.maximum_hit_points:
+            self.hud()
+            print(f"{self.name} procures Enhanced Quantum Medicine for {npc.name}.")
+            sleep(1)
+            print(f"{npc.name} feels restorative powers welling up within..")
+            sleep(1)
+            print(f"{npc.name} heals to full strength..")  # remove after testing
+            npc.hit_points = npc.maximum_hit_points
+
+            if npc.retreating:
+                npc.retreating = False
+                npc.retreat_counter = 0
+                print(f"{npc.name} is no longer retreating")
+                sleep(1)
+
+            pause()
+
+    def quantum_medicine_enhanced(self, monster):
+        # level 3 effect. consider adjusting, depending on playthrough;
+        # player should be able to use this by the time allies are encountered!
+        if monster is None:
+            print(f"Quantum Medicine, Enhanced")
+        else:
+            print(f"Quantum Medicine, Enhanced (BATTLE)")
+        sleep(1)
+        someone_has_been_healed = False
+        if self.sikira_ally or self.torbron_ally or self.magnus_ally or self.vozzbozz_ally:
+            if self.sikira_ally and self.sikira.hit_points < self.sikira.maximum_hit_points:
+                self.quantum_medicine_enhanced_npc_subfunction(self.sikira)
+                someone_has_been_healed = True
+            if self.torbron_ally and self.torbron.hit_points < self.torbron.maximum_hit_points:
+                self.quantum_medicine_enhanced_npc_subfunction(self.torbron)
+                someone_has_been_healed = True
+            if self.magnus_ally and self.magnus.hit_points < self.magnus.maximum_hit_points:
+                self.quantum_medicine_enhanced_npc_subfunction(self.magnus)
+                someone_has_been_healed = True
+            if self.vozzbozz_ally and self.vozzbozz.hit_points < self.vozzbozz.maximum_hit_points:
+                self.quantum_medicine_enhanced_npc_subfunction(self.vozzbozz)
+                someone_has_been_healed = True
+
+        self.hud()
+        quantum_unit_cost = 3
+        heal = math.ceil(self.maximum_hit_points * .90)
+        if self.hit_points < self.maximum_hit_points:
+            someone_has_been_healed = True
+            print(f"You procure Enhanced Quantum Medicine.")
+            sleep(1)
+            print(f"You feel restorative powers welling up within you..")
+            sleep(1)
+            print(f"You heal {heal} points..")  # remove after testing
+            self.hit_points += heal
+            if self.hit_points > self.maximum_hit_points:
+                self.hit_points = self.maximum_hit_points
+
+        if someone_has_been_healed:
+            self.quantum_units -= quantum_unit_cost
+
+        else:
+            if self.sikira_ally or self.torbron_ally or self.magnus_ally or self.vozzbozz_ally:
+                print("All in the party are at maximum health.")
+            else:
+                print(f"You are at maximum health.")
             sleep(1)
         pause()
         return 0
@@ -4394,7 +4472,7 @@ class Player:
               f"Final success depends on Enemy AC.")
         print()
         print(f"Quantum Medicine: Quantum Actions at a subatomic level repair physical wounds, ignoring necrosis and "
-              f"poison.\nEffectiveness based on Quantum Knowledge Level.")
+              f"poison.\nEffectiveness equal to 75% of maximum hit points.")
         print()
         print(f"Protection from Evil: Through Quantum Probabilities, reduce the chances of successful enemy Quantum\n"
               f"attacks and paralyzing effects. Effectiveness depends on Quantum Knowledge Level. Duration depends on\n"
@@ -4448,7 +4526,7 @@ class Player:
         print()
         print(f"Phantasm: By Quantum Tunneling, create a terrifyingly debilitating mental illusion, capturing the\n"
               f"mind of your enemy and causing agonizing mental damage. Success based on Player Wisdom vs Enemy\n"
-              f"Intelligence. (Undead are unbelieving)")
+              f"Intelligence. (Undead are unbelieving.)")
         print()
         print(f"Immolation: A winding trail of flame encircles your enemy, closing until forming a complete immersion\n"
               f"of deadly fire. Success based on Player Wisdom vs Enemy Dexterity.")
@@ -4456,6 +4534,11 @@ class Player:
         print(f"Vortex: A watery twister forms around your enemy, disorienting, and causing crushing damage.\n"
               f"Success based on Player Wisdom vs Enemy Strength.")
         print()
+        print(f"Quantum Medicine, Enhanced: Quantum Actions at a subatomic level repair physical wounds, ignoring "
+              f"necrosis and poison.\n"
+              f"Effectiveness equal to 90% of maximum hit points. In addition, heals any and all allies to "
+              f"full strength.\nIf procured during battle, healed allies no longer retreat, and immediately re-enter "
+              f"the fight.")
         pause()
         return None
 
@@ -4565,7 +4648,8 @@ class Player:
                                           2: "Hold Monster",
                                           3: "Phantasm",
                                           4: "Immolation",
-                                          5: "Vortex"},
+                                          5: "Vortex",
+                                          6: "Quantum Medicine, Enhanced"},
                                       4: {1: "Firewall",
                                           2: "Quantum Petrifaction",
                                           3: "Fear",
@@ -4598,7 +4682,8 @@ class Player:
                                 2: self.hold_monster,
                                 3: self.phantasm,
                                 4: self.immolation,
-                                5: self.vortex},
+                                5: self.vortex,
+                                6: self.quantum_medicine_enhanced},
                             4: {0: self.quantum_help4,
                                 1: self.firewall,
                                 2: self.quantum_petrifaction,
@@ -9258,10 +9343,10 @@ class Player:
             self.hud()
             teletype(f"From the {random_orientation}, a seemingly autonomous, marshy, and knee-deep fog stretches "
                      f"toward you from out of the mire\nas a dark, humanoid silhouette begins to emerge. "
-                     f"With elongated, troll-like nose and ears, and deep-set eyes shrouded in black,\n"
+                     f"With elongated, troll-like nose and ears, and deep-set eyes\nshrouded in black,"
                      f"the whites of which shine with a luminescence as brilliant as any moon you have ever beheld. "
                      f"\nHis garb is a mere patchwork of cloth strip wrappings, as though he were once "
-                     f"mummified. His exposed flesh is gray and lifeless,\nand his long, dark hair is a dreaded tangle."
+                     f"mummified.\nHis exposed flesh is gray and lifeless, and his long, dark hair is a dreaded tangle."
                      f" Drawing your {self.wielded_weapon.name}, you attack!\n")
             pause()
             self.hud()
@@ -9275,9 +9360,9 @@ class Player:
                      f"moment before saying, 'You may call me Deaf One'.\n'Deaf One?', You blurt out, almost "
                      f"involuntarily.\nWith a nod, he answers in a subdued, faraway voice, 'Though hearing, I hear "
                      f"in vain..'\nStill on your guard, yet feeling powerless in contrast to his obvious "
-                     f"invulnerability, you begin to explain your quest.\n'Yes, I know why you are here.', "
+                     f"invulnerability, you begin to explain your quest.\n'Yes, I know why *you* are here.', "
                      f"he interrupts, plainly. "
-                     f"'I am here', he pauses, 'to guide you. The exit of this dungeon is guarded\nby an enemy you "
+                     f"'*I* am here', he pauses, 'to guide you. The exit of this dungeon is guarded\nby an enemy you "
                      f"are not yet prepared to face.'\n")
             pause()
             self.hud()

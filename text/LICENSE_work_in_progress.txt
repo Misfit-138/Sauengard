@@ -13,7 +13,6 @@ TO DO SO, AND ALL ITS TERMS AND CONDITIONS FOR USING AND DISTRIBUTING THE PROGRA
 THAN THIS LICENSE GRANTS YOU PERMISSION TO DISTRIBUTE THE PROGRAM. THESE ACTIONS ARE PROHIBITED
 BY LAW. IF YOU DO NOT ACCEPT THESE TERMS AND CONDITIONS, DO NOT DISTRIBUTE THE PROGRAM.
 
-License
 Licensor hereby grants you the following rights, provided that you comply with all of the restrictions set forth in
 this License and provided, further, that you distribute an unmodified copy of this License with the Program
 and provided, further, that you give attribution to the Author and provided, further, that you distribute the

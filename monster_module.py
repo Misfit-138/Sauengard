@@ -7,30 +7,13 @@
 Copyright 2022, JULES PITSKER  (pitsker@proton.me)
 All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-1. The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-2. The following acknowledgement shall be included in all copies or substantial
-portions of the Software:
-This product includes software developed by Jules Pitsker.
-
-3. If using software included in the ACKNOWLEDGEMENTS section below, acknowledgements shall
-be attributed to corresponding authors listed therein.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
 ACKNOWLEDGEMENTS according to Creative Commons licenses:
 https://creativecommons.org/licenses/by/4.0/
@@ -5469,6 +5452,7 @@ class WickedQueenJannbrielle(Monster):
         self.experience_award = 64000
         self.gold = random.randint(150, 2500)
         self.weapon_bonus = 0
+        self.to_hit_bonus = 5
         self.armor_name = "unnaturally hard, alabaster flesh"
         self.strength = 30
         self.dexterity = 17

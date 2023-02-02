@@ -7,30 +7,13 @@
 Copyright 2022, JULES PITSKER  (pitsker@proton.me)
 All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-1. The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-2. The following acknowledgement shall be included in all copies or substantial
-portions of the Software:
-This product includes software developed by Jules Pitsker.
-
-3. If using software included in the ACKNOWLEDGEMENTS section below, acknowledgements shall
-be attributed to corresponding authors listed therein.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
 ACKNOWLEDGEMENTS according to Creative Commons licenses:
 https://creativecommons.org/licenses/by/4.0/
@@ -1701,7 +1684,7 @@ class Player:
         self.torbron = TorBron()
         self.magnus = Magnus()
         self.vozzbozz = VozzBozz()
-        self.sikira_ally = True
+        self.sikira_ally = False
         self.torbron_ally = False
         self.magnus_ally = False
         self.vozzbozz_ally = False
@@ -2784,6 +2767,9 @@ class Player:
             monster.experience_award = round(monster.experience_award * 1.25)
 
         if self. sikira_ally or self.torbron_ally or self.magnus_ally or self.vozzbozz_ally:
+            if monster.to_hit_bonus <= self.acumen:  # consider modifying for balance
+                monster.to_hit_bonus = self.acumen + 1
+
             if monster.proper_name == "None":
                 monster.name = f"{monster.name} Dreadnought"
             else:
@@ -8847,7 +8833,7 @@ class Player:
                       f"with a bold warning message to any who would dare to revisit such evils upon the world...")
                 sleep(1.5)
                 print(f"As you finish, you stand to admire your work..")
-                sleep(1.5)
+                pause()
                 return rndm_occurrence()
             elif throne_action == 'r':
                 difficulty_class = 14
@@ -9343,11 +9329,12 @@ class Player:
             self.hud()
             teletype(f"From the {random_orientation}, a seemingly autonomous, marshy, and knee-deep fog stretches "
                      f"toward you from out of the mire\nas a dark, humanoid silhouette begins to emerge. "
-                     f"With elongated, troll-like nose and ears, and deep-set eyes\nshrouded in black,"
+                     f"With elongated, troll-like nose and ears, and deep-set eyes\nshrouded in black, "
                      f"the whites of which shine with a luminescence as brilliant as any moon you have ever beheld. "
                      f"\nHis garb is a mere patchwork of cloth strip wrappings, as though he were once "
-                     f"mummified.\nHis exposed flesh is gray and lifeless, and his long, dark hair is a dreaded tangle."
-                     f" Drawing your {self.wielded_weapon.name}, you attack!\n")
+                     f"mummified. His exposed portions\nof flesh appear gray and lifeless, with arms covered in "
+                     f"tattoo markings, and his long, dark hair is a tangled mess.\n"
+                     f"Drawing your {self.wielded_weapon.name}, you attack!\n")
             pause()
             self.hud()
             teletype(f"Your weapon strikes his left arm and splinters into shards of white-hot steel! Unaffected and "
@@ -9362,8 +9349,8 @@ class Player:
                      f"in vain..'\nStill on your guard, yet feeling powerless in contrast to his obvious "
                      f"invulnerability, you begin to explain your quest.\n'Yes, I know why *you* are here.', "
                      f"he interrupts, plainly. "
-                     f"'*I* am here', he pauses, 'to guide you. The exit of this dungeon is guarded\nby an enemy you "
-                     f"are not yet prepared to face.'\n")
+                     f"'*I* am here', he pauses, 'to guide you. The exit of this dungeon is guarded\nby an enemy whom "
+                     f"you are not yet prepared to face.'\n")
             pause()
             self.hud()
             teletype(f"Thinking back to your training, you recall Gorndam's words and warnings about physical power "
@@ -9386,8 +9373,17 @@ class Player:
                      f" which must be embraced, and never understood.', he concludes."
                      f"\nBefore you can respond with the myriad of "
                      f"questions in your mind, the marshy fog envelopes Deaf One,\nand his form becomes "
-                     f"obscured with its whisperings until he is simply gone, along with the cold, creeping mist.\n")
+                     f"obscured with its whisperings until he is simply gone. All that remains is the cold, "
+                     f"creeping mist.\n")
             pause()
+            if self.hit_points < self.maximum_hit_points:
+                self.hud()
+                teletype(f"The remnants of the low-lying fog pulse with Weirdness, and you feel restorative energies "
+                         f"growing within!")
+                sleep(1.5)
+                teletype(f"You heal to full strength!!\n")
+                self.hit_points = self.maximum_hit_points
+                pause()
 
     def encounter_deaf_one_event2(self):
         # called from event_logic()

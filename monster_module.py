@@ -2007,9 +2007,9 @@ class Doppelganger(Monster):
         self.dot_multiplier = 1
         self.dot_turns = 1
         self.undead = False
-        self.immunities = ["Charm", "Sleep", "Web", "Phantasm"]
+        self.immunities = []
         self.vulnerabilities = []
-        self.resistances = ["Hold Monster", "Banish"]
+        self.resistances = ["Hold Monster", "Banish", "Charm", "Sleep", "Web", "Phantasm"]
         self.quantum_energy = False
         self.hit_dice = 8
         self.number_of_hd = 2
@@ -2018,15 +2018,20 @@ class Doppelganger(Monster):
         self.multi_attack = True
         self.lesser_multi_attack = False
         self.attack_1 = 4  # attack bonus
-        self.attack_1_phrase = f"It polymorphs into the form of {random.choice(forms)}!!"
+        self.attack_1_phrase = f"It polymorphs into the form of {random.choice(forms)}, cries out, 'Play ball!!', " \
+                               f"and throws a rubber snake at you!!"
         self.attack_2 = 4
-        self.attack_2_phrase = f"It shape-shifts into the form of {random.choice(forms)}!!"
+        self.attack_2_phrase = f"It shape-shifts into the form of {random.choice(forms)}, yells, 'I'll blow you " \
+                               f"away!!', and strikes with a badminton racket!!"
         self.attack_3 = 4
-        self.attack_3_phrase = f"It becomes {random.choice(forms)}!!"
+        self.attack_3_phrase = f"It becomes {random.choice(forms)} and inexplicably cries out 'SHACK, SHACK!!' " \
+                               f"and throws a Saab 9000 at you!"
         self.attack_4 = 4
-        self.attack_4_phrase = f"It changes into {random.choice(forms)}!!"
+        self.attack_4_phrase = f"It changes into {random.choice(forms)}, yells, 'Del Toro forever!!' and throws a " \
+                               f"geodesic dome at you!"
         self.attack_5 = 4
-        self.attack_5_phrase = f"It morphs into {random.choice(forms)}!!"
+        self.attack_5_phrase = f"It morphs into {random.choice(forms)} and throws a projectile, as you think to " \
+                               f"yourself, 'Another one of those stupid planes!!'"
         self.introduction = f"You have encountered a Doppelganger! Your eyes see it as it truly is for just an " \
                             f"instant,\nbefore its dark humanoid silhouette begins to " \
                             f"churn like a tempestuous body of black water;\nTall, horrific, foul, and with inhuman " \
@@ -3460,13 +3465,13 @@ class FrostGiant(Monster):
         self.attack_1 = 6  # attack bonus
         self.attack_1_phrase = "It swings its greataxe with might and skill.."
         self.attack_2 = 7
-        self.attack_2_phrase = "It strikes at you with a heavy fist, followed by a an axe swing!"
+        self.attack_2_phrase = "It strikes at you with a heavy fist, followed by an axe swing!"
         self.attack_3 = 8
         self.attack_3_phrase = "It swings its axe with both hands for a mighty blow."
         self.attack_4 = 10
         self.attack_4_phrase = "It stomps the ground with a foot, stumbling you, and comes down with a mighty axe blow!"
         self.attack_5 = 12
-        self.attack_5_phrase = "It grabs you with a crushing fist, and attacks with a mighty axe blow!"
+        self.attack_5_phrase = "It grabs you with a crushing fist, and makes another swing!"
         self.introduction = f"You have encountered a Frost Giant; A huge humanoid out of myths, now brought to this " \
                             f"reality by Quantum improbability.\nBuilt of hard, frozen flesh for battle, " \
                             f"wielding an enormous greataxe, and towering above\nyou at some 12 feet in height, " \
@@ -5439,6 +5444,138 @@ class DiamondKingPatrician(Monster):
         self.poison_phrase = f"In a blurred motion of time-bending mist, he attacks with his poisonous fangs!"
 
 
+class FrostGiantChampion(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 15
+        self.name = "Frost Giant Champion"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.experience_award = 10000
+        self.gold = random.randint(15, 25)
+        self.weapon_bonus = 9
+        self.armor_name = "icy blue battle armor"
+        self.strength = 26
+        self.dexterity = 17
+        self.constitution = 19
+        self.intelligence = 16
+        self.wisdom = 12
+        self.charisma = 12
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 1
+        self.dot_turns = 1
+        self.undead = False
+        self.immunities = ["Ice Storm"]
+        self.vulnerabilities = []
+        self.resistances = ["Sleep", "Web", "Charm"]
+        self.quantum_energy = False
+        self.hit_dice = 9
+        self.number_of_hd = 9
+        self.hit_points = 160
+        self.armor_class = 24
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 6  # attack bonus
+        self.attack_1_phrase = "It swings its greataxe with great might and skill.."
+        self.attack_2 = 7
+        self.attack_2_phrase = "It strikes at you with a heavy fist, followed by an axe swing!"
+        self.attack_3 = 8
+        self.attack_3_phrase = "It swings its axe with both hands for a mighty blow."
+        self.attack_4 = 10
+        self.attack_4_phrase = "It stomps the ground with a foot, stumbling you, and comes down with a mighty axe blow!"
+        self.attack_5 = 12
+        self.attack_5_phrase = "It grabs you with a crushing fist, and makes another swing!"
+        self.introduction = f"You have encountered a Frost Giant Champion; A worthy veteran of mettle and might born " \
+                            f"of countless wars.\nBuilt of hard, frozen flesh for battle, " \
+                            f"wielding an enormous greataxe, and towering above\nyou at some 12 feet in height, " \
+                            f"its footsteps shake you to the core as it approaches."
+
+
+class DoppelgangerBerserker(Monster):
+
+    def __init__(self):
+        super().__init__()
+        forms = ["a silvery-haired, white-bearded fiend with spectacles wearing a slick, green coat and heavy boots",
+                 "a black-bearded, silvery-haired, spectacled and slovenly fiend in a filthy undergarment",
+                 "an exact replica of you",
+                 "a tall, spectacled, smelly and lanky man with a lizard hanging from his nose by its teeth",
+                 "a mirror-image of you",
+                 "a silvery-haired, white-bearded fiend with spectacles wearing a dress coat",
+                 "an extremely short man with a gray wig, hat, and wearing a comically long coat with sleeves hanging "
+                 "far beyond his hands"]
+        self.level = 15
+        self.name = "Doppelganger Berserker"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.experience_award = 700
+        self.gold = random.randint(1, 5)
+        self.weapon_bonus = 0
+        self.armor_name = "unnatural armor"
+        self.strength = 24
+        self.dexterity = 18
+        self.constitution = 18
+        self.intelligence = 14
+        self.wisdom = 12
+        self.charisma = 14
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 5
+        self.dot_turns = 4
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = ["Hold Monster", "Banish", "Charm", "Sleep", "Web", "Phantasm"]
+        self.quantum_energy = False
+        self.hit_dice = 9
+        self.number_of_hd = 8
+        self.hit_points = 162
+        self.armor_class = 23
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 4  # attack bonus
+        self.attack_1_phrase = f"It polymorphs into the form of {random.choice(forms)}, cries out, 'Play ball!!', " \
+                               f"and throws a rubber snake at you!!"
+        self.attack_2 = 4
+        self.attack_2_phrase = f"It shape-shifts into the form of {random.choice(forms)}, yells, 'I'll blow you " \
+                               f"away!!', and strikes with a badminton racket!!"
+        self.attack_3 = 4
+        self.attack_3_phrase = f"It becomes {random.choice(forms)} and inexplicably cries out 'SHACK, SHACK!!' " \
+                               f"and throws a Saab 9000 at you!"
+        self.attack_4 = 4
+        self.attack_4_phrase = f"It changes into {random.choice(forms)}, yells, 'Del Toro forever!!' and throws a " \
+                               f"geodesic dome at you!"
+        self.attack_5 = 4
+        self.attack_5_phrase = f"It morphs into {random.choice(forms)} and throws a projectile, as you think to " \
+                               f"yourself, 'Another one of those stupid planes!!'"
+        self.introduction = f"You have encountered a Doppelganger Berserker! Its dark humanoid silhouette begins to " \
+                            f"churn like a tempestuous body of black water;\nTall, horrific, foul, and with inhuman " \
+                            f"eyes that smoulder with greedy hunger.\nIts flesh is covered in disease and its mouth " \
+                            f"is full of razor-sharp teeth.\nIt begins to smile in hideous delight."
+        self.paralyze_phrase = "It thrusts forward, clutching your arm within its iron grip!!"
+        self.paralyze_free_attack_phrase = "Completely petrified, you stand helpless as it slices at you with a " \
+                                           "horrid claw\nand spits shards of broken glass into your frozen face!!"
+
+
 class WickedQueenJannbrielle(Monster):
 
     def __init__(self):
@@ -5537,7 +5674,8 @@ monster_dict = {
     11: [CorpseGrinder, BoltThrowerCaptain, Apocryphage, MorbidAssassin, TorinManipulator],
     12: [DiamondKingInitiate, QueenWasp, FireGiantCaptain, DarkDwarfWarlord, MorbidVastator],
     13: [MorbidTroll, SheStalker, AbsconditusManipulator, BoltThrowerChampion],
-    14: [AltiorManipulator, DiamondKingPatrician]
+    14: [AltiorManipulator, DiamondKingPatrician],
+    15: [FrostGiantChampion, DoppelgangerBerserker]
 }
 
 # undead monsters:

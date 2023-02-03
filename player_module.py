@@ -15,8 +15,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-ACKNOWLEDGEMENTS according to Creative Commons licenses:
-https://creativecommons.org/licenses/by/4.0/
+ACKNOWLEDGEMENTS
 
 SOUND/MUSIC:
 Main theme: "Soul's Departure" Royalty Free Music by Darren Curtis
@@ -61,7 +60,16 @@ Gong: juskiddink / Freesound.org
 Creative Commons Attribution License 3.0 (CC BY 3.0)
 
 Clacky Keyboard: Denis McDonald (denismcdonald / Freesound.org)
-Creative Commons Attribution License 3.0 (CC BY 3.0)"""
+Creative Commons Attribution License 3.0 (CC BY 3.0)
+
+Final Victory Theme: 'Epic Victory Music' Royalty Free Instrumental Music by MUSIC4VIDEO
+https://www.youtube.com/watch?v=5JeU0pYk0dg
+
+Queen Confrontation Theme: "Shadow"
+Album: "The Net" 2020 Argsound
+Author: Artem Grebenshchikov
+Link: https://youtu.be/k-DJUohjcKo
+Free for Any non-commercial use"""
 
 import math
 import pickle
@@ -1635,7 +1643,7 @@ class Player:
         self.charisma_modifier = math.floor((self.charisma - 10) / 2)
         self.hit_dice = 10
         self.acumen = 1
-        self.maximum_hit_points = 11 + self.constitution_modifier
+        self.maximum_hit_points = 12 + self.constitution_modifier
         self.hit_points = self.maximum_hit_points  # Hit Points at 1st Level: 10 + your Constitution modifier
         self.in_proximity_to_monster = False
         self.is_paralyzed = False
@@ -2142,7 +2150,7 @@ class Player:
                 self.protection_effect = True
                 self.protection_effect_uses += 1
                 # self.protection_effect_value = (2 + self.level)
-                if self.protection_effect_value > 10:
+                if self.protection_effect_value > 10:  # beta
                     self.protection_effect_value = 10
 
         return self.protection_effect
@@ -7731,12 +7739,19 @@ class Player:
     def talk_to_jenna(self):  # expand these statements for immersive realism
         cls()
         opening_phrase = "\'Feelin' chatty, love?\', queries Jenna in a coy tone."
-        random_jenna_business = ["I'm a bit busy, here, love..\n", "There's always loot to be found in the "
-                                 "dungeons. Ye can sell what ye don't need, here in town!\n", "The Sauengard dungeons "
+        random_jenna_business = [f"'I'm a bit busy, here, love..'\n", f"'There's always loot to be found in the "
+                                 "dungeons. Ye can sell what ye don't need, here in town!'\n",
+                                 f"'The Sauengard dungeons "
                                  "were once part of a magnificent kingdom many years ago; Before it became overrun "
-                                 "by fiends, brigands and the undead.\n", "Working on yer Charisma will give ye a "
-                                 "better chance for positive outcomes in the dungeon!\n", "Gaining Constitution will"
-                                 "help ye resist poison and necrosis. It also will gain ye hit points!\n"]
+                                 "by fiends, brigands and the undead.'\n", f"'Working on yer Charisma will give ye a "
+                                 "better chance for positive outcomes with monsters!'\n", f"'Gaining Constitution "
+                                 f"will help ye resist poison and necrosis.\nIt also will gain ye hit points and "
+                                 f"resist paralyzing effects!'\n",
+                                 f"'Wisdom is important for procuring the Weirdness fer Quantum effects, and will "
+                                 f"become more important as you progress.'\n", f"'Protection from Evil helps ye "
+                                 f"resist the Quantum Attacks and Paralyzing effects of monsters.'\n",
+                                 f"'Acumen enhances many things, including initiative, melee"
+                                 f" attacks, and Quantum Effects.\nAcumen will increase with your experience level.'\n"]
         if self.dungeon.level == 1:
             self.jennas_level_1_gab(opening_phrase)
         else:

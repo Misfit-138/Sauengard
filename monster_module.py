@@ -5643,7 +5643,7 @@ class Mentor(Monster):
         self.quantum_attack_5 = 44
         self.quantum_attack_5_phrase = "Clapping his hands with a thundering arcflash, a jagged bolt of white-hot " \
                                        "lightning shoots toward you!"
-        self.introduction = f"You have encountered Mentor; A human formally schooled in the " \
+        self.introduction = f"You have encountered a Mentor; A human formally schooled in the " \
                             f"Weird Arts by an evil Quantum Master.\n" \
                             f"In the hierarchy of Weirdness, the Mentors rank above the highest\nManipulators, " \
                             f"but still below the Quantum Masters who teach them. Like all who peer into the " \
@@ -5963,6 +5963,199 @@ class AdultRedDragon(Monster):
                             f"shakes as it approaches."
 
 
+class QuantumMaster(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 19
+        self.name = "Quantum Master"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.experience_award = 17000
+        self.gold = random.randint(1, 15)
+        self.weapon_bonus = 6
+        self.to_hit_bonus = 4
+        self.armor_name = "Quantum chainmail shirt"  # "unnatural Quantum field armor"
+        self.strength = 18
+        self.dexterity = 16
+        self.constitution = 18
+        self.intelligence = 19
+        self.wisdom = 20
+        self.charisma = 18
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = True
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = True
+        self.dot_multiplier = 10
+        self.dot_turns = 5
+        self.undead = False
+        self.immunities = []
+        self.vulnerabilities = []
+        self.resistances = ["Sleep", "Web", "Charm", "Hold Monster", "Lightning", "Phantasm", "Firewall", "Firestorm",
+                            "Immolation"]
+        self.quantum_energy = True
+        self.hit_dice = 11
+        self.number_of_hd = 9
+        self.hit_points = 200
+        self.armor_class = 20
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 10  # attack bonus
+        self.attack_1_phrase = "He deftly swings his gleaming staff!"
+        self.attack_2 = 12
+        self.attack_2_phrase = "He swings his staff with a time-slowing effect! You are unable to dodge.."
+        self.attack_3 = 12
+        self.attack_3_phrase = "He cuts at you with a long, shining, steel dagger!"
+        self.attack_4 = 13
+        self.attack_4_phrase = "He slices and swings in a deadly combination!!"
+        self.attack_5 = 15
+        self.attack_5_phrase = "He slams the ground with his staff, sending crippling shock-waves through you!"
+        self.quantum_attack_1 = 16
+        self.quantum_attack_1_phrase = "With a flick of his wrist, a cone of fire is unleashed and rushes at you " \
+                                       "with roaring, searing heat!"
+        self.quantum_attack_2 = 16
+        self.quantum_attack_2_phrase = "A storm of ice and hail encircles you within a frigid wind of Weirdness!"
+        self.quantum_attack_3 = 20
+        self.quantum_attack_3_phrase = "Weird, arcing lightning courses through his body, illuminating his skeleton " \
+                                       "for a brief moment, before shooting toward you!"
+        self.quantum_attack_4 = 25
+        self.quantum_attack_4_phrase = "Pounding the ground with a fist, you are knocked off your feet, as a torrent " \
+                                       "of hot flames approaches!"
+        self.quantum_attack_5 = 50
+        self.quantum_attack_5_phrase = "Clapping his hands with a thundering arcflash, a jagged bolt of white-hot " \
+                                       "lightning shoots toward you!"
+        self.introduction = f"You have encountered a Quantum Master; A being who has nearly transcended existence by " \
+                            f"the very Weird Arts they sought.\n"
+        self.paralyze_phrase = "'HALT!', he calls out to you with a powerful voice...\n..your limbs begin to freeze up!"
+        self.paralyze_free_attack_phrase = "Spinning his staff to an attack position, he patiently swings at you " \
+                                           "as you stand, halted and helpless!"
+        self.necrotic_phrase = f"Closing his eyes for concentration, he attempts to harness Quantum necrotic forces!"
+
+
+class AncientDragon(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 19
+        self.name = "Ancient Dragon"
+        self.proper_name = "None"
+        self.he_she_it = "it"
+        self.his_her_its = "its"
+        self.him_her_it = "it"
+        self.a_an = "an"
+        self.experience_award = 17000
+        self.gold = random.randint(115, 195)
+        self.weapon_bonus = 0
+        self.armor_name = "thick, chromatic scales"
+        self.strength = 28
+        self.dexterity = 18
+        self.constitution = 26
+        self.intelligence = 18
+        self.wisdom = 18
+        self.charisma = 20
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 1
+        self.dot_turns = 1
+        self.undead = False
+        self.immunities = ["Firestorm", "Firewall", "Blaze", "Immolation"]
+        self.vulnerabilities = []
+        self.resistances = ["Sleep", "Charm"]
+        self.quantum_energy = False
+        self.hit_dice = 12
+        self.number_of_hd = 12
+        self.hit_points = 245
+        self.armor_class = 23
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 12  # attack bonus
+        self.attack_1_phrase = "It whips its heavy, spiked tail.."
+        self.attack_2 = 14
+        self.attack_2_phrase = "It bites and claws at you with terrible speed and power!"
+        self.attack_3 = 15
+        self.attack_3_phrase = "It roars hatefully, swings its huge tail, then bites with its razor-sharp teeth!"
+        self.attack_4 = 16
+        self.attack_4_phrase = "With a bellowing roar, it bites and strikes at you with both of its front claws!"
+        self.attack_5 = 52
+        self.attack_5_phrase = "Drawing a deep breath, it releases a column of hot flames from deep within!!"
+        self.introduction = f"You have encountered an Adult Red Dragon; A dangerous, deadly and proud beast from " \
+                            f"out of Quantum improbability.\nHot smoke leaks from its nostrils, and the ground " \
+                            f"shakes as it approaches."
+
+
+class CrimsonGhost(Monster):
+
+    def __init__(self):
+        super().__init__()
+        self.level = 20
+        self.name = "Crimson Ghost"
+        self.proper_name = "None"
+        self.he_she_it = "he"
+        self.his_her_its = "his"
+        self.him_her_it = "him"
+        self.experience_award = 17000
+        self.gold = random.randint(115, 195)
+        self.weapon_bonus = 0
+        self.to_hit_bonus = 8
+        self.armor_name = "Weird Armor"
+        self.strength = 30
+        self.dexterity = 30
+        self.constitution = 30
+        self.intelligence = 30
+        self.wisdom = 30
+        self.charisma = 20
+        self.evil_bonus = 1 + math.ceil(self.level / 4)  # Rounded up
+        self.strength_modifier = math.floor((self.strength - 10) / 2)
+        self.constitution_modifier = math.floor((self.constitution - 10) / 2)
+        self.dexterity_modifier = math.floor((self.dexterity - 10) / 2)
+        self.wisdom_modifier = math.floor((self.wisdom - 10) / 2)
+        self.can_paralyze = False
+        self.paralyze_turns = 1
+        self.can_poison = False
+        self.necrotic = False
+        self.dot_multiplier = 1
+        self.dot_turns = 1
+        self.undead = True
+        self.immunities = ["All"]
+        self.vulnerabilities = []
+        self.resistances = []
+        self.quantum_energy = False
+        self.hit_dice = 20
+        self.number_of_hd = 12
+        self.hit_points = 345
+        self.armor_class = 25
+        self.multi_attack = True
+        self.lesser_multi_attack = False
+        self.attack_1 = 14  # attack bonus
+        self.attack_1_phrase = "He strikes with a bony hand.."
+        self.attack_2 = 15
+        self.attack_2_phrase = "He strikes a heavy blow with his bony hand!"
+        self.attack_3 = 16
+        self.attack_3_phrase = "He strikes in a combination of bony fists!"
+        self.attack_4 = 17
+        self.attack_4_phrase = "He pounds a bony fist into your jaw, leaving you dazed, and follows up with " \
+                               "a terrible blow to the chest!"
+        self.attack_5 = 65
+        self.attack_5_phrase = "He uses the Cyclotrode X!!"
+        self.introduction = f"You have encountered The Crimson Ghost. Draped with a long, dragging, heavy robe, " \
+                            f"and carrying a brass lantern,\nyou see wide human eyes peering from behind his " \
+                            f"crude, skull-ish mask.\n"
+
+
 class WickedQueenJannbrielle(Monster):
 
     def __init__(self):
@@ -6067,7 +6260,9 @@ monster_dict = {
     15: [FrostGiantChampion, BerserkDoppelganger],
     16: [Mentor, BerserkCorpseGrinder],
     17: [AdultBlackDragon, AdultGreenDragon],
-    18: [AdultBlueDragon, AdultRedDragon]
+    18: [AdultBlueDragon, AdultRedDragon],
+    19: [QuantumMaster, AncientDragon],
+    20: [CrimsonGhost]
 }
 
 # undead monsters:

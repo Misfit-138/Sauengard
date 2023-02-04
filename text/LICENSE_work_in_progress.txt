@@ -1,11 +1,7 @@
+Sauengard, by Jules Pitsker
+Copyright 2022, JULES PITSKER  (pitsker@proton.me)
+All rights reserved.
 FREEWARE LICENSE
-
-Layperson Language
-This software has been created as a labor of love and is being provided free-of-charge. You are free to copy and
-distribute verbatim copies of the software as long as:
-1. You include this license and copyright notice in unmodified form, and,
-2. You do not sell it
-
 Preamble
 This License applies to the computer program with which this license is distributed (now the "Program").
 The Program is intellectual property of Jules Pitsker (the "Author", "Copyright Holder" and "Licensor") and is placed
@@ -22,8 +18,7 @@ BY LAW. IF YOU DO NOT ACCEPT THESE TERMS AND CONDITIONS, DO NOT DISTRIBUTE THE P
 Licensor hereby grants you the following rights, provided that you comply with all of the restrictions set forth in
 this License and provided, further, that you distribute an unmodified copy of this License with the Program
 and provided, further, that you distribute the unmodified copyright notice (which includes Author attribution)
-with the Program.
-Permission is granted to use the Program for non-commercial purposes;
+with the Program. Permission is granted to use the Program for non-commercial purposes;
 You may copy and distribute literal (i.e. verbatim) copies of the Program as you receive it.
 
 Restrictions
@@ -37,5 +32,4 @@ Distribution of the Program by a commercial organization to any third party with
 permission is prohibited if any payment is made in connection with such distribution, whether directly
 (as in payment for a copy of the Program) or indirectly (as in payment for some service related to the Program,
 or payment for some product or service that includes a copy of the Program "without charge").
-
 You may not impose any further restrictions on a recipient's exercise of the rights granted herein.

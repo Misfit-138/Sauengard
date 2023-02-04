@@ -7751,7 +7751,9 @@ class Player:
                                  f"become more important as you progress.'\n", f"'Protection from Evil helps ye "
                                  f"resist the Quantum Attacks and Paralyzing effects of monsters.'\n",
                                  f"'Acumen enhances many things, including initiative, melee"
-                                 f" attacks, and Quantum Effects.\nAcumen will increase with your experience level.'\n"]
+                                 f" attacks, and Quantum Effects.\nAcumen will increase with your experience "
+                                 f"level.'\n", f"'I heard about ancient religious altars in the dungeons.\nThey say "
+                                 f"ye must be strong if ye plan on demolishing them!'\n"]
         if self.dungeon.level == 1:
             self.jennas_level_1_gab(opening_phrase)
         else:
@@ -8822,6 +8824,7 @@ class Player:
 
     def altar_event(self):
         # called from event_logic()
+        altar_demo_exp = self.level * 600
         altar_discovery = f"level {self.dungeon.level} altar"
         if altar_discovery not in self.discovered_interactives:
             rndm_occurrence_lst = [undead_prophet_returns, self.increase_random_ability, self.decrease_random_ability,
@@ -8875,7 +8878,10 @@ class Player:
                     sleep(1.5)
                     print(f"You successfully demolish the altar!")
                     sleep(1.5)
+                    self.experience += altar_demo_exp
+                    print(f"You gain {altar_demo_exp} experience points!!")
                     self.discovered_interactives.append(altar_discovery)
+                    sleep(1.5)
                     pause()
                     self.hud()
                     return self.increase_random_ability()
@@ -8938,6 +8944,7 @@ class Player:
                 print(f"There are no gems left to pry...")
                 pause()
         elif throne_action == 'r':
+            rune_experience = self.level * 700
             difficulty_class = 15
             read_roll = dice_roll(1, 20)
             if read_roll + self.wisdom_modifier > difficulty_class:  # wisdom to recognize language
@@ -8965,7 +8972,12 @@ class Player:
                                                "cistern\nAnd flowing water from your own well."]
                         rndm_wisdom = random.choice(rndm_ancient_wisdom)
                         print(f"The literal translation is, '{rndm_wisdom}...'")
+                        sleep(1.5)
+                        self.experience += rune_experience
+                        print(f"You gain {rune_experience} experience points!!")
+                        sleep(1.5)
                         pause()
+                        self.loot()
                         return self.increase_random_ability()
                     else:
                         return "King Boss"  # king_returns()  # unable to translate
@@ -9344,7 +9356,7 @@ class Player:
             self.hud()
             teletype(f"From the {random_orientation}, a seemingly autonomous, marshy, and knee-deep fog stretches "
                      f"toward you from out of the mire\nas a dark, humanoid silhouette begins to emerge. "
-                     f"With elongated, troll-like nose and ears, and deep-set eyes\nshrouded in black, "
+                     f"You behold his elongated, troll-like nose and ears, and deep-set eyes\nshrouded in black, "
                      f"the whites of which shine with a luminescence as brilliant as any moon you have ever beheld. "
                      f"\nHis garb is a mere patchwork of cloth strip wrappings, as though he were once "
                      f"mummified. His exposed portions\nof flesh appear gray and lifeless, with arms covered in "
@@ -9393,12 +9405,10 @@ class Player:
             pause()
             if self.hit_points < self.maximum_hit_points:
                 self.hud()
-                teletype(f"The remnants of the low-lying fog pulse with Weirdness, and you feel restorative energies "
-                         f"growing within!")
+                teletype(f"The remnants of the low-lying fog pulse with Weirdness...")
                 sleep(1.5)
-                teletype(f"You heal to full strength!!\n")
-                self.hit_points = self.maximum_hit_points
-                pause()
+                self.heal_event()
+            return
 
     def encounter_deaf_one_event2(self):
         # called from event_logic()
@@ -9447,7 +9457,12 @@ class Player:
             teletype(f"The marshy fog begins to envelope Deaf One, until his form becomes obscured and he is simply "
                      f"gone, along with the cold, creeping mist.\n")
             pause()
-            cls()
+            if self.hit_points < self.maximum_hit_points:
+                self.hud()
+                teletype(f"The remnants of the low-lying fog pulse with Weirdness...")
+                sleep(1.5)
+                self.heal_event()
+            return
 
     def encounter_the_party_event(self):
         # called from event_logic()

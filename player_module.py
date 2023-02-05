@@ -631,7 +631,7 @@ def game_start():
             teletype_txt_file('introduction.txt')
             pause()
         cls()
-        new_game_or_load = input("(S)tart a new character (L)oad a saved one, or go (B)ack to main menu: ").lower()
+        new_game_or_load = input("(S)tart a new character, (L)oad a saved one, or go (B)ack to main menu: ").lower()
 
         if new_game_or_load not in ('s', 'l'):
             continue

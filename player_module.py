@@ -323,6 +323,7 @@ def escape_key_interrupt_teletype(message):
 
 
 def same_line_print(string):
+    # simple function that does not add a carriage return, allowing next item to be printed on same line
     sys.stdout.write(string)
     sys.stdout.flush()
 
@@ -335,6 +336,7 @@ def same_line_teletype(string):
 
 
 def dot_dot_dot(number_of_dots):
+    # print a series of specified periods '.' after same_line_print(string)
     for i in range(number_of_dots):
         sleep(.2)
         same_line_print(".")
@@ -391,16 +393,12 @@ def game_splash():
         print("                                   "
               "W  E  L  C  O  M  E    T  O    S  A  U  E  N  G  A  R  D.\n")
         print(f"                                         "
-              f"© Copyright 2022 by Jules Pitsker")
-        choice = input(f"                   "
-                       f"(Quit) to Desktop  (I)ntroduction  (A)bout  (T)ips  (C)redits  "
+              f"   © Copyright 2022 by Jules Pitsker")
+        choice = input(f"                               "
+                       f"(Quit) to Desktop  (A)bout  (T)ips  (C)redits  "
                        f"(L)icense  (B)egin ").lower()
 
-        if choice == 'i':
-            teletype_txt_file('introduction.txt')
-            pause()
-
-        elif choice == 'a':
+        if choice == 'a':
             teletype_txt_file('about.txt')
             pause()
 
@@ -627,6 +625,12 @@ def game_start():
         game_splash()
         cls()
         player_1 = ""  # to get rid of undefined warning
+
+        intro_or_not = input("View Introduction? (y/n) ").lower()
+        if intro_or_not == 'y':
+            teletype_txt_file('introduction.txt')
+            pause()
+        cls()
         new_game_or_load = input("(S)tart a new character (L)oad a saved one, or go (B)ack to main menu: ").lower()
 
         if new_game_or_load not in ('s', 'l'):
@@ -645,9 +649,9 @@ def game_start():
                     dot_dot_dot(5)
                     same_line_print(f"{player_name} read.\n")
                     sleep(2)
-                    dungeon = dungeon_dict[player_1.dungeon_key]  # remove after testing
-                    print(dungeon.name)  # remove after testing
-                    print(player_1.coordinates)  # remove after testing
+                    # dungeon = dungeon_dict[player_1.dungeon_key]  # diagnostic - remove after testing
+                    # print(dungeon.name)  # diagnostic - remove after testing
+                    # print(player_1.coordinates)  # diagnostic - remove after testing
                     player_1.loaded_game = True
                     sleep(1)
                     return player_1
@@ -1884,7 +1888,8 @@ class Player:
             pickle.dump(self, character_filename)
             same_line_print(f"{self.name} saved.\n")
             sleep(2)
-        town_theme()
+        tavern_theme()
+        # town_theme()
         return
 
     def hud(self):
@@ -6686,14 +6691,15 @@ class Player:
             self.hud()
             rndm_aroma = random.choice(rndm_aroma_lst)
             print(f"(In Town, Quantum Chemist Shop)")
-            print(f"Jahns, the Fieldenberg quantum chemist is here, busying himself at the crucible.\n"
+            print(f"Jahns, the Fieldenberg Quantum Chemist is here, busying himself at the crucible.\n"
                   f"Mortars and pestles litter the counter and the smell of {rndm_aroma} fills the air...")
 
-            if self.hit_points < self.maximum_hit_points:
+            '''if self.hit_points < self.maximum_hit_points:
                 print("The aura fills your nostrils and lungs...healing you to full strength!")
                 self.hit_points = self.maximum_hit_points
                 pause()
-                self.hud()
+                self.hud()'''
+
             print(f"Your gold: {self.gold} GP")
             chemist_choice = input(
                 "(P)urchase quantum items, (S)ell quantum items, Display your (I)nventory, or "
@@ -7549,20 +7555,20 @@ class Player:
         sleep(1)
         pause()
         cls()
-        print(f"Jenna catches up to you at end of the hallway. \'Ye are {self.name}, are ye not?\'\n"
+        print(f"Jenna catches up to you at end of the hallway. Ye are {self.name}, are ye not?'\n"
               f"Nodding and instinctively looking about for eavesdroppers, you re-focus on her concerned look.")
         if len(self.vanquished_foes):
             vanquished_foes = convert_list_to_string_with_commas_only(self.vanquished_foes)
-            print(f"\'I know of ye.\' Your puzzled look speaks for you, as she continues,\n"
-                  f"\'We 'ave 'eard of it.. how ye' 'ave defeated {vanquished_foes}...and others!\'")
+            print(f"'I know of ye.' Your puzzled look speaks for you, as she continues,\n"
+                  f"'We 'ave 'eard of it.. how ye' 'ave defeated {vanquished_foes}...and others!'")
         pause()
         cls()
-        teletype("\'There is somethin' ye should know!\' Her level of anxiety gives you pause; it seems out of\n"
-                 "character for her.\n\'Ye should seek out Vozzbozz!\' Pausing with a far away look, she nods.\n"
-                 "\'I'm headin' back to the bar, and we'll make like we never spoke o' this..\'\n"
-                 "\'Vozzbozz is in the barroom. He's the one with the raven on 'is shoulder!\'\n"
-                 "The meeting ends as abruptly as it began. Jenna disappears toward the bar as you slowly\n"
-                 "start to follow a good distance behind, impatient and confused.\n")
+        teletype(f"'There is somethin' ye should know!' Her level of anxiety gives you pause; it seems out of\n"
+                 f"character for her.\n'Ye should seek out Vozzbozz!' Pausing with a far away look, she nods.\n"
+                 f"'I'm headin' back to the bar, and we'll make like we never spoke o' this..'\n"
+                 f"'Vozzbozz is in the barroom. He's the one with the raven on 'is shoulder!'\n"
+                 f"The meeting ends as abruptly as it began. Jenna disappears toward the bar as you slowly\n"
+                 f"start to follow a good distance behind, impatient and confused.\n")
         pause()
         cls()
         # meeting with vozzbozz and introduction to tor'bron
@@ -7594,38 +7600,38 @@ class Player:
         sleep(1)
         pause()
         cls()
-        teletype(f"\'Well! {self.name}!\', he bellows in his booming voice. \'Sit!\' Something in his dour demeanor\n"
+        teletype(f"'Well! {self.name}!', he bellows in his booming voice. 'Sit!' Something in his dour demeanor\n"
                  f"tells you it is not an invitation, but an order. You marvel at the size and strength of the man.\n"
                  f"His jet black hair lays long on his head, and covers his body in a wiry patchwork.\n"
                  f"Long sideburns flank a strong jawbone, and his deep-set amber eyes burn with gripping intensity.\n"
-                 f"\'And where is it? Do you have it?\', he asks, his tone tense and distrustful.\n"
+                 f"'And where is it? Do you have it?', he asks, his tone tense and distrustful.\n"
                  f"You carefully retrieve the dagger and pass it to him across the table. Roughly and without "
                  f"regard,\n"
                  f"he swipes it from you, yanks it from its sheath and launches it across the room, over the heads\n"
                  f"of all the patrons on this side of the bar, until it abruptly lodges in the wall with a bang.")
         if len(self.vanquished_foes):
             vanquished_foes = convert_list_to_string_with_commas_only(self.vanquished_foes)
-            teletype(f"\'The slayer of {vanquished_foes}...\n...and others besides!\'\n")
-        teletype(f"\'When first I saw you, I was...\', he searches for the word. \'..skeptical!\'\n"
-                 "But now, things are different! Now I know you are able-bodied and strong! Good! Very good, this!\' "
-                 "He nods.\n"
-                 "A sting of disrespect hits you. After the toil and struggle to retrieve the prized dagger, "
-                 "you are\n"
-                 "now realizing it was nothing more than a test to prove your mettle to this stranger!\n"
-                 "\'You  must be Tor'bron!\', you say as you slide into the booth. His eyes\n"
-                 f"narrow slightly and he takes a sip of ale. Continuing, you say, \'I heard Vozzbozz address you\n"
-                 "the last time we saw each other. And may I add, I never doubted *your* abilities!\'\n"
-                 "Still alert, he thinks about your words. His glowering slowly turns to what must be a smile.\n"
-                 "Then, he laughs, a deep and hearty laugh. Instantly, he fiercely slams the table with his fist,\n"
-                 "so that the entire room shakes and becomes silent. He raises his huge hand, pointing\n"
-                 "straight at you. \'Good! Don't ever doubt them!\' And again he smiles and laughs as the tavern "
-                 "ambience"
+            teletype(f"'The slayer of {vanquished_foes}...\n...and others besides!'\n")
+        teletype(f"'When first I saw you, I was...', he searches for the word. '..skeptical!'\n"
+                 f"But now, things are different! Now I know you are able-bodied and strong! Good! Very good, this!' "
+                 f"He nods.\n"
+                 f"A sting of disrespect hits you. After the toil and struggle to retrieve the prized dagger, "
+                 f"you are\n"
+                 f"now realizing it was nothing more than a test to prove your mettle to this stranger!\n"
+                 f"'You must be Tor'bron!', you say as you slide into the booth. His eyes\n"
+                 f"narrow slightly and he takes a sip of ale. Continuing, you say, 'I heard Vozzbozz address you\n"
+                 f"the last time we saw each other. And may I add, I never doubted *your* abilities!'\n"
+                 f"Still alert, he thinks about your words. His glowering slowly turns to what must be a smile.\n"
+                 f"Then, he laughs, a deep and hearty laugh. Instantly, he fiercely slams the table with his fist,\n"
+                 f"so that the entire room shakes and becomes silent. He raises his huge hand, pointing\n"
+                 f"straight at you. 'Good! Don't ever doubt them!' And again he smiles and laughs as the tavern "
+                 f"ambience"
                  f"\ngradually returns. Reaching his tree-trunk arm toward you, he slams you on the shoulder with a"
                  f" heavy hand.\n"
                  f"You are thankful for the {self.armor.name.lower()} you wear; without it, the blow would "
                  f"undoubtedly "
-                 "have been an injury!\nInstinctively reaching for the aching shoulder, you reply plainly, "
-                 "\'I certainly will not..\'\n")
+                 f"have been an injury!\nInstinctively reaching for the aching shoulder, you reply plainly, "
+                 f"'I certainly will not..'\n")
         pause()
         cls()
         # meet Tor'bron, get hints
@@ -7639,7 +7645,7 @@ class Player:
         # another meeting with vozzbozz. meet Magnus the dwarf
         print(f"Upon entering, you are met with the familiar sites, sounds and smells of the inn. Scanning the bar\n"
               f"area, you immediately notice the nasty-looking knife, still lodged in the wall. Before you even have\n"
-              f"time to react, Lazarus swiftly lands on your shoulder. \'The master awaits you!\', he says plainly,\n"
+              f"time to react, Lazarus swiftly lands on your shoulder. 'The master awaits you!', he says plainly,\n"
               f"in his smooth tone. Off to your left, Vozzbozz sits in his regular booth, across from a proud-looking\n"
               f"and rather stout dwarf.")
         sleep(1)
@@ -7655,13 +7661,13 @@ class Player:
         cls()
         if self.armor.ac > 11:
             print(f"The heavily-armored dwarf looks at you seemingly uninterested and simply says,\n"
-                  f"\'That be some decent {self.armor.name.lower()} ye got there, lad\'. He takes a sip of his ale.")
+                  f"That be some decent {self.armor.name.lower()} ye got there, lad'. He takes a sip of his ale.")
         print(f"The dwarf slides out of the booth and motions that you should take his place. He then slides in next\n"
               f"to Vozzbozz and across from you.\n")
-        print(f"\'Ah, {self.name}! Meet my good friend, Magnus Stormbringer.\', says Vozzbozz curtly. "
+        print(f"'Ah, {self.name}! Meet my good friend, Magnus Stormbringer.', says Vozzbozz curtly. "
               f"The dwarf promptly reaches his\n"
               f"hand across the table and takes yours with a firm, brief grip and a nod.\n"
-              f"\'Well met\', he says, sincerely, in an alarmingly deep voice.")
+              f"'Well met', he says, sincerely, in an alarmingly deep voice.")
         pause()
         cls()
         # another meeting, get hints
@@ -7711,34 +7717,34 @@ class Player:
 
     def jennas_level_1_gab(self, opening_phrase):
         if self.town_portal_exists:
-            opening_phrase = f"\'Feelin' chatty, love?\', queries Jenna in a coy tone.\nI've 'eard ye entered" \
+            opening_phrase = f"'Feelin' chatty, love?', queries Jenna in a coy tone.\nI've 'eard ye entered" \
                              f" town through a portal. 'Tis good, sir. 'Cept a word o' caution:\n" \
                              f"Make good use of yer time here while it's open. Ye don't want ta be wastin' yer\n" \
                              f"portals, seein' as scrolls can be rare!"
         teletype(f"{opening_phrase}\n")
         treasure_chest_discovery = f"level {self.dungeon.level} treasure chest"
         if treasure_chest_discovery not in self.discovered_interactives:
-            teletype(f"She continues, \'{self.dungeon.name} is full of dangers for the "
+            teletype(f"She continues, '{self.dungeon.name} is full of dangers for the "
                      f"unwary,\n"
                      f"but there are treasures to be had as well. 'Tis said that there be a pit below the "
                      f"dungeon\n"
                      f"where ye may find gold, but it be full of monsters, traps, and fiends. Search carefully\n"
-                     f"and thoroughly if ye venture there!\' ")
+                     f"and thoroughly if ye venture there!'\n")
         else:
-            teletype(f"With a big, welcoming smile, she says, \'I 'eard it said ye 'ave found treasure in the "
+            teletype(f"With a big, welcoming smile, she says, 'I 'eard it said ye 'ave found treasure in the "
                      f"pit below {self.dungeon.name}!'\n"
-                     f"'Care to spend some o' that loot?\', she adds with a wink.")
+                     f"'Care to spend some o' that loot?', she adds with a wink.")
 
         """micro_boss_discovery = f"level {self.dungeon.level} micro boss"
         if micro_boss_discovery not in self.discovered_interactives:
-            teletype(f"Lowering her tone, she goes on, \'I've also 'eard it said that there's an elite enemy\n"
+            teletype(f"Lowering her tone, she goes on, 'I've also 'eard it said that there's an elite enemy\n"
                      f"down there, just waitin' for unsuspectin' adventurers in a dead ended corridor!'\n"
-                     f"'Take good care, now, and be wise!\'\n ")"""
+                     f"'Take good care, now, and be wise!'\n")"""
         pause()
 
     def talk_to_jenna(self):  # expand these statements for immersive realism
         cls()
-        opening_phrase = "\'Feelin' chatty, love?\', queries Jenna in a coy tone."
+        opening_phrase = f"'Feelin' chatty, love?', queries Jenna in a coy tone."
         random_jenna_business = [f"'I'm a bit busy, here, love..'\n", f"'There's always loot to be found in the "
                                  "dungeons. Ye can sell what ye don't need, here in town!'\n",
                                  f"'The Sauengard dungeons "
@@ -7775,13 +7781,14 @@ class Player:
 
             if self.boss_hint_1:
                 print(f"(In Town, The Slumbering Bear Inn)")
-                print(f"Jenna catches your gaze and nods discreetly. \'Let me know if ye be needin' anything, love.\'")
+                print(f"Jenna catches your gaze and nods discreetly. 'Let me know if ye be needin' anything, love.'")
 
             else:
                 print(f"The barroom is bustling as always, but Jenna, the barkeep, notices you and calls over,\n"
                       f"very matter-of-factly, \"What do ye be needin' love?\"")
 
-            inn_choice = input(f"(R)oom for the evening - 10 GP\n(T)alk to Jenna\n(E)xit the inn\n"
+            inn_choice = input(f"(R)oom for the evening - 10 GP\n(T)alk to Jenna\n(S)ave Character to disk\n"
+                               f"(E)xit the inn\n"
                                f"--> ").lower()
 
             if inn_choice == 'r':
@@ -7823,6 +7830,7 @@ class Player:
                         continue
 
                 else:
+                    self.hud()
                     print(f"Jenna chuckles as she shakes her head at you. \"Ye are in the pink, love!\"\n"
                           f"\"What ye be needin' a room fer?\" She hurries off to her busy routines...")
                     sleep(1.5)
@@ -7835,10 +7843,14 @@ class Player:
                 self.talk_to_jenna()
                 continue
 
+            elif inn_choice == 's':
+                self.save_character()
+                continue
+
             elif inn_choice == 'e':
                 self.hud()
                 print(f"You walk out the door, but not before turning to see Jenna's wink and bright smile.\n"
-                      f"\"Don't be a stranger, now, love! Ye are always welcome!\"")
+                      f"'Don't be a stranger, now, love! Ye are always welcome!'")
                 sleep(1.25)
                 pause()
                 return
@@ -9514,27 +9526,27 @@ class Player:
                   f"a blind angle, felling her enemy with a single, precise cut. The {monster.name} falls dead\n"
                   f"without ever realizing it was in danger.")
             print(f"Placing your {self.wielded_weapon.name} on your back, you extend a hand. You remember a greeting\n"
-                  f"that elves who visited Tinbar appreciated, and say, \'Well met, illuminated one!\'.")
+                  f"that elves who visited Tinbar appreciated, and say, Well met, illuminated one!'.")
             pause()
             self.hud()
             print(f"You immediately sense a shift in the air. The petite warrior's alabaster countenance falls to\n"
                   f"a twisted grimace and her crimson eyes burn with hate. Her blade is at your throat before you\n"
-                  f"can even react. \'What did ye call me?\' she queries in a beautifully perfect voice, smoother\n"
+                  f"can even react. 'What did ye call me?' she queries in a beautifully perfect voice, smoother\n"
                   f"than oil.")
             pause()
             self.hud()
-            print(f"\'Forgive me, friend!\', you manage to respond. \'It was meant with deep respect! It is how\n"
-                  f"Elf-kind enjoy being greeted where I am from!..\'")
-            print(f"\'I AM NOT OF-THE-LIGHT!\', she asserts, directly into your face. "
+            print(f"'Forgive me, friend!', you manage to respond. 'It was meant with deep respect! It is how\n"
+                  f"Elf-kind enjoy being greeted where I am from!..'")
+            print(f"'I AM NOT OF-THE-LIGHT!', she asserts, directly into your face. "
                   f"Your disarmed look speaks to your\n"
-                  f"confusion, and she responds, \'And I have no need of your assistance, nor of\n"
-                  f"your life!\' You feel her blade move within a hair's breadth of your throat.")
+                  f"confusion, and she responds, 'And I have no need of your assistance, nor of\n"
+                  f"your life!' You feel her blade move within a hair's breadth of your throat.")
             pause()
             self.hud()
-            print(f"Again you plead, \'Please forgive my ignorance. I am from a far-off land. My name is {self.name}\n"
+            print(f"Again you plead, 'Please forgive my ignorance. I am from a far-off land. My name is {self.name}\n"
                   f"of Tinbar! My people and the Northern Library have all been destroyed by a terrible evil that\n"
                   f"I have been sent to seek out and destroy...she bears the mark of a crowned woman surrounded\n"
-                  f"by skulls!\'")
+                  f"by skulls!'")
             pause()
             self.hud()
             print(f"Her face and mood again shift, and she removes her blade and begins to smile! It is then that you\n"
@@ -9547,28 +9559,28 @@ class Player:
             print_txt_file('sikira.txt')
             pause()
             self.hud()
-            print(f"\'Well. {self.name} of Tinbar, well met!\', she says with an evil chuckle. \'I am Si'Kira,\n"
+            print(f"'Well. {self.name} of Tinbar, well met!', she says with an evil chuckle. 'I am Si'Kira,\n"
                   f"Child of the Waning Moon. My people too, have all been slain. I also seek to destroy the\n"
-                  f"wicked Queen Jannbrielle.\'. She sheathes her blade, and her long silver hair glistens gorgeously\n"
+                  f"wicked Queen Jannbrielle.'. She sheathes her blade, and her long silver hair glistens gorgeously\n"
                   f"in the darkness, as does her wondrous weaponry and armor.")
             pause()
             self.hud()
-            print(f"\'Queen Jannbrielle..\', you repeat thoughtfully. Si'Kira looks at you as you say the name.\n"
-                  f"\'I have met allies above who dare not even utter that word, and at last I learn it...\'\n"
-                  f"\'Thank you for finally revealing the name of our common enemy, my good Elf-of-the-darkness!\' "
+            print(f"'Queen Jannbrielle..', you repeat thoughtfully. Si'Kira looks at you as you say the name.\n"
+                  f"'I have met allies above who dare not even utter that word, and at last I learn it...'\n"
+                  f"'Thank you for finally revealing the name of our common enemy, my good Elf-of-the-darkness!' "
                   f"you say with\n"
                   f"a hint of humor.")
             pause()
             self.hud()
-            print(f"Si'Kira laughs gleefully again. \'This is most interesting!\', she says, with sincere intrigue\n"
-                  f"in her voice, and visible excitement in her eyes. \'How odd that our paths cross in such a "
+            print(f"Si'Kira laughs gleefully again. 'This is most interesting!', she says, with sincere intrigue\n"
+                  f"in her voice, and visible excitement in her eyes. 'How odd that our paths cross in such a "
                   f"way..and in such a place! I shall\n"
-                  f"\'be accompanying you, {self.name} of Tinbar! For good or ill, we are bound in purpose and\n"
-                  f"outcome.\'")
+                  f"'be accompanying you, {self.name} of Tinbar! For good or ill, we are bound in purpose and\n"
+                  f"outcome.'")
             pause()
             self.hud()
-            print(f"\'I suppose..that settles it..?\', you say somewhat ironically.\n"
-                  f"\'Aye. It does.\', says Si'Kira, plainly.")
+            print(f"'I suppose..that settles it..?', you say somewhat ironically.\n"
+                  f"'Aye. It does.', says Si'Kira, plainly.")
             pause()
             self.hud()
             print(f"You cannot help but wish that you had a voice in the matter; Dark Elves are notoriously "
@@ -9667,10 +9679,10 @@ class Player:
             self.tavern()
             town_theme()
         if self.town_portal_exists:  # or self.loaded_game:
-            town_functions = input("(The Town of Fieldenberg)\n(Quit) to desktop, (S)ave, (R)estart game (I)nventory, "
+            town_functions = input("(The Town of Fieldenberg)\n(Quit) to desktop, (R)estart game (I)nventory, "
                                    "(B)lacksmith, (C)hemist , (T)avern, or re-(E)nter dungeon --> ").lower()
         else:
-            town_functions = input("(The Town of Fieldenberg)\n(Quit) to desktop, (S)ave, (R)estart game (I)nventory, "
+            town_functions = input("(The Town of Fieldenberg)\n(Quit) to desktop, (R)estart game (I)nventory, "
                                    "(B)lacksmith, (C)hemist , (T)avern, or (E)nter dungeon --> ").lower()
         if town_functions == 'r':
             return self.restart()
@@ -9678,8 +9690,8 @@ class Player:
         elif town_functions == 'quit':
             quit_game()
 
-        elif town_functions == 's':
-            self.save_character()
+        #  elif town_functions == 's':
+        #    self.save_character()
 
         elif town_functions == 'i':
             self.inventory()

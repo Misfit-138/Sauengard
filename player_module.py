@@ -112,10 +112,11 @@ def os_check():
     print("Welcome!\nPlease ensure terminal is in full screen mode.")
     print()
     if os.name == 'nt':
-        pc_powerup()
+        '''pc_powerup()
         sleep(5)
         floppy_insert_and_load()
-        ibm_dos_screen()
+        ibm_dos_screen()'''
+        commodore_pet_screen()
         initial_loading_screen()
 
     else:
@@ -126,6 +127,39 @@ def os_check():
                  f"reliably. Therefore, users will be unable to skip through teletype-style messages.\n\n")
         pause()
         unix_screen()
+
+
+def commodore_pet_screen():
+
+    cls()
+    sleep(2)
+    stop_sound()
+    print(f"\n*** COMMODORE BASIC 4.0 ***\n 31743 BYTES FREE\nREADY.")
+    # same_line_print("Enter new date (mm-dd-yy): ")
+    sleep(1.5)
+    clacky_keyboard_short2()
+    same_line_teletype(F"LOAD\"$\",8")
+    sleep(.25)
+    same_line_print("\n")
+    random_floppy_rw_sound()
+    sleep(2)
+    # stop_sound()
+    print(f"0 \"GAME DISK 1\"            1       ")
+    print(f"121  \"WUMPUS\"              PRG")
+    print(f"221  \"CANYON\"              PRG")
+    print(f"442  \"SAUENGARD\"           PRG")
+    print(f"125 BLOCKS FREE.")
+    print(f"READY.")
+    sleep(3)
+    clacky_keyboard_short()
+    sleep(.4)
+    same_line_teletype("LOAD\"SAUENGARD\",8,1")
+    stop_sound()
+    sleep(.5)
+    print("\n")
+    sleep(.5)
+    random_floppy_rw_sound()
+    sleep(3)
 
 
 def ibm_dos_screen():
@@ -2416,6 +2450,8 @@ class Player:
         after_quantum_level = self.quantum_level
 
         if after_level > before_level:
+            self.quantum_units = self.maximum_quantum_units  # necessary code for advancing from level 1 to 2
+
             if monster_gold > 0:
                 print(f"You snarf {monster_gold} gold pieces.")
                 sleep(1)
@@ -8131,8 +8167,8 @@ class Player:
                 elif replace_weapon not in ("y", "n"):
                     continue
         else:
-            print(f"Wielded_weapon.damage_bonus already >= self.level * 2 and/or, to-hit == 3!!!")  # rm after testing
-            pause()  # remove after testing
+            # print(f"Wielded_weapon.damage_bonus already >= self.level * 2 and/or, to-hit == 3!!!")  # rm after testing
+            # pause()  # remove after testing
             return
 
     def found_armor_substitution(self, found_item):
@@ -8172,8 +8208,8 @@ class Player:
                 elif replace_armor not in ("y", "n"):
                     continue
         else:
-            print(f"Worn armor ac + armor_bonus >= found item...")  # remove after testing
-            pause()  # remove after testing
+            # print(f"Worn armor ac + armor_bonus >= found item...")  # remove after testing
+            # pause()  # remove after testing
             return
 
     def found_shield_substitution(self, sub_item):
@@ -8215,8 +8251,8 @@ class Player:
                 elif replace_shield not in ("y", "n"):
                     continue
         else:
-            print(f"Wielded shield >= found item...")  # remove after testing
-            pause()  # remove after testing
+            # print(f"Wielded shield >= found item...")  # remove after testing
+            # pause()  # remove after testing
             return
 
     def found_boots_substitution(self, found_item):
@@ -8254,8 +8290,8 @@ class Player:
                 elif replace_boots not in ("y", "n"):
                     continue
         else:
-            print(f"Worn boots >= found item...")  # remove after testing
-            pause()  # remove after testing
+            # print(f"Worn boots >= found item...")  # remove after testing
+            # pause()  # remove after testing
             return
 
     def found_cloak_substitution(self, found_item):
@@ -8301,8 +8337,8 @@ class Player:
                 elif replace_cloak not in ("y", "n"):
                     continue
         else:
-            print(f"Stealth already >= .25 * dex...")  # remove after testing
-            pause()  # remove after testing
+            # print(f"Stealth already >= .25 * dex...")  # remove after testing
+            # pause()  # remove after testing
             return
 
     def found_ring_of_reg_substitution(self, found_item):
@@ -8327,8 +8363,8 @@ class Player:
             return
 
         else:
-            print("Ring of reg already equal to or more than 15% of max hit points")  # remove after testing
-            pause()  # remove after testing
+            # print("Ring of reg already equal to or more than 15% of max hit points")  # remove after testing
+            # pause()  # remove after testing
             return
 
     def found_ring_of_prot_substitution(self, found_item):
@@ -8351,8 +8387,8 @@ class Player:
             return
 
         else:
-            print("Ring of prot already equal to or more than 20% of wisdom")  # remove after testing
-            pause()  # remove after testing
+            # print("Ring of prot already equal to or more than 20% of wisdom")  # remove after testing
+            # pause()  # remove after testing
             return
 
     def loot(self):
@@ -8381,8 +8417,8 @@ class Player:
             # ****** NOTICE THE DIFFERENCE BETWEEN found_item and found_item.item_type !! ************************
             loot_roll = dice_roll(1, 20)
             self.hud()
-            print(f"Loot roll ---> {loot_roll}")  # remove after testing ?
-            pause()
+            # print(f"Loot roll ---> {loot_roll}")  # remove after testing ?
+            # pause()
             # item_class = random.choice(list(loot_dict.keys()))
             # new_item_instance = random.choice(loot_dict[item_class])()  # Calling class __init__ method
             if loot_roll >= loot_difficulty_class:
@@ -8451,8 +8487,8 @@ class Player:
                         continue
 
                 else:
-                    print(f"Minimum requirements not met for {found_item.name}.")  # remove after testing
-                    pause()  # remove after testing
+                    # print(f"Minimum requirements not met for {found_item.name}.")  # remove after testing
+                    # pause()  # remove after testing
                     continue
             else:
                 # extra chance for potion. this makes it a little too easy. consider restoring it with lower chances
@@ -8552,8 +8588,8 @@ class Player:
                         pause()
                         continue
                 else:
-                    print(f"Minimum requirements not met for {found_item.name}.")  # remove after testing
-                    pause()  # remove after testing
+                    # print(f"Minimum requirements not met for {found_item.name}.")  # remove after testing
+                    # pause()  # remove after testing
                     continue
             else:
                 if successful_tries == 0:
@@ -9372,8 +9408,10 @@ class Player:
                      f"the whites of which shine with a luminescence as brilliant as any moon you have ever beheld. "
                      f"\nHis garb is a mere patchwork of cloth strip wrappings, as though he were once "
                      f"mummified. His exposed portions\nof flesh appear gray and lifeless, with arms covered in "
-                     f"tattoo markings, and his long, dark hair is a tangled mess.\n"
-                     f"Drawing your {self.wielded_weapon.name}, you attack!\n")
+                     f"tattoo markings, and his long, dark hair is a tangled mess.\n")
+            pause()
+            self.hud()
+            teletype(f"Drawing your {self.wielded_weapon.name}, you attack!\n")
             pause()
             self.hud()
             teletype(f"Your weapon strikes his left arm and splinters into shards of white-hot steel! Unaffected and "
@@ -10267,7 +10305,7 @@ class Player:
         else:
             cls()
             print("You look at the map..")
-            print(f"Position key: {self.position}")  # remove after testing
+            # print(f"Position key: {self.position}")  # remove after testing
 
             self.coordinates = (self.x, self.y)
             print(f"(Dungeon level {self.dungeon.level} - {self.dungeon.name}) Coordinates: {self.coordinates}")

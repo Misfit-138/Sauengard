@@ -1484,7 +1484,7 @@ class DarkElfUnderling(Monster):
         self.quantum_attack_5_phrase = "Crying out wildly, and thrusting its arms forward, it shoots \n" \
                                        "the weirdness of entangled quantum flames and energies at you!"
         self.introduction = f"You have encountered a {self.name}; A race that, in many ways, resembles other\n" \
-                            f"elves, yet, dark, twisted and evil. Its chiseled, attractive face, and wiry,\n" \
+                            f"elves, yet, sinister, twisted and evil. Its chiseled, attractive face, and wiry,\n" \
                             f"athletic frame belie its true nature."
         self.poison_phrase = "It slashes at you with its poisonous blade!!"
 

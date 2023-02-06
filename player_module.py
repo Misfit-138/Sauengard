@@ -107,16 +107,21 @@ Incredibly hard	25
 Why bother?	30'''
 
 
+def ibm_startup_meta_function():
+    pc_powerup()
+    sleep(5)
+    floppy_insert_and_load()
+    ibm_dos_screen()
+
+
 def os_check():
     cls()
     print("Welcome!\nPlease ensure terminal is in full screen mode.")
     print()
     if os.name == 'nt':
-        '''pc_powerup()
-        sleep(5)
-        floppy_insert_and_load()
-        ibm_dos_screen()'''
-        commodore_pet_screen()
+        random_startup_list = [ibm_startup_meta_function, commodore_pet_screen]
+        random_startup = random.choice(random_startup_list)
+        random_startup()
         initial_loading_screen()
 
     else:

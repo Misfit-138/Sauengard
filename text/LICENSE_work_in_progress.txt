@@ -7,8 +7,7 @@ This License applies to the computer program with which this license is distribu
 The Program is intellectual property of Jules Pitsker (the "Author", "Copyright Holder" and "Licensor") and is placed
 under the protection of copyright laws, including US Law and international treaties such as the Berne Convention.
 
-Please note that this License is not a free software license as defined by the Free Software Foundation. Usage of the
-software covered by this License is allowed Free of Charge, but its COMMERCIAL DISTRIBUTION IS PROHIBITED.
+Usage of the software covered by this License is allowed Free of Charge, but its COMMERCIAL DISTRIBUTION IS PROHIBITED.
 
 BY USING OR DISTRIBUTING THE PROGRAM, YOU INDICATE YOUR ACCEPTANCE OF THIS LICENSE
 TO DO SO, AND ALL ITS TERMS AND CONDITIONS FOR USING AND DISTRIBUTING THE PROGRAM. NOTHING OTHER

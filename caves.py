@@ -304,10 +304,12 @@ class MyGame(arcade.Window):
         # directory this .py file is in. You can leave this out of your own
         # code, but it is needed to easily run the examples using "python -m"
         # as mentioned at the top of this program.
-        self.player_sprite_list = None
+
         file_path = os.path.dirname(os.path.abspath(__file__))
         os.chdir(file_path)
 
+        self.player_sprite_list = None
+        self.direction = ""  # added myself
         self.grid = None
         self.wall_list = None
         self.player_list = None
@@ -433,6 +435,11 @@ class MyGame(arcade.Window):
                          self.view_left + 20,
                          WINDOW_HEIGHT - 60 + self.view_bottom,
                          arcade.color.WHITE, 16)
+        # Add direction that is being pressed, defined on_key_press and in my_game class
+        arcade.draw_text(self.direction,
+                         self.view_left + 20,
+                         WINDOW_HEIGHT - 80 + self.view_bottom,
+                         arcade.color.WHITE, 16)
 
         self.draw_time = timeit.default_timer() - draw_start_time
 
@@ -440,12 +447,16 @@ class MyGame(arcade.Window):
         """Called whenever a key is pressed. """
 
         if key == arcade.key.UP:
+            self.direction = "NORTH"
             self.player_sprite.change_y = MOVEMENT_SPEED
         elif key == arcade.key.DOWN:
+            self.direction = "SOUTH"
             self.player_sprite.change_y = -MOVEMENT_SPEED
         elif key == arcade.key.LEFT:
+            self.direction = "WEST"
             self.player_sprite.change_x = -MOVEMENT_SPEED
         elif key == arcade.key.RIGHT:
+            self.direction = "EAST"
             self.player_sprite.change_x = MOVEMENT_SPEED
 
     def on_key_release(self, key, modifiers):
@@ -455,6 +466,7 @@ class MyGame(arcade.Window):
             self.player_sprite.change_y = 0
         elif key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.player_sprite.change_x = 0
+        self.direction = ""
 
     def on_update(self, delta_time):
         """ Movement and game logic """

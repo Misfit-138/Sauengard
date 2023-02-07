@@ -43,6 +43,7 @@ DEFAULT_FONT_SIZE = 20
 player_1 = Player()
 
 
+
 class MyScreen(arcade.Window):
     """
     Main application class.

@@ -49,7 +49,7 @@ WINDOW_TITLE = "Procedural Caves BSP Example"
 MERGE_SPRITES = False
 
 
-class Player(arcade.Sprite):
+class PlayerSprite(arcade.Sprite):
 
     def __init__(self):
         super().__init__()
@@ -375,7 +375,7 @@ class MyGame(arcade.Window):
         self.player_sprite_list = arcade.SpriteList()
 
         # Set up the player
-        self.player_sprite = Player()
+        self.player_sprite = PlayerSprite()
         self.player_sprite.center_x = WINDOW_WIDTH / 2
         self.player_sprite.center_y = WINDOW_HEIGHT / 2
         self.player_sprite_list.append(self.player_sprite)

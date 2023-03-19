@@ -277,7 +277,7 @@ def unix_screen():
     sleep(1.5)
     same_line_teletype("ls\n")
     sleep(.25)
-    print(f"adventure\ncanyon\ndnd\nDND\ndungeon\nsauengard\nwumpus\n")
+    print(f"adventure\ncanyon\ndnd\nDND\ndungeon\nchess\nspace_travel\nsauengard\n")
     same_line_print("$ ")
     sleep(1.5)
     same_line_teletype("./sauengard\n")

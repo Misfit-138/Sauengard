@@ -207,7 +207,8 @@ def ibm_dos_screen():
 
 def unix_screen():
     # original devs of
-    # UNIX,
+    # UNIX, 'chess', 'space_travel',
+    # the C programming language,
     # 'dnd',
     # 'DND' and
     # 'Dungeon',
@@ -218,7 +219,7 @@ def unix_screen():
     # Lawrence denied having ever played 'dnd' on PLATO.
     # dnd maintainer and author, Dirk Pellett, claims that Daniel Lawrence outright plagiarized it.
     # For more: http://www.armory.com/~dlp/dnd1.html)
-    user_list = ["dennis_ritchie", "ken_thompson",
+    user_list = ["ken_thompson", "dennis_ritchie",
                  "gary_whisenhunt", "ray_wood", "dirk_pellett", "flint_pellett",
                  "daniel_lawrence",
                  "don_daglow"]

@@ -98,16 +98,17 @@ if os.name == 'posix':
 # seq = [1, 2, 3]
 # foo(*seq)
 
-'''DIFFICULTY CLASSES (HIPSTER’S REMIX)
-Task Difficulty	DC
-Very Easy	5
-Easy	8
-Medium	10
-Tricky	12
-Hard	15
-Very hard	20
-Incredibly hard	25
-Why bother?	30'''
+'''DIFFICULTY CLASSES (Misfit’S REMIX)
+Task Difficulty	 DC
+Very Easy	     5
+Easy	         8
+Medium	         10
+Tricky	         12
+Hard	         15
+Very hard	     20
+Incredibly hard	 25
+Why bother?	     30
+'''
 
 
 def ibm_startup_meta_function():

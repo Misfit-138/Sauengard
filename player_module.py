@@ -688,53 +688,58 @@ def game_start():
         if intro_or_not == 'y':
             teletype_txt_file('introduction.txt')
             pause()
-        cls()
-        new_game_or_load = input("(S)tart a new character, (L)oad a saved one, or go (B)ack to main menu: ").lower()
 
-        if new_game_or_load not in ('s', 'l'):
-            continue
+        while True:
+            cls()
+            new_game_or_load = input("(S)tart a new character, (L)oad a saved one, or go (B)ack to main menu: ").lower()
 
-        if new_game_or_load == 'l':
-            player_name = input("Enter name of saved character: ")
-            load_a_character = player_name + ".sav"
-            p = Path(__file__).with_name(load_a_character)
-            random_floppy_rw_sound()
-            sleep(2)
-            if p.is_file():
-                with p.open('rb') as saved_player:  # 'rb'
-                    same_line_print(f"{player_name} found")
-                    player_1 = pickle.load(saved_player)
-                    dot_dot_dot(5)
-                    same_line_print(f"{player_name} read.\n")
-                    sleep(2)
-                    # dungeon = dungeon_dict[player_1.dungeon_key]  # diagnostic - remove after testing
-                    # print(dungeon.name)  # diagnostic - remove after testing
-                    # print(player_1.coordinates)  # diagnostic - remove after testing
-                    player_1.loaded_game = True
-                    sleep(1)
-                    return player_1
+            if new_game_or_load == 'b':
+                break
 
-            else:
-                print(f"Could not find {player_name} ")
-                sleep(1.5)
+            if new_game_or_load not in ('s', 'l'):
                 continue
 
-        if new_game_or_load == 's':
-            accept_stats = ""
+            elif new_game_or_load == 'l':
+                player_name = input("Enter name of saved character: ")
+                load_a_character = player_name + ".sav"
+                p = Path(__file__).with_name(load_a_character)
+                random_floppy_rw_sound()
+                sleep(2)
+                if p.is_file():
+                    with p.open('rb') as saved_player:  # 'rb'
+                        same_line_print(f"{player_name} found")
+                        player_1 = pickle.load(saved_player)
+                        dot_dot_dot(5)
+                        same_line_print(f"{player_name} read.\n")
+                        sleep(2)
+                        # dungeon = dungeon_dict[player_1.dungeon_key]  # diagnostic - remove after testing
+                        # print(dungeon.name)  # diagnostic - remove after testing
+                        # print(player_1.coordinates)  # diagnostic - remove after testing
+                        player_1.loaded_game = True
+                        sleep(1)
+                        return player_1
 
-            while accept_stats != 'y':
-                player_1 = character_generator()
-                player_1.hud()
-                # print(f"Dungeon Key {player_1.dungeon_key}")
-                accept_stats = input(f"Accept character and continue? (y/n)? ").lower()
+                else:
+                    print(f"Could not find {player_name} ")
+                    sleep(1.5)
+                    continue
 
-            if accept_stats == "y":
-                # player_1.dungeon_key = 1  # unneeded
-                # player_1.dungeon = dungeon_dict[player_1.dungeon_key]  # should be unneeded
-                (player_1.x, player_1.y) = player_1.dungeon.staircase
-                player_1.position = 0
-                player_1.hud()
-                return player_1
+            elif new_game_or_load == 's':
+                accept_stats = ""
+
+                while accept_stats != 'y':
+                    player_1 = character_generator()
+                    player_1.hud()
+                    # print(f"Dungeon Key {player_1.dungeon_key}")
+                    accept_stats = input(f"Accept character and continue? (y/n)? ").lower()
+
+                if accept_stats == "y":
+                    # player_1.dungeon_key = 1  # unneeded
+                    # player_1.dungeon = dungeon_dict[player_1.dungeon_key]  # should be unneeded
+                    (player_1.x, player_1.y) = player_1.dungeon.staircase
+                    player_1.position = 0
+                    player_1.hud()
+                    return player_1
 
 
 def unknown_command():

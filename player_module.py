@@ -173,6 +173,15 @@ def commodore_pet_screen():
     sleep(.5)
     random_floppy_rw_sound()
     sleep(3)
+    print(f"READY.")
+    sleep(2)
+    clacky_keyboard_short()
+    sleep(.25)
+    same_line_teletype("RUN\n")
+    stop_sound()
+    sleep(1)
+    random_floppy_rw_sound()
+    sleep(2)
 
 
 def ibm_dos_screen():

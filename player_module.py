@@ -678,6 +678,7 @@ def character_generator():
 
 
 def game_start():
+    # called from main loop
     while True:
         sad_cello_theme()
         game_splash()

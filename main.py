@@ -68,7 +68,7 @@ Creative Commons Attribution License 3.0 (CC BY 3.0)
 """
 
 from player_module import cls, town_theme, gong, sleep, pause, teletype, \
-    dungeon_command_choices, quit_game, game_start, loading_screen, os_check
+    dungeon_command_choices, quit_game, game_start, loading_screen, os_check, unknown_command
 
 os_check()
 
@@ -175,8 +175,7 @@ while True:
                     player_1.dungeon_navigation(dungeon_command)
 
                 else:
-                    print("Unknown command..")
-                    sleep(.25)
+                    unknown_command()
                     player_1.dungeon_description()
                     continue  # continue means you do not waste a turn
 

@@ -329,6 +329,7 @@ def loading_screen():
 def quit_game():
     cls()
     teletype("Quit game..")
+    teletype("Any unsaved progress will be lost....\n")
 
     if are_you_sure():
         print(f"Farewell. . .")
@@ -734,6 +735,11 @@ def game_start():
                 player_1.position = 0
                 player_1.hud()
                 return player_1
+
+
+def unknown_command():
+    print("Unknown command..")
+    sleep(.25)
 
 
 def npc_ally_hud_sub_function(npc):
@@ -2660,6 +2666,13 @@ class Player:
         else:
             self.encounter = 15  # this will make it so there are no monsters at all except bosses (for testing, etc)
 
+    def the_monster_is_not_amused(self, monster):
+        # called from self.battle_menu_choices() for invalid inputs
+        print(f"The {monster.name} is not amused.")
+        sleep(.75)
+        self.hud()
+        return
+
     def monster_introduction(self, monster):
         # called from main loop
         if monster.name in self.discovered_monsters:
@@ -2713,9 +2726,7 @@ class Player:
                     return battle_choice
 
                 else:  # invalid inputs
-                    print(f"The {monster.name} is not amused.")
-                    sleep(.75)
-                    self.hud()
+                    self.the_monster_is_not_amused(monster)
                     continue
 
             else:  # a party of adventurers cannot evade
@@ -2727,9 +2738,7 @@ class Player:
                     return battle_choice
 
                 else:  # invalid inputs
-                    print(f"The {monster.name} is not amused.")
-                    sleep(.75)
-                    self.hud()
+                    self.the_monster_is_not_amused(monster)
                     continue
 
     def check_for_boss(self, event):
@@ -9791,6 +9800,9 @@ class Player:
             loading_screen()
             dot_dot_dot(15)
             return 'e'
+
+        else:
+            unknown_command()
 
     def dungeon_navigation(self, dungeon_command):
         if dungeon_command == 'w':

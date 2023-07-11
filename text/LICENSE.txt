@@ -1,7 +1,7 @@
 Sauengard Copyright 2022, 2023, JULES PITSKER  (pitsker@proton.me)
 
 O.R.C. NOTICE
-This product is licensed under the ORC License located at the Library of
+This product is licensed under the Open RPG Creative License (ORC) located at the Library of
 Congress and available online at various locations
 including https://downloads.paizo.com/ORC_License_FINAL.pdf and others.
 All WARRANTIES ARE DISCLAIMED AS SET FORTH THEREIN.

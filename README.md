@@ -40,7 +40,7 @@ $ python3 ./path/to/main.py
 ```
 ## License
 
-This source code is licensed under the ORC License found in the LICENSE file in the root directory of this source tree.
+This source code is licensed under the Open RPG Creative License (ORC) found in the LICENSE file in the root directory of this source tree.
 
 Copyright © 2022, 2023 Jules Pitsker 
 

@@ -1,26 +1,20 @@
-# Sauengard © Copyright 2022 by Jules Pitsker
+# Sauengard © Copyright 2022, 2023 by Jules Pitsker
 # This source code is licensed under the license found in the
 # LICENSE.txt file in the root directory of this source tree.
 
 """
-Copyright 2022, JULES PITSKER  (pitsker@proton.me)
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
-documentation files (the “Software”), to deal in the Software without restriction, including without limitation
-the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software,
-and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Sauengard Copyright 2022, 2023, JULES PITSKER  (pitsker@proton.me)
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions
-of the Software.
+O.R.C. NOTICE
+This product is licensed under the ORC License located at the Library of
+Congress and available online at various locations
+including https://downloads.paizo.com/ORC_License_FINAL.pdf and others.
+All WARRANTIES ARE DISCLAIMED AS SET FORTH THEREIN.
 
-THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
-THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-ACKNOWLEDGEMENTS according to Creative Commons licenses:
+ATTRIBUTION
+This product is original work except for the the following sound/music released under the Creative Commons License:
 https://creativecommons.org/licenses/by/4.0/
 
-SOUND/MUSIC:
 Main theme: "Soul's Departure" Royalty Free Music by Darren Curtis
 Creative Commons Attribution License 4.0 International (CC BY 4.0)
 
@@ -63,7 +57,31 @@ Gong: juskiddink / Freesound.org
 Creative Commons Attribution License 3.0 (CC BY 3.0)
 
 Clacky Keyboard: Denis McDonald (denismcdonald / Freesound.org)
-Creative Commons Attribution License 3.0 (CC BY 3.0)"""
+Creative Commons Attribution License 3.0 (CC BY 3.0)
+
+Final Victory Theme: 'Epic Victory Music' Royalty Free Instrumental Music by MUSIC4VIDEO
+https://www.youtube.com/watch?v=5JeU0pYk0dg
+
+Queen Confrontation Theme: "Shadow"
+Album: "The Net" 2020 Argsound
+Author: Artem Grebenshchikov
+Link: https://youtu.be/k-DJUohjcKo
+Free for Any non-commercial use
+
+If you use my EXPRESSLY DESIGNATED LICENSED MATERIAL in your own published works, please credit me as follows:
+Sauengard, Copyright 2022,2023, Jules Pitsker.
+
+RESERVED MATERIAL
+Reserved Material elements in this product include, but may not be limited to:
+ASCII Artwork, the ABOUT section
+
+EXPRESSLY DESIGNATED LICENSED MATERIAL
+The following elements are owned by the Licensor and would otherwise
+constitute Reserved Material and are hereby designated as LICENSED MATERIAL:
+Python code, Tinbar, The Northern Kingdom and Northern Library, the Realm of Sauengard and associated characters,
+locations, lore, and titles including, but not limited to Deaf One, Wicked Queen Jannbrielle, Vozzbozz, Si'Kira,
+Tor'bron, and all elements designated as Reserved Material under the ORC License.
+"""
 
 # Telengard monsters:
 # "Gnoll", "Kobold", "Skeleton", "Hobbit", "Zombie", "Orc", "Fighter", "Mummy", "Elf", "Ghoul", "Dwarf",

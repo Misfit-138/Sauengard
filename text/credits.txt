@@ -1,4 +1,4 @@
-Sauengard Copyright 2022 by Jules Pitsker
+Sauengard Copyright 2022, 2023 by Jules Pitsker
 Please see the LICENSE.txt in the program source directory, or choose the (L)icense option from the main menu.
 Concept, coding, creation and play testing: Jules Pitsker
 

@@ -460,7 +460,7 @@ def game_splash():
         print("                                   "
               "W  E  L  C  O  M  E    T  O    S  A  U  E  N  G  A  R  D.\n")
         print(f"                                         "
-              f"   © Copyright 2022 by Jules Pitsker")
+              f"   © Copyright 2022, 2023, by Jules Pitsker")
         choice = input(f"                               "
                        f"(Quit) to Desktop  (A)bout  (T)ips  (C)redits  "
                        f"(L)icense  (B)egin ").lower()

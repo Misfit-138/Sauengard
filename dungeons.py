@@ -83,7 +83,6 @@ locations, lore, and titles including, but not limited to Deaf One, Wicked Queen
 Tor'bron, and all elements designated as Reserved Material under the ORC License.
 """
 
-
 # atrium: an open-roofed entrance hall or central court
 
 class Dungeon:

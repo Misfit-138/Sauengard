@@ -69,18 +69,18 @@ Link: https://youtu.be/k-DJUohjcKo
 Free for Any non-commercial use
 
 If you use my EXPRESSLY DESIGNATED LICENSED MATERIAL in your own published works, please credit me as follows:
-Sauengard, Copyright 2022,2023, Jules Pitsker.
+Sauengard, Copyright 2022,2023, by Jules Pitsker.
 
 RESERVED MATERIAL
 Reserved Material elements in this product include, but may not be limited to:
-The ABOUT section
+The ABOUT section, and all elements designated as Reserved Material under the ORC License.
 
 EXPRESSLY DESIGNATED LICENSED MATERIAL
 The following elements are owned by the Licensor and would otherwise
 constitute Reserved Material and are hereby designated as LICENSED MATERIAL:
-Python code, ASCII Artwork, Tinbar, The Northern Kingdom and Northern Library, the Realm of Sauengard and associated characters,
-locations, lore, and titles including, but not limited to Deaf One, Wicked Queen Jannbrielle, Vozzbozz, Si'Kira,
-Tor'bron, and all elements designated as Reserved Material under the ORC License.
+Python code, ASCII Artwork, Tinbar, The Northern Kingdom and Northern Library, the Realm of Sauengard and associated
+characters, locations, lore, and titles including, but not limited to Deaf One, Wicked Queen Jannbrielle, Vozzbozz,
+Si'Kira, and Tor'bron.
 """
 
 
